@@ -6,7 +6,10 @@
 # WORK IN PROGRESS
 # WORK IN PROGRESS
 # WORK IN PROGRESS
-** This is just a collection of files to use as seeds for a starpac library callable from fpm(Fortran Package Manager). **
+* This is just a collection of files to use as seeds for a starpac
+library callable from fpm(Fortran Package Manager). *
+
+    https://urbanjost.github.io/M_starpac/
 
 [details="User's Guide"]
 ```text
