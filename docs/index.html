@@ -1,0 +1,3026 @@
+<html>
+<head><title> OTIS Documentation: User's Guide to STARPAC </title></head>
+
+<body bgcolor="#ffffff" text="#000000" link="#000099" vlink="#006633">
+
+<center>
+<h1> User's Guide to STARPAC</h1><p>
+<h3><u>The Standards Time Series and Regressions Package</u></h3><br>
+<i>
+National Institute of Standards and Technology<br> 
+(formerly the National Bureau of Standards)<br> 
+Internal Report NBSIR 86-3448<br> 
+(text revised  3/15/90)<br> 
+(STARPAC sample output revised 03/15/90)<p>
+</i>
+<h3>
+Janet R. Donaldson<br> 
+Peter V. Tryon<p>
+</h3>
+<i>
+U.S. Department of Commerce<br> 
+Center for Computing and Applied Mathematics<br> 
+National Institute of Standards and Technology<br> 
+Boulder, Colorado 80303-3328<br>
+</i>
+</center><p>
+
+<hr>
+<center><h2><a name="preface"> Disclaimer </a></h2></center>
+No warranties, express or implied,  are made 
+by  the  distributors  or   developers  that 
+STARPAC or its constituent parts are free of 
+error.   They should  not be  relied upon as 
+the  sole basis for solving a  problem whose 
+incorrect solution could result in injury to 
+person or  property.   If  the  programs are 
+employed  in  such a  manner, it  is  at the 
+user's own  risk and  the  distributors  and 
+developers  disclaim all liability  for such 
+misuse.<p> 
+Computers  have  been   identified  in  this 
+paper  in  order  to  adequately specify the 
+sample  programs  and  test  results.   Such 
+identification does  not  imply  recommendation   
+or   endorsement   by   the  National 
+Institute  of  Standards and Technology, nor 
+does it imply  that the equipment identified 
+is necessarily  the  best  available for the 
+purpose.<p>
+
+<hr> 
+<center><h2> Preface </h2></center>
+     STARPAC, the Standards Time  Series and Regression Package, is  a library
+of  Fortran  subroutines  for  statistical  data  analysis  developed  by  the
+Statistical Engineering Division (SED) of the National Institute  of Standards
+and  Technology  (NIST),  formerly  the  National  Bureau  of Standards (NBS),
+Boulder, Colorado.   Earlier versions of this  library were distributed by the
+SED  under  the  name  STATLIB  [Tryon  and  Donaldson, 1978].   Chapter 1 and
+chapter 9 of this document were previously distributed as  NBS Technical Notes
+1068-1  and  1068-2,   respectively   [Donaldson and Tryon,  1983a and 1983b].
+STARPAC   incorporates   many   changes  to   STATLIB,  including   additional
+statistical techniques, improved algorithms and enhanced portability.<p>
+     STARPAC consists of  families of subroutines for nonlinear  least squares
+regression, time series analysis  (in both  time and frequency  domains), line
+printer  graphics,  basic  statistical  analysis,  and  linear  least  squares
+regression.  These subroutines feature:
+<ul>
+ <li> ease of use, alone and with other Fortran subroutine libraries;
+ <li> extensive error handling facilities;
+ <li> comprehensive printed reports;
+ <li> no problem size restrictions other than effective machine size; and
+ <li> portability.
+</ul>
+     Notation,  format  and naming  conventions are  constant  throughout  the
+STARPAC  documentation,   allowing  the  documentation  for  each   family  of
+subroutines to  be used alone  or in  conjunction with  the  documentation for
+another.<p>
+     STARPAC  is  written  in  ANSI Fortran   77  [American National Standards
+Institute, 1977].   Workspace  and  machine-dependent constants  are  supplied
+using subroutines based  on  the  Bell Laboratories  "Framework for a Portable
+Library"  [Fox et al., 1978a].   We have  also used  subroutines  from LINPACK
+[Dongarra et al., 1979],  from  the  "Basic  Linear  Algebra  Subprograms  for
+Fortran Usage" [Lawson et al., 1979],  from  DATAPAC [Filliben, 1977] and from
+the portable special function subroutines  of Fullerton [1977].   The analyses
+generated  by  several  of  the  subroutine  families  have  been adapted from
+OMNITAB II [Hogben et al., 1971]; users are  directed  to  Peavy et al. [1985]
+for information about OMNITAB 80, the current version of OMNITAB.<p>
+     Computer facilities for the STARPAC project have been provided in part by
+the  National Oceanic  and Atmospheric Administration  Mountain Administrative
+Support  Center  Computer  Division,  Boulder,  Colorado,  and  we  gratefully
+acknowledge their support.   The STARPAC  subroutine library is the result  of
+the programming  efforts of  Janet  R.  Donaldson  and John  E.  Koontz,  with
+assistance from Ginger A. Caldwell,  Steven M. Keefer, and Linda  L. Mitchell.
+Valuable  contributions have  also been made  by each  of the  members  of the
+Statistical Engineering Division in Boulder, and from many within  the STARPAC
+user community.   We are grateful for the many valuable  comments that we have
+received on early drafts of  the STARPAC documentation; we wish  especially to
+thank Paul T. Boggs, Ginger A. Caldwell, Sally E. Howe, John E.  Koontz, James
+T.  Ringland, Ralph J.  Slutz, and  Dominic F. Vecchia.   Finally, we  wish to
+thank Lorna Buhse for excellent manuscript support.<p>
+Janet R. Donaldson <br>
+Peter V. Tryon (deceased) <br>
+October 1985 <br>
+Revised September 1987 <br>
+Revised February 1990 <p>
+
+<hr>
+<center><h2><a name="toc"> Contents </a></h2></center>
+<blockquote>
+ <blockquote>
+ <h4>Preface</h4>
+ </blockquote>
+ <ol><li> <a href="#ch1"><h4>Introduction to Using STARPAC</h4></a> 
+  <blockquote>
+     A.  <a href="#1a">Overview of STARPAC and Its Contents</a><br>
+     B.  <a href="#1b">Documentation Conventions</a><br>
+     C.  <a href="#1c">A Sample Program</a><br>
+     D.  <a href="#1d">Using STARPAC</a><br>
+   <blockquote>
+         D.1  <a href="#1d1">The PROGRAM Statement</a><br>
+         D.2  <a href="#1d2">The Dimension Statements</a><br>
+         D.3  <a href="#1d3">The CALL Statements</a><br>
+         D.4  <a href="#1d4">STARPAC Output</a><br>
+         D.5  <a href="#1d5">STARPAC Error Handling</a><br>
+         D.6  <a href="#1d6">Common Programming Errors When Using STARPAC</a><br>
+   </blockquote>
+  </blockquote>
+ <li> <h4>Line Printer Graphics</h4> 
+ <li> <h4>Normal Random Number Generation</h4> 
+ <li> <h4>Histograms</h4>
+ <li> <h4>Statistical Analysis of A Univariate Sample</h4>
+ <li> <h4>One-Way Analysis of Variance</h4> 
+ <li> <h4>Correlation Analysis</h4> 
+ <li> <h4>Linear Least Squares</h4> 
+ <li> <a href="#ch9"><h4>Nonlinear Least Squares</h4></a> 
+  <blockquote>
+     A.  <a href="#9a">Introduction <br></a>
+     B.  <a href="#9b">Subroutine Descriptions <br></a>
+   <blockquote>
+         B.1  <a href="#9b1">Nonlinear Least Squares Estimation Subroutines <br></a>
+         B.2  <a href="#9b2">Derivative Step Size Selection Subroutines <br></a>
+         B.3  <a href="#9b3">Derivative Checking Subroutines <br></a>
+   </blockquote>
+     C.  <a href="#9c">Subroutine Declaration and CALL Statements <br></a>
+     D.  <a href="#9d">Dictionary of Subroutine Arguments and COMMON Variables <br></a>
+     E.  <a href="#9e">Computational Methods <br></a>
+   <blockquote>
+         E.1  <a href="#9e1">Algorithms <br></a>
+    <blockquote>
+              E.1.a  <a href="#9e1a">Nonlinear Least Squares Estimation <br></a>
+              E.1.b  <a href="#9e1b">Derivative Step Size Selection <br></a>
+              E.1.c  <a href="#9e1c">Derivative Checking <br></a>
+    </blockquote>
+         E.2  <a href="#9e2">Computed Results and Printed Output <br></a>
+    <blockquote>
+              E.2.a  <a href="#9e2a">The Nonlinear Least Squares Estimation 
+                     Subroutines <br></a>
+              E.2.b  <a href="#9e2b">The Derivative Step Size Selection Subroutines <br></a>
+              E.2.c  <a href="#9e2c">The Derivative Checking Subroutines <br></a>
+    </blockquote>
+   </blockquote>
+     F.  <a href="#9f">Examples <br></a>
+     G.  <a href="#9g">Acknowledgments <br></a>
+  </blockquote>
+ <li> <h4>Digital Filtering</h4> 
+ <li> <h4>Complex Demodulation</h4> 
+ <li> <h4>Correlation and Spectrum Analysis</h4> 
+ <li> <h4>Arima Modeling</h4> 
+ </ol>
+ <blockquote>
+ <b>Appendix A.</b>  Continuity of Vertical Plots on the CDC Cyber 480 and 
+   855<p>
+ <b><a href="#apb">Appendix B.</a></b>  Weighted Least Squares<p>
+ <b><a href="#apc">Appendix C.</a></b>  Estimating the Number of Reliable 
+   Digits in the Results of a Function<p>
+ <b><a href="#apd">Appendix D.</a></b>  List of STARPAC Subprogram Names<p>
+  <blockquote>
+             D.1  <a href="#ad1">Subprograms specifically written for STARPAC <br></a>
+             D.2  <a href="#ad2">Subprograms from NL2SOL <br></a>
+             D.3  <a href="#ad3">Subprograms from miscellaneous public domain sources <br></a>
+             D.4  <a href="#ad4">Subprograms from LINPACK and BLAS <br></a>
+             D.5  <a href="#ad5">Subprograms specifying machine dependent constants </a>
+  </blockquote>
+ <b><a href="#ape">Appendix E.</a></b>  List of STARPAC Labeled Common Names<p>
+ <b><a href="#ref">References</a></b>
+ </blockquote>
+</blockquote>
+
+<hr>
+
+<center>
+<a name="abstract"><h1> User's Guide to STARPAC</h1></a><p>
+<h3><u>The Standards Time Series and Regressions Package</u></h3><br>
+<h3>
+by<br>
+Janet R. Donaldson and
+Peter V. Tryon<p>
+</h3>
+<i>
+U.S. Department of Commerce<br> 
+Center for Computing and Applied Mathematics<br> 
+National Institute of Standards and Technology<br> 
+Boulder, Colorado 80303-3328<br>
+</i>
+</center><p>
+    STARPAC, the Standards Time Series and Regression Package,  is a
+library  of  Fortran  subroutines  for  statistical   data  analysis
+developed by  the Statistical  Engineering Division of  the National
+Institute  of   Standards  and  Technology  (formerly  the  National
+Bureau of Standards), Boulder, Colorado.   Earlier versions  of this
+library were distributed by  the SED  under the name  STATLIB [Tryon
+and Donaldson, 1978].  STARPAC incorporates many changes to STATLIB,
+including additional statistical techniques, improved algorithms and
+enhanced portability.<p>
+    STARPAC emphasizes  the statistical  interpretation  of results,
+and, for  this reason,  comprehensive printed  reports  of auxiliary
+statistical information, often in graphical form,  are automatically
+provided to augment the basic statistical computations  performed by
+each  user-callable STARPAC subroutine.   STARPAC thus  provides the
+best  features of  many stand-alone  statistical  software  programs
+within the flexible environment of a subroutine library.<p>
+Key   words:   data  analysis;  nonlinear  least  squares;  STARPAC;
+statistical computing;  statistical subroutine  library; statistics;
+STATLIB; time series analysis.<p>
+
+<hr>
+<center><h2><a name="ch1"> Chapter 1 </a></h2> 
+<h2> Introduction to Using STARPAC </h2>
+</center>
+
+<a name="1a"><h3>A.  Overview of STARPAC and Its Contents</h3></a>
+     STARPAC is a portable library of approximately 150 user-callable ANSI  77
+Fortran  subroutines for  statistical data analysis.   Designed primarily  for
+time series analysis and for nonlinear least squares regression,  STARPAC also
+includes subroutines for normal random number generation, line  printer plots,
+basic statistical analyses and linear least squares.  Emphasis has been placed
+on facilitating  the  interpretation of  statistical analyses,  and,  for this
+reason,  comprehensive printed  reports of auxiliary  statistical information,
+often  in graphical  form,  are automatically  provided to  augment  the basic
+statistical  computations performed by each user-callable  STARPAC subroutine.
+STARPAC thus  provides  the  best  features of  many  stand-alone  statistical
+software programs within the flexible environment of a subroutine library.<p>
+     STARPAC is  designed to be easy to  use; in  many situations, only  a few
+lines of elementary Fortran code are required for the users' main programs.  A
+fundamental STARPAC  philosophy  is  to  provide  two  or  more  user-callable
+subroutines  for each method of analysis:   one which minimizes the complexity
+of the CALL statement, automatically producing a comprehensive  printed report
+of the  results; and  one or more  others which  provide user  control  of the
+computations, allow suppression of all or part of the printed  reports, and/or
+provide storage of computed results for further analyses.<p>
+     STARPAC was developed and is  maintained by the  Center for Computing and
+Applied  Mathematics  of  the  National Institute of  Standards and Technology
+(NIST), Boulder, Colorado.  Users' comments and suggestions,  which  have  had
+significant impact already,  are highly valued and always welcomed.   Comments
+and suggestions should be directed to:<p>
+Janet R. Donaldson <br>
+NIST Center for Computing and Applied Mathematics <br>
+Mail Code 719 <br>
+325 Broadway <br>
+Boulder, CO 80303-3328.<p>
+
+<a name="1b"><h3>B.  Documentation Conventions</h3></a>
+     The documentation  for  the various  STARPAC subroutine  families  uses a
+standard  format description  of  the  information  needed to  use  a  STARPAC
+subroutine, including one or more examples.<p>
+     References to chapter sections within the STARPAC documentation refer  to
+the  identified  section  within  the current chapter unless explicitly stated
+otherwise.  Figures are identified by the section in  which  they  occur.  For
+example,  figure  B-1  refers to the first figure in section B of this chapter
+(chapter 1).<p>
+     Names of INTEGER  and REAL  STARPAC subroutine  arguments  are consistent
+with the implicit Fortran  convention for specifying variable type.   That is,
+variable  names beginning with I through  N are type INTEGER while  all others
+are type REAL unless  otherwise explicitly typed DOUBLE PRECISION  or COMPLEX.
+All dimensioned variables are explicitly declared in STARPAC  documentation by
+means  of  INTEGER,   REAL,  DOUBLE  PRECISION,  or  COMPLEX   statements,  as
+appropriate.   The  convention  used to  specify the  dimension  statements is
+discussed below in section D.2.<p>
+     The precision of the STARPAC library is indicated in the printed  reports
+generated by STARPAC:  an S following the STARPAC version number in the output
+heading indicates the single precision  version  is  being  used,  while  a  D
+indicates the double precision version.  The STARPAC documentation is designed
+for  use with both single and double precision versions.  Subroutine arguments
+which are double precision in both versions  are  declared  DOUBLE  PRECISION;
+similarly,  arguments which are single precision in both versions are declared
+REAL.  Arguments whose precision is  dependent  upon  whether  the  single  or
+double precision version of STARPAC is being used are declared &lt;real&gt;.  
+If the double  precision version of the STARPAC library is being used,  then 
+the user should substitute DOUBLE PRECISION for &lt;real&gt;; if the single 
+precision version is being used,  then  the  user  should  substitute  REAL  
+for &lt;real&gt;.  Other precision-dependent features are discussed as they occur.<p>
+
+<a name="1c"><h3>C.  A Sample Program</h3></a>
+     The  sample  program  shown  below  illustrates   the  use   of   STARPAC
+subroutines.   The code shown  is  portable ANSI 77 Fortran.   Section D below
+uses this example to discuss Fortran programming as it relates to STARPAC.<p>
+     The data used in this example are 84 relative humidity measurements taken
+at  Pikes  Peak,  Colorado.  STARPAC  subroutine PP,  documented in chapter 2,
+plots the data versus time-order and STARPAC subroutine  STAT,  documented  in
+chapter 5, prints a comprehensive statistical analysis of the data.<p>
+<blockquote><pre>
+Program:<p>
+      PROGRAM EXAMPL
+C
+C     DEMONSTRATE STAT AND PP USING SINGLE PRECISION VERSION OF STARPAC
+C
+C     N.B. DECLARATION OF Y AND X MUST BE CHANGED TO DOUBLE PRECISION
+C          IF DOUBLE PRECISION VERSION OF STARPAC IS USED.
+C
+      REAL Y(100), X(100)
+      DOUBLE PRECISION DSTAK(100)
+C
+      COMMON /CSTAK/ DSTAK
+      COMMON /ERRCHK/ IERR
+C
+C     SET UP INPUT AND OUTPUT FILES
+C     [CHAPTER 1, SECTION D.4, DESCRIBES HOW TO CHANGE OUTPUT UNIT.]
+C
+      CALL IPRINT(IPRT)
+      OPEN (UNIT=IPRT, FILE='FILENM')
+      OPEN (UNIT=5, FILE='DATA')
+C
+C     DEFINE LDSTAK, THE LENGTH OF DSTAK
+C
+      LDSTAK = 100
+C
+C     READ NUMBER OF OBSERVATIONS INTO N AND
+C          DATA INTO VECTOR Y
+C
+      READ (5,100) N
+      READ (5,101) (Y(I), I=1,N)
+C
+C     CREATE A VECTOR OF ORDER INDICES IN X
+C
+      DO 10 I=1,N
+        X(I) = I
+   10 CONTINUE
+C
+C     PRINT TITLE, PLOT OF DATA AND ERROR INDICATOR
+C
+      WRITE (IPRT,102)
+      CALL PP (Y, X, N)
+      WRITE (IPRT,103) IERR
+C
+C     PRINT TITLE, STATISTICAL ANALYSIS OF DATA AND ERROR INDICATOR
+C
+      WRITE (IPRT,102)
+      CALL STAT (Y, N, LDSTAK)
+      WRITE (IPRT,103) IERR
+C
+C     FORMAT STATEMENTS
+C
+  100 FORMAT (I5)
+  101 FORMAT (11F7.4)
+  102 FORMAT ('1DAVIS-HARRISON PIKES PEAK RELATIVE HUMIDITY DATA')
+  103 FORMAT (' IERR = ', I1)
+      END<p>
+<p>
+Data:<p>
+   84
+0.6067 0.6087 0.6086 0.6134 0.6108 0.6138 0.6125 0.6122 0.6110 0.6104 0.7213
+0.7078 0.7021 0.7004 0.6981 0.7242 0.7268 0.7418 0.7407 0.7199 0.6225 0.6254
+0.6252 0.6267 0.6218 0.6178 0.6216 0.6192 0.6191 0.6250 0.6188 0.6233 0.6225
+0.6204 0.6207 0.6168 0.6141 0.6291 0.6231 0.6222 0.6252 0.6308 0.6376 0.6330
+0.6303 0.6301 0.6390 0.6423 0.6300 0.6260 0.6292 0.6298 0.6290 0.6262 0.5952
+0.5951 0.6314 0.6440 0.6439 0.6326 0.6392 0.6417 0.6412 0.6530 0.6411 0.6355
+0.6344 0.6623 0.6276 0.6307 0.6354 0.6197 0.6153 0.6340 0.6338 0.6284 0.6162
+0.6252 0.6349 0.6344 0.6361 0.6373 0.6337 0.6383
+</pre></blockquote>
+
+<a name="1d"><h3>D.  Using STARPAC</h3></a>
+     The following  subsections provide general information needed  when using
+STARPAC,  including a  discussion  of Fortran  programming as  it  relates  to
+STARPAC usage.   Although only elementary knowledge of Fortran is  required to
+use STARPAC, users may still have to consult with a Fortran text  and/or their
+Computing Center staff when questions arise.<p>
+
+<a name="1d1"><h4>D.1  The PROGRAM Statement</h4></a>
+     The PROGRAM statement is used to name the user's main program.   The name
+EXAMPL is  assigned to the  main program  in this example.   The program  name
+cannot  be  the name  of any  variable  in the  user's main  program  and,  in
+addition, cannot be the name of any other subroutine or function called during
+execution of  the user's code.   Specifically, it  cannot be  the name of  any
+subroutine within STARPAC.  To ensure that the name of a STARPAC subroutine is
+not inadvertently  chosen for  the  name of  the main  program,  users  should
+consult with  the local installer of STARPAC  to obtain a list of  the STARPAC
+subroutine names.<p>
+
+<a name="1d2"><h4>D.2  The Dimension Statements</h4></a>
+     The user's program must include dimension statements to define  the sizes
+and types of the  vectors, matrices  and three-dimensional arrays  required by
+each STARPAC subroutine used; STARPAC  itself has  no inherent upper  limit on
+problem size.<p>
+     Within the STARPAC documentation for the subroutine declaration and  CALL
+statements, lowercase identifiers in the dimension statements represent integer 
+constants which must equal or exceed the value of the identically-spelled  
+uppercase argument.  For example,  if the documentation specifies the
+minimum dimension of a variable as &lt;real&gt; XM(n,m), and if the number of
+observations N is 15, and the number of columns of data M is 3, then (assuming
+the  single precision version of STARPAC is being used) the minimum array size
+is given by the dimension statement REAL XM(15,3).<p>
+     The  exact dimensions  assigned  to some  vectors and  matrices  must  be
+supplied in the CALL statements to some STARPAC subroutines.  For example, the
+argument IXM  is defined  as "the exact  value of  the first dimension  of the
+matrix XM as  declared in the calling program."   Continuing the  example from
+the preceding paragraph, if the  statement REAL XM(20,5) is used  to dimension
+the matrix XM for a particular subroutine, and IXM is an argument in  the CALL
+statement, then IXM must have the value 20 regardless of the value assigned to
+the variable N.<p>
+     Many STARPAC subroutines  require a work area for  internal computations.
+This  work area is provided by  the DOUBLE PRECISION vector DSTAK.   The rules
+for defining DSTAK are as follows.<p>
+<blockquote>
+     1. Programs which call  subroutines requiring the work vector  DSTAK must
+        include  the  statements<p>
+ <blockquote>
+                       DOUBLE PRECISION DSTAK (ldstak)
+                       COMMON /CSTAK/ DSTAK
+ </blockquote>
+        where ldstak indicates the integer constant used to dimension DSTAK.<p>
+     2. Since all STARPAC subroutines use the same work vector, the  length of
+        DSTAK must equal or exceed the  longest length required by any  of the
+        individual STARPAC subroutines called by the user's program.<p>
+     3. The length, LDSTAK, of the work vector DSTAK must be specified  in the
+        CALL statement of any STARPAC subroutine using DSTAK to enable STARPAC
+        to verify that there will be sufficient work area for the problem.<p>
+</blockquote>
+     It is recommended that a variable LDSTAK  be set to the length  of DSTAK,
+and that this variable be used in each CALL statement requiring the  length of
+DSTAK to be specified.   Then, if a future modification to the  user's program
+requires the length of DSTAK to  be changed, the only alterations  required in
+the existing code would be to the DOUBLE PRECISION dimension statement  and to
+the statement which assigns the length of DSTAK to LDSTAK.<p>
+     STARPAC  manages  its  work area using subroutines modeled after those in
+ACM Algorithm 528:  Framework for a  Portable  Library  [Fox  et  al.  1978a].
+Although STARPAC and the Framework share the same COMMON for their work areas,
+there  are differences between the STARPAC management subroutines and those of
+the  Framework.   In  particular,   the  STARPAC  management  subroutines 
+reinitialize  DSTAK  each  time  the user invokes a STARPAC subroutine requiring
+work area, destroying all data previously stored in DSTAK;  the Framework only
+initializes  DSTAK  the  first  time  any  of  its  management subroutines are
+invoked,  preserving work area allocations still in use.  Thus,  users must be
+cautious  when  utilizing  STARPAC  with  other  libraries  which  employ  the
+Framework, such as PORT [Fox et al., 1978b].<p>
+     The sample program shown in figure C-1 provides an example of the use  of
+dimensioned  variables  with  STARPAC.   The  REAL  vector  Y,  used  by  both
+subroutines PP and STAT,  contains the 84 relative humidity measurements;  its
+minimum length, N (the number of observations), is 84.  The REAL vector X used
+by  subroutine  PP  contains the corresponding time order indices of the data;
+its minimum length is also 84.  The DOUBLE PRECISION vector DSTAK contains the
+work area needed by STAT for intermediate computations; its minimum length, 49
+in this case,  is defined in section D of chapter  4.  In  this  example,  the
+dimensions of Y,  X,  and DSTAK,  are each 100, exceeding the required minimum
+values.<p>
+
+<a name="1d3"><h4>D.3  The CALL Statements</h4></a>
+     The STARPAC CALL statement arguments provide the interface for specifying
+the data to be used, controlling the computations, and providing space for any
+returned results.   The CALL  statements used  in the example  (fig. C-1)  are
+CALL PP(Y, X, N) and CALL STAT(Y, N, LDSTAK).   Note that scalar arguments may
+be specified either by a variable preset to the desired value, as was  done in
+the  example,  or   by  the  actual  numerical  values.    For  example,  CALL
+PP(Y, X, 84)  and CALL STAT(Y, 84, 100)  could have  been used instead  of the
+forms shown.   We recommend  using variables rather than the  actual numerical
+values in order to simplify future changes in the program.  When variables are
+used, changes need to be made in only  one place; numerical values have  to be
+changed every  place they occur.   The use  of variables can also clarify  the
+meaning of the program.<p>
+
+<a name="1d4"><h4>D.4  STARPAC Output</h4></a>
+     Most STARPAC  subroutines produce extensive printed reports,  freeing the
+user from formatting and  printing all  statistics of interest.   The standard
+output device is used for these reports.   The user has the options of titling
+the reports and changing the output device.<p>
+     The first page of the report from each STARPAC subroutine does  not start
+on a new page.  This allows the user to supply titles.  For example,<p>
+<pre>
+        WRITE (6, 100)
+    100 FORMAT ('1DAVIS-HARRISON PIKES PEAK RELATIVE HUMIDITY DATA')
+        CALL PP (Y, X, N)
+</pre>
+will print the title DAVIS-HARRISON PIKES PEAK RELATIVE HUMIDITY DATA  on  the
+top line of a new page,  immediately preceding the output produced by the call
+to subroutine PP.   Users should note that titles more than one line in length
+can cause a  printed report  designed for one page to extend beyond the bottom
+of the page.<p>
+     The unit number, IPRT, of the  output device used by STARPAC  is returned
+by STARPAC subroutine IPRINT.   Users can change the output device unit number
+by including with their program  a subroutine IPRINT which will  supersede the
+STARPAC subroutine of the same name.  The subroutine must have the form<p>
+<pre>
+        SUBROUTINE IPRINT(IPRT)
+        IPRT = u
+        RETURN
+        END
+</pre>
+where u  is an integer value specifying  the output unit to which  all STARPAC
+output will be written.<p>
+
+<a name="1d5"><h4>D.5  STARPAC Error Handling</h4></a>
+     STARPAC  provides extensive error-checking facilities which  include both
+printed  reports and  a  program-accessible  error flag  variable.   There are
+essentially two types of errors STARPAC can detect.<p>
+     The first type  of error involves incorrect problem  specification, i.e.,
+one or more of the input arguments in the subroutine statement has an improper
+value.   For example,  the number of observations, N,  might have an obviously
+meaningless non-positive value.  In the case of improper problem specification
+STARPAC generates a  printed report  identifying the subroutine  involved, the
+error  detected, and the proper form  of the  subroutine CALL statement.   The
+latter  is  provided  because  improper  input  is  often  the  result  of  an
+incorrectly specified subroutine argument list.<p>
+     A second type of error can be thought of as a computation error:   either
+the initiated calculation cannot be  completed or the results from  the called
+subroutine are questionable.   For example,  when the least squares model  and
+data are found to be  singular, the desired computations cannot  be completed;
+when one or more of the standardized residuals from a least squares fit cannot
+be computed  because the  standard  deviation of  the residual  is  zero,  the
+results of  the error  estimates  from the  least squares  regression  may  be
+questionable.   If a computation error is detected, STARPAC generates a report
+which identifies the error, and, to aid  the user in determining the  cause of
+the error, summarizes the completed results in a printed report.<p>
+     STARPAC error reports cannot be suppressed,  even when the normal  output
+from  the  STARPAC  subroutine  has  been suppressed.  (STARPAC output must be
+directed to a separate output device [see section D.4] when users do not  want
+any STARPAC reports displayed under any conditions.) Because  of  this,  users
+seldom have to consciously handle STARPAC error conditions in their code.<p>
+     When proper execution of the user's program depends on knowing whether or
+not an error has been detected, the error flag can be examined from within the
+user's code.  When access to the error flag is desired, the statement<p>
+<pre>
+        COMMON /ERRCHK/ IERR
+</pre>
+must be placed with the Fortran declaration statements in the user's  program.
+Following the execution of a STARPAC subroutine, the variable IERR will be set
+to  zero  if  no errors were detected,  and to a nonzero value otherwise;  the
+value of IERR may indicate the type of error [e.g., see chapter 9,  section D,
+argument  IERR].  If  the  CALL  statement is followed with a statement of the
+form<p>
+<pre> 
+        IF (IERR .NE. 0) STOP
+</pre>
+then the program will stop  when an  error is detected.   (In figure  C-1, the
+value  of IERR  is printed following  each CALL  statement to  show  the value
+returned.)<p>
+
+<a name="1d6"><h4>D.6  Common Programming Errors When Using STARPAC</h4></a>
+     STARPAC error-checking procedures catch many programming errors and print
+informative diagnostics  when such  errors are detected.   However, there  are
+some  errors  which  STARPAC cannot  detect.   The  more  common of  these are
+discussed below.<p>
+<blockquote>
+     1. The most common error  involves array dimensions which are  too small.
+        Although certain arguments are checked by STARPAC to verify that array
+        dimensions  are  adequate, if  incorrect information  is  supplied  to
+        STARPAC, or if the dimension of an  array which is not checked  is too
+        small, the program  will produce  erroneous results  and/or  will stop
+        prematurely.   Users should  check the  dimension statements in  their
+        program whenever difficulties are encountered in using STARPAC.<p>
+     2. The second most common error involves incorrect CALL  statements, that
+        is,  CALL  statements   in  which  the  STARPAC  subroutine   name  is
+        misspelled,  the  arguments  are  incorrectly  ordered,  one  or  more
+        arguments are omitted,  or the  argument types (INTEGER,  REAL, DOUBLE
+        PRECISION, and  COMPLEX) are incorrect.   Users having  problems using
+        STARPAC should  carefully check their declaration and  CALL statements
+        to verify that they agree with the documentation.<p>
+     3. The third most  common error  involves incorrect specification  of the
+        work vector DSTAK.   Programs which call STARPAC subroutines requiring
+        work area must  include both the DOUBLE PRECISION  statement dimension
+        DSTAK and the COMMON /CSTAK/ DSTAK statement.<p>
+     4. The final  common error involves user-supplied subroutines  which have
+        the same name as a  subroutine in  the STARPAC library.   Users should
+        consult  with the local installer of  STARPAC to obtain a list  of all
+        STARPAC subroutine names.  This list can then be used to ensure that a
+        STARPAC subroutine name has not been duplicated.<p>
+</blockquote>
+     Users  who have  not found  the  cause of  a problem  after  checking the
+possibilities  mentioned  above should  consult with  their  Computing  Center
+advisers.<p>
+
+<hr>
+<center><h2><a name="ch9"> Chapter 9 </a></h2> 
+<h2> Nonlinear Least Squares </h2>
+</center>
+
+<a name="9a"><h3>A.  Introduction</h3></a>
+     STARPAC contains 16 user-callable subroutines for nonlinear least squares
+regression.  Twelve of these are estimation subroutines that compute the least
+squares solution as described below, performing either weighted  or unweighted
+regression  with either  numerically approximated or  user-supplied (analytic)
+derivatives.   The estimation subroutines allow three levels of control of the
+computations and printed output, and allow the user to specify a subset of the
+parameters to be treated as constants,  with their values held fixed  at their
+input  values.   This last  feature allows  the user  to  examine the  results
+obtained  estimating various  subsets  of the  parameters of  a  general model
+without rewriting  the  model subroutine  for each  subset.   The  other  four
+subroutines described  in  this chapter  are utility  procedures  which choose
+optimum step  sizes  for numerically  approximating the  derivative  and which
+verify the correctness of user-supplied (analytic) derivatives.<p>
+     Each  of the  subroutines  described in  this chapter  assumes  that  the
+observations of the dependent variable, y(i), are modeled by<p>
+<pre>
+        y(i) = f(x(i),PAR) + e(i)  for i = 1, ..., N,
+</pre>
+where
+<blockquote><table>
+<tr><td valign=top>N</td> <td>is the number of observations;</td></tr>
+<tr><td valign=top>f</td> <td>is the function (nonlinear in its parameters) that 
+                   models the ith observation;</td></tr>
+<tr><td valign=top>x(i)</td> <td>is the vector of the M independent variables at 
+                   the ith observation;</td></tr>
+<tr><td valign=top>PAR</td> <td>is the vector of the NPAR model parameters; and</td></tr>
+<tr><td valign=top>e(i)</td> <td>is the unobservable random error in the ith observation,
+                   which is estimated by the ith residual.</td></tr>
+</table></blockquote>
+     The least squares estimates of the parameters, PAR, are obtained using an
+iterative procedure that requires the matrix of  partial  derivatives  of  the
+model with respect to each parameter,<p>
+<pre>
+        D(i,k) = partial [ f(x(i),PAR) wrt PAR(k) ]
+</pre>
+for i = 1, ..., N and k = 1, ..., NPAR.<p>
+The  derivative   matrix  may   be  supplied   analytically   or  approximated
+numerically.<p>
+      The least squares solution is that which minimizes (with respect to PAR)
+the residual sum of squares function,
+<pre>
+                    N                                   N
+        RSS(PAR) = SUM wt(i)*(y(i) - f(x(i),PAR))**2 = SUM wt(i)*e(i)**2
+                   i=1                                 i=1
+</pre>
+here
+<blockquote><table>
+<tr><td valign=top>wt(i)</td> <td>is the weight assigned to the ith observation  (wt(i)  
+=  1.0  in  the ''unweighted'' case). Appendix B discusses several common 
+applications for weighted least squares.</td></tr>
+</table></blockquote>
+     The user must supply both initial  values  for  the  parameters  and  the
+subroutine NLSMDL (described in section D) used to compute f(x(i),PAR), i = 1,
+...,  N,  i.e.,  the predicted values of  the  dependent  variable  given  the
+independent  variables  and the parameter values from each iteration.  Initial
+parameter  values  should  be  chosen  with  care,   since  good  values   can
+significantly reduce computing time.<p>
+     STARPAC  provides  a variety of subroutines to accommodate many levels of
+user sophistication and problem difficulty.  Users are directed to  section  B
+for  a  brief  description  of  the  subroutines.  The  declaration  and  CALL
+statements are given in section C, and the subroutine arguments are defined in
+section D.  The algorithms used and the output produced by  these  subroutines
+are  discussed  in  section  E.  Sample programs and their output are shown in
+section F.<p>
+
+<a name="9b"><h3>B.  Subroutine Descriptions</h3></a>
+<a name="9b1"><h4>B.1  Nonlinear Least Squares Estimation Subroutines</h4></a>
+     The simplest of  the 12  nonlinear least squares  estimation subroutines,
+NLS, requires neither  user-supplied weights  nor analytic  derivatives.   The
+estimated results and a variety of statistics are automatically  summarized in
+a  five-part printed report,  and the  estimated parameters and  residuals are
+returned  to the user  via the  subroutine argument  list  (level one control,
+described  below).  Most nonlinear least squares problems  can be solved using
+NLS.<p>
+     The other 11  estimation subroutines  add the  weighting,  derivative and
+level two and three control features both singly and in combination, providing
+greater  flexibility to  the user  at  the price  of less  simplicity.   These
+features are indicated by the  suffix letter(s) on the subroutine  name (e.g.,
+NLSS and NLSWDC).<p>
+<ul>
+ <li> Suffix W indicates user-supplied weights. 
+ <li> Suffix D indicates user-supplied (analytic) derivatives.
+ <li> Suffix C indicates level two control of the computations.
+ <li> Suffix S indicates level three control of the computations.
+</ul>
+     The  three levels  of  computation  and  printed output  control  are  as
+follows.<p>
+<ul> 
+ <li> In level one,  a five-part printed report,  discussed in  detail  in
+          section  E.2.a,  is  automatically  provided and the estimated model
+          parameters and residuals are returned to the user via  the  argument
+          list.
+ <li> Level two also returns the estimated parameters and residuals,  and,
+          in addition, allows the user to supply arguments to indicate
+  <ul>
+   <li> a subset of the model parameters to be treated as constants,  with
+            their values held fixed at their input values;
+   <li> either the step sizes used to compute the numerical approximations
+            to the derivative, or, when user-supplied analytic derivatives are
+            used, whether they will be checked;
+   <li> the maximum number of iterations allowed;
+   <li> the convergence criteria;
+   <li> the scale (i.e., the typical size) of each parameter;
+   <li> the  maximum  change  allowed  in  the  parameters  at  the  first
+            iteration;
+   <li> how the variance-covariance matrix is to be approximated; and
+   <li> the amount of printed output desired.
+  </ul>
+ <li> Level three  has all the  features of  level two,  and,  in addition
+          returns the following estimated values via the argument list:
+  <ul>
+   <li> the  number of nonzero weighted observations (only when a weighted
+            analysis is performed);
+   <li> the number of parameters actually estimated;
+   <li> the residual standard deviation;
+   <li> the predicted values;
+   <li> the standard deviations of the predicted values;
+   <li> the standardized residuals; and
+   <li> the variance-covariance matrix of the estimated parameters.
+  </ul>
+</ul>
+
+<a name="9b2"><h4>B.2  Derivative Step Size Selection Subroutines</h4></a>
+     When the partial derivatives used in the nonlinear least squares solution
+are not available analytically, STARPAC subroutines approximate them 
+numerically. In this case, the subroutines can  select  optimum step sizes for
+approximating the derivatives [see section  E.1.b].  The  user  also  has  the
+option  of  computing these step sizes independently of the estimation process
+by calling either of the two step size  selection  subroutines  directly.  For
+example,  when  planning  to  use  the  parameter  fixing capability [argument
+IFIXED] to examine several subsets of  the  parameters  of  a  general  model,
+computing  the  step sizes first and passing them to the estimation subroutine
+is more efficient than recomputing them each time the estimation subroutine is
+called.<p>
+     The simplest of  the two  user-callable step size  selection subroutines,
+STPLS, summarizes the step size selection information for each parameter  in a
+printed  report and  returns the step  sizes to  the user  via  the subroutine
+argument list.<p>
+     The second step  size selection  subroutine, STPLSC,  differs  from STPLS
+only in that it enables the user to supply arguments to indicate<p>
+<ul>
+ <li> the number of reliable digits in the model results;
+ <li> the number  of  exemptions  allowed  by  the  acceptance  criteria,
+           specified  as a proportion of the total number of observations (see
+           section E.1.b);
+ <li> the scale (i.e., the typical size) of each parameter; and
+ <li> the amount of printed output desired.
+</ul>
+
+<a name="9b3"><h4>B.3  Derivative Checking Subroutines</h4></a>
+     When the partial derivatives used in the nonlinear least squares solution
+are available analytically,  the user can code them for use by the  estimation
+subroutines  [see  section  D,  argument NLSDRV].  Because coding errors are a
+common  problem  with  user-supplied  derivatives,   the  STARPAC   estimation
+subroutines  automatically  check the validity of the user-supplied derivative
+code by comparing its results  to  numerically  approximated  values  for  the
+derivative.   When  the  results  are  questionable,  the  checking  procedure
+attempts to determine whether the problem lies with the user's  code  or  with
+the accuracy of the numerical approximation [see section E.1.c].  Although the
+checking  procedure  is  automatically available to the estimation subroutines
+which accept user-supplied  derivatives,  the  user  may  want  to  check  the
+derivative code independently of the estimation process.  In these cases,  the
+user can call either of the two derivative checking subroutines directly,  and
+suppress checking by the  estimation  subroutines  [see  section  D,  argument
+IDRVCK].<p>
+     The  simplest   of  the  two  derivative  checking   subroutines,  DCKLS,
+summarizes the results of the check in a printed report.<p>
+     The second of  the derivative  checking subroutine, DCKLSC,  differs from
+DCKLS only in that it enables the user to supply arguments to indicate<p>
+<ul>
+ <li> the number of reliable digits in the model results;
+ <li> the agreement tolerance;
+ <li> the scale (i.e., the typical size) of each parameter;
+ <li> the row at which the derivative is to be checked; and
+ <li> the amount of printed output desired.
+</ul>
+
+<a name="9c"><h3>C.  Subroutine Declaration and CALL Statements</h3></a>
+<b>NOTE</b>:  Argument definitions and sample programs are given in sections D 
+and F, respectively.  The  conventions  used to present the following 
+declaration and CALL statments are given in chapter 1, sections B and D.<p>
+<center><b><u>Nonlinear Least Squares Estimation Subroutines</u></b></center><p>
+     The &lt;basic declaration block&gt; identifies declaration statements 
+that are needed by all of the nonlinear least squares estimation subroutines. 
+The user should substitute the following four statements for each occurrence  
+of &lt;basic declaration block&gt; given below.<p>
+
+<blockquote><pre>
+
+                   &lt;real&gt; Y(n), XM(n,m), PAR(npar), RES(n)
+                   DOUBLE PRECISION DSTAK(ldstak)
+                   COMMON /CSTAK/ DSTAK
+                   EXTERNAL NLSMDL
+
+                                     ===
+
+NLS:    Compute  and  print  a  five-part   weighted nonlinear  least  squares
+        analysis with  numerically approximated derivatives;  return parameter
+        estimates and residuals
+
+        &lt;basic declaration block&gt;
+        :
+        :
+        CALL NLS (Y, XM, N, M, IXM, NLSMDL,
+       +          PAR, NPAR, RES, LDSTAK)
+
+                                     ===
+
+NLSC:   Compute  and  optionally print a five-part  unweighted nonlinear least
+        squares  analysis  with  numerically  approximated  derivatives  using
+        user-supplied  control   values;  return   parameter   estimates   and
+        residuals
+
+        &lt;basic declaration block&gt;
+        INTEGER IFIXED(npar)
+        &lt;real&gt; STP(npar), STOPSS, STOPP, SCALE(npar), DELTA
+        :
+        :
+        CALL NLSC (Y, XM, N, M, IXM, NLSMDL,
+       +           PAR, NPAR, RES, LDSTAK,
+       +           IFIXED, STP, MIT, STOPSS, STOPP,
+       +           SCALE, DELTA, IVAPRX, NPRT)
+
+                                     ===
+
+NLSS:   Compute  and optionally  print a five-part  unweighted nonlinear least
+        squares  analysis  with  numerically  approximated  derivatives  using
+        user-supplied control  values; return parameter  estimates, residuals,
+        number of  nonzero  weights, number of parameters  estimated, residual
+        standard  deviation,  predicted  values, standard  deviations  of  the
+        predicted  values  and  variance-covariance matrix  of  the  estimated
+        parameters
+
+        &lt;basic declaration block&gt;
+        INTEGER IFIXED(npar)
+        &lt;real&gt; STP(npar), STOPSS, STOPP, SCALE(npar), DELTA
+        &lt;real&gt; RSD, PV(n), SDPV(n), SDRES(n), VCV(npare,npare)
+        :
+        :
+        CALL NLSS (Y, XM, N, M, IXM, NLSMDL,
+       +           PAR, NPAR, RES, LDSTAK,
+       +           IFIXED, STP, MIT, STOPSS, STOPP,
+       +           SCALE, DELTA, IVAPRX, NPRT,
+       +           NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)
+
+                                     ===
+
+NLSW:   Compute  and  print  a  five-part   weighted nonlinear  least  squares
+        analysis with  numerically approximated derivatives;  return parameter
+        estimates and residuals
+
+        &lt;basic declaration block&gt;
+        &lt;real&gt; WT(n)
+        :
+        :
+        CALL NLSW (Y, WT, XM, N, M, IXM, NLSMDL,
+       +           PAR, NPAR, RES, LDSTAK)
+
+
+NLSWC:  Compute  and  optionally  print a five-part  weighted nonlinear  least
+        squares  analysis  with  numerically  approximated  derivatives  using
+        user-supplied control values; return parameter estimates and residuals
+
+        &lt;basic declaration block&gt;
+        INTEGER IFIXED(npar)
+        &lt;real&gt; WT(n)
+        &lt;real&gt; STP(npar), STOPSS, STOPP, SCALE(npar), DELTA
+        :
+        :
+        CALL NLSWC (Y, WT, XM, N, M, IXM, NLSMDL,
+       +            PAR, NPAR, RES, LDSTAK,
+       +            IFIXED, STP, MIT, STOPSS, STOPP,
+       +            SCALE, DELTA, IVAPRX, NPRT)
+
+                                     ===
+
+NLSWS:  Compute  and  optionally  print a five-part  weighted nonlinear  least
+        squares  analysis  with  numerically  approximated  derivatives  using
+        user-supplied control  values; return parameter  estimates, residuals,
+        number of  nonzero weights,  number of parameters  estimated, residual
+        standard  deviation,  predicted  values, standard  deviations  of  the
+        predicted  values  and  variance-covariance matrix  of  the  estimated
+        parameters
+
+        &lt;basic declaration block&gt;
+        INTEGER IFIXED(npar)
+        &lt;real&gt; WT(n)
+        &lt;real&gt; STP(npar), STOPSS, STOPP, SCALE(npar), DELTA
+        &lt;real&gt; RSD, PV(n), SDPV(n), SDRES(n), VCV(npare,npare)
+        :
+        :
+        CALL NLSWS (Y, WT, XM, N, M, IXM, NLSMDL,
+       +            PAR, NPAR, RES, LDSTAK,
+       +            IFIXED, STP, MIT, STOPSS, STOPP,
+       +            SCALE, DELTA, IVAPRX, NPRT,
+       +            NNZW, NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)
+
+                                     ===
+
+NLSD:   Compute  and  print  a five-part   unweighted nonlinear least  squares
+        analysis with  user-supplied derivatives;  return  parameter estimates
+        and residuals
+
+        &lt;basic declaration block&gt;
+        EXTERNAL NLSDRV
+        :
+        :
+        CALL NLSD (Y, XM, N, M, IXM, NLSMDL, NLSDRV,
+       +           PAR, NPAR, RES, LDSTAK)
+
+
+NLSDC:  Compute  and  optionally print a five-part  unweighted nonlinear least
+        squares analysis  with user-supplied  derivatives  using user-supplied
+        control values; return parameter estimates and residuals
+
+        &lt;basic declaration block&gt;
+        EXTERNAL NLSDRV
+        INTEGER IFIXED(npar)
+        &lt;real&gt; STOPSS, STOPP, SCALE(npar), DELTA
+        :
+        :
+        CALL NLSDC (Y, XM, N, M, IXM, NLSMDL, NLSDRV,
+       +            PAR, NPAR, RES, LDSTAK,
+       +            IFIXED, IDRVCK, MIT, STOPSS, STOPP,
+       +            SCALE, DELTA, IVAPRX, NPRT)
+
+                                     ===
+
+NLSDS:  Compute  and  optionally print a five-part  unweighted nonlinear least
+        squares analysis  with user-supplied  derivatives  using user-supplied
+        control  values;  return  parameter estimates,  residuals,  number  of
+        parameters estimated,  residual standard deviation,  predicted values,
+        standard  deviations of  the predicted values  and variance-covariance
+        matrix of the estimated parameters
+
+        &lt;basic declaration block&gt;
+        EXTERNAL NLSDRV
+        INTEGER IFIXED(npar)
+        &lt;real&gt; STOPSS, STOPP, SCALE(npar), DELTA
+        &lt;real&gt; RSD, PV(n), SDPV(n), SDRES(n), VCV(npare,npare)
+        :
+        :
+        CALL NLSDS (Y, XM, N, M, IXM, NLSMDL, NLSDRV,
+       +            PAR, NPAR, RES, LDSTAK,
+       +            IFIXED, IDRVCK, MIT, STOPSS, STOPP,
+       +            SCALE, DELTA, IVAPRX, NPRT,
+       +            NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)
+
+                                     ===
+
+NLSWD:  Compute  and  print  a  five-part   weighted nonlinear  least  squares
+        analysis with  user-supplied derivatives;  return  parameter estimates
+        and residuals
+
+        &lt;basic declaration block&gt;
+        EXTERNAL NLSDRV
+        &lt;real&gt; WT(n)
+        :
+        :
+        CALL NLSWD (Y, WT, XM, N, M, IXM, NLSMDL, NLSDRV,
+       +            PAR, NPAR, RES, LDSTAK)
+
+                                     ===
+
+NLSWDC: Compute  and  optionally  print a five-part  weighted nonlinear  least
+        squares analysis  with user-supplied  derivatives  using user-supplied
+        control values; return parameter estimates and residuals
+
+        &lt;basic declaration block&gt;
+        EXTERNAL NLSDRV
+        INTEGER IFIXED(npar)
+        &lt;real&gt; WT(n)
+        &lt;real&gt; STOPSS, STOPP, SCALE(npar), DELTA
+        :
+        :
+        CALL NLSWDC (Y, WT, XM, N, M, IXM, NLSMDL, NLSDRV,
+       +             PAR, NPAR, RES, LDSTAK,
+       +             IFIXED, IDRVCK, MIT, STOPSS, STOPP,
+       +             SCALE, DELTA, IVAPRX, NPRT)
+
+                                     ===
+
+NLSWDS: Compute  and  optionally  print a five-part  weighted nonlinear  least
+        squares analysis  with user-supplied  derivatives  using user-supplied
+        control  values;  return  parameter estimates,  residuals,  number  of
+        nonzero  weights,  number  of parameters estimated,  residual standard
+        deviation,  predicted values,  standard deviations  of  the  predicted
+        values and variance-covariance matrix of the estimated parameters
+
+        &lt;basic declaration block&gt;
+        EXTERNAL NLSDRV
+        INTEGER IFIXED(npar)
+        &lt;real&gt; WT(n)
+        &lt;real&gt; STOPSS, STOPP, SCALE(npar), DELTA
+        &lt;real&gt; RSD, PV(n), SDPV(n), SDRES(n), VCV(npare,npare)
+        :
+        :
+        CALL NLSWDS (Y, WT, XM, N, M, IXM, NLSMDL, NLSDRV,
+       +             PAR, NPAR, RES, LDSTAK,
+       +             IFIXED, IDRVCK, MIT, STOPSS, STOPP,
+       +             SCALE, DELTA, IVAPRX, NPRT,
+       +             NNZW, NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)
+
+                                     ===
+
+
+                       Step Size Selection Subroutines
+
+STPLS:  Compute  and  print  optimum step sizes for numerically  approximating
+        derivatives; return selected step sizes
+
+        &lt;real&gt; XM(n,m), PAR(npar), STP(npar)
+        DOUBLE PRECISION DSTAK(ldstak)
+        COMMON /CSTAK/ DSTAK
+        EXTERNAL NLSMDL
+        :
+        :
+        CALL STPLS (XM, N, M, IXM, NLSMDL, PAR, NPAR, LDSTAK, STP)
+
+                                     ===
+
+STPLSC: Compute  and  optionally  print  optimum  step sizes  for  numerically
+        approximating derivatives  using user-supplied control  values; return
+        selected step sizes
+
+        &lt;real&gt; XM(n,m), PAR(npar), STP(npar)
+        &lt;real&gt; EXMPT, SCALE(npar)
+        DOUBLE PRECISION DSTAK(ldstak)
+        COMMON /CSTAK/ DSTAK
+        EXTERNAL NLSMDL
+        :
+        :
+        CALL STPLSC (XM, N, M, IXM, NLSMDL, PAR, NPAR, LDSTAK, STP,
+       +             NETA, EXMPT, SCALE, NPRT)
+
+                                     ===
+
+
+                       Derivative Checking Subroutines
+
+DCKLS:  Perform and print derivative checking analysis; return error code
+
+        &lt;real&gt; XM(n,m), PAR(npar)
+        DOUBLE PRECISION DSTAK(ldstak)
+        COMMON /CSTAK/ DSTAK
+        EXTERNAL NLSMDL, NLSDRV
+        :
+        :
+        CALL DCKLS (XM, N, M, IXM, NLSMDL, NLSDRV, PAR, NPAR, LDSTAK)
+
+                                     ===
+
+DCKLSC: Perform and optionally print derivative checking analysis using
+        user-supplied control values; return error code
+
+        &lt;real&gt; XM(n,m), PAR(npar)
+        &lt;real&gt; SCALE(npar)
+        DOUBLE PRECISION DSTAK(ldstak)
+        COMMON /CSTAK/ DSTAK
+        EXTERNAL NLSMDL, NLSDRV
+        :
+        :
+        CALL DCKLSC (XM, N, M, IXM, NLSMDL, NLSDRV, PAR, NPAR, LDSTAK,
+       +             NETA, NTAU, SCALE, NROW, NPRT)
+
+                                     ===
+
+</pre></blockquote>
+<a name="9d"><h3>D.  Dictionary of Subroutine Arguments and COMMON Variables</h3></a>
+<blockquote><pre>
+NOTE:   --&gt; indicates  that the argument is input to  the subroutine  and that
+            the input value is preserved;
+        &lt;-- indicates that the argument is returned by the subroutine;
+        &lt;-&gt; indicates that the argument  is input  to the subroutine  and that
+            the input value is overwritten by the subroutine;
+        --- indicates that the argument  is input  to some subroutines  and is
+            returned by others;
+        *** indicates that the argument is a subroutine name;
+        ... indicates that the variable is passed via COMMON.
+
+
+D       &lt;-- The matrix of exact dimension N by NPAR that contains  the partial
+            derivatives  of   the  model  with  respect  to   each  parameter,
+            PAR(k), k = 1, ..., NPAR.  This argument is used within derivative
+            subroutine NLSDRV [see argument NLSDRV below].
+
+DELTA   --&gt; The maximum scaled change  allowed in the parameters at  the first
+            iteration [see section E.1.a].  The default value is  100.0.  When
+            DELTA  &lt;=  0.0  or when DELTA is not an argument of the subroutine
+            CALL statement the default value  is  used.  A  smaller  value  of
+            DELTA  may  be  appropriate  if,   at  the  first  iteration,  the
+            computation of the predicted values from the user's model  subrou-
+            tine  produces an arithmetric overflow or the parameters leave the
+            region of interest in parameter space.  A  reasonable  alternative
+            to  the  default  value  of  DELTA is an upper bound to the scaled
+            change that the estimated parameters should be allowed to make  on
+            the first iteration,
+
+            DELTA = min(|del(PAR(k))|/SCALE(k), for k = 1, ..., NPAR)
+
+            where del(PAR(k)) is  the  maximum  change  allowed  for  the  kth
+            parameter at the first iteration.
+
+DSTAK   ... The  DOUBLE  PRECISION vector  in COMMON /CSTAK/  of  dimension at
+            least LDSTAK.  DSTAK provides workspace for the computations.  The
+            first  LDSTAK  locations  of  DSTAK  will  be  overwritten  during
+            subroutine execution.
+
+EXMPT   --&gt; The  proportion  used  to  compute  the  number  of  observations,
+            a = EXMPT*N, for which the forward difference  quotient derivative
+            with  respect to a  given parameter  is exempted from  meeting the
+            acceptance  criteria  for step size selection [see section E.1.b].
+            The default value for EXMPT is 0.1 (10 percent).  When  the  user-
+            supplied value is outside the range [0.0,  1.0],  or when EXMPT is
+            not an argument of the  subroutine  CALL  statement,  the  default
+            value is used.
+
+IDRVCK  --&gt; The indicator  variable  used  to  designate whether  or  not  the
+            user-supplied  derivative  subroutine  is  to  be  checked.   When
+            IDRVCK  &lt;&gt; 0 the derivative is checked,  and when IDRVCK = 0 it is
+            not.  The default value is IDRVCK &lt;&gt; 0.  When  IDRVCK  is  not  an
+            argument  of  the  subroutine  CALL statement the default value is
+            used.
+
+IERR    ... An  error  flag  returned  in  COMMON  /ERRCHK/  [see  chapter  1,
+            section D.5].  Note that using (or not using) the error flag  will
+            not  affect  the  printed  error  messages  that are automatically
+            provided.
+
+            For the estimation subroutines:
+
+              IERR = 0 indicates that  no errors  were detected, and  that the
+                       iterations converged satisfactorily.
+
+              IERR = 1 indicates  that  improper  input was  detected.
+
+              IERR = 2 indicates that  the computation of the residual  sum of
+                       squares using the initial parameter values  produced an
+                       arithmetic overflow.   The user  should reduce the size
+                       of DELTA or should supply new starting values.
+
+              IERR = 3 indicates that  the model is  computationally singular,
+                       which means the model has too many parameters  near the
+                       solution.   The user should examine the model and  data
+                       to determine and remove the cause of the singularity.
+
+              IERR = 4 indicates  that  at  least  one  of   the  standardized
+                       residuals  could not  be computed because  its standard
+                       deviation was  zero.   The validity  of the  covariance
+                       matrix is questionable.
+
+              IERR = 5 indicates false convergence [see section E.1.a].
+
+              IERR = 6 indicates  that  convergence  was not  reached  in  the
+                       allowed number of iterations or model subroutine  calls
+                       [see argument MIT].
+
+              IERR = 7 indicates that the variance-covariance matrix could not
+                       be computed.
+
+            For the step size selection subroutines:
+
+              IERR = 0 indicates that  no errors  were detected, and  that all
+                       the step sizes satisfied the selection criteria.
+
+              IERR = 1 indicates that improper input was detected.
+
+              IERR = 2 indicates that one or  more of  the step sizes  did not
+                       satisfy the selection criteria.
+
+            For the derivative checking subroutines:
+
+              IERR = 0 indicates that  no errors  were detected, and  that the
+                       user-supplied derivative code appears to be correct.
+
+              IERR = 1 indicates that improper input was detected.
+
+              IERR = 2 indicates that  the user-supplied  derivative  code and
+                       numerical derivatives  do not  agree for  at  least one
+                       parameter, but  that in  each case of  disagreement the
+                       accuracy of the numerical derivatives  is questionable.
+                       Further testing is suggested.
+
+              IERR = 3 indicates that  the user-supplied  derivative  code and
+                       numerical derivatives  do not  agree for  at  least one
+                       parameter, and in at least one instance of disagreement
+                       there is no reason to doubt the numerical derivatives.
+
+IFIXED  --&gt; The vector of dimension at least NPAR that contains values used to
+            indicate whether  the  corresponding parameter  in PAR  is  to  be
+            treated  as  a  fixed  constant   or  is  to  be  estimated.    If
+            IFIXED(I) &gt; 0, PAR(I) will be  held fixed  at its input  value; if
+            IFIXED(I) = 0, PAR(I)  will be  estimated using the  least squares
+            procedure  described  in  section  A.   The  default  values   are
+            IFIXED(I)  =  0,  I  =  1,  ...,  NPAR,  i.e.,  all parameters are
+            estimated.  When IFIXED(1)  &lt;=  -1,  or  when  IFIXED  is  not  an
+            argument of the subroutine CALL statement,  the default value will
+            be used.
+
+IVCV    --&gt; The exact  value of  the  first dimension  of the  matrix  VCV  as
+            specified in the calling program.
+
+IVAPRX  --&gt; The indicator variable used to specify how the variance-covariance
+            matrix,  VCV, is  to be  approximated.   Three approximations  are
+            available:
+
+            (1) VCV = RSD**2 * inv(trans(Dhat)*W*Dhat)
+
+            (2) VCV = RSD**2 * inv(Hhat)
+
+            (3) VCV = RSD**2 * inv(Hhat) * (trans(Dhat)*W*Dhat) * inv(Hhat)
+
+            where
+
+            trans(.) indicates the transpose of the designated matrix;
+
+            inv(.) indicates the inverse of the designated matrix;
+
+            Hhat is the matrix of second partial derivatives of the model with
+              respect to each parameter (the Hessian matrix), evaluated at the
+              solution
+
+              = trans(Dhat)*W*Dhat +
+                  N
+                (SUM  e(i)*wt(i)*(second partial of e(i) wrt PAR(j) & PAR(k)
+                 i=1
+                                  for j = 1, ..., NPAR & k = 1, ..., NPAR));
+
+            W is an N by N diagonal matrix of weights,
+
+              W = diag(wt(i), i = 1, ..., N),
+
+            when a weighted analysis is performed, and  is the identity matrix
+            otherwise,  and
+
+            Dhat is the matrix that contains the partial  derivatives  of  the
+              model  with  respect  to  each  parameter (the Jacobian matrix),
+              evaluated at the solution.
+
+            Approximation  (1)  is  based  on  the  assumption   that   H   is
+            approximately  equal  to  trans(D)*W*D  because  the residuals are
+            sufficiently small at the solution;  approximation (2) is based on
+            the  assumption  that  the  necessary  conditions  for  asymptotic
+            maximum likelihood theory have been met;  and approximation (3) is
+            based   on  the  assumption  that  the  necessary  conditions  for
+            asymptotic maximum likelihood theory may be violated.  The results
+            of  a  study  by  Donaldson  and  Schnabel  [1987]  indicate  that
+            approximation  (1)  is  preferable  because  it  is  simple,  less
+            expensive,  more numerically stable and at least  as  accurate  as
+            approximations  (2)  and (3).  However,  all approximations to the
+            variance-covariance  matrix  are  subject  to  sampling  variation
+            because  they  are  computed using the estimated parameter values.
+            The  variance-covariance  matrix  computed  for   any   particular
+            nonlinear least squares solution should thus be regarded as only a
+            rough estimate [Bard, 1974; Donaldson and Schnabel, 1987].
+
+            If IVAPRX = 1 or 4 then approximation (1) is used;
+                      = 2 or 5 then approximation (2) is used; and
+                      = 3 or 6 then approximation (3) is used.
+
+            If IVAPRX = 1, 2, or 3,   then,   when    user-supplied   analytic
+            derivatives are available [see argument NLSDRV], they are  used to
+            compute  VCV; if  IVAPRX = 4,  5, or  6, then  only  the predicted
+            values from the model subroutine  are used  to compute VCV.   When
+            analytic derivatives  are  available, options  1, 2,  or  3,  will
+            generally result in a faster, more accurate computation of VCV.
+
+            The  default  value for  IVAPRX is 1.   When  argument  IVAPRX  is
+            outside the range [1, 6], or when IVAPRX is not an argument of the
+            subroutine CALL statement, then the default value will be used.
+
+IXM     --&gt; The exact  value of  the  first  dimension  of the  matrix  XM  as
+            specified in the calling program.
+
+LDSTAK  --&gt; The length of the DOUBLE PRECISION workspace vector DSTAK.  LDSTAK
+            must equal or exceed  the appropriate value given below,  where if
+            the single precision  version of  STARPAC is  being  used P = 0.5,
+            otherwise P = 1.0 [see chapter 1, section B].
+
+            For NLS, NLSC, NLSS, NLSW, NLSWC and NLSWS:
+
+              LDSTAK &gt;= 27 + max(IS*(N+NPAR), 30+NPARE) +
+
+                        max(IS*10*N, 94+N*(3+NPAR)+(3*NPARE**2+37*NPARE)/2)*P
+
+              with IS = 1 if default values are used for the  derivative step
+              sizes, and IS = 0 otherwise.
+
+            For NLSD, NLSDC, NLSDS, NLSWD, NLSWDC and NLSWDS:
+
+              LDSTAK &gt;= 45 + NPAR + (94+N*(3+NPAR)+(3*NPARE**2+35*NPARE)/2)*P
+
+            For STPLS and STPLSC:
+
+              LDSTAK &gt;= 27 + (N+NPAR) + 10*N*P
+
+            For DCKLS and DCKLSC:
+
+              LDSTAK &gt;= 14 + NPAR + (N*NPAR+N+NPAR)*P
+
+M       --&gt; The number of  independent variables, i.e., the number  of columns
+            of data in XM.
+
+MIT     --&gt; The  maximum number of iterations allowed.   This argument is also
+            used to  compute  the maximum  number of  model  subroutine calls,
+            (2*MIT).   The iterations  will stop  if either limit  is reached,
+            although,  as a rule,  the maximum  number of  iterations  will be
+            reached  first.   The  default  value for  the maximum  number  of
+            iterations is 21.  When MIT &lt;= 0 or when MIT is not an argument of
+            the subroutine CALL statement the default value will be used.
+
+N       --&gt; The number of observations.
+
+NETA    --&gt; The number of reliable decimal digits in the predicted values (PV)
+            computed  by the user's model subroutine.   The default  value for
+            NETA is  experimentally determined  by the procedure  described in
+            Appendix C.   The default  value will be used when  NETA is not an
+            argument   in   the  subroutine   CALL  statement,  or   when  the
+            user-supplied  value  of NETA  is outside  the  range [1, DIGITS],
+            where DIGITS is the number of decimal digits carried by the user's
+            computer for a  single precision  value when the  single precision
+            version of STARPAC is being used  and is the number carried  for a
+            double precision value otherwise.
+
+NLSDRV  *** The name of the user-supplied subroutine that computes the partial
+            derivative matrix (Jacobian).   This argument must be listed in an
+            EXTERNAL  statement  in  the  program  which  calls   the  STARPAC
+            estimation  or  derivative checking subroutine.   The form  of the
+            derivative subroutine  argument list  and  dimensioning statements
+            must be  exactly as shown  below, although  if there  is  only one
+            independent variable (M = 1), XM  may be  declared to be  a vector
+            with dimension IXM.
+
+              SUBROUTINE NLSDRV (PAR, NPAR, XM, N, M, IXM, D)
+              &lt;real&gt; PAR(NPAR), XM(IXM,M), D(N,NPAR)
+
+              &lt; Computations for D(I,J), I = 1, ..., N and J = 1, ..., NPAR &gt;
+
+              RETURN
+              END
+
+NLSMDL  *** The  name  of  the  user-supplied  subroutine  that  computes  the
+            predicted value  of the  dependent variable given  the independent
+            variables and the current  values of  the model parameters.   This
+            argument must be listed  in an  EXTERNAL statement in  the program
+            which calls  the STARPAC  estimation, step size  selection, and/or
+            derivative checking subroutines.  The form of the model subroutine
+            argument list and dimensioning statements must be exactly as shown
+            below, although if there is only one independent variable (M = 1),
+            XM may be declared to be a vector with dimension IXM.
+
+              SUBROUTINE NLSMDL (PAR, NPAR, XM, N, M, IXM, PV)
+              &lt;real&gt; PAR(NPAR), XM(IXM,M), PV(N)
+
+              &lt; Computations for PV(I), I = 1, ..., N &gt;
+
+              RETURN
+              END
+
+NNZW    &lt;-- The number of observations with nonzero weights.  N.B., this value
+            is returned by the estimation subroutines.
+
+NPAR    --&gt; The number of parameters  in the model, including both  those held
+            fixed  at  their  starting  values  and  those  which  are  to  be
+            estimated.
+
+NPARE   &lt;-- The number of  parameters actually estimated, i.e., the  number of
+            zero  elements  in  IFIXED.  N.B.,  this  value is returned by the
+            estimation subroutines.
+
+NPRT    --&gt; The argument controlling printed output.
+
+            For the estimation subroutines:
+
+              NPRT is  a five-digit integer,  in which  the value  of  the Ith
+              digit (counting from left to  right) is used to control  the Ith
+              section of the output.
+
+              If the Ith digit = 0 the output from the Ith section is
+                                   suppressed;
+                               = 1 the brief form of the Ith section is given;
+                               &gt;=2 the full form of the Ith section is given.
+
+              The  default value for NPRT is 11112.  When NPRT &lt;= -1,  or when
+              NPRT is not an argument in the subroutine  CALL  statement,  the
+              default value will be used.  If the convergence criteria are not
+              satisfied the subroutine gives a suitable warning and provides a
+              printed  report  even  if  NPRT  =  0.  A full discussion of the
+              printed output is given in section E.2.a and  is  summarized  as
+              follows.
+
+              Section 1 lists  the  starting  estimates  and  control  values.
+                        Brief output and  full output  are the  same  for this
+                        section.
+
+              Section 2 reports  the results of the iterations.   Brief output
+                        includes  information only  about the  first  and last
+                        iteration while full output includes information about
+                        all of the iterations.
+
+              Section 3 provides information for each observation based on the
+                        final solution.  Brief output includes information for
+                        the  first 40 observations while full  output provides
+                        the information for all of the data.
+
+              Section 4 is a  set of  four residual plots.   Brief output  and
+                        full output are the same for this section.
+
+              Section 5 is  the final  summary of  the  estimated  parameters.
+                        Brief  output  does not include printing the variance-
+                        covariance matrix while full output does.
+
+            For the step size selection and derivative checking subroutines:
+
+              If NPRT  = 0 the printed output is suppressed.
+
+              If NPRT &lt;&gt; 0 the printed output is provided.
+
+              When  the acceptance criteria  are not  met a printed  report is
+              provided even if NPRT = 0.
+
+NROW    --&gt; The  row  of   the  independent  variable  matrix  at   which  the
+            user-supplied derivative code is to be checked.  The default value
+            is the first row with no independent variables equal to zero; when
+            all rows have one or more independent variables equal to zero, row
+            one will be  used for the default value.   When the  user-supplied
+            value is outside the range [1, N] or when NROW is not  an argument
+            of the subroutine CALL statement the default value will be used.
+
+NTAU    --&gt; The agreement tolerance,  i.e., the number of digits  of agreement
+            required between the user-supplied derivatives and the derivatives
+            numerically approximated  by the  derivative  checking subroutine.
+            The default value is NETA/4.  When the user-supplied value of NTAU
+            is outside the range [1, NETA/2]  or when NTAU is not  an argument
+            of the subroutine CALL statement the default value will be used.
+
+PAR     --- The vector of dimension at least NPAR that contains  the parameter
+            values.   For all  estimation subroutines it must contain  initial
+            values  for the parameters  on input  and will  contain  the final
+            values on  return.   For  the  step size  and derivative  checking
+            subroutines it  must  contain the  parameter values  at  which the
+            operations are to be performed.
+
+PV      &lt;-- The  vector of dimension  at least  N that contains  the predicted
+            values of the dependent variable at the solution,
+
+            PV(i) = f(x(i),PAR)   for i = 1, .., N.
+
+RES     &lt;-- The vector of dimension at least N that contains the  residuals at
+            the solution,
+
+            RES(i) = y(i) - f(x(i),PAR) = e(i) for i = 1, ..., N.
+
+RSD     &lt;-- The residual standard deviation at the solution,
+
+            RSD = sqrt(RSS(PAR)/(NNZW-NPARE)).
+
+SCALE   --&gt; The vector of dimension at least NPAR that contains the  scale, or
+            typical size,  of each  parameter.   The vector  SCALE is  used to
+            normalize the size of each parameter so that
+
+            |PAR(j)/SCALE(j)| approximates |PAR(k)/SCALE(k)|
+
+            for k = 1, ..., NPAR and j = 1, ..., NPAR.
+
+            Values of |SCALE(k)| &gt; |PAR(k)| can be used to increase  the  step
+            size  in cases where the model function is known to be insensitive
+            to small changes in the value PAR(k).
+
+            For the estimation subroutines:
+
+              The  default  values  for  SCALE  are  selected  by  the  NL2SOL
+              algorithm [Dennis et al.,  1981a,b]  and  are  updated  at  each
+              iteration.  When SCALE is not an argument in the subroutine CALL
+              statement  or when the user-supplied value for SCALE(1) &lt;= 0 the
+              default procedure will be used  to  select  scale  values.  When
+              SCALE(1) &gt; 0,  values of SCALE(k) &lt;= 0 for k = 2, ..., NPAR will
+              be interpreted as an input  error.  User-supplied  scale  values
+              may  be either a vector of the typical size of each parameter or
+              a vector of ones if the typical  sizes  of  the  parameters  are
+              roughly  equal;  user-supplied scale values can sometimes result
+              in reduced computing time since these values are not updated  at
+              each iteration.
+
+            For the derivative checking and step size selection subroutines:
+
+              The default values of SCALE are defined for k = 1, ..., NPAR as:
+
+              SCALE(k) = 1.0      if PAR(k) = 0.0
+
+              SCALE(k) = |PAR(k)| otherwise
+
+              where PAR(k) is the input value of the k-th parameter.
+
+              When SCALE is not an argument in the subroutine  CALL  statement
+              or  when  the  user-supplied value of |SCALE(k)| &lt;= |PAR(k)| the
+              default value for SCALE(k) is used.  When  SCALE(1)  &lt;=  0,  the
+              default  values  will be used for SCALE(k),  k = 1,  ...,  NPAR.
+              When SCALE(1) &gt; 0, values of SCALE(k) &lt;= 0 for k = 2, ...,  NPAR
+              will be interpreted as an input error.
+
+SDPV    &lt;-- The vector of dimension at least N that contains  an approximation
+            to  the  standard  deviation  of  each  predicted  value   at  the
+            solution,
+
+            SDPV(i) = the ith diagonal element of sqrt(Dhat*VCV*trans(Dhat))
+
+            for i = 1, ..., N, where
+
+            Dhat(i,j) = partial [ f(x(i),PAR) wrt PAR(j) ]
+
+            for i = 1, ..., N and j = 1, ..., NPAR, evaluated at the solution,
+            and trans(Dhat) is the transpose of Dhat.
+
+            This  approximation  is based  on a  linearization of the model in
+            the   neighborhood   of   the   solution;   the  validity  of  the
+            approximation depends on the  nonlinearity  of  the  model.   This
+            approximation  may  be  extremely  inaccurate for a problem with a
+            highly nonlinear model.
+
+SDRES   &lt;-- The vector of dimension at least N that contains  an approximation
+            to the standardized residuals at the solution,
+
+            SDRES(i) = RES(i)/sqrt[(RSD**2/WT(i)) - SDPV(i)**2]
+
+            for i = 1, ..., N,  which  is  the  ith residual  divided  by  its
+            individual  estimated standard deviation.   This approximation  is
+            based on a linearization of  the model in the neighborhood  of the
+            solution;  the  validity  of  the  approximation  depends  on  the
+            nonlinearity  of the model.   This approximation  may be extremely
+            inaccurate for a problem with a highly nonlinear model.
+
+STOPP   --&gt; The stopping value for  the convergence test based on  the maximum
+            scaled relative  change  in  the  parameters at  the  most  recent
+            iteration.   The convergence criterion is satisfied if the current
+            step is a Newton step and
+
+              max[|PARc(k)-PARp(k)|/SCALE(k) for k = 1, ..., NPAR]
+            --------------------------------------------------------  &lt; STOPP.
+            max[(|PARc(k)|+|PARp(k)|)/SCALE(k) for k = 1, ..., NPAR]
+
+            where PARc(k) and PARp(k) indicate the current value and the value
+            from the previous iteration,  respectively,  of the kth  parameter
+            [see Dennis et  al.  1981a].  This  convergence  test  is  roughly
+            equivalent  to  the  test  based on the maximum relative change in
+            each parameter as measured by
+
+            max(|PARc(k)-PARp(k)|/|PARp(k)| for k = 1,  ..., NPAR).
+
+            STOPP  is  not  a scale-dependent value;  if its value is 10**(-4)
+            then this criteria will be met when the first four digits of  each
+            parameter  are the same at two successive iterations regardless of
+            the size of the parameter values.
+
+            The default value is approximately 10**(-DIGITS/2),  where  DIGITS
+            is the number of decimal digits carried by the user's computer for
+            a  single  precision  value  when  the single precision version of
+            STARPAC is being used and is  the  number  carried  for  a  double
+            precision value otherwise.  When the user-supplied value for STOPP
+            is  outside  the  interval  [0.0,  1.0]  or  when  STOPP is not an
+            argument of the subroutine CALL statement the default  value  will
+            be used.
+
+STOPSS  --&gt; The stopping value for the convergence test based on the  ratio of
+            the  forecasted  change  in   the   residual   sum   of   squares,
+            fcst(RSS(PAR)),  to the residual sum of squares from the  previous
+            iteration.  The  convergence  criterion  is  satisfied  if certain
+            conditions are met and
+
+            fcst(RSS(PAR))/RSS(PARp) &lt; STOPSS,
+
+            where the notation is described in  the  description  of  argument
+            STOPP  [see  Dennis  et  al.,  1981a].  This  convergence  test is
+            roughly equivalent to the test based on the relative change in the
+            residual standard deviation between two iterations as measured  by
+            (RSDc - RSDl)/RSDc.  STOPSS is not a scale-dependent value; if its
+            value  is  10**(-5)  this criteria will be met when the first five
+            digits of the  residual  sum  of  squares  are  the  same  at  two
+            successive  iterations  regardless of the size of the residual sum
+            of squares.
+
+            The default value is approximately the maximum  of  10**(-10)  and
+            10**(-2*DIGITS/3),  where DIGITS is the number of  decimal  digits
+            carried  by  the user's computer for a single precision value when
+            the single precision version of STARPAC is being used and  is  the
+            number  carried  for a double precision value otherwise.  When the
+            user-supplied   value   for   STOPSS   is   outside  the  interval
+            [10**(-DIGITS),  0.1] or when STOPSS is not  an  argument  of  the
+            subroutine CALL statement the default value will be used.
+
+STP     --- The vector of dimension  at least NPAR that contains  the relative
+            step sizes used to approximate the derivative matrix  numerically.
+            It  is  input  to the estimation subroutines and returned from the
+            step size selection subroutines.  The procedure used to select the
+            default values is described in section E.1.b.  For the  estimation
+            subroutines,  when  STP  is not an argument of the subroutine CALL
+            statement or when STP(1) &lt;= 0 the default values will be used  for
+            all  of the step sizes,  and when STP(1) &gt; 0 values of STP(k) &lt;= 0
+            for k = 2, ..., NPAR will be interpreted as an input error.
+
+VCV     &lt;-- The matrix of dimension at least NPARE by NPARE that  contains the
+            variance-covariance matrix of the estimated parameters, approxima-
+            ted  as designated by argument IVAPRX.   The parameters  which are
+            held fixed [see argument IFIXED] are not included in the variance-
+            covariance matrix.
+
+            The approximation of the variance-covariance matrix is based  on a
+            linearization of the  model in  the neighborhood of  the solution;
+            the validity of  the approximation depends on the  nonlinearity of
+            the model.   This approximation may be extremely inaccurate for  a
+            problem with a highly nonlinear model.
+
+WT      --&gt; The  vector of dimension  at least  N that  contains  the weights.
+            Negative weights are not allowed and the number of nonzero weights
+            must equal or exceed the number of parameters being estimated.   A
+            zero  weight eliminates  the corresponding  observation  from  the
+            analysis,  although  the residual,  the predicted  value  and  the
+            standard  deviation  of  the  predicted value  are  still computed
+            [see Appendix B].
+
+XM      --&gt; The matrix of dimension at least N by M whose jth  column contains
+            the N values of the jth independent variable, j = 1, ..., M.
+
+Y       --&gt; The  vector of dimension  at least  N that contains  the dependent
+            variable.
+</pre></blockquote>
+
+<a name="9e"><h3>E.  Computational Methods</h3></a>
+<a name="9e1"><h4>E.1  Algorithms</h4></a>
+<a name="9e1a"><b>E.1.a  Nonlinear Least Squares Estimation</b></a><br>
+     The  nonlinear  least  squares  estimation  subroutines  use  the  NL2SOL
+software package written by Dennis et al., [1981a,b].  The observations of the
+dependent  variable,  which are measured with error,  are iteratively fit to a
+nonlinear model by minimizing the sums of squares of the errors  as  described
+in section A.  The iterations continue until the convergence criteria based on
+the  change  in  the  parameter  values  or in the residual sum of squares are
+satisfied [see section D,  arguments STOPP and STOPSS],  the maximum number of
+iterations  (or  model  subroutine calls) is reached [see section D,  argument
+MIT],  or the iterations are terminated due to singularity  in  the  model  or
+false  convergence.  All  but  the  first  of  these  stopping  conditions may
+indicate  computational problems and will produce an error report [see chapter
+1, section D.5].<p>
+     Singular convergence means  that the model contains too  many parameters,
+at least near the solution,  while false convergence can indicate  that either
+STOPSS or STOPP is set too small for the  accuracy to which the model  and its
+derivatives are being computed or that  there is an error or  discontinuity in
+the derivative.   Users should  examine their models to determine  and correct
+the underlying cause of singular or false convergence.<p>
+     Iterative procedures  for solving  nonlinear least  squares  problems are
+discussed in Dennis and Schnabel  [1983], Draper and Smith [1981]  and Kennedy
+and Gentle [1980].   The specific procedure used in STARPAC is as follows.  At
+the current iteration the values of the parameter vector PARc are given by<p>
+<pre>
+        PARc = PARp - inv(trans(Dp)*W*Dp + Sp + Gp)*trans(Dp)*W*trans(ep)
+</pre>
+subject to the restriction that
+<pre>
+               NPAR
+        sqrt ( SUM   [(PARc(k) - PARp(k))/SCALE(k)]**2 ) <= dp,
+               k=1
+</pre>
+where
+<blockquote><table>
+ <tr><td valign=top>trans(.)</td> <td>is the transpose of the designated matrix.</td></tr>
+ <tr><td valign=top>PARp</td> <td>is the vector of the NPAR estimated parameter values 
+       from the previous iteration.</td></tr>
+ <tr><td valign=top>Dp</td> <td>is the N by NPAR matrix of the partial derivatives 
+       evaluated at PARp,<br>
+       <pre> D(i,k) = partial[ f(x(i),PAR) wrt PAR(k) ]</pre>
+       for i = 1, ..., N and k = 1, ..., NPAR.</td></tr>
+ <tr><td valign=top>W</td> <td>is an N by N diagonal matrix of user-supplied weights,<br>
+       <pre> W = diag(wt(i), i = 1, ..., N)</pre>
+       when  a weighted  analysis  is performed  and is  the  identity matrix
+       otherwise.
+ <tr><td valign=top>Sp</td> <td>is an APPROXIMATION to the exact term Sp* in the matrix 
+       of second order terms (Hessian) of the Taylor series expansion of the
+       residual sum of squares function,<br>
+<pre>             N
+ Sp*(j,k) = SUM [ep(i)*wt(i)*(second partial ep(i) wrt PARp(j) & PARp(k))],
+            i=1
+</pre> 
+        for j = 1, ..., NPAR and k = 1, ..., NPAR.</td></tr>
+ <tr><td valign=top>ep</td> <td>is the vector of the N residuals from the previous 
+        iteration.</td></tr>
+ <tr><td valign=top>dp</td> <td>is the adaptively chosen diameter of the trust region,  
+        i.e., the region in which the local approximation to the user's model 
+        function is reliable. At each iteration, dp is computed based on 
+        information from the previous iteration. At the first iteration, the 
+        initial value, d0, is supplied by argument DELTA which can be used to 
+        control the change in the parameters permitted at the first iteration.
+        </td></tr>
+ <tr><td valign=top>Gp</td> <td>is an NPAR by NPAR diagonal matrix,<br>
+        <pre> Gp = diag(gp/SCALE(k), k = 1, ..., NPAR),</pre>
+        where gp is  chosen to  approximate the  smallest  non-negative number
+        such that the restriction given above on the size of the change in the
+        parameters is satisfied.</td></tr>
+</table></blockquote>
+     The second order term Sp*,  which is expensive and difficult  to  compute
+accurately,   is   important  only  if  it  is  large  compared  to  the  term
+trans(Dp)*W*Dp,  that is,  when the residuals are large or the model is highly
+nonlinear.  When  Sp*  is  large compared to trans(Dp)*W*Dp,  algorithms which
+ignore it,  such as Levenberg-Marquardt or Gauss-Newton,  may converge slowly.
+The  NL2SOL  algorithm  used  by  STARPAC,  however,  adaptively  decides when
+inclusion of  this  term  is  necessary  for  reliable  results  and  uses  an
+inexpensive approximation to Sp* in those cases.<p>
+     The matrix,  D,  of partial derivatives of the model with respect to each
+parameter is either computed analytically using  a  user-supplied  subroutine,
+NLSDRV,  or  is numerically approximated using forward difference quotients as
+described  in  section  E.1.b.   When   the   derivatives   are   approximated
+numerically,  the  least squares solution,  especially the variance-covariance
+matrix,  can be sensitive to the step sizes used for  the  approximation.  The
+user may want to use STARPAC subroutines STPLS or STPLSC to recompute the step
+sizes  at  the  solution provided by the estimation subroutines to assure that
+the  step  sizes  which  were  used  are  still  acceptable.  If  there  is  a
+significant  change  in  the  step  size  the least squares solution should be
+recomputed with the new step sizes from the current  point.  In  addition,  if
+the  estimation  subroutine  has  convergence  problems  the  user may want to
+recompute the step sizes with the most recent parameter values  to  see  if  a
+change  in the curvature of the model,  which will be reflected as a change in
+the optimum step sizes, is causing the problem.<p>
+     Dennis et al.   [1981a] provides a detailed description of the  algorithm
+used  in STARPAC.  STARPAC also includes the subroutines NL2SOL,  NL2SNO,  and
+NL2ITR, which they reference, and which can be used as documented by them [see
+Dennis et al., 1981b].<p>
+
+<a name="9e1b"><b>E.1.b  Derivative Step Size Selection</b></a><br>
+     The STARPAC step size selection subroutines use an algorithm developed by
+Schnabel [1982] to compute  optimum step  sizes for approximating  the partial
+derivatives  of the  model  with  respect  to each  parameter.   Briefly,  the
+relative  step sizes selected  by these  subroutines are  those  which produce
+forward difference quotient approximations to the derivative, Dfd,  that agree
+reasonably well with the central difference quotient approximations, Dcd.  The
+central difference  quotient  approximations are  twice as  accurate  but also
+twice as expensive to compute.   Since the  additional accuracy is not usually
+needed, central  difference  quotient  approximations  are  not  used  by  the
+estimation subroutines.<p>
+     The number of reliable digits in  these derivatives is a function  of the
+step sizes used to compute them.  Given properly chosen step sizes, the number
+of  reliable  digits  in  Dfd  and  Dcd  will  be  approximately  h/2  and  h,
+respectively, where  h is  the  number of  reliable digits  in  the  predicted
+values, PV,  from the user's model subroutine.   For example, if the predicted
+values are  computed using an  iterative procedure  (such as  quadrature  or a
+solution of partial differential equations) which is expected to  provide five
+good digits, then h would be five; if the predicted values are calculated from
+a simple algebraic expression  translated directly  into Fortran code,  then h
+would (usually) be the number of decimal digits carried by the user's computer
+for the results.<p>
+     The relative step size for PAR(k), k = 1, ..., NPAR, is initially<p>
+<pre>
+        STP(k) = 2*sqrt*(10**(-NETA)/q)   for k = 1, ..., NPAR,
+</pre>
+where
+<blockquote><table>
+<tr><td valign=top>q</td> <td>is the average curvature (estimated by STARPAC) of the 
+        model with respect to PAR(k).</td></tr>
+</table></blockquote>
+The forward difference quotient approximations with respect to PAR(k),  k = 1,
+..., NPAR are then<p>
+<pre>
+                    f(x(i),PARk) - f(x(i),PAR)
+        Dfd(i,k) = ----------------------------   for i = 1, ..., N,
+                   STP(k)*SCALE(k)*SIGN(PAR(k))
+</pre>
+where
+<blockquote><table>
+<tr><td valign=top>f</td> <td>is the function which models the ith observation.</td></tr>
+<tr><td valign=top>x(i)</td> <td>is the vector of the values of the M independent 
+        variables at  the ith observation.</td></tr>
+<tr><td valign=top>PAR</td> <td>is the vector of the NPAR parameter values.</td></tr>
+<tr><td valign=top>PARk</td> <td>is a vector which has the same values as PAR except 
+        that the kth parameter is equal to<br>
+        PAR(k) + STP(k)*SCALE(k)*SIGN(PAR(k)).
+<tr><td valign=top>SIGN</td> <td>is a function which returns the sign of its argument.
+        </td></tr>
+</table></blockquote>
+     The  central  difference  approximations  to the  model  derivative  with
+respect to PAR(k), k = 1, ..., NPAR, are<p>
+<pre>
+                     f(x(i),PARpk) - f(x(i),PARmk)
+  Dcd(i,k) = --------------------------------------------   for i = 1, ..., N,
+             (3*10**(-NETA))**(1/3)*SCALE(k)*SIGN(PAR(k))
+</pre>
+where
+<blockquote><table>
+<tr><td valign=top>PARpk</td> <td>is a vector which has the same values as PAR except
+        that the kth parameter is equal to<br>
+        PAR(k) + (3*10**(-NETA))**(1/3)*SCALE(k)*SIGN(PAR(k)).</td></tr>
+<tr><td valign=top>PARmk</td> <td>is a vector which has the same values as PAR except
+        that  the kth parameter is equal to<br>
+        PAR(k) - (3*10**(-NETA))**(1/3)*SCALE(k)*SIGN(PAR(k)).</td></tr>
+</table></blockquote>
+     The relative  step size is  considered acceptable  if, for  at  least N-a
+observations,<p>
+<pre>
+      |Dfd(i,k) - Dcd(i,k)| <= min(10**(-NETA/4), .02)  for i = 1, ..., N,
+</pre>
+where a is  the  number  of  observations  exempted  from  meeting  the  above
+acceptance criterion [see section D, argument EXMPT].  If the step size is not
+acceptable,  it is adjusted by factors of 10 until the  condition  is  met  or
+until  no further decrease in the number of failures can be made,  although in
+no case will the selected relative step size be greater than 1.0 or less  than
+10**(-NETA).<p>
+     Note that the step  size selection  subroutines will return  the selected
+step  sizes even when the number  of failures exceeds the allowed  value; this
+condition will be noted  by the  value of IERR.   The detailed  printed output
+should always be examined for  problems discovered by the step  size selection
+subroutines.<p>
+
+<a name="9e1c"><b>E.1.c  Derivative Checking</b></a><br>
+     The STARPAC derivative checking subroutines use an algorithm developed by
+Schnabel [1982]  to  determine the  validity of  the  user-supplied derivative
+subroutine.  The user-supplied derivative subroutine is considered correct for
+a given row i, i = 1, ..., N, and parameter PAR(k), k = 1, ..., NPAR, if<p>
+<pre>
+        |Dfd(i,k) - D(i,k)| <= 10**(-t)*|D(i,k)|
+</pre>
+where
+<blockquote><table>
+<tr><td valign=top>D</td> <td>is the derivative computed by the user's subroutine.
+        </td></tr>
+<tr><td valign=top>Dfd</td> <td>is the forward difference quotient approximation to
+        the derivative described in section E.1.b.</td></tr>
+<tr><td valign=top>t</td> <td>is the agreement tolerance, i.e., number of digits of
+        agreement required between D and Dfd, which must be less than or
+        equal to the number of good digits in Dfd [see section D, argument
+        NTAU].</td></tr>
+</table></blockquote>
+     When the agreement  tolerance is  not satisfied  the  checking subroutine
+attempts to determine whether the disagreement is due to an error in the user's
+code or is due to the inaccuracy of the difference quotient approximation,
+caused either by high curvature  in the user's model or  by significant
+roundoff error.<p>
+     The  derivative  checking  subroutines  each  check  only  one row of the
+derivative matrix.  The user should examine the row at which  the  derivatives
+were  checked  to  ensure  that  some  relation  between  the  parameters  and
+independent variables,  such as a zero-valued independent variable or a factor
+(x(i) - PAR(k)) when x(i) = PAR(k), is not hiding the effect of an incorrectly
+computed derivative.  Checking only one row is appropriate since the same code
+is frequently used to compute the model function and derivatives at each row i
+= 1, ...,  N,  as is the case in the examples shown in section F.  If the code
+used  to  express  the model function and derivatives is not the same for each
+row,  then each distinct section of the  code  should  be  checked  by  making
+multiple calls to DCKLSC with argument NROW set to a row within each
+section.<p>
+
+<a name="9e2"><h4>E.2  Computed Results and Printed Output</h4></a>
+<a name="9e2a"><b>E.2.a  The Nonlinear Least Squares Estimation Subroutines</b></a><br>
+     The argument controlling  the  printed  output,  NPRT,  is  discussed  in
+section D.<p>
+     The  output  from  the  nonlinear  least  squares  estimation subroutines
+consists of five sections,  several of which include  tables  summarizing  the
+results.  In  the following descriptions,  the actual table headings are given
+by the uppercase phrases enclosed in angle braces (&lt;...&gt;). Results which
+correspond  to  input  or  returned  subroutine  CALL  statement arguments are
+identified by the argument name in uppercase (not enclosed in angle braces).<p>
+Section 1 provides a summary of the initial estimates and control values.   It
+          lists the following information.<p>
+<blockquote><ul> 
+ <li> The initial values of the parameters, PAR, and whether they are  to be
+        held fixed or not as specified by IFIXED.
+ <li> The scale values, SCALE.
+ <li> Either the step sizes used to approximate the derivatives numerically,
+        or, when user-supplied (analytic) derivatives are used, the results of
+        the checking procedure; and the control values used in  these computa-
+        tions as applicable [see section E.1.b and section E.1.c].
+ <li> The number of observations, N.
+ <li> The number of observations with nonzero weights, NNZW.
+ <li> The number of independent variables, M.
+ <li> The maximum number of iterations allowed, MIT.
+ <li> The maximum number of model subroutine calls allowed.
+ <li> The two convergence criteria, STOPSS and STOPP.
+ <li> The maximum change in  the parameters allowed at the  first iteration,
+        DELTA.
+ <li> The residual  sum  of squares  computed using  the  starting parameter
+        values.
+ <li> The  residual  standard deviation,  RSD, computed  using  the starting
+        parameter values.
+</ul></blockquote>
+Section 2 lists selected  information about  each iteration  and  includes the
+          reason the iterations were terminated.  The information provided for
+          each iteration includes the following.<p>
+<blockquote><ul>
+ <li> The iteration number.
+ <li> &lt;MODEL  CALLS&gt;:   the total number of times since execution began that
+        the user's model subroutine  has  been  called,  not  including  calls
+        required to approximate the derivatives numerically.
+ <li> &lt;RSD&gt;:   the  residual standard deviation computed using the parameter
+        values from the current iteration.
+ <li> &lt;RSS&gt;: the residual sum of squares computed using the parameter values
+        from the current iteration.
+ <li> &lt;REL CHNG RSS&gt;:  the relative change in the residual  sum  of  squares
+        caused by the current iteration.
+ <li> &lt;FORECASTED  REL  CHNG  RSS&gt;:   the  forecasted relative change in the
+        residual sum of squares at the current  iteration,  and  whether  this
+        value was checked against STOPSS (&lt;CHKD&gt; = Y) or not (&lt;CHKD&gt; = N).
+ <li> &lt;REL CHNG PAR&gt;:   the maximum scaled relative change in the parameters
+        at the current iteration,  and whether this value was checked  against
+        STOPP (&lt;CHKD&gt; = Y) or not (&lt;CHKD&gt; = N).
+ <li> &lt;CURRENT PARAMETER VALUES&gt;:   the estimated parameter values resulting
+        from the current iteration.
+</ul></blockquote>
+Section 3 provides the following information for each observation, i = 1, ...,
+          N, based on the final solution.<p>
+<blockquote><ul>
+ <li> &lt;ROW&gt;:  the row number of the observations.
+ <li> &lt;PREDICTOR VALUES&gt;:  the values for up to the first three  columns  of
+        the independent variable matrix, XM, not including the first column if
+        it is constant.
+ <li> &lt;DEPENDENT VARIABLE&gt;:  the values of the dependent variable, Y.
+ <li> &lt;PREDICTED VALUE&gt;:  the estimated predicted values, PV, from the fit.
+ <li> &lt;STD  DEV  OF  PRED VALUE&gt;:   the standard deviations of the predicted
+        values, SDPV.
+ <li> &lt;RESIDUAL&gt;:  the error estimates, RES.
+ <li> &lt;STD RES&gt;:  the standardized residuals, SDRES.
+ <li> &lt;WEIGHT&gt;:  the user-supplied weights,  WT,  printed only when weighted
+        analysis is performed.
+</ul></blockquote>
+Section 4 displays the following plots of the standardized residuals.<p>
+<blockquote><ul>
+ <li> The standardized residuals versus row numbers.
+ <li> The standardized residuals versus predicted values.
+ <li> The autocorrelation function of the (non-standardized) residuals.
+ <li> The normal probability plot of the standardized residuals.
+</ul></blockquote>
+Section 5 summarizes  the  following  information about  the  final  parameter
+         estimates and their variances.
+<blockquote><ul>
+ <li> The  variance-covariance  matrix,  VCV,  of  the  estimated  (unfixed)
+        parameters, and the corresponding correlation matrix,<br>
+<pre>rjk = VCV(j,k) / sqrt(VCV(j,j)*VCV(k,k))  for j = 1, ..., NPARE
+                                          and k = 1, ..., NPARE. </pre>
+ <li> &lt;PARAMETER&gt;:  the final value of each parameter,  PAR(k),  k = 1, ...,
+        NPAR.
+ <li> &lt;SD OF PAR&gt;:  the standard deviation of each estimated parameter,
+<pre> sqrt(VCV(k,k))   for k = 1, ..., NPAR. </pre>
+ <li> &lt;RATIO&gt;:  the ratio  of  each  estimated  parameter  to  its  standard
+        deviation,
+<pre> RATIO(k) = PAR(k) / sqrt(VCV(k,k))  for k = 1, ..., NPAR. </pre>
+ <li> &lt;APPROXIMATE 95-PERCENT CONFIDENCE LIMITS&gt;:    the  lower   and  upper
+        95-percent confidence  limits for  each parameter, computed  using the
+        appropriate  value of  the Student's t  distribution  with  NNZW-NPARE
+        degrees of freedom.
+ <li> the residual sum of squares, RSS(PAR).
+ <li> the residual standard deviation at the solution, RSD.
+ <li> the residual degrees of freedom, NNZW-NPARE.
+ <li> an approximation to the  condition number of the derivative  matrix, D
+        (the Jacobian), under the  assumption that the absolute error  in each
+        column  of D is roughly equal.   The approximation will be meaningless
+        if  this  assumption   is  not   valid;  otherwise  it   will  usually
+        underestimate the actual condition number by a factor of from 2  to 10
+        [see Dongarra et al., 1979, p.  9.5].  (Note that the condition number
+        returned by the nonlinear least squares subroutines is not exactly the
+        same as  that  returned  by the  linear least  subroutines  because of
+        differences in the  computational procedures  used by the two families
+        of subroutines.)
+</ul></blockquote>
+<b>NOTE</b>: The standard deviation of the predicted values, the standardized
+residuals,  the  variance-covariance matrix,  the standard  deviations  of the
+parameters and  the 95-percent  confidence limits  on the  parameters  are all
+based  on a  linear approximation  to  the  model  in a  neighborhood  of  the
+solution; the validity of  this approximation  depends on the  nonlinearity of
+the  model.   The  statistics  based on  this approximation  may  be extremely
+inaccurate for a problem with a highly nonlinear model.<p>
+
+<a name="9e2b"><b>E.2.b  The Derivative Step Size Selection Subroutines</b></a><br>
+     The  argument  controlling  the  printed  output,  NPRT,  is discussed in
+section D.<p>
+     The output from the step size selection subroutines consists of a summary
+of the input and control values and, for each parameter, the selected relative
+step size, the number of observations at which this step size failed  the step
+size selection criteria and the row numbers at which the failures occurred.<p>
+
+<a name="9e2c"><b>E.2.c  The Derivative Checking Subroutines</b></a><br>
+     The argument controlling  the  printed  output,  NPRT,  is  discussed  in
+section D.<p>
+     The output for the derivative checking subroutines consists of  a summary
+of  the input and control values  and the  results of the  derivative checking
+test with respect to each of the model parameters,  PAR(k),  k = 1, ..., NPAR.
+The possible test results are:<p>
+<blockquote><dl>
+<dt>OK 
+ <dd> The user-supplied derivative and the numerical derivative agree to the
+        required number of digits.<p>
+<dt>QUESTIONABLE 
+ <dd> The user-supplied derivative and the approximated derivative  agree to
+        the  required number of digits but  both are equal to zero.   The user
+        should recheck the derivative at another row.<p>
+       The user-supplied  derivative and  the approximated derivative  do not
+        agree to the required  number of digits but the  user-supplied deriva-
+        tive is identically  zero and  the approximated  derivative  is nearly
+        zero.  The user should recheck the derivative at another row.<p>
+       The user-supplied derivative and the approximated  derivative disagree
+        but the user-supplied derivative is identically zero.  The user should
+        recheck the derivative at another row.<p>
+       The user-supplied derivative and the approximated  derivative disagree
+        but  the  validity  of  the approximated  derivative  is  questionable
+        because either the ratio of the relative curvature of the model to the
+        slope of the model is too high or SCALE(k) is wrong.<p>
+       The user-supplied derivative and the approximated  derivative disagree
+        but the validity  of the estimated derivative is  questionable because
+        the ratio of the relative curvature of  the model to the slope  of the
+        model is too high.<p>
+<dt>INCORRECT 
+ <dd> The user-supplied derivative and the approximated derivative disagree,
+        and there is no reason  to question  the accuracy of  the approximated
+        derivative.
+</dl></blockquote>
+
+<a name="9f"><h3>F.  Examples</h3></a>
+     The  sample programs  of this section  use the  model and  data  given in
+example one, pages 428 to 441 of Daniel and Wood [1980]; the model is<p>
+<pre>        f(x(i),b) = PAR(1)*x(i,1)**PAR(2)  for i = 1, ..., N.</pre>
+     Nonlinear Least Squares Estimation.  In the first example program  below,
+NLS   is  used  to  compute  the  least  squares  solution  using  numerically
+approximated derivatives.  In the second example  program,  NLSD  is  used  to
+compute the least squares solution given analytic derivatives.<p>
+     Derivative  Step Size Selection.  In the third example program,  STPLS is
+used to compute the optimum  step  sizes  for  numerically  approximating  the
+derivatives with respect to each of the parameters, PAR(k), k = 1, 2.<p>
+     Derivative Checking.  In the fourth example program below,  DCKLS is used
+to  check  the  validity  of  a  user-supplied  derivative   subroutine.   The
+derivative  subroutine  has  been  intentionally coded incorrectly in order to
+display the report obtained when the derivative checking subroutine determines
+the derivatives are incorrect,  and the starting parameter  values  have  been
+chosen  in  order  to  display  the  report obtained when the test results are
+questionable.<p>
+<blockquote><pre>
+<b>Program</b>:<p>
+      PROGRAM EXAMPL
+C
+C     DEMONSTRATE NLS USING SINGLE PRECISION VERSION OF STARPAC
+C
+C     N.B. DECLARATION OF Y, XM, PAR AND RES MUST BE CHANGED TO DOUBLE
+C          PRECISION IF DOUBLE PRECISION VERSION OF STARPAC IS USED.
+C
+      REAL Y(10), XM(10,5), PAR(5), RES(10)
+      DOUBLE PRECISION DSTAK(200)
+C
+      EXTERNAL NLSMDL
+C
+      COMMON /CSTAK/ DSTAK
+C
+C     SET UP INPUT AND OUTPUT FILES
+C     [CHAPTER 1, SECTION D.4, DESCRIBES HOW TO CHANGE OUTPUT UNIT.]
+C
+      CALL IPRINT(IPRT)
+      OPEN (UNIT=IPRT, FILE='FILENM')
+      OPEN (UNIT=5, FILE='DATA')
+C
+C     SPECIFY NECESSARY DIMENSIONS
+C
+      LDSTAK = 200
+      IXM = 10
+C
+C     READ NUMBER OF PARAMETERS
+C          STARTING VALUES FOR PARAMETERS
+C          NUMBER OF OBSERVATIONS AND NUMBER OF INDEPENDENT VARIABLES
+C          INDEPENDENT AND DEPENDENT VARIABLES
+C
+      READ (5,100) NPAR
+      READ (5,101) (PAR(I), I=1,NPAR)
+      READ (5,100) N, M
+      READ (5,101) ((XM(I,J), I=1,N), J=1,M), (Y(I), I=1,N)
+C
+C     PRINT TITLE AND CALL NLS TO PERFORM NONLINEAR REGRESSION
+C     WITH NUMERICALLY APPROXIMATED DERIVATIVES
+C
+      WRITE (IPRT,102)
+      CALL NLS (Y, XM, N, M, IXM, NLSMDL, PAR, NPAR, RES, LDSTAK)
+C
+C     FORMAT STATEMENTS
+C
+  100 FORMAT (2I5)
+  101 FORMAT (6F6.3)
+  102 FORMAT ('1RESULTS OF STARPAC',
+     *  ' NONLINEAR LEAST SQUARES SUBROUTINE NLS')
+      END
+      SUBROUTINE NLSMDL (PAR, NPAR, XM, N, M, IXM, PV)
+C
+C     SUBROUTINE TO COMPUTE PREDICTED VALUES OF DEPENDENT VARIABLE
+C
+C     N.B. DECLARATION OF PAR, XM AND PV MUST BE CHANGED TO DOUBLE
+C          PRECISION IF DOUBLE PRECISION VERSION OF STARPAC IS USED.
+C
+      REAL PAR(NPAR), XM(IXM,M), PV(N)
+C
+      DO 10 I = 1, N
+        PV(I) = PAR(1) * XM(I, 1) ** PAR(2)
+   10 CONTINUE
+C
+      RETURN
+      END<p>
+Data:<p>
+    2
+ 0.725 4.000
+    6    1
+ 1.309 1.471 1.490 1.565 1.611 1.680
+ 2.138 3.421 3.597 4.340 4.882 5.660<p>
+<p>
+<p>
+<b>RESULTS OF STARPAC NONLINEAR LEAST SQUARES SUBROUTINE NLS</b>
+                          STARPAC 2.08S (03/15/90)
+*****************************************************************************
+*NONLINEAR LEAST SQUARES ESTIMATION WITH NUMERICALLY APPROXIMATED DERIVATIVES
+*****************************************************************************<p>
+SUMMARY OF INITIAL CONDITIONS
+------------------------------<p>
+<p>
+                                                STEP SIZE FOR    OBSERVATIONS FAILING STEP SIZE SELECTION CRITERIA
+                                                 APPROXIMATING                 
+      PARAMETER STARTING VALUE      SCALE          DERIVATIVE       COUNT     NOTES     ROW NUMBER
+INDEX  FIXED      (PAR)            (SCALE)           (STP)                  F C<p>
+  1      NO    .72500000           DEFAULT       .46415888E-04         0
+  2      NO    4.0000000           DEFAULT       .38782913E-06         0<p>
+<p>
+*  NOTES.  A PLUS (+) IN THE COLUMNS HEADED F OR C HAS THE FOLLOWING MEANING.<p>
+   F - NUMBER OF OBSERVATIONS FAILING STEP SIZE SELECTION CRITERIA EXCEEDS
+       NUMBER OF EXEMPTIONS ALLOWED.<p>
+   C - HIGH CURVATURE IN THE MODEL IS SUSPECTED AS THE CAUSE OF
+       ALL FAILURES NOTED.<p>
+NUMBER OF RELIABLE DIGITS IN MODEL RESULTS                         (NETA)    13<p>
+PROPORTION OF OBSERVATIONS EXEMPTED FROM SELECTION CRITERIA     (EXMPT)   .1000<p>
+NUMBER OF OBSERVATIONS EXEMPTED FROM SELECTION CRITERIA                       1<p>
+NUMBER OF OBSERVATIONS                                                (N)     6<p>
+NUMBER OF INDEPENDENT VARIABLES                                       (M)     1<p>
+MAXIMUM NUMBER OF ITERATIONS ALLOWED                                (MIT)    21<p>
+MAXIMUM NUMBER OF MODEL SUBROUTINE CALLS ALLOWED                             42<p>
+CONVERGENCE CRITERION FOR TEST BASED ON THE<p>
+     FORECASTED RELATIVE CHANGE IN RESIDUAL SUM OF SQUARES (STOPSS)   .3696E-09
+     MAXIMUM SCALED RELATIVE CHANGE IN THE PARAMETERS      (STOPP)   .8425E-07<p>
+MAXIMUM CHANGE ALLOWED IN THE PARAMETERS AT THE FIRST ITERATION (DELTA)   100.0<p>
+RESIDUAL SUM OF SQUARES FOR INPUT PARAMETER VALUES                    .1472E-01<p>
+RESIDUAL STANDARD DEVIATION FOR INPUT PARAMETER VALUES        (RSD)   .6067E-01<p>
+<p>
+                            STARPAC 2.08S (03/15/90)
+NONLINEAR LEAST SQUARES ESTIMATION WITH NUMERICALLY APPROXIMATED DERIVATIVES<p>
+<p>
+ITERATION NUMBER    1
+----------------------
+    MODEL                                                     FORECASTED
+    CALLS         RSD             RSS        REL CHNG RSS    REL CHNG RSS    REL CHNG PAR
+                                                             VALUE   CHKD    VALUE   CHKD
+        2       .3390E-01       .4597E-02       .6877       .7109       Y   .1790E-01   Y<p>
+     CURRENT PARAMETER VALUES
+         INDEX    1              2
+         VALUE   .7679852       3.859309<p>
+<p>
+ITERATION NUMBER    4
+----------------------
+    MODEL                                                     FORECASTED
+    CALLS         RSD             RSS        REL CHNG RSS    REL CHNG RSS    REL CHNG PAR
+                                                             VALUE   CHKD    VALUE   CHKD
+        5       .3285E-01       .4317E-02       .8936E-12   .7028E-12   Y   .1123E-07   Y<p>
+     CURRENT PARAMETER VALUES
+         INDEX    1              2
+         VALUE   .7688623       3.860406<p>
+***** PARAMETER AND RESIDUAL SUM OF SQUARES CONVERGENCE *****<p>
+<p>
+                                STARPAC 2.08S (03/15/90)
+NONLINEAR LEAST SQUARES ESTIMATION WITH NUMERICALLY APPROXIMATED DERIVATIVES<p>
+<p>
+RESULTS FROM LEAST SQUARES FIT
+-------------------------------<p>
+                                                    DEPENDENT       PREDICTED      STD DEV OF                         STD
+ ROW             PREDICTOR VALUES                    VARIABLE         VALUE        PRED VALUE        RESIDUAL         RES<p>
+   1                 1.3090000                      2.1380000       2.1741175       .22079043E-01  -.36117492E-01   -1.48
+   2                 1.4710000                      3.4210000       3.4111549       .16469586E-01   .98450831E-02     .35
+   3                 1.4900000                      3.5970000       3.5844108       .15615321E-01   .12589151E-01     .44
+   4                 1.5650000                      4.3400000       4.3326419       .14065814E-01   .73580833E-02     .25
+   5                 1.6110000                      4.8820000       4.8453073       .16512112E-01   .36692701E-01    1.29
+   6                 1.6800000                      5.6600000       5.6968365       .26183728E-01  -.36836492E-01   -1.86<p>
+<p>
+                               STARPAC 2.08S (03/15/90)
+NONLINEAR LEAST SQUARES ESTIMATION WITH NUMERICALLY APPROXIMATED DERIVATIVES<p>
+   STD RES VS ROW NUMBER                            STD RES VS PREDICTED VALUES
+ 3.75++---------+---------+----+----+---------+---------++    3.75++---------+---------+----+----+---------+---------++
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+ 2.25+                                                   +    2.25+                                                   +
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                        *          -        -                                      *            -
+  .75+                                                   +     .75+                                                   +
+     -                                                   -        -                                                   -
+     -          *         *         *                    -        -                  * *          *                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+ -.75+                                                   +    -.75+                                                   +
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -*                                                  -        -*                                                  -
+     -                                                  *-        -                                                  *-
+-2.25+                                                   +   -2.25+                                                   +
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+-3.75++---------+---------+----+----+---------+---------++   -3.75++---------+---------+----+----+---------+---------++
+     1.0                      3.5                      6.0      2.174                    3.935                5.697<p>
+            AUTOCORRELATION FUNCTION OF RESIDUALS    NORMAL PROBABILITY PLOT OF STD RES
+    1++---------+-------********----+---------+---------++    3.75++---------+---------+----+----+---------+---------++
+     -                        **                         -        -                                                   -
+     -                       ***                         -        -                                                   -
+     -                **********                         -        -                                                   -
+     -                         ********                  -        -                                                   -
+    6+                                                   +    2.25+                                                   +
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                     *             -
+   11+                                                   +     .75+                                                   +
+     -                                                   -        -                                                   -
+     -                                                   -        -                       *   *   *                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+   16+                                                   +    -.75+                                                   +
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                   *                               -
+     -                                                   -        -             *                                     -
+   21+                                                   +   -2.25+                                                   +
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+   26++---------+---------+----+----+---------+---------++   -3.75++---------+---------+----+----+---------+---------++
+   -1.00                      0.0                     1.00     -2.5                       0.0                      2.5<p>
+                                STARPAC 2.08S (03/15/90)
+NONLINEAR LEAST SQUARES ESTIMATION WITH NUMERICALLY APPROXIMATED DERIVATIVES<p>
+<p>
+VARIANCE-COVARIANCE AND CORRELATION MATRICES OF THE ESTIMATED (UNFIXED) PARAMS
+------------------------------------------------------------------------------<p>
+   - APPROXIMATION BASED ON ASSUMPTION THAT RESIDUALS ARE SMALL
+   - COVARIANCES ARE ABOVE THE DIAGONAL
+   - VARIANCES ARE ON THE DIAGONAL
+   - CORRELATION COEFFICIENTS ARE BELOW THE DIAGONAL<p>
+COLUMN         1                2<p>
+     1      .3342304E-03    -.9369370E-03
+     2     -.9907719         .2675639E-02<p>
+<p>
+<p>
+ESTIMATES FROM LEAST SQUARES FIT
+---------------------------------<p>
+<p>
+                                                                    APPROXIMATE
+                                                   95 PERCENT CONFIDENCE LIMITS
+INDEX  FIXED   PARAMETER        SD OF PAR       RATIO            LOWER            UPPER<p>
+  1      NO    .76886226        .18281968E-01   42.06        .71810338        .81962114
+  2      NO    3.8604056        .51726577E-01   74.63        3.7167896        4.0040216<p>
+<p>
+RESIDUAL SUM OF SQUARES                  .4317308E-02<p>
+RESIDUAL STANDARD DEVIATION              .3285311E-01
+BASED ON DEGREES OF FREEDOM        6 -   2 =    4<p>
+APPROXIMATE CONDITION NUMBER             20.87491<p>
+<p>
+<p>
+<b>Program</b>:<p>
+      PROGRAM EXAMPL
+C
+C     DEMONSTRATE NLSD USING SINGLE PRECISION VERSION OF STARPAC
+C
+C     N.B. DECLARATION OF Y, XM, PAR AND RES MUST BE CHANGED TO DOUBLE
+C          PRECISION IF DOUBLE PRECISION VERSION OF STARPAC IS USED.
+C
+      REAL Y(10), XM(10,5), PAR(5), RES(10)
+      DOUBLE PRECISION DSTAK(200)
+C
+      EXTERNAL NLSMDL, NLSDRV
+C
+      COMMON /CSTAK/ DSTAK
+C
+C     SET UP INPUT AND OUTPUT FILES
+C     [CHAPTER 1, SECTION D.4, DESCRIBES HOW TO CHANGE OUTPUT UNIT.]
+C
+      CALL IPRINT(IPRT)
+      OPEN (UNIT=IPRT, FILE='FILENM')
+      OPEN (UNIT=5, FILE='DATA')
+C
+C     SPECIFY NECESSARY DIMENSIONS
+C
+      LDSTAK = 200
+      IXM = 10
+C
+C     READ NUMBER OF PARAMETERS
+C          STARTING VALUES FOR PARAMETERS
+C          NUMBER OF OBSERVATIONS AND NUMBER OF INDEPENDENT VARIABLES
+C          INDEPENDENT AND DEPENDENT VARIABLES
+C
+      READ (5,100) NPAR
+      READ (5,101) (PAR(I), I=1,NPAR)
+      READ (5,100) N, M
+      READ (5,101) ((XM(I,J), I=1,N), J=1,M), (Y(I), I=1,N)
+C
+C     PRINT TITLE AND CALL NLSD TO PERFORM NONLINEAR REGRESSION
+C     WITH USER-SUPPLIED DERIVATIVES
+C
+      WRITE (IPRT,102)
+      CALL NLSD (Y, XM, N, M, IXM, NLSMDL, NLSDRV, PAR, NPAR, RES,
+     *  LDSTAK)
+C
+C     FORMAT STATEMENTS
+C
+  100 FORMAT (2I5)
+  101 FORMAT (6F6.3)
+  102 FORMAT ('1RESULTS OF STARPAC',
+     *  ' NONLINEAR LEAST SQUARES SUBROUTINE NLSD')
+      END
+      SUBROUTINE NLSMDL (PAR, NPAR, XM, N, M, IXM, PV)
+C
+C     SUBROUTINE TO COMPUTE PREDICTED VALUES OF DEPENDENT VARIABLE
+C
+C     N.B. DECLARATION OF PAR, XM AND PV MUST BE CHANGED TO DOUBLE
+C          PRECISION IF DOUBLE PRECISION VERSION OF STARPAC IS USED.
+C
+      REAL PAR(NPAR), XM(IXM,M), PV(N)
+C
+      DO 10 I = 1, N
+        PV(I) = PAR(1) * XM(I, 1) ** PAR(2)
+   10 CONTINUE
+C
+      RETURN
+      END
+      SUBROUTINE NLSDRV (PAR, NPAR, XM, N, M, IXM, D)
+C
+C     SUBROUTINE TO COMPUTE THE PARTIAL DERIVATIVE (JACOBIAN) MATRIX
+C
+C     N.B. DECLARATION OF PAR, XM AND D MUST BE CHANGED TO DOUBLE
+C          PRECISION IF DOUBLE PRECISION VERSION OF STARPAC IS USED.
+C
+      REAL PAR(NPAR), XM(IXM,M), D(N,NPAR)
+C
+      DO 10 I = 1, N
+        D(I,1) = XM(I,1) ** PAR(2)
+        D(I,2) = PAR(1) * XM(I,1) ** PAR(2) * ALOG(XM(I,1))
+   10 CONTINUE
+C
+      RETURN
+      END<p>
+<p>
+Data:<p>
+    2
+ 0.725 4.000
+    6    1
+ 1.309 1.471 1.490 1.565 1.611 1.680
+ 2.138 3.421 3.597 4.340 4.882 5.660<p>
+<p>
+<b>RESULTS OF STARPAC NONLINEAR LEAST SQUARES SUBROUTINE NLSD</b>
+                       STARPAC 2.08S (03/15/90)
+***********************************************************************
+*  NONLINEAR LEAST SQUARES ESTIMATION WITH USER-SUPPLIED DERIVATIVES  *
+***********************************************************************<p>
+<p>
+SUMMARY OF INITIAL CONDITIONS
+------------------------------<p>
+<p>
+                                                   DERIVATIVE
+      PARAMETER STARTING VALUE      SCALE          ASSESSMENT
+INDEX  FIXED      (PAR)            (SCALE)<p>
+  1      NO    .72500000           DEFAULT             OK
+  2      NO    4.0000000           DEFAULT             OK<p>
+NUMBER OF RELIABLE DIGITS IN MODEL RESULTS                         (NETA)    13<p>
+NUMBER OF DIGITS IN DERIVATIVE CHECKING AGREEMENT TOLERANCE        (NTAU)     4<p>
+ROW NUMBER AT WHICH DERIVATIVES WERE CHECKED                       (NROW)     1<p>
+  -VALUES OF THE INDEPENDENT VARIABLES AT THIS ROW
+         INDEX    1
+         VALUE   1.309000<p>
+NUMBER OF OBSERVATIONS                                                (N)     6<p>
+NUMBER OF INDEPENDENT VARIABLES                                       (M)     1<p>
+MAXIMUM NUMBER OF ITERATIONS ALLOWED                                (MIT)    21<p>
+MAXIMUM NUMBER OF MODEL SUBROUTINE CALLS ALLOWED                             42<p>
+CONVERGENCE CRITERION FOR TEST BASED ON THE<p>
+     FORECASTED RELATIVE CHANGE IN RESIDUAL SUM OF SQUARES (STOPSS)   .3696E-09
+     MAXIMUM SCALED RELATIVE CHANGE IN THE PARAMETERS      (STOPP)   .8425E-07<p>
+<p>
+MAXIMUM CHANGE ALLOWED IN THE PARAMETERS AT THE FIRST ITERATION (DELTA)   100.0<p>
+RESIDUAL SUM OF SQUARES FOR INPUT PARAMETER VALUES                   .1472E-01<p>
+RESIDUAL STANDARD DEVIATION FOR INPUT PARAMETER VALUES       (RSD)   .6067E-01<p>
+<p>
+                      STARPAC 2.08S (03/15/90)
+NONLINEAR LEAST SQUARES ESTIMATION WITH USER-SUPPLIED DERIVATIVES, CONTINUED<p>
+<p>
+ITERATION NUMBER    1
+----------------------
+    MODEL                                                     FORECASTED
+    CALLS         RSD             RSS        REL CHNG RSS    REL CHNG RSS    REL CHNG PAR
+                                                             VALUE   CHKD    VALUE   CHKD
+        2       .3390E-01       .4597E-02       .6877       .7109       Y   .1790E-01   Y<p>
+     CURRENT PARAMETER VALUES
+         INDEX    1              2
+         VALUE   .7679852       3.859309<p>
+<p>
+ITERATION NUMBER    4
+----------------------
+    MODEL                                                     FORECASTED
+    CALLS         RSD             RSS        REL CHNG RSS    REL CHNG RSS    REL CHNG PAR
+                                                             VALUE   CHKD    VALUE   CHKD
+        5       .3285E-01       .4317E-02      -.3214E-13   .6352E-12   Y   .1068E-07   Y<p>
+     CURRENT PARAMETER VALUES
+         INDEX    1              2
+         VALUE   .7688623       3.860406<p>
+***** PARAMETER AND RESIDUAL SUM OF SQUARES CONVERGENCE *****<p>
+<p>
+<p>
+                             STARPAC 2.08S (03/15/90)
+NONLINEAR LEAST SQUARES ESTIMATION WITH USER-SUPPLIED DERIVATIVES, CONTINUED<p>
+<p>
+RESULTS FROM LEAST SQUARES FIT
+-------------------------------<p>
+                                                    DEPENDENT       PREDICTED      STD DEV OF                         STD
+ ROW             PREDICTOR VALUES                    VARIABLE         VALUE        PRED VALUE        RESIDUAL         RES<p>
+   1                 1.3090000                      2.1380000       2.1741175       .22079044E-01  -.36117523E-01   -1.48
+   2                 1.4710000                      3.4210000       3.4111549       .16469585E-01   .98450648E-02     .35
+   3                 1.4900000                      3.5970000       3.5844109       .15615321E-01   .12589135E-01     .44
+   4                 1.5650000                      4.3400000       4.3326419       .14065814E-01   .73580808E-02     .25
+   5                 1.6110000                      4.8820000       4.8453073       .16512112E-01   .36692709E-01    1.29
+   6                 1.6800000                      5.6600000       5.6968365       .26183727E-01  -.36836464E-01   -1.86<p>
+<p>
+                           STARPAC 2.08S (03/15/90)
+NONLINEAR LEAST SQUARES ESTIMATION WITH USER-SUPPLIED DERIVATIVES, CONTINUED<p>
+ STD RES VS ROW NUMBER                          STD RES VS PREDICTED VALUES
+ 3.75++---------+---------+----+----+---------+---------++    3.75++---------+---------+----+----+---------+---------++
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+ 2.25+                                                   +    2.25+                                                   +
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                        *          -        -                                      *            -
+  .75+                                                   +     .75+                                                   +
+     -                                                   -        -                                                   -
+     -          *         *         *                    -        -                  * *          *                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+ -.75+                                                   +    -.75+                                                   +
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -*                                                  -        -*                                                  -
+     -                                                  *-        -                                                  *-
+-2.25+                                                   +   -2.25+                                                   +
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+-3.75++---------+---------+----+----+---------+---------++   -3.75++---------+---------+----+----+---------+---------++
+     1.0                      3.5                      6.0      2.174                    3.935                5.697<p>
+            AUTOCORRELATION FUNCTION OF RESIDUALS                        NORMAL PROBABILITY PLOT OF STD RES
+    1++---------+-------********----+---------+---------++    3.75++---------+---------+----+----+---------+---------++
+     -                        **                         -        -                                                   -
+     -                       ***                         -        -                                                   -
+     -                **********                         -        -                                                   -
+     -                         ********                  -        -                                                   -
+    6+                                                   +    2.25+                                                   +
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                     *             -
+   11+                                                   +     .75+                                                   +
+     -                                                   -        -                                                   -
+     -                                                   -        -                       *   *   *                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+   16+                                                   +    -.75+                                                   +
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                   *                               -
+     -                                                   -        -             *                                     -
+   21+                                                   +   -2.25+                                                   +
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+     -                                                   -        -                                                   -
+   26++---------+---------+----+----+---------+---------++   -3.75++---------+---------+----+----+---------+---------++
+   -1.00                      0.0                     1.00     -2.5                       0.0                      2.5<p>
+                        STARPAC 2.08S (03/15/90)
+NONLINEAR LEAST SQUARES ESTIMATION WITH USER-SUPPLIED DERIVATIVES, CONTINUED<p>
+<p>
+<p>
+VARIANCE-COVARIANCE AND CORRELATION MATRICES OF THE ESTIMATED (UNFIXED) PARAMS
+-------------------------------------------------------------------------------<p>
+   - APPROXIMATION BASED ON ASSUMPTION THAT RESIDUALS ARE SMALL
+   - COVARIANCES ARE ABOVE THE DIAGONAL
+   - VARIANCES ARE ON THE DIAGONAL
+   - CORRELATION COEFFICIENTS ARE BELOW THE DIAGONAL<p>
+COLUMN         1                2<p>
+     1      .3342306E-03    -.9369379E-03
+     2     -.9907719         .2675642E-02<p>
+<p>
+<p>
+ESTIMATES FROM LEAST SQUARES FIT
+---------------------------------<p>
+<p>
+                                                            95 PERCENT CONFIDENCE LIMITS
+INDEX  FIXED   PARAMETER        SD OF PAR       RATIO            LOWER            UPPER<p>
+  1      NO    .76886229        .18281974E-01   42.06        .71810339        .81962119
+  2      NO    3.8604055        .51726611E-01   74.63        3.7167894        4.0040216<p>
+<p>
+RESIDUAL SUM OF SQUARES                  .4317308E-02<p>
+RESIDUAL STANDARD DEVIATION              .3285311E-01
+BASED ON DEGREES OF FREEDOM        6 -   2 =    4<p>
+APPROXIMATE CONDITION NUMBER             20.87492<p>
+<b>Program</b>:<p>
+      PROGRAM EXAMPL
+C
+C     DEMONSTRATE STPLS USING SINGLE PRECISION VERSION OF STARPAC
+C
+C     N.B. DECLARATION OF XM, PAR AND STP MUST BE CHANGED TO DOUBLE
+C          PRECISION IF DOUBLE PRECISION VERSION OF STARPAC IS USED.
+C
+      REAL XM(10,5), PAR(5), STP(5)
+      DOUBLE PRECISION DSTAK(200)
+C
+      EXTERNAL NLSMDL, DERIV
+C
+      COMMON /CSTAK/ DSTAK
+C
+C     SET UP INPUT AND OUTPUT FILES
+C     [CHAPTER 1, SECTION D.4, DESCRIBES HOW TO CHANGE OUTPUT UNIT.]
+C
+      CALL IPRINT(IPRT)
+      OPEN (UNIT=IPRT, FILE='FILENM')
+      OPEN (UNIT=5, FILE='DATA')
+C
+C     SPECIFY NECESSARY DIMENSIONS
+C
+      LDSTAK = 200
+      IXM = 10
+C
+C     READ NUMBER OF PARAMETERS
+C          STARTING VALUES FOR PARAMETERS
+C          NUMBER OF OBSERVATIONS AND NUMBER OF INDEPENDENT VARIABLES
+C          INDEPENDENT VARIABLES
+C
+      READ (5,100) NPAR
+      READ (5,101) (PAR(I), I=1,NPAR)
+      READ (5,100) N, M
+      READ (5,101) ((XM(I,J), I=1,N), J=1,M)
+C
+C     PRINT TITLE AND CALL STPLS TO SELECT STEP SIZES FOR
+C     APPROXIMATING DERIVATIVES
+C
+      WRITE (IPRT,102)
+      CALL STPLS (XM, N, M, IXM, NLSMDL, PAR, NPAR, LDSTAK, STP)
+C
+C     FORMAT STATEMENTS
+C
+  100 FORMAT (2I5)
+  101 FORMAT (6F6.3)
+  102 FORMAT ('1RESULTS OF STARPAC',
+     *  ' DERIVATIVE STEP SIZE SELECTION SUBROUTINE STPLS')
+      END
+      SUBROUTINE NLSMDL (PAR, NPAR, XM, N, M, IXM, PV)
+C
+C     SUBROUTINE TO COMPUTE PREDICTED VALUES OF DEPENDENT VARIABLE
+C
+C     N.B. DECLARATION OF PAR, XM AND PV MUST BE CHANGED TO DOUBLE
+C          PRECISION IF DOUBLE PRECISION VERSION OF STARPAC IS USED.
+C
+      REAL PAR(NPAR), XM(IXM,M), PV(N)
+C
+      DO 10 I = 1, N
+        PV(I) = PAR(1) * XM(I, 1) ** PAR(2)
+   10 CONTINUE
+C
+      RETURN
+      END<p>
+<p>
+Data:<p>
+    2
+ 0.725 4.000
+    6    1
+ 1.309 1.471 1.490 1.565 1.611 1.680<p>
+<p>
+<b>RESULTS OF STARPAC DERIVATIVE STEP SIZE SELECTION SUBROUTINE STPLS</b>
+                     STARPAC 2.08S (03/15/90)
+**********************************
+* DERIVATIVE STEP SIZE SELECTION *
+**********************************<p>
+<p>
+                                                 STEP SIZE FOR    OBSERVATIONS FAILING STEP SIZE SELECTION CRITERIA
+                 PARAMETER                       APPROXIMATING                     *
+               STARTING VALUE       SCALE          DERIVATIVE       COUNT     NOTES     ROW NUMBER(S)
+INDEX             (PAR)            (SCALE)           (STP)                     F C<p>
+  1            .72500000           DEFAULT       .46415888E-04         0
+  2            4.0000000           DEFAULT       .38782913E-06         0<p>
+<p>
+*  NOTES.  A PLUS (+) IN THE COLUMNS HEADED F OR C HAS THE FOLLOWING MEANING.<p>
+   F - NUMBER OF OBSERVATIONS FAILING STEP SIZE SELECTION CRITERIA EXCEEDS
+       NUMBER OF EXEMPTIONS ALLOWED.<p>
+   C - HIGH CURVATURE IN THE MODEL IS SUSPECTED AS THE CAUSE OF
+       ALL FAILURES NOTED.<p>
+NUMBER OF RELIABLE DIGITS IN MODEL RESULTS                         (NETA)    13<p>
+PROPORTION OF OBSERVATIONS EXEMPTED FROM SELECTION CRITERIA    (EXMPT)   .1000<p>
+NUMBER OF OBSERVATIONS EXEMPTED FROM SELECTION CRITERIA                       1<p>
+NUMBER OF OBSERVATIONS                                                (N)     6<p>
+<p>
+<p>
+<b>Program</b>:<p>
+      PROGRAM EXAMPL
+C
+C     DEMONSTRATE DCKLS USING SINGLE PRECISION VERSION OF STARPAC
+C
+C     N.B. DECLARATION OF XM AND PAR MUST BE CHANGED TO DOUBLE PRECISION
+C          IF DOUBLE PRECISION VERSION OF STARPAC IS USED.
+C
+      REAL XM(10,5), PAR(5)
+      DOUBLE PRECISION DSTAK(200)
+C
+      EXTERNAL NLSMDL, NLSDRV
+C
+      COMMON /CSTAK/ DSTAK
+C
+C     SET UP INPUT AND OUTPUT FILES
+C     [CHAPTER 1, SECTION D.4, DESCRIBES HOW TO CHANGE OUTPUT UNIT.]
+C
+      CALL IPRINT(IPRT)
+      OPEN (UNIT=IPRT, FILE='FILENM')
+      OPEN (UNIT=5, FILE='DATA')
+C
+C     SPECIFY NECESSARY DIMENSIONS
+C
+      LDSTAK = 200
+      IXM = 10
+C
+C     READ NUMBER OF PARAMETERS
+C          STARTING VALUES FOR PARAMETERS
+C          NUMBER OF OBSERVATIONS AND NUMBER OF INDEPENDENT VARIABLES
+C          INDEPENDENT VARIABLES
+C
+      READ (5,100) NPAR
+      READ (5,101) (PAR(I), I=1,NPAR)
+      READ (5,100) N, M
+      READ (5,101) ((XM(I,J), I=1,N), J=1,M)
+C
+C     PRINT TITLE AND CALL DCKLS TO PERFORM DERIVATIVE CHECKING
+C
+      WRITE (IPRT,102)
+      CALL DCKLS (XM, N, M, IXM, NLSMDL, NLSDRV, PAR, NPAR, LDSTAK)
+C
+C     FORMAT STATEMENTS
+C
+  100 FORMAT (2I5)
+  101 FORMAT (6F6.3)
+  102 FORMAT ('1RESULTS OF STARPAC',
+     *  ' DERIVATIVE CHECKING SUBROUTINE DCKLS')
+      END
+      SUBROUTINE NLSMDL (PAR, NPAR, XM, N, M, IXM, PV)
+C
+C     SUBROUTINE TO COMPUTE PREDICTED VALUES OF DEPENDENT VARIABLE
+C
+C     N.B. DECLARATION OF PAR, XM AND PV MUST BE CHANGED TO DOUBLE
+C          PRECISION IF DOUBLE PRECISION VERSION OF STARPAC IS USED.
+C
+      REAL PAR(NPAR), XM(IXM,M), PV(N)
+C
+      DO 10 I = 1, N
+        PV(I) = PAR(1) * XM(I, 1) ** PAR(2)
+   10 CONTINUE
+C
+      RETURN
+      END
+      SUBROUTINE NLSDRV (PAR, NPAR, XM, N, M, IXM, D)
+C
+C     SUBROUTINE TO COMPUTE THE PARTIAL DERIVATIVE (JACOBIAN) MATRIX
+C
+C     DERIVATIVE WITH RESPECT TO FIRST PARAMETER HAS BEEN CODED
+C     INCORRECTLY TO DEMONSTRATE ERROR DETECTION CAPABILITIES
+C
+C     N.B. DECLARATION OF PAR, XM AND D MUST BE CHANGED TO DOUBLE
+C          PRECISION IF DOUBLE PRECISION VERSION OF STARPAC IS USED.
+C
+      REAL PAR(NPAR), XM(IXM,M), D(N,NPAR)
+C
+      DO 10 I = 1, N
+        D(I,1) = XM(I,1) * PAR(2)
+        D(I,2) = PAR(1) * XM(I,1) ** PAR(1) * ALOG(XM(I,1))
+   10 CONTINUE
+C
+      RETURN
+      END<p>
+<p>
+Data:<p>
+    2
+ 0.000 4.000
+    6    1
+ 1.309 1.471 1.490 1.565 1.611 1.680<p>
+<p>
+<b>RESULTS OF STARPAC DERIVATIVE CHECKING SUBROUTINE DCKLS</b>
+                      STARPAC 2.08S (03/15/90)
+***********************
+* DERIVATIVE CHECKING *
+***********************<p>
+<p>
+<p>
+                PARAMETER                          DERIVATIVE
+              STARTING VALUE        SCALE          ASSESSMENT
+INDEX             (PAR)            (SCALE)<p>
+  1           0.                   DEFAULT          INCORRECT
+  2            4.0000000           DEFAULT        QUESTIONABLE (1)<p>
+* NUMBERS IN PARENTHESES REFER TO THE FOLLOWING NOTES.<p>
+ (1) USER-SUPPLIED AND APPROXIMATED DERIVATIVES AGREE, BUT
+     BOTH ARE ZERO.  RECHECK AT ANOTHER ROW.<p>
+NUMBER OF RELIABLE DIGITS IN MODEL RESULTS                         (NETA)    14<p>
+NUMBER OF DIGITS IN DERIVATIVE CHECKING AGREEMENT TOLERANCE        (NTAU)     4<p>
+ROW NUMBER AT WHICH DERIVATIVES WERE CHECKED                       (NROW)     1
+  -VALUES OF THE INDEPENDENT VARIABLES AT THIS ROW
+         INDEX    1
+         VALUE   1.309000<p>
+NUMBER OF OBSERVATIONS                                                (N)     6<p>
+</pre></blockquote>
+
+<a name="9g"><h3>G.  Acknowledgments</h3></a>
+     The subroutines used to compute the nonlinear least squares  solution are
+those  referenced  in  Dennis  et al.  [1981].   The algorithms used to select
+optimum  step  sizes  for  numerical  derivatives,   and  to  check   analytic
+derivatives  were  developed  by  Schnabel [1982].  The printed output for the
+nonlinear least squares subroutines has  been  modeled  on  the  linear  least
+squares output used by OMNITAB II [Hogben et al., 1971].<p>
+
+<hr>
+<center><h2><a name="apb"> Appendix B </a></h2> 
+<h2> Weighted Least Squares </h2>
+</center>
+     Weighted  least squares can  be used  to eliminate observations  from the
+analysis and to compensate for unequal variances in the observational errors.<p>
+     Observations can be eliminated  from the analysis by using  weight values
+consisting  only of  zeros and ones.   This will  produce the  same results as
+performing an unweighted analysis with the zero-weighted values removed except
+that the predicted values,  the standard  deviations of the  predicted values,
+and the residuals of the zero-weighted data are computed.   There are two main
+reasons for weighting observations zero.  The first is to obtain the predicted
+values and their standard deviations  for a  set of independent  variables not
+included in the observed data.  (This is done by assigning any arbitrary value
+to the  dependent variable of  the desired  set of independent  variables, and
+then  weighting  these values  zero.)   The  second  reason is  to allow  easy
+examination of the effect of  outliers and influential data points.   Outliers
+often appear as large values in residual plots.   Careful checking of the data
+often leads  to confirmation that the data  are in  error, and sometimes  to a
+correction.   When a  cause for  suspicious data cannot  be found,  it may  be
+advisable  to compare the  analysis with  and without  the  questionable data.
+Caution is in order if the estimates or conclusions are highly sensitive  to a
+small amount of suspicious data.   Data that  have a very high influence  on a
+fitted curve may not result in large  residuals, however, even if they  are in
+error.  In fact, extremely influential observations may force the fitted curve
+to be very close, leading to very small residuals.   It is therefore desirable
+to identify influential observations and to compare the results  obtained with
+and  without  these  points.    Several  methods   for  detecting  influential
+observations are discussed in Bement and Williams [1969], Cook [1977], Hoaglin
+and Welsch [1978], and Belsley et al. [1980].<p>
+     Using weights to compensate for unequal observational error  variances is
+not as straightforward as  using zero  weights to eliminate  observations from
+the analysis.   When the variances of the observational errors, e(i), are  not
+equal, the unweighted least squares estimates remain unbiased but do  not have
+minimum variance.   Minimum variance  estimates are obtained by using  weights
+wti = 1/Variance[e(i)] when the error variances are known.  If weights must be
+estimated, they should be based on at least 10 degrees of freedom  [see Bement
+and Williams, 1969].   In practice, however, weights are derived from  theory,
+or obtained from the data being fit, and  either of these methods can  do more
+harm than  good.   When  the  need for  weights is  suspected  and  the  error
+variances are not known, first  fit the  data using unweighted  least squares;
+analysis  of the  residuals may confirm  the need  for weighting and  may also
+provide  estimates for  the weights themselves.   If the  need for  weights is
+confirmed, then a statistician should be consulted to assist in  selecting the
+weights and in interpreting the results.<p>
+
+<hr>
+<center><h2><a name="apc"> Appendix C </a></h2> 
+<h2> Estimating the Number of Reliable Digits<br>
+ in the Results of a Function </h2>
+</center>
+     The  number of  reliable digits,  h,  in the  results of  a  real  valued
+function, g(b), can be estimated in most cases by evaluating<p>
+<blockquote><pre>
+                             (|g(bj) - [a+j*b]|)
+        h = -log10(    max   -------------------
+                   j=-2,...,2        |g(b)|<p>
+</pre></blockquote>
+where
+<blockquote><pre>
+bj      is the vector of the NPAR parameters of the function given by,
+        bj(k) = b(k) + b(k)*j*10**(-DIGITS/2)     for j = -2, ..., 2,
+                                                  and k = 1, ..., NPAR,
+        where<p>
+        DIGITS is the number of decimal digits carried by the  user's computer
+        for  a single precision  value when  the single  precision  version of
+        STARPAC is being used and is the number carried for a double precision
+        value otherwise.<p>
+                    2
+a       = (0.20) * SUM g(bj).
+                  j=-2<p>
+                    2
+b       = (0.10) * SUM j*g(bj).
+                  j=-2
+</pre></blockquote>
+     This procedure may underestimate the number of reliable digits if g(b) is
+extremely nonlinear.   A more elaborate and more robust procedure is described
+in Gill et al. [1981].<p>
+
+<hr>
+<center><h2><a name="apd"> Appendix D </a></h2> 
+<h2> List of STARPAC Subprogram Names </h2>
+</center>
+
+<a name="ad1"><h4>D.1  Subprograms specifically written for STARPAC</h4></a>
+<blockquote><pre>
+ABSCOM   ACCDIG   ACF      ACFD     ACFDTL   ACFER    ACFF     ACFFS    ACFLST
+ACFM     ACFMN    ACFMNF   ACFMNM   ACFMS    ACFOUT   ACFS     ACFSD    ACFSDM
+ACVF     ACVFF    ACVFM    ADJLMT   AIME     AIMEC    AIMES    AIMF     AIMFS
+AIMX1    AMDRV    AMEAN    AMEANM   AMECNT   AMEDRV   AMEER    AMEFIN   AMEHDR
+AMEISM   AMEMN    AMEOUT   AMEPT1   AMEPT2   AMESTP   AMFCNT   AMFER    AMFHDR
+AMFMN    AMFOUT   AMLST    AMLST1   AOS      AOSLST   AOV1     AOV1ER   AOV1HD
+AOV1MN   AOV1S    AOV1XP   ARCOEF   ARFLT    AXPBY    BACKOP   BFS      BFSDRV
+BFSER    BFSF     BFSFS    BFSLAG   BFSM     BFSMN    BFSMS    BFSMV    BFSMVS
+BFSS     BFSV     BFSVS    CCF      CCFER    CCFF     CCFFS    CCFLST   CCFM
+CCFMN    CCFMNF   CCFMNM   CCFMS    CCFOUT   CCFS     CCFSD    CCFSDM   CCFXP
+CCVF     CCVFF    CCVFM    CDFCHI   CDFF     CDFNML   CDFT     CENTER   CHIRHO
+CMPFD    CNTR     CORR     CORRER   CORRHD   CORRMN   CORRS    CORRXP   CPYASF
+CPYMSS   CPYVII   DCKCNT   DCKCRV   DCKDRV   DCKER    DCKFPA   DCKHDR   DCKLS
+DCKLSC   DCKLS1   DCKMN    DCKOUT   DCKZRO   DCOEF    DEMDRV   DEMOD    DEMODS
+DEMODU   DEMORD   DEMOUT   DFBW     DFBWM    DIF      DIFC     DIFM     DIFMC
+DIFSER   DOTC     DOTCM    DRV      DRV1A    DRV1B    DRV2     DRV3     DRV4A
+DRV4B    ECVF     EHDR     EIAGE    EIAGEP   EISEQ    EISGE    EISII    EISLE
+EISRNG   EIVEO    EIVEQ    EIVII    ENFFT    ERAGT    ERAGTM   ERAGTP   ERDF
+ERIODD   ERSEI    ERSGE    ERSGT    ERSIE    ERSII    ERSLF    ERSLFS   ERVGT
+ERVGTM   ERVGTP   ERVII    ERVWT    ETAMDL   EXTEND   FACTOR   FFT      FFTCT
+FFTLEN   FFTR     FITEXT   FITPT1   FITPT2   FITSXP   FITXSP   FIXPRT   FLTAR
+FLTARM   FLTMA    FLTMD    FLTSL    GENI     GENR     GETPI    GFAEST   GFARF
+GFARFS   GFORD    GFOUT    GFSEST   GFSLF    GFSLFS   GMEAN    HIPASS   HIST
+HISTC    HPCOEF   HPFLT    HSTER    HSTMN    ICNTI    ICOPY    INPERL   IPGDV
+IPGM     IPGMN    IPGMP    IPGMPS   IPGMS    IPGORD   IPGOUT   IPRINT   LDSCMP
+LLCNT    LLCNTG   LLCNTP   LLER     LLHDRG   LLHDRP   LLS      LLSMN    LLSP
+LLSPS    LLSPW    LLSPWS   LLSS     LLSW     LLSWS    LOGLMT   LOPASS   LPCOEF
+LPFLT    LSTLAG   LSTVCF   LSTVEC   MAFLT    MATPRF   MATPRT   MDFLT    MDLTS1
+MDLTS2   MDLTS3   MDL1     MDL2     MDL3     MDL4     MGS      MODSUM   MPP
+MPPC     MPPL     MPPM     MPPMC    MPPML    MSGX     MULTBP   MVCHK    MVP
+MVPC     MVPL     MVPM     MVPMC    MVPML    NCHOSE   NLCMP    NLCNT    NLCNTA
+NLCNTN   NLDRVA   NLDRVN   NLER     NLERR    NLFIN    NLHDRA   NLHDRN   NLINIT
+NLISM    NLITRP   NLMN     NLOUT    NLS      NLSC     NLSD     NLSDC    NLSDS
+NLSKL    NLSPK    NLSS     NLSUPK   NLSW     NLSWC    NLSWD    NLSWDC   NLSWDS
+NLSWS    NLSX1    NLSX2    NRAND    NRANDC   OANOVA   OBSSM2   OBSSUM   PARZEN
+PGM      PGMEST   PGMMN    PGMS     PGORD    PGOUT    PLINE    PLTCHK   PLTPLX
+PLTSYM   POLAR    PP       PPC      PPCNT    PPFCHS   PPFF     PPFNML   PPFT
+PPL      PPLMT    PPM      PPMC     PPML     PPMN     PRTCNT   RANDN    RANDU
+RANKO    REALTR   RELCOM   REPCK    SAMPLE   SETESL   SETFRQ   SETIV    SETLAG
+SETRA    SETROW   SETRV    SLFLT    SMPLY    SPCCK    SPP      SPPC     SPPL
+SPPLTC   SPPLTD   SPPLTL   SPPM     SPPMC    SPPML    SRTIR    SRTIRR   SRTRI
+SRTRRI   STAT     STATER   STATS    STATW    STATWS   STAT1    STAT1W   STAT2
+STAT2W   STKCLR   STKGET   STKREL   STKSET   STKST    STPADJ   STPAMO   STPCNT
+STPDRV   STPER    STPHDR   STPLS    STPLSC   STPLS1   STPLS2   STPMN    STPOUT
+STPSEL   SUMBS    SUMDS    SUMID    SUMIDW   SUMOT    SUMSS    SUMTS    SUMWDS
+SUMWSS   SUMWTS   SVP      SVPC     SVPL     SVPM     SVPMC    SVPML    TAPER
+UAS      UASCFT   UASDV    UASER    UASEST   UASF     UASFS    UASORD   UASOUT
+UASS     UASV     UASVAR   UASVS    UFS      UFSDRV   UFSER    UFSEST   UFSF
+UFSFS    UFSLAG   UFSM     UFSMN    UFSMS    UFSMV    UFSMVS   UFSOUT   UFSPCV
+UFSS     UFSV     UFSVS    VCVOTF   VCVOUT   VERSP    VP       VPC      VPCNT
+VPHEAD   VPL      VPLMT    VPM      VPMC     VPML     VPMN     XACF     XAIMD
+XAIMT    XAOV1    XBFS     XCCF     XCORR    XDCKLD   XDCKLE   XDCKLT   XDEMOD
+XDFLT    XHIST    XLLS     XNLSD    XNLSE    XNLST    XNRAND   XPGM     XPP
+XSTAT    XSTPLD   XSTPLE   XSTPLT   XUAS     XUFS     XVP      XXCH1    XXCH2
+XXCH3    XXCH4    XXCH5    XXCH6    XXCH7    XXCH8    XXCH9    XXCH10   XXCH11
+XXCH12   XXCH13
+</pre></blockquote>
+
+<a name="ad2"><h4>D.2  Subprograms from NL2SOL</h4></a>
+<blockquote><pre>
+ASSESS   COVCLC   DFAULT   DOTPRD   DUPDAT   GQTSTP   IMDCON   ITSMRY   LINVRT
+LITVMU   LIVMUL   LMSTEP   LSQRT    LSVMIN   LTSQAR   MADJ     MADR     NL2ITR
+NL2SNO   NL2SOL   NL2X     PARCHK   QAPPLY   QRFACT   RELDST   RMDCON   RPTMUL
+SLUPDT   SLVMUL   STOPX    UFPARM   VAXPY    VCOPY    VSCOPY   V2NORM
+</pre></blockquote>
+
+<a name="ad3"><h4>D.3  Subprograms from miscellaneous public domain sources</h4></a>
+<blockquote><pre>
+ALBETA   ALGAMS   ALNGAM   ALNREL   BETAI    CSEVL    DBETAI   DCSEVL   DERF
+DERFC    DGAMI    DGAMIT   DGAMLM   DGAMMA   DGAMR    DLBETA   DLGAMS   DLNGAM
+DLNREL   D9GMIT   D9LGIC   D9LGIT   D9LGMC   EPRINT   ERF      ERFC     E9RINT
+FDUMP    GAMI     GAMIT    GAMLIM   GAMMA    GAMR     INITDS   INITS    I8SAVE
+J4SAVE   R9GMIT   R9LGIC   R9LGIT   R9LGMC   SETERR   S88FMT   XERABT   XERCLR
+XERCTL   XERPRT   XERROR   XERRWV   XERSAV   XGETF    XGETUA   XSETF
+</pre></blockquote>
+
+<a name="ad4"><h4>D.4  Subprograms from LINPACK and BLAS</h4></a>
+<blockquote><pre>
+DASUM    DAXPY    DCOPY    DDOT     DNRM2    DSCAL    DSIDI    DSIFA    DSWAP
+DTRCO    DTRDI    IDAMAX   ISAMAX   SASUM    SAXPY    SCOPY    SDOT     SNRM2
+SSCAL    SSIDI    SSIFA    SSWAP    STRCO    STRDI
+</pre></blockquote>
+
+<a name="ad5"><h4>D.5  Subprograms specifying machine dependent constants</h4></a>
+<blockquote><pre>
+D1MACH   I1MACH   R1MACH
+</pre></blockquote>
+
+<hr>
+<center><h2><a name="ape"> Appendix E </a></h2> 
+<h2> List of STARPAC Labeled Common Names </h2>
+</center>
+<blockquote><pre>
+CSTAK   ERRCHK   NOTOPT
+</pre></blockquote>
+
+
+<hr>
+<center><h2><a name="ref"> References </a></h2> 
+</center>
+Abramowitz, M.; Stegun, I.  (1964).  Handbook of mathematical functions.  Nat.
+Bur. Stand. (U.S.) Appl. Math. Ser. 55.<p>
+Akaike, H.  (1974).   A new  look at  statistical model identification.   IEEE
+Transactions on Automatic Control, AC-19.<p>
+American National  Standards Institute (1977).   ANS FORTRAN  X3.9-1977.   New
+York, NY:  American National Standards Institute.<p>
+Anderson, T. W. (1958).  An introduction to multivariate statistical analysis.
+New York, NY:  John Wiley and Sons.<p>
+Anscombe,  F.  J.; Tukey,  J. W.  (1963).   The  examination  and analysis  of
+residuals.  Technometrics, 5:  141-160.<p>
+Bard,  Y. (1974).   Nonlinear parameter estimation.   New York, NY:   Academic
+Press.<p>
+Belsley, D. A.; Kuh, E.; Welsch, R. E. (1980).   Regression diagnostics.   New
+York, NY:  John Wiley and Sons.<p>
+Bement,  T.  R.; Williams,  J. S.  (1969).   Variance  of  weighted regression
+estimators when sampling errors are independent and heteroscedastic.  J. Amer.
+Statists. Assoc.  64:  1369-1382.<p>
+Bloomfield, P. (1976).   Fourier analysis  of time  series:   an introduction.
+New York, NY:  John Wiley and Sons.<p>
+Box, G. E. P.;  Jenkins, G. M.  (1976).   Time series analysis forecasting and
+control.  San Francisco, CA:  Holden-Day.<p>
+Bradley,  J. V.   (1968).   Distribution-free  statistical  tests.   Englewood
+Cliffs, NJ:  Prentice-Hall.<p>
+Brownlee, K. A.   (1965).   Statistical theory and methodology in science  and
+technology.  Second edition.  New York, NY:  John Wiley and Sons.<p>
+Cook,  D.  R.   (1977).   Detection  of  influential  observations  in  linear
+regression.  Technometrics, 19:  15.<p>
+Crow,  E. L.; Siddiqui, M. M.   (1967).   Robust estimation of locations.   J.
+Amer. Stat. Assoc. 62:  353-389.<p>
+Daniel, C.; Wood, F. S.  (1980).  Fitting equations to data.   Second edition.
+New York, NY:  John Wiley and Sons.<p>
+Davis,  P. J. (1962).   Orthonormalization codes  in numerical  analysis.   In
+Survey of Numerical Analysis, J. Todd, ed.  New York, NY:  McGraw-Hill.<p>
+Dennis, J. E. Jr.; Gay, D. M.; Welsch, R. E.  (1981a).   An adaptive nonlinear
+least-squares algorithm.  ACM Trans. Math. Software, 7(3):  348-368.<p>
+Dennis, J.  E. Jr.;  Gay,  D. M.;  Welsch, R.  E.   (1981b).   Algorithm  573:
+NL2SOL - an adaptive nonlinear least squares algorithm [E4].  ACM Trans. Math.
+Software, 7(3):  369-383.<p>
+Dennis, J. E.  Jr.; Schnabel,  R. B.   (1983).   Numerical methods  for uncon-
+strained  optimization  and  nonlinear  equations.    Englewood  Cliffs,   NJ:
+Prentice-Hall.<p>
+Dixon,  W.  J.;  Massey,  F. J.  Jr.   (1957).   Introduction  to  statistical
+analysis.  Second edition.  New York, NY:  McGraw-Hill.<p>
+Donaldson,  J.  R.; Schnabel,  R. B.  (1987).   Computational experience  with
+confidence  regions  and confidence  intervals for  nonlinear  least  squares.
+Technometrics, 29:  67-82.<p>
+Donaldson,  J.  R.;  Tryon,  P. V.  (1983a).   Introduction  to  STARPAC,  the
+Standards  time series and regression package.   Nat. Bur. Stand. (U.S.) Tech.
+Note 1068-1.<p>
+Donaldson, J.  R.; Tryon, P. V. (1983b).   Nonlinear Least  Squares Regression
+Using STARPAC, the Standards  time series  and regression package.   Nat. Bur.
+Stand. (U.S.) Tech. Note 1068-2.<p>
+Dongarra, J. J.; Moler, C. B.; Bunch, J.  R.; Stewart, G. W. (1979).   LINPACK
+users' guide.  Philadelphia, PA:  SIAM.<p>
+Draper,  N.  R.;  Smith, H.  (1981).   Applied  regression  analysis.   Second
+edition.  New York, NY:  John Wiley and Sons.<p>
+Duncan,  A. J.  (1965).   Quality control  and industrial  statistics.   Third
+edition.  Richard D. Irwin.<p>
+Eisenhart,   C.  (1947).  Significance  of the  largest  of  a  set of  sample
+estimates of variance.  In Techniques of Statistical Analysis.   C. Eisenhart,
+M. W. Hastay and W. A. Wallis, eds.  New York, NY:  McGraw-Hill.<p>
+Filliben, J. J.   (1977).   User's guide to the DATAPAC data analysis package.
+(Unpublished  -  available   from  NIST  Statistical   Engineering   Division/
+Gaithersburg.)<p>
+Fisher, R. A.   (1950).   Statistical methods for research workers.   Eleventh
+edition.  Edenburg:  Oliver and Boyd.<p>
+Fox, P. A.; Hall, A. D.; Schryer, N. L.  (1978a).   Algorithm 528:   framework
+for a portable library [Z].  ACM Trans. Math. Software, 4(2):  177-188.<p>
+Fox,  P. A.; Hall,  A. D.;  Schryer, N. L.   (1978b).   The  PORT mathematical
+subroutine library.  ACM Trans. Math. Software, 4(2):  104-126.<p>
+Freund, J. E.; Williams, F. J. (1958).  Modern business statistics.  Englewood
+Cliffs, NJ:  Prentice-Hall.<p>
+Fullerton, L. W.  (1977).  Portable special function routines.  In Portability
+of Numerical Software: Proceedings.   Lecture Notes in Computer Science:  Vol.
+57, W. Crowell, editor.  Oak Brook, IL:  Springer-Verlag.<p>
+Gill, P. E.; Murray, W.; Wright, M. H.  (1981).   Practical optimization.  New
+York, NY:  Academic Press.<p>
+Hald, A. (1952).  Statistical theory with engineering applications.  New York,
+NY:  John Wiley and Sons.<p>
+Hoaglin, D. C.; Welsch, R. E. (1978).  The hat matrix in regression and ANOVA.
+American Statistician, 32:  17.<p>
+Hogben, D.; Peavy, S. T.; Varner, R. N.   (1971).  OMNITAB II user's reference
+manual.  Nat. Bur. Stand. (U.S.) Tech. Note 552.<p>
+Jenkins, G. M.; Watts, D. C.  (1968).  Spectral analysis and its applications.
+San Francisco, CA:  Holden-Day.<p>
+Jones, R. H. (1971).   Spectrum estimation with missing observations.   Annals
+of the Institute of Statistical Mathematics, 23:  3.<p>
+Kendall, M. G. (1948).   Rank correlation methods.   London:   Charles Griffen
+and Co.<p>
+Kendall,  M.  G.; Stuart,  A.   (1973).   The  advanced theory  of statistics.
+Inference and Relationship, Vol. 2:  London:  Charles Griffin and Co.<p>
+Kennedy, W. J. Jr.; Gentle, J. E.  (1980).  Statistical computing.   New York,
+NY:  Marcel-Dekker Inc.<p>
+Ku,  H. H.  (1973).   A  user's  guide  to  the OMNITAB  command  "STATISTICAL
+ANALYSIS."  Nat. Bur. Stand. (U.S.) Tech. Note 756.<p>
+Lawson, C.; Hanson, R.; Kincaid, D.; Krogh, F.  (1979).   Basic linear algebra
+subprograms for FORTRAN usage.  ACM Trans. Math. Software, 5(3):  308-371.<p>
+Mandel, J. (1964).  The statistical analysis of experimental data.   New York,
+NY:  Interscience.<p>
+Marsaglia,  G.; Tsang,  W. W. (1984).   A fast,  easily implemented method for
+sampling from decreasing  or symmetric  unimodal density  functions.   SIAM J.
+Sci. Stat. Comput. 5 (2):  349-358.<p>
+Miller,  I.; Freund, J. E. (1977).   Probability and statistics for engineers.
+Second edition.  Englewood Cliffs, NJ:  Prentice-Hall.<p>
+Morrison,  D. F. (1967).   Multivariate statistical  methods.   New  York, NY:
+McGraw-Hill.<p>
+Natrella,  M. G. (1966).   Experimental statistics.   Nat. Bur.  Stand. (U.S.)
+Handb. 91.<p>
+Owen, D. B. (1962).   Handbook of statistical tables.   Reading, MA:  Addison-
+Wesley Publishing Co.<p>
+Ryan, T.  A.; Joiner, B.  L.; Ryan,  B. F. (1974).   Student handbook  for the
+MINITAB statistical computing system.  The Pennsylvania State University.<p>
+Schnabel, R. B.  (1982).  Finite difference derivatives - theory and practice.
+(Unpublished - available from NIST Statistical Engineering Division/Boulder.)<p>
+Singleton,  R. C. (1969).   An algorithm  for computing  the mixed radix  fast
+Fourier transform.  IEEE Transactions on Audio and Electroacoustics, 17:  2.<p>
+Snedecor, G. W. (1956).  Statistical methods.  Fifth edition.  Ames, IA:  Iowa
+State University Press.<p>
+Snedecor, G. W.; Cochran, W. G. (1967).  Statistical methods.   Sixth edition.
+Ames, IA:  Iowa State University Press.<p>
+Tryon, P.  V.;  Donaldson,  J.  R. (1978).   STATLIB:   A  library  of Fortran
+subroutines for  statistical analysis  of experimental data.    (Unpublished -
+available from NIST Statistical Engineering Division/Boulder.)<p>
+Waldmeier, M. (1961).   The Sunspot activity in the years 1610-1960.   Zurich:
+Schulthess.<p>
+Walsh,  P. J. (1962).   Algorithm 127 - ORTHO.   Comm.  Assoc.  Comp. Mach. 5:
+511-513.<p>
+
+<hr>
+
+</body></html>
+
