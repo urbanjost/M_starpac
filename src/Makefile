@@ -22,9 +22,9 @@ PROG = ${PROGFILES:.f90=}
 
 CPROG = ${CPROGFILES:.c=}
 
-SRCS =  M_starpac.f90 
+SRCS =  M_starpac.f90 M_starpac_s.f90 M_starpac_d.f90 
 
-OBJS =  M_starpac.o 
+OBJS =  M_starpac.o M_starpac_s.o M_starpac_d.o 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 # platform-specific values you will probably change
 # 
@@ -127,4 +127,4 @@ man:
 .F90.o:
 	$(F90) $(F90FLAGS) -c $<
 
-#M_starpac_oop.o: M_starpac.o
+M_starpac.o: M_starpac_s.o M_starpac_d.o
