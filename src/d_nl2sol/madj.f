@@ -1,0 +1,29 @@
+*MADJ
+      SUBROUTINE MADJ(N, P, X, NF, J, UIPARM, URPARM, UFPARM)
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER
+     +   N,NF,P
+C
+C  ARRAY ARGUMENTS
+      DOUBLE PRECISION
+     +   J(N,P),URPARM(*),X(P)
+      INTEGER
+     +   UIPARM(*)
+C
+C  SUBROUTINE ARGUMENTS
+      EXTERNAL UFPARM
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC COS,SIN
+C
+      J(1,1) = 2.0D0*X(1) + X(2)
+      J(1,2) = 2.0D0*X(2) + X(1)
+      J(2,1) = COS(X(1))
+      J(2,2) = 0.0D0
+      J(3,1) = 0.0D0
+      J(3,2) = -SIN(X(2))
+      RETURN
+      END

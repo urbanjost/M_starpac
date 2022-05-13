@@ -1,0 +1,131 @@
+*BETAI
+      REAL FUNCTION BETAI (X, PIN, QIN)
+C APRIL 1977 VERSION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
+C BASED ON BOSTEN AND BATTISTE, REMARK ON ALGORITHM 179, COMM. ACM,
+C V 17, P 153, (1974).
+C
+C X   VALUE TO WHICH FUNCTION IS TO BE INTEGRATED. X MUST BE IN (0,1).
+C P   INPUT (1ST) PARAMETER (MUST BE GREATER THAN 0)
+C Q   INPUT (2ND) PARAMETER (MUST BE GREATER THAN 0)
+C BETAI  INCOMPLETE BETA FUNCTION RATIO, THE PROBABILITY THAT A RANDOM
+C        VARIABLE FROM A BETA DISTRIBUTION HAVING PARAMETERS P AND Q
+C        WILL BE LESS THAN OR EQUAL TO X.
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      REAL PIN,QIN,X
+C
+C  LOCAL SCALARS
+      REAL ALNEPS,ALNSML,C,EPS,FAC1,FAC2,FINSUM,P,P1,PS,Q,SML,TERM,XB,Y
+      INTEGER I,IB,N
+C
+C  EXTERNAL FUNCTIONS
+      REAL ALBETA,R1MACH
+      EXTERNAL ALBETA,R1MACH
+C
+C  EXTERNAL SUBROUTINES
+      EXTERNAL XERROR
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC ABS,AINT,EXP,FLOAT,LOG,MAX,MIN,REAL
+C
+      DATA             EPS, ALNEPS, SML, ALNSML / 4*0.0 /
+C
+      IF (EPS.NE.0.) GO TO 10
+      EPS = R1MACH(3)
+      ALNEPS = LOG(EPS)
+      SML = R1MACH(1)
+      ALNSML = LOG(SML)
+C
+ 10   IF (X.LT.0. .OR. X.GT.1.0) CALL XERROR (
+     1  'BETAI   X IS NOT IN THE RANGE (0,1)', 35, 1, 2)
+      IF (PIN.LE.0. .OR. QIN.LE.0.) CALL XERROR (
+     1  'BETAI   P AND/OR Q IS LE ZERO', 29, 2, 2)
+C
+      Y = X
+      P = PIN
+      Q = QIN
+      IF (Q.LE.P .AND. X.LT.0.8) GO TO 20
+      IF (X.LT.0.2) GO TO 20
+      Y = 1.0 - Y
+      P = QIN
+      Q = PIN
+C
+ 20   IF ((P+Q)*Y/(P+1.).LT.EPS) GO TO 80
+C
+C EVALUATE THE INFINITE SUM FIRST.
+C TERM WILL EQUAL Y**P/BETA(PS,P) * (1.-PS)I * Y**I / FAC(I)
+C
+      PS = Q - AINT(Q)
+      IF (PS.EQ.0.) PS = 1.0
+      XB = P*LOG(Y) -  ALBETA(PS, P) - LOG(P)
+      BETAI = 0.0
+      IF (XB.GE.ALNSML) THEN
+         BETAI = EXP(XB)
+         FAC2 = 1.0
+         IF (PS.NE.1.0E0) THEN
+            FAC1 = 1.0
+            N = MAX(ALNEPS/LOG(Y), 4.0E0)
+            DO 30 I=1,N
+               IF ((I-PS.EQ.0.0E0) .OR. (FAC1.EQ.0.0E0)) THEN
+                  FAC1 = 0.0E0
+               ELSE
+                  IF (LOG(ABS(FAC1)) + LOG(ABS(I-PS)) + LOG(Y) -
+     +                LOG(REAL(I)) .LT. ALNSML) THEN
+                     FAC1 = 0.0E0
+                  ELSE
+                     FAC1 = FAC1 * (I-PS)*Y/I
+                  END IF
+               END IF
+               FAC2 = FAC2 + FAC1*P/(P+I)
+ 30         CONTINUE
+         END IF
+         BETAI = BETAI*FAC2
+      END IF
+C
+C NOW EVALUATE THE FINITE SUM, MAYBE.
+C
+      IF (Q.LE.1.0) GO TO 70
+C
+      XB = P*LOG(Y) + Q*LOG(1.0-Y) - ALBETA(P,Q) - LOG(Q)
+      IB = MAX (XB/ALNSML, 0.0)
+      TERM = EXP (XB - FLOAT(IB)*ALNSML)
+      C = 1.0/(1.0-Y)
+      P1 = Q*C/(P+Q-1.)
+C
+      FINSUM = 0.0
+      N = Q
+      IF (Q.EQ.FLOAT(N)) N = N - 1
+      DO 50 I=1,N
+        IF (P1.LE.1.0 .AND. TERM/EPS.LE.FINSUM) GO TO 60
+        IF (Q-I+1.0E0 .EQ. 0.0E0) THEN
+          TERM = 0.0E0
+        ELSE
+          IF (LOG(ABS(Q-I+1.0E0)) + LOG(ABS(C)) + LOG(ABS(TERM)) -
+     +        LOG(ABS(P+Q-I)) .LT. ALNSML) THEN
+            TERM = 0.0E0
+          ELSE
+            TERM = (Q-I+1.0E0)*C*TERM/(P+Q-I)
+          END IF
+        END IF
+C
+        IF (TERM.GT.1.0) IB = IB - 1
+        IF (TERM.GT.1.0) TERM = TERM*SML
+C
+        IF (IB.EQ.0) FINSUM = FINSUM + TERM
+ 50   CONTINUE
+C
+ 60   BETAI = BETAI + FINSUM
+ 70   IF (Y.NE.X .OR. P.NE.PIN) BETAI = 1.0 - BETAI
+      BETAI = MAX (MIN (BETAI, 1.0), 0.0)
+      RETURN
+C
+ 80   BETAI = 0.0
+      XB = P*LOG(MAX(Y,SML)) - LOG(P) - ALBETA(P,Q)
+      IF (XB.GT.ALNSML .AND. Y.NE.0.) BETAI = EXP (XB)
+      IF (Y.NE.X .OR. P.NE.PIN) BETAI = 1.0 - BETAI
+      RETURN
+C
+      END

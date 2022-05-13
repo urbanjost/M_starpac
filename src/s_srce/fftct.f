@@ -1,0 +1,100 @@
+*FFTCT
+      SUBROUTINE FFTCT(X, N2, IX)
+C
+C     LATEST REVISION  -  03/15/90  (JRD)
+C
+C     COSINE TRANSFORM OF N=2*N2 SYMMETRIC DATA POINTS
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER
+     +   IX,N2
+C
+C  ARRAY ARGUMENTS
+      REAL
+     +   X(IX)
+C
+C  LOCAL SCALARS
+      REAL
+     +   A2,AA,AB,CD,CN,EX,PI,SAVE,SD,SN
+      INTEGER
+     +   I,ISN,J,K,M,M1,N1,NK
+C
+C  EXTERNAL SUBROUTINES
+      EXTERNAL FFT,GETPI,REALTR
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC SIN
+C
+C     VARIABLE DEFINITIONS (ALPHABETICALLY)
+C
+C     REAL AA, AB, A2
+C     REAL CD, CN
+C     REAL EX
+C     INTEGER I, ISN
+C     INTEGER IX
+C        THE DIMENSION OF X.
+C     INTEGER J
+C     INTEGER K
+C     INTEGER M, M1
+C     INTEGER NK, N1
+C     INTEGER N2
+C        THE HALF LENGTH OF THE SYMMETRIC DATA ARRAY.  N2 MUST BE EVEN.
+C     REAL PI
+C        THE VALUE OF PI.
+C     REAL SAVE, SD, SN
+C     REAL X(IX)
+C        THE N2+2 VECTOR WITH FIRST HALF OF SYMMETRIC DATA STORED IN
+C        THE FIRST N2+1 LOCATIONS.  LOCATION N2+2 USED ONLY FOR
+C        WORKSPACE.  THE COSINE TRANSFORM COEFFICIENTS ARE RETURNED
+C        IN THE FIRST N2+1 LOCATIONS OF X.
+C
+      CALL GETPI(PI)
+C
+      A2 = 0.0E0
+      N1 = N2 + 1
+      DO 10 J=2,N2,2
+         A2 = A2 + X(J)
+   10 CONTINUE
+      A2 = 2.0E0*A2
+      M = N2/2
+      M1 = M + 1
+      EX = X(2)
+      X(2) = 0.0E0
+      IF (N1.LT.4) GO TO 30
+      DO 20 I=4,N1,2
+         SAVE = EX - X(I)
+         EX = X(I)
+         X(I) = SAVE
+   20 CONTINUE
+   30 X(N2+2) = 0.0E0
+      ISN = -2
+      CALL REALTR(X, X(2), M, ISN)
+      CALL FFT(X, X(2), M, M, M, ISN)
+      SD = PI / (2*N2)
+      CD = 2.0E0*SIN(SD)**2
+      SD = SIN(SD+SD)
+      SN = 0.0E0
+      CN = 1.0E0
+      NK = N2 + 2
+      DO 40 J=2,M1
+         K = NK - J
+         AA = X(J) + X(K)
+         AB = (X(J)-X(K))*0.5E0
+         EX = CN - (CD*CN+SD*SN)
+         SN = (SD*CN-CD*SN) + SN
+         CN = 0.5E0/(EX*EX+SN*SN) + 0.5E0
+         SN = CN*SN
+         CN = CN*EX
+         EX = AB/SN
+         X(J) = (AA+EX)*0.5E0
+         X(K) = (AA-EX)*0.5E0
+   40 CONTINUE
+      EX = X(1)
+      X(1) = EX + A2
+      X(N2+1) = EX - A2
+      X(N2+2) = 0.0E0
+      RETURN
+      END

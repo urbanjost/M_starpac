@@ -1,0 +1,104 @@
+                               STARPAC 2.08
+              The Standards Time Series and Regression Package
+
+
+ STARPAC 2.08 is a library of portable Fortran subprograms for conducting
+ statistical analysis.  It was developed and is maintained by the Center for
+ Computing and Applied Mathematics of the National Institute of Standards and
+ Technology (formerly the National Bureau of Standards).  STARPAC contains
+ subprogram groups for performing time series analysis and nonlinear least
+ squares regression, as well as normal random number generation, line printer
+ plots, basic statistical analyses, and linear least squares.
+
+ Currently, the primary mode of distribution for STARPAC is magnetic tape.
+ The tape release package consists of the 11 files contained in this directory:
+
+        1  TOC.DOC      - tape characteristics, file structure and
+                          table of contents 
+                          (3318 bytes)
+
+        2  INSTALL.DOC  - the installation manual
+                          (59735 bytes)
+
+        3  S_SRCE.FOR   - single precision STARPAC 2.08 source code, excluding
+                          code from various public domain sources
+                          (2575385 bytes)
+
+        4  S_NL2SOL.FOR - single precision STARPAC 2.08 source code from NL2SOL
+                          (194141 bytes)
+
+        5  D_SRCE.FOR   - double precision STARPAC 2.08 source code, excluding
+                          code from various public domain sources
+                          (2628509 bytes)
+
+        6  D_NL2SOL.FOR - double precision STARPAC 2.08 source code from NL2SOL
+                          (195881 bytes)
+
+        7  MISC.FOR     - single and double precision subprograms from
+                          miscellaneous public domain sources, but excluding
+                          code from NL2SOL, LINPACK and BLAS and excluding
+                          subprograms supplying machine dependent constants
+                          (118434 bytes)
+
+        8  LPK_BLS.FOR  - single and double precision subprograms
+                          from LINPACK and BLAS
+                          (76661 bytes)
+
+        9  MDC.FOR      - single and double precision subprograms supplying
+                          machine dependent constants
+                          (47665 bytes)
+
+       10  TEST.OUT     - results of test subprograms
+                          (349444 bytes)
+
+       11  GUIDE.DOC    - STARPAC 2.08 user documentation, 
+                          in line printer format
+                          (847693 bytes)
+
+ File TOC.DOC is obviously not needed when the files are acquired via FTP.
+ File INSTALL.DOC contains a more detailed description of the STARPAC files and
+ of the installation process; installers may wish to read it before
+ transmitting the remaining files.
+
+ Before proceeding to acquire the STARPAC files, installers should note that
+ although STARPAC is supplied in both single and double precision versions, the
+ two versions cannot be used together.  This is because the names of most of
+ the subprograms are the same in the two versions.  As is documented in the
+ Installation Guide, most sites will want to install only one of the two
+ versions.  Transmission time can therefore be reduced if the source files for
+ only one version are transmitted.
+
+   *  For the single precision version, the source files
+          S_SRCE.FOR, S_NL2SOL.FOR, MISC.FOR, LPK_BLS.FOR and MDC.FOR 
+      should be used.
+
+   *  For the double precision version, the source files 
+          D_SRCE.FOR, D_NL2SOL.FOR, MISC.FOR, LPK_BLS.FOR and MDC.FOR 
+      should be used.  
+
+ Files INSTALL.DOC, GUIDE.DOC and TEST.OUT will be needed by all sites.
+
+ It is particularly important that the STARPAC developers be notified that you
+ have acquired STARPAC when the package is obtained via FTP.  Without such
+ notification, we will not know that your site should receive future notices
+ and updates.  Notification can be accomplished either by filling out and
+ returning the registration form at the end of the Installation Guide, or by
+ sending an e-mail message containing the recipient's name, address, phone
+ number and e-mail address to
+
+       Janet R. Donaldson
+
+          Internet:  jrogers@boulder.nist.gov
+   
+          Address:   National Institute of Standards and Technology
+                     Applied and Computational Mathematics Division
+                     Mail Code 719
+                     325 Broadway
+                     Boulder, Colorado  80303-3328
+
+          Phone:     303-497-5114 or FTS 320-5114
+   
+
+ We welcome your comments on STARPAC, the STARPAC release, and STARPAC
+ portability.
+

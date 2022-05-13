@@ -1,0 +1,2846 @@
+*DASUM
+      DOUBLE PRECISION FUNCTION DASUM(N,DX,INCX)
+C***BEGIN PROLOGUE  DASUM
+C***DATE WRITTEN   791001   (YYMMDD)
+C***REVISION DATE  820801   (YYMMDD)
+C***CATEGORY NO.  D1A3A
+C***KEYWORDS  ADD,BLAS,DOUBLE PRECISION,LINEAR ALGEBRA,MAGNITUDE,SUM,
+C             VECTOR
+C***AUTHOR  LAWSON, C. L., (JPL)
+C           HANSON, R. J., (SNLA)
+C           KINCAID, D. R., (U. OF TEXAS)
+C           KROGH, F. T., (JPL)
+C***PURPOSE  SUM OF MAGNITUDES OF D.P. VECTOR COMPONENTS
+C***DESCRIPTION
+C                B L A S  SUBPROGRAM
+C    DESCRIPTION OF PARAMETERS
+C     --INPUT--
+C        N  NUMBER OF ELEMENTS IN INPUT VECTOR(S)
+C       DX  DOUBLE PRECISION VECTOR WITH N ELEMENTS
+C     INCX  STORAGE SPACING BETWEEN ELEMENTS OF DX
+C     --OUTPUT--
+C    DASUM  DOUBLE PRECISION RESULT (ZERO IF N .LE. 0)
+C     RETURNS SUM OF MAGNITUDES OF DOUBLE PRECISION DX.
+C     DASUM = SUM FROM 0 TO N-1 OF DABS(DX(1+I*INCX))
+C***REFERENCES  LAWSON C.L., HANSON R.J., KINCAID D.R., KROGH F.T.,
+C                 *BASIC LINEAR ALGEBRA SUBPROGRAMS FOR FORTRAN USAGE*,
+C                 ALGORITHM NO. 539, TRANSACTIONS ON MATHEMATICAL
+C                 SOFTWARE, VOLUME 5, NUMBER 3, SEPTEMBER 1979, 308-323
+C***ROUTINES CALLED  (NONE)
+C***END PROLOGUE  DASUM
+
+C...SCALAR ARGUMENTS
+      INTEGER
+     +   INCX,N
+
+C...ARRAY ARGUMENTS
+      DOUBLE PRECISION
+     +   DX(*)
+
+C...LOCAL SCALARS
+      INTEGER
+     +   I,M,MP1,NS
+
+C...INTRINSIC FUNCTIONS
+      INTRINSIC
+     +   DABS,MOD
+
+
+C***FIRST EXECUTABLE STATEMENT  DASUM
+
+
+      DASUM = 0.D0
+      IF(N.LE.0)RETURN
+      IF(INCX.EQ.1)GOTO 20
+
+C        CODE FOR INCREMENTS NOT EQUAL TO 1.
+
+      NS = N*INCX
+          DO 10 I=1,NS,INCX
+          DASUM = DASUM + DABS(DX(I))
+   10     CONTINUE
+      RETURN
+
+C        CODE FOR INCREMENTS EQUAL TO 1.
+
+C        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 6.
+
+   20 M = MOD(N,6)
+      IF( M .EQ. 0 ) GO TO 40
+      DO 30 I = 1,M
+         DASUM = DASUM + DABS(DX(I))
+   30 CONTINUE
+      IF( N .LT. 6 ) RETURN
+   40 MP1 = M + 1
+      DO 50 I = MP1,N,6
+         DASUM = DASUM + DABS(DX(I)) + DABS(DX(I+1)) + DABS(DX(I+2))
+     1   + DABS(DX(I+3)) + DABS(DX(I+4)) + DABS(DX(I+5))
+   50 CONTINUE
+      RETURN
+      END
+*DAXPY
+      SUBROUTINE DAXPY(N,DA,DX,INCX,DY,INCY)
+C
+C     OVERWRITE DOUBLE PRECISION DY WITH DOUBLE PRECISION DA*DX + DY.
+C     FOR I = 0 TO N-1, REPLACE  DY(LY+I*INCY) WITH DA*DX(LX+I*INCX) +
+C       DY(LY+I*INCY), WHERE LX = 1 IF INCX .GE. 0, ELSE LX = (-INCX)*N,
+C       AND LY IS DEFINED IN A SIMILAR WAY USING INCY.
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      DOUBLE PRECISION DA
+      INTEGER INCX,INCY,N
+C
+C  ARRAY ARGUMENTS
+      DOUBLE PRECISION DX(*),DY(*)
+C
+C  LOCAL SCALARS
+      INTEGER I,IX,IY,M,MP1,NS
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+C
+      IF(N.LE.0.OR.DA.EQ.0.D0) RETURN
+      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
+    5 CONTINUE
+C
+C        CODE FOR NONEQUAL OR NONPOSITIVE INCREMENTS.
+C
+      IX = 1
+      IY = 1
+      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
+      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
+      DO 10 I = 1,N
+        DY(IY) = DY(IY) + DA*DX(IX)
+        IX = IX + INCX
+        IY = IY + INCY
+   10 CONTINUE
+      RETURN
+C
+C        CODE FOR BOTH INCREMENTS EQUAL TO 1
+C
+C
+C        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 4.
+C
+   20 M = MOD(N,4)
+      IF( M .EQ. 0 ) GO TO 40
+      DO 30 I = 1,M
+        DY(I) = DY(I) + DA*DX(I)
+   30 CONTINUE
+      IF( N .LT. 4 ) RETURN
+   40 MP1 = M + 1
+      DO 50 I = MP1,N,4
+        DY(I) = DY(I) + DA*DX(I)
+        DY(I + 1) = DY(I + 1) + DA*DX(I + 1)
+        DY(I + 2) = DY(I + 2) + DA*DX(I + 2)
+        DY(I + 3) = DY(I + 3) + DA*DX(I + 3)
+   50 CONTINUE
+      RETURN
+C
+C        CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
+C
+   60 CONTINUE
+      NS = N*INCX
+          DO 70 I=1,NS,INCX
+          DY(I) = DA*DX(I) + DY(I)
+   70     CONTINUE
+      RETURN
+      END
+*DCOPY
+      SUBROUTINE DCOPY(N,DX,INCX,DY,INCY)
+C
+C     COPY DOUBLE PRECISION DX TO DOUBLE PRECISION DY.
+C     FOR I = 0 TO N-1, COPY DX(LX+I*INCX) TO DY(LY+I*INCY),
+C     WHERE LX = 1 IF INCX .GE. 0, ELSE LX = (-INCX)*N, AND LY IS
+C     DEFINED IN A SIMILAR WAY USING INCY.
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER INCX,INCY,N
+C
+C  ARRAY ARGUMENTS
+      DOUBLE PRECISION DX(*),DY(*)
+C
+C  LOCAL SCALARS
+      INTEGER I,IX,IY,M,MP1,NS
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+C
+      IF(N.LE.0)RETURN
+      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
+    5 CONTINUE
+C
+C        CODE FOR UNEQUAL OR NONPOSITIVE INCREMENTS.
+C
+      IX = 1
+      IY = 1
+      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
+      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
+      DO 10 I = 1,N
+        DY(IY) = DX(IX)
+        IX = IX + INCX
+        IY = IY + INCY
+   10 CONTINUE
+      RETURN
+C
+C        CODE FOR BOTH INCREMENTS EQUAL TO 1
+C
+C
+C        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 7.
+C
+   20 M = MOD(N,7)
+      IF( M .EQ. 0 ) GO TO 40
+      DO 30 I = 1,M
+        DY(I) = DX(I)
+   30 CONTINUE
+      IF( N .LT. 7 ) RETURN
+   40 MP1 = M + 1
+      DO 50 I = MP1,N,7
+        DY(I) = DX(I)
+        DY(I + 1) = DX(I + 1)
+        DY(I + 2) = DX(I + 2)
+        DY(I + 3) = DX(I + 3)
+        DY(I + 4) = DX(I + 4)
+        DY(I + 5) = DX(I + 5)
+        DY(I + 6) = DX(I + 6)
+   50 CONTINUE
+      RETURN
+C
+C        CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
+C
+   60 CONTINUE
+      NS=N*INCX
+          DO 70 I=1,NS,INCX
+          DY(I) = DX(I)
+   70     CONTINUE
+      RETURN
+      END
+*DDOT
+      DOUBLE PRECISION FUNCTION DDOT(N,DX,INCX,DY,INCY)
+C
+C     LATEST REVISION  -  OCTOBER 3, 1983  (JRD)
+C
+C     RETURNS THE DOT PRODUCT OF DOUBLE PRECISION DX AND DY.
+C     DDOT = SUM FOR I = 0 TO N-1 OF  DX(LX+I*INCX) * DY(LY+I*INCY)
+C     WHERE LX = 1 IF INCX .GE. 0, ELSE LX = (-INCX)*N, AND LY IS
+C     DEFINED IN A SIMILAR WAY USING INCY.
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER INCX,INCY,N
+C
+C  ARRAY ARGUMENTS
+      DOUBLE PRECISION DX(*),DY(*)
+C
+C  LOCAL SCALARS
+      INTEGER I,IX,IY,M,MP1,NS
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+C
+      DDOT = 0.D0
+      IF(N.LE.0)RETURN
+      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
+    5 CONTINUE
+C
+C         CODE FOR UNEQUAL OR NONPOSITIVE INCREMENTS.
+C
+      IX = 1
+      IY = 1
+      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
+      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
+      DO 10 I = 1,N
+         DDOT = DDOT + DX(IX)*DY(IY)
+        IX = IX + INCX
+        IY = IY + INCY
+   10 CONTINUE
+      RETURN
+C
+C        CODE FOR BOTH INCREMENTS EQUAL TO 1.
+C
+C
+C        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 5.
+C
+   20 M = MOD(N,5)
+      IF( M .EQ. 0 ) GO TO 40
+      DO 30 I = 1,M
+         DDOT = DDOT + DX(I)*DY(I)
+   30 CONTINUE
+      IF( N .LT. 5 ) RETURN
+   40 MP1 = M + 1
+      DO 50 I = MP1,N,5
+         DDOT = DDOT + DX(I)*DY(I) + DX(I+1)*DY(I+1) +
+     *    DX(I+2)*DY(I+2) + DX(I+3)*DY(I+3) + DX(I+4)*DY(I+4)
+   50 CONTINUE
+      RETURN
+C
+C         CODE FOR POSITIVE EQUAL INCREMENTS .NE.1.
+C
+   60 CONTINUE
+      NS = N*INCX
+          DO 70 I=1,NS,INCX
+          DDOT = DDOT + DX(I)*DY(I)
+   70     CONTINUE
+      RETURN
+      END
+*DNRM2
+      DOUBLE PRECISION FUNCTION DNRM2 ( N, DX, INCX)
+C
+C     EUCLIDEAN NORM OF THE N-VECTOR STORED IN DX() WITH STORAGE
+C     INCREMENT INCX .
+C     IF    N .LE. 0 RETURN WITH RESULT = 0.
+C     IF N .GE. 1 THEN INCX MUST BE .GE. 1
+C
+C           C.L.LAWSON, 1978 JAN 08
+C
+C     FOUR PHASE METHOD     USING TWO BUILT-IN CONSTANTS THAT ARE
+C     HOPEFULLY APPLICABLE TO ALL MACHINES.
+C         CUTLO = MAXIMUM OF  DSQRT(U/EPS)  OVER ALL KNOWN MACHINES.
+C         CUTHI = MINIMUM OF  DSQRT(V)      OVER ALL KNOWN MACHINES.
+C     WHERE
+C         EPS = SMALLEST NO. SUCH THAT EPS + 1. .GT. 1.
+C         U   = SMALLEST POSITIVE NO.   (UNDERFLOW LIMIT)
+C         V   = LARGEST  NO.            (OVERFLOW  LIMIT)
+C
+C     BRIEF OUTLINE OF ALGORITHM..
+C
+C     PHASE 1    SCANS ZERO COMPONENTS.
+C     MOVE TO PHASE 2 WHEN A COMPONENT IS NONZERO AND .LE. CUTLO
+C     MOVE TO PHASE 3 WHEN A COMPONENT IS .GT. CUTLO
+C     MOVE TO PHASE 4 WHEN A COMPONENT IS .GE. CUTHI/M
+C     WHERE M = N FOR X() REAL AND M = 2*N FOR COMPLEX.
+C
+C     VALUES FOR CUTLO AND CUTHI..
+C     FROM THE ENVIRONMENTAL PARAMETERS LISTED IN THE IMSL CONVERTER
+C     DOCUMENT THE LIMITING VALUES ARE AS FOLLOWS..
+C     CUTLO, S.P.   U/EPS = 2**(-102) FOR  HONEYWELL.  CLOSE SECONDS ARE
+C                   UNIVAC AND DEC AT 2**(-103)
+C                   THUS CUTLO = 2**(-51) = 4.44089E-16
+C     CUTHI, S.P.   V = 2**127 FOR UNIVAC, HONEYWELL, AND DEC.
+C                   THUS CUTHI = 2**(63.5) = 1.30438E19
+C     CUTLO, D.P.   U/EPS = 2**(-67) FOR HONEYWELL AND DEC.
+C                   THUS CUTLO = 2**(-33.5) = 8.23181D-11
+C     CUTHI, D.P.   SAME AS S.P.  CUTHI = 1.30438D19
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER INCX,N
+C
+C  ARRAY ARGUMENTS
+      DOUBLE PRECISION DX(*)
+C
+C  LOCAL SCALARS
+      DOUBLE PRECISION CUTHI,CUTLO,HITEST,ONE,SUM,XMAX,ZERO
+      INTEGER I,J,NEXT,NN
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC DABS,DSQRT,FLOAT
+C
+C     DATA CUTLO, CUTHI / 8.232D-11,  1.304D19 /
+C     DATA CUTLO, CUTHI / 4.441E-16,  1.304E19 /
+      DATA CUTLO, CUTHI / 8.232D-11,  1.304D19 /
+      DATA   ZERO, ONE /0.0D0, 1.0D0/
+C
+      XMAX = ZERO
+      IF(N .GT. 0) GO TO 10
+         DNRM2  = ZERO
+         GO TO 300
+C
+   10 ASSIGN 30 TO NEXT
+      SUM = ZERO
+      NN = N * INCX
+C                                                 BEGIN MAIN LOOP
+      I = 1
+   20    GO TO NEXT,(30, 50, 70, 110)
+   30 IF( DABS(DX(I)) .GT. CUTLO) GO TO 85
+      ASSIGN 50 TO NEXT
+      XMAX = ZERO
+C
+C                        PHASE 1.  SUM IS ZERO
+C
+   50 IF( DX(I) .EQ. ZERO) GO TO 200
+      IF( DABS(DX(I)) .GT. CUTLO) GO TO 85
+C
+C                                PREPARE FOR PHASE 2.
+      ASSIGN 70 TO NEXT
+      GO TO 105
+C
+C                                PREPARE FOR PHASE 4.
+C
+  100 I = J
+      ASSIGN 110 TO NEXT
+      SUM = (SUM / DX(I)) / DX(I)
+  105 XMAX = DABS(DX(I))
+      GO TO 115
+C
+C                   PHASE 2.  SUM IS SMALL.
+C                             SCALE TO AVOID DESTRUCTIVE UNDERFLOW.
+C
+   70 IF( DABS(DX(I)) .GT. CUTLO ) GO TO 75
+C
+C                     COMMON CODE FOR PHASES 2 AND 4.
+C                     IN PHASE 4 SUM IS LARGE.  SCALE TO AVOID OVERFLOW.
+C
+  110 IF( DABS(DX(I)) .LE. XMAX ) GO TO 115
+         SUM = ONE + SUM * (XMAX / DX(I))**2
+         XMAX = DABS(DX(I))
+         GO TO 200
+C
+  115 SUM = SUM + (DX(I)/XMAX)**2
+      GO TO 200
+C
+C
+C                  PREPARE FOR PHASE 3.
+C
+   75 SUM = (SUM * XMAX) * XMAX
+C
+C
+C     FOR REAL OR D.P. SET HITEST = CUTHI/N
+C     FOR COMPLEX      SET HITEST = CUTHI/(2*N)
+C
+   85 HITEST = CUTHI/FLOAT( N )
+C
+C                   PHASE 3.  SUM IS MID-RANGE.  NO SCALING.
+C
+      DO 95 J =I,NN,INCX
+      IF(DABS(DX(J)) .GE. HITEST) GO TO 100
+   95    SUM = SUM + DX(J)**2
+      DNRM2 = DSQRT( SUM )
+      GO TO 300
+C
+  200 CONTINUE
+      I = I + INCX
+      IF ( I .LE. NN ) GO TO 20
+C
+C              END OF MAIN LOOP.
+C
+C              COMPUTE SQUARE ROOT AND ADJUST FOR SCALING.
+C
+      DNRM2 = XMAX * DSQRT(SUM)
+  300 CONTINUE
+      RETURN
+      END
+*DSCAL
+      SUBROUTINE DSCAL(N,DA,DX,INCX)
+C
+C     REPLACE DOUBLE PRECISION DX BY DOUBLE PRECISION DA*DX.
+C     FOR I = 0 TO N-1, REPLACE DX(1+I*INCX) WITH  DA * DX(1+I*INCX)
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      DOUBLE PRECISION DA
+      INTEGER INCX,N
+C
+C  ARRAY ARGUMENTS
+      DOUBLE PRECISION DX(*)
+C
+C  LOCAL SCALARS
+      INTEGER I,M,MP1,NS
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+C
+      IF(N.LE.0)RETURN
+      IF(INCX.EQ.1)GOTO 20
+C
+C        CODE FOR INCREMENTS NOT EQUAL TO 1.
+C
+      NS = N*INCX
+          DO 10 I = 1,NS,INCX
+          DX(I) = DA*DX(I)
+   10     CONTINUE
+      RETURN
+C
+C        CODE FOR INCREMENTS EQUAL TO 1.
+C
+C
+C        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 5.
+C
+   20 M = MOD(N,5)
+      IF( M .EQ. 0 ) GO TO 40
+      DO 30 I = 1,M
+        DX(I) = DA*DX(I)
+   30 CONTINUE
+      IF( N .LT. 5 ) RETURN
+   40 MP1 = M + 1
+      DO 50 I = MP1,N,5
+        DX(I) = DA*DX(I)
+        DX(I + 1) = DA*DX(I + 1)
+        DX(I + 2) = DA*DX(I + 2)
+        DX(I + 3) = DA*DX(I + 3)
+        DX(I + 4) = DA*DX(I + 4)
+   50 CONTINUE
+      RETURN
+      END
+*DSIDI
+      SUBROUTINE DSIDI(A,LDA,N,KPVT,DET,INERT,WORK,JOB)
+C
+C     DSIDI COMPUTES THE DETERMINANT, INERTIA AND INVERSE
+C     OF A DOUBLE PRECISION SYMMETRIC MATRIX USING THE FACTORS FROM
+C     DSIFA.
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER JOB,LDA,N
+C
+C  ARRAY ARGUMENTS
+      DOUBLE PRECISION A(LDA,*),DET(2),WORK(*)
+      INTEGER INERT(3),KPVT(*)
+C
+C  LOCAL SCALARS
+      DOUBLE PRECISION AK,AKKP1,AKP1,D,T,TEMP,TEN
+      INTEGER J,JB,K,KM1,KS,KSTEP
+      LOGICAL NODET,NOERT,NOINV
+C
+C  EXTERNAL FUNCTIONS
+      DOUBLE PRECISION DDOT
+      EXTERNAL DDOT
+C
+C  EXTERNAL SUBROUTINES
+      EXTERNAL DAXPY,DCOPY,DSWAP
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC DABS,IABS,MOD
+C
+C
+C     ON ENTRY
+C
+C        A       DOUBLE PRECISION(LDA,N)
+C                THE OUTPUT FROM DSIFA.
+C
+C        LDA     INTEGER
+C                THE LEADING DIMENSION OF THE ARRAY A.
+C
+C        N       INTEGER
+C                THE ORDER OF THE MATRIX A.
+C
+C        KPVT    INTEGER(N)
+C                THE PIVOT VECTOR FROM DSIFA.
+C
+C        WORK    DOUBLE PRECISION(N)
+C                WORK VECTOR.  CONTENTS DESTROYED.
+C
+C        JOB     INTEGER
+C                JOB HAS THE DECIMAL EXPANSION  ABC  WHERE
+C                   IF  C .NE. 0, THE INVERSE IS COMPUTED,
+C                   IF  B .NE. 0, THE DETERMINANT IS COMPUTED,
+C                   IF  A .NE. 0, THE INERTIA IS COMPUTED.
+C
+C                FOR EXAMPLE, JOB = 111  GIVES ALL THREE.
+C
+C     ON RETURN
+C
+C        VARIABLES NOT REQUESTED BY JOB ARE NOT USED.
+C
+C        A      CONTAINS THE UPPER TRIANGLE OF THE INVERSE OF
+C               THE ORIGINAL MATRIX.  THE STRICT LOWER TRIANGLE
+C               IS NEVER REFERENCED.
+C
+C        DET    DOUBLE PRECISION(2)
+C               DETERMINANT OF ORIGINAL MATRIX.
+C               DETERMINANT = DET(1) * 10.0**DET(2)
+C               WITH 1.0 .LE. DABS(DET(1)) .LT. 10.0
+C               OR DET(1) = 0.0.
+C
+C        INERT  INTEGER(3)
+C               THE INERTIA OF THE ORIGINAL MATRIX.
+C               INERT(1)  =  NUMBER OF POSITIVE EIGENVALUES.
+C               INERT(2)  =  NUMBER OF NEGATIVE EIGENVALUES.
+C               INERT(3)  =  NUMBER OF ZERO EIGENVALUES.
+C
+C     ERROR CONDITION
+C
+C        A DIVISION BY ZERO MAY OCCUR IF THE INVERSE IS REQUESTED
+C        AND  DSICO  HAS SET RCOND .EQ. 0.0
+C        OR  DSIFA  HAS SET  INFO .NE. 0 .
+C
+C     LINPACK. THIS VERSION DATED 08/14/78 .
+C     JAMES BUNCH, UNIV. CALIF. SAN DIEGO, ARGONNE NAT. LAB
+C
+C     SUBROUTINES AND FUNCTIONS
+C
+C     BLAS DAXPY,DCOPY,DDOT,DSWAP
+C     FORTRAN DABS,IABS,MOD
+C
+C
+      TEN = 10.0D0
+C
+      NOINV = MOD(JOB,10) .EQ. 0
+      NODET = MOD(JOB,100)/10 .EQ. 0
+      NOERT = MOD(JOB,1000)/100 .EQ. 0
+C
+      IF (NODET .AND. NOERT) GO TO 140
+         IF (NOERT) GO TO 10
+            INERT(1) = 0
+            INERT(2) = 0
+            INERT(3) = 0
+   10    CONTINUE
+         IF (NODET) GO TO 20
+            DET(1) = 1.0D0
+            DET(2) = 0.0D0
+   20    CONTINUE
+         T = 0.0D0
+         DO 130 K = 1, N
+            D = A(K,K)
+C
+C           CHECK IF 1 BY 1
+C
+            IF (KPVT(K) .GT. 0) GO TO 50
+C
+C              2 BY 2 BLOCK
+C              USE DET (D  S)  =  (D/T * C - T) * T  ,  T = DABS(S)
+C                      (S  C)
+C              TO AVOID UNDERFLOW/OVERFLOW TROUBLES.
+C              TAKE TWO PASSES THROUGH SCALING.  USE  T  FOR FLAG.
+C
+               IF (T .NE. 0.0D0) GO TO 30
+                  T = DABS(A(K,K+1))
+                  D = (D/T)*A(K+1,K+1) - T
+               GO TO 40
+   30          CONTINUE
+                  D = T
+                  T = 0.0D0
+   40          CONTINUE
+   50       CONTINUE
+C
+            IF (NOERT) GO TO 60
+               IF (D .GT. 0.0D0) INERT(1) = INERT(1) + 1
+               IF (D .LT. 0.0D0) INERT(2) = INERT(2) + 1
+               IF (D .EQ. 0.0D0) INERT(3) = INERT(3) + 1
+   60       CONTINUE
+C
+            IF (NODET) GO TO 120
+               DET(1) = D*DET(1)
+               IF (DET(1) .EQ. 0.0D0) GO TO 110
+   70             IF (DABS(DET(1)) .GE. 1.0D0) GO TO 80
+                     DET(1) = TEN*DET(1)
+                     DET(2) = DET(2) - 1.0D0
+                  GO TO 70
+   80             CONTINUE
+   90             IF (DABS(DET(1)) .LT. TEN) GO TO 100
+                     DET(1) = DET(1)/TEN
+                     DET(2) = DET(2) + 1.0D0
+                  GO TO 90
+  100             CONTINUE
+  110          CONTINUE
+  120       CONTINUE
+  130    CONTINUE
+  140 CONTINUE
+C
+C     COMPUTE INVERSE(A)
+C
+      IF (NOINV) GO TO 270
+         K = 1
+  150    IF (K .GT. N) GO TO 260
+            KM1 = K - 1
+            IF (KPVT(K) .LT. 0) GO TO 180
+C
+C              1 BY 1
+C
+               A(K,K) = 1.0D0/A(K,K)
+               IF (KM1 .LT. 1) GO TO 170
+                  CALL DCOPY(KM1,A(1,K),1,WORK,1)
+                  DO 160 J = 1, KM1
+                     A(J,K) = DDOT(J,A(1,J),1,WORK,1)
+                     CALL DAXPY(J-1,WORK(J),A(1,J),1,A(1,K),1)
+  160             CONTINUE
+                  A(K,K) = A(K,K) + DDOT(KM1,WORK,1,A(1,K),1)
+  170          CONTINUE
+               KSTEP = 1
+            GO TO 220
+  180       CONTINUE
+C
+C              2 BY 2
+C
+               T = DABS(A(K,K+1))
+               AK = A(K,K)/T
+               AKP1 = A(K+1,K+1)/T
+               AKKP1 = A(K,K+1)/T
+               D = T*(AK*AKP1 - 1.0D0)
+               A(K,K) = AKP1/D
+               A(K+1,K+1) = AK/D
+               A(K,K+1) = -AKKP1/D
+               IF (KM1 .LT. 1) GO TO 210
+                  CALL DCOPY(KM1,A(1,K+1),1,WORK,1)
+                  DO 190 J = 1, KM1
+                     A(J,K+1) = DDOT(J,A(1,J),1,WORK,1)
+                     CALL DAXPY(J-1,WORK(J),A(1,J),1,A(1,K+1),1)
+  190             CONTINUE
+                  A(K+1,K+1) = A(K+1,K+1) + DDOT(KM1,WORK,1,A(1,K+1),1)
+                  A(K,K+1) = A(K,K+1) + DDOT(KM1,A(1,K),1,A(1,K+1),1)
+                  CALL DCOPY(KM1,A(1,K),1,WORK,1)
+                  DO 200 J = 1, KM1
+                     A(J,K) = DDOT(J,A(1,J),1,WORK,1)
+                     CALL DAXPY(J-1,WORK(J),A(1,J),1,A(1,K),1)
+  200             CONTINUE
+                  A(K,K) = A(K,K) + DDOT(KM1,WORK,1,A(1,K),1)
+  210          CONTINUE
+               KSTEP = 2
+  220       CONTINUE
+C
+C           SWAP
+C
+            KS = IABS(KPVT(K))
+            IF (KS .EQ. K) GO TO 250
+               CALL DSWAP(KS,A(1,KS),1,A(1,K),1)
+               DO 230 JB = KS, K
+                  J = K + KS - JB
+                  TEMP = A(J,K)
+                  A(J,K) = A(KS,J)
+                  A(KS,J) = TEMP
+  230          CONTINUE
+               IF (KSTEP .EQ. 1) GO TO 240
+                  TEMP = A(KS,K+1)
+                  A(KS,K+1) = A(K,K+1)
+                  A(K,K+1) = TEMP
+  240          CONTINUE
+  250       CONTINUE
+            K = K + KSTEP
+         GO TO 150
+  260    CONTINUE
+  270 CONTINUE
+      RETURN
+      END
+*DSIFA
+      SUBROUTINE DSIFA(A,LDA,N,KPVT,INFO)
+C
+C     DSIFA FACTORS A DOUBLE PRECISION SYMMETRIC MATRIX BY ELIMINATION
+C     WITH SYMMETRIC PIVOTING.
+C
+C     TO SOLVE  A*X = B , FOLLOW DSIFA BY DSISL.
+C     TO COMPUTE  INVERSE(A)*C , FOLLOW DSIFA BY DSISL.
+C     TO COMPUTE  DETERMINANT(A) , FOLLOW DSIFA BY DSIDI.
+C     TO COMPUTE  INERTIA(A) , FOLLOW DSIFA BY DSIDI.
+C     TO COMPUTE  INVERSE(A) , FOLLOW DSIFA BY DSIDI.
+C
+C     ON ENTRY
+C
+C        A       DOUBLE PRECISION(LDA,N)
+C                THE SYMMETRIC MATRIX TO BE FACTORED.
+C                ONLY THE DIAGONAL AND UPPER TRIANGLE ARE USED.
+C
+C        LDA     INTEGER
+C                THE LEADING DIMENSION OF THE ARRAY  A .
+C
+C        N       INTEGER
+C                THE ORDER OF THE MATRIX  A .
+C
+C     ON RETURN
+C
+C        A       A BLOCK DIAGONAL MATRIX AND THE MULTIPLIERS WHICH
+C                WERE USED TO OBTAIN IT.
+C                THE FACTORIZATION CAN BE WRITTEN  A = U*D*TRANS(U)
+C                WHERE  U  IS A PRODUCT OF PERMUTATION AND UNIT
+C                UPPER TRIANGULAR MATRICES , TRANS(U) IS THE
+C                TRANSPOSE OF  U , AND  D  IS BLOCK DIAGONAL
+C                WITH 1 BY 1 AND 2 BY 2 BLOCKS.
+C
+C        KPVT    INTEGER(N)
+C                AN INTEGER VECTOR OF PIVOT INDICES.
+C
+C        INFO    INTEGER
+C                = 0  NORMAL VALUE.
+C                = K  IF THE K-TH PIVOT BLOCK IS SINGULAR. THIS IS
+C                     NOT AN ERROR CONDITION FOR THIS SUBROUTINE,
+C                     BUT IT DOES INDICATE THAT DSISL OR DSIDI MAY
+C                     DIVIDE BY ZERO IF CALLED.
+C
+C     LINPACK. THIS VERSION DATED 08/14/78 .
+C     JAMES BUNCH, UNIV. CALIF. SAN DIEGO, ARGONNE NAT. LAB.
+C
+C     SUBROUTINES AND FUNCTIONS
+C
+C     BLAS DAXPY,DSWAP,IDAMAX
+C     FORTRAN DABS,DMAX1,DSQRT
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER INFO,LDA,N
+C
+C  ARRAY ARGUMENTS
+      DOUBLE PRECISION A(LDA,*)
+      INTEGER KPVT(*)
+C
+C  LOCAL SCALARS
+      DOUBLE PRECISION ABSAKK,AK,AKM1,ALPHA,BK,BKM1,COLMAX,DENOM,MULK,
+     +   MULKM1,ROWMAX,T
+      INTEGER IMAX,IMAXP1,J,JJ,JMAX,K,KM1,KM2,KSTEP
+      LOGICAL SWAP
+C
+C  EXTERNAL FUNCTIONS
+      INTEGER IDAMAX
+      EXTERNAL IDAMAX
+C
+C  EXTERNAL SUBROUTINES
+      EXTERNAL DAXPY,DSWAP
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC DABS,DMAX1,DSQRT
+C
+C
+C     INITIALIZE
+C
+C     ALPHA IS USED IN CHOOSING PIVOT BLOCK SIZE.
+      ALPHA = (1.0D0 + DSQRT(17.0D0))/8.0D0
+C
+      INFO = 0
+C
+C     MAIN LOOP ON K, WHICH GOES FROM N TO 1.
+C
+      K = N
+   10 CONTINUE
+C
+C        LEAVE THE LOOP IF K=0 OR K=1.
+C
+C     ...EXIT
+         IF (K .EQ. 0) GO TO 200
+         IF (K .GT. 1) GO TO 20
+            KPVT(1) = 1
+            IF (A(1,1) .EQ. 0.0D0) INFO = 1
+C     ......EXIT
+            GO TO 200
+   20    CONTINUE
+C
+C        THIS SECTION OF CODE DETERMINES THE KIND OF
+C        ELIMINATION TO BE PERFORMED.  WHEN IT IS COMPLETED,
+C        KSTEP WILL BE SET TO THE SIZE OF THE PIVOT BLOCK, AND
+C        SWAP WILL BE SET TO .TRUE. IF AN INTERCHANGE IS
+C        REQUIRED.
+C
+         KM1 = K - 1
+         ABSAKK = DABS(A(K,K))
+C
+C        DETERMINE THE LARGEST OFF-DIAGONAL ELEMENT IN
+C        COLUMN K.
+C
+         IMAX = IDAMAX(K-1,A(1,K),1)
+         COLMAX = DABS(A(IMAX,K))
+         IF (ABSAKK .LT. ALPHA*COLMAX) GO TO 30
+            KSTEP = 1
+            SWAP = .FALSE.
+         GO TO 90
+   30    CONTINUE
+C
+C           DETERMINE THE LARGEST OFF-DIAGONAL ELEMENT IN
+C           ROW IMAX.
+C
+            ROWMAX = 0.0D0
+            IMAXP1 = IMAX + 1
+            DO 40 J = IMAXP1, K
+               ROWMAX = DMAX1(ROWMAX,DABS(A(IMAX,J)))
+   40       CONTINUE
+            IF (IMAX .EQ. 1) GO TO 50
+               JMAX = IDAMAX(IMAX-1,A(1,IMAX),1)
+               ROWMAX = DMAX1(ROWMAX,DABS(A(JMAX,IMAX)))
+   50       CONTINUE
+            IF (DABS(A(IMAX,IMAX)) .LT. ALPHA*ROWMAX) GO TO 60
+               KSTEP = 1
+               SWAP = .TRUE.
+            GO TO 80
+   60       CONTINUE
+            IF (ABSAKK .LT. ALPHA*COLMAX*(COLMAX/ROWMAX)) GO TO 70
+               KSTEP = 1
+               SWAP = .FALSE.
+            GO TO 80
+   70       CONTINUE
+               KSTEP = 2
+               SWAP = IMAX .NE. KM1
+   80       CONTINUE
+   90    CONTINUE
+         IF (DMAX1(ABSAKK,COLMAX) .NE. 0.0D0) GO TO 100
+C
+C           COLUMN K IS ZERO.  SET INFO AND ITERATE THE LOOP.
+C
+            KPVT(K) = K
+            INFO = K
+         GO TO 190
+  100    CONTINUE
+         IF (KSTEP .EQ. 2) GO TO 140
+C
+C           1 X 1 PIVOT BLOCK.
+C
+            IF (.NOT.SWAP) GO TO 120
+C
+C              PERFORM AN INTERCHANGE.
+C
+               CALL DSWAP(IMAX,A(1,IMAX),1,A(1,K),1)
+               DO 110 JJ = IMAX, K
+                  J = K + IMAX - JJ
+                  T = A(J,K)
+                  A(J,K) = A(IMAX,J)
+                  A(IMAX,J) = T
+  110          CONTINUE
+  120       CONTINUE
+C
+C           PERFORM THE ELIMINATION.
+C
+            DO 130 JJ = 1, KM1
+               J = K - JJ
+               MULK = -A(J,K)/A(K,K)
+               T = MULK
+               CALL DAXPY(J,T,A(1,K),1,A(1,J),1)
+               A(J,K) = MULK
+  130       CONTINUE
+C
+C           SET THE PIVOT ARRAY.
+C
+            KPVT(K) = K
+            IF (SWAP) KPVT(K) = IMAX
+         GO TO 190
+  140    CONTINUE
+C
+C           2 X 2 PIVOT BLOCK.
+C
+            IF (.NOT.SWAP) GO TO 160
+C
+C              PERFORM AN INTERCHANGE.
+C
+               CALL DSWAP(IMAX,A(1,IMAX),1,A(1,K-1),1)
+               DO 150 JJ = IMAX, KM1
+                  J = KM1 + IMAX - JJ
+                  T = A(J,K-1)
+                  A(J,K-1) = A(IMAX,J)
+                  A(IMAX,J) = T
+  150          CONTINUE
+               T = A(K-1,K)
+               A(K-1,K) = A(IMAX,K)
+               A(IMAX,K) = T
+  160       CONTINUE
+C
+C           PERFORM THE ELIMINATION.
+C
+            KM2 = K - 2
+            IF (KM2 .EQ. 0) GO TO 180
+               AK = A(K,K)/A(K-1,K)
+               AKM1 = A(K-1,K-1)/A(K-1,K)
+               DENOM = 1.0D0 - AK*AKM1
+               DO 170 JJ = 1, KM2
+                  J = KM1 - JJ
+                  BK = A(J,K)/A(K-1,K)
+                  BKM1 = A(J,K-1)/A(K-1,K)
+                  MULK = (AKM1*BK - BKM1)/DENOM
+                  MULKM1 = (AK*BKM1 - BK)/DENOM
+                  T = MULK
+                  CALL DAXPY(J,T,A(1,K),1,A(1,J),1)
+                  T = MULKM1
+                  CALL DAXPY(J,T,A(1,K-1),1,A(1,J),1)
+                  A(J,K) = MULK
+                  A(J,K-1) = MULKM1
+  170          CONTINUE
+  180       CONTINUE
+C
+C           SET THE PIVOT ARRAY.
+C
+            KPVT(K) = 1 - K
+            IF (SWAP) KPVT(K) = -IMAX
+            KPVT(K-1) = KPVT(K)
+  190    CONTINUE
+         K = K - KSTEP
+      GO TO 10
+  200 CONTINUE
+      RETURN
+      END
+*DSWAP
+      SUBROUTINE DSWAP(N,DX,INCX,DY,INCY)
+C
+C     INTERCHANGE DOUBLE PRECISION DX AND DOUBLE PRECISION DY.
+C     FOR I = 0 TO N-1, INTERCHANGE  DX(LX+I*INCX) AND DY(LY+I*INCY),
+C     WHERE LX = 1 IF INCX .GE. 0, ELSE LX = (-INCX)*N, AND LY IS
+C     DEFINED IN A SIMILAR WAY USING INCY.
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER INCX,INCY,N
+C
+C  ARRAY ARGUMENTS
+      DOUBLE PRECISION DX(*),DY(*)
+C
+C  LOCAL SCALARS
+      DOUBLE PRECISION DTEMP1,DTEMP2,DTEMP3
+      INTEGER I,IX,IY,M,MP1,NS
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+C
+      IF(N.LE.0)RETURN
+      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
+    5 CONTINUE
+C
+C       CODE FOR UNEQUAL OR NONPOSITIVE INCREMENTS.
+C
+      IX = 1
+      IY = 1
+      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
+      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
+      DO 10 I = 1,N
+        DTEMP1 = DX(IX)
+        DX(IX) = DY(IY)
+        DY(IY) = DTEMP1
+        IX = IX + INCX
+        IY = IY + INCY
+   10 CONTINUE
+      RETURN
+C
+C       CODE FOR BOTH INCREMENTS EQUAL TO 1
+C
+C
+C       CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 3.
+C
+   20 M = MOD(N,3)
+      IF( M .EQ. 0 ) GO TO 40
+      DO 30 I = 1,M
+        DTEMP1 = DX(I)
+        DX(I) = DY(I)
+        DY(I) = DTEMP1
+   30 CONTINUE
+      IF( N .LT. 3 ) RETURN
+   40 MP1 = M + 1
+      DO 50 I = MP1,N,3
+        DTEMP1 = DX(I)
+        DTEMP2 = DX(I+1)
+        DTEMP3 = DX(I+2)
+        DX(I) = DY(I)
+        DX(I+1) = DY(I+1)
+        DX(I+2) = DY(I+2)
+        DY(I) = DTEMP1
+        DY(I+1) = DTEMP2
+        DY(I+2) = DTEMP3
+   50 CONTINUE
+      RETURN
+   60 CONTINUE
+C
+C     CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
+C
+      NS = N*INCX
+        DO 70 I=1,NS,INCX
+        DTEMP1 = DX(I)
+        DX(I) = DY(I)
+        DY(I) = DTEMP1
+   70   CONTINUE
+      RETURN
+      END
+*DTRCO
+      SUBROUTINE DTRCO(T,LDT,N,RCOND,Z,JOB)
+C***BEGIN PROLOGUE  DTRCO
+C***DATE WRITTEN   780814   (YYMMDD)
+C***REVISION DATE  820801   (YYMMDD)
+C***CATEGORY NO.  D2A3
+C***KEYWORDS  CONDITION,DOUBLE PRECISION,FACTOR,LINEAR ALGEBRA,LINPACK,
+C             MATRIX,TRIANGULAR
+C***AUTHOR  MOLER, C. B., (U. OF NEW MEXICO)
+C***PURPOSE  ESTIMATES THE CONDITION OF A DOUBLE PRECISION TRIANGULAR
+C            MATRIX.
+C***DESCRIPTION
+C     DTRCO ESTIMATES THE CONDITION OF A DOUBLE PRECISION TRIANGULAR
+C     MATRIX.
+C     ON ENTRY
+C        T       DOUBLE PRECISION(LDT,N)
+C                T CONTAINS THE TRIANGULAR MATRIX.  THE ZERO
+C                ELEMENTS OF THE MATRIX ARE NOT REFERENCED, AND
+C                THE CORRESPONDING ELEMENTS OF THE ARRAY CAN BE
+C                USED TO STORE OTHER INFORMATION.
+C        LDT     INTEGER
+C                LDT IS THE LEADING DIMENSION OF THE ARRAY T.
+C        N       INTEGER
+C                N IS THE ORDER OF THE SYSTEM.
+C        JOB     INTEGER
+C                = 0         T  IS LOWER TRIANGULAR.
+C                = NONZERO   T  IS UPPER TRIANGULAR.
+C     ON RETURN
+C        RCOND   DOUBLE PRECISION
+C                AN ESTIMATE OF THE RECIPROCAL CONDITION OF  T .
+C                FOR THE SYSTEM  T*X = B , RELATIVE PERTURBATIONS
+C                IN  T  AND  B  OF SIZE  EPSILON  MAY CAUSE
+C                RELATIVE PERTURBATIONS IN  X  OF SIZE  EPSILON/RCOND .
+C                IF  RCOND  IS SO SMALL THAT THE LOGICAL EXPRESSION
+C                           1.0 + RCOND .EQ. 1.0
+C                IS TRUE, THEN  T  MAY BE SINGULAR TO WORKING
+C                PRECISION.  IN PARTICULAR,  RCOND  IS ZERO  IF
+C                EXACT SINGULARITY IS DETECTED OR THE ESTIMATE
+C                UNDERFLOWS.
+C        Z       DOUBLE PRECISION(N)
+C                A WORK VECTOR WHOSE CONTENTS ARE USUALLY UNIMPORTANT.
+C                IF  T  IS CLOSE TO A SINGULAR MATRIX, THEN  Z  IS
+C                AN APPROXIMATE NULL VECTOR IN THE SENSE THAT
+C                NORM(A*Z) = RCOND*NORM(A)*NORM(Z) .
+C     LINPACK.  THIS VERSION DATED 08/14/78 .
+C     CLEVE MOLER, UNIVERSITY OF NEW MEXICO, ARGONNE NATIONAL LAB.
+C***REFERENCES  DONGARRA J.J., BUNCH J.R., MOLER C.B., STEWART G.W.,
+C                 *LINPACK USERS  GUIDE*, SIAM, 1979.
+C***ROUTINES CALLED  DASUM,DAXPY,DSCAL
+C***END PROLOGUE  DTRCO
+
+C...SCALAR ARGUMENTS
+      DOUBLE PRECISION
+     +   RCOND
+      INTEGER
+     +   JOB,LDT,N
+
+C...ARRAY ARGUMENTS
+      DOUBLE PRECISION
+     +   T(LDT,*),Z(*)
+
+C...LOCAL SCALARS
+      DOUBLE PRECISION
+     +   EK,S,SM,TNORM,W,WK,WKM,YNORM
+      INTEGER
+     +   I1,J,J1,J2,K,KK,L
+      LOGICAL
+     +   LOWER
+
+C...EXTERNAL FUNCTIONS
+      DOUBLE PRECISION
+     +   DASUM
+      EXTERNAL
+     +   DASUM
+
+C...EXTERNAL SUBROUTINES
+      EXTERNAL
+     +   DAXPY,DSCAL
+
+C...INTRINSIC FUNCTIONS
+      INTRINSIC
+     +   DABS,DMAX1,DSIGN
+
+
+C***FIRST EXECUTABLE STATEMENT  DTRCO
+
+
+      LOWER = JOB .EQ. 0
+
+C     COMPUTE 1-NORM OF T
+
+      TNORM = 0.0D0
+      DO 10 J = 1, N
+         L = J
+         IF (LOWER) L = N + 1 - J
+         I1 = 1
+         IF (LOWER) I1 = J
+         TNORM = DMAX1(TNORM,DASUM(L,T(I1,J),1))
+   10 CONTINUE
+
+C     RCOND = 1/(NORM(T)*(ESTIMATE OF NORM(INVERSE(T)))) .
+C     ESTIMATE = NORM(Z)/NORM(Y) WHERE  T*Z = Y  AND  TRANS(T)*Y = E .
+C     TRANS(T)  IS THE TRANSPOSE OF T .
+C     THE COMPONENTS OF  E  ARE CHOSEN TO CAUSE MAXIMUM LOCAL
+C     GROWTH IN THE ELEMENTS OF Y .
+C     THE VECTORS ARE FREQUENTLY RESCALED TO AVOID OVERFLOW.
+
+C     SOLVE TRANS(T)*Y = E
+
+      EK = 1.0D0
+      DO 20 J = 1, N
+         Z(J) = 0.0D0
+   20 CONTINUE
+      DO 100 KK = 1, N
+         K = KK
+         IF (LOWER) K = N + 1 - KK
+         IF (Z(K) .NE. 0.0D0) EK = DSIGN(EK,-Z(K))
+         IF (DABS(EK-Z(K)) .LE. DABS(T(K,K))) GO TO 30
+            S = DABS(T(K,K))/DABS(EK-Z(K))
+            CALL DSCAL(N,S,Z,1)
+            EK = S*EK
+   30    CONTINUE
+         WK = EK - Z(K)
+         WKM = -EK - Z(K)
+         S = DABS(WK)
+         SM = DABS(WKM)
+         IF (T(K,K) .EQ. 0.0D0) GO TO 40
+            WK = WK/T(K,K)
+            WKM = WKM/T(K,K)
+         GO TO 50
+   40    CONTINUE
+            WK = 1.0D0
+            WKM = 1.0D0
+   50    CONTINUE
+         IF (KK .EQ. N) GO TO 90
+            J1 = K + 1
+            IF (LOWER) J1 = 1
+            J2 = N
+            IF (LOWER) J2 = K - 1
+            DO 60 J = J1, J2
+               SM = SM + DABS(Z(J)+WKM*T(K,J))
+               Z(J) = Z(J) + WK*T(K,J)
+               S = S + DABS(Z(J))
+   60       CONTINUE
+            IF (S .GE. SM) GO TO 80
+               W = WKM - WK
+               WK = WKM
+               DO 70 J = J1, J2
+                  Z(J) = Z(J) + W*T(K,J)
+   70          CONTINUE
+   80       CONTINUE
+   90    CONTINUE
+         Z(K) = WK
+  100 CONTINUE
+      S = 1.0D0/DASUM(N,Z,1)
+      CALL DSCAL(N,S,Z,1)
+
+      YNORM = 1.0D0
+
+C     SOLVE T*Z = Y
+
+      DO 130 KK = 1, N
+         K = N + 1 - KK
+         IF (LOWER) K = KK
+         IF (DABS(Z(K)) .LE. DABS(T(K,K))) GO TO 110
+            S = DABS(T(K,K))/DABS(Z(K))
+            CALL DSCAL(N,S,Z,1)
+            YNORM = S*YNORM
+  110    CONTINUE
+         IF (T(K,K) .NE. 0.0D0) Z(K) = Z(K)/T(K,K)
+         IF (T(K,K) .EQ. 0.0D0) Z(K) = 1.0D0
+         I1 = 1
+         IF (LOWER) I1 = K + 1
+         IF (KK .GE. N) GO TO 120
+            W = -Z(K)
+            CALL DAXPY(N-KK,W,T(I1,K),1,Z(I1),1)
+  120    CONTINUE
+  130 CONTINUE
+C     MAKE ZNORM = 1.0
+      S = 1.0D0/DASUM(N,Z,1)
+      CALL DSCAL(N,S,Z,1)
+      YNORM = S*YNORM
+
+      IF (TNORM .NE. 0.0D0) RCOND = YNORM/TNORM
+      IF (TNORM .EQ. 0.0D0) RCOND = 0.0D0
+      RETURN
+      END
+*DTRDI
+      SUBROUTINE DTRDI(T,LDT,N,DET,JOB,INFO)
+C
+C     DTRDI COMPUTES THE DETERMINANT AND INVERSE OF A DOUBLE PRECISION
+C     TRIANGULAR MATRIX.
+C
+C     ON ENTRY
+C
+C        T       DOUBLE PRECISION(LDT,N)
+C                T CONTAINS THE TRIANGULAR MATRIX. THE ZERO
+C                ELEMENTS OF THE MATRIX ARE NOT REFERENCED, AND
+C                THE CORRESPONDING ELEMENTS OF THE ARRAY CAN BE
+C                USED TO STORE OTHER INFORMATION.
+C
+C        LDT     INTEGER
+C                LDT IS THE LEADING DIMENSION OF THE ARRAY T.
+C
+C        N       INTEGER
+C                N IS THE ORDER OF THE SYSTEM.
+C
+C        JOB     INTEGER
+C                = 010       NO DET, INVERSE OF LOWER TRIANGULAR.
+C                = 011       NO DET, INVERSE OF UPPER TRIANGULAR.
+C                = 100       DET, NO INVERSE.
+C                = 110       DET, INVERSE OF LOWER TRIANGULAR.
+C                = 111       DET, INVERSE OF UPPER TRIANGULAR.
+C
+C     ON RETURN
+C
+C        T       INVERSE OF ORIGINAL MATRIX IF REQUESTED.
+C                OTHERWISE UNCHANGED.
+C
+C        DET     DOUBLE PRECISION(2)
+C                DETERMINANT OF ORIGINAL MATRIX IF REQUESTED.
+C                OTHERWISE NOT REFERENCED.
+C                DETERMINANT = DET(1) * 10.0**DET(2)
+C                WITH  1.0 .LE. DABS(DET(1)) .LT. 10.0
+C                OR  DET(1) .EQ. 0.0 .
+C
+C        INFO    INTEGER
+C                INFO CONTAINS ZERO IF THE SYSTEM IS NONSINGULAR
+C                AND THE INVERSE IS REQUESTED.
+C                OTHERWISE INFO CONTAINS THE INDEX OF
+C                A ZERO DIAGONAL ELEMENT OF T.
+C
+C
+C     LINPACK. THIS VERSION DATED 08/14/78 .
+C     CLEVE MOLER, UNIVERSITY OF NEW MEXICO, ARGONNE NATIONAL LAB.
+C
+C     SUBROUTINES AND FUNCTIONS
+C
+C     BLAS DAXPY,DSCAL
+C     FORTRAN DABS,MOD
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER INFO,JOB,LDT,N
+C
+C  ARRAY ARGUMENTS
+      DOUBLE PRECISION DET(2),T(LDT,*)
+C
+C  LOCAL SCALARS
+      DOUBLE PRECISION TEMP,TEN
+      INTEGER I,J,K,KB,KM1,KP1
+C
+C  EXTERNAL SUBROUTINES
+      EXTERNAL DAXPY,DSCAL
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC DABS,MOD
+C
+C
+C     BEGIN BLOCK PERMITTING ...EXITS TO 180
+C
+C        COMPUTE DETERMINANT
+C
+         IF (JOB/100 .EQ. 0) GO TO 70
+            DET(1) = 1.0D0
+            DET(2) = 0.0D0
+            TEN = 10.0D0
+            DO 50 I = 1, N
+               DET(1) = T(I,I)*DET(1)
+C           ...EXIT
+               IF (DET(1) .EQ. 0.0D0) GO TO 60
+   10          IF (DABS(DET(1)) .GE. 1.0D0) GO TO 20
+                  DET(1) = TEN*DET(1)
+                  DET(2) = DET(2) - 1.0D0
+               GO TO 10
+   20          CONTINUE
+   30          IF (DABS(DET(1)) .LT. TEN) GO TO 40
+                  DET(1) = DET(1)/TEN
+                  DET(2) = DET(2) + 1.0D0
+               GO TO 30
+   40          CONTINUE
+   50       CONTINUE
+   60       CONTINUE
+   70    CONTINUE
+C
+C        COMPUTE INVERSE OF UPPER TRIANGULAR
+C
+         IF (MOD(JOB/10,10) .EQ. 0) GO TO 170
+            IF (MOD(JOB,10) .EQ. 0) GO TO 120
+C              BEGIN BLOCK PERMITTING ...EXITS TO 110
+                  DO 100 K = 1, N
+                     INFO = K
+C              ......EXIT
+                     IF (T(K,K) .EQ. 0.0D0) GO TO 110
+                     T(K,K) = 1.0D0/T(K,K)
+                     TEMP = -T(K,K)
+                     CALL DSCAL(K-1,TEMP,T(1,K),1)
+                     KP1 = K + 1
+                     IF (N .LT. KP1) GO TO 90
+                     DO 80 J = KP1, N
+                        TEMP = T(K,J)
+                        T(K,J) = 0.0D0
+                        CALL DAXPY(K,TEMP,T(1,K),1,T(1,J),1)
+   80                CONTINUE
+   90                CONTINUE
+  100             CONTINUE
+                  INFO = 0
+  110          CONTINUE
+            GO TO 160
+  120       CONTINUE
+C
+C              COMPUTE INVERSE OF LOWER TRIANGULAR
+C
+               DO 150 KB = 1, N
+                  K = N + 1 - KB
+                  INFO = K
+C     ............EXIT
+                  IF (T(K,K) .EQ. 0.0D0) GO TO 180
+                  T(K,K) = 1.0D0/T(K,K)
+                  TEMP = -T(K,K)
+                  IF (K .NE. N) CALL DSCAL(N-K,TEMP,T(K+1,K),1)
+                  KM1 = K - 1
+                  IF (KM1 .LT. 1) GO TO 140
+                  DO 130 J = 1, KM1
+                     TEMP = T(K,J)
+                     T(K,J) = 0.0D0
+                     CALL DAXPY(N-K+1,TEMP,T(K,K),1,T(K,J),1)
+  130             CONTINUE
+  140             CONTINUE
+  150          CONTINUE
+               INFO = 0
+  160       CONTINUE
+  170    CONTINUE
+  180 CONTINUE
+      RETURN
+      END
+*IDAMAX
+      INTEGER FUNCTION IDAMAX(N,DX,INCX)
+C
+C     FIND SMALLEST INDEX OF MAXIMUM MAGNITUDE OF DOUBLE PRECISION DX.
+C     IDAMAX =  FIRST I, I = 1 TO N, TO MINIMIZE  ABS(DX(1-INCX+I*INCX))
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER INCX,N
+C
+C  ARRAY ARGUMENTS
+      DOUBLE PRECISION DX(*)
+C
+C  LOCAL SCALARS
+      DOUBLE PRECISION DMAX,XMAG
+      INTEGER I,II,NS
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC DABS
+C
+      IDAMAX = 0
+      IF(N.LE.0) RETURN
+      IDAMAX = 1
+      IF(N.LE.1)RETURN
+      IF(INCX.EQ.1)GOTO 20
+C
+C        CODE FOR INCREMENTS NOT EQUAL TO 1.
+C
+      DMAX = DABS(DX(1))
+      NS = N*INCX
+      II = 1
+          DO 10 I = 1,NS,INCX
+          XMAG = DABS(DX(I))
+          IF(XMAG.LE.DMAX) GO TO 5
+          IDAMAX = II
+          DMAX = XMAG
+    5     II = II + 1
+   10     CONTINUE
+      RETURN
+C
+C        CODE FOR INCREMENTS EQUAL TO 1.
+C
+   20 DMAX = DABS(DX(1))
+      DO 30 I = 2,N
+          XMAG = DABS(DX(I))
+          IF(XMAG.LE.DMAX) GO TO 30
+          IDAMAX = I
+          DMAX = XMAG
+   30 CONTINUE
+      RETURN
+      END
+*ISAMAX
+      INTEGER FUNCTION ISAMAX(N,SX,INCX)
+C
+C     FIND SMALLEST INDEX OF MAXIMUM MAGNITUDE OF SINGLE PRECISION SX.
+C     ISAMAX =  FIRST I, I = 1 TO N, TO MINIMIZE  ABS(SX(1-INCX+I*INCX))
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER INCX,N
+C
+C  ARRAY ARGUMENTS
+      REAL SX(*)
+C
+C  LOCAL SCALARS
+      REAL SMAX,XMAG
+      INTEGER I,II,NS
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC ABS
+C
+      ISAMAX = 0
+      IF(N.LE.0) RETURN
+      ISAMAX = 1
+      IF(N.LE.1)RETURN
+      IF(INCX.EQ.1)GOTO 20
+C
+C        CODE FOR INCREMENTS NOT EQUAL TO 1.
+C
+      SMAX = ABS(SX(1))
+      NS = N*INCX
+      II = 1
+          DO 10 I=1,NS,INCX
+          XMAG = ABS(SX(I))
+          IF(XMAG.LE.SMAX) GO TO 5
+          ISAMAX = II
+          SMAX = XMAG
+    5     II = II + 1
+   10     CONTINUE
+      RETURN
+C
+C        CODE FOR INCREMENTS EQUAL TO 1.
+C
+   20 SMAX = ABS(SX(1))
+      DO 30 I = 2,N
+         XMAG = ABS(SX(I))
+         IF(XMAG.LE.SMAX) GO TO 30
+         ISAMAX = I
+         SMAX = XMAG
+   30 CONTINUE
+      RETURN
+      END
+*SASUM
+      REAL FUNCTION SASUM(N,SX,INCX)
+C***BEGIN PROLOGUE  SASUM
+C***DATE WRITTEN   791001   (YYMMDD)
+C***REVISION DATE  820801   (YYMMDD)
+C***CATEGORY NO.  D1A3A
+C***KEYWORDS  ADD,BLAS,LINEAR ALGEBRA,MAGNITUDE,SUM,VECTOR
+C***AUTHOR  LAWSON, C. L., (JPL)
+C           HANSON, R. J., (SNLA)
+C           KINCAID, D. R., (U. OF TEXAS)
+C           KROGH, F. T., (JPL)
+C***PURPOSE  SUM OF MAGNITUDES OF S.P VECTOR COMPONENTS
+C***DESCRIPTION
+C                B L A S  SUBPROGRAM
+C    DESCRIPTION OF PARAMETERS
+C     --INPUT--
+C        N  NUMBER OF ELEMENTS IN INPUT VECTOR(S)
+C       SX  SINGLE PRECISION VECTOR WITH N ELEMENTS
+C     INCX  STORAGE SPACING BETWEEN ELEMENTS OF SX
+C     --OUTPUT--
+C    SASUM  SINGLE PRECISION RESULT (ZERO IF N .LE. 0)
+C     RETURNS SUM OF MAGNITUDES OF SINGLE PRECISION SX.
+C     SASUM = SUM FROM 0 TO N-1 OF  ABS(SX(1+I*INCX))
+C***REFERENCES  LAWSON C.L., HANSON R.J., KINCAID D.R., KROGH F.T.,
+C                 *BASIC LINEAR ALGEBRA SUBPROGRAMS FOR FORTRAN USAGE*,
+C                 ALGORITHM NO. 539, TRANSACTIONS ON MATHEMATICAL
+C                 SOFTWARE, VOLUME 5, NUMBER 3, SEPTEMBER 1979, 308-323
+C***ROUTINES CALLED  (NONE)
+C***END PROLOGUE  SASUM
+
+C...SCALAR ARGUMENTS
+      INTEGER
+     +   INCX,N
+
+C...ARRAY ARGUMENTS
+      REAL SX(*)
+
+C...LOCAL SCALARS
+      INTEGER
+     +   I,M,MP1,NS
+
+C...INTRINSIC FUNCTIONS
+      INTRINSIC
+     +   ABS,MOD
+
+
+C***FIRST EXECUTABLE STATEMENT  SASUM
+
+
+      SASUM = 0.0E0
+      IF(N.LE.0)RETURN
+      IF(INCX.EQ.1)GOTO 20
+
+C        CODE FOR INCREMENTS NOT EQUAL TO 1.
+
+      NS = N*INCX
+          DO 10 I=1,NS,INCX
+          SASUM = SASUM + ABS(SX(I))
+   10     CONTINUE
+      RETURN
+
+C        CODE FOR INCREMENTS EQUAL TO 1.
+
+
+C        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 6.
+
+   20 M = MOD(N,6)
+      IF( M .EQ. 0 ) GO TO 40
+      DO 30 I = 1,M
+        SASUM = SASUM + ABS(SX(I))
+   30 CONTINUE
+      IF( N .LT. 6 ) RETURN
+   40 MP1 = M + 1
+      DO 50 I = MP1,N,6
+        SASUM = SASUM + ABS(SX(I)) + ABS(SX(I + 1)) + ABS(SX(I + 2))
+     1  + ABS(SX(I + 3)) + ABS(SX(I + 4)) + ABS(SX(I + 5))
+   50 CONTINUE
+      RETURN
+      END
+*SAXPY
+      SUBROUTINE SAXPY(N,SA,SX,INCX,SY,INCY)
+C
+C     OVERWRITE SINGLE PRECISION SY WITH SINGLE PRECISION SA*SX +SY.
+C     FOR I = 0 TO N-1, REPLACE  SY(LY+I*INCY) WITH SA*SX(LX+I*INCX) +
+C       SY(LY+I*INCY), WHERE LX = 1 IF INCX .GE. 0, ELSE LX = (-INCX)*N,
+C       AND LY IS DEFINED IN A SIMILAR WAY USING INCY.
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      REAL SA
+      INTEGER INCX,INCY,N
+C
+C  ARRAY ARGUMENTS
+      REAL SX(*),SY(*)
+C
+C  LOCAL SCALARS
+      INTEGER I,IX,IY,M,MP1,NS
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+C
+      IF(N.LE.0.OR.SA.EQ.0.E0) RETURN
+      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
+    5 CONTINUE
+C
+C        CODE FOR NONEQUAL OR NONPOSITIVE INCREMENTS.
+C
+      IX = 1
+      IY = 1
+      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
+      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
+      DO 10 I = 1,N
+        SY(IY) = SY(IY) + SA*SX(IX)
+        IX = IX + INCX
+        IY = IY + INCY
+   10 CONTINUE
+      RETURN
+C
+C        CODE FOR BOTH INCREMENTS EQUAL TO 1
+C
+C
+C        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 4.
+C
+   20 M = MOD(N,4)
+      IF( M .EQ. 0 ) GO TO 40
+      DO 30 I = 1,M
+        SY(I) = SY(I) + SA*SX(I)
+   30 CONTINUE
+      IF( N .LT. 4 ) RETURN
+   40 MP1 = M + 1
+      DO 50 I = MP1,N,4
+        SY(I) = SY(I) + SA*SX(I)
+        SY(I + 1) = SY(I + 1) + SA*SX(I + 1)
+        SY(I + 2) = SY(I + 2) + SA*SX(I + 2)
+        SY(I + 3) = SY(I + 3) + SA*SX(I + 3)
+   50 CONTINUE
+      RETURN
+C
+C        CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
+C
+   60 CONTINUE
+      NS = N*INCX
+          DO 70 I=1,NS,INCX
+          SY(I) = SA*SX(I) + SY(I)
+   70     CONTINUE
+      RETURN
+      END
+*SCOPY
+      SUBROUTINE SCOPY(N,SX,INCX,SY,INCY)
+C
+C     COPY SINGLE PRECISION SX TO SINGLE PRECISION SY.
+C     FOR I = 0 TO N-1, COPY  SX(LX+I*INCX) TO SY(LY+I*INCY),
+C     WHERE LX = 1 IF INCX .GE. 0, ELSE LX = (-INCX)*N, AND LY IS
+C     DEFINED IN A SIMILAR WAY USING INCY.
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER INCX,INCY,N
+C
+C  ARRAY ARGUMENTS
+      REAL SX(*),SY(*)
+C
+C  LOCAL SCALARS
+      INTEGER I,IX,IY,M,MP1,NS
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+C
+      IF(N.LE.0)RETURN
+      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
+    5 CONTINUE
+C
+C        CODE FOR UNEQUAL OR NONPOSITIVE INCREMENTS.
+C
+      IX = 1
+      IY = 1
+      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
+      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
+      DO 10 I = 1,N
+        SY(IY) = SX(IX)
+        IX = IX + INCX
+        IY = IY + INCY
+   10 CONTINUE
+      RETURN
+C
+C        CODE FOR BOTH INCREMENTS EQUAL TO 1
+C
+C
+C        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 7.
+C
+   20 M = MOD(N,7)
+      IF( M .EQ. 0 ) GO TO 40
+      DO 30 I = 1,M
+        SY(I) = SX(I)
+   30 CONTINUE
+      IF( N .LT. 7 ) RETURN
+   40 MP1 = M + 1
+      DO 50 I = MP1,N,7
+        SY(I) = SX(I)
+        SY(I + 1) = SX(I + 1)
+        SY(I + 2) = SX(I + 2)
+        SY(I + 3) = SX(I + 3)
+        SY(I + 4) = SX(I + 4)
+        SY(I + 5) = SX(I + 5)
+        SY(I + 6) = SX(I + 6)
+   50 CONTINUE
+      RETURN
+C
+C        CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
+C
+   60 CONTINUE
+      NS = N*INCX
+          DO 70 I=1,NS,INCX
+          SY(I) = SX(I)
+   70     CONTINUE
+      RETURN
+      END
+*SDOT
+      REAL FUNCTION SDOT(N,SX,INCX,SY,INCY)
+C
+C     LATEST REVISION  -  OCTOBER 3, 1983  (JRD)
+C
+C     RETURNS THE DOT PRODUCT OF SINGLE PRECISION SX AND SY.
+C     SDOT = SUM FOR I = 0 TO N-1 OF  SX(LX+I*INCX) * SY(LY+I*INCY),
+C     WHERE LX = 1 IF INCX .GE. 0, ELSE LX = (-INCX)*N, AND LY IS
+C     DEFINED IN A SIMILAR WAY USING INCY.
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER INCX,INCY,N
+C
+C  ARRAY ARGUMENTS
+      REAL SX(*),SY(*)
+C
+C  LOCAL SCALARS
+      INTEGER I,IX,IY,M,MP1,NS
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+C
+      SDOT = 0.0E0
+      IF(N.LE.0)RETURN
+      IF(INCX.EQ.INCY) IF(INCX-1)5,20,60
+    5 CONTINUE
+C
+C        CODE FOR UNEQUAL INCREMENTS OR NONPOSITIVE INCREMENTS.
+C
+      IX = 1
+      IY = 1
+      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
+      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
+      DO 10 I = 1,N
+        SDOT = SDOT + SX(IX)*SY(IY)
+        IX = IX + INCX
+        IY = IY + INCY
+   10 CONTINUE
+      RETURN
+C
+C        CODE FOR BOTH INCREMENTS EQUAL TO 1
+C
+C
+C        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 5.
+C
+   20 M = MOD(N,5)
+      IF( M .EQ. 0 ) GO TO 40
+      DO 30 I = 1,M
+        SDOT = SDOT + SX(I)*SY(I)
+   30 CONTINUE
+      IF( N .LT. 5 ) RETURN
+   40 MP1 = M + 1
+      DO 50 I = MP1,N,5
+        SDOT = SDOT + SX(I)*SY(I) + SX(I + 1)*SY(I + 1) +
+     *    SX(I+2)*SY(I+2) + SX(I+3)*SY(I+3) + SX(I+4)*SY(I+4)
+   50 CONTINUE
+      RETURN
+C
+C        CODE FOR POSITIVE EQUAL INCREMENTS .NE.1.
+C
+   60 CONTINUE
+      NS=N*INCX
+      DO 70 I=1,NS,INCX
+        SDOT = SDOT + SX(I)*SY(I)
+   70   CONTINUE
+      RETURN
+      END
+*SNRM2
+      REAL FUNCTION SNRM2 ( N, SX, INCX)
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER INCX,N
+C
+C  ARRAY ARGUMENTS
+      REAL SX(*)
+C
+C  LOCAL SCALARS
+      REAL CUTHI,CUTLO,HITEST,ONE,SUM,XMAX,ZERO
+      INTEGER I,J,NEXT,NN
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC ABS,FLOAT,SQRT
+C
+      DATA   ZERO, ONE /0.0E0, 1.0E0/
+C
+C     EUCLIDEAN NORM OF THE N-VECTOR STORED IN SX() WITH STORAGE
+C     INCREMENT INCX .
+C     IF    N .LE. 0 RETURN WITH RESULT = 0.
+C     IF N .GE. 1 THEN INCX MUST BE .GE. 1
+C
+C           C.L.LAWSON, 1978 JAN 08
+C
+C     FOUR PHASE METHOD     USING TWO BUILT-IN CONSTANTS THAT ARE
+C     HOPEFULLY APPLICABLE TO ALL MACHINES.
+C         CUTLO = MAXIMUM OF  SQRT(U/EPS)  OVER ALL KNOWN MACHINES.
+C         CUTHI = MINIMUM OF  SQRT(V)      OVER ALL KNOWN MACHINES.
+C     WHERE
+C         EPS = SMALLEST NO. SUCH THAT EPS + 1. .GT. 1.
+C         U   = SMALLEST POSITIVE NO.   (UNDERFLOW LIMIT)
+C         V   = LARGEST  NO.            (OVERFLOW  LIMIT)
+C
+C     BRIEF OUTLINE OF ALGORITHM..
+C
+C     PHASE 1    SCANS ZERO COMPONENTS.
+C     MOVE TO PHASE 2 WHEN A COMPONENT IS NONZERO AND .LE. CUTLO
+C     MOVE TO PHASE 3 WHEN A COMPONENT IS .GT. CUTLO
+C     MOVE TO PHASE 4 WHEN A COMPONENT IS .GE. CUTHI/M
+C     WHERE M = N FOR X() REAL AND M = 2*N FOR COMPLEX.
+C
+C     VALUES FOR CUTLO AND CUTHI..
+C     FROM THE ENVIRONMENTAL PARAMETERS LISTED IN THE IMSL CONVERTER
+C     DOCUMENT THE LIMITING VALUES ARE AS FOLLOWS..
+C     CUTLO, S.P.   U/EPS = 2**(-102) FOR  HONEYWELL.  CLOSE SECONDS ARE
+C                   UNIVAC AND DEC AT 2**(-103)
+C                   THUS CUTLO = 2**(-51) = 4.44089E-16
+C     CUTHI, S.P.   V = 2**127 FOR UNIVAC, HONEYWELL, AND DEC.
+C                   THUS CUTHI = 2**(63.5) = 1.30438E19
+C     CUTLO, D.P.   U/EPS = 2**(-67) FOR HONEYWELL AND DEC.
+C                   THUS CUTLO = 2**(-33.5) = 8.23181D-11
+C     CUTHI, D.P.   SAME AS S.P.  CUTHI = 1.30438D19
+C     DATA CUTLO, CUTHI / 8.232D-11,  1.304D19 /
+C     DATA CUTLO, CUTHI / 4.441E-16,  1.304E19 /
+      DATA CUTLO, CUTHI / 4.441E-16,  1.304E19 /
+C
+      XMAX = ZERO
+      IF(N .GT. 0) GO TO 10
+         SNRM2  = ZERO
+         GO TO 300
+C
+   10 ASSIGN 30 TO NEXT
+      SUM = ZERO
+      NN = N * INCX
+C                                                 BEGIN MAIN LOOP
+      I = 1
+   20    GO TO NEXT,(30, 50, 70, 110)
+   30 IF( ABS(SX(I)) .GT. CUTLO) GO TO 85
+      ASSIGN 50 TO NEXT
+      XMAX = ZERO
+C
+C                        PHASE 1.  SUM IS ZERO
+C
+   50 IF( SX(I) .EQ. ZERO) GO TO 200
+      IF( ABS(SX(I)) .GT. CUTLO) GO TO 85
+C
+C                                PREPARE FOR PHASE 2.
+      ASSIGN 70 TO NEXT
+      GO TO 105
+C
+C                                PREPARE FOR PHASE 4.
+C
+  100 I = J
+      ASSIGN 110 TO NEXT
+      SUM = (SUM / SX(I)) / SX(I)
+  105 XMAX = ABS(SX(I))
+      GO TO 115
+C
+C                   PHASE 2.  SUM IS SMALL.
+C                             SCALE TO AVOID DESTRUCTIVE UNDERFLOW.
+C
+   70 IF( ABS(SX(I)) .GT. CUTLO ) GO TO 75
+C
+C                     COMMON CODE FOR PHASES 2 AND 4.
+C                     IN PHASE 4 SUM IS LARGE.  SCALE TO AVOID OVERFLOW.
+C
+  110 IF( ABS(SX(I)) .LE. XMAX ) GO TO 115
+         SUM = ONE + SUM * (XMAX / SX(I))**2
+         XMAX = ABS(SX(I))
+         GO TO 200
+C
+  115 SUM = SUM + (SX(I)/XMAX)**2
+      GO TO 200
+C
+C
+C                  PREPARE FOR PHASE 3.
+C
+   75 SUM = (SUM * XMAX) * XMAX
+C
+C
+C     FOR REAL OR D.P. SET HITEST = CUTHI/N
+C     FOR COMPLEX      SET HITEST = CUTHI/(2*N)
+C
+   85 HITEST = CUTHI/FLOAT( N )
+C
+C                   PHASE 3.  SUM IS MID-RANGE.  NO SCALING.
+C
+      DO 95 J =I,NN,INCX
+      IF(ABS(SX(J)) .GE. HITEST) GO TO 100
+   95    SUM = SUM + SX(J)**2
+      SNRM2 = SQRT( SUM )
+      GO TO 300
+C
+  200 CONTINUE
+      I = I + INCX
+      IF ( I .LE. NN ) GO TO 20
+C
+C              END OF MAIN LOOP.
+C
+C              COMPUTE SQUARE ROOT AND ADJUST FOR SCALING.
+C
+      SNRM2 = XMAX * SQRT(SUM)
+  300 CONTINUE
+      RETURN
+      END
+*SSCAL
+      SUBROUTINE SSCAL(N,SA,SX,INCX)
+C
+C     REPLACE SINGLE PRECISION SX BY SINGLE PRECISION SA*SX.
+C     FOR I = 0 TO N-1, REPLACE SX(1+I*INCX) WITH  SA * SX(1+I*INCX)
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      REAL SA
+      INTEGER INCX,N
+C
+C  ARRAY ARGUMENTS
+      REAL SX(*)
+C
+C  LOCAL SCALARS
+      INTEGER I,M,MP1,NS
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+C
+      IF(N.LE.0)RETURN
+      IF(INCX.EQ.1)GOTO 20
+C
+C        CODE FOR INCREMENTS NOT EQUAL TO 1.
+C
+      NS = N*INCX
+          DO 10 I = 1,NS,INCX
+          SX(I) = SA*SX(I)
+   10     CONTINUE
+      RETURN
+C
+C        CODE FOR INCREMENTS EQUAL TO 1.
+C
+C
+C        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 5.
+C
+   20 M = MOD(N,5)
+      IF( M .EQ. 0 ) GO TO 40
+      DO 30 I = 1,M
+        SX(I) = SA*SX(I)
+   30 CONTINUE
+      IF( N .LT. 5 ) RETURN
+   40 MP1 = M + 1
+      DO 50 I = MP1,N,5
+        SX(I) = SA*SX(I)
+        SX(I + 1) = SA*SX(I + 1)
+        SX(I + 2) = SA*SX(I + 2)
+        SX(I + 3) = SA*SX(I + 3)
+        SX(I + 4) = SA*SX(I + 4)
+   50 CONTINUE
+      RETURN
+      END
+*SSIDI
+      SUBROUTINE SSIDI(A,LDA,N,KPVT,DET,INERT,WORK,JOB)
+C
+C     LATEST REVISION  -  JANUARY 24, 1990  (JRD)
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER JOB,LDA,N
+C
+C  ARRAY ARGUMENTS
+      REAL A(LDA,*),DET(2),WORK(*)
+      INTEGER INERT(3),KPVT(*)
+C
+C  LOCAL SCALARS
+      REAL AK,AKKP1,AKP1,D,T,TEMP,TEN
+      INTEGER J,JB,K,KM1,KS,KSTEP
+      LOGICAL NODET,NOERT,NOINV
+C
+C  EXTERNAL FUNCTIONS
+      REAL SDOT
+      EXTERNAL SDOT
+C
+C  EXTERNAL SUBROUTINES
+      EXTERNAL SAXPY,SCOPY,SSWAP
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC ABS,IABS,MOD
+C
+C     SSIDI COMPUTES THE DETERMINANT, INERTIA AND INVERSE
+C     OF A REAL SYMMETRIC MATRIX USING THE FACTORS FROM SSIFA.
+C
+C     ON ENTRY
+C
+C        A       REAL(LDA,N)
+C                THE OUTPUT FROM SSIFA.
+C
+C        LDA     INTEGER
+C                THE LEADING DIMENSION OF THE ARRAY A.
+C
+C        N       INTEGER
+C                THE ORDER OF THE MATRIX A.
+C
+C        KPVT    INTEGER(N)
+C                THE PIVOT VECTOR FROM SSIFA.
+C
+C        WORK    REAL(N)
+C                WORK VECTOR.  CONTENTS DESTROYED.
+C
+C        JOB     INTEGER
+C                JOB HAS THE DECIMAL EXPANSION  ABC  WHERE
+C                   IF  C .NE. 0, THE INVERSE IS COMPUTED,
+C                   IF  B .NE. 0, THE DETERMINANT IS COMPUTED,
+C                   IF  A .NE. 0, THE INERTIA IS COMPUTED.
+C
+C                FOR EXAMPLE, JOB = 111  GIVES ALL THREE.
+C
+C     ON RETURN
+C
+C        VARIABLES NOT REQUESTED BY JOB ARE NOT USED.
+C
+C        A      CONTAINS THE UPPER TRIANGLE OF THE INVERSE OF
+C               THE ORIGINAL MATRIX.  THE STRICT LOWER TRIANGLE
+C               IS NEVER REFERENCED.
+C
+C        DET    REAL(2)
+C               DETERMINANT OF ORIGINAL MATRIX.
+C               DETERMINANT = DET(1) * 10.0**DET(2)
+C               WITH 1.0 .LE. ABS(DET(1)) .LT. 10.0
+C               OR DET(1) = 0.0.
+C
+C        INERT  INTEGER(3)
+C               THE INERTIA OF THE ORIGINAL MATRIX.
+C               INERT(1)  =  NUMBER OF POSITIVE EIGENVALUES.
+C               INERT(2)  =  NUMBER OF NEGATIVE EIGENVALUES.
+C               INERT(3)  =  NUMBER OF ZERO EIGENVALUES.
+C
+C     ERROR CONDITION
+C
+C        A DIVISION BY ZERO MAY OCCUR IF THE INVERSE IS REQUESTED
+C        AND  SSICO  HAS SET RCOND .EQ. 0.0
+C        OR  SSIFA  HAS SET  INFO .NE. 0 .
+C
+C     LINPACK. THIS VERSION DATED 08/14/78 .
+C     JAMES BUNCH, UNIV. CALIF. SAN DIEGO, ARGONNE NAT. LAB
+C
+C     SUBROUTINES AND FUNCTIONS
+C
+C     BLAS SAXPY,SCOPY,SDOT,SSWAP
+C     FORTRAN ABS,IABS,MOD
+C
+C
+      NOINV = MOD(JOB,10) .EQ. 0
+      NODET = MOD(JOB,100)/10 .EQ. 0
+      NOERT = MOD(JOB,1000)/100 .EQ. 0
+C
+      TEN = 10.0E0
+C
+      IF (NODET .AND. NOERT) GO TO 140
+         IF (NOERT) GO TO 10
+            INERT(1) = 0
+            INERT(2) = 0
+            INERT(3) = 0
+   10    CONTINUE
+         IF (NODET) GO TO 20
+            DET(1) = 1.0E0
+            DET(2) = 0.0E0
+   20    CONTINUE
+         T = 0.0E0
+         DO 130 K = 1, N
+            D = A(K,K)
+C
+C           CHECK IF 1 BY 1
+C
+            IF (KPVT(K) .GT. 0) GO TO 50
+C
+C              2 BY 2 BLOCK
+C              USE DET (D  S)  =  (D/T * C - T) * T  ,  T = ABS(S)
+C                      (S  C)
+C              TO AVOID UNDERFLOW/OVERFLOW TROUBLES.
+C              TAKE TWO PASSES THROUGH SCALING.  USE  T  FOR FLAG.
+C
+               IF (T .NE. 0.0E0) GO TO 30
+                  T = ABS(A(K,K+1))
+                  D = (D/T)*A(K+1,K+1) - T
+               GO TO 40
+   30          CONTINUE
+                  D = T
+                  T = 0.0E0
+   40          CONTINUE
+   50       CONTINUE
+C
+            IF (NOERT) GO TO 60
+               IF (D .GT. 0.0E0) INERT(1) = INERT(1) + 1
+               IF (D .LT. 0.0E0) INERT(2) = INERT(2) + 1
+               IF (D .EQ. 0.0E0) INERT(3) = INERT(3) + 1
+   60       CONTINUE
+C
+            IF (NODET) GO TO 120
+               DET(1) = D*DET(1)
+               IF (DET(1) .EQ. 0.0E0) GO TO 110
+   70             IF (ABS(DET(1)) .GE. 1.0E0) GO TO 80
+                     DET(1) = TEN*DET(1)
+                     DET(2) = DET(2) - 1.0E0
+                  GO TO 70
+   80             CONTINUE
+   90             IF (ABS(DET(1)) .LT. TEN) GO TO 100
+                     DET(1) = DET(1)/TEN
+                     DET(2) = DET(2) + 1.0E0
+                  GO TO 90
+  100             CONTINUE
+  110          CONTINUE
+  120       CONTINUE
+  130    CONTINUE
+  140 CONTINUE
+C
+C     COMPUTE INVERSE(A)
+C
+      IF (NOINV) GO TO 270
+         K = 1
+  150    IF (K .GT. N) GO TO 260
+            KM1 = K - 1
+            IF (KPVT(K) .LT. 0) GO TO 180
+C
+C              1 BY 1
+C
+               A(K,K) = 1.0E0/A(K,K)
+               IF (KM1 .LT. 1) GO TO 170
+                  CALL SCOPY(KM1,A(1,K),1,WORK,1)
+                  DO 160 J = 1, KM1
+                     A(J,K) = SDOT(J,A(1,J),1,WORK,1)
+                     CALL SAXPY(J-1,WORK(J),A(1,J),1,A(1,K),1)
+  160             CONTINUE
+                  A(K,K) = A(K,K) + SDOT(KM1,WORK,1,A(1,K),1)
+  170          CONTINUE
+               KSTEP = 1
+            GO TO 220
+  180       CONTINUE
+C
+C              2 BY 2
+C
+               T = ABS(A(K,K+1))
+               AK = A(K,K)/T
+               AKP1 = A(K+1,K+1)/T
+               AKKP1 = A(K,K+1)/T
+               D = T*(AK*AKP1 - 1.0E0)
+               A(K,K) = AKP1/D
+               A(K+1,K+1) = AK/D
+               A(K,K+1) = -AKKP1/D
+               IF (KM1 .LT. 1) GO TO 210
+                  CALL SCOPY(KM1,A(1,K+1),1,WORK,1)
+                  DO 190 J = 1, KM1
+                     A(J,K+1) = SDOT(J,A(1,J),1,WORK,1)
+                     CALL SAXPY(J-1,WORK(J),A(1,J),1,A(1,K+1),1)
+  190             CONTINUE
+                  A(K+1,K+1) = A(K+1,K+1) + SDOT(KM1,WORK,1,A(1,K+1),1)
+                  A(K,K+1) = A(K,K+1) + SDOT(KM1,A(1,K),1,A(1,K+1),1)
+                  CALL SCOPY(KM1,A(1,K),1,WORK,1)
+                  DO 200 J = 1, KM1
+                     A(J,K) = SDOT(J,A(1,J),1,WORK,1)
+                     CALL SAXPY(J-1,WORK(J),A(1,J),1,A(1,K),1)
+  200             CONTINUE
+                  A(K,K) = A(K,K) + SDOT(KM1,WORK,1,A(1,K),1)
+  210          CONTINUE
+               KSTEP = 2
+  220       CONTINUE
+C
+C           SWAP
+C
+            KS = IABS(KPVT(K))
+            IF (KS .EQ. K) GO TO 250
+               CALL SSWAP(KS,A(1,KS),1,A(1,K),1)
+               DO 230 JB = KS, K
+                  J = K + KS - JB
+                  TEMP = A(J,K)
+                  A(J,K) = A(KS,J)
+                  A(KS,J) = TEMP
+  230          CONTINUE
+               IF (KSTEP .EQ. 1) GO TO 240
+                  TEMP = A(KS,K+1)
+                  A(KS,K+1) = A(K,K+1)
+                  A(K,K+1) = TEMP
+  240          CONTINUE
+  250       CONTINUE
+            K = K + KSTEP
+         GO TO 150
+  260    CONTINUE
+  270 CONTINUE
+      RETURN
+      END
+*SSIFA
+      SUBROUTINE SSIFA(A,LDA,N,KPVT,INFO)
+C
+C     LATEST REVISION  -  JANUARY 24, 1990
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER INFO,LDA,N
+C
+C  ARRAY ARGUMENTS
+      REAL A(LDA,*)
+      INTEGER KPVT(*)
+C
+C  LOCAL SCALARS
+      REAL ABSAKK,AK,AKM1,ALPHA,BK,BKM1,COLMAX,DENOM,MULK,MULKM1,ROWMAX,
+     +   T
+      INTEGER IMAX,IMAXP1,J,JJ,JMAX,K,KM1,KM2,KSTEP
+      LOGICAL SWAP
+C
+C  EXTERNAL FUNCTIONS
+      INTEGER ISAMAX
+      EXTERNAL ISAMAX
+C
+C  EXTERNAL SUBROUTINES
+      EXTERNAL SAXPY,SSWAP
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC ABS,AMAX1,SQRT
+C
+C
+C     SSIFA FACTORS A REAL SYMMETRIC MATRIX BY ELIMINATION
+C     WITH SYMMETRIC PIVOTING.
+C
+C     TO SOLVE  A*X = B , FOLLOW SSIFA BY SSISL.
+C     TO COMPUTE  INVERSE(A)*C , FOLLOW SSIFA BY SSISL.
+C     TO COMPUTE  DETERMINANT(A) , FOLLOW SSIFA BY SSIDI.
+C     TO COMPUTE  INERTIA(A) , FOLLOW SSIFA BY SSIDI.
+C     TO COMPUTE  INVERSE(A) , FOLLOW SSIFA BY SSIDI.
+C
+C     ON ENTRY
+C
+C        A       REAL(LDA,N)
+C                THE SYMMETRIC MATRIX TO BE FACTORED.
+C                ONLY THE DIAGONAL AND UPPER TRIANGLE ARE USED.
+C
+C        LDA     INTEGER
+C                THE LEADING DIMENSION OF THE ARRAY  A .
+C
+C        N       INTEGER
+C                THE ORDER OF THE MATRIX  A .
+C
+C     ON RETURN
+C
+C        A       A BLOCK DIAGONAL MATRIX AND THE MULTIPLIERS WHICH
+C                WERE USED TO OBTAIN IT.
+C                THE FACTORIZATION CAN BE WRITTEN  A = U*D*TRANS(U)
+C                WHERE  U  IS A PRODUCT OF PERMUTATION AND UNIT
+C                UPPER TRIANGULAR MATRICES , TRANS(U) IS THE
+C                TRANSPOSE OF  U , AND  D  IS BLOCK DIAGONAL
+C                WITH 1 BY 1 AND 2 BY 2 BLOCKS.
+C
+C        KPVT    INTEGER(N)
+C                AN INTEGER VECTOR OF PIVOT INDICES.
+C
+C        INFO    INTEGER
+C                = 0  NORMAL VALUE.
+C                = K  IF THE K-TH PIVOT BLOCK IS SINGULAR. THIS IS
+C                     NOT AN ERROR CONDITION FOR THIS SUBROUTINE,
+C                     BUT IT DOES INDICATE THAT SSISL OR SSIDI MAY
+C                     DIVIDE BY ZERO IF CALLED.
+C
+C     LINPACK. THIS VERSION DATED 08/14/78 .
+C     JAMES BUNCH, UNIV. CALIF. SAN DIEGO, ARGONNE NAT. LAB.
+C
+C     SUBROUTINES AND FUNCTIONS
+C
+C     BLAS SAXPY,SSWAP,ISAMAX
+C     FORTRAN ABS,AMAX1,SQRT
+C
+C
+C     INITIALIZE
+C
+C     ALPHA IS USED IN CHOOSING PIVOT BLOCK SIZE.
+      ALPHA = (1.0E0 + SQRT(17.0E0))/8.0E0
+C
+      INFO = 0
+C
+C     MAIN LOOP ON K, WHICH GOES FROM N TO 1.
+C
+      K = N
+   10 CONTINUE
+C
+C        LEAVE THE LOOP IF K=0 OR K=1.
+C
+C     ...EXIT
+         IF (K .EQ. 0) GO TO 200
+         IF (K .GT. 1) GO TO 20
+            KPVT(1) = 1
+            IF (A(1,1) .EQ. 0.0E0) INFO = 1
+C     ......EXIT
+            GO TO 200
+   20    CONTINUE
+C
+C        THIS SECTION OF CODE DETERMINES THE KIND OF
+C        ELIMINATION TO BE PERFORMED.  WHEN IT IS COMPLETED,
+C        KSTEP WILL BE SET TO THE SIZE OF THE PIVOT BLOCK, AND
+C        SWAP WILL BE SET TO .TRUE. IF AN INTERCHANGE IS
+C        REQUIRED.
+C
+         KM1 = K - 1
+         ABSAKK = ABS(A(K,K))
+C
+C        DETERMINE THE LARGEST OFF-DIAGONAL ELEMENT IN
+C        COLUMN K.
+C
+         IMAX = ISAMAX(K-1,A(1,K),1)
+         COLMAX = ABS(A(IMAX,K))
+         IF (ABSAKK .LT. ALPHA*COLMAX) GO TO 30
+            KSTEP = 1
+            SWAP = .FALSE.
+         GO TO 90
+   30    CONTINUE
+C
+C           DETERMINE THE LARGEST OFF-DIAGONAL ELEMENT IN
+C           ROW IMAX.
+C
+            ROWMAX = 0.0E0
+            IMAXP1 = IMAX + 1
+            DO 40 J = IMAXP1, K
+               ROWMAX = AMAX1(ROWMAX,ABS(A(IMAX,J)))
+   40       CONTINUE
+            IF (IMAX .EQ. 1) GO TO 50
+               JMAX = ISAMAX(IMAX-1,A(1,IMAX),1)
+               ROWMAX = AMAX1(ROWMAX,ABS(A(JMAX,IMAX)))
+   50       CONTINUE
+            IF (ABS(A(IMAX,IMAX)) .LT. ALPHA*ROWMAX) GO TO 60
+               KSTEP = 1
+               SWAP = .TRUE.
+            GO TO 80
+   60       CONTINUE
+            IF (ABSAKK .LT. ALPHA*COLMAX*(COLMAX/ROWMAX)) GO TO 70
+               KSTEP = 1
+               SWAP = .FALSE.
+            GO TO 80
+   70       CONTINUE
+               KSTEP = 2
+               SWAP = IMAX .NE. KM1
+   80       CONTINUE
+   90    CONTINUE
+         IF (AMAX1(ABSAKK,COLMAX) .NE. 0.0E0) GO TO 100
+C
+C           COLUMN K IS ZERO.  SET INFO AND ITERATE THE LOOP.
+C
+            KPVT(K) = K
+            INFO = K
+         GO TO 190
+  100    CONTINUE
+         IF (KSTEP .EQ. 2) GO TO 140
+C
+C           1 X 1 PIVOT BLOCK.
+C
+            IF (.NOT.SWAP) GO TO 120
+C
+C              PERFORM AN INTERCHANGE.
+C
+               CALL SSWAP(IMAX,A(1,IMAX),1,A(1,K),1)
+               DO 110 JJ = IMAX, K
+                  J = K + IMAX - JJ
+                  T = A(J,K)
+                  A(J,K) = A(IMAX,J)
+                  A(IMAX,J) = T
+  110          CONTINUE
+  120       CONTINUE
+C
+C           PERFORM THE ELIMINATION.
+C
+            DO 130 JJ = 1, KM1
+               J = K - JJ
+               MULK = -A(J,K)/A(K,K)
+               T = MULK
+               CALL SAXPY(J,T,A(1,K),1,A(1,J),1)
+               A(J,K) = MULK
+  130       CONTINUE
+C
+C           SET THE PIVOT ARRAY.
+C
+            KPVT(K) = K
+            IF (SWAP) KPVT(K) = IMAX
+         GO TO 190
+  140    CONTINUE
+C
+C           2 X 2 PIVOT BLOCK.
+C
+            IF (.NOT.SWAP) GO TO 160
+C
+C              PERFORM AN INTERCHANGE.
+C
+               CALL SSWAP(IMAX,A(1,IMAX),1,A(1,K-1),1)
+               DO 150 JJ = IMAX, KM1
+                  J = KM1 + IMAX - JJ
+                  T = A(J,K-1)
+                  A(J,K-1) = A(IMAX,J)
+                  A(IMAX,J) = T
+  150          CONTINUE
+               T = A(K-1,K)
+               A(K-1,K) = A(IMAX,K)
+               A(IMAX,K) = T
+  160       CONTINUE
+C
+C           PERFORM THE ELIMINATION.
+C
+            KM2 = K - 2
+            IF (KM2 .EQ. 0) GO TO 180
+               AK = A(K,K)/A(K-1,K)
+               AKM1 = A(K-1,K-1)/A(K-1,K)
+               DENOM = 1.0E0 - AK*AKM1
+               DO 170 JJ = 1, KM2
+                  J = KM1 - JJ
+                  BK = A(J,K)/A(K-1,K)
+                  BKM1 = A(J,K-1)/A(K-1,K)
+                  MULK = (AKM1*BK - BKM1)/DENOM
+                  MULKM1 = (AK*BKM1 - BK)/DENOM
+                  T = MULK
+                  CALL SAXPY(J,T,A(1,K),1,A(1,J),1)
+                  T = MULKM1
+                  CALL SAXPY(J,T,A(1,K-1),1,A(1,J),1)
+                  A(J,K) = MULK
+                  A(J,K-1) = MULKM1
+  170          CONTINUE
+  180       CONTINUE
+C
+C           SET THE PIVOT ARRAY.
+C
+            KPVT(K) = 1 - K
+            IF (SWAP) KPVT(K) = -IMAX
+            KPVT(K-1) = KPVT(K)
+  190    CONTINUE
+         K = K - KSTEP
+      GO TO 10
+  200 CONTINUE
+      RETURN
+      END
+*SSWAP
+      SUBROUTINE SSWAP (N,SX,INCX,SY,INCY)
+C
+C     INTERCHANGE SINGLE PRECISION SX AND SINGLE PRECISION SY.
+C     FOR I = 0 TO N-1, INTERCHANGE  SX(LX+I*INCX) AND SY(LY+I*INCY),
+C     WHERE LX = 1 IF INCX .GE. 0, ELSE LX = (-INCX)*N, AND LY IS
+C     DEFINED IN A SIMILAR WAY USING INCY.
+C
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER INCX,INCY,N
+C
+C  ARRAY ARGUMENTS
+      REAL SX(*),SY(*)
+C
+C  LOCAL SCALARS
+      REAL STEMP1,STEMP2,STEMP3
+      INTEGER I,IX,IY,M,MP1,NS
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+C
+      IF(N.LE.0)RETURN
+      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
+    5 CONTINUE
+C
+C       CODE FOR UNEQUAL OR NONPOSITIVE INCREMENTS.
+C
+      IX = 1
+      IY = 1
+      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
+      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
+      DO 10 I = 1,N
+        STEMP1 = SX(IX)
+        SX(IX) = SY(IY)
+        SY(IY) = STEMP1
+        IX = IX + INCX
+        IY = IY + INCY
+   10 CONTINUE
+      RETURN
+C
+C       CODE FOR BOTH INCREMENTS EQUAL TO 1
+C
+C
+C       CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 3.
+C
+   20 M = MOD(N,3)
+      IF( M .EQ. 0 ) GO TO 40
+      DO 30 I = 1,M
+        STEMP1 = SX(I)
+        SX(I) = SY(I)
+        SY(I) = STEMP1
+   30 CONTINUE
+      IF( N .LT. 3 ) RETURN
+   40 MP1 = M + 1
+      DO 50 I = MP1,N,3
+        STEMP1 = SX(I)
+        STEMP2 = SX(I+1)
+        STEMP3 = SX(I+2)
+        SX(I) = SY(I)
+        SX(I+1) = SY(I+1)
+        SX(I+2) = SY(I+2)
+        SY(I) = STEMP1
+        SY(I+1) = STEMP2
+        SY(I+2) = STEMP3
+   50 CONTINUE
+      RETURN
+   60 CONTINUE
+C
+C     CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
+C
+      NS = N*INCX
+        DO 70 I=1,NS,INCX
+        STEMP1 = SX(I)
+        SX(I) = SY(I)
+        SY(I) = STEMP1
+   70   CONTINUE
+      RETURN
+      END
+*STRCO
+      SUBROUTINE STRCO(T,LDT,N,RCOND,Z,JOB)
+C***BEGIN PROLOGUE  STRCO
+C***DATE WRITTEN   780814   (YYMMDD)
+C***REVISION DATE  820801   (YYMMDD)
+C***CATEGORY NO.  D2A3
+C***KEYWORDS  CONDITION,FACTOR,LINEAR ALGEBRA,LINPACK,MATRIX,TRIANGULAR
+C***AUTHOR  MOLER, C. B., (U. OF NEW MEXICO)
+C***PURPOSE  ESTIMATES THE CONDITION OF A REAL TRIANGULAR MATRIX.
+C***DESCRIPTION
+C     STRCO ESTIMATES THE CONDITION OF A REAL TRIANGULAR MATRIX.
+C     ON ENTRY
+C        T       REAL(LDT,N)
+C                T CONTAINS THE TRIANGULAR MATRIX.  THE ZERO
+C                ELEMENTS OF THE MATRIX ARE NOT REFERENCED, AND
+C                THE CORRESPONDING ELEMENTS OF THE ARRAY CAN BE
+C                USED TO STORE OTHER INFORMATION.
+C        LDT     INTEGER
+C                LDT IS THE LEADING DIMENSION OF THE ARRAY T.
+C        N       INTEGER
+C                N IS THE ORDER OF THE SYSTEM.
+C        JOB     INTEGER
+C                = 0         T  IS LOWER TRIANGULAR.
+C                = NONZERO   T  IS UPPER TRIANGULAR.
+C     ON RETURN
+C        RCOND   REAL
+C                AN ESTIMATE OF THE RECIPROCAL CONDITION OF  T .
+C                FOR THE SYSTEM  T*X = B , RELATIVE PERTURBATIONS
+C                IN  T  AND  B  OF SIZE  EPSILON  MAY CAUSE
+C                RELATIVE PERTURBATIONS IN  X  OF SIZE  EPSILON/RCOND .
+C                IF  RCOND  IS SO SMALL THAT THE LOGICAL EXPRESSION
+C                           1.0 + RCOND .EQ. 1.0
+C                IS TRUE, THEN  T  MAY BE SINGULAR TO WORKING
+C                PRECISION.  IN PARTICULAR,  RCOND  IS ZERO  IF
+C                EXACT SINGULARITY IS DETECTED OR THE ESTIMATE
+C                UNDERFLOWS.
+C        Z       REAL(N)
+C                A WORK VECTOR WHOSE CONTENTS ARE USUALLY UNIMPORTANT.
+C                IF  T  IS CLOSE TO A SINGULAR MATRIX, THEN  Z  IS
+C                AN APPROXIMATE NULL VECTOR IN THE SENSE THAT
+C                NORM(A*Z) = RCOND*NORM(A)*NORM(Z) .
+C     LINPACK.  THIS VERSION DATED 08/14/78 .
+C     CLEVE MOLER, UNIVERSITY OF NEW MEXICO, ARGONNE NATIONAL LAB.
+C***REFERENCES  DONGARRA J.J., BUNCH J.R., MOLER C.B., STEWART G.W.,
+C                 *LINPACK USERS  GUIDE*, SIAM, 1979.
+C***ROUTINES CALLED  SASUM,SAXPY,SSCAL
+C***END PROLOGUE  STRCO
+
+C...SCALAR ARGUMENTS
+      REAL RCOND
+      INTEGER
+     +   JOB,LDT,N
+
+C...ARRAY ARGUMENTS
+      REAL T(LDT,*),Z(*)
+
+C...LOCAL SCALARS
+      REAL EK,S,SM,TNORM,W,WK,WKM,YNORM
+      INTEGER
+     +   I1,J,J1,J2,K,KK,L
+      LOGICAL
+     +   LOWER
+
+C...EXTERNAL FUNCTIONS
+      REAL SASUM
+      EXTERNAL
+     +   SASUM
+
+C...EXTERNAL SUBROUTINES
+      EXTERNAL
+     +   SAXPY,SSCAL
+
+C...INTRINSIC FUNCTIONS
+      INTRINSIC
+     +   ABS,AMAX1,SIGN
+
+
+C***FIRST EXECUTABLE STATEMENT  STRCO
+
+
+      LOWER = JOB .EQ. 0
+
+C     COMPUTE 1-NORM OF T
+
+      TNORM = 0.0E0
+      DO 10 J = 1, N
+         L = J
+         IF (LOWER) L = N + 1 - J
+         I1 = 1
+         IF (LOWER) I1 = J
+         TNORM = AMAX1(TNORM,SASUM(L,T(I1,J),1))
+   10 CONTINUE
+
+C     RCOND = 1/(NORM(T)*(ESTIMATE OF NORM(INVERSE(T)))) .
+C     ESTIMATE = NORM(Z)/NORM(Y) WHERE  T*Z = Y  AND  TRANS(T)*Y = E .
+C     TRANS(T)  IS THE TRANSPOSE OF T .
+C     THE COMPONENTS OF  E  ARE CHOSEN TO CAUSE MAXIMUM LOCAL
+C     GROWTH IN THE ELEMENTS OF Y .
+C     THE VECTORS ARE FREQUENTLY RESCALED TO AVOID OVERFLOW.
+
+C     SOLVE TRANS(T)*Y = E
+
+      EK = 1.0E0
+      DO 20 J = 1, N
+         Z(J) = 0.0E0
+   20 CONTINUE
+      DO 100 KK = 1, N
+         K = KK
+         IF (LOWER) K = N + 1 - KK
+         IF (Z(K) .NE. 0.0E0) EK = SIGN(EK,-Z(K))
+         IF (ABS(EK-Z(K)) .LE. ABS(T(K,K))) GO TO 30
+            S = ABS(T(K,K))/ABS(EK-Z(K))
+            CALL SSCAL(N,S,Z,1)
+            EK = S*EK
+   30    CONTINUE
+         WK = EK - Z(K)
+         WKM = -EK - Z(K)
+         S = ABS(WK)
+         SM = ABS(WKM)
+         IF (T(K,K) .EQ. 0.0E0) GO TO 40
+            WK = WK/T(K,K)
+            WKM = WKM/T(K,K)
+         GO TO 50
+   40    CONTINUE
+            WK = 1.0E0
+            WKM = 1.0E0
+   50    CONTINUE
+         IF (KK .EQ. N) GO TO 90
+            J1 = K + 1
+            IF (LOWER) J1 = 1
+            J2 = N
+            IF (LOWER) J2 = K - 1
+            DO 60 J = J1, J2
+               SM = SM + ABS(Z(J)+WKM*T(K,J))
+               Z(J) = Z(J) + WK*T(K,J)
+               S = S + ABS(Z(J))
+   60       CONTINUE
+            IF (S .GE. SM) GO TO 80
+               W = WKM - WK
+               WK = WKM
+               DO 70 J = J1, J2
+                  Z(J) = Z(J) + W*T(K,J)
+   70          CONTINUE
+   80       CONTINUE
+   90    CONTINUE
+         Z(K) = WK
+  100 CONTINUE
+      S = 1.0E0/SASUM(N,Z,1)
+      CALL SSCAL(N,S,Z,1)
+
+      YNORM = 1.0E0
+
+C     SOLVE T*Z = Y
+
+      DO 130 KK = 1, N
+         K = N + 1 - KK
+         IF (LOWER) K = KK
+         IF (ABS(Z(K)) .LE. ABS(T(K,K))) GO TO 110
+            S = ABS(T(K,K))/ABS(Z(K))
+            CALL SSCAL(N,S,Z,1)
+            YNORM = S*YNORM
+  110    CONTINUE
+         IF (T(K,K) .NE. 0.0E0) Z(K) = Z(K)/T(K,K)
+         IF (T(K,K) .EQ. 0.0E0) Z(K) = 1.0E0
+         I1 = 1
+         IF (LOWER) I1 = K + 1
+         IF (KK .GE. N) GO TO 120
+            W = -Z(K)
+            CALL SAXPY(N-KK,W,T(I1,K),1,Z(I1),1)
+  120    CONTINUE
+  130 CONTINUE
+C     MAKE ZNORM = 1.0
+      S = 1.0E0/SASUM(N,Z,1)
+      CALL SSCAL(N,S,Z,1)
+      YNORM = S*YNORM
+
+      IF (TNORM .NE. 0.0E0) RCOND = YNORM/TNORM
+      IF (TNORM .EQ. 0.0E0) RCOND = 0.0E0
+      RETURN
+      END
+*STRDI
+      SUBROUTINE STRDI(T,LDT,N,DET,JOB,INFO)
+C
+C  VARIABLE DECLARATIONS
+C
+C  SCALAR ARGUMENTS
+      INTEGER INFO,JOB,LDT,N
+C
+C  ARRAY ARGUMENTS
+      REAL DET(2),T(LDT,*)
+C
+C  LOCAL SCALARS
+      REAL TEMP,TEN
+      INTEGER I,J,K,KB,KM1,KP1
+C
+C  EXTERNAL SUBROUTINES
+      EXTERNAL SAXPY,SSCAL
+C
+C  INTRINSIC FUNCTIONS
+      INTRINSIC ABS,MOD
+C
+C
+C     STRDI COMPUTES THE DETERMINANT AND INVERSE OF A REAL
+C     TRIANGULAR MATRIX.
+C
+C     ON ENTRY
+C
+C        T       REAL(LDT,N)
+C                T CONTAINS THE TRIANGULAR MATRIX. THE ZERO
+C                ELEMENTS OF THE MATRIX ARE NOT REFERENCED, AND
+C                THE CORRESPONDING ELEMENTS OF THE ARRAY CAN BE
+C                USED TO STORE OTHER INFORMATION.
+C
+C        LDT     INTEGER
+C                LDT IS THE LEADING DIMENSION OF THE ARRAY T.
+C
+C        N       INTEGER
+C                N IS THE ORDER OF THE SYSTEM.
+C
+C        JOB     INTEGER
+C                = 010       NO DET, INVERSE OF LOWER TRIANGULAR.
+C                = 011       NO DET, INVERSE OF UPPER TRIANGULAR.
+C                = 100       DET, NO INVERSE.
+C                = 110       DET, INVERSE OF LOWER TRIANGULAR.
+C                = 111       DET, INVERSE OF UPPER TRIANGULAR.
+C
+C     ON RETURN
+C
+C        T       INVERSE OF ORIGINAL MATRIX IF REQUESTED.
+C                OTHERWISE UNCHANGED.
+C
+C        DET     REAL(2)
+C                DETERMINANT OF ORIGINAL MATRIX IF REQUESTED.
+C                OTHERWISE NOT REFERENCED.
+C                DETERMINANT = DET(1) * 10.0**DET(2)
+C                WITH  1.0 .LE. ABS(DET(1)) .LT. 10.0
+C                OR  DET(1) .EQ. 0.0 .
+C
+C        INFO    INTEGER
+C                INFO CONTAINS ZERO IF THE SYSTEM IS NONSINGULAR
+C                AND THE INVERSE IS REQUESTED.
+C                OTHERWISE INFO CONTAINS THE INDEX OF
+C                A ZERO DIAGONAL ELEMENT OF T.
+C
+C
+C     LINPACK. THIS VERSION DATED 08/14/78 .
+C     CLEVE MOLER, UNIVERSITY OF NEW MEXICO, ARGONNE NATIONAL LAB.
+C
+C     SUBROUTINES AND FUNCTIONS
+C
+C     BLAS SAXPY,SSCAL
+C     FORTRAN ABS,MOD
+C
+C     BEGIN BLOCK PERMITTING ...EXITS TO 180
+C
+C        COMPUTE DETERMINANT
+C
+         IF (JOB/100 .EQ. 0) GO TO 70
+            DET(1) = 1.0E0
+            DET(2) = 0.0E0
+            TEN = 10.0E0
+            DO 50 I = 1, N
+               DET(1) = T(I,I)*DET(1)
+C           ...EXIT
+               IF (DET(1) .EQ. 0.0E0) GO TO 60
+   10          IF (ABS(DET(1)) .GE. 1.0E0) GO TO 20
+                  DET(1) = TEN*DET(1)
+                  DET(2) = DET(2) - 1.0E0
+               GO TO 10
+   20          CONTINUE
+   30          IF (ABS(DET(1)) .LT. TEN) GO TO 40
+                  DET(1) = DET(1)/TEN
+                  DET(2) = DET(2) + 1.0E0
+               GO TO 30
+   40          CONTINUE
+   50       CONTINUE
+   60       CONTINUE
+   70    CONTINUE
+C
+C        COMPUTE INVERSE OF UPPER TRIANGULAR
+C
+         IF (MOD(JOB/10,10) .EQ. 0) GO TO 170
+            IF (MOD(JOB,10) .EQ. 0) GO TO 120
+C              BEGIN BLOCK PERMITTING ...EXITS TO 110
+                  DO 100 K = 1, N
+                     INFO = K
+C              ......EXIT
+                     IF (T(K,K) .EQ. 0.0E0) GO TO 110
+                     T(K,K) = 1.0E0/T(K,K)
+                     TEMP = -T(K,K)
+                     CALL SSCAL(K-1,TEMP,T(1,K),1)
+                     KP1 = K + 1
+                     IF (N .LT. KP1) GO TO 90
+                     DO 80 J = KP1, N
+                        TEMP = T(K,J)
+                        T(K,J) = 0.0E0
+                        CALL SAXPY(K,TEMP,T(1,K),1,T(1,J),1)
+   80                CONTINUE
+   90                CONTINUE
+  100             CONTINUE
+                  INFO = 0
+  110          CONTINUE
+            GO TO 160
+  120       CONTINUE
+C
+C              COMPUTE INVERSE OF LOWER TRIANGULAR
+C
+               DO 150 KB = 1, N
+                  K = N + 1 - KB
+                  INFO = K
+C     ............EXIT
+                  IF (T(K,K) .EQ. 0.0E0) GO TO 180
+                  T(K,K) = 1.0E0/T(K,K)
+                  TEMP = -T(K,K)
+                  IF (K .NE. N) CALL SSCAL(N-K,TEMP,T(K+1,K),1)
+                  KM1 = K - 1
+                  IF (KM1 .LT. 1) GO TO 140
+                  DO 130 J = 1, KM1
+                     TEMP = T(K,J)
+                     T(K,J) = 0.0E0
+                     CALL SAXPY(N-K+1,TEMP,T(K,K),1,T(K,J),1)
+  130             CONTINUE
+  140             CONTINUE
+  150          CONTINUE
+               INFO = 0
+  160       CONTINUE
+  170    CONTINUE
+  180 CONTINUE
+      RETURN
+      END

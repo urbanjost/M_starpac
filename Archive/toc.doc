@@ -1,0 +1,81 @@
+ STARPAC 2.08 -- The Standards Time Series and Regression Package
+
+
+ Direct questions to
+
+      Janet R. Donaldson
+      Optimization Group/Applied and Computational Mathematics Division (719)
+      National Institute of Standards and Technology
+      325 Broadway
+      Boulder, CO 80303-3328
+      (303) 497-5114
+      e-mail:  internet -- jrd@cam.nist.gov
+               bitnet   -- jrd@nistcs2
+
+
+ *** PHYSICAL CHARACTERISTICS OF TAPE
+
+      A.  ASCII character set.
+      B.  1600 cpi density.
+      C.  Unlabeled.
+      D.  11 files, each terminated by tapemarks.
+      E.  Additional tapemark follows tapemark of last file.
+      F.  Files consist of 1 or more blocks (physical records).
+      G.  Files 1 to 9 have blocks of
+          45 line images (logical records) of 80 characters each,
+          i.e., 3600 characters;
+      H.  Files 10 and 11 have blocks of
+          20 line images (logical records) of 132 characters each,
+          i.e., 2640 characters;
+      I.  Last block of a file may contain fewer than the specified number of
+          line images, in which case it is short, not blank filled.
+
+
+
+ *** TAPE CONTENTS
+
+ File No.  File Id.       Description
+ --------  -----------    -----------
+
+        1  TOC.DOC      - tape characteristics, file structure and
+                          table of contents
+                          (line image length = 80, block size = 3600)
+
+        2  INSTALL.DOC  - this installation manual
+                          (line image length = 80, block size = 3600)
+
+        3  S_SRCE.FOR   - single precision STARPAC 2.08 source code, excluding
+                          code from various public domain sources
+                          (line image length = 80, block size = 3600)
+
+        4  S_NL2SOL.FOR - single precision STARPAC 2.08 source code from NL2SOL
+                          (line image length = 80, block size = 3600)
+
+        5  D_SRCE.FOR   - double precision STARPAC 2.08 source code, excluding
+                          code from various public domain sources
+                          (line image length = 80, block size = 3600)
+
+        6  D_NL2SOL.FOR - double precision STARPAC 2.08 source code from NL2SOL
+                          (line image length = 80, block size = 3600)
+
+        7  MISC.FOR     - single and double precision subprograms from
+                          miscellaneous public domain sources, but excluding
+                          code from NL2SOL, LINPACK and BLAS and excluding
+                          subprograms supplying machine dependent constants
+                          (line image length = 80, block size = 3600)
+
+        8  LPK_BLS.FOR  - single and double precision subprograms
+                          from LINPACK and BLAS
+                          (line image length = 80, block size = 3600)
+
+        9  MDC.FOR      - single and double precision subprograms supplying
+                          machine dependent constants
+                          (line image length = 80, block size = 3600)
+
+       10  TEST.OUT     - results of test subprograms
+                          (line image length = 132, block size = 2640)
+
+       11  GUIDE.DOC    - STARPAC 2.08 user documentation,
+                          in line printer format
+                          (line image length = 132, block size = 2640)
+

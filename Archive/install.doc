@@ -1,0 +1,1210 @@
+1                            Installation Document
+                                      for
+                                 STARPAC 2.08
+
+
+                     John E. Koontz and Janet R. Donaldson
+                  Center for Computing and Applied Mathematics
+                 National Institute of Standards and Technology
+                  (Formerly the National Bureau of Standards)
+
+
+
+                      Please direct STARPAC enquiries to:
+
+                               Janet R. Donaldson
+                 National Institute of Standards and Technology
+                                 Mail Code 719
+                                  325 Broadway
+                             Boulder, CO 80303-3328
+
+                          303-497-5114 (FTS 320-5114)
+               Internet:  jrd@cam.nist.gov;  Bitnet:  jrd@nistcs2
+
+
+                                   Disclaimer
+
+ Certain computer equipment is identified in this document in order to describe
+ the installation procedure adequately.  Such identification does not imply
+ recommendation or endorsement by the National Institute of Standards and
+ Technology, nor does it imply that the equipment identified is necessarily the
+ best available for the purpose.
+
+ No warranties, express or implied, are made by the distributors or developers
+ that STARPAC or its constituent parts are free of error.  They should not be
+ relied upon as the sole basis for solving a problem whose incorrect solution
+ could result in injury to person or property.  If the programs are employed in
+ such a manner, it is at the user's own risk and the distributors and
+ developers disclaim all liability for such misuse.
+
+
+                                    Contents
+
+ 1.  Preliminaries
+ 2.  Installation Procedure
+     Step 1:  Prepare for Updates and Modifications
+     Step 2:  Select Single or Double Precision Version
+     Step 3:  Remove STARPAC Code Already Available on Target System
+     Step 4:  Set Necessary Machine Dependent Values
+     Step 5:  Compile STARPAC and Create Object-Code Library
+     Step 6:  Test STARPAC
+     Step 7:  Set Up Public Interface
+     Step 8:  Set Up Distributor Interface
+ 3.  Updates
+ 4.  STARPAC User's Guide
+ 5.  Information for Advisers
+ 6.  STARPAC Contacts
+ 7.  Acknowledgments
+ Appendix A:  STARPAC Portability
+      A.1  Language Compatibility
+      A.2  Handling of Floating Point Underflow
+      A.3  Operating System Compatibility
+      A.4  STARPAC Output Characteristics
+      A.5  STARPAC Compatibility with Other Software
+ Appendix B:  Comparing STARPAC Test Results
+ Appendix C:  Systems Running STARPAC
+ References
+ STARPAC Release Installation Registration Form
+
+
+                               1.  Preliminaries
+
+ STARPAC, an improved descendent of STATLIB 2 [Tryon and Donaldson, 1978], is a
+ library of portable Fortran subprograms for conducting statistical analysis.
+ STARPAC consists of groups of subprograms, each group dealing with a
+ particular analysis task, for example, nonlinear regression.  Within each
+ group there are some subprograms with brief argument lists, and others with
+ more extended lists.  The subprograms with brief argument lists require little
+ more than the data as input arguments and return only the most basic results
+ as output arguments, with default control values determining the details of
+ the computation of the results and the printing of the report.  The
+ subprograms with more extended argument lists include the control values as
+ input arguments and return additional results.
+
+ STARPAC has the following features.
+
+ 1.  It is portable.  It should be possible to install it on any system with a
+     Fortran 77 compiler, an object-code library facility (see section 2, step
+     5), adequate memory, and a printer with 132 characters per line (carriage
+     control included).
+
+ 2.  It is easy to use, performing extensive error checking and providing
+     comprehensive printed reports.
+
+ 3.  It has good user documentation, which is available on-line.
+
+ 4.  It uses reliable numerical algorithms.
+
+ 5.  It has no restrictions on problem size other than effective machine size.
+
+ 6.  It can be used with most other Fortran-callable subprogram libraries
+     including IMSL [IMSL, 1982], LINPACK [Dongarra et al., 1980], and others.
+
+ 7.  It can be used with the user's own Fortran code, for example, special
+     data transformations or model functions.
+
+ The current STARPAC release is STARPAC 2.08, which contains subprogram
+ groups for performing time series analysis and nonlinear least squares
+ regression, as well as normal random number generation, line printer plots,
+ basic statistical analyses, and linear least squares.  This version
+ supersedes all earlier versions of STARPAC, including STARPAC 1, which
+ contained only the nonlinear least squares portion of STARPAC 2.08.
+
+ This document explains the layout of the STARPAC release, and provides
+ installation instructions as well as supplemental material which the
+ installer may find useful.  Section 5 may also be of use to STARPAC users and
+ could be included in the installer's local documentation.
+
+ The release tape includes all materials and code necessary to install
+ STARPAC.
+
+
+ *** PHYSICAL CHARACTERISTICS OF TAPE
+
+      A.  ASCII character set.
+      B.  1600 cpi density.
+      C.  Unlabeled.
+      D.  11 files, each terminated by tapemarks.
+      E.  Additional tapemark follows tapemark of last file.
+      F.  Files consist of 1 or more blocks (physical records).
+      G.  Files 1 to 9 have blocks of
+          45 line images (logical records) of 80 characters each,
+          i.e., 3600 characters;
+      H.  Files 10 and 11 have blocks of
+          20 line images (logical records) of 132 characters each,
+          i.e., 2640 characters;
+      I.  Last block of a file may contain fewer than the specified number of
+          line images, in which case it is short, not blank filled.
+
+
+
+ *** TAPE CONTENTS
+
+ File No.  File Id.       Description
+ --------  -----------    -----------
+
+        1  TOC.DOC      - tape characteristics, file structure and
+                          table of contents
+                          (line image length = 80, block size = 3600)
+
+        2  INSTALL.DOC  - this installation manual
+                          (line image length = 80, block size = 3600)
+
+        3  S_SRCE.FOR   - single precision STARPAC 2.08 source code, excluding
+                          code from various public domain sources
+                          (line image length = 80, block size = 3600)
+
+        4  S_NL2SOL.FOR - single precision STARPAC 2.08 source code from NL2SOL
+                          (line image length = 80, block size = 3600)
+
+        5  D_SRCE.FOR   - double precision STARPAC 2.08 source code, excluding
+                          code from various public domain sources
+                          (line image length = 80, block size = 3600)
+
+        6  D_NL2SOL.FOR - double precision STARPAC 2.08 source code from NL2SOL
+                          (line image length = 80, block size = 3600)
+
+        7  MISC.FOR     - single and double precision subprograms from
+                          miscellaneous public domain sources, but excluding
+                          code from NL2SOL, LINPACK and BLAS and excluding
+                          subprograms supplying machine dependent constants
+                          (line image length = 80, block size = 3600)
+
+        8  LPK_BLS.FOR  - single and double precision subprograms
+                          from LINPACK and BLAS
+                          (line image length = 80, block size = 3600)
+
+        9  MDC.FOR      - single and double precision subprograms supplying
+                          machine dependent constants
+                          (line image length = 80, block size = 3600)
+
+       10  TEST.OUT     - results of test subprograms
+                          (line image length = 132, block size = 2640)
+
+       11  GUIDE.DOC    - STARPAC 2.08 user documentation,
+                          in line printer format
+                          (line image length = 132, block size = 2640)
+
+
+ In the remaining sections, the information necessary to install and support
+ STARPAC 2.08 is supplied.  Section 2 provides a step by step description of
+ the installation procedure.  Section 3 describes the update procedure that
+ will be used for future modifications and additions, and section 4 describes
+ the STARPAC user documentation.  Section 5 lists information we believe will
+ be useful for the local STARPAC advisors, and section 6 lists the names and
+ addresses of STARPAC contacts at the National Institute of Standards and
+ Technology.  The public domain software used by STARPAC is acknowledged in
+ section 7.  In appendix A, we summarize STARPAC characteristics which may
+ affect portability, and in appendix B we provide information which should
+ help installers determine whether differences they observe between their
+ STARPAC output and that obtained by us are significant.  Finally, in appendix
+ C we list systems running STARPAC.
+
+
+                           2.  Installation Procedure
+
+ STARPAC and its constituent parts are written in Fortran as defined in the
+ 1978 standard (ANSI X3.9-1978) [ANSI, 1978], commonly called Fortran 77.  (The
+ terms "Fortran V" or "Fortran 5" are occasionally used as synonyms, but may
+ refer instead to "enhanced Fortran IV.") We believe that STARPAC is compatible
+ with the ANSI X3.9-1978 full language standard.  However, before carrying out
+ the installation procedure, it may be useful to glance at appendix A, which
+ surveys some potential installation problems.
+
+
+ Step 1:  Prepare for Updates and Modifications
+
+ It is an unfortunate fact of computing that code always requires some
+ modification during its lifetime.  Since STARPAC requires that a few
+ modifications be made during the initial installation, we recommend that a
+ maintenance system be organized as the first step of the STARPAC installation
+ process.  If possible, the installers should set up such a system for the
+ STARPAC source code and object code to make it easy to retrieve and modify
+ individual subprograms.  The details of this will depend on the target
+ system.  On Cyber computers running NOS, for example, the source code could
+ be maintained in UPDATE or MODIFY format, and the object code could be
+ handled with LIBEDIT.
+
+ Note that the subprograms in each source code file are ordered alphabetically,
+ and that each STARPAC subprogram begins with a comment line consisting of an
+ asterisk followed immediately by the subprogram name, i.e., *name.  (This is
+ the only use of an asterisk in column 1 of the STARPAC source code.) This is
+ done to facilitate the creation of the maintenance system and to aid the
+ installer in separating the subprograms.  For example, the following Fortran
+ program could be used to split source code file D_SRCE.FOR.
+
+      PROGRAM FSPLIT
+      CHARACTER TEST1*1,TEST2*6,LINE*73
+      INTEGER IUNIT1,IUNIT2,LAST
+
+      IUNIT1 = 30
+      IUNIT2 = 31
+
+      OPEN (UNIT=IUNIT1,FILE='D_SRCE.FOR')
+
+      READ (UNIT=IUNIT1,FMT=1000,END=999) TEST1,TEST2,LINE
+      LAST = INDEX(TEST2,' ')-1
+      IF (LAST.LE.0) LAST = 6
+      OPEN (UNIT=IUNIT2,FILE=TEST2(1:LAST)//'.FOR')
+      WRITE (UNIT=IUNIT2,FMT=1000) TEST1,TEST2,LINE
+
+  100 READ (UNIT=IUNIT1,FMT=1000,END=999) TEST1,TEST2,LINE
+      IF (TEST1.EQ.'*') THEN
+         CLOSE (UNIT=IUNIT2)
+         LAST = INDEX(TEST2,' ')-1
+         IF (LAST.LE.0) LAST = 6
+         OPEN (UNIT=IUNIT2,FILE=TEST2(1:LAST)//'.FOR')
+      END IF
+      WRITE (UNIT=IUNIT2,FMT=1000) TEST1,TEST2,LINE
+      GO TO 100
+
+  999 CONTINUE
+      CLOSE (UNIT=IUNIT2)
+
+ 1000 FORMAT (A1,A6,A73)
+      END
+
+
+ Step 2:  Select Single or Double Precision Version
+
+ STARPAC is supplied in both single and double precision versions.  Both
+ versions are complete as they stand, and except for precision, the two
+ versions are identical.  Installers can use either precision version.  The
+ two versions cannot be used together, however, because the names of most of
+ the subprograms are the same in both versions.  Both versions are documented
+ in the STARPAC User's Guide.
+
+ Portions of STARPAC, for example the nonlinear least squares procedures, are
+ sensitive to the machine precision and require approximately 14 decimal
+ places for rational arithmetic.  Somewhat fewer places should still work, but
+ six or seven decimal places are definitely too few for general use.  For
+ these numerically sensitive procedures, only the simplest problems could be
+ solved correctly at such reduced precisions.
+
+ The installers must choose which version of STARPAC to install based upon
+ which version supplies adequate precision on the target machine.  As far as
+ we know, at present only CDC and Cray Fortrans offer sufficient precision to
+ permit general use of the single precision version of STARPAC.  For other
+ machines, we recommend general use of the double precision version only.
+
+ If both versions of STARPAC have sufficient precision on the installers'
+ machine, then both may be installed; however, since the bulk of the STARPAC
+ subprograms have identical names in both the single precision and double
+ precision versions, it will be necessary to keep the two versions of STARPAC
+ in separate libraries and to use them separately.  Note that when both the
+ single and double precision versions are available, there are likely to be
+ trade-offs between them.  The double precision version will offer greater
+ accuracy in results, while the single precision version will require less
+ storage and machine time.
+
+
+ Step 3:  Remove STARPAC Code Already Available on Target System
+
+ STARPAC 2.08 contains code written specifically for STARPAC, as well as a
+ variety of subprograms taken from public domain sources.  Files S_SRCE.FOR
+ and D_SRCE.FOR contain those subprograms written specifically for STARPAC;
+ files S_NL2SOL.FOR, D_NL2SOL.FOR, MISC.FOR, LPK_BLS.FOR and MDC.FOR contain
+ subprograms extracted from public domain sources.  Subprograms within the
+ first group must be used as supplied.  The installer may substitute already
+ available versions of subprograms in the second group, if desired, subject to
+ the limitations listed below.  We strongly advise, however, that STARPAC be
+ installed and tested first with the code supplied, so that the installer can
+ determine whether substitution results in any changes in STARPAC's behavior.
+ The subprograms taken from public domain sources are described in greater
+ detail below.
+
+ Files S_NL2SOL.FOR and D_NL2SOL.FOR contain single and double precision
+ versions, respectively, of the NL2SOL Adaptive Nonlinear Least Squares
+ Algorithm, developed by John E.  Dennis, Jr., David M.  Gay, and Roy E.
+ Welsch.  These subprograms supply the core of the STARPAC nonlinear
+ regression capabilities.  We use Version 2.2, obtained directly from David M.
+ Gay, with some minor changes made in the interest of increased portability.
+ We supply with this release of STARPAC the whole of NL2SOL Version 2.2, as
+ modified.  Users who wish to use it directly can do so as documented in
+ Dennis et al.  [1981a,b].  The NL2SOL developers have continued their work
+ since their release of version 2.2.  The most recent versions of NL2SOL
+ CANNOT be substituted directly for the version used in STARPAC, and we cannot
+ guarantee the compatibility of STARPAC with versions of NL2SOL other than
+ version 2.2.
+
+ File MISC.FOR contains single and double precision versions of a variety of
+ public domain subprograms, including subprograms from ACM Algorithm 528,
+ Framework for a Portable Library [Fox et al., 1978a,b] (excluding subprograms
+ D1MACH, I1MACH and R1MACH), and from the portable special function subprogram
+ library of Fullerton [1977].  These subprograms may be replaced with locally
+ available versions, if desired.
+
+ File LPK_BLS.FOR contains the subset of LINPACK [Dongarra et al., 1979] and
+ BLAS [Lawton et al., 1979a,b] subprograms specifically required by STARPAC.
+ If LINPACK and the BLAS have already been installed on the local system, the
+ previously installed subprograms may be freely substituted for the
+ subprograms supplied on the STARPAC tape.  This may be especially desirable
+ on machines for which optimized versions of LINPACK and BLAS exist.
+
+ File MDC.FOR contains the 3 subprograms, I1MACH, R1MACH and D1MACH, that
+ supply the machine-dependent constants necessary for the single and double
+ precision versions of STARPAC to run.  I1MACH, R1MACH and D1MACH are all part
+ of ACM Algorithm 528, Framework for a Portable Library [Fox et al., 1978a,b],
+ developed at Bell Laboratories.  If this code is already available on the
+ target machine, it should be possible to substitute the installed versions of
+ these subprograms instead of modifying the STARPAC versions as described in
+ the next step.  Installers must be careful, however, to verify that the
+ previously installed versions have not been extended so that they are
+ incompatible with the STARPAC versions.
+
+
+ Step 4:  Set Necessary Machine Dependent Values
+
+ STARPAC 2.08 has been designed so that the number of machine dependencies
+ that the installer must address are minimized.  For most sites, only the
+ three subprograms in file MDC.FOR must be modified for installation.
+ However, subprograms STKSET and GETPI in files S_SRCE.FOR and D_SRCE.FOR and
+ subprograms SNRM2 and DNRM2 in file LPK_BLS.FOR may also require modification.
+ These necessary and possible changes are described in detail below.
+
+ File MDC.FOR contains the 3 subprograms, I1MACH, R1MACH and D1MACH, that
+ supply the machine-dependent constants necessary for STARPAC to run.  As
+ stated in the previous step, these 3 subprograms are from ACM Algorithm 528,
+ developed at Bell Laboratories.  I1MACH supplies integer valued machine
+ dependent constants.  R1MACH, which is actually called only in the single
+ precision version of STARPAC, supplies single precision machine dependent
+ constants.  D1MACH, which is actually called only in the double precision
+ version of STARPAC, is the double precision equivalent of R1MACH.
+
+ As noted in the previous step, it may be possible to substitute a previously
+ installed version of these subprograms.  If these subprograms are not already
+ available on the target machine, the installer will have to update the
+ supplied versions so that they return the necessary values.  I1MACH, R1MACH
+ and D1MACH as supplied on the tape will return undefined values if they are
+ not updated.  All three subprograms are commented to describe the necessary
+ changes.  The required constants for a number of common machines are listed
+ in DATA statements in these subprograms.  If the target machine's constants
+ are available in this fashion, then all that is necessary is to uncomment the
+ relevant DATA statements.  If the target machine's constants are not already
+ listed in the DATA statements of these subprograms, then the installer will
+ need to obtain the appropriate values from local machine documentation, the
+ local systems group, or, if necessary, the machine's manufacturer.  WE CANNOT
+ HELP YOU DETERMINE THE NECESSARY VALUES.
+
+ Subprogram STKSET in files S_SRCE.FOR and D_SRCE.FOR supplies information on
+ the length in storage units of integer, logical, real, double precision, and
+ complex values.  STKSET assumes that integers, logicals, and reals are all
+ one storage unit long, and double precisions and complexes are two storage
+ units long.  Changes are only needed if these assumptions do not hold, which
+ is the case, for example, on some mini- and micro-computers.  STARPAC's
+ STKSET is based on the Framework subprograms ISTKIN and I0TK00 [Fox et al.,
+ 1978a,b].  The part that may require modification is from I0TK00.  The basis
+ for the assumptions in the original I0TK00 subprogram is explained in Fox et
+ al.  [1978a:  123-4].  An installed version of I0TK00 can supply a guideline
+ for changes to STKSET; otherwise rely on the comments in STKSET for help.
+ (Caution:  Do not simply insert a call to an available I0TK00.  Unlike
+ STKSET, I0TK00 does not reinitialize the stack when a second STARPAC
+ subprogram is called.)
+
+ Subprogram GETPI, also in files S_SRCE.FOR and D_SRCE.FOR, defines the
+ constant pi to 31 digits.  If the precision for STARPAC as installed on the
+ target machine exceeds 31 digits, GETPI should be altered appropriately.
+
+ Subprograms SNRM2 and DNRM2 in file LPK_BLS.FOR may also require
+ modification.  These two subprograms compute the L2 norm of a vector.  SNRM2
+ is called only in the single precision version of STARPAC, while DNRM2 is
+ called only in the double precision version.  They contain two constants,
+ CUTLO and CUTHI, which are defined for worst cases over a large and current
+ range of machines.
+
+      CUTLO = max(SQRT(U/EPS))
+            = 4.441E-16 (single precision)
+            = 8.232D-11 (double precision)
+      CUTHI = min(SQRT(V))
+            = 1.304E19 (single precision)
+            = 1.304D19 (double precision)
+
+      where
+
+              EPS = smallest number such that EPS + 1.0 > 1.0,
+              U   = smallest positive number (underflow limit),
+              V   = largest number (overflow limit).
+
+ It is not likely that the installers' machine will constitute a still worse
+ case, but, if it does, CUTLO and CUTHI should be redefined.  Note, however,
+ that SNRM2 and DNRM2 are both part of the BLAS [Lawton et al., 1979a,b].
+ Before considering changing SNRM2 or DMRM2, therefore, the installers should
+ determine whether or not the BLAS are installed on their machine already.  If
+ they are, then it should be possible to make use of the versions already
+ installed.  This is particularly useful if the installers' machine is one of
+ those for which specially optimized versions of the BLAS exist.  [See step 3
+ above.]
+
+ Note that a few other constants in the STARPAC code are carried only to a
+ limited number of places; consequently, results from calculations dependent
+ on these constants may not be accurate to more than approximately this number
+ of places.  At present, however, we know of no instances in which the
+ resultant accuracy is not adequate for STARPAC's purposes.
+
+
+ Step 5:  Compile STARPAC and Create Object-Code Library
+
+ The single and double precision versions of the STARPAC 2.08 source code are
+ each contained in 5 files.  For the single precision version, files
+ S_SRCE.FOR, S_NL2SOL.FOR, MISC.FOR, LPK_BLS.FOR and MDC.FOR should be used.
+ For the double precision version, files D_SRCE.FOR, D_NL2SOL.FOR, MISC.FOR,
+ LPK_BLS.FOR and MDC.FOR should be used.  In each case, the code must be
+ modified as described in steps 3 and 4 above.
+
+ In compiling STARPAC, we recommend that the following compiler options be
+ used if available.
+
+ 1.  Rounded arithmetic (optional with at least CDC compilers).
+
+ 2.  No subscript checking.  STARPAC contains correct subscript references
+     that access elements beyond the nominal upper limit of certain actual
+     parameter arrays.  Run-time subscript checking would produce a deluge of
+     incorrect run-time error messages.
+
+ 3.  The most extensive set of error messages possible.  In our experience it
+     is well worth hearing everything that a compiler has to say about imported
+     code.
+
+ Let us emphasize that we do not expect any problems with compilation.
+ Modification of some subprograms may be required, however, by features in the
+ installer's Fortran compiler or operating system.  Appendix A lists some
+ potential problems which the installer may have to address.
+
+ After the STARPAC code has been successfully compiled, a Fortran object-code
+ library must be created.  The term object-code library here refers to whatever
+ facility a system has for satisfying external references automatically at
+ load-time, using a collection of previously compiled subprograms.  The
+ existence of such a facility is essential to the convenient use of STARPAC,
+ since each user-callable STARPAC subprogram invokes a whole series of
+ additional subprograms.  A user would find it very awkward to deal with these
+ additional subprograms explicitly.
+
+ Note that the 5 files containing the STARPAC source code should be compiled
+ into a single library, not 5 separate libraries.  Creating 5 separate
+ libraries and linking them sequentially could result in unsatisfied externals
+ since in some instances subprograms in one file reference subprograms from
+ other files.
+
+
+ Step 6:  Test STARPAC
+
+ To make it possible to verify that STARPAC functions reasonably on the
+ installers' machine, we have included two sets of test subprograms in files
+ S_SRCE.FOR and D_SRCE.FOR.  The first set, which includes all subprograms in
+ these two files that begin with XX, e.g., subprogram XXCH1, provides a
+ minimal set of tests for determining that STARPAC is running properly.  The
+ second set, which includes all subprograms that begin with a single X, e.g.,
+ XACF, provides more extensive tests.  Only the first set is documented here.
+ Instructions for using the more extensive tests found in the second set are
+ available from us if the results from the first set are inconclusive or
+ suggest special problems.
+
+ Each test subprogram beginning with XX is associated with the subprograms
+ documented in a given chapter of the STARPAC User's Guide, one test
+ subprogram per chapter.  The output from these tests is provided in file
+ TEST.OUT, which contains Cyber 180/855 output from the single precision
+ version of STARPAC (machine precision c. 14 decimal places).
+
+ The STARPAC test subprograms should be invoked using a program of the form
+
+      PARAMETER (LDSTAK=3000)
+      DOUBLE PRECISION DSTAK(LDSTAK)
+      COMMON /CSTAK/ DSTAK
+      COMMON /ERRCHK/ IERR
+
+      CALL IPRINT(IPRT)
+      OPEN (UNIT=IPRT,FILE='TESTFL')
+
+      CALL XXCH<n> (LDSTAK)
+
+      END
+
+ where <n> is an integer between 1 and 13, inclusive.
+
+ Each test subprogram tests the user callable STARPAC subprograms documented
+ in a given chapter of the STARPAC User's Guide.  Test subprogram names are
+ constructed by appending the chapter number to the characters XXCH.  That is,
+ subprogram XXCH2 is the test subprogram associated with the STARPAC user
+ callable subprograms documented in chapter 2 of the STARPAC User's Guide;
+ XXCH3 is the test subprogram associated with subprograms documented in
+ chapter 3; etc.  Each test subprogram essentially duplicates the examples
+ shown in the given chapter of the STARPAC User's Guide.  (A test subprogram
+ for chapter 1, XXCH1, is also available.  It duplicates the test subprograms
+ for chapters 2 and 5, however, and it is therefore not absolutely necessary
+ to run it.) The single argument of these test subprograms, e.g., LDSTAK in
+ the above example, is the amount of work space provided to STARPAC in common
+ /CSTAK/ [see chapter 1, section D.2, of the STARPAC User's Guide].  Note that
+ the output for each test is preceeded by a line containing the string 1*CH<n>.
+
+ It is possible and sometimes convenient to combine several test runs into one
+ by calling one test subprogram after another in a single test program.  There
+ could be a local limit to this, however, since at some point the memory
+ required by the test's object code and run time storage may exceed the memory
+ available on the machine.
+
+ To verify that the installed version of STARPAC is performing correctly, each
+ of the test subprograms should be run and their results compared with the
+ appropriate test outputs from the release tape.  There will be at least some
+ differences between the two sets of outputs.  Appendix B provides comments
+ that are intended to help the installer decide if the observed differences
+ are significant.  Differences described as insignificant can be ignored.  Any
+ others differences are potential problems.  If a problem proves intractable,
+ the installers may feel free to contact the distributors [see section 6],
+ though we cannot guarantee that we will be able to respond to the problem
+ immediately, or to solve it when we can respond.
+
+ In comparing the tape and installed versions of STARPAC test outputs, please
+ note that the comparison should be made BEFORE any updates are inserted that
+ were included separately with the release or supplied later.  Such updates
+ will not be reflected in the output on the tape, and might easily produce
+ additional differences between the tape test output and the test output from
+ the installed version of STARPAC.  After the tape and installed test outputs
+ compare satisfactorily, the additional updates can be inserted and the
+ pre-update and post-update test outputs can be compared usefully.
+
+ The optimal way of comparing two test outputs is to use a text comparison
+ utility (comparator).  It may be useful to pre-edit one or both of the test
+ files before using such a test comparator, however, in order to remove the
+ pervasive but insignificant disagreements due to differences in format
+ conversion [see appendix B].  It is best to use a comparator that realigns
+ the files after any mismatch, reports the extraneous material, and then keeps
+ going.  A literal-minded, line-for-line comparator will require a lot of
+ human intervention to work at all, although it might still be preferable to
+ visual comparison.  The installers must also recognize that some of the the
+ test files consist essentially of a series of nearly identical reports.  A
+ realigning comparator may get out of synchronization and begin comparing the
+ ith report in a series in one file with the (i+1)th report in the other file.
+
+ Note that two significant formatting differences can occur which are not
+ easily detected by a comparison utility.  These involve deviations from
+ STARPAC's two assumptions about output devices:  (1) that the printer page
+ has a width of 132 characters (including the carriage control character), and
+ (2) that the page length is at least 60 lines [see appendix A.3].  The
+ installer should look for signs of clipped or awkwardly continued lines and
+ for system-forced new pages followed closely by STARPAC-forced new pages.
+ The best way to find both sorts of problems quickly is to look at an output
+ page containing a scatter plot (test XXCH2).
+
+
+ Step 7:  Set Up Public Interface
+
+ Even when the package is running, some important steps still remain.  One
+ such step is to set up the public, or user, interface.  This activity is
+ necessary to some extent even if the installers are the only prospective
+ users; it is particularly important if a wider circle of users is
+ anticipated.
+
+ The public interface consists essentially of three items:  (1) an
+ announcement to interested parties that the package is available; (2) the
+ local user document, perhaps incorporated in the announcement; and (3) a
+ distribution scheme for the STARPAC User's Guide [see section 4].  The local
+ user document is necessary because the STARPAC User's Guide says nothing
+ about accessing STARPAC on any particular system.  The local user document
+ should indicate at least (1) the current version of STARPAC, (2) how to
+ access and use the object code library file, (3) how to obtain the STARPAC
+ User's Guide, and (4) how to contact the installers or other designated
+ advisers in the event of problems.  See section 5 for other information which
+ might usefully be included in a local document.
+
+ It is the installers' responsibility to arrange a local distribution scheme
+ for the STARPAC User's Guide.
+
+
+ Step 8:  Set Up Distributor Interface
+
+ Another important but often forgotten step in installation is setting up the
+ distributor interface, i.e., reporting back to us.  The principal reason for
+ this is to register the installation for receipt of source code updates and
+ STARPAC User's Guide revision sets.  To register, fill out the registration
+ form at the end of this document and return it to us.  IF WE DO NOT RECEIVE A
+ REGISTRATION FORM, WE WILL ASSUME THAT STARPAC WAS NOT INSTALLED AND NO
+ FUTURE UPDATES WILL BE NEEDED.
+
+ In addition, we would be pleased if the installers would let us know their
+ experiences with installing STARPAC, particularly any problems arising from
+ the nature of the code or the installation procedure.  Information of this
+ nature will enable us to improve future releases.
+
+ Finally, we would be interested in seeing any local STARPAC documentation
+ that is prepared.  This will give us some idea what STARPAC looks like on
+ different systems, and may suggest improvements in the STARPAC User's Guide.
+
+
+                                  3.  Updates
+
+ As indicated in section 2, step 1, it may be necessary to install an update
+ to the source code at some later date.  Updates will always change the
+ STARPAC version number.  Versions of STARPAC are identified with a system of
+ decimal numbers:  1.01, 1.02, ..., 2.01, etc., in which the whole number part
+ identifies a major release (resulting from addition of new capabilities),
+ while the fractional part reflects addition of a minor modification or
+ correction.  The current version of STARPAC is 2.08.
+
+ Existing updates should already be included in any release tape and will be
+ reflected in the test output of the tape.  Installers who have a STARPAC
+ release and want to obtain future updates can do so by sending in the STARPAC
+ Installation Registration form supplied at the end of this document.
+
+ Updates will identify the program units modified and, for each program unit,
+ show the necessary changes.  Updates will also indicate what test subprograms
+ [see section 2, step 6] should be run to verify that the update functions
+ properly.  Since the test subprograms may not be structured to reveal the
+ error being corrected, the results of running the test may simply be to
+ confirm that nothing has been accidentally corrupted during insertion of the
+ update.  Any changes that the update should produce will be noted.
+
+ STARPAC 2.08 - corrects an error in STARPAC's ARIMA modeling and forecasting
+                subroutines.  This error causes the estimated model parameter
+                values and the computed forecasts to be incorrect when the
+                series mean is not zero.  Errors in the reported covariance
+                matrix and the standard errors of the estimated ARIMA model
+                parameters are also corrected.
+
+                In addition, STARPAC 2.08 includes a modification to the
+                uniform random number generator, used by NRAND and NRANDC,
+                that will result in the generation of different random numbers
+                than those produced by STARPAC 2.07.  It also includes a minor
+                modification to the subroutine used to compute the number of
+                good digits in the results of a user-supplied nonlinear model,
+                used by the NLS family of routines, and changes in the
+                declaration blocks for each of the STARPAC subroutines that
+                will result in improved portability.
+
+                No changes were made to the user interface to STARPAC.
+
+
+
+                            4.  STARPAC User's Guide
+
+ The STARPAC User's Guide is supplied in line printer format in file
+ GUIDE.DOC.  This document should be referenced as National Institute of
+ Standards and Technology Internal Report NBSIR 86-3448 [Donaldson and Tryon,
+ 1987].  Future modifications and corrections to the on-line documentation will
+ be provided to registered STARPAC installations.  It is the installer's
+ responsibility to make this documentation and future modifications to it
+ available to local users.
+
+ The on-line documentation uses the standard Fortran conventions for printing
+ formatted records.  In particular, the first character of each line is used
+ to determine vertical spacing.  For correct printing, if the first character
+ of a line is a blank then the printer should vertical space one line, if the
+ first character is a + then there should be no vertical advance before
+ printing the line, and if the first character is a 1 then the printer should
+ advance to the beginning of a new page.  The maximum page size is 132 columns
+ (printer control included) by 60 lines.  (Note that the on-line documentation
+ actually consists of two types of pages:  descriptive text, and sample output
+ from the STARPAC subprograms.  The descriptive text has a maximum width of
+ only 80 columns, while the sample output has a maximum width of 132 columns.)
+
+ The installer may modify the on-line documentation as necessary if its format
+ is not convenient.  Each section of the documentation begins with a line
+ beginning with '1-----'.  This is done in part to aid the installer in
+ separating file GUIDE.DOC into smaller units that may be more convenient to
+ modify.  For example, the following Fortran program could be used to subdivide
+ file GUIDE.DOC.
+
+      PROGRAM CSPLIT
+      INTEGER IUNIT1,IUNIT2
+      CHARACTER ID*6,TEST*6,LINE*74
+      CHARACTER*6 FILEID(31:50)
+
+      DATA ID        /'1-----'/
+      DATA FILEID(31)/'PREFAC'/
+      DATA FILEID(32)/'CHAP01'/
+      DATA FILEID(33)/'CHAP02'/
+      DATA FILEID(34)/'CHAP03'/
+      DATA FILEID(35)/'CHAP04'/
+      DATA FILEID(36)/'CHAP05'/
+      DATA FILEID(37)/'CHAP06'/
+      DATA FILEID(38)/'CHAP07'/
+      DATA FILEID(39)/'CHAP08'/
+      DATA FILEID(40)/'CHAP09'/
+      DATA FILEID(41)/'CHAP10'/
+      DATA FILEID(42)/'CHAP11'/
+      DATA FILEID(43)/'CHAP12'/
+      DATA FILEID(44)/'CHAP13'/
+      DATA FILEID(45)/'APPENA'/
+      DATA FILEID(46)/'APPENB'/
+      DATA FILEID(47)/'APPENC'/
+      DATA FILEID(48)/'APPEND'/
+      DATA FILEID(49)/'APPENE'/
+      DATA FILEID(50)/'REFERS'/
+
+      IUNIT1 = 30
+      OPEN (UNIT=IUNIT1,FILE='GUIDE.DOC')
+
+      IUNIT2 = 31
+      OPEN  (UNIT=IUNIT2,FILE=FILEID(IUNIT2))
+
+      READ  (UNIT=IUNIT1,FMT=1000,END=999) TEST,LINE
+      WRITE (UNIT=IUNIT2,FMT=1000) TEST,LINE
+  100 READ  (UNIT=IUNIT1,FMT=1000,END=999) TEST,LINE
+      IF (TEST.EQ.ID) THEN
+         CLOSE (UNIT=IUNIT2)
+         IUNIT2 = IUNIT2+1
+         OPEN (UNIT=IUNIT2,FILE=FILEID(IUNIT2))
+         PRINT *, IUNIT2
+      END IF
+      WRITE (UNIT=IUNIT2,FMT=1000) TEST,LINE
+      GO TO 100
+  999 CONTINUE
+      CLOSE (UNIT=IUNIT2)
+
+ 1000 FORMAT (A6,A74)
+      END
+
+
+                          5.  Information for Advisers
+
+ In general, advisers should be familiar with the contents of chapter 1 of the
+ STARPAC User's Guide.  Most of it need only be skimmed by an experienced
+ Fortran user; however, STARPAC advisors should particularly note the
+ following.
+
+ 1.  The aspect of STARPAC which most often confuses users is the working
+     storage stack DSTAK.  This is described in chapter 1, section D.2.  The
+     basic system, taken from the Framework package, is discussed in Fox et
+     al.  [1978a:  116-121; 1978b:  184-188].
+
+ 2.  The unit number used for STARPAC output can be retrieved with subprogram
+     IPRINT:  CALL IPRINT(IPRT) results in the unit number for output being
+     returned in the INTEGER variable IPRT.  Instructions for altering the
+     unit number to which STARPAC directs its output are found in chapter 1,
+     section D.4.
+
+ 3.  Chapter 1, section D.6, contains a list of the most common programming
+     errors made when using STARPAC.  A very high proportion of all errors
+     fall into the classes listed there; the use of variably-dimensioned
+     arrays in passing data and returning results seems to be especially
+     troublesome.  Many other errors result from undefined variables.
+
+ Most STARPAC error messages are self-explanatory.  There are a few, however,
+ which are cryptic.  They are:
+
+      ERROR 1 IN D1MACH - I OUT OF BOUNDS
+
+      DSTAK IS TOO SHORT
+
+      ***** ERROR *****
+      THE POINTER FOR ALLOCATION NUMBER  <n> HAS BEEN OVERWRITTEN
+
+      ERROR IN STARPAC. LSTVEC TRIES TO ACCESS MORE ELEMENTS THAN EXIST IN MASK.
+
+ These are all "second string" error messages which can only occur due to
+ either internal errors in the STARPAC code, or overwriting of code or data
+ storage.  That is, the user should not encounter them unless there is a
+ serious problem, either with STARPAC or with the user's own code.  If the
+ error is actually in STARPAC, we would appreciate hearing about it.
+
+
+                                  6.  Contacts
+
+ The installers may contact the distributors as follows.
+
+ Principal Contact:
+
+       Janet R. Donaldson
+       National Institute of Standards and Technology
+       Mail Code 719
+       325 Broadway
+       Boulder, CO  80303-3328
+
+       303-497-5114 or FTS 320-5114
+       Internet:  jrd@cam.nist.gov;  Bitnet:  jrd@nistcs2
+
+
+ Backup:
+
+       John E. Koontz
+       National Institute of Standards and Technology
+       Mail Code 715
+       325 Broadway
+       Boulder, CO  80303-3328
+
+       303-497-5180 or FTS 320-5180
+       Internet:  jek@cam.nist.gov;  Bitnet:  jek@nistcs2
+
+
+                              7.  Acknowledgments
+
+ STARPAC uses various public-domain code; we would like to acknowledge our use
+ of code from the following sources.
+
+ 1.  NL2SOL [Dennis et al., 1981a,b; see also section 2, step 3]
+
+ 2.  Framework for a Portable Library [Fox et al., 1978b]
+
+ 3.  LINPACK [Dongarra et al., 1979]
+
+ 4.  The BLAS [Lawson et al., 1979a,b]
+
+ 5.  Fullerton's Portable Special Function Subprograms [Fullerton, 1977]
+
+ 6.  OMNITAB [Hogben et al., 1971].  (STARPAC derives historically from
+     STATLIB 2 [Tryon and Donaldson, 1978], and STATLIB 2 was in part a library
+     variant of portions of OMNITAB.)
+
+ 7.  DATAPAC [Filliben, 1977].  (DATAPAC supplies certain subprograms used for
+     probability distribution computations.)
+
+ The STARPAC release has benefited from suggestions by Elsie Clark, Richard
+ Freemire, David Schrader, and Wendell Slattery.
+
+ STARPAC has been granted development and testing facilities on systems
+ operated by the MASC Computer Services Division, NOAA (U.S.  Department of
+ Commerce); the CAM Scientific Computing Division, NBS (U.S.  Department of
+ Commerce); the NCAR Scientific Computing Division; and the USFS Forest Fire
+ Laboratory (U.S.  Department of the Interior).  We would like to thank these
+ groups, and particularly Ginger Caldwell (NCAR), Elsie Clark (CAM), Richard
+ Freemire (CAM), Francis Fujioka (USFS), Sally Howe (CAM), Ken Walton (NCAR),
+ and Wesley Wilson (NCAR), who participated in test installations.
+
+ STARPAC's conception and inception owe much to Peter V. Tryon (1941-1982).
+
+
+                        Appendix A:  STARPAC Portability
+
+ This section is designed to outline and summarize considerations affecting
+ STARPAC portability that are not covered in the step by step installation
+ instructions of section 2.
+
+ A.1  Language Compatibility
+
+ STARPAC is written in standard Fortran 77 as defined by the ANSI X3.9-1978
+ document.  We therefore expect a minimum number of problems arising from
+ language incompatibility.  There are, however, a few potential problems.
+
+ First, some compilers restrict the number of arguments which a subprogram may
+ have.  When this problem occurs, it is most easily solved by deleting from
+ the formal and actual parameter lists a sufficient number of scalar arguments
+ of a single type and either (a) passing them via a labeled common or (b)
+ packing them into a single array and passing them via the argument list.  (A
+ list of labeled common names already used by STARPAC and therefore not to be
+ duplicated for this purpose is provided in the STARPAC User's Guide in
+ Appendix E.)  Details of this are left for the installer.
+
+ Second, some compilers may flag some STARPAC code as potentially dangerous.
+
+ 1.  STARPAC uses some subscripts that appear to a range checker to be out of
+     range but, in fact, are not.  Subscript range checking options should be
+     turned off when STARPAC is compiled.
+
+ 2.  STARPAC equates actual expression parameters to formal parameters which
+     could be defined in the subprogram.  Redefinition of the formal parameter
+     does not occur in these cases.
+
+ 3.  STARPAC equates two formal parameters to one actual parameter during
+     subprogram invocations.  If one formal parameter were redefined, the
+     value of the other would be undefined under the Standard.  We know of no
+     instances in STARPAC where the potential hazards of this operation are
+     realized.
+
+ Finally, STARPAC makes two nonstandard assumptions that a compiler may flag.
+ (Fox et al., [1978a:  122-123] provide the justification for these
+ assumptions.)
+
+ 1.  It uses noncorner elements in EQUIVALENCEs of mixed data types.  This
+     occurs in Framework subprograms R1MACH and D1MACH, and has been done in
+     such a fashion that it should not cause problems.
+
+ 2.  It assumes that if a variable is set in a DATA statement and then reset
+     by an assignment statement, leaving the subprogram and reentering it will
+     not cause the DATA statement value to be restored.  That is, it assumes
+     that DATA initialization occurs at initial load time, not whenever a
+     subprogram is (re)invoked.
+
+
+ A.2  Handling of Floating Point Underflow
+
+ For some data sets, STARPAC may result in a floating point underflow.  We
+ assume that the result of such an underflow will be set to zero by the target
+ system.  For all cases of underflow that we have observed in running STARPAC,
+ this produces the desired result.
+
+ We expect that STARPAC users will observe floating point underflows only
+ infrequently.  If this is not the case on the target system, please notify
+ us.
+
+
+ A.3  Operating System Compatibility
+
+ STARPAC requires very little of the operating system.  The only direct
+ interaction is a requirement that STARPAC know the standard unit number for
+ output.  The installers must set this in subprogram I1MACH in the Framework
+ portion of STARPAC [see section 2, step 4].  Note that I1MACH returns
+ undefined values until modified by the installer.
+
+ Less directly, STARPAC requires some sort of object code library facility if
+ STARPAC is to be used conveniently [see section 2, step 5].
+
+ Finally, some STARPAC subprograms require a fair amount of space to run.  The
+ installers may need to do some sort of segmenting if their system is small.
+ The extent to which this is actually necessary can be determined by running
+ the various test subprograms to see if they load.
+
+
+ A.4  STARPAC Output Characteristics
+
+ STARPAC expects output devices with pages 132 characters wide (1 carriage
+ control character plus 131 printing characters), and 60 lines long.  (Note:
+ Some STARPAC reports are not paginated, and run for an arbitrary number of
+ lines.) Because of the paginated reports, it is advisable to alter or
+ suppress, if possible, any system-defined page-length of less than 60 lines.
+ If a subprogram call is needed to accomplish this, it may be convenient to
+ place it in subprogram VERSP, which is executed before each page of STARPAC
+ output is produced.  This problem is known to affect at least some Sperry
+ systems.
+
+
+ A.5  STARPAC Compatibility with Other Software
+
+ There are only two known sources of incompatibility with other software.
+ First, the combination of STARPAC with another code might be too large to run
+ on a particular system.  Second, an overlap of the names of STARPAC
+ subprograms or labeled commons with the names of such entities in other code
+ might prevent STARPAC being run in conjunction with the other code [see
+ STARPAC User's Guide, appendices D and E, for a list of STARPAC 2.08
+ subprogram and common names].  Some systems may have loaders which eliminate
+ the second difficulty in one way or another.  In the case of overlapping
+ commons, no problem results if the commons' dimensions are compatible and the
+ other code does not expect the common to be intact during or after a STARPAC
+ call.
+
+ A particular instance of the overlapping common names problem occurs because
+ STARPAC uses the Framework for a Portable Library [Fox et al., 1978a,b] in a
+ modified version that reinitializes the Framework's CSTAK common each time a
+ STARPAC user-callable subprogram is called.  The published version of the
+ Framework initializes CSTAK once only - the first time that a Framework
+ subprogram is called.  The requirement for what, in effect, are two different
+ CSTAK commons may prevent the use of STARPAC with other Framework-using
+ software, such as the PORT library [Fox et al., 1978a], since calling STARPAC
+ would destroy the contents of PORT's CSTAK.  See Donaldson and Tryon [1987:
+ Chapter 1, Section D.2] for further discussion.
+
+
+                      Appendix B:  Comparing STARPAC Test Results
+
+ Differences between STARPAC outputs run on different machines can occur for a
+ variety of reasons.  The most pervasive of the differences between the
+ installers' outputs and those on the tape are apt to be those resulting from
+ differences in the implementation of the F and G conversion specifications in
+ different Fortrans.  Some Fortrans, for example, print '0.xxxx' when others
+ print ' .xxxx', and so on.  This kind of difference is obviously
+ insignificant.  Also, there will be differences observed in the format of
+ many of the values printed in exponential notation if the double precision
+ version of STARPAC is installed, since file TEST.OUT contains output from a
+ single precision version of STARPAC.  This difference in precision will also
+ be reflected in the version number printed at the top of each page of STARPAC
+ output:  the single precision version has a version number followed by the
+ letter S (e.g., 2.08S) while the double precision version has a version
+ number followed by the letter D (e.g., 2.08D).
+
+ Next, bear in mind that either of the files could legitimately contain
+ material different from that in the other.  To begin with, certain values
+ included in the output are machine dependent.  These include the code printed
+ to indicate an uncomputable result, and the default stopping criteria used in
+ such iterative processes as nonlinear least squares.  The uncomputed value
+ code is the largest legal rational magnitude; in the outputs on the tape,
+ which were generated on CDC equipment, this code can be recognized as a value
+ of approximately 1.2E+322.  Default stopping criteria are multiples of some
+ root of the machine precision (largest relative spacing), and are labeled as
+ stopping criteria in the output.
+
+ Differences in machine precision will be reflected in the outputs in a number
+ of additional ways.  Trivially, since the computed values are only
+ approximately correct, performing the calculations in two different
+ precisions can result in approximations which differ in the last few decimal
+ places.  In the case of values which are actually approximations to zero, the
+ values may differ in all places, and even in scale (approximations to zero
+ values can be recognized as very small fractions which may differ between the
+ two test outputs).  Results from the random number generator will also differ
+ in the last few places, causing corresponding differences in the results from
+ STARPAC procedures such as HIST, which are used to analyze and display the
+ generated values.  Differences in machine precision can also cause values to
+ fall into different intervals in the plotting routines, and the frequency
+ distribution included in the STAT family of procedures.
+
+ Installers should expect differences in machine precision and consequent
+ differences in stopping criteria to cause iterative processes in different
+ versions of STARPAC to take different numbers of iterations to solve the same
+ problem, changing the value of the reported number of iterations.
+
+ Another source of different answers is the nonassociativity of machine
+ arithmetic.  Different orders of evaluation of the same expression on the
+ same machine can produce different answers, with symptoms similar to those
+ produced by a slight change in precision.  Though Fortran compilers are
+ deterministic, there are a number of ways in which alternate orders of
+ evaluation can be selected on the same machine.  It can happen on the same
+ machine, but under different compilers, or under the same compiler, but at
+ different update or optimization levels.  Installers with CDC equipment who
+ find that their results differ from those on the tape should bear this in
+ mind, as should all installers who discover that the answers change in
+ response to a simple change in the choice of compiler or compiler option, or
+ to recompilation with a new version of a compiler.  These differences can
+ seem alarming if they are unexpected, but are actually trivial.
+
+ Some test case problems which are relatively more sensitive to differences in
+ precision may become unsolvable when precision is reduced.  In such cases, an
+ error report may be substituted for a more lengthy solution report.  A
+ certain amount of this sort of change is to be expected; however, if a large
+ proportion of the test problems become unsolvable under the installed version
+ of STARPAC, there is a serious problem.  The most likely scenario for this is
+ an injudicious attempt to install STARPAC in single precision on a machine
+ that has only six or seven decimal digits at that precision.  In this case,
+ the single precison version should be abandoned in favor of the double
+ precision version.
+
+ One final source of differences in test outputs is that runtime error or
+ status messages may occur in one of the test outputs but not the other, due
+ to differences in the systems, compilers, or hardware.
+
+
+                      Appendix C: Systems Running STARPAC
+
+ Equipment             Operating        Compiler                    Precision
+                       System
+
+ CDC Cyber 180/855     NOS 2.5.2        FTN 5.1+670 (opt = 0 & 1)   single
+
+ CDC Cyber 200/205     VSOS 2.3         FTN200                      single
+
+ Concurrent Computer
+ Corportation 3230     OS32MT           FORTRAN-VIIZ                double
+
+ VAX 11/780            VMS 2.2          FORTRAN 4.7                 double
+
+ SUN 3/180             BSD UNIX 4.3     F77                         double
+
+
+                                   References
+
+ American National Standards Institute. (1966).  U.S.A. standard Fortran.  New
+ York: United States of America Standards Institute.
+
+ American National Standards Institute. (1978).  American national standard
+ programming language FORTRAN - approved April 3, 1978.  New York: American
+ National Standards Institute.
+
+ Dennis, J. E. Jr.; Gay, D. M.; Welsch, R. E. (1981a).  An adaptive nonlinear
+ least-squares algorithm.  ACM Trans. on Math. Software, 7(3): 348-368.
+
+ Dennis, J.  E. Jr.; Gay, D. M.; Welsch, R.  E. (1981b).  Algorithm 573: NL2SOL
+ - an adaptive nonlinear least-squares algorithm.  ACM Trans. on Math.
+ Software, 7(3): 369-383.
+
+ Donaldson, J.  R.; Tryon, P. V. (1983a).  Introduction to STARPAC, the
+ Standards time series and regression package.  National Institute of Standards
+ and Technology Technical Note NBSTN 1068-1.
+
+ Donaldson, J. R.; Tryon, P. V. (1983b).  Nonlinear least squares regression
+ using STARPAC, the Standards time series and regression package.  National
+ Institute of Standards and Technology Technical Note NBSTN 1068-2.
+
+ Donaldson, J.  R.; Tryon, P.  V.  (1987).  STARPAC, the Standards Time Series
+ and Regression Package.  National Institute of Standards and Technology
+ Internal Report NBSIR 86-3448.
+
+ Dongarra, J. J.; Moler, C. B.; Bunch, J. R.; Stewart, G. W. (1980).  LINPACK
+ users' guide.  Philadelphia: SIAM.
+
+ Dorrenbacher, J.; Paddock, D.; Wisneski, D.; Fosdick, L. D. (1976).  POLISH, a
+ Fortran program to edit Fortran programs.  Dept. of Computer Science,
+ University of Colorado, Boulder, Report CU-CS-050-76 (revised) May 1976.
+
+ Filliben, J. J. (1977).  User's guide to the DATAPAC data analysis package,
+ Version 77.5.  Draft.
+
+ Fox, P. A.; Hall, A. D.; and Schryer, N. L. (1978a).  The PORT mathematical
+ subroutine library.  ACM Trans. on Math.  Software, 4(2): 104-126.
+
+ Fox, P.  A.; Hall, A.  D.; and Schryer, N.  L. (1978b).  Algorithm 528:
+ framework for a portable library.  ACM Trans. on Math.  Software, 4(2): 177-
+ 188.
+
+ Fullerton, L.  W.  (1977).  Portable special function routines.  In
+ Portability of Numerical Software:  Proceedings.  W.  Crowell, editor.
+ (Lecture Notes in Computer Science:  Vol.  57).  Oak Brook, IL:  Springer-
+ Verlag.
+
+ Hogben, D.; Peavy, S. T.; Varner, R. N. (1971).  OMNITAB II user's reference
+ manual.  National Institute of Standards and Technology Technical Note NBSTN
+ 552.
+
+ IMSL. (1982).  IMSL library manual.  Houston: IMSL, Inc.
+
+ Lawson, F. L.; Hanson, R. J.; Kincaid, D.  R.; Krogh, F. T. (1979a).  Basic
+ linear algebra subprograms for Fortran usage.  ACM Trans. on Math. Software,
+ 5(3): 308-323.
+
+ Lawson, F.  L.; Hanson, R. J.; Kincaid, D.  R.; Krogh, F.  T. (1979b).
+ Algorithm 539: basic linear algebra subprograms for Fortran usage.  ACM Trans.
+ on Math. Software, 5(3): 324-325.
+
+ Ryder, G. G.; Hall, A. D. (1973).  The PFORT verifier.  Computing Science
+ Technical Report No. 12, (Revised April 1979.) Murray Hill: Bell Laboratories.
+
+ Siemieniuch, J. L. (n.d.).  APT.  Internal document and source code developed
+ by the Numerical Algorithms Group Ltd.
+
+ Tryon, P.  V.; Donaldson, J. R. (1978).  STATLIB - a library of FORTRAN
+ subroutines for statistical analysis of experimental data.  Revised June 1,
+ 1978 and October 2, 1978.  Unpublished.
+
+1
+                                                                     (03/16/87)
+              STARPAC 2.08 Release Installation Registration Form
+
+ Filling out and returning this form will ensure receipt of all future updates
+ to the source code and manual, and of any announcements of new versions.
+
+ We welcome your comments on STARPAC, the STARPAC release, and STARPAC
+ portability.  Please feel free to include these on separate sheets.  We are
+ particularly interested in any unanticipated changes that you may have had to
+ make to the code in order to install STARPAC.
+
+
+ 1.   Contact
+
+         Name:  .........................................................
+      Address:  .........................................................
+                .........................................................
+                .........................................................
+                .........................................................
+                                                          Zip:  .........
+      Telephone:  ....................
+
+ 2.   Installer (optional, may report if different from contact)
+
+         Name:  .........................................................
+      Address:  .........................................................
+                .........................................................
+                .........................................................
+                .........................................................
+                                                          Zip:  .........
+
+ 3.   Name of Installation Site (if not clear from address)
+
+      ...................................................................
+
+ 4.   STARPAC Operating Environment (use additional sheets as necessary)
+
+                                   Machine 1               Machine 2
+
+             Computer Model:  .....................   ...................
+           Operating System:  .....................   ...................
+           Fortran Compiler:  .....................   ...................
+
+
+
+ Please return to:
+
+       Janet R. Donaldson
+       National Institute of Standards and Technology
+       Mail Code 719
+       325 Broadway
+       Boulder, CO  80303-3328
+
+       303-497-5114 or FTS 320-5114
+       Internet:  jrd@cam.nist.gov;  Bitnet:  jrd@nistcs2
+
+

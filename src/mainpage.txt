@@ -1,0 +1,12 @@
+'mainpage.txt
+/**
+         @mainpage M_starpac 
+
+         @section Introduction
+
+     M_starpac - 
+              The Standards Time Series and Regression Package from NIST
+	      repackaged.
+
+         @image html html/images/yarnball.gif
+*/'
