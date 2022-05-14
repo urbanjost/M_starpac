@@ -1,0 +1,43 @@
+!RELDST
+      real(kind=wp) function reldst(p, d, x, x0)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!
+!  ***  COMPUTE AND RETURN RELATIVE DIFFERENCE BETWEEN X AND X0  ***
+!  ***  NL2SOL VERSION 2.2  ***
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   d(p),x(p),x0(p)
+!
+!  LOCAL SCALARS
+      real(kind=wp) ::
+     +   emax,t,xmax,zero
+      integer
+     +   i
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic abs
+!
+      data zero/0.0_wp/
+!
+      emax = zero
+      xmax = zero
+      do 10 i = 1, p
+         t = abs(d(i) * (x(i) - x0(i)))
+         if (emax .lt. t) emax = t
+         t = d(i) * (abs(x(i)) + abs(x0(i)))
+         if (xmax .lt. t) xmax = t
+ 10      continue
+      reldst = zero
+      if (xmax .gt. zero) reldst = emax / xmax
+
+      end function reldst

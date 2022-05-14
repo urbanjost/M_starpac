@@ -1,0 +1,126 @@
+!DFAULT
+      subroutine dfault(iv, v)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   v(45)
+      integer
+     +   iv(25)
+!
+!  LOCAL SCALARS
+      real(kind=wp) ::
+     +   machep,mepcrt,one,sqteps,three
+      integer
+     +   afctol,cosmin,covprt,covreq,d0init,decfac,delta0,dfac,
+     +   dinit,dltfdc,dltfdj,dtype,epslon,fuzz,incfac,inits,jtinit,
+     +   lmax0,mxfcal,mxiter,outlev,parprt,phmnfc,phmxfc,prunit,
+     +   rdfcmn,rdfcmx,rfctol,rlimit,solprt,statpr,tuner1,tuner2,
+     +   tuner3,tuner4,tuner5,x0prt,xctol,xftol
+!
+!  EXTERNAL FUNCTIONS
+      real(kind=wp) ::
+     +   rmdcon
+      integer
+     +   imdcon
+      external rmdcon,imdcon
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic max
+!
+!  ***  SUPPLY NL2SOL (VERSION 2.2) DEFAULT VALUES TO IV AND V  ***
+!
+!     INTEGER IV(25)
+!     REAL(KIND=WP) :: V(45)
+!/+
+!     REAL(KIND=WP) :: MAX
+!/
+!     EXTERNAL IMDCON, RMDCON
+!     INTEGER IMDCON
+!     REAL(KIND=WP) :: RMDCON
+!
+!     REAL(KIND=WP) :: MACHEP, MEPCRT, ONE, SQTEPS, THREE
+!
+!  ***  SUBSCRIPTS FOR IV AND V  ***
+!
+!     INTEGER AFCTOL, COSMIN, COVPRT, COVREQ, DECFAC, DELTA0, DFAC,
+!    1        DINIT, DLTFDC, DLTFDJ, DTYPE, D0INIT, EPSLON, FUZZ,
+!    2        INCFAC, INITS, JTINIT, LMAX0, MXFCAL, MXITER, OUTLEV,
+!    3        PARPRT, PHMNFC, PHMXFC, PRUNIT, RDFCMN, RDFCMX,
+!    4        RFCTOL, RLIMIT, SOLPRT, STATPR, TUNER1, TUNER2, TUNER3,
+!    5        TUNER4, TUNER5, XCTOL, XFTOL, X0PRT
+!
+      data one/1.0_wp/, three/3.0_wp/
+!
+!  ***  IV SUBSCRIPT VALUES  ***
+!
+      data covprt/14/, covreq/15/, dtype/16/, inits/25/,
+     +     mxfcal/17/, mxiter/18/, outlev/19/,
+     +     parprt/20/, prunit/21/, solprt/22/,
+     +     statpr/23/, x0prt/24/
+!
+!  ***  V SUBSCRIPT VALUES  ***
+!
+      data afctol/31/, cosmin/43/, decfac/22/,
+     +     delta0/44/, dfac/41/, dinit/38/, dltfdc/40/,
+     +     dltfdj/36/, d0init/37/, epslon/19/, fuzz/45/,
+     +     incfac/23/, jtinit/39/, lmax0/35/, phmnfc/20/,
+     +     phmxfc/21/, rdfcmn/24/, rdfcmx/25/,
+     +     rfctol/32/, rlimit/42/, tuner1/26/,
+     +     tuner2/27/, tuner3/28/, tuner4/29/,
+     +     tuner5/30/, xctol/33/, xftol/34/
+!
+!-----------------------------------------------------------------------
+!
+      iv(1) = 12
+      iv(covprt) = 1
+      iv(covreq) = 1
+      iv(dtype) = 1
+      iv(inits) = 0
+      iv(mxfcal) = 200
+      iv(mxiter) = 150
+      iv(outlev) = 1
+      iv(parprt) = 1
+      iv(prunit) = imdcon(1)
+      iv(solprt) = 1
+      iv(statpr) = 1
+      iv(x0prt) = 1
+!
+      machep = rmdcon(3)
+      v(afctol) = 1.0e-20_wp
+      if (machep .gt. 1.0e-10_wp) v(afctol) = machep**2
+      v(cosmin) = max(1.0e-6_wp, 1.0e2_wp * machep)
+      v(decfac) = 0.5_wp
+      sqteps = rmdcon(4)
+      v(delta0) = sqteps
+      v(dfac) = 0.6_wp
+      v(dinit) = 0.0_wp
+      mepcrt = machep ** (one/three)
+      v(dltfdc) = mepcrt
+      v(dltfdj) = sqteps
+      v(d0init) = 1.0_wp
+      v(epslon) = 0.1_wp
+      v(fuzz) = 1.5_wp
+      v(incfac) = 2.0_wp
+      v(jtinit) = 1.0e-6_wp
+      v(lmax0) = 100.0_wp
+      v(phmnfc) = -0.1_wp
+      v(phmxfc) = 0.1_wp
+      v(rdfcmn) = 0.1_wp
+      v(rdfcmx) = 4.0_wp
+      v(rfctol) = max(1.0e-10_wp, mepcrt**2)
+      v(rlimit) = rmdcon(5)
+      v(tuner1) = 0.1_wp
+      v(tuner2) = 1.0e-4_wp
+      v(tuner3) = 0.75_wp
+      v(tuner4) = 0.5_wp
+      v(tuner5) = 0.75_wp
+      v(xctol) = sqteps
+      v(xftol) = 1.0e2_wp * machep
+ 
+      end subroutine dfault

@@ -1,0 +1,47 @@
+!LIVMUL
+      subroutine livmul(n, x, l, y)
+!
+!  ***  SOLVE  L*X = Y, WHERE  L  IS AN  N X N  LOWER TRIANGULAR
+!  ***  MATRIX STORED COMPACTLY BY ROWS.  X AND Y MAY OCCUPY THE SAME
+!  ***  STORAGE.  ***
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   n
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   l(1),x(n),y(n)
+!
+!  LOCAL SCALARS
+      real(kind=wp) ::
+     +   t,zero
+      integer
+     +   i,j,k
+!
+!  EXTERNAL FUNCTIONS
+      real(kind=wp) ::
+     +   dotprd
+      external dotprd
+!
+      data zero/0.0_wp/
+!
+      do 10 k = 1, n
+         if (y(k) .ne. zero) go to 20
+         x(k) = zero
+ 10      continue
+      go to 999
+ 20   j = k*(k+1)/2
+      x(k) = y(k) / l(j)
+      if (k .ge. n) go to 999
+      k = k + 1
+      do 30 i = k, n
+         t = dotprd(i-1, l(j+1), x)
+         j = j + i
+         x(i) = (y(i) - t)/l(j)
+ 30      continue
+ 999  return
+      end subroutine livmul

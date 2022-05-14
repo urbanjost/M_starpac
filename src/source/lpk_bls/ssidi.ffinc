@@ -1,0 +1,231 @@
+!SSIDI
+      SUBROUTINE SSIDI(A,LDA,N,KPVT,DET,INERT,WORK,JOB)
+!
+!     LATEST REVISION  -  JANUARY 24, 1990  (JRD)
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER JOB,LDA,N
+!
+!  ARRAY ARGUMENTS
+      REAL A(LDA,*),DET(2),WORK(*)
+      INTEGER INERT(3),KPVT(*)
+!
+!  LOCAL SCALARS
+      REAL AK,AKKP1,AKP1,D,T,TEMP,TEN
+      INTEGER J,JB,K,KM1,KS,KSTEP
+      LOGICAL NODET,NOERT,NOINV
+!
+!  EXTERNAL FUNCTIONS
+      REAL SDOT
+      EXTERNAL SDOT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL SAXPY,SCOPY,SSWAP
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC ABS,IABS,MOD
+!
+!     SSIDI COMPUTES THE DETERMINANT, INERTIA AND INVERSE
+!     OF A REAL SYMMETRIC MATRIX USING THE FACTORS FROM SSIFA.
+!
+!     ON ENTRY
+!
+!        A       REAL(LDA,N)
+!                THE OUTPUT FROM SSIFA.
+!
+!        LDA     INTEGER
+!                THE LEADING DIMENSION OF THE ARRAY A.
+!
+!        N       INTEGER
+!                THE ORDER OF THE MATRIX A.
+!
+!        KPVT    INTEGER(N)
+!                THE PIVOT VECTOR FROM SSIFA.
+!
+!        WORK    REAL(N)
+!                WORK VECTOR.  CONTENTS DESTROYED.
+!
+!        JOB     INTEGER
+!                JOB HAS THE DECIMAL EXPANSION  ABC  WHERE
+!                   IF  C .NE. 0, THE INVERSE IS COMPUTED,
+!                   IF  B .NE. 0, THE DETERMINANT IS COMPUTED,
+!                   IF  A .NE. 0, THE INERTIA IS COMPUTED.
+!
+!                FOR EXAMPLE, JOB = 111  GIVES ALL THREE.
+!
+!     ON RETURN
+!
+!        VARIABLES NOT REQUESTED BY JOB ARE NOT USED.
+!
+!        A      CONTAINS THE UPPER TRIANGLE OF THE INVERSE OF
+!               THE ORIGINAL MATRIX.  THE STRICT LOWER TRIANGLE
+!               IS NEVER REFERENCED.
+!
+!        DET    REAL(2)
+!               DETERMINANT OF ORIGINAL MATRIX.
+!               DETERMINANT = DET(1) * 10.0**DET(2)
+!               WITH 1.0 .LE. ABS(DET(1)) .LT. 10.0
+!               OR DET(1) = 0.0.
+!
+!        INERT  INTEGER(3)
+!               THE INERTIA OF THE ORIGINAL MATRIX.
+!               INERT(1)  =  NUMBER OF POSITIVE EIGENVALUES.
+!               INERT(2)  =  NUMBER OF NEGATIVE EIGENVALUES.
+!               INERT(3)  =  NUMBER OF ZERO EIGENVALUES.
+!
+!     ERROR CONDITION
+!
+!        A DIVISION BY ZERO MAY OCCUR IF THE INVERSE IS REQUESTED
+!        AND  SSICO  HAS SET RCOND .EQ. 0.0
+!        OR  SSIFA  HAS SET  INFO .NE. 0 .
+!
+!     LINPACK. THIS VERSION DATED 08/14/78 .
+!     JAMES BUNCH, UNIV. CALIF. SAN DIEGO, ARGONNE NAT. LAB
+!
+!     SUBROUTINES AND FUNCTIONS
+!
+!     BLAS SAXPY,SCOPY,SDOT,SSWAP
+!     FORTRAN ABS,IABS,MOD
+!
+!
+      NOINV = MOD(JOB,10) .EQ. 0
+      NODET = MOD(JOB,100)/10 .EQ. 0
+      NOERT = MOD(JOB,1000)/100 .EQ. 0
+!
+      TEN = 10.0E0
+!
+      IF (NODET .AND. NOERT) GO TO 140
+         IF (NOERT) GO TO 10
+            INERT(1) = 0
+            INERT(2) = 0
+            INERT(3) = 0
+   10    CONTINUE
+         IF (NODET) GO TO 20
+            DET(1) = 1.0E0
+            DET(2) = 0.0E0
+   20    CONTINUE
+         T = 0.0E0
+         DO 130 K = 1, N
+            D = A(K,K)
+!
+!           CHECK IF 1 BY 1
+!
+            IF (KPVT(K) .GT. 0) GO TO 50
+!
+!              2 BY 2 BLOCK
+!              USE DET (D  S)  =  (D/T * C - T) * T  ,  T = ABS(S)
+!                      (S  C)
+!              TO AVOID UNDERFLOW/OVERFLOW TROUBLES.
+!              TAKE TWO PASSES THROUGH SCALING.  USE  T  FOR FLAG.
+!
+               IF (T .NE. 0.0E0) GO TO 30
+                  T = ABS(A(K,K+1))
+                  D = (D/T)*A(K+1,K+1) - T
+               GO TO 40
+   30          CONTINUE
+                  D = T
+                  T = 0.0E0
+   40          CONTINUE
+   50       CONTINUE
+!
+            IF (NOERT) GO TO 60
+               IF (D .GT. 0.0E0) INERT(1) = INERT(1) + 1
+               IF (D .LT. 0.0E0) INERT(2) = INERT(2) + 1
+               IF (D .EQ. 0.0E0) INERT(3) = INERT(3) + 1
+   60       CONTINUE
+!
+            IF (NODET) GO TO 120
+               DET(1) = D*DET(1)
+               IF (DET(1) .EQ. 0.0E0) GO TO 110
+   70             IF (ABS(DET(1)) .GE. 1.0E0) GO TO 80
+                     DET(1) = TEN*DET(1)
+                     DET(2) = DET(2) - 1.0E0
+                  GO TO 70
+   80             CONTINUE
+   90             IF (ABS(DET(1)) .LT. TEN) GO TO 100
+                     DET(1) = DET(1)/TEN
+                     DET(2) = DET(2) + 1.0E0
+                  GO TO 90
+  100             CONTINUE
+  110          CONTINUE
+  120       CONTINUE
+  130    CONTINUE
+  140 CONTINUE
+!
+!     COMPUTE INVERSE(A)
+!
+      IF (NOINV) GO TO 270
+         K = 1
+  150    IF (K .GT. N) GO TO 260
+            KM1 = K - 1
+            IF (KPVT(K) .LT. 0) GO TO 180
+!
+!              1 BY 1
+!
+               A(K,K) = 1.0E0/A(K,K)
+               IF (KM1 .LT. 1) GO TO 170
+                  CALL SCOPY(KM1,A(1,K),1,WORK,1)
+                  DO 160 J = 1, KM1
+                     A(J,K) = SDOT(J,A(1,J),1,WORK,1)
+                     CALL SAXPY(J-1,WORK(J),A(1,J),1,A(1,K),1)
+  160             CONTINUE
+                  A(K,K) = A(K,K) + SDOT(KM1,WORK,1,A(1,K),1)
+  170          CONTINUE
+               KSTEP = 1
+            GO TO 220
+  180       CONTINUE
+!
+!              2 BY 2
+!
+               T = ABS(A(K,K+1))
+               AK = A(K,K)/T
+               AKP1 = A(K+1,K+1)/T
+               AKKP1 = A(K,K+1)/T
+               D = T*(AK*AKP1 - 1.0E0)
+               A(K,K) = AKP1/D
+               A(K+1,K+1) = AK/D
+               A(K,K+1) = -AKKP1/D
+               IF (KM1 .LT. 1) GO TO 210
+                  CALL SCOPY(KM1,A(1,K+1),1,WORK,1)
+                  DO 190 J = 1, KM1
+                     A(J,K+1) = SDOT(J,A(1,J),1,WORK,1)
+                     CALL SAXPY(J-1,WORK(J),A(1,J),1,A(1,K+1),1)
+  190             CONTINUE
+                  A(K+1,K+1) = A(K+1,K+1) + SDOT(KM1,WORK,1,A(1,K+1),1)
+                  A(K,K+1) = A(K,K+1) + SDOT(KM1,A(1,K),1,A(1,K+1),1)
+                  CALL SCOPY(KM1,A(1,K),1,WORK,1)
+                  DO 200 J = 1, KM1
+                     A(J,K) = SDOT(J,A(1,J),1,WORK,1)
+                     CALL SAXPY(J-1,WORK(J),A(1,J),1,A(1,K),1)
+  200             CONTINUE
+                  A(K,K) = A(K,K) + SDOT(KM1,WORK,1,A(1,K),1)
+  210          CONTINUE
+               KSTEP = 2
+  220       CONTINUE
+!
+!           SWAP
+!
+            KS = IABS(KPVT(K))
+            IF (KS .EQ. K) GO TO 250
+               CALL SSWAP(KS,A(1,KS),1,A(1,K),1)
+               DO 230 JB = KS, K
+                  J = K + KS - JB
+                  TEMP = A(J,K)
+                  A(J,K) = A(KS,J)
+                  A(KS,J) = TEMP
+  230          CONTINUE
+               IF (KSTEP .EQ. 1) GO TO 240
+                  TEMP = A(KS,K+1)
+                  A(KS,K+1) = A(K,K+1)
+                  A(K,K+1) = TEMP
+  240          CONTINUE
+  250       CONTINUE
+            K = K + KSTEP
+         GO TO 150
+  260    CONTINUE
+  270 CONTINUE
+      RETURN
+      END

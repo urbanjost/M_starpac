@@ -1,0 +1,35 @@
+!IMDCON
+      integer function imdcon(k)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!  ***  RETURN INTEGER MACHINE-DEPENDENT CONSTANTS  ***
+!
+!     ***  K = 1 MEANS RETURN STANDARD OUTPUT UNIT NUMBER.   ***
+!     ***  K = 2 MEANS RETURN ALTERNATE OUTPUT UNIT NUMBER.  ***
+!     ***  K = 3 MEANS RETURN  INPUT UNIT NUMBER.            ***
+!          (NOTE -- K = 2, 3 ARE USED ONLY BY TEST PROGRAMS.)
+!
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   k
+!
+!  LOCAL ARRAYS
+      integer
+     +   mdcon(3)
+!
+!  EXTERNAL FUNCTIONS
+      integer
+     +   i1mach
+      external i1mach
+!
+      mdcon(1) = i1mach(2)
+      mdcon(2) = i1mach(3)
+      mdcon(3) = i1mach(1)
+!
+      imdcon = mdcon(k)
+      end function imdcon

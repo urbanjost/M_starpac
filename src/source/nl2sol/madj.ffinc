@@ -1,0 +1,29 @@
+!MADJ
+      subroutine madj(n, p, x, nf, j, uiparm, urparm, ufparm)
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   n,nf,p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   j(n,p),urparm(*),x(p)
+      integer
+     +   uiparm(*)
+!
+!  SUBROUTINE ARGUMENTS
+      external ufparm
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic cos,sin
+!
+      j(1,1) = 2.0_wp*x(1) + x(2)
+      j(1,2) = 2.0_wp*x(2) + x(1)
+      j(2,1) = cos(x(1))
+      j(2,2) = 0.0_wp
+      j(3,1) = 0.0_wp
+      j(3,2) = -sin(x(2))
+
+      end subroutine madj

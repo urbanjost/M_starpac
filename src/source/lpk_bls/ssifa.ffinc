@@ -1,0 +1,244 @@
+!SSIFA
+      SUBROUTINE SSIFA(A,LDA,N,KPVT,INFO)
+!
+!     LATEST REVISION  -  JANUARY 24, 1990
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER INFO,LDA,N
+!
+!  ARRAY ARGUMENTS
+      REAL A(LDA,*)
+      INTEGER KPVT(*)
+!
+!  LOCAL SCALARS
+      REAL ABSAKK,AK,AKM1,ALPHA,BK,BKM1,COLMAX,DENOM,MULK,MULKM1,ROWMAX,
+     +   T
+      INTEGER IMAX,IMAXP1,J,JJ,JMAX,K,KM1,KM2,KSTEP
+      LOGICAL SWAP
+!
+!  EXTERNAL FUNCTIONS
+      INTEGER ISAMAX
+      EXTERNAL ISAMAX
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL SAXPY,SSWAP
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC ABS,AMAX1,SQRT
+!
+!
+!     SSIFA FACTORS A REAL SYMMETRIC MATRIX BY ELIMINATION
+!     WITH SYMMETRIC PIVOTING.
+!
+!     TO SOLVE  A*X = B , FOLLOW SSIFA BY SSISL.
+!     TO COMPUTE  INVERSE(A)*C , FOLLOW SSIFA BY SSISL.
+!     TO COMPUTE  DETERMINANT(A) , FOLLOW SSIFA BY SSIDI.
+!     TO COMPUTE  INERTIA(A) , FOLLOW SSIFA BY SSIDI.
+!     TO COMPUTE  INVERSE(A) , FOLLOW SSIFA BY SSIDI.
+!
+!     ON ENTRY
+!
+!        A       REAL(LDA,N)
+!                THE SYMMETRIC MATRIX TO BE FACTORED.
+!                ONLY THE DIAGONAL AND UPPER TRIANGLE ARE USED.
+!
+!        LDA     INTEGER
+!                THE LEADING DIMENSION OF THE ARRAY  A .
+!
+!        N       INTEGER
+!                THE ORDER OF THE MATRIX  A .
+!
+!     ON RETURN
+!
+!        A       A BLOCK DIAGONAL MATRIX AND THE MULTIPLIERS WHICH
+!                WERE USED TO OBTAIN IT.
+!                THE FACTORIZATION CAN BE WRITTEN  A = U*D*TRANS(U)
+!                WHERE  U  IS A PRODUCT OF PERMUTATION AND UNIT
+!                UPPER TRIANGULAR MATRICES , TRANS(U) IS THE
+!                TRANSPOSE OF  U , AND  D  IS BLOCK DIAGONAL
+!                WITH 1 BY 1 AND 2 BY 2 BLOCKS.
+!
+!        KPVT    INTEGER(N)
+!                AN INTEGER VECTOR OF PIVOT INDICES.
+!
+!        INFO    INTEGER
+!                = 0  NORMAL VALUE.
+!                = K  IF THE K-TH PIVOT BLOCK IS SINGULAR. THIS IS
+!                     NOT AN ERROR CONDITION FOR THIS SUBROUTINE,
+!                     BUT IT DOES INDICATE THAT SSISL OR SSIDI MAY
+!                     DIVIDE BY ZERO IF CALLED.
+!
+!     LINPACK. THIS VERSION DATED 08/14/78 .
+!     JAMES BUNCH, UNIV. CALIF. SAN DIEGO, ARGONNE NAT. LAB.
+!
+!     SUBROUTINES AND FUNCTIONS
+!
+!     BLAS SAXPY,SSWAP,ISAMAX
+!     FORTRAN ABS,AMAX1,SQRT
+!
+!
+!     INITIALIZE
+!
+!     ALPHA IS USED IN CHOOSING PIVOT BLOCK SIZE.
+      ALPHA = (1.0E0 + SQRT(17.0E0))/8.0E0
+!
+      INFO = 0
+!
+!     MAIN LOOP ON K, WHICH GOES FROM N TO 1.
+!
+      K = N
+   10 CONTINUE
+!
+!        LEAVE THE LOOP IF K=0 OR K=1.
+!
+!     ...EXIT
+         IF (K .EQ. 0) GO TO 200
+         IF (K .GT. 1) GO TO 20
+            KPVT(1) = 1
+            IF (A(1,1) .EQ. 0.0E0) INFO = 1
+!     ......EXIT
+            GO TO 200
+   20    CONTINUE
+!
+!        THIS SECTION OF CODE DETERMINES THE KIND OF
+!        ELIMINATION TO BE PERFORMED.  WHEN IT IS COMPLETED,
+!        KSTEP WILL BE SET TO THE SIZE OF THE PIVOT BLOCK, AND
+!        SWAP WILL BE SET TO .TRUE. IF AN INTERCHANGE IS
+!        REQUIRED.
+!
+         KM1 = K - 1
+         ABSAKK = ABS(A(K,K))
+!
+!        DETERMINE THE LARGEST OFF-DIAGONAL ELEMENT IN
+!        COLUMN K.
+!
+         IMAX = ISAMAX(K-1,A(1,K),1)
+         COLMAX = ABS(A(IMAX,K))
+         IF (ABSAKK .LT. ALPHA*COLMAX) GO TO 30
+            KSTEP = 1
+            SWAP = .FALSE.
+         GO TO 90
+   30    CONTINUE
+!
+!           DETERMINE THE LARGEST OFF-DIAGONAL ELEMENT IN
+!           ROW IMAX.
+!
+            ROWMAX = 0.0E0
+            IMAXP1 = IMAX + 1
+            DO 40 J = IMAXP1, K
+               ROWMAX = AMAX1(ROWMAX,ABS(A(IMAX,J)))
+   40       CONTINUE
+            IF (IMAX .EQ. 1) GO TO 50
+               JMAX = ISAMAX(IMAX-1,A(1,IMAX),1)
+               ROWMAX = AMAX1(ROWMAX,ABS(A(JMAX,IMAX)))
+   50       CONTINUE
+            IF (ABS(A(IMAX,IMAX)) .LT. ALPHA*ROWMAX) GO TO 60
+               KSTEP = 1
+               SWAP = .TRUE.
+            GO TO 80
+   60       CONTINUE
+            IF (ABSAKK .LT. ALPHA*COLMAX*(COLMAX/ROWMAX)) GO TO 70
+               KSTEP = 1
+               SWAP = .FALSE.
+            GO TO 80
+   70       CONTINUE
+               KSTEP = 2
+               SWAP = IMAX .NE. KM1
+   80       CONTINUE
+   90    CONTINUE
+         IF (AMAX1(ABSAKK,COLMAX) .NE. 0.0E0) GO TO 100
+!
+!           COLUMN K IS ZERO.  SET INFO AND ITERATE THE LOOP.
+!
+            KPVT(K) = K
+            INFO = K
+         GO TO 190
+  100    CONTINUE
+         IF (KSTEP .EQ. 2) GO TO 140
+!
+!           1 X 1 PIVOT BLOCK.
+!
+            IF (.NOT.SWAP) GO TO 120
+!
+!              PERFORM AN INTERCHANGE.
+!
+               CALL SSWAP(IMAX,A(1,IMAX),1,A(1,K),1)
+               DO 110 JJ = IMAX, K
+                  J = K + IMAX - JJ
+                  T = A(J,K)
+                  A(J,K) = A(IMAX,J)
+                  A(IMAX,J) = T
+  110          CONTINUE
+  120       CONTINUE
+!
+!           PERFORM THE ELIMINATION.
+!
+            DO 130 JJ = 1, KM1
+               J = K - JJ
+               MULK = -A(J,K)/A(K,K)
+               T = MULK
+               CALL SAXPY(J,T,A(1,K),1,A(1,J),1)
+               A(J,K) = MULK
+  130       CONTINUE
+!
+!           SET THE PIVOT ARRAY.
+!
+            KPVT(K) = K
+            IF (SWAP) KPVT(K) = IMAX
+         GO TO 190
+  140    CONTINUE
+!
+!           2 X 2 PIVOT BLOCK.
+!
+            IF (.NOT.SWAP) GO TO 160
+!
+!              PERFORM AN INTERCHANGE.
+!
+               CALL SSWAP(IMAX,A(1,IMAX),1,A(1,K-1),1)
+               DO 150 JJ = IMAX, KM1
+                  J = KM1 + IMAX - JJ
+                  T = A(J,K-1)
+                  A(J,K-1) = A(IMAX,J)
+                  A(IMAX,J) = T
+  150          CONTINUE
+               T = A(K-1,K)
+               A(K-1,K) = A(IMAX,K)
+               A(IMAX,K) = T
+  160       CONTINUE
+!
+!           PERFORM THE ELIMINATION.
+!
+            KM2 = K - 2
+            IF (KM2 .EQ. 0) GO TO 180
+               AK = A(K,K)/A(K-1,K)
+               AKM1 = A(K-1,K-1)/A(K-1,K)
+               DENOM = 1.0E0 - AK*AKM1
+               DO 170 JJ = 1, KM2
+                  J = KM1 - JJ
+                  BK = A(J,K)/A(K-1,K)
+                  BKM1 = A(J,K-1)/A(K-1,K)
+                  MULK = (AKM1*BK - BKM1)/DENOM
+                  MULKM1 = (AK*BKM1 - BK)/DENOM
+                  T = MULK
+                  CALL SAXPY(J,T,A(1,K),1,A(1,J),1)
+                  T = MULKM1
+                  CALL SAXPY(J,T,A(1,K-1),1,A(1,J),1)
+                  A(J,K) = MULK
+                  A(J,K-1) = MULKM1
+  170          CONTINUE
+  180       CONTINUE
+!
+!           SET THE PIVOT ARRAY.
+!
+            KPVT(K) = 1 - K
+            IF (SWAP) KPVT(K) = -IMAX
+            KPVT(K-1) = KPVT(K)
+  190    CONTINUE
+         K = K - KSTEP
+      GO TO 10
+  200 CONTINUE
+      RETURN
+      END

@@ -1,0 +1,26 @@
+!MADR
+      subroutine madr(n, p, x, nf, r, uiparm, urparm, ufparm)
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   n,nf,p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   r(n),urparm(*),x(p)
+      integer
+     +   uiparm(*)
+!
+!  SUBROUTINE ARGUMENTS
+      external ufparm
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic cos,sin
+!
+      r(1) = x(1)**2 + x(2)**2 + x(1)*x(2)
+      r(2) = sin(x(1))
+      r(3) = cos(x(2))
+
+      end subroutine madr

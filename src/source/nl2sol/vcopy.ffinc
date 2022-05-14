@@ -1,0 +1,22 @@
+!VCOPY
+      subroutine vcopy(p, y, x)
+!
+!  ***  SET Y = X, WHERE X AND Y ARE P-VECTORS  ***
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) :: x(*),y(*)
+!
+!  LOCAL SCALARS
+      integer i
+!
+!
+      do i = 1, p
+        y(i) = x(i)
+      enddo
+
+      end subroutine vcopy

@@ -1,0 +1,192 @@
+!NL2SNO
+      subroutine nl2sno(n, p, x, calcr, iv, v, uiparm, urparm, ufparm)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!  ***  LIKE NL2SOL, BUT WITHOUT CALCJ -- MINIMIZE NONLINEAR SUM OF  ***
+!  ***  SQUARES USING FINITE-DIFFERENCE JACOBIAN APPROXIMATIONS      ***
+!  ***  (NL2SOL VERSION 2.2)  ***
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   n,p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   urparm(1),v(1),x(p)
+      integer
+     +   iv(1),uiparm(1)
+!
+!  SUBROUTINE ARGUMENTS
+      external calcr,ufparm
+!
+!  LOCAL SCALARS
+      real(kind=wp) ::
+     +   h,hfac,hlim,negpt5,one,xk,zero
+      integer
+     +   covprt,covreq,d,d1,dk,dltfdj,dtype,i,j,j1,j1k,k,nf,nfcall,
+     +   nfgcal,r,r1,rn,toobig
+      logical
+     +   strted
+!
+!  EXTERNAL FUNCTIONS
+      real(kind=wp) ::
+     +   rmdcon
+      external rmdcon
+!
+!  EXTERNAL SUBROUTINES
+      external dfault,itsmry,nl2itr,vscopy
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic abs,max
+!
+!     INTEGER N, P, IV(1), UIPARM(1)
+!     REAL(KIND=WP) :: X(P), V(1), URPARM(1)
+!     DIMENSION IV(60+P),  V(93 + N*P + 3*N + P*(3*P+33)/2)
+!     EXTERNAL CALCR, UFPARM
+!
+!-----------------------------  DISCUSSION  ----------------------------
+!
+!        THE PARAMETERS FOR NL2SNO ARE THE SAME AS THOSE FOR NL2SOL
+!     (WHICH SEE), EXCEPT THAT CALCJ IS OMITTED.  INSTEAD OF CALLING
+!     CALCJ TO OBTAIN THE JACOBIAN MATRIX OF R AT X, NL2SNO COMPUTES
+!     AN APPROXIMATION TO IT BY FINITE (FORWARD) DIFFERENCES -- SEE
+!     V(DLTFDJ) BELOW.  NL2SNO USES FUNCTION VALUES ONLY WHEN COMPUT-
+!     THE COVARIANCE MATRIX (RATHER THAN THE FUNCTIONS AND GRADIENTS
+!     THAT NL2SOL MAY USE).  TO DO SO, NL2SNO SETS IV(COVREQ) TO -1 IF
+!     IV(COVPRT) = 1 WITH IV(COVREQ) = 0 AND TO MINUS ITS ABSOLUTE
+!     VALUE OTHERWISE.  THUS V(DELTA0) IS NEVER REFERENCED AND ONLY
+!     V(DLTFDC) MATTERS -- SEE NL2SOL FOR A DESCRIPTION OF V(DLTFDC).
+!        THE NUMBER OF EXTRA CALLS ON CALCR USED IN COMPUTING THE JACO-
+!     BIAN APPROXIMATION ARE NOT INCLUDED IN THE FUNCTION EVALUATION
+!     COUNT IV(NFCALL) AND ARE NOT OTHERWISE REPORTED.
+!
+! V(DLTFDJ)... V(36) HELPS CHOOSE THE STEP SIZE USED WHEN COMPUTING THE
+!             FINITE-DIFFERENCE JACOBIAN MATRIX.  FOR DIFFERENCES IN-
+!             VOLVING X(I), THE STEP SIZE FIRST TRIED IS
+!                       V(DLTFDJ) * MAX(ABS(X(I)), 1/D(I)),
+!             WHERE D IS THE CURRENT SCALE VECTOR (SEE REF. 1).  (IF
+!             THIS STEP IS TOO BIG, I.E., IF CALCR SETS NF TO 0, THEN
+!             SMALLER STEPS ARE TRIED UNTIL THE STEP SIZE IS SHRUNK BE-
+!             LOW 1000 * MACHEP, WHERE MACHEP IS THE UNIT ROUNDOFF.
+!             DEFAULT = MACHEP**0.5.
+!
+!  ***  REFERENCES  ***
+!
+! 1.  DENNIS, J.E., GAY, D.M., AND WELSCH, R.E. (1980), AN ADAPTIVE
+!             NONLINEAR LEAST-SQUARES ALGORITHM, SUBMITTED TO ACM TRANS.
+!             MATH. SOFTWARE.
+!
+!  ***  GENERAL  ***
+!
+!     CODED BY DAVID M. GAY.
+!     THIS SUBROUTINE WAS WRITTEN IN CONNECTION WITH RESEARCH
+!     SUPPORTED BY THE NATIONAL SCIENCE FOUNDATION UNDER GRANTS
+!     MCS-7600324, DCR75-10143, 76-14311DSS, MCS76-11989, AND
+!     MCS-7906671.
+!
+!+++++++++++++++++++++++++++  DECLARATIONS  ++++++++++++++++++++++++++++
+!
+!/
+!  ***  EXTERNAL FUNCTIONS AND SUBROUTINES  ***
+!
+!     EXTERNAL DFAULT, ITSMRY, NL2ITR, RMDCON, VSCOPY
+!     REAL(KIND=WP) :: RMDCON
+!
+! DFAULT... SUPPLIES DEFAULT PARAMETER VALUES.
+! ITSMRY... PRINTS ITERATION SUMMARY AND INFO ABOUT INITIAL AND FINAL X.
+! NL2ITR... REVERSE-COMMUNICATION ROUTINE THAT CARRIES OUT NL2SOL ALGO-
+!             RITHM.
+! RMDCON... RETURNS MACHINE-DEPENDENT CONSTANTS.
+! VSCOPY... SETS ALL ELEMENTS OF A VECTOR TO A SCALAR.
+!
+!     LOGICAL STRTED
+!     INTEGER DK, D1, I, J1, J1K, K, NF, RN, R1
+!     REAL(KIND=WP) :: H, HFAC, HLIM, NEGPT5, ONE, XK, ZERO
+!
+!  ***  SUBSCRIPTS FOR IV AND V  ***
+!
+!     INTEGER COVPRT, COVREQ, D, DLTFDJ, DTYPE, J, NFCALL, NFGCAL, R,
+!    1        TOOBIG
+!
+      data hfac/1.0e3_wp/, hlim/0.0_wp/, negpt5/-0.5_wp/,
+     +     one/1.0_wp/, zero/0.0_wp/
+!
+!  ***  IV SUBSCRIPT VALUES  ***
+!
+      data covprt/14/, covreq/15/, d/27/, dtype/16/, j/33/,
+     +     nfcall/6/, nfgcal/7/, r/50/, toobig/2/
+!
+!  ***  V SUBSCRIPT VALUES  ***
+!
+      data dltfdj/36/
+!
+!+++++++++++++++++++++++++++++++  BODY  ++++++++++++++++++++++++++++++++
+!
+      d1 = 94 + 2*n + p*(3*p + 31)/2
+      iv(d) = d1
+      r1 = d1 + p
+      iv(r) = r1
+      j1 = r1 + n
+      iv(j) = j1
+      rn = j1 - 1
+      if (iv(1) .eq. 0) call dfault(iv, v)
+      iv(covreq) = -abs(iv(covreq))
+      if (iv(covprt) .ne. 0 .and. iv(covreq) .eq. 0) iv(covreq) = -1
+      strted = .true.
+      if (iv(1) .ne. 12) go to 80
+         strted = .false.
+         iv(nfcall) = 1
+         iv(nfgcal) = 1
+!        ***  INITIALIZE SCALE VECTOR D TO ONES FOR COMPUTING
+!        ***  INITIAL JACOBIAN.
+         if (iv(dtype) .gt. 0) call vscopy(p, v(d1), one)
+!
+ 10   nf = iv(nfcall)
+      call calcr(n, p, x, nf, v(r1), uiparm, urparm, ufparm)
+      if (strted) go to 20
+         if (nf .gt. 0) go to 30
+              iv(1) = 13
+              go to 90
+!
+ 20   if (nf .le. 0) iv(toobig) = 1
+      go to 80
+!
+!  ***  COMPUTE FINITE-DIFFERENCE JACOBIAN  ***
+!
+ 30   j1k = j1
+      dk = d1
+      do 70 k = 1, p
+         xk = x(k)
+         h = v(dltfdj) * max(abs(xk), one/v(dk))
+         dk = dk + 1
+ 40      x(k) = xk + h
+         nf = iv(nfgcal)
+         call calcr (n, p, x, nf, v(j1k), uiparm, urparm, ufparm)
+         if (nf .gt. 0) go to 50
+              if (hlim .eq. zero) hlim = hfac * rmdcon(3)
+!             ***  HLIM = HFAC TIMES THE UNIT ROUNDOFF  ***
+              h = negpt5 * h
+              if (abs(h) .ge. hlim) go to 40
+                   iv(1) = 15
+                   go to 90
+ 50      x(k) = xk
+         do 60 i = r1, rn
+              v(j1k) = (v(j1k) - v(i)) / h
+              j1k = j1k + 1
+ 60           continue
+ 70      continue
+!
+      strted = .true.
+!
+ 80   call nl2itr(v(d1), iv, v(j1), n, n, p, v(r1), v, x)
+      if (iv(1) - 2) 10, 30, 999
+!
+ 90   call itsmry(v(d1), iv, p, v, x)
+!
+ 999  return
+
+      end subroutine nl2sno

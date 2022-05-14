@@ -1,0 +1,559 @@
+!ASSESS
+      subroutine assess (d, iv, p, step, stlstg, v, x, x0)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!
+!  ***  ASSESS CANDIDATE STEP (NL2SOL VERSION 2.2)  ***
+!
+!  ***  PURPOSE  ***
+!
+!        This subroutine is called by an unconstrained minimization
+!     routine to assess the next candidate step.  It may recommend one
+!     of several courses of action, such as accepting the step, recomputing
+!     it using the same or a new quadratic model, or halting due
+!     to convergence or false convergence.  See the return code listing
+!     below.
+!
+!
+!  Variable Declarations
+!
+!  SCALAR ARGUMENTS
+      integer p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) :: d(p),step(p),stlstg(p),v(*),x(p),x0(p)
+      integer iv(*)
+!
+!  LOCAL SCALARS
+      real(kind=wp) :: emax,gts,half,one,reldx1,rfac1,temp,two,xmax,zero
+      integer
+     +   afctol,decfac,dst0,dstnrm,dstsav,f,f0,fdif,flstgd,gtslst,
+     +   gtstep,i,incfac,irc,lmax0,mlstgd,model,nfc,nfcall,nfgcal,
+     +   nreduc,plstgd,preduc,radfac,radinc,rdfcmn,rdfcmx,reldx,
+     +   restor,rfctol,stage,stglim,stppar,switch,toobig,tuner1,
+     +   tuner2,tuner3,xctol,xftol,xirc
+      logical goodx
+!
+!  EXTERNAL FUNCTIONS
+      real(kind=wp),external :: reldst
+!     real(kind=wp) :: mach  
+!
+!  EXTERNAL SUBROUTINES
+      external vcopy
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic abs,max
+!
+!--------------------------  PARAMETER USAGE  --------------------------
+!
+!     IV (I/O) INTEGER PARAMETER AND SCRATCH VECTOR -- SEE DESCRIPTION
+!             BELOW OF IV VALUES REFERENCED.
+!      D (IN)  SCALE VECTOR USED IN COMPUTING V(RELDX) -- SEE BELOW.
+!      P (IN)  NUMBER OF PARAMETERS BEING OPTIMIZED.
+!   STEP (I/O) ON INPUT, STEP IS THE STEP TO BE ASSESSED.  IT IS UN-
+!             CHANGED ON OUTPUT UNLESS A PREVIOUS STEP ACHIEVED A
+!             BETTER OBJECTIVE FUNCTION REDUCTION, IN WHICH CASE STLSTG
+!             WILL HAVE BEEN COPIED TO STEP.
+! STLSTG (I/O) WHEN ASSESS RECOMMENDS RECOMPUTING STEP EVEN THOUGH THE
+!             CURRENT (OR A PREVIOUS) STEP YIELDS AN OBJECTIVE FUNC-
+!             TION DECREASE, IT SAVES IN STLSTG THE STEP THAT GAVE THE
+!             BEST FUNCTION REDUCTION SEEN SO FAR (IN THE CURRENT ITERA-
+!             TION).  IF THE RECOMPUTED STEP YIELDS A LARGER FUNCTION
+!             VALUE, THEN STEP IS RESTORED FROM STLSTG AND
+!             X = X0 + STEP IS RECOMPUTED.
+!      V (I/O) REAL(KIND=WP) PARAMETER AND SCRATCH VECTOR -- SEE DESCRIPTION
+!             BELOW OF V VALUES REFERENCED.
+!      X (I/O) ON INPUT, X = X0 + STEP IS THE POINT AT WHICH THE OBJEC-
+!             TIVE FUNCTION HAS JUST BEEN EVALUATED.  IF AN EARLIER
+!             STEP YIELDED A BIGGER FUNCTION DECREASE, THEN X IS
+!             RESTORED TO THE CORRESPONDING EARLIER VALUE.  OTHERWISE,
+!             IF THE CURRENT STEP DOES NOT GIVE ANY FUNCTION DECREASE,
+!             THEN X IS RESTORED TO X0.
+!     X0 (IN)  INITIAL OBJECTIVE FUNCTION PARAMETER VECTOR (AT THE
+!             START OF THE CURRENT ITERATION).
+!
+!  ***  IV VALUES REFERENCED  ***
+!
+!    IV(IRC) (I/O) ON INPUT FOR THE FIRST STEP TRIED IN A NEW ITERATION,
+!             IV(IRC) SHOULD BE SET TO 3 OR 4 (THE VALUE TO WHICH IT IS
+!             SET WHEN STEP IS DEFINITELY TO BE ACCEPTED).  ON INPUT
+!             AFTER STEP HAS BEEN RECOMPUTED, IV(IRC) SHOULD BE
+!             UNCHANGED SINCE THE PREVIOUS RETURN OF ASSESS.
+!                ON OUTPUT, IV(IRC) IS A RETURN CODE HAVING ONE OF THE
+!             FOLLOWING VALUES...
+!                  1 = SWITCH MODELS OR TRY SMALLER STEP.
+!                  2 = SWITCH MODELS OR ACCEPT STEP.
+!                  3 = ACCEPT STEP AND DETERMINE V(RADFAC) BY GRADIENT
+!                       TESTS.
+!                  4 = ACCEPT STEP, V(RADFAC) HAS BEEN DETERMINED.
+!                  5 = RECOMPUTE STEP (USING THE SAME MODEL).
+!                  6 = RECOMPUTE STEP WITH RADIUS = V(LMAX0) BUT DO NOT
+!                       EVAULATE THE OBJECTIVE FUNCTION.
+!                  7 = X-CONVERGENCE (SEE V(XCTOL)).
+!                  8 = RELATIVE FUNCTION CONVERGENCE (SEE V(RFCTOL)).
+!                  9 = BOTH X- AND RELATIVE FUNCTION CONVERGENCE.
+!                 10 = ABSOLUTE FUNCTION CONVERGENCE (SEE V(AFCTOL)).
+!                 11 = SINGULAR CONVERGENCE (SEE V(LMAX0)).
+!                 12 = FALSE CONVERGENCE (SEE V(XFTOL)).
+!                 13 = IV(IRC) WAS OUT OF RANGE ON INPUT.
+!             RETURN CODE I HAS PRECDENCE OVER I+1 FOR I = 9, 10, 11.
+! IV(MLSTGD) (I/O) SAVED VALUE OF IV(MODEL).
+!  IV(MODEL) (I/O) ON INPUT, IV(MODEL) SHOULD BE AN INTEGER IDENTIFYING
+!             THE CURRENT QUADRATIC MODEL OF THE OBJECTIVE FUNCTION.
+!             IF A PREVIOUS STEP YIELDED A BETTER FUNCTION REDUCTION,
+!             THEN IV(MODEL) WILL BE SET TO IV(MLSTGD) ON OUTPUT.
+! IV(NFCALL) (IN)  INVOCATION COUNT FOR THE OBJECTIVE FUNCTION.
+! IV(NFGCAL) (I/O) VALUE OF IV(NFCALL) AT STEP THAT GAVE THE BIGGEST
+!             FUNCTION REDUCTION THIS ITERATION.  IV(NFGCAL) REMAINS
+!             UNCHANGED UNTIL A FUNCTION REDUCTION IS OBTAINED.
+! IV(RADINC) (I/O) THE NUMBER OF RADIUS INCREASES (OR MINUS THE NUMBER
+!             OF DECREASES) SO FAR THIS ITERATION.
+! IV(RESTOR) (OUT) SET TO 0 UNLESS X AND V(F) HAVE BEEN RESTORED, IN
+!             WHICH CASE ASSESS SETS IV(RESTOR) = 1.
+!  IV(STAGE) (I/O) COUNT OF THE NUMBER OF MODELS TRIED SO FAR IN THE
+!             CURRENT ITERATION.
+! IV(STGLIM) (IN)  MAXIMUM NUMBER OF MODELS TO CONSIDER.
+! IV(SWITCH) (OUT) SET TO 0 UNLESS A NEW MODEL IS BEING TRIED AND IT
+!             GIVES A SMALLER FUNCTION VALUE THAN THE PREVIOUS MODEL,
+!             IN WHICH CASE ASSESS SETS IV(SWITCH) = 1.
+! IV(TOOBIG) (IN)  IS NONZERO IF STEP WAS TOO BIG (E.G. IF IT CAUSED
+!             OVERFLOW).
+!   IV(XIRC) (I/O) VALUE THAT IV(IRC) WOULD HAVE IN THE ABSENCE OF
+!             CONVERGENCE, FALSE CONVERGENCE, AND OVERSIZED STEPS.
+!
+!  ***  V VALUES REFERENCED  ***
+!
+! V(AFCTOL) (IN)  ABSOLUTE FUNCTION CONVERGENCE TOLERANCE.  IF THE
+!             ABSOLUTE VALUE OF THE CURRENT FUNCTION VALUE V(F) IS LESS
+!             THAN V(AFCTOL), THEN ASSESS RETURNS WITH IV(IRC) = 10.
+! V(DECFAC) (IN)  FACTOR BY WHICH TO DECREASE RADIUS WHEN IV(TOOBIG) IS
+!             NONZERO.
+! V(DSTNRM) (IN)  THE 2-NORM OF D*STEP.
+! V(DSTSAV) (I/O) VALUE OF V(DSTNRM) ON SAVED STEP.
+!   V(DST0) (IN)  THE 2-NORM OF D TIMES THE NEWTON STEP (WHEN DEFINED,
+!             I.E., FOR V(NREDUC) .GE. 0).
+!      V(F) (I/O) ON BOTH INPUT AND OUTPUT, V(F) IS THE OBJECTIVE FUNC-
+!             TION VALUE AT X.  IF X IS RESTORED TO A PREVIOUS VALUE,
+!             THEN V(F) IS RESTORED TO THE CORRESPONDING VALUE.
+!   V(FDIF) (OUT) THE FUNCTION REDUCTION V(F0) - V(F) (FOR THE OUTPUT
+!             VALUE OF V(F) IF AN EARLIER STEP GAVE A BIGGER FUNCTION
+!             DECREASE, AND FOR THE INPUT VALUE OF V(F) OTHERWISE).
+! V(FLSTGD) (I/O) SAVED VALUE OF V(F).
+!     V(F0) (IN)  OBJECTIVE FUNCTION VALUE AT START OF ITERATION.
+! V(GTSLST) (I/O) VALUE OF V(GTSTEP) ON SAVED STEP.
+! V(GTSTEP) (IN)  INNER PRODUCT BETWEEN STEP AND GRADIENT.
+! V(INCFAC) (IN)  MINIMUM FACTOR BY WHICH TO INCREASE RADIUS.
+!  V(LMAX0) (IN)  MAXIMUM REASONABLE STEP SIZE (AND INITIAL STEP BOUND).
+!             IF THE ACTUAL FUNCTION DECREASE IS NO MORE THAN TWICE
+!             WHAT WAS PREDICTED, IF A RETURN WITH IV(IRC) = 7, 8, 9,
+!             OR 10 DOES NOT OCCUR, IF V(DSTNRM) .GT. V(LMAX0), AND IF
+!             V(PREDUC) .LE. V(RFCTOL) * ABS(V(F0)), THEN ASSESS RE-
+!             TURNS WITH IV(IRC) = 11.  IF SO DOING APPEARS WORTHWHILE,
+!             THEN ASSESS REPEATS THIS TEST WITH V(PREDUC) COMPUTED FOR
+!             A STEP OF LENGTH V(LMAX0) (BY A RETURN WITH IV(IRC) = 6).
+! V(NREDUC) (I/O)  FUNCTION REDUCTION PREDICTED BY QUADRATIC MODEL FOR
+!             NEWTON STEP.  IF ASSESS IS CALLED WITH IV(IRC) = 6, I.E.,
+!             IF V(PREDUC) HAS BEEN COMPUTED WITH RADIUS = V(LMAX0) FOR
+!             USE IN THE SINGULAR CONVERVENCE TEST, THEN V(NREDUC) IS
+!             SET TO -V(PREDUC) BEFORE THE LATTER IS RESTORED.
+! V(PLSTGD) (I/O) VALUE OF V(PREDUC) ON SAVED STEP.
+! V(PREDUC) (I/O) FUNCTION REDUCTION PREDICTED BY QUADRATIC MODEL FOR
+!             CURRENT STEP.
+! V(RADFAC) (OUT) FACTOR TO BE USED IN DETERMINING THE NEW RADIUS,
+!             WHICH SHOULD BE V(RADFAC)*DST, WHERE  DST  IS EITHER THE
+!             OUTPUT VALUE OF V(DSTNRM) OR THE 2-NORM OF
+!             DIAG(NEWD)*STEP  FOR THE OUTPUT VALUE OF STEP AND THE
+!             UPDATED VERSION, NEWD, OF THE SCALE VECTOR D.  FOR
+!             IV(IRC) = 3, V(RADFAC) = 1.0 IS RETURNED.
+! V(RDFCMN) (IN)  MINIMUM VALUE FOR V(RADFAC) IN TERMS OF THE INPUT
+!             VALUE OF V(DSTNRM) -- SUGGESTED VALUE = 0.1.
+! V(RDFCMX) (IN)  MAXIMUM VALUE FOR V(RADFAC) -- SUGGESTED VALUE = 4.0.
+!  V(RELDX) (OUT) SCALED RELATIVE CHANGE IN X CAUSED BY STEP, COMPUTED
+!             BY FUNCTION  RELDST  AS
+!                 MAX (D(I)*ABS(X(I)-X0(I)), 1 .LE. I .LE. P) /
+!                    MAX (D(I)*(ABS(X(I))+ABS(X0(I))), 1 .LE. I .LE. P).
+!             IF AN ACCEPTABLE STEP IS RETURNED, THEN V(RELDX) IS COM-
+!             PUTED USING THE OUTPUT (POSSIBLY RESTORED) VALUES OF X
+!             AND STEP.  OTHERWISE IT IS COMPUTED USING THE INPUT
+!             VALUES.
+! V(RFCTOL) (IN)  RELATIVE FUNCTION CONVERGENCE TOLERANCE.  IF THE
+!             ACTUAL FUNCTION REDUCTION IS AT MOST TWICE WHAT WAS PRE-
+!             DICTED AND  V(NREDUC) .LE. V(RFCTOL)*ABS(V(F0)),  THEN
+!             ASSESS RETURNS WITH IV(IRC) = 8 OR 9.  SEE ALSO V(LMAX0).
+! V(STPPAR) (IN)  MARQUARDT PARAMETER -- 0 MEANS FULL NEWTON STEP.
+! V(TUNER1) (IN)  TUNING CONSTANT USED TO DECIDE IF THE FUNCTION
+!             REDUCTION WAS MUCH LESS THAN EXPECTED.  SUGGESTED
+!             VALUE = 0.1.
+! V(TUNER2) (IN)  TUNING CONSTANT USED TO DECIDE IF THE FUNCTION
+!             REDUCTION WAS LARGE ENOUGH TO ACCEPT STEP.  SUGGESTED
+!             VALUE = 10**-4.
+! V(TUNER3) (IN)  TUNING CONSTANT USED TO DECIDE IF THE RADIUS
+!             SHOULD BE INCREASED.  SUGGESTED VALUE = 0.75.
+!  V(XCTOL) (IN)  X-CONVERGENCE CRITERION.  IF STEP IS A NEWTON STEP
+!             (V(STPPAR) = 0) HAVING V(RELDX) .LE. V(XCTOL) AND GIVING
+!             AT MOST TWICE THE PREDICTED FUNCTION DECREASE, THEN
+!             ASSESS RETURNS IV(IRC) = 7 OR 9.
+!  V(XFTOL) (IN)  FALSE CONVERGENCE TOLERANCE.  IF STEP GAVE NO OR ONLY
+!             A SMALL FUNCTION DECREASE AND V(RELDX) .LE. V(XFTOL),
+!             THEN ASSESS RETURNS WITH IV(IRC) = 12.
+!
+!-------------------------------  NOTES  -------------------------------
+!
+!  ***  APPLICATION AND USAGE RESTRICTIONS  ***
+!
+!        THIS ROUTINE IS CALLED AS PART OF THE NL2SOL (NONLINEAR
+!     LEAST-SQUARES) PACKAGE.  IT MAY BE USED IN ANY UNCONSTRAINED
+!     MINIMIZATION SOLVER THAT USES DOGLEG, GOLDFELD-QUANDT-TROTTER,
+!     OR LEVENBERG-MARQUARDT STEPS.
+!
+!  ***  ALGORITHM NOTES  ***
+!
+!        SEE (1) FOR FURTHER DISCUSSION OF THE ASSESSING AND MODEL
+!     SWITCHING STRATEGIES.  WHILE NL2SOL CONSIDERS ONLY TWO MODELS,
+!     ASSESS IS DESIGNED TO HANDLE ANY NUMBER OF MODELS.
+!
+!  ***  USAGE NOTES  ***
+!
+!        ON THE FIRST CALL OF AN ITERATION, ONLY THE I/O VARIABLES
+!     STEP, X, IV(IRC), IV(MODEL), V(F), V(DSTNRM), V(GTSTEP), AND
+!     V(PREDUC) NEED HAVE BEEN INITIALIZED.  BETWEEN CALLS, NO I/O
+!     VALUES EXECPT STEP, X, IV(MODEL), V(F) AND THE STOPPING TOLER-
+!     ANCES SHOULD BE CHANGED.
+!        AFTER A RETURN FOR CONVERGENCE OR FALSE CONVERGENCE, ONE CAN
+!     CHANGE THE STOPPING TOLERANCES AND CALL ASSESS AGAIN, IN WHICH
+!     CASE THE STOPPING TESTS WILL BE REPEATED.
+!
+!  ***  REFERENCES  ***
+!
+!     (1) DENNIS, J.E., JR., GAY, D.M., AND WELSCH, R.E. (1980),
+!        AN ADAPTIVE NONLINEAR LEAST-SQUARES ALGORITHM,
+!        SUBMITTED TO ACM TRANS. MATH. SOFTWARE.
+!
+!     (2) POWELL, M.J.D. (1970)  A FORTRAN SUBROUTINE FOR SOLVING
+!        SYSTEMS OF NONLINEAR ALGEBRAIC EQUATIONS, IN NUMERICAL
+!        METHODS FOR NONLINEAR ALGEBRAIC EQUATIONS, EDITED BY
+!        P. RABINOWITZ, GORDON AND BREACH, LONDON.
+!
+!  ***  HISTORY  ***
+!
+!        JOHN DENNIS DESIGNED MUCH OF THIS ROUTINE, STARTING WITH
+!     IDEAS IN (2). ROY WELSCH SUGGESTED THE MODEL SWITCHING STRATEGY.
+!        DAVID GAY AND STEPHEN PETERS CAST THIS SUBROUTINE INTO A MORE
+!     PORTABLE FORM (WINTER 1977), AND DAVID GAY CAST IT INTO ITS
+!     PRESENT FORM (FALL 1978).
+!
+!  ***  GENERAL  ***
+!
+!     THIS SUBROUTINE WAS WRITTEN IN CONNECTION WITH RESEARCH
+!     SUPPORTED BY THE NATIONAL SCIENCE FOUNDATION UNDER GRANTS
+!     MCS-7600324, DCR75-10143, 76-14311DSS, MCS76-11989, AND
+!     MCS-7906671.
+!
+!------------------------  EXTERNAL QUANTITIES  ------------------------
+!
+!  ***  EXTERNAL FUNCTIONS AND SUBROUTINES  ***
+!
+!     EXTERNAL RELDST, VCOPY
+!     REAL(KIND=WP) :: RELDST
+!
+! VCOPY.... COPIES ONE VECTOR TO ANOTHER.
+!
+!/
+!  ***  NO COMMON BLOCKS  ***
+!
+!--------------------------  LOCAL VARIABLES  --------------------------
+!
+!     LOGICAL GOODX
+!     INTEGER I, NFC
+!     REAL(KIND=WP) :: EMAX, GTS, HALF, ONE, RELDX1, RFAC1,
+!    +                 TEMP, TWO, XMAX, ZERO
+!
+!  ***  SUBSCRIPTS FOR IV AND V  ***
+!
+!     INTEGER AFCTOL, DECFAC, DSTNRM, DSTSAV, DST0, F, FDIF, FLSTGD, F0,
+!    1        GTSLST, GTSTEP, INCFAC, IRC, LMAX0, MLSTGD, MODEL, NFCALL,
+!    2        NFGCAL, NREDUC, PLSTGD, PREDUC, RADFAC, RADINC, RDFCMN,
+!    3        RDFCMX, RELDX, RESTOR, RFCTOL, STAGE, STGLIM, STPPAR,
+!    4        SWITCH, TOOBIG, TUNER1, TUNER2, TUNER3, XCTOL, XFTOL,
+!    5        XIRC
+!
+!  ***  DATA INITIALIZATIONS  ***
+!
+      data half/0.5_wp/, one/1.0_wp/, two/2.0_wp/, zero/0.0_wp/
+!
+      data irc/3/, mlstgd/4/, model/5/, nfcall/6/,
+     +     nfgcal/7/, radinc/8/, restor/9/, stage/10/,
+     +     stglim/11/, switch/12/, toobig/2/, xirc/13/
+      data afctol/31/, decfac/22/, dstnrm/2/, dst0/3/,
+     +     dstsav/18/, f/10/, fdif/11/, flstgd/12/, f0/13/,
+     +     gtslst/14/, gtstep/4/, incfac/23/,
+     +     lmax0/35/, nreduc/6/, plstgd/15/, preduc/7/,
+     +     radfac/16/, rdfcmn/24/, rdfcmx/25/,
+     +     reldx/17/, rfctol/32/, stppar/5/, tuner1/26/,
+     +     tuner2/27/, tuner3/28/, xctol/33/, xftol/34/
+!
+!+++++++++++++++++++++++++++++++  BODY  ++++++++++++++++++++++++++++++++
+!
+      nfc = iv(nfcall)
+      iv(switch) = 0
+      iv(restor) = 0
+      rfac1 = one
+      goodx = .true.
+      i = iv(irc)
+      if (i .ge. 1 .and. i .le. 12)
+     +             go to (20,30,10,10,40,360,290,290,290,290,290,140), i
+         iv(irc) = 13
+         go to 999
+!
+!  ***  INITIALIZE FOR NEW ITERATION  ***
+!
+ 10   iv(stage) = 1
+      iv(radinc) = 0
+      v(flstgd) = v(f0)
+      if (iv(toobig) .eq. 0) go to 90
+         iv(stage) = -1
+         iv(xirc) = i
+         go to 60
+!
+!  ***  STEP WAS RECOMPUTED WITH NEW MODEL OR SMALLER RADIUS  ***
+!  ***  FIRST DECIDE WHICH  ***
+!
+ 20   if (iv(model) .ne. iv(mlstgd)) go to 30
+!        ***  OLD MODEL RETAINED, SMALLER RADIUS TRIED  ***
+!        ***  DO NOT CONSIDER ANY MORE NEW MODELS THIS ITERATION  ***
+         iv(stage) = iv(stglim)
+         iv(radinc) = -1
+         go to 90
+!
+!  ***  A NEW MODEL IS BEING TRIED.  DECIDE WHETHER TO KEEP IT.  ***
+!
+ 30   iv(stage) = iv(stage) + 1
+!
+!     ***  NOW WE ADD THE POSSIBILTIY THAT STEP WAS RECOMPUTED WITH  ***
+!     ***  THE SAME MODEL, PERHAPS BECAUSE OF AN OVERSIZED STEP.     ***
+!
+ 40   if (iv(stage) .gt. 0) go to 50
+!
+!        ***  STEP WAS RECOMPUTED BECAUSE IT WAS TOO BIG.  ***
+!
+         if (iv(toobig) .ne. 0) go to 60
+!
+!        ***  RESTORE IV(STAGE) AND PICK UP WHERE WE LEFT OFF.  ***
+!
+         iv(stage) = -iv(stage)
+         i = iv(xirc)
+         go to (20, 30, 90, 90, 70), i
+!
+ 50   if (iv(toobig) .eq. 0) go to 70
+!
+!  ***  HANDLE OVERSIZE STEP  ***
+!
+      if (iv(radinc) .gt. 0) go to 80
+         iv(stage) = -iv(stage)
+         iv(xirc) = iv(irc)
+!
+ 60      v(radfac) = v(decfac)
+         iv(radinc) = iv(radinc) - 1
+         iv(irc) = 5
+         go to 999
+!
+ 70   if (v(f) .lt. v(flstgd)) go to 90
+!
+!     *** THE NEW STEP IS A LOSER.  RESTORE OLD MODEL.  ***
+!
+      if (iv(model) .eq. iv(mlstgd)) go to 80
+         iv(model) = iv(mlstgd)
+         iv(switch) = 1
+!
+!     ***  RESTORE STEP, ETC. ONLY IF A PREVIOUS STEP DECREASED V(F).
+!
+ 80   if (v(flstgd) .ge. v(f0)) go to 90
+         iv(restor) = 1
+         v(f) = v(flstgd)
+         v(preduc) = v(plstgd)
+         v(gtstep) = v(gtslst)
+         if (iv(switch) .eq. 0) rfac1 = v(dstnrm) / v(dstsav)
+         v(dstnrm) = v(dstsav)
+         nfc = iv(nfgcal)
+         goodx = .false.
+!
+!
+!  ***  COMPUTE RELATIVE CHANGE IN X BY CURRENT STEP  ***
+!
+ 90   reldx1 = reldst(p, d, x, x0)
+!
+!  ***  RESTORE X AND STEP IF NECESSARY  ***
+!
+      if (goodx) go to 105
+      do 100 i = 1, p
+         step(i) = stlstg(i)
+         x(i) = x0(i) + stlstg(i)
+ 100     continue
+!
+ 105  v(fdif) = v(f0) - v(f)
+      temp = 0.0
+      if (v(preduc).gt.mach(1)/v(tuner2)) temp = v(tuner2) * v(preduc)
+      if (v(fdif).gt.temp) go to 120
+!
+!        ***  NO (OR ONLY A TRIVIAL) FUNCTION DECREASE
+!        ***  -- SO TRY NEW MODEL OR SMALLER RADIUS
+!
+         v(reldx) = reldx1
+         if (v(f) .lt. v(f0)) go to 110
+              iv(mlstgd) = iv(model)
+              v(flstgd) = v(f)
+              v(f) = v(f0)
+              call vcopy(p, x, x0)
+              iv(restor) = 1
+              go to 115
+ 110     iv(nfgcal) = nfc
+ 115     iv(irc) = 1
+         if (iv(stage) .lt. iv(stglim)) go to 130
+              iv(irc) = 5
+              iv(radinc) = iv(radinc) - 1
+              go to 130
+!
+!  ***  NONTRIVIAL FUNCTION DECREASE ACHIEVED  ***
+!
+ 120  iv(nfgcal) = nfc
+      rfac1 = one
+      if (goodx) v(reldx) = reldx1
+      v(dstsav) = v(dstnrm)
+      if (v(fdif) .gt. v(preduc)*v(tuner1)) go to 200
+!
+!  ***  DECREASE WAS MUCH LESS THAN PREDICTED -- EITHER CHANGE MODELS
+!  ***  OR ACCEPT STEP WITH DECREASED RADIUS.
+!
+      if (iv(stage) .ge. iv(stglim)) go to 125
+!        ***  CONSIDER SWITCHING MODELS  ***
+         iv(irc) = 2
+         go to 130
+!
+!     ***  ACCEPT STEP WITH DECREASED RADIUS  ***
+!
+ 125  iv(irc) = 4
+!
+!  ***  SET V(RADFAC) TO FLETCHER*S DECREASE FACTOR  ***
+!
+ 130  iv(xirc) = iv(irc)
+      emax = v(gtstep) + v(fdif)
+      v(radfac) = half * rfac1
+      if (emax .lt. v(gtstep)) v(radfac) = rfac1 * max(v(rdfcmn),
+     +                                           half * v(gtstep)/emax)
+!
+!  ***  DO FALSE CONVERGENCE TEST  ***
+!
+ 140  if (v(reldx) .le. v(xftol)) go to 160
+         iv(irc) = iv(xirc)
+         if (v(f) .lt. v(f0)) go to 230
+              go to 300
+!
+ 160  iv(irc) = 12
+      go to 310
+!
+!  ***  HANDLE GOOD FUNCTION DECREASE  ***
+!
+ 200  if (v(fdif) .lt. (-v(tuner3) * v(gtstep))) go to 260
+!
+!     ***  INCREASING RADIUS LOOKS WORTHWHILE.  SEE IF WE JUST
+!     ***  RECOMPUTED STEP WITH A DECREASED RADIUS OR RESTORED STEP
+!     ***  AFTER RECOMPUTING IT WITH A LARGER RADIUS.
+!
+      if (iv(radinc) .lt. 0) go to 260
+      if (iv(restor) .eq. 1) go to 260
+!
+!        ***  WE DID NOT.  TRY A LONGER STEP UNLESS THIS WAS A NEWTON
+!        ***  STEP.
+!
+         v(radfac) = v(rdfcmx)
+         gts = v(gtstep)
+         if (v(fdif) .lt. (half/v(radfac) - one) * gts)
+     +            v(radfac) = max(v(incfac), half*gts/(gts + v(fdif)))
+         iv(irc) = 4
+         if (v(stppar) .eq. zero) go to 300
+!             ***  STEP WAS NOT A NEWTON STEP.  RECOMPUTE IT WITH
+!             ***  A LARGER RADIUS.
+              iv(irc) = 5
+              iv(radinc) = iv(radinc) + 1
+!
+!  ***  SAVE VALUES CORRESPONDING TO GOOD STEP  ***
+!
+ 230  v(flstgd) = v(f)
+      iv(mlstgd) = iv(model)
+      call vcopy(p, stlstg, step)
+      v(dstsav) = v(dstnrm)
+      iv(nfgcal) = nfc
+      v(plstgd) = v(preduc)
+      v(gtslst) = v(gtstep)
+      go to 300
+!
+!  ***  ACCEPT STEP WITH RADIUS UNCHANGED  ***
+!
+ 260  v(radfac) = one
+      iv(irc) = 3
+      go to 300
+!
+!  ***  COME HERE FOR A RESTART AFTER CONVERGENCE  ***
+!
+ 290  iv(irc) = iv(xirc)
+      if (v(dstsav) .ge. zero) go to 310
+         iv(irc) = 12
+         go to 310
+!
+!  ***  PERFORM CONVERGENCE TESTS  ***
+!
+ 300  iv(xirc) = iv(irc)
+ 310  if (abs(v(f)) .lt. v(afctol)) iv(irc) = 10
+      if (half * v(fdif) .gt. v(preduc)) go to 999
+      emax = 0.0
+      if (abs(v(f0)).gt.mach(1)/v(rfctol))
+     +   emax = v(rfctol) * abs(v(f0))
+      if (v(dstnrm) .gt. v(lmax0) .and. v(preduc) .le. emax)
+     +                       iv(irc) = 11
+      if (v(dst0) .lt. zero) go to 320
+      i = 0
+      if ((v(nreduc) .gt. zero .and. v(nreduc) .le. emax) .or.
+     +    (v(nreduc) .eq. zero. and. v(preduc) .eq. zero))  i = 2
+      if (v(stppar) .eq. zero .and. v(reldx) .le. v(xctol)) i = i + 1
+      if (i .gt. 0) iv(irc) = i + 6
+!
+!  ***  CONSIDER RECOMPUTING STEP OF LENGTH V(LMAX0) FOR SINGULAR
+!  ***  CONVERGENCE TEST.
+!
+ 320  if (abs(iv(irc)-3) .gt. 1 .and. iv(irc) .ne. 12) go to 999
+      if (v(dstnrm) .gt. v(lmax0)) go to 330
+         if (v(preduc) .ge. emax) go to 999
+              if (v(dst0) .lt. zero) go to 340
+                   if (half * v(dst0) .le. v(lmax0)) go to 999
+                        go to 340
+ 330  if (half * v(dstnrm) .le. v(lmax0)) go to 999
+      xmax = v(lmax0) / v(dstnrm)
+      if (xmax * (two - xmax) * v(preduc) .ge. emax) go to 999
+ 340  if (v(nreduc) .lt. zero) go to 370
+!
+!  ***  RECOMPUTE V(PREDUC) FOR USE IN SINGULAR CONVERGENCE TEST  ***
+!
+      v(gtslst) = v(gtstep)
+      v(dstsav) = v(dstnrm)
+      if (iv(irc) .eq. 12) v(dstsav) = -v(dstsav)
+      v(plstgd) = v(preduc)
+      iv(irc) = 6
+      call vcopy(p, stlstg, step)
+      go to 999
+!
+!  ***  PERFORM SINGULAR CONVERGENCE TEST WITH RECOMPUTED V(PREDUC)  ***
+!
+ 360  v(gtstep) = v(gtslst)
+      v(dstnrm) = abs(v(dstsav))
+      call vcopy(p, step, stlstg)
+      iv(irc) = iv(xirc)
+      if (v(dstsav) .le. zero) iv(irc) = 12
+      v(nreduc) = -v(preduc)
+      v(preduc) = v(plstgd)
+ 370  if (-v(nreduc) .le. v(rfctol) * abs(v(f0))) iv(irc) = 11
+!
+ 999  return
+!
+!  ***  LAST CARD OF ASSESS FOLLOWS  ***
+      end

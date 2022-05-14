@@ -1,0 +1,145 @@
+!SRTRI
+      SUBROUTINE SRTRI(A, LA, IR)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!   FUNCTION     SRTRI  - SORT ARRAY A ON AN INTEGER ARRAY IR.
+!                           IF THE INTEGER ARRAY IS A PERMUTATION
+!                           VECTOR FOR THE ARRAY, THEN THE
+!                           ARRAY IS RESTORED TO ITS ORIGINAL
+!                           (UNPERMUTED) ORDER.
+!                           PERMUTATIONS RETURNED
+!   USAGE               - CALL SRTRI (A,LA,IR)
+!   PARAMETERS   A(LA)  - ON INPUT, CONTAINS THE ARRAY TO BE SORTED
+!                         ON OUTPUT, A CONTAINS THE SORTED ARRAY
+!                LA     - INPUT VARIABLE CONTAINING THE NUMBER OF
+!                           ELEMENTS IN THE ARRAY TO BE SORTED
+!                IR(LA) - ON INPUT, CONTAINS THE INTEGER KEY ARRAY
+!                         ON OUTPUT, CONTAINS THE SORTED KEY ARRAY
+!                           1,2,...,LA.
+!                       - THEN ON OUTPUT, IR CONTAINS A RECORD OF THE
+!                           PERMUTATIONS MADE ON THE VECTOR A.
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   LA
+!
+!  ARRAY ARGUMENTS
+      DOUBLE PRECISION
+     +   A(LA)
+      INTEGER
+     +   IR(LA)
+!
+!  LOCAL SCALARS
+      DOUBLE PRECISION
+     +   R,T,TT
+      INTEGER
+     +   I,IJ,IT,ITT,J,K,L,M
+!
+!  LOCAL ARRAYS
+      INTEGER
+     +   IL(21),IU(21)
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC INT
+!
+!
+      M = 1
+      I = 1
+      J = LA
+      R = .375D0
+   10 IF (I.EQ.J) GO TO 90
+      IF (R.GT.0.5898437D0) GO TO 20
+      R = R + 3.90625D-2
+      GO TO 30
+   20 R = R - .21875D0
+   30 K = I
+!                                  SELECT A CENTRAL ELEMENT OF THE
+!                                  ARRAY AND SAVE IT IN LOCATION IT
+      IJ = I + INT((J-I)*R)
+      T = A(IJ)
+      IT = IR(IJ)
+!                                  IF FIRST ELEMENT OF ARRAY IS GREATER
+!                                  THAN IT, INTERCHANGE WITH IT
+      IF (IR(I).LE.IT) GO TO 40
+      A(IJ) = A(I)
+      A(I) = T
+      T = A(IJ)
+      IR(IJ) = IR(I)
+      IR(I) = IT
+      IT = IR(IJ)
+   40 L = J
+!                                  IF LAST ELEMENT OF ARRAY IS LESS THAN
+!                                  IT, INTERCHANGE WITH IT
+      IF (IR(J).GE.IT) GO TO 60
+      A(IJ) = A(J)
+      A(J) = T
+      T = A(IJ)
+      IR(IJ) = IR(J)
+      IR(J) = IT
+      IT = IR(IJ)
+!                                  IF FIRST ELEMENT OF ARRAY IS GREATER
+!                                  THAN IT, INTERCHANGE WITH IT
+      IF (IR(I).LE.IT) GO TO 60
+      A(IJ) = A(I)
+      A(I) = T
+      T = A(IJ)
+      IR(IJ) = IR(I)
+      IR(I) = IT
+      IT = IR(IJ)
+      GO TO 60
+   50 TT = A(L)
+      A(L) = A(K)
+      A(K) = TT
+      ITT = IR(L)
+      IR(L) = IR(K)
+      IR(K) = ITT
+!                                  FIND AN ELEMENT IN THE SECOND HALF OF
+!                                  THE ARRAY WHICH IS SMALLER THAN IT
+   60 L = L - 1
+      IF (IR(L).GT.IT) GO TO 60
+!                                  FIND AN ELEMENT IN THE FIRST HALF OF
+!                                  THE ARRAY WHICH IS GREATER THAN IT
+   70 K = K + 1
+      IF (IR(K).LT.IT) GO TO 70
+!                                  INTERCHANGE THESE ELEMENTS
+      IF (K.LE.L) GO TO 50
+!                                  SAVE UPPER AND LOWER SUBSCRIPTS OF
+!                                  THE ARRAY YET TO BE SORTED
+      IF (L-I.LE.J-K) GO TO 80
+      IL(M) = I
+      IU(M) = L
+      I = K
+      M = M + 1
+      GO TO 100
+   80 IL(M) = K
+      IU(M) = J
+      J = L
+      M = M + 1
+      GO TO 100
+!                                  BEGIN AGAIN ON ANOTHER PORTION OF
+!                                  THE UNSORTED ARRAY
+   90 M = M - 1
+      IF (M.EQ.0) RETURN
+      I = IL(M)
+      J = IU(M)
+  100 IF (J-I.GE.1) GO TO 30
+      IF (I.EQ.1) GO TO 10
+      I = I - 1
+  110 I = I + 1
+      IF (I.EQ.J) GO TO 90
+      T = A(I+1)
+      IT = IR(I+1)
+      IF (IR(I).LE.IT) GO TO 110
+      K = I
+  120 A(K+1) = A(K)
+      IR(K+1) = IR(K)
+      K = K - 1
+      IF (IT.LT.IR(K)) GO TO 120
+      A(K+1) = T
+      IR(K+1) = IT
+      GO TO 110
+      END

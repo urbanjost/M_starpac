@@ -1,0 +1,83 @@
+!DUPDAT
+      subroutine dupdat(d, iv, j, n, nn, p, v)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!  ***  UPDATE SCALE VECTOR D FOR NL2ITR (NL2SOL VERSION 2.2)  ***
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   n,nn,p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   d(p),j(nn,p),v(1)
+      integer
+     +   iv(1)
+!
+!  LOCAL SCALARS
+      real(kind=wp) ::
+     +   sii,t,vdfac,zero
+      integer
+     +   d0,dfac,dtype,i,jtol0,jtoli,niter,s,s1
+!
+!  EXTERNAL FUNCTIONS
+      real(kind=wp) ::
+     +   v2norm
+      external v2norm
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic max,sqrt
+!
+!  ***  PARAMETER DECLARATIONS  ***
+!
+!     INTEGER IV(1), N, NN, P
+!     REAL(KIND=WP) :: D(P), J(NN,P), V(1)
+!     DIMENSION IV(*), V(*)
+!
+!  ***  LOCAL VARIABLES  ***
+!
+!     INTEGER D0, I, JTOLI, S1
+!     REAL(KIND=WP) :: SII, T, VDFAC
+!
+!     ***  CONSTANTS  ***
+!     REAL(KIND=WP) :: ZERO
+!
+!/
+!  ***  EXTERNAL FUNCTION  ***
+!
+!     EXTERNAL V2NORM
+!     REAL(KIND=WP) :: V2NORM
+!
+!  ***  SUBSCRIPTS FOR IV AND V  ***
+!
+!     INTEGER DFAC, DTYPE, JTOL0, NITER, S
+      data dfac/41/, dtype/16/, jtol0/86/, niter/31/, s/53/
+!
+      data zero/0.0_wp/
+!
+!-----------------------------------------------------------------------
+!
+      i = iv(dtype)
+      if (i .eq. 1) go to 20
+         if (iv(niter) .gt. 0) go to 999
+!
+ 20   vdfac = v(dfac)
+      d0 = jtol0 + p
+      s1 = iv(s) - 1
+      do 30 i = 1, p
+         s1 = s1 + i
+         sii = v(s1)
+         t = v2norm(n, j(1,i))
+         if (sii .gt. zero) t = sqrt(t*t + sii)
+         jtoli = jtol0 + i
+         d0 = d0 + 1
+         if (t .lt. v(jtoli)) t = max(v(d0), v(jtoli))
+         d(i) = max(vdfac*d(i), t)
+ 30      continue
+!
+ 999  return
+      end subroutine dupdat

@@ -1,0 +1,67 @@
+!SLVMUL
+      subroutine slvmul(p, y, s, x)
+!
+!  ***  SET  Y = S * X,  S = P X P SYMMETRIC MATRIX.  ***
+!  ***  LOWER TRIANGLE OF  S  STORED ROWWISE.         ***
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   s(1),x(p),y(p)
+!
+!  LOCAL SCALARS
+      real(kind=wp) ::
+     +   xi
+      integer
+     +   i,im1,j,k
+!
+!  EXTERNAL FUNCTIONS
+      real(kind=wp) ::
+     +   dotprd
+      external dotprd
+!
+!  ***  PARAMETER DECLARATIONS  ***
+!
+!     INTEGER P
+!     REAL(KIND=WP) :: S(1), X(P), Y(P)
+!     DIMENSION S(P*(P+1)/2)
+!
+!  ***  LOCAL VARIABLES  ***
+!
+!     INTEGER I, IM1, J, K
+!     REAL(KIND=WP) :: XI
+!
+!  ***  EXTERNAL FUNCTION  ***
+!
+!     EXTERNAL DOTPRD
+!     REAL(KIND=WP) :: DOTPRD
+!
+!-----------------------------------------------------------------------
+!
+      j = 1
+      do 10 i = 1, p
+         y(i) = dotprd(i, s(j), x)
+         j = j + i
+ 10      continue
+!
+      if (p .le. 1) go to 999
+      j = 1
+      do 40 i = 2, p
+         xi = x(i)
+         im1 = i - 1
+         j = j + 1
+         do 30 k = 1, im1
+              y(k) = y(k) + s(j)*xi
+              j = j + 1
+ 30           continue
+ 40      continue
+!
+ 999  return
+
+      end subroutine slvmul

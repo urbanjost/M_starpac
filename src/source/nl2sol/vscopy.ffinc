@@ -1,0 +1,22 @@
+!VSCOPY
+      subroutine vscopy(p, y, s)
+!
+!  ***  SET P-VECTOR Y TO SCALAR S  ***
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      real(kind=wp) :: s
+      integer p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) :: y(*)
+!
+!  LOCAL SCALARS
+      integer i
+!
+      do i = 1, p
+         y(i) = s
+      enddo
+
+      end subroutine vscopy

@@ -1,0 +1,646 @@
+!GQTSTP
+      subroutine gqtstp(d, dig, dihdi, ka, l, p, step, v, w)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!  *** COMPUTE GOLDFELD-QUANDT-TROTTER STEP BY MORE-HEBDEN TECHNIQUE ***
+!  ***  (NL2SOL VERSION 2.2)  ***
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   ka,p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   d(p),dig(p),dihdi(1),l(1),step(p),v(21),w(1)
+!
+!  LOCAL SCALARS
+      real(kind=wp) ::
+     +   aki,akk,alphak,delta,dgxfac,dst,epsfac,epso6,four,half,kappa,
+     +   lk,negone,oldphi,one,p001,phi,phimax,phimin,psifac,rad,root,
+     +   si,six,sk,sw,t,t1,three,two,twopsi,uk,wi,zero
+      integer
+     +   dggdmx,dgnorm,diag,diag0,dst0,dstnrm,dstsav,emax,emin,
+     +   epslon,gtstep,i,im1,inc,irc,j,k,k1,kalim,lk0,nreduc,
+     +   phipin,phmnfc,phmxfc,preduc,q,q0,rad0,radius,stppar,uk0,x,
+     +   x0
+      logical
+     +   restrt
+!
+!  EXTERNAL FUNCTIONS
+      real(kind=wp) ::
+     +   dotprd,lsvmin,rmdcon,v2norm
+      external dotprd,lsvmin,rmdcon,v2norm
+!
+!  EXTERNAL SUBROUTINES
+      external litvmu,livmul,lsqrt
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic abs,max,min,sqrt
+!
+!  ***  PARAMETER DECLARATIONS  ***
+!
+!     INTEGER KA, P
+!     REAL(KIND=WP) :: D(P), DIG(P), DIHDI(1), L(1), V(21), STEP(P),
+!    1                 W(1)
+!     DIMENSION DIHDI(P*(P+1)/2), L(P*(P+1)/2), W(4*P+7)
+!
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!
+!  ***  PURPOSE  ***
+!
+!        GIVEN THE (COMPACTLY STORED) LOWER TRIANGLE OF A SCALED
+!     HESSIAN (APPROXIMATION) AND A NONZERO SCALED GRADIENT VECTOR,
+!     THIS SUBROUTINE COMPUTES A GOLDFELD-QUANDT-TROTTER STEP OF
+!     APPROXIMATE LENGTH V(RADIUS) BY THE MORE-HEBDEN TECHNIQUE.  IN
+!     OTHER WORDS, STEP IS COMPUTED TO (APPROXIMATELY) MINIMIZE
+!     PSI(STEP) = (G**T)*STEP + 0.5*(STEP**T)*H*STEP  SUCH THAT THE
+!     2-NORM OF D*STEP IS AT MOST (APPROXIMATELY) V(RADIUS), WHERE
+!     G  IS THE GRADIENT,  H  IS THE HESSIAN, AND  D  IS A DIAGONAL
+!     SCALE MATRIX WHOSE DIAGONAL IS STORED IN THE PARAMETER D.
+!     (GQTSTP ASSUMES  DIG = D**-1 * G  AND  DIHDI = D**-1 * H * D**-1.)
+!     IF G = 0, HOWEVER, STEP = 0 IS RETURNED (EVEN AT A SADDLE POINT).
+!
+!  ***  PARAMETER DESCRIPTION  ***
+!
+!     D (IN)  = THE SCALE VECTOR, I.E. THE DIAGONAL OF THE SCALE
+!              MATRIX  D  MENTIONED ABOVE UNDER PURPOSE.
+!   DIG (IN)  = THE SCALED GRADIENT VECTOR, D**-1 * G.  IF G = 0, THEN
+!              STEP = 0  AND  V(STPPAR) = 0  ARE RETURNED.
+! DIHDI (IN)  = LOWER TRIANGLE OF THE SCALED HESSIAN (APPROXIMATION),
+!              I.E., D**-1 * H * D**-1, STORED COMPACTLY BY ROWS., I.E.,
+!              IN THE ORDER (1,1), (2,1), (2,2), (3,1), (3,2), ETC.
+!    KA (I/O) = THE NUMBER OF HEBDEN ITERATIONS (SO FAR) TAKEN TO DETER-
+!              MINE STEP.  KA .LT. 0 ON INPUT MEANS THIS IS THE FIRST
+!              ATTEMPT TO DETERMINE STEP (FOR THE PRESENT DIG AND DIHDI)
+!              -- KA IS INITIALIZED TO 0 IN THIS CASE.  OUTPUT WITH
+!              KA = 0  (OR V(STPPAR) = 0)  MEANS  STEP = -(H**-1)*G.
+!     L (I/O) = WORKSPACE OF LENGTH P*(P+1)/2 FOR CHOLESKY FACTORS.
+!     P (IN)  = NUMBER OF PARAMETERS -- THE HESSIAN IS A  P X P  MATRIX.
+!  STEP (I/O) = THE STEP COMPUTED.
+!     V (I/O) CONTAINS VARIOUS CONSTANTS AND VARIABLES DESCRIBED BELOW.
+!     W (I/O) = WORKSPACE OF LENGTH 4*P + 6.
+!
+!  ***  ENTRIES IN V  ***
+!
+! V(DGNORM) (I/O) = 2-NORM OF (D**-1)*G.
+! V(DSTNRM) (OUTPUT) = 2-NORM OF D*STEP.
+! V(DST0)   (I/O) = 2-NORM OF D*(H**-1)*G (FOR POS. DEF. H ONLY), OR
+!             OVERESTIMATE OF SMALLEST EIGENVALUE OF (D**-1)*H*(D**-1).
+! V(EPSLON) (IN)  = MAX. REL. ERROR ALLOWED FOR PSI(STEP).  FOR THE
+!             STEP RETURNED, PSI(STEP) WILL EXCEED ITS OPTIMAL VALUE
+!             BY LESS THAN -V(EPSLON)*PSI(STEP).  SUGGESTED VALUE = 0.1.
+! V(GTSTEP) (OUT) = INNER PRODUCT BETWEEN G AND STEP.
+! V(NREDUC) (OUT) = PSI(-(H**-1)*G) = PSI(NEWTON STEP)  (FOR POS. DEF.
+!             H ONLY -- V(NREDUC) IS SET TO ZERO OTHERWISE).
+! V(PHMNFC) (IN)  = TOL. (TOGETHER WITH V(PHMXFC)) FOR ACCEPTING STEP
+!             (MORE*S SIGMA).  THE ERROR V(DSTNRM) - V(RADIUS) MUST LIE
+!             BETWEEN V(PHMNFC)*V(RADIUS) AND V(PHMXFC)*V(RADIUS).
+! V(PHMXFC) (IN)  (SEE V(PHMNFC).)
+!             SUGGESTED VALUES -- V(PHMNFC) = -0.25, V(PHMXFC) = 0.5.
+! V(PREDUC) (OUT) = PSI(STEP) = PREDICTED OBJ. FUNC. REDUCTION FOR STEP.
+! V(RADIUS) (IN)  = RADIUS OF CURRENT (SCALED) TRUST REGION.
+! V(RAD0)   (I/O) = VALUE OF V(RADIUS) FROM PREVIOUS CALL.
+! V(STPPAR) (I/O) IS NORMALLY THE MARQUARDT PARAMETER, I.E. THE ALPHA
+!             DESCRIBED BELOW UNDER ALGORITHM NOTES.  IF H + ALPHA*D**2
+!             (SEE ALGORITHM NOTES) IS (NEARLY) SINGULAR, HOWEVER,
+!             THEN V(STPPAR) = -ALPHA.
+!
+!  ***  USAGE NOTES  ***
+!
+!     IF IT IS DESIRED TO RECOMPUTE STEP USING A DIFFERENT VALUE OF
+!     V(RADIUS), THEN THIS ROUTINE MAY BE RESTARTED BY CALLING IT
+!     WITH ALL PARAMETERS UNCHANGED EXCEPT V(RADIUS).  (THIS EXPLAINS
+!     WHY STEP AND W ARE LISTED AS I/O).  ON AN INTIIAL CALL (ONE WITH
+!     KA .LT. 0), STEP AND W NEED NOT BE INITIALIZED AND ONLY COMPO-
+!     NENTS V(EPSLON), V(STPPAR), V(PHMNFC), V(PHMXFC), V(RADIUS), AND
+!     V(RAD0) OF V MUST BE INITIALIZED.  TO COMPUTE STEP FROM A SADDLE
+!     POINT (WHERE THE TRUE GRADIENT VANISHES AND H HAS A NEGATIVE
+!     EIGENVALUE), A NONZERO G WITH SMALL COMPONENTS SHOULD BE PASSED.
+!
+!  ***  APPLICATION AND USAGE RESTRICTIONS  ***
+!
+!     THIS ROUTINE IS CALLED AS PART OF THE NL2SOL (NONLINEAR LEAST-
+!     SQUARES) PACKAGE (REF. 1), BUT IT COULD BE USED IN SOLVING ANY
+!     UNCONSTRAINED MINIMIZATION PROBLEM.
+!
+!  ***  ALGORITHM NOTES  ***
+!
+!        THE DESIRED G-Q-T STEP (REF. 2, 3, 4) SATISFIES
+!     (H + ALPHA*D**2)*STEP = -G  FOR SOME NONNEGATIVE ALPHA SUCH THAT
+!     H + ALPHA*D**2 IS POSITIVE SEMIDEFINITE.  ALPHA AND STEP ARE
+!     COMPUTED BY A SCHEME ANALOGOUS TO THE ONE DESCRIBED IN REF. 5.
+!     ESTIMATES OF THE SMALLEST AND LARGEST EIGENVALUES OF THE HESSIAN
+!     ARE OBTAINED FROM THE GERSCHGORIN CIRCLE THEOREM ENHANCED BY A
+!     SIMPLE FORM OF THE SCALING DESCRIBED IN REF. 6.  CASES IN WHICH
+!     H + ALPHA*D**2 IS NEARLY (OR EXACTLY) SINGULAR ARE HANDLED BY
+!     THE TECHNIQUE DISCUSSED IN REF. 2.  IN THESE CASES, A STEP OF
+!     (EXACT) LENGTH V(RADIUS) IS RETURNED FOR WHICH PSI(STEP) EXCEEDS
+!     ITS OPTIMAL VALUE BY LESS THAN -V(EPSLON)*PSI(STEP).
+!
+!  ***  FUNCTIONS AND SUBROUTINES CALLED  ***
+!
+! DOTPRD - RETURNS INNER PRODUCT OF TWO VECTORS.
+! LITVMU - APPLIES INVERSE-TRANSPOSE OF COMPACT LOWER TRIANG. MATRIX.
+! LIVMUL - APPLIES INVERSE OF COMPACT LOWER TRIANG. MATRIX.
+! LSQRT  - FINDS CHOLESKY FACTOR (OF COMPACTLY STORED LOWER TRIANG.).
+! LSVMIN - RETURNS APPROX. TO MIN. SING. VALUE OF LOWER TRIANG. MATRIX.
+! RMDCON - RETURNS MACHINE-DEPENDENT CONSTANTS.
+! V2NORM - RETURNS 2-NORM OF A VECTOR.
+!
+!  ***  REFERENCES  ***
+!
+! 1.  DENNIS, J.E., GAY, D.M., AND WELSCH, R.E. (1980), AN ADAPTIVE
+!             NONLINEAR LEAST-SQUARES ALGORITHM, (SUBMITTED TO ACM
+!             TRANS. MATH. SOFTWARE).
+! 2.  GAY, D.M. (1979), COMPUTING OPTIMAL ELLIPTICALLY CONSTRAINED
+!             STEPS, MRC TECH. SUMMARY REPORT NO. 2013, MATH. RESEARCH
+!             CENTER, UNIV. OF WISCONSIN-MADISON.
+! 3.  GOLDFELD, S.M., QUANDT, R.E., AND TROTTER, H.F. (1966),
+!             MAXIMIZATION BY QUADRATIC HILL-CLIMBING, ECONOMETRICA 34,
+!             PP. 541-551.
+! 4.  HEBDEN, M.D. (1973), AN ALGORITHM FOR MINIMIZATION USING EXACT
+!             SECOND DERIVATIVES, REPORT T.P. 515, THEORETICAL PHYSICS
+!             DIV., A.E.R.E. HARWELL, OXON., ENGLAND.
+! 5.  MORE, J.J. (1978), THE LEVENBERG-MARQUARDT ALGORITHM, IMPLEMEN-
+!             TATION AND THEORY, PP.105-116 OF SPRINGER LECTURE NOTES
+!             IN MATHEMATICS NO. 630, EDITED BY G.A. WATSON, SPRINGER-
+!             VERLAG, BERLIN AND NEW YORK.
+! 6.  VARGA, R.S. (1965), MINIMAL GERSCHGORIN SETS, PACIFIC J. MATH. 15,
+!             PP. 719-729.
+!
+!  ***  GENERAL  ***
+!
+!     CODED BY DAVID M. GAY.
+!     THIS SUBROUTINE WAS WRITTEN IN CONNECTION WITH RESEARCH
+!     SUPPORTED BY THE NATIONAL SCIENCE FOUNDATION UNDER GRANTS
+!     MCS-7600324, DCR75-10143, 76-14311DSS, MCS76-11989, AND
+!     MCS-7906671.
+!
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!
+!  ***  LOCAL VARIABLES  ***
+!
+!     LOGICAL RESTRT
+!     INTEGER DGGDMX, DIAG, DIAG0, DSTSAV, EMAX, EMIN, I, IM1, INC, IRC,
+!    1        J, K, KALIM, K1, LK0, PHIPIN, Q, Q0, UK0, X, X0
+!     REAL(KIND=WP) :: ALPHAK, AKI, AKK, DELTA, DST, EPSO6, LK,
+!    1                 OLDPHI, PHI, PHIMAX, PHIMIN, PSIFAC, RAD,
+!    2                 ROOT, SI, SK, SW, T, TWOPSI, T1, UK, WI
+!
+!     ***  CONSTANTS  ***
+!     REAL(KIND=WP) :: DGXFAC, EPSFAC, FOUR, HALF, KAPPA, NEGONE, ONE,
+!    1                 P001, SIX, THREE, TWO, ZERO
+!
+!/
+!  ***  EXTERNAL FUNCTIONS AND SUBROUTINES  ***
+!
+!     EXTERNAL DOTPRD, LITVMU, LIVMUL, LSQRT, LSVMIN, RMDCON, V2NORM
+!     REAL(KIND=WP) :: DOTPRD, LSVMIN, RMDCON, V2NORM
+!
+!  ***  SUBSCRIPTS FOR V  ***
+!
+!     INTEGER DGNORM, DSTNRM, DST0, EPSLON, GTSTEP, STPPAR, NREDUC,
+!    1        PHMNFC, PHMXFC, PREDUC, RADIUS, RAD0
+      data dgnorm/1/, dstnrm/2/, dst0/3/, epslon/19/,
+     +     gtstep/4/, nreduc/6/, phmnfc/20/,
+     +     phmxfc/21/, preduc/7/, radius/8/,
+     +     rad0/9/, stppar/5/
+!
+      data dgxfac/0.0_wp/, epsfac/50.0_wp/, four/4.0_wp/, half/0.5_wp/,
+     +     kappa/2.0_wp/, negone/-1.0_wp/, one/1.0_wp/, p001/1.0e-3_wp/,
+     +     six/6.0_wp/, three/3.0_wp/, two/2.0_wp/, zero/0.0_wp/
+!
+!  ***  BODY  ***
+!
+!     ***  STORE LARGEST ABS. ENTRY IN (D**-1)*H*(D**-1) AT W(DGGDMX).
+      dggdmx = p + 1
+!     ***  STORE GERSCHGORIN OVER- AND UNDERESTIMATES OF THE LARGEST
+!     ***  AND SMALLEST EIGENVALUES OF (D**-1)*H*(D**-1) AT W(EMAX)
+!     ***  AND W(EMIN) RESPECTIVELY.
+      emax = dggdmx + 1
+      emin = emax + 1
+!     ***  FOR USE IN RECOMPUTING STEP, THE FINAL VALUES OF LK, UK, DST,
+!     ***  AND THE INVERSE DERIVATIVE OF MORE*S PHI AT 0 (FOR POS. DEF.
+!     ***  H) ARE STORED IN W(LK0), W(UK0), W(DSTSAV), AND W(PHIPIN)
+!     ***  RESPECTIVELY.
+      uk = 0.0_wp
+      phi = 0.0_wp
+      dst = 0.0_wp
+      alphak = 0.0_wp
+      lk0 = emin + 1
+      phipin = lk0 + 1
+      uk0 = phipin + 1
+      dstsav = uk0 + 1
+!     ***  STORE DIAG OF (D**-1)*H*(D**-1) IN W(DIAG),...,W(DIAG0+P).
+      diag0 = dstsav
+      diag = diag0 + 1
+!     ***  STORE -D*STEP IN W(Q),...,W(Q0+P).
+      q0 = diag0 + p
+      q = q0 + 1
+      rad = v(radius)
+!     ***  PHITOL = MAX. ERROR ALLOWED IN DST = V(DSTNRM) = 2-NORM OF
+!     ***  D*STEP.
+      phimax = v(phmxfc) * rad
+      phimin = v(phmnfc) * rad
+!     ***  EPSO6 AND PSIFAC ARE USED IN CHECKING FOR THE SPECIAL CASE
+!     ***  OF (NEARLY) SINGULAR H + ALPHA*D**2 (SEE REF. 2).
+      psifac = two * v(epslon) / (three * (four * (v(phmnfc) + one) *
+     +                       (kappa + one)  +  kappa  +  two) * rad**2)
+!     ***  OLDPHI IS USED TO DETECT LIMITS OF NUMERICAL ACCURACY.  IF
+!     ***  WE RECOMPUTE STEP AND IT DOES NOT CHANGE, THEN WE ACCEPT IT.
+      oldphi = zero
+      epso6 = v(epslon)/six
+      irc = 0
+      restrt = .false.
+      kalim = ka + 50
+!
+!  ***  START OR RESTART, DEPENDING ON KA  ***
+!
+      if (ka .ge. 0) go to 310
+!
+!  ***  FRESH START  ***
+!
+      k = 0
+      uk = negone
+      ka = 0
+      kalim = 50
+!
+!     ***  STORE DIAG(DIHDI) IN W(DIAG0+1),...,W(DIAG0+P)  ***
+!
+      j = 0
+      do 20 i = 1, p
+         j = j + i
+         k1 = diag0 + i
+         w(k1) = dihdi(j)
+ 20      continue
+!
+!     ***  DETERMINE W(DGGDMX), THE LARGEST ELEMENT OF DIHDI  ***
+!
+      t1 = zero
+      j = p * (p + 1) / 2
+      do 30 i = 1, j
+         t = abs(dihdi(i))
+         if (t1 .lt. t) t1 = t
+ 30      continue
+      w(dggdmx) = t1
+!
+!  ***  TRY ALPHA = 0  ***
+!
+ 40   call lsqrt(1, p, l, dihdi, irc)
+      if (irc .eq. 0) go to 60
+!        ***  INDEF. H -- UNDERESTIMATE SMALLEST EIGENVALUE, USE THIS
+!        ***  ESTIMATE TO INITIALIZE LOWER BOUND LK ON ALPHA.
+         j = irc*(irc+1)/2
+         t = l(j)
+         l(j) = one
+         do 50 i = 1, irc
+ 50           w(i) = zero
+         w(irc) = one
+         call litvmu(irc, w, l, w)
+         t1 = v2norm(irc, w)
+         lk = -t / t1 / t1
+         v(dst0) = -lk
+         if (restrt) go to 210
+         v(nreduc) = zero
+         go to 70
+!
+!     ***  POSITIVE DEFINITE H -- COMPUTE UNMODIFIED NEWTON STEP.  ***
+ 60   lk = zero
+      call livmul(p, w(q), l, dig)
+      v(nreduc) = half * dotprd(p, w(q), w(q))
+      call litvmu(p, w(q), l, w(q))
+      dst = v2norm(p, w(q))
+      v(dst0) = dst
+      phi = dst - rad
+      if (phi .le. phimax) go to 280
+      if (restrt) go to 210
+!
+!  ***  PREPARE TO COMPUTE GERSCHGORIN ESTIMATES OF LARGEST (AND
+!  ***  SMALLEST) EIGENVALUES.  ***
+!
+ 70   v(dgnorm) = v2norm(p, dig)
+      if (v(dgnorm) .eq. zero) go to 450
+      k = 0
+      do 100 i = 1, p
+         wi = zero
+         if (i .eq. 1) go to 90
+         im1 = i - 1
+         do 80 j = 1, im1
+              k = k + 1
+              t = abs(dihdi(k))
+              wi = wi + t
+              w(j) = w(j) + t
+ 80           continue
+ 90      w(i) = wi
+         k = k + 1
+ 100     continue
+!
+!  ***  (UNDER-)ESTIMATE SMALLEST EIGENVALUE OF (D**-1)*H*(D**-1)  ***
+!
+      k = 1
+      t1 = w(diag) - w(1)
+      if (p .le. 1) go to 120
+      do 110 i = 2, p
+         j = diag0 + i
+         t = w(j) - w(i)
+         if (t .ge. t1) go to 110
+              t1 = t
+              k = i
+ 110     continue
+!
+ 120  sk = w(k)
+      j = diag0 + k
+      akk = w(j)
+      k1 = k*(k-1)/2 + 1
+      inc = 1
+      t = zero
+      do 150 i = 1, p
+         if (i .eq. k) go to 130
+         aki = abs(dihdi(k1))
+         si = w(i)
+         j = diag0 + i
+         t1 = half * (akk - w(j) + si - aki)
+         t1 = t1 + sqrt(t1*t1 + sk*aki)
+         if (t .lt. t1) t = t1
+         if (i .lt. k) go to 140
+ 130     inc = i
+ 140     k1 = k1 + inc
+ 150     continue
+!
+      w(emin) = akk - t
+      uk = v(dgnorm)/rad - w(emin)
+!
+!  ***  COMPUTE GERSCHGORIN (OVER-)ESTIMATE OF LARGEST EIGENVALUE  ***
+!
+      k = 1
+      t1 = w(diag) + w(1)
+      if (p .le. 1) go to 170
+      do 160 i = 2, p
+         j = diag0 + i
+         t = w(j) + w(i)
+         if (t .le. t1) go to 160
+              t1 = t
+              k = i
+ 160     continue
+!
+ 170  sk = w(k)
+      j = diag0 + k
+      akk = w(j)
+      k1 = k*(k-1)/2 + 1
+      inc = 1
+      t = zero
+      do 200 i = 1, p
+         if (i .eq. k) go to 180
+         aki = abs(dihdi(k1))
+         si = w(i)
+         j = diag0 + i
+         t1 = half * (w(j) + si - aki - akk)
+         t1 = t1 + sqrt(t1*t1 + sk*aki)
+         if (t .lt. t1) t = t1
+         if (i .lt. k) go to 190
+ 180     inc = i
+ 190     k1 = k1 + inc
+ 200     continue
+!
+      w(emax) = akk + t
+      lk = max(lk, v(dgnorm)/rad - w(emax))
+!
+!     ***  ALPHAK = CURRENT VALUE OF ALPHA (SEE ALG. NOTES ABOVE).  WE
+!     ***  USE MORE*S SCHEME FOR INITIALIZING IT.
+      alphak = abs(v(stppar)) * v(rad0)/rad
+!
+      if (irc .ne. 0) go to 210
+!
+!  ***  COMPUTE L0 FOR POSITIVE DEFINITE H  ***
+!
+      call livmul(p, w, l, w(q))
+      t = v2norm(p, w)
+      w(phipin) = dst / t / t
+      lk = max(lk, phi*w(phipin))
+!
+!  ***  SAFEGUARD ALPHAK AND ADD ALPHAK*I TO (D**-1)*H*(D**-1)  ***
+!
+ 210  ka = ka + 1
+      if (-v(dst0) .ge. alphak .or. alphak .lt. lk .or. alphak .ge. uk)
+     +                      alphak = uk * max(p001, sqrt(lk/uk))
+      k = 0
+      do 220 i = 1, p
+         k = k + i
+         j = diag0 + i
+         dihdi(k) = w(j) + alphak
+ 220     continue
+!
+!  ***  TRY COMPUTING CHOLESKY DECOMPOSITION  ***
+!
+      call lsqrt(1, p, l, dihdi, irc)
+      if (irc .eq. 0) go to 250
+!
+!  ***  (D**-1)*H*(D**-1) + ALPHAK*I  IS INDEFINITE -- OVERESTIMATE
+!  ***  SMALLEST EIGENVALUE FOR USE IN UPDATING LK  ***
+!
+      j = (irc*(irc+1))/2
+      t = l(j)
+      l(j) = one
+      do 230 i = 1, irc
+ 230     w(i) = zero
+      w(irc) = one
+      call litvmu(irc, w, l, w)
+      t1 = v2norm(irc, w)
+      lk = alphak - t/t1/t1
+      v(dst0) = -lk
+      go to 210
+!
+!  ***  ALPHAK MAKES (D**-1)*H*(D**-1) POSITIVE DEFINITE.
+!  ***  COMPUTE Q = -D*STEP, CHECK FOR CONVERGENCE.  ***
+!
+ 250  call livmul(p, w(q), l, dig)
+      call litvmu(p, w(q), l, w(q))
+      dst = v2norm(p, w(q))
+      phi = dst - rad
+      if (phi .le. phimax .and. phi .ge. phimin) go to 290
+      if (phi .eq. oldphi) go to 290
+      oldphi = phi
+      if (phi .gt. zero) go to 260
+!        ***  CHECK FOR THE SPECIAL CASE OF  H + ALPHA*D**2  (NEARLY)
+!        ***  SINGULAR.  DELTA IS .GE. THE SMALLEST EIGENVALUE OF
+!        ***  (D**-1)*H*(D**-1) + ALPHAK*I.
+         if (v(dst0) .gt. zero) go to 260
+         delta = alphak + v(dst0)
+         twopsi = alphak*dst*dst + dotprd(p, dig, w(q))
+         if (delta .lt. psifac*twopsi) go to 270
+!
+!  ***  UNACCEPTABLE ALPHAK -- UPDATE LK, UK, ALPHAK  ***
+!
+ 260  if (ka .ge. kalim) go to 290
+      call livmul(p, w, l, w(q))
+      t1 = v2norm(p, w)
+!     ***  THE FOLLOWING MIN IS NECESSARY BECAUSE OF RESTARTS  ***
+      if (phi .lt. zero) uk = min(uk, alphak)
+      alphak = alphak  +  (phi/t1) * (dst/t1) * (dst/rad)
+      lk = max(lk, alphak)
+      go to 210
+!
+!  ***  DECIDE HOW TO HANDLE (NEARLY) SINGULAR H + ALPHA*D**2  ***
+!
+!     ***  IF NOT YET AVAILABLE, OBTAIN MACHINE DEPENDENT VALUE DGXFAC.
+ 270  if (dgxfac .eq. zero) dgxfac = epsfac * rmdcon(3)
+!
+!     ***  NOW DECIDE.  ***
+      if (delta .gt. dgxfac*w(dggdmx)) go to 350
+!        ***  DELTA IS SO SMALL WE CANNOT HANDLE THE SPECIAL CASE IN
+!        ***  THE AVAILABLE ARITHMETIC.  ACCEPT STEP AS IT IS.
+         go to 290
+!
+!  ***  ACCEPTABLE STEP ON FIRST TRY  ***
+!
+ 280  alphak = zero
+!
+!  ***  SUCCESSFUL STEP IN GENERAL.  COMPUTE STEP = -(D**-1)*Q  ***
+!
+ 290  do 300 i = 1, p
+         j = q0 + i
+         step(i) = -w(j)/d(i)
+ 300     continue
+      v(gtstep) = -dotprd(p, dig, w(q))
+      v(preduc) = half * (abs(alphak)*dst*dst - v(gtstep))
+      go to 430
+!
+!
+!  ***  RESTART WITH NEW RADIUS  ***
+!
+ 310  if (v(dst0) .le. zero .or. v(dst0) - rad .gt. phimax) go to 330
+!
+!     ***  PREPARE TO RETURN NEWTON STEP  ***
+!
+         restrt = .true.
+         ka = ka + 1
+         k = 0
+         do 320 i = 1, p
+              k = k + i
+              j = diag0 + i
+              dihdi(k) = w(j)
+ 320          continue
+         uk = negone
+         go to 40
+!
+ 330  if (ka .eq. 0) go to 60
+!
+      dst = w(dstsav)
+      alphak = abs(v(stppar))
+      phi = dst - rad
+      t = v(dgnorm)/rad
+      if (rad .gt. v(rad0)) go to 340
+!
+!        ***  SMALLER RADIUS  ***
+         uk = t - w(emin)
+         lk = zero
+         if (alphak .gt. zero) lk = w(lk0)
+         lk = max(lk, t - w(emax))
+         if (v(dst0) .gt. zero) lk = max(lk, (v(dst0)-rad)*w(phipin))
+         go to 260
+!
+!     ***  BIGGER RADIUS  ***
+ 340  uk = t - w(emin)
+      if (alphak .gt. zero) uk = min(uk, w(uk0))
+      lk = max(zero, -v(dst0), t - w(emax))
+      if (v(dst0) .gt. zero) lk = max(lk, (v(dst0)-rad)*w(phipin))
+      go to 260
+!
+!  ***  HANDLE (NEARLY) SINGULAR H + ALPHA*D**2  ***
+!
+!     ***  NEGATE ALPHAK TO INDICATE SPECIAL CASE  ***
+ 350  alphak = -alphak
+!     ***  ALLOCATE STORAGE FOR SCRATCH VECTOR X  ***
+      x0 = q0 + p
+      x = x0 + 1
+!
+!  ***  USE INVERSE POWER METHOD WITH START FROM LSVMIN TO OBTAIN
+!  ***  APPROXIMATE EIGENVECTOR CORRESPONDING TO SMALLEST EIGENVALUE
+!  ***  OF (D**-1)*H*(D**-1).
+!
+      delta = kappa*delta
+      t = lsvmin(p, l, w(x), w)
+!
+      k = 0
+!     ***  NORMALIZE W  ***
+ 360  do 370 i = 1, p
+ 370     w(i) = t*w(i)
+!     ***  COMPLETE CURRENT INV. POWER ITER. -- REPLACE W BY (L**-T)*W.
+      call litvmu(p, w, l, w)
+      t1 = one/v2norm(p, w)
+      t = t1*t
+      if (t .le. delta) go to 390
+      if (k .gt. 30) go to 290
+      k = k + 1
+!     ***  START NEXT INV. POWER ITER. BY STORING NORMALIZED W IN X.
+      do 380 i = 1, p
+         j = x0 + i
+         w(j) = t1*w(i)
+ 380     continue
+!     ***  COMPUTE W = (L**-1)*X.
+      call livmul(p, w, l, w(x))
+      t = one/v2norm(p, w)
+      go to 360
+!
+ 390  do 400 i = 1, p
+ 400     w(i) = t1*w(i)
+!
+!  ***  NOW W IS THE DESIRED APPROXIMATE (UNIT) EIGENVECTOR AND
+!  ***  T*X = ((D**-1)*H*(D**-1) + ALPHAK*I)*W.
+!
+      sw = dotprd(p, w(q), w)
+      t1 = (rad + dst) * (rad - dst)
+      root = sqrt(sw*sw + t1)
+      if (sw .lt. zero) root = -root
+      si = t1 / (sw + root)
+!     ***  ACCEPT CURRENT STEP IF ADDING SI*W WOULD LEAD TO A
+!     ***  FURTHER RELATIVE REDUCTION IN PSI OF LESS THAN V(EPSLON)/3.
+      v(preduc) = half*twopsi
+      t1 = zero
+      t = si*(alphak*sw - half*si*(alphak + t*dotprd(p,w(x),w)))
+      if (t .lt. epso6*twopsi) go to 410
+         v(preduc) = v(preduc) + t
+         dst = rad
+         t1 = -si
+ 410  do 420 i = 1, p
+         j = q0 + i
+         w(j) = t1*w(i) - w(j)
+         step(i) = w(j) / d(i)
+ 420     continue
+      v(gtstep) = dotprd(p, dig, w(q))
+!
+!  ***  SAVE VALUES FOR USE IN A POSSIBLE RESTART  ***
+!
+ 430  v(dstnrm) = dst
+      v(stppar) = alphak
+      w(lk0) = lk
+      w(uk0) = uk
+      v(rad0) = rad
+      w(dstsav) = dst
+!
+!     ***  RESTORE DIAGONAL OF DIHDI  ***
+!
+      j = 0
+      do 440 i = 1, p
+         j = j + i
+         k = diag0 + i
+         dihdi(j) = w(k)
+ 440     continue
+      go to 999
+!
+!  ***  SPECIAL CASE -- G = 0  ***
+!
+ 450  v(stppar) = zero
+      v(preduc) = zero
+      v(dstnrm) = zero
+      v(gtstep) = zero
+      do 460 i = 1, p
+ 460     step(i) = zero
+!
+ 999  return
+!
+      end subroutine gqtstp

@@ -1,0 +1,24 @@
+!VAXPY
+      subroutine vaxpy(p, w, a, x, y)
+!
+!  ***  SET W = A*X + Y  --  W, X, Y = P-VECTORS, A = SCALAR  ***
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      real(kind=wp) :: a
+      integer p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) :: w(*),x(*),y(*)
+!
+!  LOCAL SCALARS
+      integer i
+!
+!
+      do i = 1, p
+         w(i) = a*x(i) + y(i)
+      enddo
+
+      end subroutine vaxpy

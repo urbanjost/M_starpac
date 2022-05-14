@@ -1,0 +1,133 @@
+!MGS
+      SUBROUTINE MGS(A, B, N, NP, X, C, D, R, IR, IA, IER)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE COMPUTES THE SOLUTION  X  TO THE LINEAR SYSTEM OF
+!     EQUATIONS  AX=B, USING THE METHOD OF MODIFIED GRAM-SCHMIDT.
+!     THE MATRIX A IS DECOMPOSED INTO THREE MATRICES
+!        Q  AN ORTHOGONAL MATRIX
+!        D  A DIAGONAL MATRIX AND
+!        R  AN UPPER TRIANGULAR MATRIX
+!     THE SOLUTION VECTOR X IS THE VECTOR WHICH SOLVES THE SYSTEM
+!     OF EQUATIONS  RX = C
+!     X, A, AND B ARE NOT PRESERVED ON OUTPUT
+!
+!     ADAPTED FROM OMNITAB II BY -
+!                  JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  MAY 17, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   IA,IER,IR,N,NP
+!
+!  ARRAY ARGUMENTS
+      REAL(KIND=WP)
+     +   A(IA,NP),B(N),C(NP),D(NP),R(IR,NP),X(NP)
+!
+!  LOCAL SCALARS
+      REAL(KIND=WP)
+     +   SM1,SM2
+      INTEGER
+     +   I,J,JJ,K,NPJJMJ
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     REAL A(IA,NP)
+!           THE COEFFICIENTS MATRIX (NOT PRESERVED ON OUTPUT)
+!     REAL B(N)
+!           THE CONSTANT COLUMN MATRIX OF THE SYSTEM (NOT PRESERVED
+!           ON OUTPUT)
+!     REAL C(NP)
+!           THE MATRIX C DESCRIBED ABOVE
+!     REAL D(NP)
+!           THE DIAGONAL ELEMENTS OF THE MATRIX D DESCRIBED ABOVE
+!     INTEGER I
+!           *
+!     INTEGER IA
+!           THE ROW DIMENSION OF A.
+!     INTEGER IER
+!           *
+!     INTEGER IR
+!           THE ROW DIMENSION OF R.
+!     INTEGER J
+!           *
+!     INTEGER JJ
+!           *
+!     INTEGER K
+!           *
+!     INTEGER N
+!           THE NUMBER OF OBSERVATIONS
+!     INTEGER NP
+!           THE NUMBER OF PARAMETERS
+!     INTEGER NPJJMJ
+!           *
+!     REAL R(IR,NP)
+!           THE UPPER ELEMENTS OF THE MATRIX R DESCRIBED ABOVE
+!     REAL SM1
+!           *
+!     REAL SM2
+!           *
+!     REAL X(NP)
+!           THE SOLUTION MATRIX
+!
+!
+      IER = 0
+!
+      SM1 = 0.0E0
+      SM2 = 0.0E0
+      DO 10 I=1,N
+         SM1 = A(I,1)*A(I,1) + SM1
+         SM2 = A(I,1)*B(I) + SM2
+   10 CONTINUE
+      IF (SM1.EQ.0.0E0) GO TO 100
+      D(1) = SM1
+      C(1) = SM2/SM1
+      IF (NP.EQ.1) GO TO 70
+      DO 60 K=2,NP
+         DO 40 J=K,NP
+            SM1 = 0.0E0
+            DO 20 I=1,N
+               SM1 = A(I,K-1)*A(I,J) + SM1
+   20       CONTINUE
+            R(K-1,J) = SM1/D(K-1)
+            DO 30 I=1,N
+               A(I,J) = A(I,J) - A(I,K-1)*R(K-1,J)
+   30       CONTINUE
+   40    CONTINUE
+         SM1 = 0.0E0
+         SM2 = 0.0E0
+         DO 50 I=1,N
+            B(I) = B(I) - A(I,K-1)*C(K-1)
+            SM1 = A(I,K)*A(I,K) + SM1
+            SM2 = A(I,K)*B(I) + SM2
+   50    CONTINUE
+         IF (SM1.EQ.0.0E0) GO TO 100
+         D(K) = SM1
+         C(K) = SM2/SM1
+   60 CONTINUE
+!
+!     COMPLETE BACKSOLVE
+!
+   70 X(NP) = C(NP)
+      IF (NP.EQ.1) RETURN
+      DO 90 I=2,NP
+         K = NP + 1 - I
+         JJ = K + 1
+         SM1 = 0.0E0
+         DO 80 J=JJ,NP
+            NPJJMJ = NP + JJ - J
+            SM1 = R(K,NPJJMJ)*X(NPJJMJ) + SM1
+   80    CONTINUE
+         X(K) = C(K) - SM1
+   90 CONTINUE
+      RETURN
+  100 IER = 1
+      RETURN
+      END

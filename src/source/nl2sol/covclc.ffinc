@@ -1,0 +1,440 @@
+!COVCLC
+      subroutine covclc(covirc, d, iv, j, n, nn, p, r, v, x)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!  ***  COMPUTE COVARIANCE MATRIX FOR NL2ITR (NL2SOL VERSION 2.2)  ***
+!
+!  ***  LET K = ABS(IV(COVREQ).  FOR K .LE. 2, A FINITE-DIFFERENCE
+!  ***  HESSIAN H IS COMPUTED (USING FUNC. AND GRAD. VALUES IF
+!  ***  IV(COVREQ) IS NONNEGATIVE, AND USING ONLY FUNC. VALUES IF
+!  ***  IV(COVREQ) IS NEGATIVE).  FOR SCALE = 2*F(X) / MAX(1, N-P),
+!  ***  WHERE 2*F(X) IS THE RESIDUAL SUM OF SQUARES, COVCLC COMPUTES...
+!  ***             K = 0 OR 1...  SCALE * H**-1 * (J**T * J) * H**-1.
+!  ***             K = 2...  SCALE * H**-1.
+!  ***             K .GE. 3...  SCALE * (J**T * J)**-1.
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   covirc,n,nn,p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   d(p),j(nn,p),r(n),v(1),x(p)
+      integer
+     +   iv(1)
+!
+!  LOCAL SCALARS
+      real(kind=wp) ::
+     +   del,half,negpt5,one,t,two,wk,zero
+      integer
+     +   cov,covmat,covreq,delta,delta0,dltfdc,f,fx,g,g1,gp,gsave1,
+     +   h,hc,hmi,hpi,hpm,i,ierr,ip1,ipiv0,ipivi,ipivk,ipivot,irc,
+     +   k,kagqt,kalm,kind,kl,l,lmat,m,mm1,mm1o2,mode,nfgcal,pp1o2,
+     +   qtr,qtr1,rd,rd1,rsave,savei,stp0,stpi,stpm,switch,toobig,
+     +   w,w0,w1,wl,xmsave
+      logical
+     +   havej
+!
+!  EXTERNAL SUBROUTINES
+      external linvrt,litvmu,livmul,lsqrt,ltsqar,qrfact,vcopy,vscopy
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic abs,max
+!
+!  ***  PARAMETER DECLARATIONS  ***
+!
+!     INTEGER COVIRC, IV(1), N, NN, P
+!     REAL(KIND=WP) :: D(P), J(NN,P), R(N), V(1), X(P)
+!     DIMENSION IV(*), V(*)
+!
+!  ***  LOCAL VARIABLES  ***
+!
+!     LOGICAL HAVEJ
+!     INTEGER COV, GP, GSAVE1, G1, HC, HMI, HPI, HPM, I, IPIVI, IPIVK,
+!    1        IP1, IRC, K, KIND, KL, L, M, MM1, MM1O2, PP1O2, QTR1,
+!    2        RD1, STPI, STPM, STP0, WL, W0, W1
+!     REAL(KIND=WP) :: DEL, HALF, NEGPT5, ONE, T, TWO, WK, ZERO
+!
+!/
+!  ***  EXTERNAL SUBROUTINES  ***
+!
+!     EXTERNAL LINVRT, LITVMU, LIVMUL, LSQRT, LTSQAR, QRFACT,
+!    1         VCOPY, VSCOPY
+!
+! LINVRT... INVERT LOWER TRIANGULAR MATRIX.
+! LITVMU... APPLY INVERSE-TRANSPOSE OF COMPACT LOWER TRIANG. MATRIX.
+! LIVMUL... APPLY INVERSE OF COMPACT LOWER TRIANG. MATRIX.
+! LSQRT.... COMPUTE CHOLESKY FACTOR OF (LOWER TRINAG. OF) A SYM. MATRIX.
+! LTSQAR... GIVEN LOWER TRIANG. MATRIX L, COMPUTE (L**T)*L.
+! QRFACT... COMPUTE QR DECOMPOSITION OF A MATRIX.
+! VCOPY.... COPY ONE VECTOR TO ANOTHER.
+! VSCOPY... SET ALL ELEMENTS OF A VECTOR TO A SCALAR.
+!
+!  ***  SUBSCRIPTS FOR IV AND V  ***
+!
+!     INTEGER COVMAT, COVREQ, DELTA, DELTA0, DLTFDC, F, FX, G, H, IERR,
+!    1        IPIVOT, IPIV0, KAGQT, KALM, LMAT, MODE, NFGCAL, QTR,
+!    2        RD, RSAVE, SAVEI, SWITCH, TOOBIG, W, XMSAVE
+!
+      data half/0.5_wp/, negpt5/-0.5_wp/, one/1.0_wp/, two/2.0_wp/,
+     +     zero/0.0_wp/
+!
+      data covmat/26/, covreq/15/, delta/50/, delta0/44/,
+     +     dltfdc/40/, f/10/, fx/46/, g/28/, h/44/, ierr/32/,
+     +     ipivot/61/, ipiv0/60/, kagqt/35/, kalm/36/,
+     +     lmat/58/, mode/38/, nfgcal/7/, qtr/49/,
+     +     rd/51/, rsave/52/, savei/54/, switch/12/,
+     +     toobig/2/, w/59/, xmsave/49/
+!
+!+++++++++++++++++++++++++++++++  BODY  ++++++++++++++++++++++++++++++++
+!
+      cov = iv(lmat)
+!
+      covirc = 4
+      kind = iv(covreq)
+      m = iv(mode)
+      if (m .gt. 0) go to 10
+         iv(kagqt) = -1
+         if (iv(kalm) .gt. 0) iv(kalm) = 0
+         if (abs(kind) .ge. 3) go to 300
+         v(fx) = v(f)
+         k = iv(rsave)
+         call vcopy(n, v(k), r)
+ 10   if (m .gt. p) go to 200
+      if (kind .lt. 0) go to 100
+!
+!  ***  COMPUTE FINITE-DIFFERENCE HESSIAN USING BOTH FUNCTION AND
+!  ***  GRADIENT VALUES.
+!
+      gsave1 = iv(w) + p
+      g1 = iv(g)
+      if (m .gt. 0) go to 15
+!        ***  FIRST CALL ON COVCLC.  SET GSAVE = G, TAKE FIRST STEP  ***
+         call vcopy(p, v(gsave1), v(g1))
+         iv(switch) = iv(nfgcal)
+         go to 80
+!
+ 15   del = v(delta)
+      x(m) = v(xmsave)
+      if (iv(toobig) .eq. 0) go to 30
+!
+!     ***  HANDLE OVERSIZE V(DELTA)  ***
+!
+         if (del*x(m) .gt. zero) go to 20
+!             ***  WE ALREADY TRIED SHRINKING V(DELTA), SO QUIT  ***
+              iv(covmat) = -2
+              go to 190
+!
+!        ***  TRY SHRINKING V(DELTA)  ***
+ 20      del = negpt5 * del
+         go to 90
+!
+ 30   cov = iv(lmat)
+      gp = g1 + p - 1
+!
+!  ***  SET  G = (G - GSAVE)/DEL  ***
+!
+      do i = g1, gp
+         v(i) = (v(i) - v(gsave1)) / del
+         gsave1 = gsave1 + 1
+      enddo      
+!
+!  ***  ADD G AS NEW COL. TO FINITE-DIFF. HESSIAN MATRIX  ***
+!
+      k = cov + m*(m-1)/2
+      l = k + m - 2
+      if ( m .eq. 1) go to 60
+!
+!  ***  SET  H(I,M) = 0.5 * (H(I,M) + G(I))  FOR I = 1 TO M-1  ***
+!
+      do i = k, l
+         v(i) = half * (v(i) + v(g1))
+         g1 = g1 + 1
+      enddo        
+!
+!  ***  ADD  H(I,M) = G(I)  FOR I = M TO P  ***
+!
+ 60   l = l + 1
+      do i = m, p
+         v(l) = v(g1)
+         l = l + i
+         g1 = g1 + 1
+      enddo      
+!
+ 80   m = m + 1
+      iv(mode) = m
+      if (m .gt. p) go to 190
+!
+!  ***  CHOOSE NEXT FINITE-DIFFERENCE STEP, RETURN TO GET G THERE  ***
+!
+      del = v(delta0) * max(one/d(m), abs(x(m)))
+      if (x(m) .lt. zero) del = -del
+      v(xmsave) = x(m)
+ 90   x(m) = x(m) + del
+      v(delta) = del
+      covirc = 2
+      go to 999
+!
+!  ***  COMPUTE FINITE-DIFFERENCE HESSIAN USING FUNCTION VALUES ONLY.
+!
+ 100  stp0 = iv(w) + p - 1
+      mm1 = m - 1
+      mm1o2 = m*mm1/2
+      if (m .gt. 0) go to 105
+!        ***  FIRST CALL ON COVCLC.  ***
+         iv(savei) = 0
+         go to 180
+!
+ 105  i = iv(savei)
+      if (i .gt. 0) go to 160
+      if (iv(toobig) .eq. 0) go to 120
+!
+!     ***  HANDLE OVERSIZE STEP  ***
+!
+         stpm = stp0 + m
+         del = v(stpm)
+         if (del*x(xmsave) .gt. zero) go to 110
+!             ***  WE ALREADY TRIED SHRINKING THE STEP, SO QUIT  ***
+              iv(covmat) = -2
+              go to 999
+!
+!        ***  TRY SHRINKING THE STEP  ***
+ 110     del = negpt5 * del
+         x(m) = x(xmsave) + del
+         v(stpm) = del
+         covirc = 1
+         go to 999
+!
+!  ***  SAVE F(X + STP(M)*E(M)) IN H(P,M)  ***
+!
+ 120  pp1o2 = p * (p-1) / 2
+      cov = iv(lmat)
+      hpm = cov + pp1o2 + mm1
+      v(hpm) = v(f)
+!
+!  ***  START COMPUTING ROW M OF THE FINITE-DIFFERENCE HESSIAN H.  ***
+!
+      hmi = cov + mm1o2
+      if (mm1 .eq. 0) go to 140
+      hpi = cov + pp1o2
+      do i = 1, mm1
+         v(hmi) = v(fx) - (v(f) + v(hpi))
+         hmi = hmi + 1
+         hpi = hpi + 1
+      enddo        
+ 140  v(hmi) = v(f) - two*v(fx)
+!
+!  ***  COMPUTE FUNCTION VALUES NEEDED TO COMPLETE ROW M OF H.  ***
+!
+      i = 1
+!
+ 150  iv(savei) = i
+      stpi = stp0 + i
+      v(delta) = x(i)
+      x(i) = x(i) + v(stpi)
+      if (i .eq. m) x(i) = v(xmsave) - v(stpi)
+      covirc = 1
+      go to 999
+!
+ 160  x(i) = v(delta)
+      if (iv(toobig) .eq. 0) go to 170
+!        ***  PUNT IN THE EVENT OF AN OVERSIZE STEP  ***
+         iv(covmat) = -2
+         go to 999
+!
+!  ***  FINISH COMPUTING H(M,I)  ***
+!
+ 170  stpi = stp0 + i
+      hmi = cov + mm1o2 + i - 1
+      stpm = stp0 + m
+      v(hmi) = (v(hmi) + v(f)) / (v(stpi)*v(stpm))
+      i = i + 1
+      if (i .le. m) go to 150
+      iv(savei) = 0
+      x(m) = v(xmsave)
+!
+ 180  m = m + 1
+      iv(mode) = m
+      if (m .gt. p) go to 190
+!
+!  ***  PREPARE TO COMPUTE ROW M OF THE FINITE-DIFFERENCE HESSIAN H.
+!  ***  COMPUTE M-TH STEP SIZE STP(M), THEN RETURN TO OBTAIN
+!  ***  F(X + STP(M)*E(M)), WHERE E(M) = M-TH STD. UNIT VECTOR.
+!
+      del = v(dltfdc) * max(one/d(m), abs(x(m)))
+      if (x(m) .lt. zero) del = -del
+      v(xmsave) = x(m)
+      x(m) = x(m) + del
+      stpm = stp0 + m
+      v(stpm) = del
+      covirc = 1
+      go to 999
+!
+!  ***  RESTORE R, V(F), ETC.  ***
+!
+ 190  k = iv(rsave)
+      call vcopy(n, r, v(k))
+      v(f) = v(fx)
+      if (kind .lt. 0) go to 200
+         iv(nfgcal) = iv(switch)
+         qtr1 = iv(qtr)
+         call vcopy(n, v(qtr1), r)
+         if (iv(covmat) .lt. 0) go to 999
+         covirc = 3
+         go to 999
+!
+ 200  cov = iv(lmat)
+!
+!  ***  THE COMPLETE FINITE-DIFF. HESSIAN IS NOW STORED AT V(COV).   ***
+!  ***  USE IT TO COMPUTE THE REQUESTED COVARIANCE MATRIX.           ***
+!
+!     ***  COMPUTE CHOLESKY FACTOR C OF H = C*(C**T)  ***
+!     ***  AND STORE IT AT V(HC).  ***
+!
+      hc = cov
+      if (abs(kind) .eq. 2) go to 210
+         hc = abs(iv(h))
+         iv(h) = -hc
+ 210  call lsqrt(1, p, v(hc), v(cov), irc)
+      iv(covmat) = -1
+      if (irc .ne. 0) go to 999
+!
+      w1 = iv(w) + p
+      if (abs(kind) .gt. 1) go to 350
+!
+!  ***  COVARIANCE = SCALE * H**-1 * (J**T * J) * H**-1  ***
+!
+      call vscopy(p*(p+1)/2, v(cov), zero)
+      havej = iv(kalm) .eq. (-1)
+!     ***  HAVEJ = .TRUE. MEANS J IS IN ITS ORIGINAL FORM, WHILE
+!     ***  HAVEJ = .FALSE. MEANS QRFACT HAS BEEN APPLIED TO J.
+!
+      m = p
+      if (havej) m = n
+      w0 = w1 - 1
+      rd1 = iv(rd)
+      do 290 i = 1, m
+         if (havej) go to 240
+!
+!        ***  SET W = IPIVOT * (ROW I OF R MATRIX FROM QRFACT).  ***
+!
+              call vscopy(p, v(w1), zero)
+              ipivi = ipiv0 + i
+              l = w0 + iv(ipivi)
+              v(l) = v(rd1)
+              rd1 = rd1 + 1
+              if (i .eq. p) go to 260
+              ip1 = i + 1
+              do 230 k = ip1, p
+                   ipivk = ipiv0 + k
+                   l = w0 + iv(ipivk)
+                   v(l) = j(i,k)
+ 230               continue
+              go to 260
+!
+!        ***  SET W = (ROW I OF J).  ***
+!
+ 240     l = w0
+         do 250 k = 1, p
+              l = l + 1
+              v(l) = j(i,k)
+ 250          continue
+!
+!        ***  SET W = H**-1 * W.  ***
+!
+ 260     call livmul(p, v(w1), v(hc), v(w1))
+         call litvmu(p, v(w1), v(hc), v(w1))
+!
+!        ***  ADD  W * W**T  TO COVARIANCE MATRIX.  ***
+!
+         kl = cov
+         do 280 k = 1, p
+              l = w0 + k
+              wk = v(l)
+              do 270 l = 1, k
+                   wl = w0 + l
+                   v(kl) = v(kl)  +  wk * v(wl)
+                   kl = kl + 1
+ 270               continue
+ 280          continue
+ 290     continue
+      go to 380
+!
+!  ***  COVARIANCE = SCALE * (J**T * J)**-1.  ***
+!
+ 300  rd1 = iv(rd)
+      if (iv(kalm) .ne. (-1)) go to 310
+!
+!        ***  APPLY QRFACT TO J  ***
+!
+         qtr1 = iv(qtr)
+         call vcopy(n, v(qtr1), r)
+         w1 = iv(w) + p
+         call qrfact(nn, n, p, j, v(rd1), iv(ipivot), iv(ierr), 0,
+     +               v(w1))
+         iv(kalm) = -2
+ 310  iv(covmat) = -1
+      if (iv(ierr) .ne. 0) go to 999
+      cov = iv(lmat)
+      hc = abs(iv(h))
+      iv(h) = -hc
+!
+!     ***  SET HC = (R MATRIX FROM QRFACT).  ***
+!
+      l = hc
+      do 340 i = 1, p
+         if (i .gt. 1) call vcopy(i-1, v(l), j(1,i))
+         l = l + i - 1
+         v(l) = v(rd1)
+         l = l + 1
+         rd1 = rd1 + 1
+ 340     continue
+!
+!  ***  THE CHOLESKY FACTOR C OF THE UNSCALED INVERSE COVARIANCE MATRIX
+!  ***  (OR PERMUTATION THEREOF) IS STORED AT V(HC).
+!
+!  ***  SET C = C**-1.
+!
+ 350  call linvrt(p, v(hc), v(hc))
+!
+!  ***  SET C = C**T * C.
+!
+      call ltsqar(p, v(hc), v(hc))
+!
+      if (hc .eq. cov) go to 380
+!
+!     ***  C = PERMUTED, UNSCALED COVARIANCE.
+!     ***  SET COV = IPIVOT * C * IPIVOT**T.
+!
+         do i = 1, p
+              m = ipiv0 + i
+              ipivi = iv(m)
+              kl = cov-1 + ipivi*(ipivi-1)/2
+              do k = 1, i
+                   m = ipiv0 + k
+                   ipivk = iv(m)
+                   l = kl + ipivk
+                   if (ipivk .gt. ipivi)
+     +                       l = l + (ipivk-ipivi)*(ipivk+ipivi-3)/2
+                   v(l) = v(hc)
+                   hc = hc + 1
+              enddo          
+         enddo        
+!
+ 380  continue
+      iv(covmat) = cov
+!
+!  ***  APPLY SCALE FACTOR = (RESID. SUM OF SQUARES) / MAX(1,N-P).
+!
+      t = v(f) / (half * max(1,n-p))
+      k = cov - 1 + p*(p+1)/2
+      do i = cov, k
+         v(i) = t * v(i)
+      enddo
+!
+ 999  return
+      end subroutine covclc

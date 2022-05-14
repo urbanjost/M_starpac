@@ -1,0 +1,535 @@
+!XPGM
+      SUBROUTINE XPGM(LDSTAK)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     ROUTINE TO TEST THE TIME SERIES PERIODOGRAM AND TIME SERIES
+!     UTILITY SUBROUTINES
+!
+!     SERIES Y IS THE FIRST 50 VALUES OF THE SERIES LISTED ON PAGE
+!     318 OF JENKINS AND WATTS.  THE SPECTRUM OF THIS SERIES IS SHOWN
+!     FOR VARIOUS BANDWIDTH ON PAGE 270 OF JENKINS AND WATTS.
+!
+!     SERIES Z IS THE WOLF SUNSPOT NUMBERS FROM 1700 TO 1960 AS
+!     TABULATED BY WALDMEIER.  THE RAW AND SMOOTHED PERIODOGRAMS OF
+!     TAPERED SERIES ARE SHOWN ON PAGES 95 AND 176, RESPECTIVELY, OF
+!     BLOOMFIELD.
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 2, 1985
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   LDSTAK
+!
+!  SCALARS IN COMMON
+      INTEGER
+     +   IERR
+!
+!  ARRAYS IN COMMON
+      DOUBLE PRECISION DSTAK(12)
+!
+!  LOCAL SCALARS
+      REAL(KIND=WP)
+     +   TAPERP
+      INTEGER
+     +   I,IEXTND,IPRT,ITEST,LAB,LFREQ,LPER,LPERI,LZFFT,NF,NFFT,NK,
+     +   NPRT,NTEMP,NY,NZ
+!
+!  LOCAL ARRAYS
+      REAL(KIND=WP)
+     +   AB(600),FREQ(300),PER(300),PERF(300),PERI(300),Y(150),
+     +   YFFT(400),Z(275),ZFFT(600),ZT(275)
+      INTEGER
+     +   K(10)
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL CENTER,FFTLEN,FFTR,IPGM,IPGMP,IPGMPS,IPGMS,IPRINT,MDFLT,
+     +   PGM,PGMS,PPL,SCOPY,TAPER
+!
+!  COMMON BLOCKS
+      COMMON /CSTAK/DSTAK
+      COMMON /ERRCHK/IERR
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     REAL AB(600)
+!        THE VECTOR OF THE NF REAL AND IMAGINARY COMPONENTS OF THE
+!        FOURIER COEFFICIENTS.
+!     DOUBLE PRECISION DSTAK(12)
+!        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
+!     REAL FREQ(300)
+!        THE VECTOR OF FREQUENCIES AT WHICH THE SPECTRUM IS COMPUTED.
+!     INTEGER I
+!        AN INDEX VARIABLE
+!     INTEGER IERR
+!        THE INTEGER VALUE RETURNED BY THIS ROUTINE DESIGNATING
+!        WHETHER ANY ERRORS WERE DETECTED IN THE PARAMETER LIST
+!        IF IERR .EQ. 0, NO ERRORS WERE DETECTED
+!        IF IERR .EQ. 1, ERRORS HAVE BEEN DETECTED
+!     INTEGER IEXTND
+!        THE INDICATOR VARIABLE USED TO DESIGNATE WHETHER ZERO
+!        (IEXTND .EQ. 0) OR THE SERIES MEAN (IEXTND .NE. 0) IS TO BE
+!        USED TO EXTEND THE SERIES.
+!     INTEGER IPRT
+!        THE LOGICAL UNIT USED FOR PRINTED OUTPUT.
+!     INTEGER ITEST
+!        THE NUMBER OF THE TEST SET BEING PERFORMED
+!     INTEGER K(10)
+!        THE VECTOR OF THE MODIFIED DANIEL FILTER LENGTHS.
+!     INTEGER LAB
+!        THE LENGTH OF THE VECTOR AB.
+!     INTEGER LDSTAK
+!        THE LENGTH OF THE VECTOR DSTAK IN COMMON CSTAK.
+!     INTEGER LFREQ
+!        THE LENGTH OF THE VECTOR FREQ.
+!     INTEGER LPER
+!        THE LENGTH OF THE VECTOR PER.
+!     INTEGER LPERI
+!        THE LENGTH OF THE VECTOR PERI.
+!     INTEGER LZFFT
+!        THE LENGTH OF THE VECTORS YFFT AND ZFFT, RESPECTIVELY..
+!     INTEGER NF
+!        THE NUMBER OF FREQUENCIES AT WHICH THE SPECTRUM IS
+!        TO BE COMPUTED.
+!     INTEGER NFFT
+!        THE EXTENDED SERIES LENGTH.
+!     INTEGER NK
+!        THE NUMBER OF MODIFIED DANIEL FILTERS TO BE APPLIED.
+!     INTEGER NPRT
+!        THE VARIABLE CONTROLING PRINTED OUTPUT, WHERE
+!        FOR THE PERIODOGRAM ROUTINES
+!        IF NPRT .LE. -2, THE OUTPUT CONSISTS OF A PAGE PLOT OF THE
+!                         PERIODOGRAM ON A LOG-LINEAR SCALE,
+!        IF NPRT .EQ. -1, THE OUTPUT CONSISTS OF A PAGE PLOT OF THE
+!                         PERIODOGRAM IN DECIBELS ON A LINEAR SCALE,
+!        IF NPRT .EQ.  0, THE OUTPUT IS SUPPRESSED,
+!        IF NPRT .EQ.  1, THE OUTPUT CONSISTS OF A VERTICAL PLOT OF THE
+!                         PERIODOGRAM IN DECIBELS ON A LINEAR SCALE.
+!        IF NPRT .GE.  2, THE OUTPUT CONSISTS OF A VERTICAL PLOT OF THE
+!                         PERIODOGRAM ON A LOG-LINEAR SCALE,
+!        AND FOR THE INTEGRATED PERIODOGRAM ROUTINES
+!        IF NPRT .EQ.  0, THE OUTPUT IS SUPPRESSED,
+!        IF NPRT .NE.  0, THE OUTPUT CONSISTS OF A PAGE PLOT OF THE
+!                         INTEGRATED PERIODOGRAM
+!     INTEGER NTEMP
+!        A TEMPORARY STORAGE LOCATION
+!     INTEGER NY
+!        THE NUMBER OF OBSERVATIONS IN THE SERIES Y.
+!     INTEGER NZ
+!        THE NUMBER OF OBSERVATIONS IN THE SERIES Z.
+!     REAL PER(300)
+!        THE SERIES PERIODOGRAM.
+!     REAL PERF(300)
+!        THE FILTERED (SMOOTHED) PERIODOGRAM.
+!     REAL PERI(300)
+!        THE SERIES INTEGRATED PERIODOGRAM.
+!     REAL TAPERP
+!        THE PERCENT OF THE SERIES TO BE TAPERED.
+!     REAL Y(150)
+!         THE ARRAY CONTAINING THE TIME SERIES FROM JENKINS AND WATTS.
+!     REAL YFFT(400)
+!        THE VECTOR OF THE OBSERVED TIME SERIES TO BE ANALYZED USING
+!        THE FFT.
+!     REAL Z(275)
+!        THE ARRAY OF THE WOLF SUNSPOT NUMBERS.
+!     REAL ZFFT(600)
+!        THE VECTOR OF THE TAPERED WOLF SUNSPOT NUMBERS TO BE
+!        ANALYZED USING THE FFT.
+!     REAL ZT(275)
+!        THE ARRAY OF THE TAPERED SUNSPOT NUMBERS.
+!
+      DATA   Y(  1),  Y(  2),  Y(  3),  Y(  4),  Y(  5),  Y(  6)
+     +    / -.88E0,  -.12E0,  -.89E0, -1.38E0,  -.07E0,  1.03E0/
+      DATA   Y(  7),  Y(  8),  Y(  9),  Y( 10),  Y( 11),  Y( 12)
+     +    / 2.14E0,   .35E0, -1.10E0, -1.78E0, -2.76E0, -1.77E0/
+      DATA   Y( 13),  Y( 14),  Y( 15),  Y( 16),  Y( 17),  Y( 18)
+     +    /  .98E0,  1.00E0,  -.70E0, -1.01E0, -1.30E0,  -.85E0/
+      DATA   Y( 19),  Y( 20),  Y( 21),  Y( 22),  Y( 23),  Y( 24)
+     +    / -.46E0,  1.63E0,   .06E0,  -.17E0, -1.01E0, -1.04E0/
+      DATA   Y( 25),  Y( 26),  Y( 27),  Y( 28),  Y( 29),  Y( 30)
+     +    / -.66E0, -1.12E0,  -.51E0,  -.71E0,  -.20E0,  -.13E0/
+      DATA   Y( 31),  Y( 32),  Y( 33),  Y( 34),  Y( 35),  Y( 36)
+     +    /  .14E0,  1.59E0,  -.76E0, -1.08E0, -1.77E0, -1.20E0/
+      DATA   Y( 37),  Y( 38),  Y( 39),  Y( 40),  Y( 41),  Y( 42)
+     +    /  .45E0,  -.07E0,  -.63E0,  -.35E0,  -.87E0,  -.62E0/
+      DATA   Y( 43),  Y( 44),  Y( 45),  Y( 46),  Y( 47),  Y( 48)
+     +    /  .28E0,  1.90E0,  2.14E0,  1.05E0,   .31E0,  1.07E0/
+      DATA   Y( 49),  Y( 50)
+     +    / 2.67E0,  2.44E0/
+!
+      DATA   Z(  1),  Z(  2),  Z(  3),  Z(  4),  Z(  5),  Z(  6)
+     +    /  5.0E0,  11.0E0,  16.0E0,  23.0E0,  36.0E0,  58.0E0/
+      DATA   Z(  7),  Z(  8),  Z(  9),  Z( 10),  Z( 11),  Z( 12)
+     +    / 29.0E0,  20.0E0,  10.0E0,   8.0E0,   3.0E0,   0.0E0/
+      DATA   Z( 13),  Z( 14),  Z( 15),  Z( 16),  Z( 17),  Z( 18)
+     +    /  0.0E0,   2.0E0,  11.0E0,  27.0E0,  47.0E0,  63.0E0/
+      DATA   Z( 19),  Z( 20),  Z( 21),  Z( 22),  Z( 23),  Z( 24)
+     +    / 60.0E0,  39.0E0,  28.0E0,  26.0E0,  22.0E0,  11.0E0/
+      DATA   Z( 25),  Z( 26),  Z( 27),  Z( 28),  Z( 29),  Z( 30)
+     +    / 21.0E0,  40.0E0,  78.0E0, 122.0E0, 103.0E0,  73.0E0/
+      DATA   Z( 31),  Z( 32),  Z( 33),  Z( 34),  Z( 35),  Z( 36)
+     +    / 47.0E0,  35.0E0,  11.0E0,   5.0E0,  16.0E0,  34.0E0/
+      DATA   Z( 37),  Z( 38),  Z( 39),  Z( 40),  Z( 41),  Z( 42)
+     +    / 70.0E0,  81.0E0, 111.0E0, 101.0E0,  73.0E0,  40.0E0/
+      DATA   Z( 43),  Z( 44),  Z( 45),  Z( 46),  Z( 47),  Z( 48)
+     +    / 20.0E0,  16.0E0,   5.0E0,  11.0E0,  22.0E0,  40.0E0/
+      DATA   Z( 49),  Z( 50),  Z( 51),  Z( 52),  Z( 53),  Z( 54)
+     +    / 60.0E0,  80.9E0,  83.4E0,  47.7E0,  47.8E0,  30.7E0/
+      DATA   Z( 55),  Z( 56),  Z( 57),  Z( 58),  Z( 59),  Z( 60)
+     +    / 12.2E0,   9.6E0,  10.2E0,  32.4E0,  47.6E0,  54.0E0/
+      DATA   Z( 61),  Z( 62),  Z( 63),  Z( 64),  Z( 65),  Z( 66)
+     +    / 62.9E0,  85.9E0,  61.2E0,  45.1E0,  36.4E0,  20.9E0/
+      DATA   Z( 67),  Z( 68),  Z( 69),  Z( 70),  Z( 71),  Z( 72)
+     +    / 11.4E0,  37.8E0,  69.8E0, 106.1E0, 100.8E0,  81.6E0/
+      DATA   Z( 73),  Z( 74),  Z( 75),  Z( 76),  Z( 77),  Z( 78)
+     +    / 66.5E0,  34.8E0,  30.6E0,   7.0E0,  19.8E0,  92.5E0/
+      DATA   Z( 79),  Z( 80),  Z( 81),  Z( 82),  Z( 83),  Z( 84)
+     +    /154.4E0, 125.9E0,  84.8E0,  68.1E0,  38.5E0,  22.8E0/
+      DATA   Z( 85),  Z( 86),  Z( 87),  Z( 88),  Z( 89),  Z( 90)
+     +    / 10.2E0,  24.1E0,  82.9E0, 132.0E0, 130.9E0, 118.1E0/
+      DATA   Z( 91),  Z( 92),  Z( 93),  Z( 94),  Z( 95),  Z( 96)
+     +    / 89.9E0,  66.6E0,  60.0E0,  46.9E0,  41.0E0,  21.3E0/
+      DATA   Z( 97),  Z( 98),  Z( 99),  Z(100),  Z(101),  Z(102)
+     +    / 16.0E0,   6.4E0,   4.1E0,   6.8E0,  14.5E0,  34.0E0/
+      DATA   Z(103),  Z(104),  Z(105),  Z(106),  Z(107),  Z(108)
+     +    / 45.0E0,  43.1E0,  47.5E0,  42.2E0,  28.1E0,  10.1E0/
+      DATA   Z(109),  Z(110),  Z(111),  Z(112),  Z(113),  Z(114)
+     +    /  8.1E0,   2.5E0,   0.0E0,   1.4E0,   5.0E0,  12.2E0/
+      DATA   Z(115),  Z(116),  Z(117),  Z(118),  Z(119),  Z(120)
+     +    / 13.9E0,  35.4E0,  45.8E0,  41.1E0,  30.1E0,  23.9E0/
+      DATA   Z(121),  Z(122),  Z(123),  Z(124),  Z(125),  Z(126)
+     +    / 15.6E0,   6.6E0,   4.0E0,   1.8E0,   8.5E0,  16.6E0/
+      DATA   Z(127),  Z(128),  Z(129),  Z(130),  Z(131),  Z(132)
+     +    / 36.3E0,  49.6E0,  64.2E0,  67.0E0,  70.9E0,  47.8E0/
+      DATA   Z(133),  Z(134),  Z(135),  Z(136),  Z(137),  Z(138)
+     +    / 27.5E0,   8.5E0,  13.2E0,  56.9E0, 121.5E0, 138.3E0/
+      DATA   Z(139),  Z(140),  Z(141),  Z(142),  Z(143),  Z(144)
+     +    /103.2E0,  85.7E0,  64.6E0,  36.7E0,  24.2E0,  10.7E0/
+      DATA   Z(145),  Z(146),  Z(147),  Z(148),  Z(149),  Z(150)
+     +    / 15.0E0,  40.1E0,  61.5E0,  98.5E0, 124.7E0,  96.3E0/
+      DATA   Z(151),  Z(152),  Z(153),  Z(154),  Z(155),  Z(156)
+     +    / 66.6E0,  64.5E0,  54.1E0,  39.0E0,  20.6E0,   6.7E0/
+      DATA   Z(157),  Z(158),  Z(159),  Z(160),  Z(161),  Z(162)
+     +    /  4.3E0,  22.7E0,  54.8E0,  93.8E0,  95.8E0,  77.2E0/
+      DATA   Z(163),  Z(164),  Z(165),  Z(166),  Z(167),  Z(168)
+     +    / 59.1E0,  44.0E0,  47.0E0,  30.5E0,  16.3E0,   7.3E0/
+      DATA   Z(169),  Z(170),  Z(171),  Z(172),  Z(173),  Z(174)
+     +    / 37.6E0,  74.0E0, 139.0E0, 111.2E0, 101.6E0,  66.2E0/
+      DATA   Z(175),  Z(176),  Z(177),  Z(178),  Z(179),  Z(180)
+     +    / 44.7E0,  17.0E0,  11.3E0,  12.4E0,   3.4E0,   6.0E0/
+      DATA   Z(181),  Z(182),  Z(183),  Z(184),  Z(185),  Z(186)
+     +    / 32.3E0,  54.3E0,  59.7E0,  63.7E0,  63.5E0,  52.2E0/
+      DATA   Z(187),  Z(188),  Z(189),  Z(190),  Z(191),  Z(192)
+     +    / 25.4E0,  13.1E0,   6.8E0,   6.3E0,   7.1E0,  35.6E0/
+      DATA   Z(193),  Z(194),  Z(195),  Z(196),  Z(197),  Z(198)
+     +    / 73.0E0,  85.1E0,  78.0E0,  64.0E0,  41.8E0,  26.2E0/
+      DATA   Z(199),  Z(200),  Z(201),  Z(202),  Z(203),  Z(204)
+     +    / 26.7E0,  12.1E0,   9.5E0,   2.7E0,   5.0E0,  24.4E0/
+      DATA   Z(205),  Z(206),  Z(207),  Z(208),  Z(209),  Z(210)
+     +    / 42.0E0,  63.5E0,  53.8E0,  62.0E0,  48.5E0,  43.9E0/
+      DATA   Z(211),  Z(212),  Z(213),  Z(214),  Z(215),  Z(216)
+     +    / 18.6E0,   5.7E0,   3.6E0,   1.4E0,   9.6E0,  47.4E0/
+      DATA   Z(217),  Z(218),  Z(219),  Z(220),  Z(221),  Z(222)
+     +    / 57.1E0, 103.9E0,  80.6E0,  63.6E0,  37.6E0,  26.1E0/
+      DATA   Z(223),  Z(224),  Z(225),  Z(226),  Z(227),  Z(228)
+     +    / 14.2E0,   5.8E0,  16.7E0,  44.3E0,  63.9E0,  69.0E0/
+      DATA   Z(229),  Z(230),  Z(231),  Z(232),  Z(233),  Z(234)
+     +    / 77.8E0,  64.9E0,  35.7E0,  21.2E0,  11.1E0,   5.7E0/
+      DATA   Z(235),  Z(236),  Z(237),  Z(238),  Z(239),  Z(240)
+     +    /  8.7E0,  36.1E0,  79.7E0, 114.4E0, 109.6E0,  88.8E0/
+      DATA   Z(241),  Z(242),  Z(243),  Z(244),  Z(245),  Z(246)
+     +    / 67.8E0,  47.5E0,  30.6E0,  16.3E0,   9.6E0,  33.2E0/
+      DATA   Z(247),  Z(248),  Z(249),  Z(250),  Z(251),  Z(252)
+     +    / 92.6E0, 151.6E0, 136.3E0, 134.7E0,  83.9E0,  69.4E0/
+      DATA   Z(253),  Z(254),  Z(255),  Z(256),  Z(257),  Z(258)
+     +    / 31.5E0,  13.9E0,   4.4E0,  38.0E0, 141.7E0, 190.2E0/
+      DATA   Z(259),  Z(260),  Z(261)
+     +    /184.8E0, 159.0E0, 112.3E0/
+!
+      ITEST = 1
+!
+!     MAKE CALLS WITH VALID DATA
+!
+      NY = 50
+      NZ = 261
+      NFFT = 514
+      NPRT = 2
+      LZFFT = 600
+      LPER = 514
+      LPERI = 514
+      TAPERP = 0.10E0
+      LFREQ = 300
+      IEXTND = 0
+      LAB = 600
+      NK = 3
+      K(1) = 8
+      K(2) = 8
+      K(3) = 8
+!
+      CALL IPRINT(IPRT)
+!
+!     TEST OF CENTER
+!
+    5 WRITE (IPRT, 1018)
+      CALL CENTER (Z, NZ, ZT)
+      WRITE (IPRT, 1002) IERR
+!
+!     PRINT RETURNED VARIABLES FROM CENTER
+!
+      IF (IERR.EQ.0) WRITE (IPRT, 1004) (ZT(I), I = 1, NZ)
+!
+!     TEST OF TAPER
+!
+      WRITE (IPRT, 1015)
+      CALL TAPER (Z, NZ, TAPERP, ZT)
+      WRITE (IPRT, 1002) IERR
+!
+!     PRINT RETURNED VARIABLES FROM TAPER
+!
+      IF (IERR.EQ.0) WRITE (IPRT, 1004) (ZT(I), I = 1, NZ)
+!
+!     TEST OF PGM
+!
+      WRITE (IPRT, 1013)
+      CALL SCOPY (NZ, ZT, 1, ZFFT, 1)
+      CALL PGM (ZFFT, NZ, LZFFT, LDSTAK)
+      WRITE (IPRT, 1002) IERR
+!
+!     TEST OF FFTLEN
+!
+      WRITE (IPRT, 1026)
+      CALL FFTLEN(NFFT-2, 2, NTEMP)
+      WRITE(IPRT, 1002) IERR
+!
+!     PRINT RETURNED VARIABLES FROM FFTLEN
+!
+      IF (IERR.EQ.0) WRITE (IPRT, 1027) NTEMP
+!
+!     TEST OF PGMS
+!
+      NTEMP = NFFT-1
+      WRITE (IPRT, 1025)
+      CALL SCOPY (NZ, ZT, 1, ZFFT, 1)
+      CALL PGMS (ZFFT, NZ, NTEMP, LZFFT, IEXTND, NF, PER, LPER, FREQ,
+     +   LFREQ, -2)
+      WRITE (IPRT, 1027) NTEMP
+      WRITE (IPRT, 1002) IERR
+!
+!     PRINT RETURNED VARIABLES FROM PGMS
+!
+      IF (IERR.EQ.0) THEN
+        WRITE (IPRT, 1004) (FREQ(I), I = 1, NF)
+        WRITE (IPRT, 1004) (PER(I), I = 1, NF)
+      END IF
+!
+!     TEST OF MDFLT
+!
+      WRITE (IPRT, 1016)
+      CALL MDFLT (PER, NF, NK, K, PERF, LDSTAK)
+      WRITE (IPRT, 1002) IERR
+      IF (IERR.EQ.0) THEN
+!
+!       PRINT RETURNED VARIABLES FROM MDFLT
+!
+        WRITE (IPRT, 1004) (PERF(I), I = 1, NF)
+!
+!       DISPLAY SMOOTHED PERIODOGRAM ON A LOG PLOT
+!
+        WRITE (IPRT, 1028)
+        CALL PPL (PERF, FREQ, NF, 1)
+      END IF
+!
+!     TEST OF IPGMP
+!
+      WRITE (IPRT, 1029)
+      CALL IPGMP (PER, FREQ, NF, NZ, LDSTAK)
+      WRITE (IPRT, 1002) IERR
+!
+!     TEST OF IPGMPS
+!
+      WRITE (IPRT, 1030)
+      CALL IPGMPS (PER, FREQ, NF, NZ, LDSTAK, PERI, NPRT)
+      WRITE (IPRT, 1002) IERR
+      IF (IERR.EQ.0) THEN
+!
+!     PRINT RETURNED VARIABLES FROM IPGMPS
+!
+         WRITE (IPRT, 1004) (FREQ(I), I = 1, NF)
+         WRITE (IPRT, 1004) (PERI(I), I = 1, NF)
+      END IF
+!
+!     TEST OF IPGM
+!
+      WRITE (IPRT, 1017)
+      CALL SCOPY (NZ, ZT, 1, ZFFT, 1)
+      CALL IPGM (ZFFT, NZ, LZFFT, LDSTAK)
+      WRITE (IPRT, 1002) IERR
+!
+!     TEST OF IPGMS
+!
+      WRITE (IPRT, 1014)
+      CALL SCOPY (NZ, ZT, 1, ZFFT, 1)
+      CALL IPGMS (ZFFT, NZ, LZFFT, LDSTAK, NF, PERI, LPERI, FREQ, LFREQ,
+     +   NPRT)
+      WRITE (IPRT, 1002) IERR
+      IF (IERR.EQ.0) THEN
+!
+!     PRINT RETURNED VARIABLES FROM IPGMS
+!
+         WRITE (IPRT, 1004) (FREQ(I), I = 1, NF)
+         WRITE (IPRT, 1004) (PERI(I), I = 1, NF)
+      END IF
+!
+!     TEST OF FFTR (CENTERED DATA - O PERCENT TAPER)
+!
+      TAPERP = -1.0E0
+      WRITE (IPRT, 1031)
+      IF (NY.GE.1) CALL TAPER (Y, NY, TAPERP, YFFT)
+      CALL FFTR (YFFT, NY, NFFT, IEXTND, NF, AB, LAB)
+      WRITE (IPRT, 1002) IERR
+!
+!     PRINT RETURNED VARIABLES FROM FFTR
+!
+      IF (IERR.EQ.0) WRITE (IPRT, 1004) (AB(I), I = 1, NF)
+!
+      GO TO (10, 20, 30, 40) ITEST
+!
+!     CHECK MINIMUM PROBLEM SIZE
+!
+   10 ITEST = ITEST + 1
+      NZ = 17
+      NY = 17
+      GO TO 5
+!
+!     CHECK VARIOUS OPTIONS
+!
+   20 ITEST = ITEST + 1
+!
+!     TEST OF MDFLT (ELEMENTS OF K NOT EVEN)
+!
+      K(1) = 7
+      WRITE (IPRT, 1016)
+      CALL MDFLT (PER, NF, NK, K, PERF, LDSTAK)
+      WRITE (IPRT, 1002) IERR
+!
+!     PRINT RETURNED VARIABLES FROM MDFLT
+!
+      WRITE (IPRT, 1004) (PERF(I), I = 1, NF)
+!
+!     TEST OF PGMS (UNCENTERED DATA)
+!
+      IEXTND = 1
+      NPRT = 1
+      WRITE (IPRT, 1025)
+      CALL SCOPY (NZ, Z, 1, ZFFT, 1)
+      CALL PGMS (ZFFT, NZ, NFFT, LZFFT, IEXTND, NF, PER, LPER, FREQ,
+     +   LFREQ, NPRT)
+      WRITE (IPRT, 1002) IERR
+!
+!     PRINT RETURNED VARIABLES FROM PGMS
+!
+      WRITE (IPRT, 1004) (FREQ(I), I = 1, NF)
+      WRITE (IPRT, 1004) (PER(I), I = 1, NF)
+!
+      NPRT = 2
+      WRITE (IPRT, 1025)
+      CALL SCOPY (NZ, Z, 1, ZFFT, 1)
+      CALL PGMS (ZFFT, NZ, NFFT, LZFFT, IEXTND, NF, PER, LPER, FREQ,
+     +   LFREQ, NPRT)
+      WRITE (IPRT, 1002) IERR
+!
+!     PRINT RETURNED VARIABLES FROM PGMS
+!
+      WRITE (IPRT, 1004) (FREQ(I), I = 1, NF)
+      WRITE (IPRT, 1004) (PER(I), I = 1, NF)
+!
+!     TEST OF FFTR (CENTERED DATA - 100 PERCENT TAPER)
+!
+      TAPERP = 1.1E0
+      WRITE (IPRT, 1031)
+      CALL TAPER (Y, NY, TAPERP, YFFT)
+      CALL FFTR (YFFT, NY, NFFT, IEXTND, NF, AB, LAB)
+      WRITE (IPRT, 1002) IERR
+!
+!     PRINT RETURNED VARIABLES FROM FFTR
+!
+      WRITE (IPRT, 1004) (AB(I), I = 1, NF)
+!
+!     TEST OF FFTR (CENTERED DATA - O PERCENT TAPER)
+!
+      TAPERP = -1.0E0
+      WRITE (IPRT, 1031)
+      CALL TAPER (Y, NY, TAPERP, YFFT)
+      CALL FFTR (YFFT, NY, NFFT-1, IEXTND, NF, AB, NFFT-2)
+      WRITE (IPRT, 1002) IERR
+!
+!     PRINT RETURNED VARIABLES FROM FFTR
+!
+      WRITE (IPRT, 1004) (AB(I), I = 1, NF)
+!
+!     PERFORM ERROR CHECKING
+!
+      NY = -1
+      NZ = -1
+      NFFT = 0
+      NPRT = 2
+      LZFFT = 0
+      LPER = 0
+      LPERI = 0
+      TAPERP = 0.10E0
+      LFREQ = 0
+      IEXTND = 0
+      LAB = 0
+      NK = 0
+      K(1) = 0
+      K(2) = 0
+      K(3) = 0
+      GO TO 5
+!
+!     PERFORM MORE ERROR CHECKING
+!
+   30 ITEST = ITEST + 1
+      NY = 50
+      NZ = 261
+      NPRT = 2
+      LZFFT = 0
+      LPER = 0
+      LPERI = 0
+      TAPERP = 0.10E0
+      LFREQ = 0
+      IEXTND = 0
+      LAB = 0
+      NK = 3
+      K(1) = 0
+      K(2) = 0
+      K(3) = 0
+      GO TO 5
+!
+   40 RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1002 FORMAT (8H IERR IS, I5)
+ 1004 FORMAT (3(1X, E16.8))
+ 1013 FORMAT ('1', 11HTEST OF PGM)
+ 1014 FORMAT ('1', 13HTEST OF IPGMS)
+ 1015 FORMAT ('1', 13HTEST OF TAPER)
+ 1016 FORMAT ('1', 13HTEST OF MDFLT)
+ 1017 FORMAT ('1', 12HTEST OF IPGM)
+ 1018 FORMAT ('1', 14HTEST OF CENTER)
+ 1025 FORMAT ('1', 12HTEST OF PGMS)
+ 1026 FORMAT ('1', 14HTEST OF FFTLEN)
+ 1027 FORMAT (/8H NFFT IS, I6)
+ 1028 FORMAT ('1', 45HDISPLAY OF PERIODOGRAM SMOOTHED WITH MODIFIED,
+     +   14H DANIEL FILTER)
+ 1029 FORMAT ('1', 13HTEST OF IPGMP)
+ 1030 FORMAT ('1', 14HTEST OF IPGMPS)
+ 1031 FORMAT ('1', 12HTEST OF FFTR)
+      END

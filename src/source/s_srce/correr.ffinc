@@ -1,0 +1,168 @@
+!CORRER
+      SUBROUTINE CORRER(NMSUB, M, N, IYM, IVCV, LDSTAK, ICOR, NPRT)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE CHECKS FOR ERRORS IN THE INPUT
+!     PARAMETERS.  IF ANY ARE FOUND A FLAG IS SET AND
+!     COMPUTATION STOPS
+!
+!     WRITTEN BY -
+!        LINDA L. MITCHELL
+!        STATISTICAL ENGINEERING DIVISION
+!        NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  MAY 17, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ICOR,IVCV,IYM,LDSTAK,M,N,NPRT
+!
+!  ARRAY ARGUMENTS
+      CHARACTER
+     +   NMSUB(6)*1
+!
+!  SCALARS IN COMMON
+      INTEGER
+     +   IERR
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IP,IPRT,IS,LDSMIN
+      LOGICAL
+     +   ERR01,ERR02,ERR03,ERR04,ERR05,HEAD
+!
+!  LOCAL ARRAYS
+      CHARACTER
+     +   LIVCV(8)*1,LIYM(8)*1,LLDS(8)*1,LM(8)*1,LN(8)*1,
+     +   LTHREE(8)*1,LTWO(8)*1
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EISGE,IPRINT,LDSCMP
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MAX
+!
+!  COMMON BLOCKS
+      COMMON /ERRCHK/IERR
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERR01, ERR02, ERR03, ERR04, ERR05
+!                  VALUE(S) INDICATING WHETHER OR ERROR WAS DETECTED
+!                  (TRUE) OR NOT (FALSE).
+!     LOGICAL HEAD
+!                  A FLAG INDICATING WHETHER THE HEADING SHOULD BE
+!                  PRINTED (TRUE) OR NOT (FALSE).  IF A HEADING IS
+!                  PRINTED, THE VALUE OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER ICOR
+!                  DETERMINES WHICH SUBROUTINE CALLED CORRER
+!                  IF =1, THEN CALLED BY CORR
+!                     =2, THEN CALLED BY CORRS
+!     INTEGER IERR
+!                  A FLAG, THAT WHEN RETURNED BY THIS ROUTINE DESIGNATES
+!                  WHETHER  ERRORS WERE DETECTED IN THE PARAMETER LIST
+!                  IF IERR .EQ. 0, NO ERRORS WERE DETECTED
+!                  IF IERR .EQ. 1, ERRORS HAVE BEEN DETECTED
+!     INTEGER IP
+!                  A TEMPORARY VARIABLE USED FOR COMPUTING LDSMIN.
+!     INTEGER IPRT
+!                  THE LOGICAL OUTPUT UNIT
+!     INTEGER IS
+!                  A TEMPORARY VARIABLE USED FOR COMPUTING LDSMIN.
+!     INTEGER IVCV
+!                  THE DIMENSION OF SC
+!     INTEGER IYM
+!                  ACTUAL ROW DIMENSION OF YM
+!     INTEGER LDSMIN
+!                  THE MINIMUM LENGTH ALLOWED FOR DSTAK
+!     INTEGER LDSTAK
+!                  THE LENGTH OF THE VECTOR DSTAK IN COMMON CSTAK
+!     CHARACTER*1 LIVCV(8), LIYM(8), LLDS(8), LM(8), LN(8), LTHREE(8),
+!    *  LTWO(8)
+!                  THE ARRAY(S) CONTAINING THE NAME(S) OF THE
+!                  VARIABLE(S) CHECKED FOR ERRORS.
+!     INTEGER M
+!                  NUMBER OF VARIABLES
+!     INTEGER N
+!                  THE NUMBER OFOBSERVATIONS
+!     CHARACTER*1 NMSUB(6)
+!                  THE NAME OF THE CALLING SUBROUTINE.
+!     INTEGER NPRT
+!                  THE VARIABLE CONTROLLING THE PRINTED OUTPUT.
+!                  IF NPRT=0, OUTPUT IS SUPPRESSED, OTHERWISE IT IS NOT
+!
+!
+!     SET UP NAME ARRAYS
+!
+      DATA  LIVCV(1), LIVCV(2), LIVCV(3), LIVCV(4), LIVCV(5), LIVCV(6),
+     +      LIVCV(7), LIVCV(8) / 'I', 'V', 'C', 'V', ' ', ' ', ' ', ' '/
+      DATA   LIYM(1),  LIYM(2),  LIYM(3),  LIYM(4),  LIYM(5),  LIYM(6),
+     +       LIYM(7),  LIYM(8) / 'I', 'Y', 'M', ' ', ' ', ' ', ' ', ' '/
+      DATA   LLDS(1),  LLDS(2),  LLDS(3),  LLDS(4),  LLDS(5),  LLDS(6),
+     +       LLDS(7),  LLDS(8) / 'L', 'D', 'S', 'T', 'A', 'K', ' ', ' '/
+      DATA     LM(1),    LM(2),    LM(3),    LM(4),    LM(5),    LM(6),
+     +         LM(7),    LM(8) / 'M', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
+      DATA     LN(1),    LN(2),    LN(3),    LN(4),    LN(5),    LN(6),
+     +         LN(7),    LN(8) / 'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
+      DATA LTHREE(1),LTHREE(2),LTHREE(3),LTHREE(4),LTHREE(5),LTHREE(6),
+     +     LTHREE(7),LTHREE(8) / 'T', 'H', 'R', 'E', 'E', ' ', ' ', ' '/
+      DATA   LTWO(1),  LTWO(2),  LTWO(3),  LTWO(4),  LTWO(5),  LTWO(6),
+     +       LTWO(7),  LTWO(8) / 'T', 'W', 'O', ' ', ' ', ' ', ' ', ' '/
+!
+      CALL IPRINT(IPRT)
+!
+      HEAD = .TRUE.
+!
+      IERR = 0
+!
+!     BEGIN ERROR CHECKING. THE COMMENTS STATE WHAT CONSTITUTES AN
+!     ERROR. COMMENTS ENCLOSED BY STARS(**) INDICATE THE ERROR CONDITION
+!
+!     **NUMBER OF VARIABLES LESS THAN 2**
+!
+      CALL EISGE(NMSUB, LM, M, 2, 2, HEAD, ERR01, LTWO)
+!
+!     **NUMBER OF OBSERVATIONS LESS THAN 3**
+!
+      CALL EISGE(NMSUB, LN, N, 3, 2, HEAD, ERR02, LTHREE)
+!
+!     **OBSERVATION MATRIX DIMENSIONED LESS THAN N**
+!
+      ERR03 = .FALSE.
+      IF (.NOT.ERR02) CALL EISGE(NMSUB, LIYM, IYM, N, 3, HEAD, ERR03,
+     +   LN)
+!
+!     **SC MATRIX DIMENSIONED LESS THAN M**
+!
+      ERR04 = .FALSE.
+      IF ((ICOR.EQ.2) .AND. (.NOT.ERR01)) CALL EISGE(NMSUB, LIVCV,
+     +   IVCV, M, 3, HEAD, ERR04, LM)
+!
+      IF (ERR01 .OR. ERR02) GO TO 40
+      IS = 0
+      IF (ICOR.EQ.1) IS = 1
+!
+      IP = 1
+      IF (NPRT.EQ.0) IP = 0
+!
+!
+!     CHECK FOR ENOUGH COMMON FOR THIS PROBLEM
+!
+      CALL LDSCMP(12, 0, IP*MAX(N,M), 0, 0, 0, 'S',
+     +   IS*M*M + IP*(MAX(N,M)+M+N*(M+3)+6*M*M), LDSMIN)
+!
+      CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR05, LLDS)
+!
+      IF (ERR01 .OR. ERR02 .OR. ERR03 .OR. ERR04 .OR. ERR05) GO TO 40
+      RETURN
+!
+!     SET IERR TO INDICATE AN ERROR
+!
+   40 CONTINUE
+      IERR = 1
+      RETURN
+      END

@@ -1,0 +1,725 @@
+!NL2ITR
+      subroutine nl2itr (d, iv, j, n, nn, p, r, v, x)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!
+!  ***  CARRY OUT NL2SOL (NONLINEAR LEAST-SQUARES) ITERATIONS  ***
+!  ***  (NL2SOL VERSION 2.2)  ***
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer n,nn,p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) :: d(p),j(nn,p),r(n),v(*),x(p)
+      integer iv(*)
+!
+!  LOCAL SCALARS
+      real(kind=wp) :: e,half,negone,one,rdof1,sttsst,t,t1,zero
+      integer
+     +   cnvcod,cosmin,covmat,covprt,covreq,d0init,dgnorm,dig,dig1,
+     +   dinit,dstnrm,dtype,dummy,f,f0,fdif,fuzz,g,g01,g1,gtstep,h,
+     +   h0,h1,i,ierr,im1,incfac,inits,ipiv0,ipiv1,ipivi,ipivk,
+     +   ipivot,ipk,irc,jtinit,jtol1,k,kagqt,kalm,km1,l,lky,lky1,
+     +   lmat,lmat1,lmax0,lstgst,m,mode,model,mxfcal,mxiter,nfcall,
+     +   nfcov,nfgcal,ngcall,ngcov,niter,nvsave,phmxfc,pp1o2,
+     +   preduc,qtr,qtr1,rad0,radfac,radinc,radius,rd,rd0,rd1,rdk,
+     +   restor,rlimit,rsave,rsave1,s,s1,size,smh,sstep,step,step1,
+     +   stglim,stlstg,stpmod,stppar,sused,switch,temp1,temp2,
+     +   toobig,tuner4,tuner5,vsave1,w,w1,wscale,x0,x01,xirc
+!
+!  EXTERNAL FUNCTIONS
+      real(kind=wp) :: dotprd,v2norm
+      logical stopx
+      external dotprd,v2norm,stopx
+!
+!  EXTERNAL SUBROUTINES
+      external assess,covclc,dupdat,gqtstp,itsmry,lmstep,parchk,qapply,
+     +   qrfact,rptmul,slupdt,slvmul,vaxpy,vcopy,vscopy
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic abs,sqrt
+!
+!  ***  PARAMETER DECLARATIONS  ***
+!
+!     INTEGER IV(1), N, NN, P
+!     REAL(KIND=WP) :: D(P), J(NN,P), R(N), V(1), X(P)
+!     DIMENSION IV(60+P), V(93 + 2*N + P*(3*P+31)/2)
+!
+!
+!--------------------------  PARAMETER USAGE  --------------------------
+!
+! D.... SCALE VECTOR.
+! IV... INTEGER VALUE ARRAY.
+! J.... N BY P JACOBIAN MATRIX (LEAD DIMENSION NN).
+! N.... NUMBER OF OBSERVATIONS (COMPONENTS IN R).
+! NN... LEAD DIMENSION OF J.
+! P.... NUMBER OF PARAMETERS (COMPONENTS IN X).
+! R.... RESIDUAL VECTOR.
+! V.... FLOATING-POINT VALUE ARRAY.
+! X.... PARAMETER VECTOR.
+!
+!  ***  DISCUSSION  ***
+!
+!        PARAMETERS IV, N, P, V, AND X ARE THE SAME AS THE CORRESPOND-
+!     ING ONES TO NL2SOL (WHICH SEE), EXCEPT THAT V CAN BE SHORTER
+!     (SINCE THE PART OF V THAT NL2SOL USES FOR STORING D, J, AND R IS
+!     NOT NEEDED).  MOREOVER, COMPARED WITH NL2SOL, IV(1) MAY HAVE THE
+!     TWO ADDITIONAL OUTPUT VALUES 1 AND 2, WHICH ARE EXPLAINED BELOW,
+!     AS IS THE USE OF IV(TOOBIG) AND IV(NFGCAL).  THE VALUES IV(D),
+!     IV(J), AND IV(R), WHICH ARE OUTPUT VALUES FROM NL2SOL (AND
+!     NL2SNO), ARE NOT REFERENCED BY NL2ITR OR THE SUBROUTINES IT CALLS.
+!        ON A FRESH START, I.E., A CALL ON NL2ITR WITH IV(1) = 0 OR 12,
+!     NL2ITR ASSUMES THAT R = R(X), THE RESIDUAL AT X, AND J = J(X),
+!     THE CORRESPONDING JACOBIAN MATRIX OF R AT X.
+!
+! IV(1) = 1 MEANS THE CALLER SHOULD SET R TO R(X), THE RESIDUAL AT X,
+!             AND CALL NL2ITR AGAIN, HAVING CHANGED NONE OF THE OTHER
+!             PARAMETERS.  AN EXCEPTION OCCURS IF R CANNOT BE EVALUATED
+!             AT X (E.G. IF R WOULD OVERFLOW), WHICH MAY HAPPEN BECAUSE
+!             OF AN OVERSIZED STEP.  IN THIS CASE THE CALLER SHOULD SET
+!             IV(TOOBIG) = IV(2) TO 1, WHICH WILL CAUSE NL2ITR TO IG-
+!             NORE R AND TRY A SMALLER STEP.  THE PARAMETER NF THAT
+!             NL2SOL PASSES TO CALCR (FOR POSSIBLE USE BY CALCJ) IS A
+!             COPY OF IV(NFCALL) = IV(6).
+! IV(1) = 2 MEANS THE CALLER SHOULD SET J TO J(X), THE JACOBIAN MATRIX
+!             OF R AT X, AND CALL NL2ITR AGAIN.  THE CALLER MAY CHANGE
+!             D AT THIS TIME, BUT SHOULD NOT CHANGE ANY OF THE OTHER
+!             PARAMETERS.  THE PARAMETER NF THAT NL2SOL PASSES TO
+!             CALCJ IS IV(NFGCAL) = IV(7).  IF J CANNOT BE EVALUATED
+!             AT X, THEN THE CALLER MAY SET IV(NFGCAL) TO 0, IN WHICH
+!             CASE NL2ITR WILL RETURN WITH IV(1) = 15.
+!
+!  ***  GENERAL  ***
+!
+!     CODED BY DAVID M. GAY.
+!     THIS SUBROUTINE WAS WRITTEN IN CONNECTION WITH RESEARCH
+!     SUPPORTED BY THE NATIONAL SCIENCE FOUNDATION UNDER GRANTS
+!
+!     MCS-7600324, DCR75-10143, 76-14311DSS, MCS76-11989, AND
+!     MCS-7906671.
+!        (SEE NL2SOL FOR REFERENCES.)
+!
+!+++++++++++++++++++++++++++  DECLARATIONS  ++++++++++++++++++++++++++++
+!
+!  ***  LOCAL VARIABLES  ***
+!
+!     INTEGER DUMMY, DIG1, G1, G01, H0, H1, I, IM1, IPIVI, IPIVK, IPIV1,
+!    1        IPK, K, KM1, L, LKY1, LMAT1, LSTGST, M, PP1O2, QTR1,
+!    2        RDK, RD0, RD1, RSAVE1, SMH, SSTEP, STEP1, STPMOD, S1,
+!    3        TEMP1, TEMP2, W1, X01
+!     REAL(KIND=WP) :: E, RDOF1, STTSST, T, T1
+!
+!     ***  CONSTANTS  ***
+!
+!     REAL(KIND=WP) :: HALF, NEGONE, ONE, ZERO
+!
+!/
+!  ***  EXTERNAL FUNCTIONS AND SUBROUTINES  ***
+!
+!     EXTERNAL ASSESS, COVCLC, DOTPRD, DUPDAT, GQTSTP, ITSMRY, LMSTEP,
+!    1         PARCHK, QAPPLY, QRFACT, RPTMUL, SLUPDT, SLVMUL, STOPX,
+!    2         VAXPY, VCOPY, VSCOPY, V2NORM
+!     LOGICAL STOPX
+!     REAL(KIND=WP) :: DOTPRD, V2NORM
+!
+! ASSESS... ASSESSES CANDIDATE STEP.
+! COVCLC... COMPUTES COVARIANCE MATRIX.
+! DOTPRD... RETURNS INNER PRODUCT OF TWO VECTORS.
+! DUPDAT... UPDATES SCALE VECTOR D.
+! GQTSTP... COMPUTES GOLDFELD-QUANDT-TROTTER STEP (AUGMENTED MODEL).
+! ITSMRY... PRINTS ITERATION SUMMARY AND INFO ABOUT INITIAL AND FINAL X.
+! LMSTEP... COMPUTES LEVENBERG-MARQUARDT STEP (GAUSS-NEWTON MODEL).
+! PARCHK... CHECKS VALIDITY OF INPUT IV AND V VALUES.
+! QAPPLY... APPLIES ORTHOGONAL MATRIX Q FROM QRFACT TO A VECTOR.
+! QRFACT... COMPUTES QR DECOMPOSITION OF A MATRIX VIA HOUSEHOLDER TRANS.
+! RPTMUL... MULTIPLIES VECTOR BY THE R MATRIX (AND/OR ITS TRANSPOSE)
+!             STORED BY QRFACT.
+! SLUPDT... PERFORMS QUASI-NEWTON UPDATE ON COMPACTLY STORED LOWER TRI-
+!             ANGLE OF A SYMMETRIC MATRIX.
+! STOPX.... RETURNS .TRUE. IF THE BREAK KEY HAS BEEN PRESSED.
+! VAXPY.... COMPUTES SCALAR TIMES ONE VECTOR PLUS ANOTHER.
+! VCOPY.... COPIES ONE VECTOR TO ANOTHER.
+! VSCOPY... SETS ALL ELEMENTS OF A VECTOR TO A SCALAR.
+! V2NORM... RETURNS THE 2-NORM OF A VECTOR.
+!
+!  ***  SUBSCRIPTS FOR IV AND V  ***
+!
+!     INTEGER CNVCOD, COSMIN, COVMAT, COVPRT, COVREQ, DGNORM, DIG,
+!    1        DINIT, DSTNRM, DTYPE, D0INIT, F, FDIF, FUZZ,
+!    2        F0, G, GTSTEP, H, IERR, INCFAC, INITS, IPIVOT, IPIV0, IRC,
+!    3        JTINIT, JTOL1, KAGQT, KALM, LKY, LMAT, LMAX0, MODE, MODEL,
+!    4        MXFCAL, MXITER, NFCALL, NFGCAL, NFCOV, NGCOV, NGCALL,
+!    5        NITER, NVSAVE, PHMXFC, PREDUC, QTR, RADFAC, RADINC,
+!    6        RADIUS, RAD0, RD, RESTOR, RLIMIT, RSAVE, S, SIZE, STEP,
+!    7        STGLIM, STLSTG, STPPAR, SUSED, SWITCH, TOOBIG, TUNER4,
+!    8        TUNER5, VSAVE1, W, WSCALE, XIRC, X0
+!
+!  ***  IV SUBSCRIPT VALUES  ***
+!
+      data cnvcod/34/, covmat/26/, covprt/14/,
+     +     covreq/15/, dig/43/, dtype/16/, g/28/, h/44/,
+     +     ierr/32/, inits/25/, ipivot/61/, ipiv0/60/,
+     +     irc/3/, kagqt/35/, kalm/36/, lky/37/, lmat/58/,
+     +     mode/38/, model/5/, mxfcal/17/, mxiter/18/,
+     +     nfcall/6/, nfgcal/7/, nfcov/40/, ngcov/41/,
+     +     ngcall/30/, niter/31/, qtr/49/,
+     +     radinc/8/, rd/51/, restor/9/, rsave/52/, s/53/,
+     +     step/55/, stglim/11/, stlstg/56/, sused/57/,
+     +     switch/12/, toobig/2/, w/59/, xirc/13/, x0/60/
+!
+!  ***  V SUBSCRIPT VALUES  ***
+!
+      data cosmin/43/, dgnorm/1/, dinit/38/, dstnrm/2/,
+     +     d0init/37/, f/10/, fdif/11/, fuzz/45/,
+     +     f0/13/, gtstep/4/, incfac/23/,
+     +     jtinit/39/, jtol1/87/, lmax0/35/,
+     +     nvsave/9/, phmxfc/21/, preduc/7/,
+     +     radfac/16/, radius/8/, rad0/9/, rlimit/42/,
+     +     size/47/, stppar/5/, tuner4/29/, tuner5/30/,
+     +     vsave1/78/, wscale/48/
+!
+!
+      data half/0.5_wp/, negone/-1.0_wp/, one/1.0_wp/, zero/0.0_wp/
+!
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!
+      i = iv(1)
+      if (i .eq. 1) go to 20
+      if (i .eq. 2) go to 50
+!
+!  ***  CHECK VALIDITY OF IV AND V INPUT VALUES  ***
+!
+!     ***  NOTE -- IF IV(1) = 0, THEN PARCHK CALLS DFAULT(IV, V)  ***
+      call parchk(iv, n, nn, p, v)
+      i = iv(1) - 2
+      if (i .gt. 10) go to 999
+      go to (350, 350, 350, 350, 350, 350, 195, 160, 195, 10), i
+!
+!  ***  INITIALIZATION AND STORAGE ALLOCATION  ***
+!
+ 10   iv(niter) = 0
+      iv(nfcall) = 1
+      iv(ngcall) = 1
+      iv(nfgcal) = 1
+      iv(mode) = -1
+      iv(stglim) = 2
+      iv(toobig) = 0
+      iv(cnvcod) = 0
+      iv(covmat) = 0
+      iv(nfcov) = 0
+      iv(ngcov) = 0
+      iv(kalm) = -1
+      iv(radinc) = 0
+      iv(s) = jtol1 + 2*p
+      pp1o2 = p * (p + 1) / 2
+      iv(x0) = iv(s) + pp1o2
+      iv(step) = iv(x0) + p
+      iv(stlstg) = iv(step) + p
+      iv(dig) = iv(stlstg) + p
+      iv(g) = iv(dig) + p
+      iv(lky) = iv(g) + p
+      iv(rd) = iv(lky) + p
+      iv(rsave) = iv(rd) + p
+      iv(qtr) = iv(rsave) + n
+      iv(h) = iv(qtr) + n
+      iv(w) = iv(h) + pp1o2
+      iv(lmat) = iv(w) + 4*p + 7
+!     +++ LENGTH OF W = P*(P+9)/2 + 7.  LMAT IS CONTAINED IN W.
+      if (v(dinit) .ge. zero) call vscopy(p, d, v(dinit))
+      if (v(jtinit) .gt. zero) call vscopy(p, v(jtol1), v(jtinit))
+      i = jtol1 + p
+      if (v(d0init) .gt. zero) call vscopy(p, v(i), v(d0init))
+      v(rad0) = zero
+      v(stppar) = zero
+      v(radius) = v(lmax0) / (one + v(phmxfc))
+!
+!  ***  SET INITIAL MODEL AND S MATRIX  ***
+!
+      iv(model) = 1
+      if (iv(inits) .eq. 2) iv(model) = 2
+      s1 = iv(s)
+      if (iv(inits) .eq. 0) call vscopy(pp1o2, v(s1), zero)
+!
+!  ***  COMPUTE FUNCTION VALUE (HALF THE SUM OF SQUARES)  ***
+!
+ 20   t = v2norm(n, r)
+      if (t .gt. v(rlimit)) iv(toobig) = 1
+      if (iv(toobig) .ne. 0) go to 30
+      v(f) = 0.0
+      if (t.gt.sqrt(mach(1))) v(f) = half * t**2
+ 30   if (iv(mode)) 40, 350, 730
+!
+ 40   if (iv(toobig) .eq. 0) go to 60
+         iv(1) = 13
+         go to 900
+!
+!  ***  MAKE SURE JACOBIAN COULD BE COMPUTED  ***
+!
+ 50   if (iv(nfgcal) .ne. 0) go to 60
+         iv(1) = 15
+         go to 900
+!
+!  ***  COMPUTE GRADIENT  ***
+!
+ 60   iv(kalm) = -1
+      g1 = iv(g)
+      do 70 i = 1, p
+         v(g1) = dotprd(n, r, j(1,i))
+         g1 = g1 + 1
+ 70      continue
+      if (iv(mode) .gt. 0) go to 710
+!
+!  ***  UPDATE D AND MAKE COPIES OF R FOR POSSIBLE USE LATER  ***
+!
+      if (iv(dtype) .gt. 0) call dupdat(d, iv, j, n, nn, p, v)
+      rsave1 = iv(rsave)
+      call vcopy(n, v(rsave1), r)
+      qtr1 = iv(qtr)
+      call vcopy(n, v(qtr1), r)
+!
+!  ***  COMPUTE  D**-1 * GRADIENT  ***
+!
+      g1 = iv(g)
+      dig1 = iv(dig)
+      k = dig1
+      do 80 i = 1, p
+         v(k) = v(g1) / d(i)
+         k = k + 1
+         g1 = g1 + 1
+ 80      continue
+      v(dgnorm) = v2norm(p, v(dig1))
+!
+      if (iv(cnvcod) .ne. 0) go to 700
+      if (iv(mode) .eq. 0) go to 570
+      iv(mode) = 0
+!
+!
+!-----------------------------  MAIN LOOP  -----------------------------
+!
+!
+!  ***  PRINT ITERATION SUMMARY, CHECK ITERATION LIMIT  ***
+!
+ 150  call itsmry(d, iv, p, v, x)
+ 160  k = iv(niter)
+      if (k .lt. iv(mxiter)) go to 170
+         iv(1) = 10
+         go to 900
+ 170  iv(niter) = k + 1
+!
+!  ***  UPDATE RADIUS  ***
+!
+      if (k .eq. 0) go to 185
+      step1 = iv(step)
+      do 180 i = 1, p
+         v(step1) = d(i) * v(step1)
+         step1 = step1 + 1
+ 180     continue
+      step1 = iv(step)
+      v(radius) = v(radfac) * v2norm(p, v(step1))
+!
+!  ***  INITIALIZE FOR START OF NEXT ITERATION  ***
+!
+ 185  x01 = iv(x0)
+      v(f0) = v(f)
+      iv(kagqt) = -1
+      iv(irc) = 4
+      iv(h) = -abs(iv(h))
+      iv(sused) = iv(model)
+!
+!     ***  COPY X TO X0  ***
+!
+      call vcopy(p, v(x01), x)
+!
+!  ***  CHECK STOPX AND FUNCTION EVALUATION LIMIT  ***
+!
+ 190  if (.not. stopx(dummy)) go to 200
+         iv(1) = 11
+         go to 205
+!
+!     ***  COME HERE WHEN RESTARTING AFTER FUNC. EVAL. LIMIT OR STOPX.
+!
+ 195  if (v(f) .ge. v(f0)) go to 200
+         v(radfac) = one
+         k = iv(niter)
+         go to 170
+!
+ 200  if (iv(nfcall) .lt. iv(mxfcal) + iv(nfcov)) go to 210
+         iv(1) = 9
+ 205     if (v(f) .ge. v(f0)) go to 900
+!
+!        ***  IN CASE OF STOPX OR FUNCTION EVALUATION LIMIT WITH
+!        ***  IMPROVED V(F), EVALUATE THE GRADIENT AT X.
+!
+              iv(cnvcod) = iv(1)
+              go to 560
+!
+!. . . . . . . . . . . . .  COMPUTE CANDIDATE STEP  . . . . . . . . . .
+!
+ 210  step1 = iv(step)
+      w1 = iv(w)
+      if (iv(model) .eq. 2) go to 240
+!
+!  ***  COMPUTE LEVENBERG-MARQUARDT STEP  ***
+!
+         qtr1 = iv(qtr)
+         if (iv(kalm) .ge. 0) go to 215
+              rd1 = iv(rd)
+              if (-1 .eq. iv(kalm)) call qrfact(nn, n, p, j, v(rd1),
+     +                                   iv(ipivot), iv(ierr), 0, v(w1))
+              call qapply(nn, n, p, j, v(qtr1), iv(ierr))
+ 215     h1 = iv(h)
+         if (h1 .gt. 0) go to 230
+!
+!        ***  COPY R MATRIX TO H  ***
+!
+              h1 = -h1
+              iv(h) = h1
+              k = h1
+              rd1 = iv(rd)
+              v(k) = v(rd1)
+              if (p .eq. 1) go to 230
+              do 220 i = 2, p
+                   call vcopy(i-1, v(k+1), j(1,i))
+                   k = k + i
+                   rd1 = rd1 + 1
+                   v(k) = v(rd1)
+ 220               continue
+!
+ 230     g1 = iv(g)
+         call lmstep(d, v(g1), iv(ierr), iv(ipivot), iv(kalm), p,
+     +               v(qtr1), v(h1), v(step1), v, v(w1))
+         go to 310
+!
+!  ***  COMPUTE GOLDFELD-QUANDT-TROTTER STEP (AUGMENTED MODEL)  ***
+!
+ 240  if (iv(h) .gt. 0) go to 300
+!
+!     ***  SET H TO  D**-1 * ( (J**T)*J + S) ) * D**-1.  ***
+!
+         h1 = -iv(h)
+         iv(h) = h1
+         s1 = iv(s)
+         if (iv(kalm) .ge. 0) go to 270
+!
+!        ***  J IS IN ITS ORIGINAL FORM  ***
+!
+              do 260 i = 1, p
+                   t = one / d(i)
+                   do 250 k = 1, i
+                        v(h1) = t*(dotprd(n,j(1,i),j(1,k))+v(s1)) / d(k)
+                        h1 = h1 + 1
+                        s1 = s1 + 1
+ 250                    continue
+ 260               continue
+              go to 300
+!
+!  ***  LMSTEP HAS APPLIED QRFACT TO J  ***
+!
+ 270     smh = s1 - h1
+         h0 = h1 - 1
+         ipiv1 = iv(ipivot)
+         t1 = one / d(ipiv1)
+         rd0 = iv(rd) - 1
+         rdof1 = v(rd0 + 1)
+         do 290 i = 1, p
+              l = ipiv0 + i
+              ipivi = iv(l)
+              h1 = h0 + ipivi*(ipivi-1)/2
+              l = h1 + ipivi
+              m = l + smh
+!             ***  V(L) = H(IPIVOT(I), IPIVOT(I))  ***
+!             ***  V(M) = S(IPIVOT(I), IPIVOT(I))  ***
+              t = one / d(ipivi)
+              rdk = rd0 + i
+              e = v(rdk)**2
+              if (i .gt. 1) e = e + dotprd(i-1, j(1,i), j(1,i))
+              v(l) = (e + v(m)) * t**2
+              if (i .eq. 1) go to 290
+              l = h1 + ipiv1
+              if (ipivi .lt. ipiv1) l = l +
+     +                               ((ipiv1-ipivi)*(ipiv1+ipivi-3))/2
+              m = l + smh
+!             ***  V(L) = H(IPIVOT(I), IPIVOT(1))  ***
+!             ***  V(M) = S(IPIVOT(I), IPIVOT(1))  ***
+              v(l) = t * (rdof1 * j(1,i)  +  v(m)) * t1
+              if (i .eq. 2) go to 290
+              im1 = i - 1
+              do 280 k = 2, im1
+                   ipk = ipiv0 + k
+                   ipivk = iv(ipk)
+                   l = h1 + ipivk
+                   if (ipivi .lt. ipivk) l = l +
+     +                               ((ipivk-ipivi)*(ipivk+ipivi-3))/2
+                   m = l + smh
+!                  ***  V(L) = H(IPIVOT(I), IPIVOT(K))  ***
+!                  ***  V(M) = S(IPIVOT(I), IPIVOT(K))  ***
+                   km1 = k - 1
+                   rdk = rd0 + k
+                   v(l) = t * (dotprd(km1, j(1,i), j(1,k)) +
+     +                            v(rdk)*j(k,i) + v(m)) / d(ipivk)
+ 280               continue
+ 290          continue
+!
+!  ***  COMPUTE ACTUAL GOLDFELD-QUANDT-TROTTER STEP  ***
+!
+ 300  h1 = iv(h)
+      dig1 = iv(dig)
+      lmat1 = iv(lmat)
+      call gqtstp(d, v(dig1), v(h1), iv(kagqt), v(lmat1), p, v(step1),
+     +            v, v(w1))
+!
+!
+!  ***  COMPUTE R(X0 + STEP)  ***
+!
+ 310  if (iv(irc) .eq. 6) go to 350
+      x01 = iv(x0)
+      step1 = iv(step)
+      call vaxpy(p, x, one, v(step1), v(x01))
+      iv(nfcall) = iv(nfcall) + 1
+      iv(1) = 1
+      iv(toobig) = 0
+      go to 999
+!
+!. . . . . . . . . . . . .  ASSESS CANDIDATE STEP  . . . . . . . . . . .
+!
+ 350  step1 = iv(step)
+      lstgst = iv(stlstg)
+      x01 = iv(x0)
+      call assess(d, iv, p, v(step1), v(lstgst), v, x, v(x01))
+!
+!  ***  IF NECESSARY, SWITCH MODELS AND/OR RESTORE R  ***
+!
+      if (iv(switch) .eq. 0) go to 360
+         iv(h) = -abs(iv(h))
+         iv(sused) = iv(sused) + 2
+         call vcopy(nvsave, v, v(vsave1))
+ 360  if (iv(restor) .eq. 0) go to 390
+         rsave1 = iv(rsave)
+         call vcopy(n, r, v(rsave1))
+ 390  l = iv(irc) - 4
+      stpmod = iv(model)
+      if (l .gt. 0) go to (410,440,450,450,450,450,450,450,640,570), l
+!
+!  ***  DECIDE WHETHER TO CHANGE MODELS  ***
+!
+      e = v(preduc) - v(fdif)
+      sstep = iv(lky)
+      s1 = iv(s)
+      call slvmul(p, v(sstep), v(s1), v(step1))
+      sttsst = half * dotprd(p, v(step1), v(sstep))
+      if (iv(model) .eq. 1) sttsst = -sttsst
+      if (abs(e + sttsst) * v(fuzz) .ge. abs(e)) go to 400
+!
+!     ***  SWITCH MODELS  ***
+!
+         iv(model) = 3 - iv(model)
+         if (iv(model) .eq. 1) iv(kagqt) = -1
+         if (iv(model) .eq. 2 .and. iv(kalm) .gt. 0) iv(kalm) = 0
+         if (-2 .lt. l) go to 480
+              iv(h) = -abs(iv(h))
+              iv(sused) = iv(sused) + 2
+              call vcopy(nvsave, v(vsave1), v)
+              go to 420
+!
+ 400  if (-3 .lt. l) go to 480
+!
+!     ***  RECOMPUTE STEP WITH DECREASED RADIUS  ***
+!
+         v(radius) = v(radfac) * v(dstnrm)
+         go to 190
+!
+!  ***  RECOMPUTE STEP, SAVING V VALUES AND R IF NECESSARY  ***
+!
+ 410  v(radius) = v(radfac) * v(dstnrm)
+ 420  if (v(f) .ge. v(f0)) go to 190
+      rsave1 = iv(rsave)
+      call vcopy(n, v(rsave1), r)
+      go to 190
+!
+!  ***  COMPUTE STEP OF LENGTH V(LMAX0) FOR SINGULAR CONVERGENCE TEST
+!
+ 440  v(radius) = v(lmax0)
+      go to 210
+!
+!  ***  CONVERGENCE OR FALSE CONVERGENCE  ***
+!
+ 450  iv(cnvcod) = l
+      if (v(f) .ge. v(f0)) go to 700
+         if (iv(xirc) .eq. 14) go to 700
+              iv(xirc) = 14
+!
+!. . . . . . . . . . . .  PROCESS ACCEPTABLE STEP  . . . . . . . . . . .
+!
+ 480  iv(covmat) = 0
+!
+!  ***  SET  LKY = (J(X0)**T) * R(X)  ***
+!
+      lky1 = iv(lky)
+      if (iv(kalm) .ge. 0) go to 500
+!
+!     ***  JACOBIAN HAS NOT BEEN MODIFIED  ***
+!
+         do 490 i = 1, p
+              v(lky1) = dotprd(n, j(1,i), r)
+              lky1 = lky1 + 1
+ 490          continue
+         go to 510
+!
+!  ***  QRFACT HAS BEEN APPLIED TO J.  STORE COPY OF R IN QTR AND  ***
+!  ***  APPLY Q TO IT.                                             ***
+!
+ 500  qtr1 = iv(qtr)
+      call vcopy(n, v(qtr1), r)
+      call qapply(nn, n, p, j, v(qtr1), iv(ierr))
+!
+!  ***  MULTIPLY TOP P-VECTOR IN QTR BY PERMUTED UPPER TRIANGLE    ***
+!  ***  STORED BY QRFACT IN J AND RD.                              ***
+!
+      rd1 = iv(rd)
+      temp1 = iv(stlstg)
+      call rptmul(3, iv(ipivot), j, nn, p, v(rd1), v(qtr1), v(lky1),
+     +            v(temp1))
+!
+!  ***  SEE WHETHER TO SET V(RADFAC) BY GRADIENT TESTS  ***
+!
+ 510  if (iv(irc) .ne. 3) go to 560
+         step1 = iv(step)
+         temp1 = iv(stlstg)
+         temp2 = iv(x0)
+!
+!     ***  SET  TEMP1 = HESSIAN * STEP  FOR USE IN GRADIENT TESTS  ***
+!
+         if (stpmod .eq. 2) go to 530
+!
+!        ***  STEP COMPUTED USING GAUSS-NEWTON MODEL  ***
+!        ***  -- QRFACT HAS BEEN APPLIED TO J         ***
+!
+              rd1 = iv(rd)
+              call rptmul(2, iv(ipivot), j, nn, p, v(rd1),
+     +                    v(step1), v(temp1), v(temp2))
+              go to 560
+!
+!     ***  STEP COMPUTED USING AUGMENTED MODEL  ***
+!
+ 530     h1 = iv(h)
+         k = temp2
+         do 540 i = 1, p
+              v(k) = d(i) * v(step1)
+              k = k + 1
+              step1 = step1 + 1
+ 540          continue
+         call slvmul(p, v(temp1), v(h1), v(temp2))
+         do 550 i = 1, p
+              v(temp1) = d(i) * v(temp1)
+              temp1 = temp1 + 1
+ 550          continue
+!
+!  ***  SAVE OLD GRADIENT AND COMPUTE NEW ONE  ***
+!
+ 560  iv(ngcall) = iv(ngcall) + 1
+      g1 = iv(g)
+      g01 = iv(w)
+      call vcopy(p, v(g01), v(g1))
+      iv(1) = 2
+      go to 999
+!
+!  ***  INITIALIZATIONS -- G0 = G - G0, ETC.  ***
+!
+ 570  g01 = iv(w)
+      g1 = iv(g)
+      call vaxpy(p, v(g01), negone, v(g01), v(g1))
+      step1 = iv(step)
+      temp1 = iv(stlstg)
+      temp2 = iv(x0)
+      if (iv(irc) .ne. 3) go to 600
+!
+!  ***  SET V(RADFAC) BY GRADIENT TESTS  ***
+!
+!     ***  SET  TEMP1 = D**-1 * (HESSIAN * STEP  +  (G(X0) - G(X)))  ***
+!
+         k = temp1
+         l = g01
+         do 580 i = 1, p
+              v(k) = (v(k) - v(l)) / d(i)
+              k = k + 1
+              l = l + 1
+ 580          continue
+!
+!        ***  DO GRADIENT TESTS  ***
+!
+         if (v2norm(p, v(temp1)) .le. v(dgnorm) * v(tuner4))  go to 590
+              if (dotprd(p, v(g1), v(step1))
+     +                  .ge. v(gtstep) * v(tuner5))  go to 600
+ 590               v(radfac) = v(incfac)
+!
+!  ***  FINISH COMPUTING LKY = ((J(X) - J(X0))**T) * R  ***
+!
+!     ***  CURRENTLY LKY = (J(X0)**T) * R  ***
+!
+ 600  lky1 = iv(lky)
+      call vaxpy(p, v(lky1), negone, v(lky1), v(g1))
+!
+!  ***  DETERMINE SIZING FACTOR V(SIZE)  ***
+!
+!     ***  SET TEMP1 = S * STEP  ***
+      s1 = iv(s)
+      call slvmul(p, v(temp1), v(s1), v(step1))
+!
+      t1 = abs(dotprd(p, v(step1), v(temp1)))
+      t = abs(dotprd(p, v(step1), v(lky1)))
+      v(size) = one
+      if (t .lt. t1) v(size) = t / t1
+!
+!  ***  UPDATE S  ***
+!
+      call slupdt(v(s1), v(cosmin), p, v(size), v(step1), v(temp1),
+     +            v(temp2), v(g01), v(wscale), v(lky1))
+      iv(1) = 2
+      go to 150
+!
+!. . . . . . . . . . . . . .  MISC. DETAILS  . . . . . . . . . . . . . .
+!
+!  ***  BAD PARAMETERS TO ASSESS  ***
+!
+ 640  iv(1) = 14
+      go to 900
+!
+!  ***  CONVERGENCE OBTAINED -- COMPUTE COVARIANCE MATRIX IF DESIRED ***
+!
+ 700  if (iv(covreq) .eq. 0 .and. iv(covprt) .eq. 0) go to 760
+      if (iv(covmat) .ne. 0) go to 760
+      if (iv(cnvcod) .ge. 7) go to 760
+      iv(mode) = 0
+ 710  call covclc(i, d, iv, j, n, nn, p, r, v, x)
+      go to (720, 720, 740, 750), i
+ 720  iv(nfcov) = iv(nfcov) + 1
+      iv(nfcall) = iv(nfcall) + 1
+      iv(restor) = i
+      iv(1) = 1
+      go to 999
+!
+ 730  if (iv(restor) .eq. 1 .or. iv(toobig) .ne. 0) go to 710
+      iv(nfgcal) = iv(nfcall)
+ 740  iv(ngcov) = iv(ngcov) + 1
+      iv(ngcall) = iv(ngcall) + 1
+      iv(1) = 2
+      go to 999
+!
+ 750  iv(mode) = 0
+      if (iv(niter) .eq. 0) iv(mode) = -1
+!
+ 760  iv(1) = iv(cnvcod)
+      iv(cnvcod) = 0
+!
+!  ***  PRINT SUMMARY OF FINAL ITERATION AND OTHER REQUESTED ITEMS  ***
+!
+ 900  call itsmry(d, iv, p, v, x)
+!
+ 999  return
+!
+!  ***  LAST CARD OF NL2ITR FOLLOWS  ***
+      end

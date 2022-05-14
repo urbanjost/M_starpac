@@ -1,0 +1,107 @@
+!MATPRT
+      SUBROUTINE MATPRT (X, Y, NC, IPRT, MODE, CODE, IRDIM)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS SUBROUTINE TAKES A SQUARE MATRIX AND PRINTS EITHER ITS
+!     LOWER TRIANGULAR PART OR THE FULL MATRIX WITH OR WITHOUT DOUBLE
+!     PRINTING.
+!
+!     WRITTEN BY - LINDA L. MITCHELL
+!                  STATISTICAL ENGINEERING LAB/BOULDER
+!                  NATIONAL BUREAU OF STANDARDS
+!
+!     CREATION DATE  -  APRIL 2, 1981
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   CODE,IPRT,IRDIM,MODE,NC
+!
+!  ARRAY ARGUMENTS
+      REAL(KIND=WP)
+     +   X(IRDIM,NC),Y(IRDIM,NC)
+!
+!  LOCAL SCALARS
+      REAL(KIND=WP)
+     +   TEMP
+      INTEGER
+     +   I,IWIDTH,J,K,KM,KN,L,NF
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MIN,SQRT
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER CODE
+!                  IF 1 -SINGLE PRINTED LINE, X ONLY (Y IS DUMMY ARG)
+!                     2 -DOUBLE PRINTED LINE, BOTH X AND Y
+!     INTEGER I
+!                  ROW NUMBER
+!     INTEGER IPRT
+!                  THE OUTPUT UNIT NUMBER
+!     INTEGER IRDIM
+!                  ROW INDEX OF X
+!     INTEGER IWIDTH
+!                  THE WIDTH OF THE OUTPUT DEVICE.
+!     INTEGER J
+!                  FIRST COLUMN IN THE SET TO BE PRINTED
+!     INTEGER K
+!                  COLUMN NUMBER IN THE POSSIBLE SET OF NF
+!     INTEGER KM
+!                  LAST COLUMN IN THE SET
+!                   LIMITED TO VALUES OF J-1 PLUS A NUMBER BETWEEN 1 AND
+!                   NF (INCLUSIVE)
+!     INTEGER KN
+!                  LAST COLUMN TO PRINT WHEN PRINTING LOWER TRIANGLE
+!     INTEGER L
+!                  FIRST ROW TO PRINT FOR THIS SET
+!     INTEGER MODE
+!                  IF 0, LOWER TRIANGULAR PART PRINTED
+!                     1, FULL MATRIX PRINTED
+!                     2, LOWER TRIANGULAR PART IS PRINTED WITH
+!                        SQUARE ROOTS OF THE DIAGONAL
+!     INTEGER NC
+!                  ROW AND COLUMN DIMENSION OF X
+!     INTEGER NF
+!                  THE NUMBER OF COLUMNS THAT CAN BE PRINTED, GIVEN
+!                  THE WIDTH IWIDTH OF THE OUTPUT DEVICE.
+!     REAL TEMP
+!                  A TEMPORARY LOCATION
+!     REAL X(IRDIM,NC)
+!                  NC BY NC INPUT MATRIX
+!     REAL Y(IRDIM,NC)
+!                  MATRIX TO BE PRINTED ON THE SECOND LEVEL IF CODE=2
+!
+      IWIDTH = 132
+      NF = MIN(7, (IWIDTH - 7)/17)
+      L = 1
+      DO 20 J=1,NC, NF
+         KN = MIN(NC, J+NF-1)
+         WRITE(IPRT,1000) (K,K=J,KN)
+         WRITE(IPRT,1030)
+         IF ((MODE.EQ.00) .OR. (MODE.EQ.2)) L = J
+         DO 10 I=L,NC
+            TEMP = X(I,I)
+            KM = KN
+            IF ((MODE.EQ.0) .OR. (MODE.EQ.2))
+     +         KM = J + MIN(I-L, NF-1)
+            IF ((MODE.EQ.2) .AND. ((I.GE.J) .AND. (I.LE.KM)))
+     +         X(I,I) = SQRT(X(I,I))
+            WRITE(IPRT,1010) I, (X(I,K),K=J,KM)
+            IF (CODE.EQ.2) WRITE(IPRT,1020) (Y(I,K),K=J,KM)
+            IF (CODE.EQ.2) WRITE(IPRT,1030)
+            X(I,I) = TEMP
+   10    CONTINUE
+   20 CONTINUE
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (/4X, 7HCOLUMN , 7(I9, 8X))
+ 1010 FORMAT (4X, I6, 1X, 7(3X, G14.8))
+ 1020 FORMAT (9X, 7(3X, G14.8))
+ 1030 FORMAT (4X)
+      END

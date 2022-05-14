@@ -1,0 +1,229 @@
+!AMFOUT
+      SUBROUTINE AMFOUT(F, FSD, N, NFCST, IFCSTO, IFO, NFCSTO, Y,
+     +  T975, PAGE)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE PRODUCES ARIMA FORECASTING OUTPUT
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 2, 1985
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      DOUBLE PRECISION
+     +   T975
+      INTEGER
+     +   IFO,N,NFCST,NFCSTO
+      LOGICAL
+     +   PAGE
+!
+!  ARRAY ARGUMENTS
+      DOUBLE PRECISION
+     +   F(*),FSD(*),Y(*)
+      INTEGER
+     +   IFCSTO(*)
+!
+!  LOCAL SCALARS
+      DOUBLE PRECISION
+     +   FL,FU,SCALE,YMN,YMX
+      INTEGER
+     +   I,IEND,IF,ILIM,INTER,IPF,IPFL,IPFU,IPRT,IPY,IY,J
+!
+!  LOCAL ARRAYS
+      DOUBLE PRECISION
+     +   YLIM(4)
+      CHARACTER
+     +   LINE(53)*1
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL AMFHDR,IPRINT
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC INT,MAX,MIN
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     DOUBLE PRECISION F(NFCST)
+!        THE FORECASTS.
+!     DOUBLE PRECISION FL
+!        THE LOWER 95 PERCENT CONFIDENCE LIMIT FOR THE FORECAST
+!     DOUBLE PRECISION FSD(NFCST)
+!        THE STANDARD DEVIATIONS OF THE FORECASTS.
+!     DOUBLE PRECISION FU
+!        THE UPPER 95 PERCENT CONFIDENCE LIMIT FOR THE FORECAST
+!     INTEGER I
+!        AN INDEX VARIABLE.
+!     INTEGER IEND
+!        THE LAST LOCATION IN THE PLOT STRING.
+!     INTEGER IF
+!        AN INDEX VARIABLE.
+!     INTEGER IFCSTO(NFCSTO)
+!        THE INDICES OF THE ORIGINS FOR THE FORECASTS.
+!     INTEGER IFO
+!        THE INDEX OF THE ORIGIN BEING USED.
+!     INTEGER ILIM
+!        THE NUMBER OF LOCATIONS IN YLIM.
+!     INTEGER INTER
+!        THE NUMBER OF PLOT INTERVALS.
+!     INTEGER IPF
+!        THE LOCATION IN THE PLOT STRING OF THE FORECAST.
+!     INTEGER IPFL
+!        THE LOCATION IN THE PLOT STRING OF THE FORECAST LOWER
+!        CONFIDENCE LIMIT.
+!     INTEGER IPFU
+!        THE LOCATION IN THE PLOT STRING OF THE FORECAST UPPER
+!        CONFIDENCE LIMIT.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER IPY
+!        THE LOCATION IN THE PLOT STRING OF THE OBSERVED VALUE.
+!     INTEGER IY
+!        AN INDEX VARIABLE.
+!     INTEGER J
+!        AN INDEX VARIABLE.
+!     CHARACTER*1 LINE(53)
+!        THE ARRAY OF SYMBOLS TO BE PLOTTED.
+!     INTEGER N
+!        THE NUMBER OF OBSERVATIONS.
+!     INTEGER NFCST
+!        THE NUMBER OF FORECASTS.
+!     INTEGER NFCSTO
+!        THE NUMBER OF THE ORIGINS.
+!     LOGICAL PAGE
+!        THE VARIABLE USED TO INDICATE WHETHER A GIVEN SECTION OF
+!        THE OUTPUT IS TO BEGIN ON A NEW PAGE (TRUE) OR NOT (FALSE).
+!     DOUBLE PRECISION SCALE
+!        THE PLOT SCALE.
+!     DOUBLE PRECISION T975
+!        THE VALUE OF THE 97.5 PERCENT POINT FUNCTION FOR THE
+!        T DISTRIBUTION.
+!     DOUBLE PRECISION Y(N)
+!        THE DEPENDENT VARIABLE.
+!     DOUBLE PRECISION YLIM(4)
+!        THE VALUES OF THE AXIS LABELS.
+!     DOUBLE PRECISION YMN
+!        THE MINIMUM VALUE TO BE PLOTTED.
+!     DOUBLE PRECISION YMX
+!        THE MAXIMUM VALUE TO BE PLOTTED.
+!
+!     SET VARIABLES FOR PLOTS
+!
+      CALL IPRINT(IPRT)
+      INTER = 50
+      IEND = INTER + 1
+      ILIM = 4
+!
+!     COMPUTE SCALE FOR PLOT
+!
+      YMN = F(NFCST)-T975*FSD(NFCST)
+      YMX = F(NFCST)+T975*FSD(NFCST)
+      IY = IFCSTO(IFO)
+      DO 10 I = 1, NFCST
+        YMN = MIN(YMN, F(I)-T975*FSD(I))
+        YMX = MAX(YMX, F(I)+T975*FSD(I))
+        IF ((IY.GE.1) .AND. (IY.LE.N)) THEN
+          YMN = MIN(YMN, Y(IY))
+          YMX = MAX(YMX, Y(IY))
+          IY = IY + 1
+        END IF
+   10 CONTINUE
+      IF (IFCSTO(IFO).GE.2) THEN
+        DO 20 IY = MAX(IFCSTO(IFO)-4, 1), IFCSTO(IFO)-1
+          YMN = MIN(YMN, Y(IY))
+          YMX = MAX(YMX, Y(IY))
+   20   CONTINUE
+      END IF
+!
+      SCALE = (YMX-YMN) / INTER
+!
+!     PRINT PLOT HEADINGS
+!
+      DO 30 I = 1, ILIM
+        YLIM(I) = YMN + SCALE*I*10.0D0
+   30 CONTINUE
+!
+      CALL AMFHDR(PAGE, .TRUE., 0)
+      WRITE (IPRT, 1030) IFO
+      WRITE (IPRT, 1000) YMN, YLIM(2), YLIM(4),
+     +  YLIM(1), YLIM(4), YMX
+!
+!     BEGIN PLOTTING
+!
+      DO 80 I=MAX(IFCSTO(IFO)-4,1), IFCSTO(IFO)+NFCST
+         IF (I.NE.IFCSTO(IFO)) THEN
+           DO 40 J = 1, IEND
+             LINE(J) = ' '
+   40      CONTINUE
+         ELSE
+           DO 50 J = 1, IEND
+             LINE(J) = '.'
+   50      CONTINUE
+         END IF
+         IF (I.LE.IFCSTO(IFO)) THEN
+           IPY = INT(((Y(I)-YMN) / SCALE) + 1.5D0)
+           LINE(IPY) = '*'
+           WRITE (IPRT, 1020) I, (LINE(J),J=1,IEND), I, Y(I)
+         ELSE
+           IF = I-IFCSTO(IFO)
+           FL = F(IF) - T975*FSD(IF)
+           FU = F(IF) + T975*FSD(IF)
+           IF (I.LE.N) THEN
+             IPFL = INT(((FL-YMN) / SCALE) + 1.5D0)
+             IPFU = INT(((FU-YMN) / SCALE) + 1.5D0)
+             DO 60 J = IPFL, IPFU
+               LINE(J) = '-'
+   60        CONTINUE
+             LINE(IPFL) = '('
+             LINE(IPFU) = ')'
+             IPY = INT(((Y(I)-YMN) / SCALE) + 1.5D0)
+             LINE(IPY) = '*'
+             IPF = INT(((F(IF)-YMN) / SCALE) + 1.5D0)
+             IF (IPF.NE.IPY) THEN
+               LINE(IPF) = 'X'
+             ELSE
+               LINE(IPF) = '2'
+             END IF
+             WRITE (IPRT, 1010) I, (LINE(J),J=1,IEND), I,
+     +         F(IF), FL, FU, Y(I)
+           ELSE
+             IPFL = INT(((FL-YMN) / SCALE) + 1.5D0)
+             IPFU = INT(((FU-YMN) / SCALE) + 1.5D0)
+             DO 70 J = IPFL, IPFU
+               LINE(J) = '-'
+   70        CONTINUE
+             LINE(IPFL) = '('
+             LINE(IPFU) = ')'
+             IPF = INT(((F(IF)-YMN) / SCALE) + 1.5D0)
+             LINE(IPF) = 'X'
+             WRITE (IPRT, 1010) I, (LINE(J),J=1,IEND), I,
+     +         F(IF), FL, FU
+           END IF
+         END IF
+   80 CONTINUE
+!
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (//
+     +  82X, ' --------------------95  PERCENT'/
+     +  1X, 3(G15.8, 5X), 21X,
+     +  ' --------------CONFIDENCE LIMITS',
+     +  ' ---------ACTUAL'/
+     +  11X, 2(G15.8, 5X), G15.8,
+     +  ' ------FORECASTS ----------LOWER',
+     +  ' ----------UPPER -------IF KNOWN'/
+     +  9X, 5('I---------'), 'I', 6X,
+     +  ' ------------[X] ------------[(]',
+     +  ' ------------[)] ------------[*]')
+ 1010 FORMAT (2X, I5, 1X, 'I', 51A1, 'I', I5, 4(1X, G15.8))
+ 1020 FORMAT (2X, I5, 1X, 'I', 51A1, 'I', I5, 49X, G15.8)
+ 1030 FORMAT (//' FORECASTS FOR ORIGIN ', I2)
+!
+      END

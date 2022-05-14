@@ -1,0 +1,87 @@
+!RPTMUL
+      subroutine rptmul(func, ipivot, j, nn, p, rd, x, y, z)
+!
+!  ***  FUNC = 1... SET  Y = RMAT * (PERM**T) * X.
+!  ***  FUNC = 2... SET  Y = PERM * (RMAT**T) * RMAT * (PERM**T) * X.
+!  ***  FUNC = 3... SET  Y = PERM * (RMAT**T) X.
+!
+!
+!  ***  PERM = MATRIX WHOSE I-TH COL. IS THE IPIVOT(I)-TH UNIT VECTOR.
+!  ***  RMAT IS THE UPPER TRIANGULAR MATRIX WHOSE STRICT UPPER TRIANGLE
+!  ***       IS STORED IN  J  AND WHOSE DIAGONAL IS STORED IN RD.
+!  ***  Z IS A SCRATCH VECTOR.
+!  ***  X AND Y MAY SHARE STORAGE.
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   func,nn,p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   j(nn,p),rd(p),x(p),y(p),z(p)
+      integer
+     +   ipivot(p)
+!
+!  LOCAL SCALARS
+      real(kind=wp) ::
+     +   zk
+      integer
+     +   i,im1,k,km1
+!
+!  EXTERNAL FUNCTIONS
+      real(kind=wp) ::
+     +   dotprd
+      external dotprd
+!
+!
+!-----------------------------------------------------------------------
+!
+      if (func .gt. 2) go to 50
+!
+!  ***  FIRST SET  Z = (PERM**T) * X  ***
+!
+      do 10 i = 1, p
+         k = ipivot(i)
+         z(i) = x(k)
+ 10      continue
+!
+!  ***  NOW SET  Y = RMAT * Z  ***
+!
+      y(1) = z(1) * rd(1)
+      if (p .le. 1) go to 40
+      do 30 k = 2, p
+         km1 = k - 1
+         zk = z(k)
+         do 20 i = 1, km1
+ 20           y(i) = y(i) + j(i,k)*zk
+         y(k) = zk*rd(k)
+ 30      continue
+!
+ 40   if (func .le. 1) go to 999
+      go to 70
+!
+ 50   do 60 i = 1, p
+ 60      y(i) = x(i)
+!
+!  ***  SET  Z = (RMAT**T) * Y  ***
+!
+ 70   z(1) = y(1) * rd(1)
+      if (p .eq. 1) go to 90
+      do 80 i = 2, p
+         im1 = i - 1
+         z(i) = y(i)*rd(i) + dotprd(im1, j(1,i), y)
+ 80      continue
+!
+!  ***  NOW SET  Y = PERM * Z  ***
+!
+ 90   do 100 i = 1, p
+         k = ipivot(i)
+         y(k) = z(i)
+ 100     continue
+!
+ 999  return
+
+      end subroutine rptmul

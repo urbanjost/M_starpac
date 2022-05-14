@@ -1,0 +1,107 @@
+!XXCH5
+      SUBROUTINE XXCH5(LDSTAK)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS SUBPROGRAM PROVIDES A SIMPLE TEST OF
+!     THE STATISTICAL ANALYSIS FAMILY OF ROUTINES.
+!
+!     DATA SET IS FROM PAGE 39 OF MANDEL [1964]
+!
+!     WRITTEN BY  -  JOHN E. KOONTZ, JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  AUGUST 3, 1987
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   LDSTAK
+!
+!  SCALARS IN COMMON
+      INTEGER
+     +   IERR
+!
+!  ARRAYS IN COMMON
+      DOUBLE PRECISION DSTAK(12)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT,N
+!
+!  LOCAL ARRAYS
+      DOUBLE PRECISION
+     +   Y(40)
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT,STAT
+!
+!  COMMON BLOCKS
+      COMMON /CSTAK/DSTAK
+      COMMON /ERRCHK/IERR
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     DOUBLE PRECISION DSTAK(12)
+!        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
+!     INTEGER IERR
+!        ERROR FLAG
+!     INTEGER IPRT
+!        LOGICAL OUTPUT UNIT.
+!     INTEGER LDSTAK
+!        THE LENGTH OF DSTAK IN COMMON /CSTAK/.
+!     INTEGER N
+!        THE LENGTH OF THE VECTOR Y.
+!     DOUBLE PRECISION Y(40)
+!        DATA VECTOR FOR TESTS.
+!
+!     DATA INITIALIZATIONS.
+!
+      DATA N /39/
+!
+      DATA Y( 1), Y( 2), Y( 3), Y( 4)
+     +    / 0.4, 0.6, 1.0, 1.0/
+      DATA Y( 5), Y( 6), Y( 7), Y( 8)
+     +    / 1.0, 0.5, 0.6, 0.7/
+      DATA Y( 9), Y(10), Y(11), Y(12)
+     +    / 1.0, 0.6, 0.2, 1.9/
+      DATA Y(13), Y(14), Y(15), Y(16)
+     +    / 0.2, 0.4, 0.0, -0.4/
+      DATA Y(17), Y(18), Y(19), Y(20)
+     +    / -0.3, 0.0, -0.4, -0.3/
+      DATA Y(21), Y(22), Y(23), Y(24)
+     +    / 0.1, -0.1, 0.2, -0.5/
+      DATA Y(25), Y(26), Y(27), Y(28)
+     +    / 0.3, -0.1, 0.2, -0.2/
+      DATA Y(29), Y(30), Y(31), Y(32)
+     +    / 0.8, 0.5, 0.6, 0.8/
+      DATA Y(33), Y(34), Y(35), Y(36)
+     +    / 0.7, 0.7, 0.2, 0.5/
+      DATA Y(37), Y(38), Y(39)
+     +    / 0.7, 0.8, 1.1/
+!
+!     DEFINE IPRT, THE CURRENT OUTPUT UNIT.
+!
+      CALL IPRINT(IPRT)
+!
+!     PRINT HEADING
+!
+      WRITE (IPRT,1000)
+!
+!     PERFORM SIMPLE TEST OF STAT
+!
+      WRITE (IPRT,1100)
+      CALL STAT(Y, N, LDSTAK)
+      WRITE (IPRT,2000) IERR
+!
+      RETURN
+!
+!     FORMATS
+!
+ 1000 FORMAT ('1*CH5')
+ 1100 FORMAT (' SIMPLE TEST OF STAT')
+ 2000 FORMAT (/' THE VALUE OF IERR IS ', I4)
+      END

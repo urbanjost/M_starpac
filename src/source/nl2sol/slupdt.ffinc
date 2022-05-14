@@ -1,0 +1,91 @@
+!SLUPDT
+      subroutine slupdt(a, cosmin, p, size, step, u, w, wchmtd, wscale,
+     +                  y)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!
+!  ***  UPDATE SYMMETRIC  A  SO THAT  A * STEP = Y  ***
+!  ***  (LOWER TRIANGLE OF  A  STORED ROWWISE       ***
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      real(kind=wp) ::
+     +   cosmin,size,wscale
+      integer
+     +   p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   a(1),step(p),u(p),w(p),wchmtd(p),y(p)
+!
+!  LOCAL SCALARS
+      real(kind=wp) ::
+     +   denmin,half,one,sdotwm,t,ui,wi,zero
+      integer
+     +   i,j,k
+!
+!  EXTERNAL FUNCTIONS
+      real(kind=wp) ::
+     +   dotprd,v2norm
+      external dotprd,v2norm
+!
+!  EXTERNAL SUBROUTINES
+      external slvmul
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic abs,min
+!
+!  ***  PARAMETER DECLARATIONS  ***
+!
+!     INTEGER P
+!     REAL(KIND=WP) :: A(1), COSMIN, SIZE, STEP(P), U(P), W(P),
+!    1                 WCHMTD(P), WSCALE, Y(P)
+!     DIMENSION A(P*(P+1)/2)
+!
+!  ***  LOCAL VARIABLES  ***
+!
+!     INTEGER I, J, K
+!     REAL(KIND=WP) :: DENMIN, SDOTWM, T, UI, WI
+!
+!     ***  CONSTANTS  ***
+!     REAL(KIND=WP) :: HALF, ONE, ZERO
+!
+!/
+!  ***  EXTERNAL FUNCTIONS AND SUBROUTINES  ***
+!
+!     EXTERNAL DOTPRD, SLVMUL, V2NORM
+!     REAL(KIND=WP) :: DOTPRD, V2NORM
+!
+      data half/0.5_wp/, one/1.0_wp/, zero/0.0_wp/
+!
+!-----------------------------------------------------------------------
+!
+      sdotwm = dotprd(p, step, wchmtd)
+      denmin = cosmin * v2norm(p,step) * v2norm(p,wchmtd)
+      wscale = one
+      if (denmin .ne. zero) wscale = min(one, abs(sdotwm/denmin))
+      t = zero
+      if (sdotwm .ne. zero) t = wscale / sdotwm
+      do 10 i = 1, p
+ 10      w(i) = t * wchmtd(i)
+      call slvmul(p, u, a, step)
+      t = half * (size * dotprd(p, step, u)  -  dotprd(p, step, y))
+      do 20 i = 1, p
+ 20      u(i) = t*w(i) + y(i) - size*u(i)
+!
+!  ***  SET  A = A + U*(W**T) + W*(U**T)  ***
+!
+      k = 1
+      do 40 i = 1, p
+         ui = u(i)
+         wi = w(i)
+         do 30 j = 1, i
+              a(k) = size*a(k) + ui*w(j) + wi*u(j)
+              k = k + 1
+ 30           continue
+ 40      continue
+!
+      end subroutine slupdt

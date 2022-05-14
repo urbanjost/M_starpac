@@ -1,0 +1,72 @@
+!RMDCON
+      real(kind=wp) function rmdcon(k)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer k
+!
+!  LOCAL SCALARS
+      real(kind=wp) :: big,eta,machep,one001,pt999
+!
+!  EXTERNAL FUNCTIONS
+!     real(kind=wp) :: mach
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic sqrt
+!
+!
+!  ***  RETURN MACHINE DEPENDENT CONSTANTS USED BY NL2SOL  ***
+!
+! +++  COMMENTS BELOW CONTAIN DATA STATEMENTS FOR VARIOUS MACHINES.  +++
+! +++  TO CONVERT TO ANOTHER MACHINE, PLACE A C IN COLUMN 1 OF THE   +++
+! +++  DATA STATEMENT LINE(S) THAT CORRESPOND TO THE CURRENT MACHINE +++
+! +++  AND REMOVE THE C FROM COLUMN 1 OF THE DATA STATEMENT LINE(S)  +++
+! +++  THAT CORRESPOND TO THE NEW MACHINE.                           +++
+!
+!     INTEGER K
+!
+!  ***  THE CONSTANT RETURNED DEPENDS ON K...
+!
+!  ***        K = 1... SMALLEST POS. ETA SUCH THAT -ETA EXISTS.
+!  ***        K = 2... SQUARE ROOT OF 1.001*ETA.
+!  ***        K = 3... UNIT ROUNDOFF = SMALLEST POS. NO. MACHEP SUCH
+!  ***                 THAT 1 + MACHEP .GT. 1 .AND. 1 - MACHEP .LT. 1.
+!  ***        K = 4... SQUARE ROOT OF 0.999*MACHEP.
+!  ***        K = 5... SQUARE ROOT OF 0.999*BIG (SEE K = 6).
+!  ***        K = 6... LARGEST MACHINE NO. BIG SUCH THAT -BIG EXISTS.
+!
+!
+      data one001/1.001_wp/, pt999/0.999_wp/
+!
+      big = mach(2)
+      eta = mach(1)
+      machep = mach(4)
+!
+!-------------------------------  BODY  --------------------------------
+!
+      go to (10, 20, 30, 40, 50, 60), k
+!
+ 10   rmdcon = eta
+      go to 999
+!
+ 20   rmdcon = sqrt(one001*eta)
+      go to 999
+!
+ 30   rmdcon = machep
+      go to 999
+!
+ 40   rmdcon = sqrt(pt999*machep)
+      go to 999
+!
+ 50   rmdcon = sqrt(pt999*big)
+      go to 999
+!
+ 60   rmdcon = big
+!
+ 999  return
+!  ***  LAST CARD OF RMDCON FOLLOWS  ***
+      end

@@ -1,0 +1,509 @@
+!LMSTEP
+      subroutine lmstep(d, g, ierr, ipivot, ka, p, qtr, r, step, v, w)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!
+!  ***  COMPUTE LEVENBERG-MARQUARDT STEP USING MORE-HEBDEN TECHNIQUE  **
+!  ***  NL2SOL VERSION 2.2.  ***
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   ierr,ka,p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   d(p),g(p),qtr(p),r(1),step(p),v(21),w(1)
+      integer
+     +   ipivot(p)
+!
+!  LOCAL SCALARS
+      real(kind=wp) ::
+     +   a,adi,alphak,b,d1,d2,dfac,dfacsq,dst,dtol,eight,half,lk,
+     +   negone,oldphi,one,p001,phi,phimax,phimin,psifac,rad,si,sj,
+     +   sqrtak,t,three,ttol,twopsi,uk,wl,zero
+      integer
+     +   dgnorm,dst0,dstnrm,dstsav,epslon,gtstep,i,i1,ip1,j1,k,
+     +   kalim,l,lk0,nreduc,phipin,phmnfc,phmxfc,pp1o2,preduc,rad0,
+     +   radius,res,res0,rmat,rmat0,stppar,uk0
+!
+!  EXTERNAL FUNCTIONS
+      real(kind=wp) ::
+     +   dotprd,v2norm
+      external dotprd,v2norm
+!
+!  EXTERNAL SUBROUTINES
+      external litvmu,livmul,vcopy
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic abs,max,min,sqrt
+!
+!  ***  PARAMETER DECLARATIONS  ***
+!
+!     INTEGER IERR, KA, P
+!     INTEGER IPIVOT(P)
+!     REAL(KIND=WP) :: D(P), G(P), QTR(P), R(1), STEP(P), V(21), W(1)
+!     DIMENSION W(P*(P+5)/2 + 4)
+!
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!
+!  ***  PURPOSE  ***
+!
+!        GIVEN THE R MATRIX FROM THE QR DECOMPOSITION OF A JACOBIAN
+!     MATRIX, J, AS WELL AS Q-TRANSPOSE TIMES THE CORRESPONDING
+!     RESIDUAL VECTOR, RESID, THIS SUBROUTINE COMPUTES A LEVENBERG-
+!     MARQUARDT STEP OF APPROXIMATE LENGTH V(RADIUS) BY THE MORE-
+!     TECHNIQUE.
+!
+!  ***  PARAMETER DESCRIPTION  ***
+!
+!      D (IN)  = THE SCALE VECTOR.
+!      G (IN)  = THE GRADIENT VECTOR (J**T)*R.
+!   IERR (I/O) = RETURN CODE FROM QRFACT OR QRFGS -- 0 MEANS R HAS
+!             FULL RANK.
+! IPIVOT (I/O) = PERMUTATION ARRAY FROM QRFACT OR QRFGS, WHICH COMPUTE
+!             QR DECOMPOSITIONS WITH COLUMN PIVOTING.
+!     KA (I/O).  KA .LT. 0 ON INPUT MEANS THIS IS THE FIRST CALL ON
+!             LMSTEP FOR THE CURRENT R AND QTR.  ON OUTPUT KA CON-
+!             TAINS THE NUMBER OF HEBDEN ITERATIONS NEEDED TO DETERMINE
+!             STEP.  KA = 0 MEANS A GAUSS-NEWTON STEP.
+!      P (IN)  = NUMBER OF PARAMETERS.
+!    QTR (IN)  = (Q**T)*RESID = Q-TRANSPOSE TIMES THE RESIDUAL VECTOR.
+!      R (IN)  = THE R MATRIX, STORED COMPACTLY BY COLUMNS.
+!   STEP (OUT) = THE LEVENBERG-MARQUARDT STEP COMPUTED.
+!      V (I/O) CONTAINS VARIOUS CONSTANTS AND VARIABLES DESCRIBED BELOW.
+!      W (I/O) = WORKSPACE OF LENGTH P*(P+5)/2 + 4.
+!
+!  ***  ENTRIES IN V  ***
+!
+! V(DGNORM) (I/O) = 2-NORM OF (D**-1)*G.
+! V(DSTNRM) (I/O) = 2-NORM OF D*STEP.
+! V(DST0)   (I/O) = 2-NORM OF GAUSS-NEWTON STEP (FOR NONSING. J).
+! V(EPSLON) (IN) = MAX. REL. ERROR ALLOWED IN TWONORM(R)**2 MINUS
+!             TWONORM(R - J*STEP)**2.  (SEE ALGORITHM NOTES BELOW.)
+! V(GTSTEP) (OUT) = INNER PRODUCT BETWEEN G AND STEP.
+! V(NREDUC) (OUT) = HALF THE REDUCTION IN THE SUM OF SQUARES PREDICTED
+!             FOR A GAUSS-NEWTON STEP.
+! V(PHMNFC) (IN)  = TOL. (TOGETHER WITH V(PHMXFC)) FOR ACCEPTING STEP
+!             (MORE*S SIGMA).  THE ERROR V(DSTNRM) - V(RADIUS) MUST LIE
+!             BETWEEN V(PHMNFC)*V(RADIUS) AND V(PHMXFC)*V(RADIUS).
+! V(PHMXFC) (IN)  (SEE V(PHMNFC).)
+! V(PREDUC) (OUT) = HALF THE REDUCTION IN THE SUM OF SQUARES PREDICTED
+!             BY THE STEP RETURNED.
+! V(RADIUS) (IN)  = RADIUS OF CURRENT (SCALED) TRUST REGION.
+! V(RAD0)   (I/O) = VALUE OF V(RADIUS) FROM PREVIOUS CALL.
+! V(STPPAR) (I/O) = MARQUARDT PARAMETER (OR ITS NEGATIVE IF THE SPECIAL
+!             CASE MENTIONED BELOW IN THE ALGORITHM NOTES OCCURS).
+!
+! NOTE -- SEE DATA STATEMENT BELOW FOR VALUES OF ABOVE SUBSCRIPTS.
+!
+!  ***  USAGE NOTES  ***
+!
+!     IF IT IS DESIRED TO RECOMPUTE STEP USING A DIFFERENT VALUE OF
+!     V(RADIUS), THEN THIS ROUTINE MAY BE RESTARTED BY CALLING IT
+!     WITH ALL PARAMETERS UNCHANGED EXCEPT V(RADIUS).  (THIS EXPLAINS
+!     WHY MANY PARAMETERS ARE LISTED AS I/O).  ON AN INTIIAL CALL (ONE
+!     WITH KA = -1), THE CALLER NEED ONLY HAVE INITIALIZED D, G, KA, P,
+!     QTR, R, V(EPSLON), V(PHMNFC), V(PHMXFC), V(RADIUS), AND V(RAD0).
+!
+!  ***  APPLICATION AND USAGE RESTRICTIONS  ***
+!
+!     THIS ROUTINE IS CALLED AS PART OF THE NL2SOL (NONLINEAR LEAST-
+!     SQUARES) PACKAGE (REF. 1).
+!
+!  ***  ALGORITHM NOTES  ***
+!
+!     THIS CODE IMPLEMENTS THE STEP COMPUTATION SCHEME DESCRIBED IN
+!     REFS. 2 AND 4.  FAST GIVENS TRANSFORMATIONS (SEE REF. 3, PP. 60-
+!     62) ARE USED TO COMPUTE STEP WITH A NONZERO MARQUARDT PARAMETER.
+!        A SPECIAL CASE OCCURS IF J IS (NEARLY) SINGULAR AND V(RADIUS)
+!     IS SUFFICIENTLY LARGE.  IN THIS CASE THE STEP RETURNED IS SUCH
+!     THAT  TWONORM(R)**2 - TWONORM(R - J*STEP)**2  DIFFERS FROM ITS
+!     OPTIMAL VALUE BY LESS THAN V(EPSLON) TIMES THIS OPTIMAL VALUE,
+!     WHERE J AND R DENOTE THE ORIGINAL JACOBIAN AND RESIDUAL.  (SEE
+!     REF. 2 FOR MORE DETAILS.)
+!
+!  ***  FUNCTIONS AND SUBROUTINES CALLED  ***
+!
+! DOTPRD - RETURNS INNER PRODUCT OF TWO VECTORS.
+! LITVMU - APPLY INVERSE-TRANSPOSE OF COMPACT LOWER TRIANG. MATRIX.
+! LIVMUL - APPLY INVERSE OF COMPACT LOWER TRIANG. MATRIX.
+! VCOPY  - COPIES ONE VECTOR TO ANOTHER.
+! V2NORM - RETURNS 2-NORM OF A VECTOR.
+!
+!  ***  REFERENCES  ***
+!
+! 1.  DENNIS, J.E., GAY, D.M., AND WELSCH, R.E. (1980), AN ADAPTIVE
+!             NONLINEAR LEAST-SQUARES ALGORITHM, (SUBMITTED TO ACM
+!             TRANS. MATH. SOFTWARE).
+! 2.  GAY, D.M. (1979), COMPUTING OPTIMAL ELLIPTICALLY CONSTRAINED
+!             STEPS, MRC TECH. SUMMARY REPORT NO. 2013, MATH RESEARCH
+!             CENTER, UNIV. OF WISCONSIN-MADISON.
+! 3.  LAWSON, C.L., AND HANSON, R.J. (1974), SOLVING LEAST SQUARES
+!             PROBLEMS, PRENTICE-HALL, ENGLEWOOD CLIFFS, N.J.
+! 4.  MORE, J.J. (1978), THE LEVENBERG-MARQUARDT ALGORITHM, IMPLEMEN-
+!             TATION AND THEORY, PP.105-116 OF SPRINGER LECTURE NOTES
+!             IN MATHEMATICS NO. 630, EDITED BY G.A. WATSON, SPRINGER-
+!             VERLAG, BERLIN AND NEW YORK.
+!
+!  ***  GENERAL  ***
+!
+!     CODED BY DAVID M. GAY.
+!     THIS SUBROUTINE WAS WRITTEN IN CONNECTION WITH RESEARCH
+!     SUPPORTED BY THE NATIONAL SCIENCE FOUNDATION UNDER GRANTS
+!     MCS-7600324, DCR75-10143, 76-14311DSS, MCS76-11989, AND
+!     MCS-7906671.
+!
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!
+!  ***  LOCAL VARIABLES  ***
+!
+!     INTEGER DSTSAV, I, IP1, I1, J1, K, KALIM, L, LK0, PHIPIN,
+!    1        PP1O2, RES, RES0, RMAT, RMAT0, UK0
+!     REAL(KIND=WP) :: A, ADI, ALPHAK, B, DFACSQ, DST, DTOL, D1, D2,
+!    1                 LK, OLDPHI, PHI, PHIMAX, PHIMIN, PSIFAC, RAD,
+!    2                 SI, SJ, SQRTAK, T, TWOPSI, UK, WL
+!
+!     ***  CONSTANTS  ***
+!     REAL(KIND=WP) :: DFAC, EIGHT, HALF, NEGONE, ONE, P001, THREE,
+!    1                 TTOL, ZERO
+!
+!/
+!  ***  EXTERNAL FUNCTIONS AND SUBROUTINES  ***
+!
+!     EXTERNAL DOTPRD, LITVMU, LIVMUL, VCOPY, V2NORM
+!     REAL(KIND=WP) :: DOTPRD, V2NORM
+!
+!  ***  SUBSCRIPTS FOR V  ***
+!
+!     INTEGER DGNORM, DSTNRM, DST0, EPSLON, GTSTEP, NREDUC, PHMNFC,
+!    1        PHMXFC, PREDUC, RADIUS, RAD0, STPPAR
+      data dgnorm/1/, dstnrm/2/, dst0/3/, epslon/19/,
+     +     gtstep/4/, nreduc/6/, phmnfc/20/,
+     +     phmxfc/21/, preduc/7/, radius/8/,
+     +     rad0/9/, stppar/5/
+!
+      data dfac/256.0_wp/, eight/8.0_wp/, half/0.5_wp/, negone/-1.0_wp/,
+     +     one/1.0_wp/, p001/1.0e-3_wp/, three/3.0_wp/, ttol/2.5_wp/,
+     +     zero/0.0_wp/
+!
+!  ***  BODY  ***
+!
+!     ***  FOR USE IN RECOMPUTING STEP, THE FINAL VALUES OF LK AND UK,
+!     ***  THE INVERSE DERIVATIVE OF MORE*S PHI AT 0 (FOR NONSING. J)
+!     ***  AND THE VALUE RETURNED AS V(DSTNRM) ARE STORED AT W(LK0),
+!     ***  W(UK0), W(PHIPIN), AND W(DSTSAV) RESPECTIVELY.
+      alphak = 0.0_wp
+      psifac = 0.0_wp
+      lk0 = p + 1
+      phipin = lk0 + 1
+      uk0 = phipin + 1
+      dstsav = uk0 + 1
+      rmat0 = dstsav
+!     ***  A COPY OF THE R-MATRIX FROM THE QR DECOMPOSITION OF J IS
+!     ***  STORED IN W STARTING AT W(RMAT), AND A COPY OF THE RESIDUAL
+!     ***  VECTOR IS STORED IN W STARTING AT W(RES).  THE LOOPS BELOW
+!     ***  THAT UPDATE THE QR DECOMP. FOR A NONZERO MARQUARDT PARAMETER
+!     ***  WORK ON THESE COPIES.
+      rmat = rmat0 + 1
+      pp1o2 = p * (p + 1) / 2
+      res0 = pp1o2 + rmat0
+      res = res0 + 1
+      rad = v(radius)
+      if (rad .gt. zero)
+     +   psifac = v(epslon)/((eight*(v(phmnfc) + one) + three) * rad**2)
+      phimax = v(phmxfc) * rad
+      phimin = v(phmnfc) * rad
+!     ***  DTOL, DFAC, AND DFACSQ ARE USED IN RESCALING THE FAST GIVENS
+!     ***  REPRESENTATION OF THE UPDATED QR DECOMPOSITION.
+      dtol = one/dfac
+      dfacsq = dfac*dfac
+!     ***  OLDPHI IS USED TO DETECT LIMITS OF NUMERICAL ACCURACY.  IF
+!     ***  WE RECOMPUTE STEP AND IT DOES NOT CHANGE, THEN WE ACCEPT IT.
+      oldphi = zero
+      lk = zero
+      uk = zero
+      kalim = ka + 12
+!
+!  ***  START OR RESTART, DEPENDING ON KA  ***
+!
+      if (ka) 10, 20, 370
+!
+!  ***  FRESH START -- COMPUTE V(NREDUC)  ***
+!
+ 10   ka = 0
+      kalim = 12
+      k = p
+      if (ierr .ne. 0) k = abs(ierr) - 1
+      v(nreduc) = half*dotprd(k, qtr, qtr)
+!
+!  ***  SET UP TO TRY INITIAL GAUSS-NEWTON STEP  ***
+!
+ 20   v(dst0) = negone
+      if (ierr .ne. 0) go to 90
+!
+!  ***  COMPUTE GAUSS-NEWTON STEP  ***
+!
+!     ***  NOTE -- THE R-MATRIX IS STORED COMPACTLY BY COLUMNS IN
+!     ***  R(1), R(2), R(3), ...  IT IS THE TRANSPOSE OF A
+!     ***  LOWER TRIANGULAR MATRIX STORED COMPACTLY BY ROWS, AND WE
+!     ***  TREAT IT AS SUCH WHEN USING LITVMU AND LIVMUL.
+      call litvmu(p, w, r, qtr)
+!     ***  TEMPORARILY STORE PERMUTED -D*STEP IN STEP.
+      do 60 i = 1, p
+         j1 = ipivot(i)
+         step(i) = d(j1)*w(i)
+ 60      continue
+      dst = v2norm(p, step)
+      v(dst0) = dst
+      phi = dst - rad
+      if (phi .le. phimax) go to 410
+!     ***  IF THIS IS A RESTART, GO TO 110  ***
+      if (ka .gt. 0) go to 110
+!
+!  ***  GAUSS-NEWTON STEP WAS UNACCEPTABLE.  COMPUTE L0  ***
+!
+      do 70 i = 1, p
+         j1 = ipivot(i)
+         step(i) = d(j1)*(step(i)/dst)
+ 70      continue
+      call livmul(p, step, r, step)
+      t = one / v2norm(p, step)
+      w(phipin) = (t/dst)*t
+      lk = phi*w(phipin)
+!
+!  ***  COMPUTE U0  ***
+!
+ 90   do 100 i = 1, p
+ 100     w(i) = g(i)/d(i)
+      v(dgnorm) = v2norm(p, w)
+      uk = v(dgnorm)/rad
+      if (uk .le. zero) go to 390
+!
+!     ***  ALPHAK WILL BE USED AS THE CURRENT MARQUARDT PARAMETER.  WE
+!     ***  USE MORE*S SCHEME FOR INITIALIZING IT.
+      alphak = abs(v(stppar)) * v(rad0)/rad
+!
+!
+!  ***  TOP OF LOOP -- INCREMENT KA, COPY R TO RMAT, QTR TO RES  ***
+!
+ 110  ka = ka + 1
+      call vcopy(pp1o2, w(rmat), r)
+      call vcopy(p, w(res), qtr)
+!
+!  ***  SAFEGUARD ALPHAK AND INITIALIZE FAST GIVENS SCALE VECTOR.  ***
+!
+      if (alphak .le. zero .or. alphak .lt. lk .or. alphak .ge. uk)
+     +             alphak = uk * max(p001, sqrt(lk/uk))
+      sqrtak = sqrt(alphak)
+      do 120 i = 1, p
+ 120     w(i) = one
+!
+!  ***  ADD ALPHAK*D AND UPDATE QR DECOMP. USING FAST GIVENS TRANS.  ***
+!
+      do 270 i = 1, p
+!        ***  GENERATE, APPLY 1ST GIVENS TRANS. FOR ROW I OF ALPHAK*D.
+!        ***  (USE STEP TO STORE TEMPORARY ROW)  ***
+         l = i*(i+1)/2 + rmat0
+         wl = w(l)
+         d2 = one
+         d1 = w(i)
+         j1 = ipivot(i)
+         adi = sqrtak*d(j1)
+         if (adi .ge. abs(wl)) go to 150
+ 130     a = adi/wl
+         b = d2*a/d1
+         t = a*b + one
+         if (t .gt. ttol) go to 150
+         w(i) = d1/t
+         d2 = d2/t
+         w(l) = t*wl
+         a = -a
+         do 140 j1 = i, p
+              l = l + j1
+              step(j1) = a*w(l)
+ 140          continue
+         go to 170
+!
+ 150     b = wl/adi
+         a = d1*b/d2
+         t = a*b + one
+         if (t .gt. ttol) go to 130
+         w(i) = d2/t
+         d2 = d1/t
+         w(l) = t*adi
+         do 160 j1 = i, p
+              l = l + j1
+              wl = w(l)
+              step(j1) = -wl
+              w(l) = a*wl
+ 160          continue
+!
+ 170     if (i .eq. p) go to 280
+!
+!        ***  NOW USE GIVENS TRANS. TO ZERO ELEMENTS OF TEMP. ROW  ***
+!
+         ip1 = i + 1
+         do 260 i1 = ip1, p
+              l = i1*(i1+1)/2 + rmat0
+              wl = w(l)
+              si = step(i1-1)
+              d1 = w(i1)
+!
+!             ***  RESCALE ROW I1 IF NECESSARY  ***
+!
+              if (d1 .ge. dtol) go to 190
+                   d1 = d1*dfacsq
+                   wl = wl/dfac
+                   k = l
+                   do 180 j1 = i1, p
+                        k = k + j1
+                        w(k) = w(k)/dfac
+ 180                    continue
+!
+!             ***  USE GIVENS TRANS. TO ZERO NEXT ELEMENT OF TEMP. ROW
+!
+ 190          if (abs(si) .gt. abs(wl)) go to 220
+              if (si .eq. zero) go to 260
+ 200          a = si/wl
+              b = d2*a/d1
+              t = a*b + one
+              if (t .gt. ttol) go to 220
+              w(l) = t*wl
+              w(i1) = d1/t
+              d2 = d2/t
+              do 210 j1 = i1, p
+                   l = l + j1
+                   wl = w(l)
+                   sj = step(j1)
+                   w(l) = wl + b*sj
+                   step(j1) = sj - a*wl
+ 210               continue
+              go to 240
+!
+ 220          b = wl/si
+              a = d1*b/d2
+              t = a*b + one
+              if (t .gt. ttol) go to 200
+              w(i1) = d2/t
+              d2 = d1/t
+              w(l) = t*si
+              do 230 j1 = i1, p
+                   l = l + j1
+                   wl = w(l)
+                   sj = step(j1)
+                   w(l) = a*wl + sj
+                   step(j1) = b*sj - wl
+ 230               continue
+!
+!             ***  RESCALE TEMP. ROW IF NECESSARY  ***
+!
+ 240          if (d2 .ge. dtol) go to 260
+                   d2 = d2*dfacsq
+                   do 250 k = i1, p
+ 250                    step(k) = step(k)/dfac
+ 260          continue
+ 270     continue
+!
+!  ***  COMPUTE STEP  ***
+!
+ 280  call litvmu(p, w(res), w(rmat), w(res))
+!     ***  RECOVER STEP AND STORE PERMUTED -D*STEP AT W(RES)  ***
+      do 290 i = 1, p
+         j1 = ipivot(i)
+         k = res0 + i
+         t = w(k)
+         step(j1) = -t
+         w(k) = t*d(j1)
+ 290     continue
+      dst = v2norm(p, w(res))
+      phi = dst - rad
+      if (phi .le. phimax .and. phi .ge. phimin) go to 430
+      if (oldphi .eq. phi) go to 430
+      oldphi = phi
+!
+!  ***  CHECK FOR (AND HANDLE) SPECIAL CASE  ***
+!
+      if (phi .gt. zero) go to 310
+         if (ka .ge. kalim) go to 430
+              twopsi = alphak*dst*dst - dotprd(p, step, g)
+              if (alphak .ge. twopsi*psifac) go to 310
+                   v(stppar) = -alphak
+                   go to 440
+!
+!  ***  UNACCEPTABLE STEP -- UPDATE LK, UK, ALPHAK, AND TRY AGAIN  ***
+!
+ 300  if (phi .lt. zero) uk = min(uk, alphak)
+      go to 320
+ 310  if (phi .lt. zero) uk = alphak
+ 320  do 330 i = 1, p
+         j1 = ipivot(i)
+         k = res0 + i
+         step(i) = d(j1) * (w(k)/dst)
+ 330     continue
+      call livmul(p, step, w(rmat), step)
+      do 340 i = 1, p
+ 340     step(i) = step(i) / sqrt(w(i))
+      t = one / v2norm(p, step)
+      alphak = alphak + t*phi*t/rad
+      lk = max(lk, alphak)
+      go to 110
+!
+!  ***  RESTART  ***
+!
+ 370  lk = w(lk0)
+      uk = w(uk0)
+      if (v(dst0) .gt. zero .and. v(dst0) - rad .le. phimax) go to 20
+      alphak = abs(v(stppar))
+      dst = w(dstsav)
+      phi = dst - rad
+      t = v(dgnorm)/rad
+      if (rad .gt. v(rad0)) go to 380
+!
+!        ***  SMALLER RADIUS  ***
+         uk = t
+         if (alphak .le. zero) lk = zero
+         if (v(dst0) .gt. zero) lk = max(lk, (v(dst0)-rad)*w(phipin))
+         go to 300
+!
+!     ***  BIGGER RADIUS  ***
+ 380  if (alphak .le. zero .or. uk .gt. t) uk = t
+      lk = zero
+      if (v(dst0) .gt. zero) lk = max(lk, (v(dst0)-rad)*w(phipin))
+      go to 300
+!
+!  ***  SPECIAL CASE -- RAD .LE. 0 OR (G = 0 AND J IS SINGULAR)  ***
+!
+ 390  v(stppar) = zero
+      dst = zero
+      lk = zero
+      uk = zero
+      v(gtstep) = zero
+      v(preduc) = zero
+      do 400 i = 1, p
+ 400     step(i) = zero
+      go to 450
+!
+!  ***  ACCEPTABLE GAUSS-NEWTON STEP -- RECOVER STEP FROM W  ***
+!
+ 410  alphak = zero
+      do 420 i = 1, p
+         j1 = ipivot(i)
+         step(j1) = -w(i)
+ 420     continue
+!
+!  ***  SAVE VALUES FOR USE IN A POSSIBLE RESTART  ***
+!
+ 430  v(stppar) = alphak
+ 440  v(gtstep) = dotprd(p, step, g)
+      v(preduc) = half * (alphak*dst*dst - v(gtstep))
+ 450  v(dstnrm) = dst
+      w(dstsav) = dst
+      w(lk0) = lk
+      w(uk0) = uk
+      v(rad0) = rad
+!
+      end subroutine lmstep

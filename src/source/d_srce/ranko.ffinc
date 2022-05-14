@@ -1,0 +1,101 @@
+!RANKO
+      SUBROUTINE RANKO(N, Y, H, R, T)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     VERSION  45.0    RANKO    3/ 6/70
+!     *****
+!     PUTS RANK OF N X"S IN VECTOR R. VECTOR H IS USED FOR STORAGE.
+!     X,H AND R MUST BE DIMENSIONED N OR GREATER.
+!     STORES CORRECTION FOR TIES IN T = SUM(T-1)*T*(T+1).
+!        N.B.  T IS 12 TIMES VALUE COMPUTED BY ORIGINAL OMNITAB ROUTINE.
+!     T=0  MEANS NO TIES.
+!     WRITTEN BY DAVID HOGBEN, SEL, NBS.   4/9/69.
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      DOUBLE PRECISION
+     +   T
+      INTEGER
+     +   N
+!
+!  ARRAY ARGUMENTS
+      DOUBLE PRECISION
+     +   R(N),Y(N)
+      INTEGER
+     +   H(N)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IJ,J,K,K2
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL SRTIR,SRTRI
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER H(N)
+!        THE INDICES TO THE HIERARCHY OF R
+!     INTEGER I
+!        INDEX VARIABLE
+!     INTEGER IJ
+!        INDEX VARIABLE BASED ON I-J
+!     INTEGER J
+!        INDEX VARIABLE
+!     INTEGER K
+!        INDEX VARIABLE
+!     INTEGER K2
+!          INDEX VARIABLE
+!     INTEGER N
+!        NUMBER OF OBSERVATIONS
+!     DOUBLE PRECISION R(N)
+!        FINAL VECTOR CONTAINING RANK
+!     DOUBLE PRECISION T
+!        12 TIMES THE OMNITAB CORRECTION FOR TIES
+!             T = SUM(T-1)*T*(T+1)
+!             T = 0 MEANS NO TIES
+!     DOUBLE PRECISION Y(N)
+!        VECTOR TO BE RANKED
+!
+!
+!     MOVE Y TO R AND PUT I IN H
+!
+      DO 10 I=1,N
+         H(I) = I
+         R(I) = Y(I)
+   10 CONTINUE
+!
+!     SORT Y IN R, CARRY ALONG I IN H TO OBTAIN HIERARCHY IN H.
+!
+      CALL SRTIR(H, N, R)
+!
+!     REPLACE R(I) BY I*.
+!     LET K BE SUCH THAT R(I)=R(I-J+1),J=1,K. THEN I* = I-(K-1)/2.
+!
+      K = 1
+      T = 0
+      DO 40 I=2,N
+         IF (R(I).EQ.R(I-1)) THEN
+            K = K + 1
+         ELSE
+            DO 30 J=1,K
+               IJ = I - J
+               R(IJ) = (I-1) - (K-1)/2.0D0
+   30       CONTINUE
+            T = T + (K-1)*K*(K+1)
+            K = 1
+         END IF
+   40 CONTINUE
+      T = T + (K-1)*K*(K+1)
+      DO 50 I=1,K
+         K2 = N + 1 - I
+         R(K2) = N - (K-1)/2.0D0
+   50 CONTINUE
+!
+!     SORT H CARRY ALONG R TO OBTAIN RANKS IN R
+!
+      CALL SRTRI(R, N, H)
+      RETURN
+      END

@@ -1,0 +1,153 @@
+!OANOVA
+      SUBROUTINE OANOVA(YSUM, RED, NPAR, RVAR, NNZW, TEMP, IPRT)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     COMPUTE AND PRINT ANALYSIS OF VARIANCE
+!
+!     WRITTEN BY DAVID HOGBEN, SEL, NBS.   10/09/69.
+!
+!     THIS ROUTINE WAS ADAPTED FROM THE OMNITAB ROUTINE OANOVA
+!     BY - -
+!
+!     JANET R. DONALDSON
+!     STATISTICAL ENGINEERING DIVISION
+!     NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 29, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      REAL(KIND=WP)
+     +   RVAR,YSUM
+      INTEGER
+     +   IPRT,NNZW,NPAR
+!
+!  ARRAY ARGUMENTS
+      REAL(KIND=WP)
+     +   RED(NPAR),TEMP(NPAR)
+!
+!  LOCAL SCALARS
+      REAL(KIND=WP)
+     +   ASUM,CR,F1,F2,FPLM,PF1,PF2,RESMS,RESSS,SSU,V1F2,VR
+      INTEGER
+     +   I,K,NSUA
+!
+!  EXTERNAL FUNCTIONS
+      REAL(KIND=WP)
+     +   CDFF,R1MACH
+      EXTERNAL CDFF,R1MACH
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     REAL ASUM
+!        *
+!     REAL CR
+!        *
+!     REAL FPLM
+!        THE FLOATING POINT LARGEST MAGNITUDE.
+!     REAL F1
+!        *
+!     REAL F2
+!        *
+!     INTEGER I
+!        AN INDEX.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER K
+!        *
+!     INTEGER NPAR
+!        THE NUMBER OF PARAMETERS.
+!     INTEGER NNZW
+!        THE NUMBER OF NON ZERO WEIGHTS.
+!     INTEGER NSUA
+!        *
+!     REAL PF1
+!        *
+!     REAL PF2
+!        *
+!     REAL RED(NPAR)
+!        THE REDUCTION TO THE SUM OF SQUARES DUE TO EACH PARAMETER.
+!     REAL RESMS
+!        *
+!     REAL RESSS
+!        *
+!     REAL RVAR
+!        THE RESIDUAL VARIANCE.
+!     REAL SSU
+!        *
+!     REAL TEMP(NPAR)
+!        A WORK VECTOR.
+!     REAL VR
+!        *
+!     REAL V1F2
+!        *
+!     REAL YSUM
+!        THE SUM OF THE WEIGHTED DEPENDENT VARIABLES SQUARED.
+!
+!
+      FPLM = R1MACH(2)
+!
+      RESMS = YSUM/NNZW
+      NSUA = NNZW
+      WRITE (IPRT,1000)
+      ASUM = 0.0E0
+      VR = NNZW-NPAR
+      RESSS = VR*RVAR
+      TEMP(NPAR) = RESSS
+      IF (NPAR.EQ.1) GO TO 20
+      DO 10 I=2,NPAR
+         K = NPAR + 2 - I
+         TEMP(K-1) = TEMP(K) + RED(K)
+   10 CONTINUE
+   20 V1F2 = NPAR+1
+      SSU = NNZW
+      DO 50 I=1,NPAR
+         NSUA = NSUA - 1
+         ASUM = ASUM + RED(I)
+         SSU = SSU - 1.0E0
+         CR = ASUM/I
+         RESMS = 0.0E0
+         IF (SSU.GT.0.0E0) RESMS = TEMP(I)/SSU
+         V1F2 = V1F2 - 1.0E0
+!
+!     NEVER POOL
+!
+         IF (RVAR.GT.0.0E0) GO TO 30
+         F1 = FPLM
+         F2 = FPLM
+         PF1 = 0.0E0
+         PF2 = 0.0E0
+         GO TO 40
+   30    F1 = RED(I)/RVAR
+         PF1 = 1.0E0 - CDFF(F1,1.0E0,VR)
+!
+!     TEST HIGHER SUB-HYPOTHESES
+!
+         F2 = (TEMP(I)+RED(I)-RESSS)/V1F2/RVAR
+         PF2 = 1.0E0 - CDFF(F2,V1F2,VR)
+   40    CONTINUE
+         WRITE (IPRT,1010) I, RED(I), CR, I, RESMS, NSUA, F1, PF1, F2,
+     +      PF2
+   50 CONTINUE
+      WRITE (IPRT,1020) RESSS, NSUA
+      WRITE (IPRT,1030) YSUM, NNZW
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (////50X, 20HANALYSIS OF VARIANCE/24X, 16H-DEPENDENT ON OR,
+     +   33HDER VARIABLES ARE ENTERED, UNLESS, 21H VECTORS ARE ORTHOGON,
+     +   3HAL-//
+     +   1X, 5H PAR , 4X, 14HSUM OF SQUARES, 63X,
+     +   19H------ PAR=0 ------, 4X, 19H------ PARS=0 -----/
+     +   1X, 5HINDEX, 4X, 14HRED DUE TO PAR, 7X, 10HCUM MS RED,
+     +   6X, 9HDF(MSRED), 6X, 10HCUM RES MS, 6X, 7HDF(RMS), 5X,
+     +   'F', 8X, 7HPROB(F), 7X, 'F', 8X, 7HPROB(F)/)
+ 1010 FORMAT (1X, I3, 6X, G16.9, 3X, G16.9, 1X, I6, 8X, G16.9, 1X, I5,
+     +   4X, G12.6, F7.3, 4X, G12.6, F7.3)
+ 1020 FORMAT (/1X, 10HRESIDUAL  , 1X, G14.7, 20X, I6)
+ 1030 FORMAT (1X, 10HTOTAL     , 1X, G14.7, 20X, I6)
+      END

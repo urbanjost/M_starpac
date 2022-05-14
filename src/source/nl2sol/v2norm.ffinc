@@ -1,0 +1,73 @@
+!V2NORM
+      real(kind=wp) function v2norm(p, x)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!  ***  RETURN THE 2-NORM OF THE P-VECTOR X, TAKING  ***
+!  ***  CARE TO AVOID THE MOST LIKELY UNDERFLOWS.    ***
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   x(*)
+!
+!  LOCAL SCALARS
+      real(kind=wp) ::
+     +   one,r,scale,sqteta,t,xi,zero
+      integer
+     +   i,j
+!
+!  EXTERNAL FUNCTIONS
+      real(kind=wp) ::
+     +   rmdcon
+      external rmdcon
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic abs,sqrt
+!
+!
+      data one/1.0_wp/, sqteta/0.0_wp/, zero/0.0_wp/
+!
+      if (p .gt. 0) go to 10
+         v2norm = zero
+         go to 999
+ 10   do 20 i = 1, p
+         if (x(i) .ne. zero) go to 30
+ 20      continue
+      v2norm = zero
+      go to 999
+!
+ 30   scale = abs(x(i))
+      if (i .lt. p) go to 40
+         v2norm = scale
+         go to 999
+ 40   t = one
+      if (sqteta .eq. zero) sqteta = rmdcon(2)
+!
+!     ***  SQTETA IS (SLIGHTLY LARGER THAN) THE SQUARE ROOT OF THE
+!     ***  SMALLEST POSITIVE FLOATING POINT NUMBER ON THE MACHINE.
+!     ***  THE TESTS INVOLVING SQTETA ARE DONE TO PREVENT UNDERFLOWS.
+!
+      j = i + 1
+      do 60 i = j, p
+         xi = abs(x(i))
+         if (xi .gt. scale) go to 50
+              r = xi / scale
+              if (r .gt. sqteta) t = t + r*r
+              go to 60
+ 50           r = scale / xi
+              if (r .le. sqteta) r = zero
+              t = one  +  t * r*r
+         scale = xi
+ 60      continue
+!
+      v2norm = scale * sqrt(t)
+ 999  return
+
+      end function v2norm

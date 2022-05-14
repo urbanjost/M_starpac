@@ -134,8 +134,8 @@ library callable from fpm(Fortran Package Manager). *
                   Computers  have  been   identified  in  this
                   paper  in  order  to  adequately specify the
                   sample  programs  and  test  results.   Such
-                  identification does  not  imply  recommenda-
-                  tion   or   endorsement   by   the  National
+                  identification does  not  imply  recommendation
+                  or   endorsement   by   the  National
                   Institute  of  Standards and Technology, nor
                   does it imply  that the equipment identified
                   is necessarily  the  best  available for the
@@ -2266,7 +2266,7 @@ library callable from fpm(Fortran Package Manager). *
 
  where
 
- y       is a standard normal psuedo-random number;
+ y       is a standard normal pseudo-random number;
 
  mu      is the desired mean (see section D, argument YMEAN); and
 
@@ -2522,7 +2522,7 @@ library callable from fpm(Fortran Package Manager). *
  C
  C     FORMAT STATEMENTS
  C
-   100 FORMAT ('1RESULTS OF STARPAC NORMAL PSUEDO-RANDOM NUMBER',
+   100 FORMAT ('1RESULTS OF STARPAC NORMAL PSEUDO-RANDOM NUMBER',
       1  ' GENERATION SUBROUTINES',
       2  ' DISPLAYED WITH STARPAC PLOT SUBROUTINE MVP')
        END
@@ -2534,7 +2534,7 @@ library callable from fpm(Fortran Package Manager). *
 
 
                                      <3-5>
-1RESULTS OF STARPAC NORMAL PSUEDO-RANDOM NUMBER GENERATION SUBROUTINES DISPLAYED WITH STARPAC PLOT SUBROUTINE MVP
+1RESULTS OF STARPAC NORMAL PSEUDO-RANDOM NUMBER GENERATION SUBROUTINES DISPLAYED WITH STARPAC PLOT SUBROUTINE MVP
                                                                                                          STARPAC 2.08S (03/15/90)
              -2.4249   -1.6383    -.8518    -.0652     .7213    1.5078    2.2944    3.0809    3.8675    4.6540    5.4406
               -I---------I---------I---------I---------I---------I---------I---------I---------I---------I---------I-

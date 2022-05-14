@@ -1,0 +1,287 @@
+!ITSMRY
+      subroutine itsmry(d, iv, p, v, x)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!  ***  PRINT NL2SOL (VERSION 2.2) ITERATION SUMMARY  ***
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   d(p),v(*),x(p)
+      integer
+     +   iv(*)
+!
+!  LOCAL SCALARS
+      real(kind=wp) ::
+     +   nreldf,oldf,preldf,reldf,zero
+      integer
+     +   cov1,covmat,covprt,covreq,dstnrm,f,f0,fdif,g,g1,i,i1,ich,
+     +   ii,iv1,j,m,needhd,nf,nfcall,nfcov,ng,ngcall,ngcov,niter,
+     +   nreduc,ol,outlev,preduc,prntit,prunit,pu,reldx,size,
+     +   solprt,statpr,stppar,sused,x0prt
+!
+!  LOCAL ARRAYS
+      character
+     +   model1(3,6)*1,model2(4,6)*1
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic abs
+!
+!  ***  PARAMETER DECLARATIONS  ***
+!
+!     INTEGER IV(1), P
+!     REAL(KIND=WP) :: D(P), V(1), X(P)
+!     DIMENSION IV(*), V(*)
+!
+!+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+!
+!  ***  LOCAL VARIABLES  ***
+!
+!     INTEGER COV1, G1, I, II, IV1, I1, J, M, NF, NG, OL, PU
+!     CHARACTER*1 MODEL1(3, 6), MODEL2(4, 6)
+!     REAL(KIND=WP) :: NRELDF, OLDF, PRELDF, RELDF, ZERO
+!
+!/
+!  ***  NO EXTERNAL FUNCTIONS OR SUBROUTINES  ***
+!
+!  ***  SUBSCRIPTS FOR IV AND V  ***
+!
+!     INTEGER COVMAT, COVPRT, COVREQ, DSTNRM, F, FDIF, F0, G,
+!    1        NEEDHD, NFCALL, NFCOV, NGCOV, NGCALL, NITER, NREDUC,
+!    2        OUTLEV, PREDUC, PRNTIT, PRUNIT, RELDX, SIZE, SOLPRT,
+!    3        STATPR, STPPAR, SUSED, X0PRT
+!
+!  ***  IV SUBSCRIPT VALUES  ***
+!
+      data covmat/26/, covprt/14/, g/28/, covreq/15/,
+     +     needhd/39/, nfcall/6/, nfcov/40/, ngcov/41/,
+     +     ngcall/30/, niter/31/, outlev/19/, prntit/48/,
+     +     prunit/21/, solprt/22/, statpr/23/, sused/57/,
+     +     x0prt/24/
+!
+!  ***  V SUBSCRIPT VALUES  ***
+!
+      data dstnrm/2/, f/10/, f0/13/, fdif/11/, nreduc/6/,
+     +     preduc/7/, reldx/17/, size/47/, stppar/5/
+!
+      data model1(1, 1), model1(2, 1), model1(3, 1)
+     +   /        ' ',          ' ',          ' '  /
+      data model1(1, 2), model1(2, 2), model1(3, 2)
+     +   /        ' ',          ' ',          ' '  /
+      data model1(1, 3), model1(2, 3), model1(3, 3)
+     +   /        ' ',          ' ',          ' '  /
+      data model1(1, 4), model1(2, 4), model1(3, 4)
+     +   /        ' ',          ' ',          ' '  /
+      data model1(1, 5), model1(2, 5), model1(3, 5)
+     +   /        ' ',          'G',          ' '  /
+      data model1(1, 6), model1(2, 6), model1(3, 6)
+     +   /        ' ',          'S',          ' '  /
+      data model2(1, 1), model2(2, 1), model2(3, 1), model2(4, 1)
+     +    /       ' ',          'G',          ' ',          ' '  /
+      data model2(1, 2), model2(2, 2), model2(3, 2), model2(4, 2)
+     +   /        ' ',          'S',          ' ',          ' '  /
+      data model2(1, 3), model2(2, 3), model2(3, 3), model2(4, 3)
+     +   /        'G',          '-',          'S',          ' '  /
+      data model2(1, 4), model2(2, 4), model2(3, 4), model2(4, 4)
+     +   /        'S',          '-',          'G',          ' '  /
+      data model2(1, 5), model2(2, 5), model2(3, 5), model2(4, 5)
+     +   /        '-',          'S',          '-',          'G'  /
+      data model2(1, 6), model2(2, 6), model2(3, 6), model2(4, 6)
+     +   /        '-',          'G',          '-',          'S'  /
+      data zero/0.0_wp/
+!
+!-----------------------------------------------------------------------
+!
+      pu = iv(prunit)
+      if (pu .eq. 0) go to 999
+      iv1 = iv(1)
+      ol = iv(outlev)
+      if (iv1 .lt. 2 .or. iv1 .gt. 15) go to 140
+      if (ol .eq. 0) go to 20
+      if (iv1 .ge. 12) go to 20
+      if (iv1 .ge. 10 .and. iv(prntit) .eq. 0) go to 20
+      if (iv1 .gt. 2) go to 10
+         iv(prntit) = iv(prntit) + 1
+         if (iv(prntit) .lt. abs(ol)) go to 999
+ 10   nf = iv(nfcall) - abs(iv(nfcov))
+      iv(prntit) = 0
+      reldf = zero
+      preldf = zero
+      oldf = v(f0)
+      if (oldf .le. zero) go to 12
+         reldf = v(fdif) / oldf
+         preldf = v(preduc) / oldf
+ 12   if (ol .gt. 0) go to 15
+!
+!        ***  PRINT SHORT SUMMARY LINE  ***
+!
+         if (iv(needhd) .eq. 1) write(pu, 1010)
+ 1010 format(12h0   it    nf,6x,'F',8x,5hreldf,6x,6hpreldf,5x,5hreldx)
+         iv(needhd) = 0
+         write(pu,1017) iv(niter), nf, v(f), reldf, preldf, v(reldx)
+         go to 20
+!
+!     ***  PRINT LONG SUMMARY LINE  ***
+!
+ 15   if (iv(needhd) .eq. 1) write(pu,1015)
+ 1015 format(12h0   it    nf,6x,'F',8x,5hreldf,6x,6hpreldf,5x,5hreldx,
+     +       4x,15hmodel    stppar,6x,4hsize,6x,6hd*step,5x,7hnpreldf)
+      iv(needhd) = 0
+      m = iv(sused)
+      nreldf = zero
+      if (oldf .gt. zero) nreldf = v(nreduc) / oldf
+      write(pu,1017) iv(niter), nf, v(f), reldf, preldf, v(reldx),
+     +               (model1(ich, m), ich = 1, 3),
+     +               (model2(ich, m), ich = 1, 4),
+     +               v(stppar), v(size), v(dstnrm), nreldf
+ 1017 format(1x,i5,i6,4e11.3,7a1,4e11.3)
+!
+ 20   go to (999,999,30,35,40,45,50,60,70,80,90,150,110,120,130), iv1
+!
+ 30   write(pu,1030)
+ 1030 format(26h0***** x-convergence *****)
+      go to 180
+!
+ 35   write(pu,1035)
+ 1035 format(42h0***** relative function convergence *****)
+      go to 180
+!
+ 40   write(pu,1040)
+ 1040 format(49h0***** x- and relative function convergence *****)
+      go to 180
+!
+ 45   write(pu,1045)
+ 1045 format(42h0***** absolute function convergence *****)
+      go to 180
+!
+ 50   write(pu,1050)
+ 1050 format(33h0***** singular convergence *****)
+      go to 180
+!
+ 60   write(pu,1060)
+ 1060 format(30h0***** false convergence *****)
+      go to 180
+!
+ 70   write(pu,1070)
+ 1070 format(38h0***** function evaluation limit *****)
+      go to 180
+!
+ 80   write(pu,1080)
+ 1080 format(28h0***** iteration limit *****)
+      go to 180
+!
+ 90   write(pu,1090)
+ 1090 format(18h0***** stopx *****)
+      go to 180
+!
+ 110  write(pu,1100)
+ 1100 format(45h0***** initial sum of squares overflows *****)
+!
+      go to 150
+!
+ 120  write(pu,1120)
+ 1120 format(37h0***** bad parameters to assess *****)
+      go to 999
+!
+ 130  write(pu,1130)
+ 1130 format(36h0***** j could not be computed *****)
+      if (iv(niter) .gt. 0) go to 190
+      go to 150
+!
+ 140  write(pu,1140) iv1
+ 1140 format(14h0***** iv(1) =,i5,6h *****)
+      go to 999
+!
+!  ***  INITIAL CALL ON ITSMRY  ***
+!
+ 150  if (iv(x0prt) .ne. 0) write(pu,1150) (i, x(i), d(i), i = 1, p)
+ 1150 format(23h0    i     initial x(i),7x,4hd(i)//(1x,i5,e17.6,e14.3))
+      if (iv1 .ge. 13) go to 999
+      iv(needhd) = 0
+      iv(prntit) = 0
+      if (ol .eq. 0) go to 999
+      if (ol .lt. 0) write(pu,1010)
+      if (ol .gt. 0) write(pu,1015)
+      write(pu,1160) v(f)
+ 1160 format(12h0    0     1,e11.3,11x,e11.3)
+      go to 999
+!
+!  ***  PRINT VARIOUS INFORMATION REQUESTED ON SOLUTION  ***
+!
+ 180  iv(needhd) = 1
+      if (iv(statpr) .eq. 0) go to 190
+         oldf = v(f0)
+         preldf = zero
+         nreldf = zero
+         if (oldf .le. zero) go to 185
+              preldf = v(preduc) / oldf
+              nreldf = v(nreduc) / oldf
+ 185     nf = iv(nfcall) - iv(nfcov)
+         ng = iv(ngcall) - iv(ngcov)
+         write(pu,1180) v(f), v(reldx), nf, ng, preldf, nreldf
+ 1180 format(9h0function,e17.6,8h   reldx,e20.6/12h func. evals,
+     +   i8,9x,'GRAD. EVALS',i8/' PRELDF',e19.6,3x,'NPRELDF',e18.6)
+!
+         if (iv(nfcov) .gt. 0) write(pu,1185) iv(nfcov)
+ 1185    format('0',i4,' EXTRA FUNC. EVALS FOR COVARIANCE.')
+         if (iv(ngcov) .gt. 0) write(pu,1186) iv(ngcov)
+ 1186    format(1x,i4,' EXTRA GRAD. EVALS FOR COVARIANCE.')
+!
+ 190  if (iv(solprt) .eq. 0) go to 210
+         iv(needhd) = 1
+         g1 = iv(g)
+         write(pu,1190)
+ 1190 format('0    I      FINAL X(I)',8x,'D(I)',10x,'G(I)'/)
+         do 200 i = 1, p
+              write(pu,1200) i, x(i), d(i), v(g1)
+              g1 = g1 + 1
+ 200          continue
+ 1200    format(1x,i5,e17.6,2e14.3)
+!
+ 210  if (iv(covprt) .eq. 0) go to 999
+      cov1 = iv(covmat)
+      iv(needhd) = 1
+      if (cov1) 220, 230, 240
+ 220  if (-1 .eq. cov1) write(pu,1220)
+ 1220 format(43h0++++++ indefinite covariance matrix ++++++)
+      if (-2 .eq. cov1) write(pu,1225)
+ 1225 format(52h0++++++ oversize steps in computing covariance +++++)
+      go to 999
+!
+ 230  write(pu,1230)
+ 1230 format(45h0++++++ covariance matrix not computed ++++++)
+      go to 999
+!
+ 240  i = abs(iv(covreq))
+      if (i .le. 1) write(pu,1241)
+ 1241 format(48h0covariance = scale * h**-1 * (j**t * j) * h**-1/)
+      if (i .eq. 2) write(pu,1242)
+ 1242 format(27h0covariance = scale * h**-1/)
+      if (i .ge. 3) write(pu,1243)
+ 1243 format(36h0covariance = scale * (j**t * j)**-1/)
+      ii = cov1 - 1
+      if (ol .le. 0) go to 260
+      do 250 i = 1, p
+         i1 = ii + 1
+         ii = ii + i
+         write(pu,1250) i, (v(j), j = i1, ii)
+ 250     continue
+ 1250 format(' ROW',i3,2x,9e12.4/(9x,9e12.4))
+      go to 999
+!
+ 260  do 270 i = 1, p
+         i1 = ii + 1
+         ii = ii + i
+         write(pu,1270) i, (v(j), j = i1, ii)
+ 270     continue
+ 1270 format(' ROW',i3,2x,5e12.4/(9x,5e12.4))
+!
+ 999  return
+      end subroutine itsmry

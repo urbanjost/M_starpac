@@ -1,0 +1,63 @@
+!DOTPRD
+      real(kind=wp) function dotprd(p, x, y)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!  ***  RETURN THE INNER PRODUCT OF THE P-VECTORS X AND Y.  ***
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer
+     +   p
+!
+!  ARRAY ARGUMENTS
+      real(kind=wp) ::
+     +   x(*),y(*)
+!
+!  LOCAL SCALARS
+      real(kind=wp) ::
+     +   one,sqteta,t,zero
+      integer
+     +   i
+!
+!  EXTERNAL FUNCTIONS
+      real(kind=wp) ::
+     +   rmdcon
+      external rmdcon
+!
+!  INTRINSIC FUNCTIONS
+      intrinsic abs,max
+!
+!     INTEGER P
+!     REAL(KIND=WP) :: X(*), Y(*)
+!
+!     INTEGER I
+!     REAL(KIND=WP) :: ONE, SQTETA, T, ZERO
+!/+
+!     REAL(KIND=WP) :: MAX, ABS
+!/
+!     EXTERNAL RMDCON
+!     REAL(KIND=WP) :: RMDCON
+!
+!  ***  RMDCON(2) RETURNS A MACHINE-DEPENDENT CONSTANT, SQTETA, WHICH
+!  ***  IS SLIGHTLY LARGER THAN THE SMALLEST POSITIVE NUMBER THAT
+!  ***  CAN BE SQUARED WITHOUT UNDERFLOWING.
+!
+      data one/1.0_wp/, sqteta/0.0_wp/, zero/0.0_wp/
+!
+      dotprd = zero
+      if (p .le. 0) go to 999
+      if (sqteta .eq. zero) sqteta = rmdcon(2)
+      do 20 i = 1, p
+         t = max(abs(x(i)), abs(y(i)))
+         if (t .gt. one) go to 10
+         if (t .lt. sqteta) go to 20
+         t = (x(i)/sqteta)*y(i)
+         if (abs(t) .lt. sqteta) go to 20
+ 10      dotprd = dotprd + x(i)*y(i)
+ 20   continue
+!
+ 999  return
+      end function dotprd

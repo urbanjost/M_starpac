@@ -1,0 +1,91 @@
+      function mach(i)
+!*****************************************************************************80
+! CAN REPLACE THIS WITH AN ARRAY OF CONSTANTS OR DIRECT CALLS
+!*****************************************************************************80
+!
+!! MACH returns double precision real machine constants.
+!
+!  Discussion:
+!
+!    Assuming that the internal representation of a double precision real
+!    number is in base B, with T the number of base-B digits in the mantissa,
+!    and EMIN the smallest possible exponent and EMAX the largest possible
+!    exponent, then
+!
+!      MACH(1) = B**(EMIN-1), the smallest positive magnitude.
+!      MACH(2) = B**EMAX*(1-B**(-T)), the largest magnitude.
+!      MACH(3) = B**(-T), the smallest relative spacing.
+!      MACH(4) = B**(1-T), the largest relative spacing.
+!      MACH(5) = log10(B).
+!
+!  Modified:
+!
+!    24 April 2007
+!    14 May   2022
+!
+!  Author:
+!
+!    Phyllis Fox, Andrew Hall, Norman Schryer
+!    John S. Urban
+!
+!  Reference:
+!
+!    Phyllis Fox, Andrew Hall, Norman Schryer,
+!    Algorithm 528:
+!    Framework for a Portable Library,
+!    ACM Transactions on Mathematical Software,
+!    Volume 4, Number 2, June 1978, page 176-188.
+!
+!  Parameters:
+!
+!    Input, integer I, chooses the parameter to be returned.
+!    1 <= I <= 5.
+!
+!    Output, real ( kind = wp ) MACH, the value of the chosen parameter.
+!
+!===============================================================================
+! intrinsics
+! exponent     -  Exponent function
+! fraction     -  Fractional part of the model representation
+! nearest      -  Nearest representable number
+! rrspacing    -  Reciprocal of the relative spacing
+! scale        -  Scale a real value
+! set_exponent -  Set the exponent of the model
+!
+! spacing      -  Smallest distance between two numbers of a given type
+! digits       -  Significant digits function
+! epsilon      -  Epsilon function
+! maxexponent  -  Maximum exponent of a real kind
+! minexponent  -  Minimum exponent of a real kind
+! precision    -  Decimal precision of a real kind
+! radix        -  Base of a model number
+! range        -  Decimal exponent range of a real kind
+! tiny         -  Smallest positive number of a real kind
+! huge         -  Largest number of a kind
+!====================================================================================================================================
+      implicit none
+      integer,parameter       :: b = radix(0.0_wp)
+      integer,parameter       :: t = digits (0.0_wp )
+      real(kind=wp),parameter :: EMIN=minexponent(0.0_wp)
+      real(kind=wp),parameter :: EMAX=maxexponent(0.0_wp)
+      real ( kind = wp ) mach
+      integer i
+
+      select case(i)
+      case(1); mach = tiny(0.0_wp)               ! B**(EMIN-1), the smallest positive magnitude.
+      case(2); mach = huge(0.0_wp)               ! B**EMAX*(1-B**(-T)), the largest magnitude.
+                                                 ! calculating this by formula could cause overflow without using a larger type
+      case(3); mach = real(B,KIND=real64)**(-T)  ! B**(-T), the smallest relative spacing.
+      case(4); mach = epsilon(0.0_wp)            ! B**(1-T), the largest relative spacing.
+      case(5); mach = log10(real(B,kind=wp))     ! log10(B).
+      case default
+         write ( *, '(a)' ) ' '
+         write ( *, '(a)' ) 'MACH - Fatal error!'
+         write ( *, '(a)' ) '  The input argument I is out of bounds.'
+         write ( *, '(a)' ) '  Legal values satisfy 1 <= I <= 5.'
+         write ( *, '(a,i12)' ) '  I = ', i
+         mach = 0.0D+00
+         stop
+      end select
+
+      end function mach
