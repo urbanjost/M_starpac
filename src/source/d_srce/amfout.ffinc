@@ -16,7 +16,7 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   T975
       INTEGER
      +   IFO,N,NFCST,NFCSTO
@@ -24,19 +24,19 @@
      +   PAGE
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   F(*),FSD(*),Y(*)
       INTEGER
      +   IFCSTO(*)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   FL,FU,SCALE,YMN,YMX
       INTEGER
      +   I,IEND,IF,ILIM,INTER,IPF,IPFL,IPFU,IPRT,IPY,IY,J
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   YLIM(4)
       CHARACTER
      +   LINE(53)*1
@@ -49,13 +49,13 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION F(NFCST)
+!     REAL(KIND=WP) :: F(NFCST)
 !        THE FORECASTS.
-!     DOUBLE PRECISION FL
+!     REAL(KIND=WP) :: FL
 !        THE LOWER 95 PERCENT CONFIDENCE LIMIT FOR THE FORECAST
-!     DOUBLE PRECISION FSD(NFCST)
+!     REAL(KIND=WP) :: FSD(NFCST)
 !        THE STANDARD DEVIATIONS OF THE FORECASTS.
-!     DOUBLE PRECISION FU
+!     REAL(KIND=WP) :: FU
 !        THE UPPER 95 PERCENT CONFIDENCE LIMIT FOR THE FORECAST
 !     INTEGER I
 !        AN INDEX VARIABLE.
@@ -98,18 +98,18 @@
 !     LOGICAL PAGE
 !        THE VARIABLE USED TO INDICATE WHETHER A GIVEN SECTION OF
 !        THE OUTPUT IS TO BEGIN ON A NEW PAGE (TRUE) OR NOT (FALSE).
-!     DOUBLE PRECISION SCALE
+!     REAL(KIND=WP) :: SCALE
 !        THE PLOT SCALE.
-!     DOUBLE PRECISION T975
+!     REAL(KIND=WP) :: T975
 !        THE VALUE OF THE 97.5 PERCENT POINT FUNCTION FOR THE
 !        T DISTRIBUTION.
-!     DOUBLE PRECISION Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        THE DEPENDENT VARIABLE.
-!     DOUBLE PRECISION YLIM(4)
+!     REAL(KIND=WP) :: YLIM(4)
 !        THE VALUES OF THE AXIS LABELS.
-!     DOUBLE PRECISION YMN
+!     REAL(KIND=WP) :: YMN
 !        THE MINIMUM VALUE TO BE PLOTTED.
-!     DOUBLE PRECISION YMX
+!     REAL(KIND=WP) :: YMX
 !        THE MAXIMUM VALUE TO BE PLOTTED.
 !
 !     SET VARIABLES FOR PLOTS
@@ -145,7 +145,7 @@
 !     PRINT PLOT HEADINGS
 !
       DO 30 I = 1, ILIM
-        YLIM(I) = YMN + SCALE*I*10.0D0
+        YLIM(I) = YMN + SCALE*I*10.0E0_WP
    30 CONTINUE
 !
       CALL AMFHDR(PAGE, .TRUE., 0)
@@ -166,7 +166,7 @@
    50      CONTINUE
          END IF
          IF (I.LE.IFCSTO(IFO)) THEN
-           IPY = INT(((Y(I)-YMN) / SCALE) + 1.5D0)
+           IPY = INT(((Y(I)-YMN) / SCALE) + 1.5D0_WP)
            LINE(IPY) = '*'
            WRITE (IPRT, 1020) I, (LINE(J),J=1,IEND), I, Y(I)
          ELSE
@@ -174,16 +174,16 @@
            FL = F(IF) - T975*FSD(IF)
            FU = F(IF) + T975*FSD(IF)
            IF (I.LE.N) THEN
-             IPFL = INT(((FL-YMN) / SCALE) + 1.5D0)
-             IPFU = INT(((FU-YMN) / SCALE) + 1.5D0)
+             IPFL = INT(((FL-YMN) / SCALE) + 1.5D0_WP)
+             IPFU = INT(((FU-YMN) / SCALE) + 1.5D0_WP)
              DO 60 J = IPFL, IPFU
                LINE(J) = '-'
    60        CONTINUE
              LINE(IPFL) = '('
              LINE(IPFU) = ')'
-             IPY = INT(((Y(I)-YMN) / SCALE) + 1.5D0)
+             IPY = INT(((Y(I)-YMN) / SCALE) + 1.5D0_WP)
              LINE(IPY) = '*'
-             IPF = INT(((F(IF)-YMN) / SCALE) + 1.5D0)
+             IPF = INT(((F(IF)-YMN) / SCALE) + 1.5D0_WP)
              IF (IPF.NE.IPY) THEN
                LINE(IPF) = 'X'
              ELSE
@@ -192,14 +192,14 @@
              WRITE (IPRT, 1010) I, (LINE(J),J=1,IEND), I,
      +         F(IF), FL, FU, Y(I)
            ELSE
-             IPFL = INT(((FL-YMN) / SCALE) + 1.5D0)
-             IPFU = INT(((FU-YMN) / SCALE) + 1.5D0)
+             IPFL = INT(((FL-YMN) / SCALE) + 1.5D0_WP)
+             IPFU = INT(((FU-YMN) / SCALE) + 1.5D0_WP)
              DO 70 J = IPFL, IPFU
                LINE(J) = '-'
    70        CONTINUE
              LINE(IPFL) = '('
              LINE(IPFU) = ')'
-             IPF = INT(((F(IF)-YMN) / SCALE) + 1.5D0)
+             IPF = INT(((F(IF)-YMN) / SCALE) + 1.5D0_WP)
              LINE(IPF) = 'X'
              WRITE (IPRT, 1010) I, (LINE(J),J=1,IEND), I,
      +         F(IF), FL, FU

@@ -1,5 +1,6 @@
 !XUAS
-      SUBROUTINE XUAS(LDSTAK)
+      SUBROUTINE XUAS(LDSTAK,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -27,16 +28,16 @@
      +   IERR
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   FMAX,FMIN,YMISS
       INTEGER
      +   I,IAR,IPRT,LACOV,LAG,LAGMAX,LDS,LYFFT,NF,NPRT,NY
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   ACOV(101),FREQ(300),PHI(101),SPCA(101),SPCF(101),Y(150),
      +   YFFT(400)
 !
@@ -52,14 +53,14 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION ACOV(101)
+!     REAL(KIND=WP) :: ACOV(101)
 !        THE AUTOCOVARIANCE VECTOR.
-!     DOUBLE PRECISION DSTAK(12)
+!     REAL(KIND=WP) :: DSTAK(12)
 !        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
-!     DOUBLE PRECISION FMAX, FMIN
+!     REAL(KIND=WP) :: FMAX, FMIN
 !        THE MAXIMUM AND MINIMUM FREQUENCIES AT WHICH THE
 !        SPECTRUM IS TO BE COMPUTED.
-!     DOUBLE PRECISION FREQ(300)
+!     REAL(KIND=WP) :: FREQ(300)
 !        THE VECTOR OF FREQUENCIES AT WHICH THE SPECTRUM IS COMPUTED.
 !     INTEGER I
 !        AN INDEX VARIABLE
@@ -92,20 +93,20 @@
 !        NPRT > 0 THE PLOT IS LOG/LINEAR
 !     INTEGER NY
 !        THE NUMBER OF OBSERVATIONS IN THE SERIES Y.
-!     DOUBLE PRECISION PHI(101)
+!     REAL(KIND=WP) :: PHI(101)
 !        THE VECTOR OF THE ORDER IAR AUTOREGRESSIVE MODEL COEFFICIENTS.
-!     DOUBLE PRECISION SPCA(101)
+!     REAL(KIND=WP) :: SPCA(101)
 !        THE ARRAYS IN WHICH THE AUTOREGRESSIVE SPECTRUM IS STORED
 !        FOR EACH LAG WINDOW.
-!     DOUBLE PRECISION SPCF(101)
+!     REAL(KIND=WP) :: SPCF(101)
 !        THE ARRAYS IN WHICH THE FOURIER SPECTRUM IS STORED
 !        FOR EACH LAG WINDOW.
-!     DOUBLE PRECISION Y(150)
+!     REAL(KIND=WP) :: Y(150)
 !         THE ARRAY CONTAINING THE TIME SERIES FROM JENKINS AND WATTS.
-!     DOUBLE PRECISION YFFT(400)
+!     REAL(KIND=WP) :: YFFT(400)
 !        THE VECTOR OF THE OBSERVED TIME SERIES TO BE ANALYZED USING
 !        THE FFT.
-!     DOUBLE PRECISION YMISS
+!     REAL(KIND=WP) :: YMISS
 !        THE USER SUPPLIED CODE WHICH IS USED TO DETERMINE WHETHER OR
 !        NOT AN OBSERVATION IN THE SERIES IS MISSING.  IF Y(I) = YMISS,
 !        THE VALUE IS ASSUMED MISSING, OTHERWISE IT IS NOT.
@@ -114,19 +115,19 @@
       DATA   Y(  1), Y(  2), Y(  3), Y(  4), Y(  5), Y(  6)
      +    /-0.88D0, -0.12D0, -0.89D0, -1.38D0, -0.07D0,  1.03D0/
       DATA   Y(  7), Y(  8), Y(  9), Y( 10), Y( 11), Y( 12)
-     +    / 2.14D0,  0.35D0, -1.10D0, -1.78D0, -2.76D0, -1.77D0/
+     +    / 2.14D0,  0.35D0, -1.10E0_WP, -1.78D0, -2.76D0, -1.77D0/
       DATA   Y( 13), Y( 14), Y( 15), Y( 16), Y( 17), Y( 18)
-     +    / 0.98D0,  1.00D0, -0.70D0, -1.01D0, -1.30D0, -0.85D0/
+     +    / 0.98D0,  1.00E0_WP, -0.70E0_WP, -1.01D0, -1.30E0_WP, -0.85D0/
       DATA   Y( 19), Y( 20), Y( 21), Y( 22), Y( 23), Y( 24)
      +    /-0.46D0,  1.63D0,  0.06D0, -0.17D0, -1.01D0, -1.04D0/
       DATA   Y( 25), Y( 26), Y( 27), Y( 28), Y( 29), Y( 30)
-     +    /-0.66D0, -1.12D0, -0.51D0, -0.71D0, -0.20D0, -0.13D0/
+     +    /-0.66D0, -1.12D0, -0.51D0, -0.71D0, -0.20E0_WP, -0.13D0/
       DATA   Y( 31), Y( 32), Y( 33), Y( 34), Y( 35), Y( 36)
-     +    / 0.14D0,  1.59D0, -0.76D0, -1.08D0, -1.77D0, -1.20D0/
+     +    / 0.14D0,  1.59D0, -0.76D0, -1.08D0, -1.77D0, -1.20E0_WP/
       DATA   Y( 37), Y( 38), Y( 39), Y( 40), Y( 41), Y( 42)
      +    / 0.45D0, -0.07D0, -0.63D0, -0.35D0, -0.87D0, -0.62D0/
       DATA   Y( 43), Y( 44), Y( 45), Y( 46), Y( 47), Y( 48)
-     +    / 0.28D0,  1.90D0,  2.14D0,  1.05D0,  0.31D0,  1.07D0/
+     +    / 0.28D0,  1.90E0_WP,  2.14D0,  1.05D0,  0.31D0,  1.07D0/
       DATA   Y( 49), Y( 50)
      +    / 2.67D0,  2.44D0/
 !
@@ -147,7 +148,7 @@
       LYFFT = -11
       NF = -5
       FMIN = 0.5D0
-      FMAX = 0.0D0
+      FMAX = 0.0E0_WP
       NPRT = -1
       LDS = 0
       WRITE(IPRT, 1001)
@@ -180,12 +181,12 @@
       LAGMAX = 50
       LAG = 101
       IAR = 101
-      CALL SETRV(PHI, IAR, 2.0D0)
-      CALL SETRV(ACOV, LAGMAX+1, 2.0D0)
-      ACOV(1) = 1.0D0
+      CALL SETRV(PHI, IAR, 2.0E0_WP)
+      CALL SETRV(ACOV, LAGMAX+1, 2.0E0_WP)
+      ACOV(1) = 1.0E0_WP
       LYFFT = -11
       NF = 51
-      FMIN = 0.0D0
+      FMIN = 0.0E0_WP
       FMAX = 0.5D0
       NPRT = 5
       LDS = 0
@@ -217,11 +218,11 @@
       LYFFT = 400
       LAG = 16
       IAR = 2
-      PHI(1) = 1.0D0
+      PHI(1) = 1.0E0_WP
       PHI(2) = -0.5D0
       CALL ACFS (Y, NY, LAGMAX, LACOV, ACOV, IAR, PHI, 0, 700)
       NF = 51
-      FMIN = 0.0D0
+      FMIN = 0.0E0_WP
       FMAX = 0.5D0
       NPRT = 3
       LDS = 0
@@ -249,10 +250,10 @@
       LYFFT = 400
       LAG = 16
       IAR = 2
-      PHI(1) = 1.0D0
+      PHI(1) = 1.0E0_WP
       PHI(2) = -0.5D0
       NF = 51
-      FMIN = 0.0D0
+      FMIN = 0.0E0_WP
       FMAX = 0.5D0
       NPRT = 2
       LDS = 700
@@ -330,10 +331,10 @@
       LYFFT = 400
       LAG = 1
       IAR = -1
-      PHI(1) = 1.0D0
+      PHI(1) = 1.0E0_WP
       PHI(2) = -0.5D0
       NF = 1
-      FMIN = 0.0D0
+      FMIN = 0.0E0_WP
       FMAX = 0.5D0
       NPRT = 2
       LDS = LDSTAK
@@ -366,7 +367,7 @@
       LYFFT = 400
       LAG = 0
       IAR = 0
-      PHI(1) = 1.0D0
+      PHI(1) = 1.0E0_WP
       PHI(2) = -0.5D0
       NF = 51
       FMIN = 0.45D0
@@ -390,16 +391,16 @@
 !     WHITE NOISE SPECTRUM
 !
       YMISS = 1.16D0
-      CALL SETRV(YFFT, NY, 0.0D0)
+      CALL SETRV(YFFT, NY, 0.0E0_WP)
       NY = 50
       LAGMAX = 49
       LYFFT = 400
       LAG = 16
       IAR = 2
-      PHI(1) = 1.0D0
+      PHI(1) = 1.0E0_WP
       PHI(2) = -0.5D0
       NF = 51
-      FMIN = 0.0D0
+      FMIN = 0.0E0_WP
       FMAX = 0.5D0
       NPRT = 2
 !
@@ -425,7 +426,7 @@
       LYFFT = 400
       LAG = 0
       IAR = 0
-      PHI(1) = 1.0D0
+      PHI(1) = 1.0E0_WP
       PHI(2) = -0.5D0
       NF = 51
       FMIN = 0.45D0

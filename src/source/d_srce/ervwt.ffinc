@@ -27,7 +27,7 @@
      +   ERROR,HEAD
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   WT(*)
       CHARACTER
      +   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1
@@ -74,7 +74,7 @@
 !        THE MINIMUM NUMBER OF NONZERO WEIGHTS WHICH IS ACCEPTABLE.
 !     INTEGER NZW
 !        THE NUMBER OF ZERO WEIGHTS.
-!     DOUBLE PRECISION WT(N)
+!     REAL(KIND=WP) :: WT(N)
 !        THE WEIGHT VECTOR.
 !
       ERROR = .FALSE.
@@ -85,8 +85,8 @@
 !
       NZW = 0
       DO 10 I = 1, N
-         IF (WT(I) .LT. 0.0D0) GO TO 20
-         IF (WT(I) .EQ. 0.0D0) NZW = NZW + 1
+         IF (WT(I) .LT. 0.0E0_WP) GO TO 20
+         IF (WT(I) .EQ. 0.0E0_WP) NZW = NZW + 1
    10 CONTINUE
 !
       NNZW = N - NZW

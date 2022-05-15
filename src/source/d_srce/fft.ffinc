@@ -70,11 +70,11 @@
      +   ISN,N,NSPAN,NTOT
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   A(*),B(*)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   AA,AJ,AJM,AJP,AK,AKM,AKP,BB,BJ,BJM,BJP,BK,BKM,BKP,C1,C2,C3,
      +   C72,CD,RAD,RADF,S1,S120,S2,S3,S72,SD
       INTEGER
@@ -82,7 +82,7 @@
      +   KT,M,MAXF,MAXP,NN,NT
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   AT(MAXF1),BT(MAXF1),CK(MAXF1),SK(MAXF1)
       INTEGER
      +   NFAC(11),NP(MAXP1)
@@ -115,11 +115,11 @@
       K4 = 0
 !
       INC = ISN
-      RAD = 8.0D0*ATAN(1.0D0)
-      S72 = RAD/5.0D0
+      RAD = 8.0E0_WP*ATAN(1.0E0_WP)
+      S72 = RAD/5.0E0_WP
       C72 = COS(S72)
       S72 = SIN(S72)
-      S120 = SQRT(0.75D0)
+      S120 = SQRT(0.75D0_WP)
       IF (ISN.GE.0) GO TO 10
       S72 = -S72
       S120 = -S120
@@ -130,7 +130,7 @@
       KSPAN = KS
       NN = NT - INC
       JC = KS/N
-      RADF = RAD*JC*0.5D0
+      RADF = RAD*JC*0.5D0_WP
       I = 0
       JF = 0
 !  DETERMINE THE FACTORS OF N
@@ -176,7 +176,7 @@
       IF (J.NE.0) GO TO 110
 !  COMPUTE FOURIER TRANSFORM
   120 SD = RADF/KSPAN
-      CD = 2.0D0*SIN(SD)**2
+      CD = 2.0E0_WP*SIN(SD)**2
       SD = SIN(SD+SD)
       KK = 1
       I = I + 1
@@ -196,7 +196,7 @@
       KK = KK - NN
       IF (KK.LE.JC) GO TO 130
       IF (KK.GT.KSPAN) GO TO 360
-  140 C1 = 1.0D0 - CD
+  140 C1 = 1.0E0_WP - CD
       S1 = SD
   150 K2 = KK + KSPAN
       AK = A(KK) - A(K2)
@@ -214,7 +214,7 @@
       AK = C1 - (CD*C1+SD*S1)
       S1 = (SD*C1-CD*S1) + S1
 !  THE FOLLOWING THREE STATEMENTS COMPENSATE FOR TRUNCATION ERROR
-      C1 = 0.5D0/(AK**2+S1**2) + 0.5D0
+      C1 = 0.5D0_WP/(AK**2+S1**2) + 0.5D0_WP
       S1 = C1*S1
       C1 = C1*AK
       KK = KK + JC
@@ -232,8 +232,8 @@
       BJ = B(K1) + B(K2)
       A(KK) = AK + AJ
       B(KK) = BK + BJ
-      AK = -0.5D0*AJ + AK
-      BK = -0.5D0*BJ + BK
+      AK = -0.5D0_WP*AJ + AK
+      BK = -0.5D0_WP*BJ + BK
       AJ = (A(K1)-A(K2))*S120
       BJ = (B(K1)-B(K2))*S120
       A(K1) = AK - BJ
@@ -249,7 +249,7 @@
   170 IF (NFAC(I).NE.4) GO TO 260
       KSPNN = KSPAN
       KSPAN = KSPAN/4
-  180 C1 = 1.0D0
+  180 C1 = 1.0E0_WP
       S1 = 0
   190 K1 = KK + KSPAN
       K2 = K1 + KSPAN
@@ -271,7 +271,7 @@
       AKM = AKM + BJM
       BKP = BKM + AJM
       BKM = BKM - AJM
-      IF (S1.EQ.0.0D0) GO TO 230
+      IF (S1.EQ.0.0E0_WP) GO TO 230
   200 A(K1) = AKP*C1 - BKP*S1
       B(K1) = AKP*S1 + BKP*C1
       A(K2) = AJP*C2 - BJP*S2
@@ -282,11 +282,11 @@
       IF (KK.LE.NT) GO TO 190
   210 C2 = C1 - (CD*C1+SD*S1)
       S1 = (SD*C1-CD*S1) + S1
-      C1 = 0.5D0/(C2**2+S1**2) + 0.5D0
+      C1 = 0.5D0_WP/(C2**2+S1**2) + 0.5D0_WP
       S1 = C1*S1
       C1 = C1*C2
       C2 = C1**2 - S1**2
-      S2 = 2.0D0*C1*S1
+      S2 = 2.0E0_WP*C1*S1
       C3 = C2*C1 - S2*S1
       S3 = C2*S1 + S2*C1
       KK = KK - NT + JC
@@ -299,7 +299,7 @@
       AKM = AKM - BJM
       BKP = BKM - AJM
       BKM = BKM + AJM
-      IF (S1.NE.0.0D0) GO TO 200
+      IF (S1.NE.0.0E0_WP) GO TO 200
   230 A(K1) = AKP
       B(K1) = BKP
       A(K2) = AJP
@@ -311,7 +311,7 @@
       GO TO 210
 !  TRANSFORM FOR FACTOR OF 5 (OPTIONAL CODE)
   240 C2 = C72**2 - S72**2
-      S2 = 2.0D0*C72*S72
+      S2 = 2.0E0_WP*C72*S72
   250 K1 = KK + KSPAN
       K2 = K1 + KSPAN
       K3 = K2 + KSPAN
@@ -361,8 +361,8 @@
       C1 = COS(S1)
       S1 = SIN(S1)
       IF (JF.GT.MAXF) GO TO 590
-      CK(JF) = 1.0D0
-      SK(JF) = 0.0D0
+      CK(JF) = 1.0E0_WP
+      SK(JF) = 0.0E0_WP
       J = 1
   270 CK(J) = CK(K)*C1 + SK(K)*S1
       SK(J) = CK(K)*S1 - SK(K)*C1
@@ -400,8 +400,8 @@
       JJ = J
       AK = AA
       BK = BB
-      AJ = 0.0D0
-      BJ = 0.0D0
+      AJ = 0.0E0_WP
+      BJ = 0.0E0_WP
       K = 1
   310 K = K + 1
       AK = AT(K)*CK(JJ) + AK
@@ -426,7 +426,7 @@
 !  MULTIPLY BY ROTATION FACTOR (EXCEPT FOR FACTORS OF 2 AND 4)
   320 IF (I.EQ.M) GO TO 360
       KK = JC + 1
-  330 C2 = 1.0D0 - CD
+  330 C2 = 1.0E0_WP - CD
       S1 = SD
   340 C1 = C2
       S2 = S1
@@ -443,7 +443,7 @@
       IF (KK.LE.KSPNN) GO TO 350
       C2 = C1 - (CD*C1+SD*S1)
       S1 = S1 + (SD*C1-CD*S1)
-      C1 = 0.5D0/(C2**2+S1**2) + 0.5D0
+      C1 = 0.5D0_WP/(C2**2+S1**2) + 0.5D0_WP
       S1 = C1*S1
       C2 = C1*C2
       KK = KK - KSPNN + JC

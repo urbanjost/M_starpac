@@ -26,9 +26,10 @@
      +   i,j,jbar,k,k1,minum,mk1
 !
 !  EXTERNAL FUNCTIONS
+!     REAL(KIND=WP) :: RMDCON
       real(kind=wp) ::
-     +   dotprd,rmdcon,v2norm
-      external dotprd,rmdcon,v2norm
+     +   dotprd,v2norm
+      external dotprd,v2norm
 !
 !  EXTERNAL SUBROUTINES
       external vaxpy,vscopy
@@ -48,8 +49,8 @@
 !     INTEGER MIN
 !     REAL(KIND=WP) ::             ABS,SQRT
 !/
-!     EXTERNAL DOTPRD, RMDCON, VAXPY, VSCOPY, V2NORM
-!     REAL(KIND=WP) :: DOTPRD, RMDCON, V2NORM
+!     EXTERNAL DOTPRD, VAXPY, VSCOPY, V2NORM
+!     REAL(KIND=WP) :: DOTPRD, V2NORM
 ! DOTPRD... RETURNS INNER PRODUCT OF TWO VECTORS.
 ! RMDCON... RETURNS MACHINE-DEPENDENT CONSTANTS.
 ! VAXPY... COMPUTES SCALAR TIMES ONE VECTOR PLUS ANOTHER.
@@ -161,8 +162,8 @@
       data rktol/0.0_wp/, ufeta/0.0_wp/
 !     *****BODY OF PROGRAM.
       if (ufeta .gt. zero) go to 10
-         ufeta = rmdcon(1)
-         rktol = rmdcon(4)
+         ufeta = rmdcon(1,typ=0.0_wp)
+         rktol = rmdcon(4,typ=0.0_wp)
    10 ierr = 0
       rktol1 = p01 * rktol
 !

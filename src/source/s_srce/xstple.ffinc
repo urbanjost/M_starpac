@@ -1,5 +1,6 @@
 !XSTPLE
-      SUBROUTINE XSTPLE(LDSTAK)
+      SUBROUTINE XSTPLE(LDSTAK,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !

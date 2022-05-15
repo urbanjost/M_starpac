@@ -16,7 +16,7 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   RSS
       INTEGER
      +   N,NNZW
@@ -24,7 +24,7 @@
      +   WEIGHT
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   PV(N),RES(N),SDRES(N),WT(N)
 !
 !  SCALARS IN COMMON
@@ -32,7 +32,7 @@
      +   IERR
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   ANNZW,DOT,FAC1,FAC2,FPLM,GAMMA,PI,PVDIV,PVMAX,PVMID,PVMIN,
      +   RATIO,ROWDIV,ROWMAX,ROWMID,ROWMIN,W,XDIV,XMAX,XMIN,YLABEL,
      +   YMAX,YMIN
@@ -47,7 +47,7 @@
      +   LINE(102)*1
 !
 !  EXTERNAL FUNCTIONS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   D1MACH
       LOGICAL
      +   MVCHK
@@ -64,16 +64,16 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION ANNZW
+!     REAL(KIND=WP) :: ANNZW
 !        THE NUMBER OF NONZERO WEIGHTS, USED IN COMPUTING
 !        THE NORMAL PROBABILITY PLOT.
-!     DOUBLE PRECISION DOT
+!     REAL(KIND=WP) :: DOT
 !        ...
-!     DOUBLE PRECISION FAC1, FAC2
+!     REAL(KIND=WP) :: FAC1, FAC2
 !        FACTORS USED IN COMPUTING THE NORMAL PROBABILITY PLOT.
-!     DOUBLE PRECISION FPLM
+!     REAL(KIND=WP) :: FPLM
 !        THE FLOATING POINT LARGEST MAGNITUDE.
-!     DOUBLE PRECISION GAMMA
+!     REAL(KIND=WP) :: GAMMA
 !        A VALUE USED IN COMPUTING THE NORMAL PROBABILITY PLOT.
 !     INTEGER I
 !        AN INDEX VARIABLE.
@@ -128,52 +128,52 @@
 !        THE NUMBER OF NON ZERO WEIGHTS.
 !     INTEGER NROW
 !        THE NUMBER OF COLUMNS IN THE PLOT.
-!     DOUBLE PRECISION PI
+!     REAL(KIND=WP) :: PI
 !        THE VALUE OF PI.
-!     DOUBLE PRECISION PV(N)
+!     REAL(KIND=WP) :: PV(N)
 !        THE PREDICTED VALUE BASED ON THE CURRENT COEFFICIENT ESTIMATES
-!     DOUBLE PRECISION PVDIV
+!     REAL(KIND=WP) :: PVDIV
 !        THE VALUE OF A DIVISION ALONG THE -PREDICTED VALUE- AXIS.
-!     DOUBLE PRECISION PVMAX
+!     REAL(KIND=WP) :: PVMAX
 !        THE LARGEST VALUE IN THE VECTOR PV.
-!     DOUBLE PRECISION PVMID
+!     REAL(KIND=WP) :: PVMID
 !        THE MIDPOINT OF THE RANGE OF VALUES IN THE VECTOR PV.
-!     DOUBLE PRECISION PVMIN
+!     REAL(KIND=WP) :: PVMIN
 !        THE SMALLEST VALUE IN THE VECTOR PV.
-!     DOUBLE PRECISION RATIO
+!     REAL(KIND=WP) :: RATIO
 !        A VALUE USED TO PRODUCE THE NORMAL PROBABILITY PLOT.
-!     DOUBLE PRECISION RES(N)
+!     REAL(KIND=WP) :: RES(N)
 !        THE RESIDUALS FROM THE FIT.
-!     DOUBLE PRECISION ROWDIV
+!     REAL(KIND=WP) :: ROWDIV
 !        THE VALUE OF A DIVISION ALONG THE -ROW- AXIS.
-!     DOUBLE PRECISION ROWMAX
+!     REAL(KIND=WP) :: ROWMAX
 !        THE LARGEST ROW VALUE.
-!     DOUBLE PRECISION ROWMID
+!     REAL(KIND=WP) :: ROWMID
 !        THE MIDPOINT OF THE RANGE OF THE ROWS PLOTTED.
-!     DOUBLE PRECISION ROWMIN
+!     REAL(KIND=WP) :: ROWMIN
 !        THE SMALLEST ROW VALUE PLOTTED.
-!     DOUBLE PRECISION RSS
+!     REAL(KIND=WP) :: RSS
 !        THE RESIDUAL SUM OF SQUARES.
-!     DOUBLE PRECISION SDRES(N)
+!     REAL(KIND=WP) :: SDRES(N)
 !        THE STANDARD DEVIATIONS OF THE RESIDUALS.
-!     DOUBLE PRECISION W
+!     REAL(KIND=WP) :: W
 !        THE VALUE OF THE WEIGHT FOR THE CURRENT VALUE BEING PLOTTED.
 !     LOGICAL WEIGHT
 !        THE VARIABLE USED TO INDICATE WHETHER WEIGHTED ANALYSIS IS TO
 !        BE PERFORMED (TRUE) OR NOT (FALSE).
-!     DOUBLE PRECISION WT(N)
+!     REAL(KIND=WP) :: WT(N)
 !        THE USER SUPPLIED WEIGHTS.
-!     DOUBLE PRECISION XDIV
+!     REAL(KIND=WP) :: XDIV
 !        THE VALUE OF A DIVISION ALONG THE X AXIS.
-!     DOUBLE PRECISION XMAX
+!     REAL(KIND=WP) :: XMAX
 !        THE LARGEST VALUE ALONG THE X AXIS.
-!     DOUBLE PRECISION XMIN
+!     REAL(KIND=WP) :: XMIN
 !        THE SMALLEST VALUE ALONG THE X AXIS.
-!     DOUBLE PRECISION YLABEL
+!     REAL(KIND=WP) :: YLABEL
 !        THE LABEL TO BE PRINTED ALONG THE Y AXIS.
-!     DOUBLE PRECISION YMAX
+!     REAL(KIND=WP) :: YMAX
 !        THE LARGEST VALUE ALONG THE Y AXIS
-!     DOUBLE PRECISION YMIN
+!     REAL(KIND=WP) :: YMIN
 !        THE SMALLEST VALUE ALONG THE Y AXIS.
 !
       DATA IPLUS/'+'/, IMINUS/'-'/, ISTAR/'*'/, IBLANK/' '/
@@ -196,10 +196,10 @@
 !     INITIALIZE VARIABLES FOR PROBABILITY PLOT
 !
       CALL GETPI(PI)
-      GAMMA = PI/8.0D0
+      GAMMA = PI/8.0E0_WP
       ANNZW = NNZW
-      FAC1 = 1.0D0 / (ANNZW - 2.0D0*GAMMA + 1.0D0)
-      FAC2 = 10.0D0
+      FAC1 = 1.0E0_WP / (ANNZW - 2.0E0_WP*GAMMA + 1.0E0_WP)
+      FAC2 = 10.0E0_WP
 !
 !     INITIALIZE THE PLOT SIZE (IN PLOT UNITS)
 !
@@ -214,7 +214,7 @@
       IFIRST = 1
       IF (.NOT. WEIGHT) GO TO 20
       DO 10 I=1,N
-         IF (WT(I).LE.0.0D0) GO TO 10
+         IF (WT(I).LE.0.0E0_WP) GO TO 10
          IFIRST = I
          GO TO 20
    10 CONTINUE
@@ -231,9 +231,9 @@
       PVMAX = PV(IFIRST)
       ROWMAX = IFIRST
       DO 30 I=IFIRST,N
-         W = 1.0D0
+         W = 1.0E0_WP
          IF (WEIGHT) W = WT(I)
-         IF (W.GT.0.0D0) THEN
+         IF (W.GT.0.0E0_WP) THEN
             ROWMAX = I
             IF (PV(I).LT.PVMIN) PVMIN = PV(I)
             IF (PV(I).GT.PVMAX) PVMAX = PV(I)
@@ -241,18 +241,18 @@
    30 CONTINUE
 !
       IF (PVMIN.LT.PVMAX) GO TO 35
-         IF (PVMIN.EQ.0.0D0) GO TO 33
-            PVMIN = PVMIN - PVMIN/2.0D0
-            PVMAX = PVMAX + PVMAX/2.0D0
+         IF (PVMIN.EQ.0.0E0_WP) GO TO 33
+            PVMIN = PVMIN - PVMIN/2.0E0_WP
+            PVMAX = PVMAX + PVMAX/2.0E0_WP
          GO TO 35
    33    CONTINUE
-            PVMIN = -0.5D0
-            PVMAX = 0.5D0
+            PVMIN = -0.5D0_WP
+            PVMAX = 0.5D0_WP
    35 CONTINUE
 !
-      ROWMID = (ROWMAX+ROWMIN)/2.0D0
+      ROWMID = (ROWMAX+ROWMIN)/2.0E0_WP
       ROWDIV = (ROWMAX-ROWMIN)/(NCOL-1)
-      PVMID = (PVMAX+PVMIN)/2.0D0
+      PVMID = (PVMAX+PVMIN)/2.0E0_WP
       PVDIV = (PVMAX-PVMIN)/(NCOL-1)
 !
 !     PRINT TITLES FOR FIRST PLOTS
@@ -267,8 +267,8 @@
 !     SET AXIS LIMITS FOR THE STANDARDIZED RESIDUALS VS
 !     STANDARDIZED RESIDUALS LAGED BY ONE AND FOR PROBABILITY PLOT
 !
-      XMIN = -3.75D0
-      XMAX = 3.75D0
+      XMIN = -3.75D0_WP
+      XMAX = 3.75D0_WP
       XDIV = (XMAX-XMIN)/(NCOL-1)
 !
 !     PRINT TITLES FOR SECOND PLOTS
@@ -281,12 +281,12 @@
 !
 !     PRINT PLOTS, ONE LINE AT A TIME
 !
-      YLABEL = 3.75D0
+      YLABEL = 3.75D0_WP
       YMAX = FPLM
-      YMIN = 4.05D0
+      YMIN = 4.05D0_WP
       DO 160 K=1,NROW
-         YMIN = YMIN - 0.3D0
-         IF (-3.70D0.GE.YMIN) YMIN = -FPLM
+         YMIN = YMIN - 0.3D0_WP
+         IF (-3.70E0_WP.GE.YMIN) YMIN = -FPLM
          DO 100 L=1,NCOL
             NCOLPL = L + NCOL
             LINE(L) = IBLANK
@@ -302,31 +302,31 @@
             IF (WEIGHT) THEN
                W = WT(I)
             ELSE
-               W = 1.0D0
+               W = 1.0E0_WP
             END IF
-            IF ((W.NE.0.0D0) .AND. (.NOT.MVCHK(SDRES(I),FPLM))) THEN
+            IF ((W.NE.0.0E0_WP) .AND. (.NOT.MVCHK(SDRES(I),FPLM))) THEN
                IF ((SDRES(I).GT.YMIN) .AND. (SDRES(I).LE.YMAX)) THEN
                   IF (IPLOT.EQ.1) THEN
 !
 !     SET PLOT LINE FOR FIRST SET OF PLOTS
 !
-                     IROW = INT(((I-ROWMIN)/ROWDIV)+1.5D0)
+                     IROW = INT(((I-ROWMIN)/ROWDIV)+1.5D0_WP)
                      LINE(IROW) = ISTAR
-                     IPV = INT((PV(I)-PVMIN)/PVDIV+1.5D0) + NCOL
+                     IPV = INT((PV(I)-PVMIN)/PVDIV+1.5D0_WP) + NCOL
                      LINE(IPV) = ISTAR
                   ELSE
 !
 !     SET PLOT LINE FOR PROBABILITY PLOT
 !
                      RATIO = (ANNZW-GAMMA) * FAC1
-                     IPRB = INT(4.91D0*(RATIO**0.14D0-
-     +                         (1.0D0-RATIO)**0.14D0)*FAC2) + 77
+                     IPRB = INT(4.91D0_WP*(RATIO**0.14D0_WP-
+     +                         (1.0E0_WP-RATIO)**0.14D0_WP)*FAC2) + 77
                      IF (IPRB.LE.NCOL) IPRB = NCOL+1
                      IF (IPRB.GE.103) IPRB = 102
                      LINE(IPRB) = ISTAR
-                     ANNZW = ANNZW - 1.0D0
-                     IF ((ANNZW.LT.2.0D0) .AND. (NNZW.LE.10)) THEN
-                        GAMMA = 1.0D0/3.0D0
+                     ANNZW = ANNZW - 1.0E0_WP
+                     IF ((ANNZW.LT.2.0E0_WP) .AND. (NNZW.LE.10)) THEN
+                        GAMMA = 1.0E0_WP/3.0E0_WP
                      END IF
                   END IF
                END IF
@@ -337,12 +337,12 @@
 !
          IF (IPLOT.EQ.2) THEN
             IF (K.LE.N-1) THEN
-              DOT = 0.0D0
+              DOT = 0.0E0_WP
               IF (WEIGHT) THEN
                 NDOT = 0
                 DO 120 IDOT = 1, N-K
-                  IF ((WT(IDOT).GT.0.0D0) .AND.
-     +                (WT(IDOT+K).GT.0.0D0)) THEN
+                  IF ((WT(IDOT).GT.0.0E0_WP) .AND.
+     +                (WT(IDOT+K).GT.0.0E0_WP)) THEN
                     NDOT = NDOT + 1
                     DOT = DOT + RES(IDOT)*RES(IDOT+K)
                   END IF

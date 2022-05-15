@@ -22,7 +22,7 @@
      +   ERROR,HEAD
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   H(*)
       CHARACTER
      +   NMSUB(6)*1,NMVAR(8)*1
@@ -39,7 +39,7 @@
 !     LOGICAL ERROR
 !        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
 !        (FALSE).
-!     DOUBLE PRECISION H(K)
+!     REAL(KIND=WP) :: H(K)
 !         THE VECTOR OF FILTER COEFFICIENTS.
 !     LOGICAL HEAD
 !        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
@@ -73,7 +73,7 @@
       NZERO = 0
       DO 10 IHM = 1, KHALF
          IHP = K + 1 - IHM
-         IF (H(IHM) .EQ. 0.0D0) NZERO = NZERO + 1
+         IF (H(IHM) .EQ. 0.0E0_WP) NZERO = NZERO + 1
          IF (H(IHM)  .EQ.  H(IHP)) GO TO 10
 !
          CALL IPRINT(IPRT)
@@ -83,7 +83,7 @@
          RETURN
    10 CONTINUE
 !
-      IF (H(KMID) .EQ. 0.0D0) NZERO = NZERO + 1
+      IF (H(KMID) .EQ. 0.0E0_WP) NZERO = NZERO + 1
 !
       IF (NZERO .LT. KMID) RETURN
 !

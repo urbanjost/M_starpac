@@ -16,13 +16,13 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   T
       INTEGER
      +   N
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   R(N),Y(N)
       INTEGER
      +   H(N)
@@ -50,13 +50,13 @@
 !          INDEX VARIABLE
 !     INTEGER N
 !        NUMBER OF OBSERVATIONS
-!     DOUBLE PRECISION R(N)
+!     REAL(KIND=WP) :: R(N)
 !        FINAL VECTOR CONTAINING RANK
-!     DOUBLE PRECISION T
+!     REAL(KIND=WP) :: T
 !        12 TIMES THE OMNITAB CORRECTION FOR TIES
 !             T = SUM(T-1)*T*(T+1)
 !             T = 0 MEANS NO TIES
-!     DOUBLE PRECISION Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        VECTOR TO BE RANKED
 !
 !
@@ -82,7 +82,7 @@
          ELSE
             DO 30 J=1,K
                IJ = I - J
-               R(IJ) = (I-1) - (K-1)/2.0D0
+               R(IJ) = (I-1) - (K-1)/2.0E0_WP
    30       CONTINUE
             T = T + (K-1)*K*(K+1)
             K = 1
@@ -91,7 +91,7 @@
       T = T + (K-1)*K*(K+1)
       DO 50 I=1,K
          K2 = N + 1 - I
-         R(K2) = N - (K-1)/2.0D0
+         R(K2) = N - (K-1)/2.0E0_WP
    50 CONTINUE
 !
 !     SORT H CARRY ALONG R TO OBTAIN RANKS IN R

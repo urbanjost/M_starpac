@@ -28,13 +28,13 @@
      +   LA
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   A(LA)
       INTEGER
      +   IR(LA)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   R,T,TT
       INTEGER
      +   I,IJ,IT,ITT,J,K,L,M

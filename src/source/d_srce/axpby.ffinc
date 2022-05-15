@@ -21,13 +21,13 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   SA,SB
       INTEGER
      +   INCX,INCY,INCZ,N
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   SX(*),SY(*),SZ(*)
 !
 !  LOCAL SCALARS
@@ -39,7 +39,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION SX(N), SY(N), SZ(N)
+!     REAL(KIND=WP) :: SX(N), SY(N), SZ(N)
 !
       IF(N.LE.0) RETURN
       IF ((INCX .EQ. 1) .AND. (INCY .EQ. 1) .AND. (INCZ .EQ. 1))

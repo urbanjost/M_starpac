@@ -1,5 +1,6 @@
 !XPP
-      SUBROUTINE XPP(LDSTAK)
+      SUBROUTINE XPP(LDSTAK,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !

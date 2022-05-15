@@ -16,13 +16,13 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   RSS
       INTEGER
      +   N
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   RES(*),SDREST(*)
 !
 !  SCALARS IN COMMON
@@ -30,7 +30,7 @@
      +   IERR
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   AN,DOT,FAC1,FAC2,FPLM,GAMMA,PI,RATIO,ROWDIV,ROWMAX,ROWMID,
      +   ROWMIN,XDIV,XMAX,XMIN,YLABEL,YMAX,YMIN
       INTEGER
@@ -44,7 +44,7 @@
      +   LINE(113)*1
 !
 !  EXTERNAL FUNCTIONS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   D1MACH
       LOGICAL
      +   MVCHK
@@ -61,16 +61,16 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION AN
+!     REAL(KIND=WP) :: AN
 !        THE NUMBER OF OBSERVATIONS, USED IN COMPUTING
 !        THE NORMAL PROBABILITY PLOT.
-!     DOUBLE PRECISION DOT
+!     REAL(KIND=WP) :: DOT
 !        THE DOT PRODUCT USED TO COMPUTE THE CORRELATION COEFFICIENT.
-!     DOUBLE PRECISION FAC1, FAC2
+!     REAL(KIND=WP) :: FAC1, FAC2
 !        FACTORS USED IN COMPUTING THE NORMAL PROBABILITY PLOT.
-!     DOUBLE PRECISION FPLM
+!     REAL(KIND=WP) :: FPLM
 !        THE FLOATING POINT LARGEST MAGNITUDE.
-!     DOUBLE PRECISION GAMMA
+!     REAL(KIND=WP) :: GAMMA
 !        A VALUE USED IN COMPUTING THE NORMAL PROBABILITY PLOT.
 !     INTEGER I
 !        AN INDEX VARIABLE.
@@ -120,35 +120,35 @@
 !        THE NUMBER OF POINTS MAKING UP DOT.
 !     INTEGER NROW
 !        THE NUMBER OF COLUMNS IN THE PLOT.
-!     DOUBLE PRECISION PI
+!     REAL(KIND=WP) :: PI
 !        THE VALUE OF PI.
-!     DOUBLE PRECISION RATIO
+!     REAL(KIND=WP) :: RATIO
 !        A VALUE USED TO PRODUCE THE NORMAL PROBABILITY PLOT.
-!     DOUBLE PRECISION RES(N)
+!     REAL(KIND=WP) :: RES(N)
 !        THE RESIDUALS FROM THE FIT.
-!     DOUBLE PRECISION ROWDIV
+!     REAL(KIND=WP) :: ROWDIV
 !        THE VALUE OF A DIVISION ALONG THE -ROW- AXIS.
-!     DOUBLE PRECISION ROWMAX
+!     REAL(KIND=WP) :: ROWMAX
 !        THE LARGEST ROW VALUE.
-!     DOUBLE PRECISION ROWMID
+!     REAL(KIND=WP) :: ROWMID
 !        THE MIDPOINT OF THE RANGE OF THE ROWS PLOTTED.
-!     DOUBLE PRECISION ROWMIN
+!     REAL(KIND=WP) :: ROWMIN
 !        THE SMALLEST ROW VALUE PLOTTED.
-!     DOUBLE PRECISION RSS
+!     REAL(KIND=WP) :: RSS
 !        THE RESIDUAL SUM OF SQUARES.
-!     DOUBLE PRECISION SDREST(N)
+!     REAL(KIND=WP) :: SDREST(N)
 !        THE STANDARDIZED RESIDUALS.
-!     DOUBLE PRECISION XDIV
+!     REAL(KIND=WP) :: XDIV
 !        THE VALUE OF A DIVISION ALONG THE X AXIS.
-!     DOUBLE PRECISION XMAX
+!     REAL(KIND=WP) :: XMAX
 !        THE LARGEST VALUE ALONG THE X AXIS.
-!     DOUBLE PRECISION XMIN
+!     REAL(KIND=WP) :: XMIN
 !        THE SMALLEST VALUE ALONG THE X AXIS.
-!     DOUBLE PRECISION YLABEL
+!     REAL(KIND=WP) :: YLABEL
 !        THE LABEL TO BE PRINTED ALONG THE Y AXIS.
-!     DOUBLE PRECISION YMAX
+!     REAL(KIND=WP) :: YMAX
 !        THE LARGEST VALUE ALONG THE Y AXIS
-!     DOUBLE PRECISION YMIN
+!     REAL(KIND=WP) :: YMIN
 !        THE SMALLEST VALUE ALONG THE Y AXIS.
 !
       DATA IPLUS/'+'/, IMINUS/'-'/, ISTAR/'*'/, IBLANK/' '/
@@ -171,10 +171,10 @@
 !     INITIALIZE VALUES FOR PROBABILITY PLOT
 !
       CALL GETPI(PI)
-      GAMMA = PI/8.0D0
+      GAMMA = PI/8.0E0_WP
       AN = N
-      FAC1 = 1.0D0 / (AN - 2.0D0*GAMMA + 1.0D0)
-      FAC2 = 10.0D0
+      FAC1 = 1.0E0_WP / (AN - 2.0E0_WP*GAMMA + 1.0E0_WP)
+      FAC2 = 10.0E0_WP
 !
 !     INITIALIZE THE PLOT SIZE (IN PLOT UNITS)
 !
@@ -190,7 +190,7 @@
       ROWMIN = 1
       ROWMAX = N
 !
-      ROWMID = (ROWMAX+ROWMIN)/2.0D0
+      ROWMID = (ROWMAX+ROWMIN)/2.0E0_WP
       ROWDIV = (ROWMAX-ROWMIN)/(NCOL-1)
 !
 !     PRINT TITLES FOR FIRST PLOTS
@@ -206,8 +206,8 @@
 !     SET AXIS LIMITS FOR THE STANDARDIZED RESIDUALS VS
 !     STANDARDIZED RESIDUALS LAGGED BY ONE AND FOR PROBABILITY PLOT
 !
-      XMIN = -3.75D0
-      XMAX = 3.75D0
+      XMIN = -3.75D0_WP
+      XMAX = 3.75D0_WP
       XDIV = (XMAX-XMIN)/(NCOL-1)
 !
 !     PRINT TITLES FOR SECOND PLOTS
@@ -222,12 +222,12 @@
 !
       NCOLP1 = NCOL + 1
       NCOLT2 = 2*NCOL
-      YLABEL = 3.75D0
+      YLABEL = 3.75D0_WP
       YMAX = FPLM
-      YMIN = 4.05D0
+      YMIN = 4.05D0_WP
       DO 160 K=1,NROW
-         YMIN = YMIN - 0.3D0
-         IF (-3.70D0.GE.YMIN) YMIN = -FPLM
+         YMIN = YMIN - 0.3D0_WP
+         IF (-3.70E0_WP.GE.YMIN) YMIN = -FPLM
          DO 100 L=1,NCOL
             NCOLPL = L + NCOL
             LINE(L) = IBLANK
@@ -243,18 +243,18 @@
             IF (.NOT.MVCHK(SDREST(I),FPLM)) THEN
                IF ((SDREST(I).GT.YMIN) .AND. (SDREST(I).LE.YMAX)) THEN
                   IF (IPLOT.EQ.1) THEN
-                      IROW = INT(((I-ROWMIN)/ROWDIV)+1.5D0)
+                      IROW = INT(((I-ROWMIN)/ROWDIV)+1.5D0_WP)
                       LINE(IROW) = ISTAR
                    ELSE
                       RATIO = (AN-GAMMA) * FAC1
-                      IPRB = INT(4.91D0*(RATIO**0.14D0-
-     +                          (1.0D0-RATIO)**0.14D0)*FAC2) + 77
+                      IPRB = INT(4.91D0_WP*(RATIO**0.14D0_WP -
+     +                          (1.0E0_WP-RATIO)**0.14D0_WP)*FAC2) + 77
                       IF (IPRB.LE.NCOL) IPRB = NCOL+1
                       IF (IPRB.GE.103) IPRB = 102
                       LINE(IPRB) = ISTAR
-                      AN = AN - 1.0D0
-                      IF ((AN.LT.2.0D0) .AND. (N.LE.10)) THEN
-                         GAMMA = 1.0D0/3.0D0
+                      AN = AN - 1.0E0_WP
+                      IF ((AN.LT.2.0E0_WP) .AND. (N.LE.10)) THEN
+                         GAMMA = 1.0E0_WP/3.0E0_WP
                       END IF
                    END IF
                 END IF
@@ -266,8 +266,8 @@
          IF (IPLOT.EQ.2) THEN
             IMID = (NCOL-1)/2
             IF (K.LE.N-1) THEN
-               DOT = 0.0D0
-               CALL DOTC(RES, 0.0D0, N, RES(K+1), 0.0D0,
+               DOT = 0.0E0_WP
+               CALL DOTC(RES, 0.0E0_WP, N, RES(K+1), 0.0E0_WP,
      +                   N-K, DOT, NDOT)
                IX = INT(IMID*DOT/RSS) + IMID + 1
                I1 = MIN(IX,IMID+1)
@@ -284,7 +284,7 @@
                WRITE (IPRT,1020) K, (LINE(L),L=1,NCOL), YLABEL,
      +                           (LINE(L),L=NCOLP1,NCOLT2)
             END IF
-            YLABEL = YLABEL - 1.5D0
+            YLABEL = YLABEL - 1.5D0_WP
          ELSE
             IF (IPLOT.EQ.1) THEN
                WRITE (IPRT,2030) (LINE(L),L=1,111)

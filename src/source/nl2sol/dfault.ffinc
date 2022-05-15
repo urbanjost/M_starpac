@@ -24,11 +24,10 @@
      +   tuner3,tuner4,tuner5,x0prt,xctol,xftol
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     +   rmdcon
+!     REAL(KIND=WP) :: RMDCON
       integer
      +   imdcon
-      external rmdcon,imdcon
+      external imdcon
 !
 !  INTRINSIC FUNCTIONS
       intrinsic max
@@ -40,9 +39,8 @@
 !/+
 !     REAL(KIND=WP) :: MAX
 !/
-!     EXTERNAL IMDCON, RMDCON
+!     EXTERNAL IMDCON 
 !     INTEGER IMDCON
-!     REAL(KIND=WP) :: RMDCON
 !
 !     REAL(KIND=WP) :: MACHEP, MEPCRT, ONE, SQTEPS, THREE
 !
@@ -91,12 +89,12 @@
       iv(statpr) = 1
       iv(x0prt) = 1
 !
-      machep = rmdcon(3)
+      machep = rmdcon(3,typ=0.0_wp)
       v(afctol) = 1.0e-20_wp
       if (machep .gt. 1.0e-10_wp) v(afctol) = machep**2
       v(cosmin) = max(1.0e-6_wp, 1.0e2_wp * machep)
       v(decfac) = 0.5_wp
-      sqteps = rmdcon(4)
+      sqteps = rmdcon(4,typ=0.0_wp)
       v(delta0) = sqteps
       v(dfac) = 0.6_wp
       v(dinit) = 0.0_wp
@@ -114,7 +112,7 @@
       v(rdfcmn) = 0.1_wp
       v(rdfcmx) = 4.0_wp
       v(rfctol) = max(1.0e-10_wp, mepcrt**2)
-      v(rlimit) = rmdcon(5)
+      v(rlimit) = rmdcon(5,typ=0.0_wp)
       v(tuner1) = 0.1_wp
       v(tuner2) = 1.0e-4_wp
       v(tuner3) = 0.75_wp

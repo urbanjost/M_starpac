@@ -1,14 +1,13 @@
 !NL2X
-      subroutine nl2x
+      subroutine nl2x(typ)
+      real(kind=wp),intent(in) :: typ
 !     ***  TEST NL2SOL AND NL2SNO ON MADSEN EXAMPLE  ***
 !
 !  VARIABLE DECLARATIONS
 !
 !  LOCAL ARRAYS
-      real(kind=wp) ::
-     +   urparm(1),v(147),x(2)
-      integer
-     +   iv(62),uiparm(1)
+      real(kind=wp) :: urparm(1),v(147),x(2)
+      integer :: iv(62),uiparm(1)
 !
 !  EXTERNAL SUBROUTINES
       external madj,madr,nl2sno,nl2sol,ufparm

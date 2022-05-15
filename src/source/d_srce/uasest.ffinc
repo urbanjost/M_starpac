@@ -17,17 +17,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   DELTA,VAR
       INTEGER
      +   IAR,ISPC,LPHI,NF
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   FREQ(NF),PHI(LPHI),SPCA(ISPC)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   ARG,EI,ER,EXI,EXR,EXRTMP,PI,TI,TR
       INTEGER
      +   I,J
@@ -40,14 +40,14 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION ARG
+!     REAL(KIND=WP) :: ARG
 !        THE ARGUMENT FOR THE SINE AND COSINE FUNCTIONS USED IN
 !        CALCULATIONS OF THE SPECTRUM.
-!     DOUBLE PRECISION DELTA
+!     REAL(KIND=WP) :: DELTA
 !        THE SAMPLING INTERVAL.
-!     DOUBLE PRECISION EI, ER, EXI, EXR, EXRTMP
+!     REAL(KIND=WP) :: EI, ER, EXI, EXR, EXRTMP
 !        'COMPLEX' VARIABLES USED IN THE COMPUTATIONS.
-!     DOUBLE PRECISION FREQ(NF)
+!     REAL(KIND=WP) :: FREQ(NF)
 !        THE ARRAY CONTAINING THE FREQUENCIES AT WHICH THE SPECTRUM
 !        IS TO BE COMPUTED.
 !     INTEGER I
@@ -63,16 +63,16 @@
 !     INTEGER NF
 !        THE NUMBER OF FREQUENCIES AT WHICH THE SPECTRUM IS TO BE
 !        ESTIMATED.
-!     DOUBLE PRECISION PHI(LPHI)
+!     REAL(KIND=WP) :: PHI(LPHI)
 !        THE ARRAY OF AUTOREGRESSIVE COEFFICIENTS FOR THE
 !        SELECTED ORDER.
-!     DOUBLE PRECISION PI
+!     REAL(KIND=WP) :: PI
 !        THE VALUE OF PI.
-!     DOUBLE PRECISION SPCA(ISPC)
+!     REAL(KIND=WP) :: SPCA(ISPC)
 !        THE ARRAY IN WHICH THE AUTOREGRESSIVE SPECTRUM IS STORED.
-!     DOUBLE PRECISION TI, TR
+!     REAL(KIND=WP) :: TI, TR
 !        A VARIABLE USED IN THE COMPUTATIONS.
-!     DOUBLE PRECISION VAR
+!     REAL(KIND=WP) :: VAR
 !        THE ONE STEP PREDICTION VARIANCE FOR THE SELECTED ORDER (IAR).
 !
       CALL GETPI(PI)
@@ -80,30 +80,30 @@
       DO 20 J=1,NF
          SPCA(J) = DELTA * VAR
          IF (IAR.GE.1) THEN
-            IF (DELTA.EQ.1.0D0) THEN
-               IF (FREQ(J).EQ.0.0D0) THEN
-                  ER = 1.0D0
-                  EI = 0.0D0
+            IF (DELTA.EQ.1.0E0_WP) THEN
+               IF (FREQ(J).EQ.0.0E0_WP) THEN
+                  ER = 1.0E0_WP
+                  EI = 0.0E0_WP
                ELSE IF (FREQ(J).EQ.0.25D0) THEN
-                  ER = 0.0D0
-                  EI = 1.0D0
+                  ER = 0.0E0_WP
+                  EI = 1.0E0_WP
                ELSE IF (FREQ(J).EQ.0.5D0) THEN
-                  ER = -1.0D0
-                  EI = 0.0D0
+                  ER = -1.0E0_WP
+                  EI = 0.0E0_WP
                ELSE
-                  ARG = 2.0D0 * PI * DELTA * FREQ(J)
+                  ARG = 2.0E0_WP * PI * DELTA * FREQ(J)
                   ER = COS(ARG)
                   EI = SIN(ARG)
                END IF
             ELSE
-               ARG = 2.0D0 * PI * DELTA * FREQ(J)
+               ARG = 2.0E0_WP * PI * DELTA * FREQ(J)
                ER = COS(ARG)
                EI = SIN(ARG)
             END IF
-            EXR = 1.0D0
-            EXI = 0.0D0
-            TR = 1.0D0
-            TI = 0.0D0
+            EXR = 1.0E0_WP
+            EXI = 0.0E0_WP
+            TR = 1.0E0_WP
+            TI = 0.0E0_WP
             DO 10 I=1,IAR
                EXRTMP = EXR*ER - EXI*EI
                EXI = EXR*EI + EXI*ER

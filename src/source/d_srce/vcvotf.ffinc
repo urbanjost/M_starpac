@@ -30,7 +30,7 @@
      +   EST
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   VCV(LVCV)
       INTEGER
      +   MASK(LMASK)
@@ -85,7 +85,7 @@
 !              PRINTED BELOW THE DIAGONAL
 !     INTEGER NPAR
 !        THE NUMBER OF UNKNOWN PARAMETERS IN THE MODEL.
-!     DOUBLE PRECISION VCV(LVCV)
+!     REAL(KIND=WP) :: VCV(LVCV)
 !        THE VARIANCE COVARIANCE MATRIX.
 !
 !     COMMENCE BODY OF ROUTINE
@@ -99,7 +99,7 @@
       MODE = 0
       DO 30 I=1,NPAR
          II = I*(I-1)/2 + I
-         IF (VCV(II).GT.0.0D0) GO TO 30
+         IF (VCV(II).GT.0.0E0_WP) GO TO 30
          IF (EST) GO TO 10
          WRITE (IPRT,1000)
          GO TO 20

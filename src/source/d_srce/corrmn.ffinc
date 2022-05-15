@@ -33,7 +33,7 @@
      +   IVCV,IYM,LIWRK,LWRK,M,N,NPRT
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   AVG(M),CILO(M,M),CIUP(M,M),PC(M,M),QF(M,M),QUAD(N,3),
      +   RANK(N,M),SC(M,M),SCINV(M,M),SD(M),SLPC(M,M),SLSC(M,M),
      +   SRCC(M,M),T(M),VCV(IVCV,M),WRK(LWRK),YM(IYM,M)
@@ -45,19 +45,19 @@
      +   IERR
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   B,F,FN3,FPLM,HL1,HL2,SQSUM,SUM,Z,ZZ
       INTEGER
      +   I,IER,IPRT,J,K,K1,K2,NSUM
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   C(3),D(3),RR(3,3),XX(3)
       INTEGER
      +   INERT(3)
 !
 !  EXTERNAL FUNCTIONS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   CDFF,D1MACH
       EXTERNAL CDFF,D1MACH
 !
@@ -74,27 +74,27 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION AVG(M)
+!     REAL(KIND=WP) :: AVG(M)
 !                  CONTAINS THE COLUMN AVERAGES OF YM
-!     DOUBLE PRECISION B
+!     REAL(KIND=WP) :: B
 !                  = (N-1) * N * (N+1) / 6
-!     DOUBLE PRECISION C(3)
+!     REAL(KIND=WP) :: C(3)
 !                  *
-!     DOUBLE PRECISION CILO(M,M)
+!     REAL(KIND=WP) :: CILO(M,M)
 !                  LOWER CONFIDENCE INTERVAL FOR SC
-!     DOUBLE PRECISION CIUP(M,M)
+!     REAL(KIND=WP) :: CIUP(M,M)
 !                  UPPER CONFIDENCE INTERVAL FOR SC
-!     DOUBLE PRECISION D(3)
+!     REAL(KIND=WP) :: D(3)
 !                  A DUMMY ARRAY.
-!     DOUBLE PRECISION F
+!     REAL(KIND=WP) :: F
 !                  SQUARE ROOT OF FN3
-!     DOUBLE PRECISION FN3
-!                  DOUBLE PRECISION REPRESENTATION OF (N-3).
-!     DOUBLE PRECISION FPLM
+!     REAL(KIND=WP) :: FN3
+!                  REAL(KIND=WP) :: REPRESENTATION OF (N-3).
+!     REAL(KIND=WP) :: FPLM
 !                  THE FLOATING POINT LARGEST MAGNITUDE
-!     DOUBLE PRECISION HL1
+!     REAL(KIND=WP) :: HL1
 !                  *
-!     DOUBLE PRECISION HL2
+!     REAL(KIND=WP) :: HL2
 !                  *
 !     INTEGER I
 !                  AN INDEX VARIABLE
@@ -137,47 +137,47 @@
 !                  OTHERWISE PRINTOUT IS PROVIDED
 !     INTEGER NSUM
 !                  THE NUMBER OF OBSERVATIONS IN THE DOT PRODUCT
-!     DOUBLE PRECISION PC(M,M)
+!     REAL(KIND=WP) :: PC(M,M)
 !                  PARTIAL CORRELATION COEFFICIENTS MATRIX
-!     DOUBLE PRECISION QF(M,M)
+!     REAL(KIND=WP) :: QF(M,M)
 !                  QUADRATIC FIX MATRIX
-!     DOUBLE PRECISION QUAD(N,3)
+!     REAL(KIND=WP) :: QUAD(N,3)
 !                  DOUBLE VERSION OF QF MATRIX
-!     DOUBLE PRECISION RANK(N,M)
+!     REAL(KIND=WP) :: RANK(N,M)
 !                  THE MATRIX CONTAING THE RANKS OF YM
-!     DOUBLE PRECISION RR(3,3)
+!     REAL(KIND=WP) :: RR(3,3)
 !                  *
-!     DOUBLE PRECISION SC(M,M)
+!     REAL(KIND=WP) :: SC(M,M)
 !                  SIMPLE CORRELATION COEFFICIENTS MATRIX
-!     DOUBLE PRECISION SCINV(M,M)
+!     REAL(KIND=WP) :: SCINV(M,M)
 !                  THE INVERSE MATRIX OF SC
-!     DOUBLE PRECISION SD(M)
+!     REAL(KIND=WP) :: SD(M)
 !                  STANDARD DEVIATION OF THE COMLUMNS OF YM
-!     DOUBLE PRECISION SLPC(M,M)
+!     REAL(KIND=WP) :: SLPC(M,M)
 !                  SIGNIFICANCE LEVELS OF PC
-!     DOUBLE PRECISION SLSC(M,M)
+!     REAL(KIND=WP) :: SLSC(M,M)
 !                  SIGNIFICANCE LEVELS OF SC
-!     DOUBLE PRECISION SQSUM
+!     REAL(KIND=WP) :: SQSUM
 !                  THE SUM OF SQUARES OF THE ITH COLUMN OF YM
-!     DOUBLE PRECISION SRCC(M,M)
+!     REAL(KIND=WP) :: SRCC(M,M)
 !                  SPEARMAN RANK CORRELATION COEFFICIENTS
-!     DOUBLE PRECISION SUM
+!     REAL(KIND=WP) :: SUM
 !                  USED IN CALCULATING THE STATISTICS OF YM
-!     DOUBLE PRECISION T(M)
+!     REAL(KIND=WP) :: T(M)
 !                  USED IN DETERMINING SRCC
-!     DOUBLE PRECISION VCV(IVCV,M)
+!     REAL(KIND=WP) :: VCV(IVCV,M)
 !                  THE VARIANCE COVARIANCE MATRIX.
-!     DOUBLE PRECISION WRK(LWRK)
+!     REAL(KIND=WP) :: WRK(LWRK)
 !                  WORK STORAGE
-!     DOUBLE PRECISION XX(3)
+!     REAL(KIND=WP) :: XX(3)
 !                  *
-!     DOUBLE PRECISION YM(IYM,M)
+!     REAL(KIND=WP) :: YM(IYM,M)
 !                  THE MATRIX WHOSE COLUMNS EACH CONTAIN ONE OF M SETS
 !                  OF N OBSERVATIONS. EACH COLUMN REPRESENTS A DIFFERENT
 !                  VARIABLE
-!     DOUBLE PRECISION Z
+!     REAL(KIND=WP) :: Z
 !                  USED IN COMPUTING CONFIDENCE INTERVALS
-!     DOUBLE PRECISION ZZ
+!     REAL(KIND=WP) :: ZZ
 !                  USED IN DETERMINING CORRELATION COEFFICIENTS
 !
       IERR = 0
@@ -210,7 +210,7 @@
 !     COMPUTE STANDARD DEVIATIONS
 !
       DO 40 I=1,M
-         IF (VCV(I,I).LE.0.0D0) GO TO 90
+         IF (VCV(I,I).LE.0.0E0_WP) GO TO 90
          SD(I) = SQRT(VCV(I,I))
    40 CONTINUE
 !
@@ -218,8 +218,8 @@
 !
       DO 60 J=1,M
          DO 50 I=J,M
-            SC(I,J) = 1.0D0
-            SCINV(J,I) = 1.0D0
+            SC(I,J) = 1.0E0_WP
+            SCINV(J,I) = 1.0E0_WP
             IF (I.EQ.J) GO TO 50
             SC(I,J) = VCV(I,J)/SD(I)/SD(J)
             SC(J,I) = SC(I,J)
@@ -240,13 +240,13 @@
       CALL DSIDI(SCINV, M, M, IWRK, D, INERT, WRK, 1)
       DO 130 J=1,M
          DO 120 I=J,M
-            PC(I,J) = 1.0D0
+            PC(I,J) = 1.0E0_WP
             IF (I.EQ.J) GO TO 120
             ZZ = SCINV(I,I)*SCINV(J,J)
             PC(I,J) = FPLM
-            IF (ZZ.LE.0.0D0) GO TO 110
+            IF (ZZ.LE.0.0E0_WP) GO TO 110
             PC(I,J) = -SCINV(J,I)/SQRT(ZZ)
-            IF (ABS(PC(I,J)).GT.1.0D0) PC(I,J) = SIGN(1.0D0,PC(I,J))
+            IF (ABS(PC(I,J)).GT.1.0E0_WP) PC(I,J) = SIGN(1.0E0_WP,PC(I,J))
   110       PC(J,I) = PC(I,J)
   120    CONTINUE
 !
@@ -257,18 +257,18 @@
 !
       DO 180 I=1,M
          DO 170 J=1,I
-            IF (PC(I,J).NE.0.0D0) GO TO 140
-            SLPC(I,J) = 1.0D0
+            IF (PC(I,J).NE.0.0E0_WP) GO TO 140
+            SLPC(I,J) = 1.0E0_WP
             GO TO 170
-  140       IF (ABS(PC(I,J)).LT.1.0D0) GO TO 150
-            SLPC(I,J) = 0.0D0
+  140       IF (ABS(PC(I,J)).LT.1.0E0_WP) GO TO 150
+            SLPC(I,J) = 0.0E0_WP
             GO TO 170
   150       F = PC(I,J)*PC(I,J)
-            IF (1.0D0-F.NE.0.0D0) GO TO 160
+            IF (1.0E0_WP-F.NE.0.0E0_WP) GO TO 160
             SLPC(I,J) = FPLM
             GO TO 170
-  160       F = (N-M)*F/(1.0D0-F)
-            SLPC(I,J) = 1.0D0 - CDFF(F,1.0D0,DBLE(N-M))
+  160       F = (N-M)*F/(1.0E0_WP-F)
+            SLPC(I,J) = 1.0E0_WP - CDFF(F,1.0E0_WP,DBLE(N-M))
   170    CONTINUE
   180 CONTINUE
 !
@@ -278,20 +278,20 @@
   190 DO 250 I=1,M
          DO 240 J=1,I
             IF (I.NE.J) GO TO 200
-            SLSC(I,J) = 0.0D0
+            SLSC(I,J) = 0.0E0_WP
             GO TO 240
-  200       IF (SC(I,J).NE.0.0D0) GO TO 210
-            SLSC(I,J) = 1.0D0
+  200       IF (SC(I,J).NE.0.0E0_WP) GO TO 210
+            SLSC(I,J) = 1.0E0_WP
             GO TO 240
-  210       IF (ABS(SC(I,J)).LT.1.0D0) GO TO 220
-            SLSC(I,J) = 0.0D0
+  210       IF (ABS(SC(I,J)).LT.1.0E0_WP) GO TO 220
+            SLSC(I,J) = 0.0E0_WP
             GO TO 240
   220       F = SC(I,J)*SC(I,J)
-            IF (F.NE.1.0D0) GO TO 230
+            IF (F.NE.1.0E0_WP) GO TO 230
             SLSC(I,J) = FPLM
             GO TO 240
-  230       F = (N-2)*F/(1.0D0-F)
-            SLSC(I,J) = 1.0D0 - CDFF(F,1.0D0,DBLE(N-2))
+  230       F = (N-2)*F/(1.0E0_WP-F)
+            SLSC(I,J) = 1.0E0_WP - CDFF(F,1.0E0_WP,DBLE(N-2))
   240    CONTINUE
   250 CONTINUE
 !
@@ -314,7 +314,7 @@
 !
       DO 280 I=1,M
          CALL RANKO(N, YM(1,I), IWRK, RANK(1,I), T(I))
-         T(I) = T(I) / 12.0D0
+         T(I) = T(I) / 12.0E0_WP
   280 CONTINUE
 !
 !     COMPUTE SPEARMAN RANK CORRELATION COEFFICIENTS.
@@ -323,19 +323,19 @@
       B = (N-1)*N*(N+1)/6
       DO 330 I=1,M
          DO 320 J=1,I
-            SRCC(I,J) = 1.0D0
+            SRCC(I,J) = 1.0E0_WP
             IF (I.EQ.J) GO TO 320
-            K1 = 2.0D0*T(I) + 0.4D0
-            K2 = 2.0D0*T(J) + 0.4D0
+            K1 = 2.0E0_WP*T(I) + 0.4D0_WP
+            K2 = 2.0E0_WP*T(J) + 0.4D0_WP
             SRCC(I,J) = FPLM
             IF ((INT(B)-K1.LE.0) .OR. (INT(B)-K2.LE.0)) GO TO 320
-            SUM = 0.0D0
+            SUM = 0.0E0_WP
             DO 310 K=1,N
                ZZ = RANK(K,I) - RANK(K,J)
                SUM = SUM + ZZ*ZZ
   310       CONTINUE
-            ZZ = (B - 2.0D0*T(I))*(B - 2.0D0*T(J))
-            IF (ZZ.GT.0.0D0) SRCC(I,J) = (B-SUM-T(I)-T(J))/SQRT(ZZ)
+            ZZ = (B - 2.0E0_WP*T(I))*(B - 2.0E0_WP*T(J))
+            IF (ZZ.GT.0.0E0_WP) SRCC(I,J) = (B-SUM-T(I)-T(J))/SQRT(ZZ)
   320    CONTINUE
   330 CONTINUE
 !
@@ -355,19 +355,19 @@
 !     MACHINE/COMPILATION ENVIRONMENTS, IN CASES IN WHICH THE
 !     YM MATRIX IS NEAR SINGULAR (ESSENTIALLY SINGULAR BUT THE
 !     SINGULARITY IS UNDETECTED BY THE CODE).  THE OBSERVED SYMPTOMS
-!     ARE ALTERNATION BETWEEN QF VALUES OF 0.0D0 (FIRST F = LINE
-!     PRODUCES ZERO) AND 1.0D0 (FIRST F = LINE PRODUCES APPROX.
+!     ARE ALTERNATION BETWEEN QF VALUES OF 0.0E0_WP (FIRST F = LINE
+!     PRODUCES ZERO) AND 1.0E0_WP (FIRST F = LINE PRODUCES APPROX.
 !     ZERO, AND NUMERATOR IN SECOND F = LINE IS NONZERO).
 !
   340 FN3 = N-3
       DO 410 J=1,M
          DO 400 I=1,M
             IF (I.NE.J) GO TO 350
-            QF(I,J) = 1.0D0
+            QF(I,J) = 1.0E0_WP
             GO TO 400
-  350       SQSUM = 0.0D0
+  350       SQSUM = 0.0E0_WP
             DO 360 K=1,N
-              QUAD(K,1) = 1.0D0
+              QUAD(K,1) = 1.0E0_WP
                QUAD(K,2) = YM(K,J)
                QUAD(K,3) = YM(K,J)*YM(K,J)
                SQSUM = SQSUM + YM(K,I)*YM(K,I)
@@ -381,11 +381,11 @@
                C(K) = C(K)*SQRT(D(K))
   380       CONTINUE
             F = (SQSUM-C(1)*C(1)-C(2)*C(2)-C(3)*C(3))
-            QF(I,J) = 0.0D0
-            IF (F.EQ.0.0D0) GO TO 400
+            QF(I,J) = 0.0E0_WP
+            IF (F.EQ.0.0E0_WP) GO TO 400
             F = (C(3)*C(3)*FN3)/F
-            QF(I,J) = 1.0D0
-            IF (F.GT.0.0D0) QF(I,J) = 1.0D0 - CDFF(F,1.0D0,FN3)
+            QF(I,J) = 1.0E0_WP
+            IF (F.GT.0.0E0_WP) QF(I,J) = 1.0E0_WP - CDFF(F,1.0E0_WP,FN3)
   400    CONTINUE
   410 CONTINUE
 !
@@ -400,40 +400,40 @@
 !     COMPUTE CONFIDENCE LIMITS FOR SIMPLE CORRELATION COEFFICIENTS
 !
   420 F = SQRT(FN3)
-      HL1 = 2.5758293D0/F
-      HL2 = 1.9599640D0/F
+      HL1 = 2.5758293D0_WP/F
+      HL2 = 1.9599640E0_WP/F
       DO 520 J=1,M
          DO 510 I=1,M
             IF (I.NE.J) GO TO 430
-            CIUP(I,J) = 99.0D0
-            CILO(I,J) = 95.0D0
+            CIUP(I,J) = 99.0E0_WP
+            CILO(I,J) = 95.0E0_WP
             GO TO 510
   430       IF (I.LT.J) GO TO 470
 !
 !           COMPUTE 95 PERCENT INTERVALS.
 !
-            IF (SC(I,J).GE.1.0D0) GO TO 440
-            IF (SC(I,J).GT.-1.0D0) GO TO 450
-            Z = -1.0D0
+            IF (SC(I,J).GE.1.0E0_WP) GO TO 440
+            IF (SC(I,J).GT.-1.0E0_WP) GO TO 450
+            Z = -1.0E0_WP
             GO TO 460
-  440       Z = 1.0D0
+  440       Z = 1.0E0_WP
             GO TO 460
-  450       Z = 0.5D0*LOG((1.0D0+SC(I,J))/(1.0D0-SC(I,J)))
-  460       CIUP(I,J) = MIN(TANH(Z+HL2),1.0D0)
-            CILO(I,J) = MAX(TANH(Z-HL2),-1.0D0)
+  450       Z = 0.5D0_WP*LOG((1.0E0_WP+SC(I,J))/(1.0E0_WP-SC(I,J)))
+  460       CIUP(I,J) = MIN(TANH(Z+HL2),1.0E0_WP)
+            CILO(I,J) = MAX(TANH(Z-HL2),-1.0E0_WP)
             GO TO 510
 !
 !           COMPUTE 99 PERCENT INTERVALS.
 !
-  470       IF (SC(J,I).GE.1.0D0) GO TO 480
-            IF (SC(J,I).GT.-1.0D0) GO TO 490
-            Z = -1.0D0
+  470       IF (SC(J,I).GE.1.0E0_WP) GO TO 480
+            IF (SC(J,I).GT.-1.0E0_WP) GO TO 490
+            Z = -1.0E0_WP
             GO TO 500
-  480       Z = 1.0D0
+  480       Z = 1.0E0_WP
             GO TO 500
-  490       Z = 0.5D0*LOG((1.0D0+SC(J,I))/(1.0D0-SC(J,I)))
-  500       CIUP(I,J) = MIN(TANH(Z+HL1),1.0D0)
-            CILO(I,J) = MAX(TANH(Z-HL1),-1.0D0)
+  490       Z = 0.5D0_WP*LOG((1.0E0_WP+SC(J,I))/(1.0E0_WP-SC(J,I)))
+  500       CIUP(I,J) = MIN(TANH(Z+HL1),1.0E0_WP)
+            CILO(I,J) = MAX(TANH(Z-HL1),-1.0E0_WP)
   510    CONTINUE
   520 CONTINUE
 !

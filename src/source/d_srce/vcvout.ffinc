@@ -27,11 +27,11 @@
      +   EST
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   VCV(IVCV,NP)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   DEN,SVCVII,SVCVJJ
       INTEGER
      +   I,IPRT,J,K,MODE
@@ -44,7 +44,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION DEN
+!     REAL(KIND=WP) :: DEN
 !        DENOMINATOR OF (I, J) CORRELATION COEFFICIENT
 !     LOGICAL EST
 !        AN INDICATOR USED TO DESIGNATE WHETHER THE VCV TO BE PRINTED
@@ -65,9 +65,9 @@
 !                      OF THE DIAGONAL.
 !     INTEGER NP
 !        THE NUMBER OF UNKNOWN PARAMETERS IN THE MODEL.
-!     DOUBLE PRECISION SVCVII, SVCVJJ
+!     REAL(KIND=WP) :: SVCVII, SVCVJJ
 !        SQUARE ROOTS OF VCV(I, I) AND VCV(J, J)
-!     DOUBLE PRECISION VCV(IVCV,NP)
+!     REAL(KIND=WP) :: VCV(IVCV,NP)
 !        THE VARIANCE COVARIANCE MATRIX.
 !
 !     COMMENCE BODY OF ROUTINE
@@ -78,7 +78,7 @@
 !
       MODE = 2
       DO 10 I=1,NP
-         IF (VCV(I,I).GT.0.0D0) GO TO 10
+         IF (VCV(I,I).GT.0.0E0_WP) GO TO 10
          WRITE (IPRT,1000)
          IF (EST) WRITE (IPRT,1050)
          WRITE (IPRT,1010)
@@ -111,14 +111,14 @@
       IF (NP.EQ.1) GO TO 60
       DO 50 J=2,NP
          K = J - 1
-         SVCVJJ = 0.0D0
-         IF (VCV(J,J).GT.0.0D0) SVCVJJ = SQRT(VCV(J,J))
+         SVCVJJ = 0.0E0_WP
+         IF (VCV(J,J).GT.0.0E0_WP) SVCVJJ = SQRT(VCV(J,J))
          DO 40 I=1,K
-            SVCVII = 0.0D0
-            IF (VCV(I,I).GT.0.0D0) SVCVII = SQRT(VCV(I,I))
+            SVCVII = 0.0E0_WP
+            IF (VCV(I,I).GT.0.0E0_WP) SVCVII = SQRT(VCV(I,I))
             DEN = SVCVII*SVCVJJ
-            IF (DEN.LE.0.0D0) VCV(J,I) = 0.0D0
-            IF (DEN.GT.0.0D0) VCV(J,I) = VCV(J,I)/DEN
+            IF (DEN.LE.0.0E0_WP) VCV(J,I) = 0.0E0_WP
+            IF (DEN.GT.0.0E0_WP) VCV(J,I) = VCV(J,I)/DEN
    40    CONTINUE
    50 CONTINUE
 !

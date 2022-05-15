@@ -17,13 +17,13 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   BW,DF
       INTEGER
      +   LAG,LNLPPA,LW,N
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   W(LW)
       INTEGER
      +   NLPPA1(LNLPPA),NLPPA2(LNLPPA)
@@ -34,9 +34,9 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION BW
+!     REAL(KIND=WP) :: BW
 !        THE BANDWIDTH.
-!     DOUBLE PRECISION DF
+!     REAL(KIND=WP) :: DF
 !        THE EFFECTIVE DEGREES OF FREEDOM.
 !     INTEGER K
 !        AN INDEX VARIABLE
@@ -51,17 +51,17 @@
 !     INTEGER NLPPA1(LNLPPA), NLPPA2(LNLPPA)
 !        THE NUMBER OF LAGGED PRODUCT PAIRS USED FOR EACH ACVF
 !        ESTIMATE.
-!     DOUBLE PRECISION W(LW)
+!     REAL(KIND=WP) :: W(LW)
 !        THE VECTOR OF LAG WINDOWS.
 !
       BW = (W(1)*N)**2/NLPPA1(1)
       DO 10 K = 1, LAG
          BW = BW + (W(K+1)*(N-K))**2 *
-     +      (1.0D0/NLPPA1(K+1) + 1.0D0/NLPPA2(K+1))
+     +      (1.0E0_WP/NLPPA1(K+1) + 1.0E0_WP/NLPPA2(K+1))
    10 CONTINUE
 !
 !
       BW = N / BW
-      DF = 2.0D0 * BW * N
+      DF = 2.0E0_WP * BW * N
       RETURN
       END

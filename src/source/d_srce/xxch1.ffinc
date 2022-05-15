@@ -1,5 +1,6 @@
 !XXCH1
-      SUBROUTINE XXCH1(LDSTAK)
+      SUBROUTINE XXCH1(LDSTAK,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -26,14 +27,14 @@
      +   IERR
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
      +   I,IPRT,N
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   X(100),Y(100)
 !
 !  EXTERNAL SUBROUTINES
@@ -45,7 +46,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION DSTAK(12)
+!     REAL(KIND=WP) :: DSTAK(12)
 !        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
 !     INTEGER I
 !        AN INDEX VARIABLE.
@@ -57,9 +58,9 @@
 !        THE LENGTH OF DSTAK IN COMMON /CSTAK/.
 !     INTEGER N
 !        THE LENGTH OF THE VECTOR Y.
-!     DOUBLE PRECISION X(100)
+!     REAL(KIND=WP) :: X(100)
 !        THE ORDER INDICES OF THE DATA.
-!     DOUBLE PRECISION Y(100)
+!     REAL(KIND=WP) :: Y(100)
 !        DATA VECTOR FOR TESTS.
 !
 !
@@ -70,7 +71,7 @@
       DATA Y( 5), Y( 6), Y( 7)
      +    / 0.6108D0, 0.6138D0, 0.6125D0/
       DATA Y( 8), Y( 9), Y(10), Y(11)
-     +    / 0.6122D0, 0.6110D0, 0.6104D0, 0.7213D0/
+     +    / 0.6122D0, 0.6110E0_WP, 0.6104D0, 0.7213D0/
       DATA Y(12), Y(13), Y(14)
      +    / 0.7078D0, 0.7021D0, 0.7004D0/
       DATA Y(15), Y(16), Y(17), Y(18)
@@ -82,7 +83,7 @@
       DATA Y(26), Y(27), Y(28)
      +    / 0.6178D0, 0.6216D0, 0.6192D0/
       DATA Y(29), Y(30), Y(31), Y(32)
-     +    / 0.6191D0, 0.6250D0, 0.6188D0, 0.6233D0/
+     +    / 0.6191D0, 0.6250E0_WP, 0.6188D0, 0.6233D0/
       DATA Y(33), Y(34), Y(35)
      +    / 0.6225D0, 0.6204D0, 0.6207D0/
       DATA Y(36), Y(37), Y(38), Y(39)
@@ -90,23 +91,23 @@
       DATA Y(40), Y(41), Y(42)
      +    / 0.6222D0, 0.6252D0, 0.6308D0/
       DATA Y(43), Y(44), Y(45), Y(46)
-     +    / 0.6376D0, 0.6330D0, 0.6303D0, 0.6301D0/
+     +    / 0.6376D0, 0.6330E0_WP, 0.6303D0, 0.6301D0/
       DATA Y(47), Y(48), Y(49)
-     +    / 0.6390D0, 0.6423D0, 0.6300D0/
+     +    / 0.6390E0_WP, 0.6423D0, 0.6300E0_WP/
       DATA Y(50), Y(51), Y(52), Y(53)
-     +    / 0.6260D0, 0.6292D0, 0.6298D0, 0.6290D0/
+     +    / 0.6260E0_WP, 0.6292D0, 0.6298D0, 0.6290E0_WP/
       DATA Y(54), Y(55), Y(56)
      +    / 0.6262D0, 0.5952D0, 0.5951D0/
       DATA Y(57), Y(58), Y(59), Y(60)
-     +    / 0.6314D0, 0.6440D0, 0.6439D0, 0.6326D0/
+     +    / 0.6314D0, 0.6440E0_WP, 0.6439D0, 0.6326D0/
       DATA Y(61), Y(62), Y(63)
      +    / 0.6392D0, 0.6417D0, 0.6412D0/
       DATA Y(64), Y(65), Y(66), Y(67)
-     +    / 0.6530D0, 0.6411D0, 0.6355D0, 0.6344D0/
+     +    / 0.6530E0_WP, 0.6411D0, 0.6355D0, 0.6344D0/
       DATA Y(68), Y(69), Y(70)
      +    / 0.6623D0, 0.6276D0, 0.6307D0/
       DATA Y(71), Y(72), Y(73), Y(74)
-     +    / 0.6354D0, 0.6197D0, 0.6153D0, 0.6340D0/
+     +    / 0.6354D0, 0.6197D0, 0.6153D0, 0.6340E0_WP/
       DATA Y(75), Y(76), Y(77)
      +    / 0.6338D0, 0.6284D0, 0.6162D0/
       DATA Y(78), Y(79), Y(80), Y(81)

@@ -19,14 +19,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   DELTA,RSD,STOPP,STOPSS
       INTEGER
      +   IFCST,IVAPRX,IVCV,MIT,MOD,MXFAC,MXFC,MXFCO,MXN,MXPAR,N,
      +   NFAC,NFCST,NFCSTO,NPAR,NPARE,NPRT
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   FCST(MXFC,*),FCSTSD(*),PAR(*),PV(*),RES(*),SCALE(*),SDPV(*),
      +   SDRES(*),STP(*),VCV(MXPAR,*)
       INTEGER
@@ -37,15 +37,13 @@
      +   IERR
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   SQMEPS
       INTEGER
      +   I,J
 !
 !  EXTERNAL FUNCTIONS
-      DOUBLE PRECISION
-     +   RMDCON
-      EXTERNAL RMDCON
+!     REAL(KIND=WP) :: RMDCON
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL SETRV
@@ -58,12 +56,12 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION DELTA
+!     REAL(KIND=WP) :: DELTA
 !        THE MAXIMUM CHANGE ALLOWED IN THE MODEL PARAMETERS AT THE
 !        FIRST ITERATION.
-!     DOUBLE PRECISION FCST(MXFC,MXFCO)
+!     REAL(KIND=WP) :: FCST(MXFC,MXFCO)
 !        THE FORECASTS.
-!     DOUBLE PRECISION FCSTSD(MXFC)
+!     REAL(KIND=WP) :: FCSTSD(MXFC)
 !        THE STANDARD DEVIATION OF THE FORECASTS.
 !     INTEGER I
 !        *
@@ -118,26 +116,26 @@
 !        THE NUMBER OF PARAMETERS ESTIMATED BY THE ROUTINE.
 !     INTEGER NPRT
 !        *
-!     DOUBLE PRECISION PAR(MXPAR)
+!     REAL(KIND=WP) :: PAR(MXPAR)
 !        THE ARRAY IN WHICH THE CURRENT ESTIMATES OF THE UNKNOWN
 !        PARAMETERS ARE STORED.
-!     DOUBLE PRECISION PV(MXN)
+!     REAL(KIND=WP) :: PV(MXN)
 !        THE PREDICTED VALUES.
-!     DOUBLE PRECISION RES(MXN)
+!     REAL(KIND=WP) :: RES(MXN)
 !        THE RESIDUALS.
-!     DOUBLE PRECISION RSD
+!     REAL(KIND=WP) :: RSD
 !        THE RESIDUAL STANDARD DEVIATION.
-!     DOUBLE PRECISION SCALE(MXPAR)
+!     REAL(KIND=WP) :: SCALE(MXPAR)
 !        THE SCALE VALUES.
-!     DOUBLE PRECISION SDPV(MXN)
+!     REAL(KIND=WP) :: SDPV(MXN)
 !        THE STANDARD DEVIATION OF THE PREDICTED VALUES.
-!     DOUBLE PRECISION SDRES(MXN)
+!     REAL(KIND=WP) :: SDRES(MXN)
 !        THE STANDARDIZED RESIDUALS.
-!     DOUBLE PRECISION SQMEPS, STOPP, STOPSS
+!     REAL(KIND=WP) :: SQMEPS, STOPP, STOPSS
 !        *
-!     DOUBLE PRECISION STP(MXPAR)
+!     REAL(KIND=WP) :: STP(MXPAR)
 !        THE STEP VALUES.
-!     DOUBLE PRECISION VCV(MXPAR,MXPAR)
+!     REAL(KIND=WP) :: VCV(MXPAR,MXPAR)
 !        THE VARIANCE COVARIANCE MATRIX.
 !
       GO TO (10, 20, 30, 40, 50, 60), MOD
@@ -154,9 +152,9 @@
       MSPEC(3,2) = 1
       MSPEC(4,2) = 12
       NPAR = 3
-      PAR(1) = 0.0D0
-      PAR(2) = 0.4D0
-      PAR(3) = 0.6D0
+      PAR(1) = 0.0E0_WP
+      PAR(2) = 0.4E0_WP
+      PAR(3) = 0.6E0_WP
       IFIXED(1) = 1
       IFIXED(2) = 0
       IFIXED(3) = 0
@@ -164,47 +162,47 @@
       GO TO 70
 !
 !
-   20 PAR(1) = 1.0D0
-      PAR(2) = 2.0D0
-      PAR(3) = 3.0D0
+   20 PAR(1) = 1.0E0_WP
+      PAR(2) = 2.0E0_WP
+      PAR(3) = 3.0E0_WP
 !
       GO TO 70
 !
 !
-   30 PAR(1) = 6.0D0
-      PAR(2) = 5.0D0
-      PAR(3) = 4.0D0
-      PAR(4) = 3.0D0
-      PAR(5) = 2.0D0
+   30 PAR(1) = 6.0E0_WP
+      PAR(2) = 5.0E0_WP
+      PAR(3) = 4.0E0_WP
+      PAR(4) = 3.0E0_WP
+      PAR(5) = 2.0E0_WP
 !
       GO TO 70
 !
 !
-   40 CALL SETRV(PAR, NPAR, 0.0D0)
+   40 CALL SETRV(PAR, NPAR, 0.0E0_WP)
 !
       GO TO 70
 !
 !
-   50 CALL SETRV(PAR, NPAR, 0.5D0)
+   50 CALL SETRV(PAR, NPAR, 0.5E0_WP)
 !
       GO TO 70
 !
 !
-   60 PAR(1) = 100.0D0
-      PAR(2) = 15.0D0
+   60 PAR(1) = 100.0E0_WP
+      PAR(2) = 15.0E0_WP
 !
    70 CONTINUE
 !
-      SQMEPS = SQRT(RMDCON(3))
+      SQMEPS = SQRT(RMDCON(3,typ=0.0_wp))
 !
       MIT = 25
       DO 80 I=1,10
          STP(I) = SQMEPS
-         SCALE(I) = 1.0D0
+         SCALE(I) = 1.0E0_WP
    80 CONTINUE
-      STOPSS = 10.0D-7
-      STOPP = 10.0D-7
-      DELTA = 0.5D0
+      STOPSS = 10.0E-7_WP
+      STOPP = 10.0E-7_WP
+      DELTA = 0.5E0_WP
       NPRT = 11111
       IVAPRX = 3
       IVCV = MXPAR
@@ -216,27 +214,27 @@
       IFCST = MXFC
 !
       DO 85 I=1,MXN
-         RES(I) = -1.0D0
-         PV(I) = -1.0D0
-         SDPV(I) = -1.0D0
-         SDRES(I) = -1.0D0
+         RES(I) = -1.0E0_WP
+         PV(I) = -1.0E0_WP
+         SDPV(I) = -1.0E0_WP
+         SDRES(I) = -1.0E0_WP
    85 CONTINUE
 !
       DO 100 I=1,MXPAR
          DO 90 J=1,MXPAR
-            VCV(I,J) = -1.0D0
+            VCV(I,J) = -1.0E0_WP
    90    CONTINUE
   100 CONTINUE
 !
       DO 110 I = 1, MXFC
-        FCSTSD(I) = -1.0D0
+        FCSTSD(I) = -1.0E0_WP
         DO 105 J = 1, MXFCO
-          FCST(I,J) = -1.0D0
+          FCST(I,J) = -1.0E0_WP
   105   CONTINUE
   110 CONTINUE
 !
       NPARE = -1
-      RSD = -1.0D0
+      RSD = -1.0E0_WP
 !
       IERR = -1
 !

@@ -1,5 +1,6 @@
 !XNRAND
-      SUBROUTINE XNRAND(LDSTAK)
+      SUBROUTINE XNRAND(LDSTAK,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -24,16 +25,16 @@
      +   IERR
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   SIGMA,YMEAN
       INTEGER
      +   I,IPRT,ISEED,N
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   Y(1000)
 !
 !  EXTERNAL SUBROUTINES
@@ -45,7 +46,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION DSTAK(12)
+!     REAL(KIND=WP) :: DSTAK(12)
 !        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
 !     INTEGER I
 !        AN INDEX VARIABLE
@@ -60,11 +61,11 @@
 !        AMOUNT OF WORK AREA.  SIZE OF DSTAK.
 !     INTEGER N
 !        THE LENGTH OF THE VECTOR Y.
-!     DOUBLE PRECISION SIGMA
+!     REAL(KIND=WP) :: SIGMA
 !        THE S.D. OF THE SAMPLE.
-!     DOUBLE PRECISION Y(1000)
+!     REAL(KIND=WP) :: Y(1000)
 !        DATA VECTOR FOR TESTS.
-!     DOUBLE PRECISION YMEAN
+!     REAL(KIND=WP) :: YMEAN
 !        THE MEAN OF THE SAMPLE.
 !
 !
@@ -92,7 +93,7 @@
       ISEED = 0
       SIGMA = -1
       N = 0
-      YMEAN = 0.0D0
+      YMEAN = 0.0E0_WP
       CALL NRAND(Y, N, ISEED)
       WRITE (IPRT,1170) IERR
       CALL NRANDC(Y, N, ISEED, YMEAN, SIGMA)
@@ -102,8 +103,8 @@
 !
       ISEED = 334
       N = 10
-      YMEAN = 0.0D0
-      SIGMA = 1.0D0
+      YMEAN = 0.0E0_WP
+      SIGMA = 1.0E0_WP
 !
       WRITE (IPRT, 1120) N, ISEED
       CALL NRAND (Y, N, ISEED)
@@ -116,8 +117,8 @@
 !
       ISEED = 13531
       N = 1000
-      YMEAN = 0.0D0
-      SIGMA = 1.0D0
+      YMEAN = 0.0E0_WP
+      SIGMA = 1.0E0_WP
 !
       WRITE (IPRT, 1120) N, ISEED
       CALL NRAND (Y, N, ISEED)
@@ -129,8 +130,8 @@
 !
       ISEED = 99999
       N = 1000
-      YMEAN = 4.0D0
-      SIGMA = 4.0D0
+      YMEAN = 4.0E0_WP
+      SIGMA = 4.0E0_WP
 !
       WRITE (IPRT, 1120) N, ISEED
       CALL NRAND (Y, N, ISEED)

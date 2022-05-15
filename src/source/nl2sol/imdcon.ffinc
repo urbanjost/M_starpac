@@ -10,21 +10,16 @@
 !     ***  K = 3 MEANS RETURN  INPUT UNIT NUMBER.            ***
 !          (NOTE -- K = 2, 3 ARE USED ONLY BY TEST PROGRAMS.)
 !
-!
-!
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
-     +   k
+      integer k
 !
 !  LOCAL ARRAYS
-      integer
-     +   mdcon(3)
+      integer mdcon(3)
 !
 !  EXTERNAL FUNCTIONS
-      integer
-     +   i1mach
+      integer i1mach
       external i1mach
 !
       mdcon(1) = i1mach(2)

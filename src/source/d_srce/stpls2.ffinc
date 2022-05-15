@@ -20,7 +20,7 @@
      +   NPAR
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   STP(NPAR)
 !
 !  SCALARS IN COMMON
@@ -43,11 +43,11 @@
 !        IF IERR .EQ. 1, ERRORS WERE DETECTED.
 !     INTEGER NPAR
 !        THE NUMBER OF UNKNOWN PARAMETERS IN THE MODEL.
-!     DOUBLE PRECISION STP(NPAR)
+!     REAL(KIND=WP) :: STP(NPAR)
 !        THE STEP SIZE ARRAY.
 !
       DO 10 I=1,NPAR
-         STP(I) = -1.0D0
+         STP(I) = -1.0E0_WP
    10 CONTINUE
 !
       IERR = -1

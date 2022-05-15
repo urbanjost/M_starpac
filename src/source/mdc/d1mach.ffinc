@@ -1,5 +1,5 @@
 !D1MACH
-      DOUBLE PRECISION FUNCTION D1MACH(I)
+      double precision function d1mach(i)
 !
 !     MODIFIED JANUARY 24, 1990 TO ACCORD WITH CMLIB AND PORT VERSIONS
 !
@@ -30,25 +30,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER I
+      integer i
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION DMACH(5)
-      INTEGER DIVER(4),LARGE(4),LOG10(4),RIGHT(4),SMALL(4)
+      double precision dmach(5)
+      integer diver(4),large(4),log10(4),right(4),small(4)
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER I1MACH
-      EXTERNAL I1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL SETERR
+      external seterr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DMACH(1),SMALL(1))
-      EQUIVALENCE (DMACH(2),LARGE(1))
-      EQUIVALENCE (DMACH(3),RIGHT(1))
-      EQUIVALENCE (DMACH(4),DIVER(1))
-      EQUIVALENCE (DMACH(5),LOG10(1))
+      equivalence (dmach(1),small(1))
+      equivalence (dmach(2),large(1))
+      equivalence (dmach(3),right(1))
+      equivalence (dmach(4),diver(1))
+      equivalence (dmach(5),log10(1))
 !
 !
 !     MACHINE CONSTANTS FOR IEEE ARITHMETIC MACHINES, SUCH AS THE AT&T
@@ -454,16 +452,24 @@
 !     DATA DIVER(1),DIVER(2) / '00002500'X, '00000000'X /
 !     DATA LOG10(1),LOG10(2) / '209A3F9A'X, 'CFF884FB'X /
 !
+      integer,parameter       :: b = radix(0.0d0)
+      integer,parameter       :: t = digits (0.0d0)
+      double precision,parameter :: emin=minexponent(0.0d0)
+      double precision,parameter :: emax=maxexponent(0.0d0)
+
+      select case(i)
+      case(1); d1mach = tiny(0.0d0)                        ! B**(EMIN-1), the smallest positive magnitude.
+      case(2); d1mach = huge(0.0d0)                        ! B**EMAX*(1-B**(-T)), the largest magnitude.
+                                                           ! calculating this by formula could cause overflow without using a larger type
+      case(3); d1mach = real(b,kind=kind(0.0d0))**(-t)     ! B**(-T), the smallest relative spacing.
+      case(4); d1mach = epsilon(0.0d0)                     ! B**(1-T), the largest relative spacing.
+      case(5) 
+      block
+      intrinsic log10
+      d1mach = log10(real(b,kind=kind(0.0d0)))    ! log10(B).
+      endblock
+      case default
+         call seterr('D1MACH - I OUT OF BOUNDS',24,1,2)
+      end select
 !
-!     CHECK FOR INITIALIZATION WITH DUMMY CALL TO I1MACH
-!
-      D1MACH = I1MACH(I)
-!
-!
-      IF (I .LT. 1  .OR.  I .GT. 5)
-     1   CALL SETERR('D1MACH - I OUT OF BOUNDS',24,1,2)
-!
-      D1MACH = DMACH(I)
-      RETURN
-!
-      END
+      end function d1mach

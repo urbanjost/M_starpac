@@ -1,0 +1,157 @@
+module M_test
+use M_starpac, only :  ssifa,  dswap,  dtrdi,  dscal,   strco
+use M_starpac, only :  dasum,  dnrm2,  dsifa,  sscal,   isamax
+use M_starpac, only :  ddot,   daxpy,  sdot,   idamax,  sswap
+use M_starpac, only :  dsidi,  dtrco,  ssidi,  strdi,   scopy
+use M_starpac, only :  saxpy,  sasum,  dcopy,  snrm2
+
+use M_starpac, only :  i1mach, d1mach, r1mach
+
+use M_starpac, only :  r9lgic,  gamma,   dlngam,  erfc,    eprint
+use M_starpac, only :  dgamr,   dlbeta,  dcsevl,  gamlim,  r9lgmc
+use M_starpac, only :  alngam,  xerprt,  inits,   csevl,   xgetua
+use M_starpac, only :  e9rint,  xerror,  d9gmit,  xsetf,   r9gmit
+use M_starpac, only :  dlnrel,  gami,    d9lgic,  derf,    xerrwv
+use M_starpac, only :  d9lgit,  seterr,  fdump,   r9lgit,  xerctl
+use M_starpac, only :  s88fmt,  erf,     xerabt,  alnrel,  initds
+use M_starpac, only :  dbetai,  i8save,  dgamma,  derfc,   dgamlm
+use M_starpac, only :  albeta,  xersav,  dgamit,  gamit,   dlgams
+use M_starpac, only :  gamr,    xerclr,  betai,   j4save,  xgetf
+use M_starpac, only :  d9lgmc,  algams,  dgami
+
+
+use M_starpac, only :   nl2itr,  qapply,  livmul,  lsqrt,   imdcon,  linvrt
+use M_starpac, only :   vscopy,  lmstep,  qrfact,  nl2sno
+use M_starpac, only :   stopx,   madr,    v2norm,  itsmry,  dotprd,  vcopy
+use M_starpac, only :   parchk,  assess,  nl2x,    covclc
+use M_starpac, only :   rmdcon,  lsvmin,  madj,    vaxpy,   rptmul,  slvmul
+use M_starpac, only :   ltsqar,  litvmu,  gqtstp,  dupdat
+use M_starpac, only :   dfault,  ufparm,  reldst,  slupdt,  nl2sol
+
+use M_starpac, only :   amecnt,  gfsest,  vpm,     mdl1,    stpamo,  nlinit
+use M_starpac, only :   amfmn,   acffs,   icopy,   uasdv,   pgms,    llcntp
+use M_starpac, only :   ufsout,  setrv,   stphdr,  nlout,   ccfer,   matprf
+use M_starpac, only :   sumwts,  cdff,    lpcoef,  stpsel,  aoslst  
+use M_starpac, only :   arcoef,  llsps,   corrhd,  gfout,   vpcnt,   acfm
+use M_starpac, only :   mppml,   vpmc,    demord,  polar
+use M_starpac, only :   cdfnml,  aov1mn,  dckout,  stpcnt,  eivii,   msgx
+use M_starpac, only :   gfarf,   uaser,   drv3,    bfsv,    mvpm,    nlsupk
+use M_starpac, only :   fltar,   nlsc,    chirho,  ufsmv,   nrand
+use M_starpac, only :   ersgt,   amean,   bfsdrv,  vpc,     lstvcf
+use M_starpac, only :   ccf,     nlswdc,  spcck,   ipgms,   acvff
+use M_starpac, only :   uasfs,   acvf,    fftlen,  nlism,   nlsw,    pp
+use M_starpac, only :   fftr,    bfsmvs,  dckdrv,  drv4a,   drv4b
+use M_starpac, only :   stkrel,  ccvf,    pplmt,   sumts,   stat,    dotcm
+use M_starpac, only :   mvpc,    acflst,  pgm,     histc,   dcoef
+use M_starpac, only :   ppm,     sumds,   corrmn,  acfdtl,  versp
+use M_starpac, only :   ppmn,    geni,    setra,   mpp,     center
+use M_starpac, only :   eisrng,  ppl,     gfarfs,  svpl,    cpymss,  fitext
+use M_starpac, only :   iprint,  nlfin,   dckfpa,  uasest,  dif,     demods
+use M_starpac, only :   pgmmn,   sppm,    pltchk,  bfsvs,   amestp,  nlswd
+use M_starpac, only :   demout,  amdrv,   ranko,   ufsmvs,  bfs,     mppl
+use M_starpac, only :   taper,   amlst1,  erslf,   acfmnf,  aimf,    realtr
+use M_starpac, only :   amedrv,  getpi,   nlerr,   fitxsp,  sumwss,  ervgt
+use M_starpac, only :   aov1xp,  ccfxp,   gfaest,  mvpl,    aov1hd
+use M_starpac, only :   ersge,   eiveq,   mdl4,    backop,  slflt
+use M_starpac, only :   cdft,    acvfm,   statws,  nlsd,    fltma
+use M_starpac, only :   setiv,   ccfmnf,  lpflt,   dcklsc,  hstmn,   ufsms
+use M_starpac, only :   ppfchs,  oanova,  ppff,    aimx1,   stat2w  
+use M_starpac, only :   amfcnt,  mppm,    ervgtm,  ppfnml,  ameism,  arflt
+use M_starpac, only :   eisii,   multbp,  vcvotf,  ppmc,    bfsfs,   lopass
+use M_starpac, only :   stpdrv,  amfer,   ccfout,  amefin
+use M_starpac, only :   amfhdr,  gfslf,   sppltd,  mvpml,   setfrq,  ccfmn
+use M_starpac, only :   ipgdv,   dckmn,   acfms,   amept2,  eiseq,   inperl
+use M_starpac, only :   eiage,   eiagep,  ecvf,    nlhdrn,  amlst   
+use M_starpac, only :   spp,     nlitrp,  adjlmt,  ller,    mvp
+use M_starpac, only :   erdf,    stat2,   ipgm,    repck,   mdflt,   llsp
+use M_starpac, only :   sumid,   ufsest,  erslfs,  uas,     uasout
+use M_starpac, only :   mgs,     ufsdrv,  acf,     ufs
+use M_starpac, only :   bfsf,    acfer,   eisge,   loglmt,  uascft,  amemn
+use M_starpac, only :   bfser,   drv2,    llspws,  cpyvii,  lls,     llsws
+use M_starpac, only :   ipgmp,   extend,  uass,    stkget,  uasvar
+use M_starpac, only :   sppml,   ccfs,    aime,    uasvs,   acfmn,   ervii
+use M_starpac, only :   fltarm,  relcom,  ccffs,   ccvff,   enfft
+use M_starpac, only :   obssm2,  amfout,  stkclr,  cmpfd
+use M_starpac, only :   amehdr,  ipgmps,  nrandc,  modsum,  acfsdm,  stpout
+use M_starpac, only :   bfss,    fft,     dcker,   obssum,  ufsf    
+use M_starpac, only :   srtrri,  nlhdra,  nlcmp,   stater,  ccvfm,   mppmc
+use M_starpac, only :   nlmn,    vpml,    ppcnt,   fltsl,   sumwds,  bfsmn
+use M_starpac, only :   ldscmp,  bfsms,   srtirr,  uasf,    eragt
+use M_starpac, only :   llss,    svpc,    stats,   ppml,    nlcnt
+use M_starpac, only :   amept1,  fitpt1,  difm,    pline,   stper,   nlsdc
+use M_starpac, only :   ameanm,  etamdl,  nls,     nlcntn,  mdlts3
+use M_starpac, only :   fixprt,  bfsm,    ufss,    ccfsdm,  dckhdr  
+use M_starpac, only :   difmc,   eisle,   gmean,   matprt,  accdig,  svpm
+use M_starpac, only :   ccfsd,   aimec,   llhdrp,  eriodd,  llsw,    stpls2
+use M_starpac, only :   nlss,    corrs,   randn,   hist,    pgmest,  ccflst
+use M_starpac, only :   mdlts2,  corrxp,  mppc,    acfmnm,  demdrv
+use M_starpac, only :   difc,    nlspk,   setesl,  acff,    ersii,   stat1
+use M_starpac, only :   mdlts1,  acfd,    factor,  dckcnt,  aov1s,   ccff
+use M_starpac, only :   pgord,   pgout,   drv,     aos,     nchose
+use M_starpac, only :   ppc,     svp,     dckls,   acfs,    nlsds,   difser
+use M_starpac, only :   dckcrv,  hipass,  ipgord,  mvpmc,   setlag,  sppltl
+use M_starpac, only :   vcvout,  lstvec,  acfout,  sppmc
+use M_starpac, only :   ufsv,    nlswds,  ccfmnm,  svpmc,   nldrvn,  vpmn
+use M_starpac, only :   mdl2,    aimes,   stat1w,  statw,   dckzro
+use M_starpac, only :   axpby,   uasv,    vphead,  stplsc,  sppc,    sumidw
+use M_starpac, only :   ufsmn,   icnti,   drv1a,   sumss,   nlswc,   llcnt
+use M_starpac, only :   dotc,    ameout,  mdl3,    hster,   fltmd
+use M_starpac, only :   genr,    srtir,   nlsws,   ufspcv,  ppft,    ccfms
+use M_starpac, only :   hpflt,   pltsym,  cdfchi,  ufsm,    ipgmn,   drv1b
+use M_starpac, only :   abscom,  aov1er,  sumot,   demod,   aov1,    nlsx1
+use M_starpac, only :   ervwt,   dfbw,    cpyasf,  srtri,   dckls1,  llspw
+use M_starpac, only :   parzen,  sumbs,   stkset,  fftct,   ufser
+use M_starpac, only :   demodu,  ehdr,    aimfs,   maflt,   nler
+use M_starpac, only :   gfslfs,  stpadj,  ccfm,    vplmt,   ameer
+use M_starpac, only :   nldrva,  smply,   llcntg,  sppltc,  pltplx,  lstlag
+use M_starpac, only :   corr,    stkst,   vp,      fitsxp,  ufslag,  llsmn
+use M_starpac, only :   hpcoef,  nlskl,   eragtm,  sppl,    acfsd
+use M_starpac, only :   ufsvs,   cntr,    gford,   fitpt2,  svpml,   mvchk
+use M_starpac, only :   stpls1,  stpmn,   sample,  ervgtp,  stpls,   ipgout
+use M_starpac, only :   ersei,   setrow,  bfsmv,   nlsx2,   nlcnta
+use M_starpac, only :   prtcnt,  ufsfs,   uasord,  ersie,   llhdrg
+use M_starpac, only :   dfbwm,   eiveo,   vpl,     bfslag,  eragtp
+implicit none
+public
+contains
+include "inc/xacf.inc"
+include "inc/xaimd.inc"
+include "inc/xaimt.inc"
+include "inc/xaov1.inc"
+include "inc/xbfs.inc"
+include "inc/xccf.inc"
+include "inc/xcorr.inc"
+include "inc/xdckld.inc"
+include "inc/xdckle.inc"
+include "inc/xdcklt.inc"
+include "inc/xdemod.inc"
+include "inc/xdflt.inc"
+include "inc/xhist.inc"
+include "inc/xlls.inc"
+include "inc/xnlsd.inc"
+include "inc/xnlse.inc"
+include "inc/xnlst.inc"
+include "inc/xnrand.inc"
+include "inc/xpgm.inc"
+include "inc/xpp.inc"
+include "inc/xstat.inc"
+include "inc/xstpld.inc"
+include "inc/xstple.inc"
+include "inc/xstplt.inc"
+include "inc/xuas.inc"
+include "inc/xufs.inc"
+include "inc/xvp.inc"
+include "inc/xxch10.inc"
+include "inc/xxch11.inc"
+include "inc/xxch12.inc"
+include "inc/xxch13.inc"
+include "inc/xxch1.inc"
+include "inc/xxch2.inc"
+include "inc/xxch3.inc"
+include "inc/xxch4.inc"
+include "inc/xxch5.inc"
+include "inc/xxch6.inc"
+include "inc/xxch7.inc"
+include "inc/xxch8.inc"
+include "inc/xxch9.inc"
+end module M_test

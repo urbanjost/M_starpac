@@ -66,8 +66,8 @@
       implicit none
       integer,parameter       :: b = radix(0.0_wp)
       integer,parameter       :: t = digits (0.0_wp )
-      real(kind=wp),parameter :: EMIN=minexponent(0.0_wp)
-      real(kind=wp),parameter :: EMAX=maxexponent(0.0_wp)
+      real(kind=wp),parameter :: emin=minexponent(0.0_wp)
+      real(kind=wp),parameter :: emax=maxexponent(0.0_wp)
       real ( kind = wp ) mach
       integer i
 
@@ -75,16 +75,16 @@
       case(1); mach = tiny(0.0_wp)               ! B**(EMIN-1), the smallest positive magnitude.
       case(2); mach = huge(0.0_wp)               ! B**EMAX*(1-B**(-T)), the largest magnitude.
                                                  ! calculating this by formula could cause overflow without using a larger type
-      case(3); mach = real(B,KIND=wp)**(-T)      ! B**(-T), the smallest relative spacing.
+      case(3); mach = real(b,kind=wp)**(-t)      ! B**(-T), the smallest relative spacing.
       case(4); mach = epsilon(0.0_wp)            ! B**(1-T), the largest relative spacing.
-      case(5); mach = log10(real(B,kind=wp))     ! log10(B).
+      case(5); mach = log10(real(b,kind=wp))     ! log10(B).
       case default
          write ( *, '(a)' ) ' '
          write ( *, '(a)' ) 'MACH - Fatal error!'
          write ( *, '(a)' ) '  The input argument I is out of bounds.'
          write ( *, '(a)' ) '  Legal values satisfy 1 <= I <= 5.'
          write ( *, '(a,i12)' ) '  I = ', i
-         mach = 0.0D+00
+         mach = 0.0d+00
          stop
       end select
 

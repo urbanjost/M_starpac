@@ -13,11 +13,11 @@
      +   IX,N2
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   X(IX)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   A2,AA,AB,CD,CN,EX,PI,SAVE,SD,SN
       INTEGER
      +   I,ISN,J,K,M,M1,N1,NK
@@ -30,9 +30,9 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION AA, AB, A2
-!     DOUBLE PRECISION CD, CN
-!     DOUBLE PRECISION EX
+!     REAL(KIND=WP) :: AA, AB, A2
+!     REAL(KIND=WP) :: CD, CN
+!     REAL(KIND=WP) :: EX
 !     INTEGER I, ISN
 !     INTEGER IX
 !        THE DIMENSION OF X.
@@ -42,10 +42,10 @@
 !     INTEGER NK, N1
 !     INTEGER N2
 !        THE HALF LENGTH OF THE SYMMETRIC DATA ARRAY.  N2 MUST BE EVEN.
-!     DOUBLE PRECISION PI
+!     REAL(KIND=WP) :: PI
 !        THE VALUE OF PI.
-!     DOUBLE PRECISION SAVE, SD, SN
-!     DOUBLE PRECISION X(IX)
+!     REAL(KIND=WP) :: SAVE, SD, SN
+!     REAL(KIND=WP) :: X(IX)
 !        THE N2+2 VECTOR WITH FIRST HALF OF SYMMETRIC DATA STORED IN
 !        THE FIRST N2+1 LOCATIONS.  LOCATION N2+2 USED ONLY FOR
 !        WORKSPACE.  THE COSINE TRANSFORM COEFFICIENTS ARE RETURNED
@@ -53,48 +53,48 @@
 !
       CALL GETPI(PI)
 !
-      A2 = 0.0D0
+      A2 = 0.0E0_WP
       N1 = N2 + 1
       DO 10 J=2,N2,2
          A2 = A2 + X(J)
    10 CONTINUE
-      A2 = 2.0D0*A2
+      A2 = 2.0E0_WP*A2
       M = N2/2
       M1 = M + 1
       EX = X(2)
-      X(2) = 0.0D0
+      X(2) = 0.0E0_WP
       IF (N1.LT.4) GO TO 30
       DO 20 I=4,N1,2
          SAVE = EX - X(I)
          EX = X(I)
          X(I) = SAVE
    20 CONTINUE
-   30 X(N2+2) = 0.0D0
+   30 X(N2+2) = 0.0E0_WP
       ISN = -2
       CALL REALTR(X, X(2), M, ISN)
       CALL FFT(X, X(2), M, M, M, ISN)
       SD = PI / (2*N2)
-      CD = 2.0D0*SIN(SD)**2
+      CD = 2.0E0_WP*SIN(SD)**2
       SD = SIN(SD+SD)
-      SN = 0.0D0
-      CN = 1.0D0
+      SN = 0.0E0_WP
+      CN = 1.0E0_WP
       NK = N2 + 2
       DO 40 J=2,M1
          K = NK - J
          AA = X(J) + X(K)
-         AB = (X(J)-X(K))*0.5D0
+         AB = (X(J)-X(K))*0.5D0_WP
          EX = CN - (CD*CN+SD*SN)
          SN = (SD*CN-CD*SN) + SN
-         CN = 0.5D0/(EX*EX+SN*SN) + 0.5D0
+         CN = 0.5D0_WP/(EX*EX+SN*SN) + 0.5D0_WP
          SN = CN*SN
          CN = CN*EX
          EX = AB/SN
-         X(J) = (AA+EX)*0.5D0
-         X(K) = (AA-EX)*0.5D0
+         X(J) = (AA+EX)*0.5D0_WP
+         X(K) = (AA-EX)*0.5D0_WP
    40 CONTINUE
       EX = X(1)
       X(1) = EX + A2
       X(N2+1) = EX - A2
-      X(N2+2) = 0.0D0
+      X(N2+2) = 0.0E0_WP
       RETURN
       END

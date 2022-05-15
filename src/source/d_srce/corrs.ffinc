@@ -25,7 +25,7 @@
      +   IVCV,IYM,LDSTAK,M,N,NPRT
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   VCV(*),YM(*)
 !
 !  SCALARS IN COMMON
@@ -33,7 +33,7 @@
      +   IERR
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
@@ -41,7 +41,7 @@
      +   QUAD,RANK,SC,SCINV,SD,SLPC,SLSC,SRCC,T,WRK
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   RSTAK(12)
       INTEGER
      +   ISTAK(12)
@@ -78,7 +78,7 @@
 !     INTEGER CIUP
 !                  OCCUPIES THE SAME SPACE AS SLSC AND IS THE UPPER
 !                  CONFIDENCE INTERVAL
-!     DOUBLE PRECISION DSTAK(12)
+!     REAL(KIND=WP) :: DSTAK(12)
 !                  THE DOUBLE PRECISION VERSION OF
 !                  THE /CSTAK/ WORK AREA.
 !     INTEGER ICOR
@@ -93,7 +93,7 @@
 !     INTEGER IFP
 !                  AN INDICATOR FOR STACK ALLOCATION TYPE, WHERE IFP=3
 !                  INDICATES SINGLE PRECISION AND IFP=4 INDICATES
-!                  DOUBLE PRECISION.
+!                  REAL(KIND=WP) ::.
 !     INTEGER IPRT
 !                  LOGICAL OUTPUT UNIT
 !     INTEGER ISTAK(12)
@@ -132,11 +132,11 @@
 !                  QUADRATIC FIT MATRIX
 !     INTEGER QUAD
 !                  THE STARTING LOCATION IN THE WORK AREA FOR THE
-!                  DOUBLE PRECISION  QUAD FIT
+!                  REAL(KIND=WP) ::  QUAD FIT
 !     INTEGER RANK
 !                  THE STARTING LOCATION IN THE WORK AREA FOR THE
 !                  MATRIX CONTAINING THE RANKS OF YM
-!     DOUBLE PRECISION RSTAK(12)
+!     REAL(KIND=WP) :: RSTAK(12)
 !                  THE DOUBLE PRECISION VERSION OF
 !                  THE /CSTAK/ WORK AREA.
 !     INTEGER SC
@@ -160,12 +160,12 @@
 !     INTEGER T
 !                  STARTING LOCATION IN THE WORK AREA
 !                  FOR THE WORK VECTOR T
-!     DOUBLE PRECISION VCV(IVCV,M)
+!     REAL(KIND=WP) :: VCV(IVCV,M)
 !                  THE VARIANCE COVARIANCE MATRIX
 !     INTEGER WRK
 !                  THE STARTING LOCATION IN THE WORK AREA FOR
 !                  WORK SPACE
-!     DOUBLE PRECISION YM(IYM,M)
+!     REAL(KIND=WP) :: YM(IYM,M)
 !                  THE OBSERVATION MATRIX
 !
 !

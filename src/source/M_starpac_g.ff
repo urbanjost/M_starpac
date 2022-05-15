@@ -1,0 +1,9 @@
+      module M_starpac_g
+      implicit none
+      integer,save,public :: G_IERR
+!        THE INTEGER VALUE RETURNED BY THIS ROUTINE DESIGNATING
+!        WHETHER ANY ERRORS WERE DETECTED IN THE PARAMETER LIST
+!        IF G_IERR .EQ. 0, NO ERRORS WERE DETECTED
+!        IF G_IERR .EQ. 1, ERRORS HAVE BEEN DETECTED
+      private
+      end module M_starpac_g

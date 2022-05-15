@@ -1,5 +1,6 @@
 !XNLSD
-      SUBROUTINE XNLSD(LDSTAK)
+      SUBROUTINE XNLSD(LDSTAK,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -404,7 +405,7 @@
 !     TEST NL2SOL AND NL2SNO DIRECTLY
 !
       WRITE (IPRT,1320)
-      CALL NL2X
+      CALL NL2X(0.0_wp)
 !
 !
       RETURN

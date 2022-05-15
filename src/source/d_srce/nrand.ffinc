@@ -26,7 +26,7 @@
      +   ISEED,N
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   Y(*)
 !
 !  SCALARS IN COMMON
@@ -44,9 +44,7 @@
      +   LN(8)*1,LONE(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      DOUBLE PRECISION
-     +   RANDN
-      EXTERNAL RANDN
+!     REAL(TYPE=WP) :: RANDN
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL EISGE,EISRNG,IPRINT
@@ -85,7 +83,7 @@
 !        THE LENGTH OF DATA SET GENERATED
 !     CHARACTER*1 NMSUB(6)
 !        THE NAME OF THIS SUBROUTINE
-!     DOUBLE PRECISION Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        THE GENERATED RANDOM VALUES.
 !
       DATA  NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6)
@@ -114,9 +112,9 @@
 !
 !     GENERATE THE PSEUDO-RANDOM NUMBERS
 !
-        Y(1) = RANDN(ISEEDU)
+        Y(1) = RANDN(ISEEDU,typ=0.0_wp)
         DO 20 I=1,N
-           Y(I) = RANDN(0)
+           Y(I) = RANDN(0,typ=0.0_wp)
    20   CONTINUE
       END IF
 !

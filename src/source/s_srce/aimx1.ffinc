@@ -43,9 +43,7 @@
      +   I,J
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   RMDCON
-      EXTERNAL RMDCON
+!     REAL(KIND=WP) :: RMDCON
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL SETRV
@@ -195,7 +193,7 @@
 !
    70 CONTINUE
 !
-      SQMEPS = SQRT(RMDCON(3))
+      SQMEPS = SQRT(RMDCON(3,typ=0.0_wp))
 !
       MIT = 25
       DO 80 I=1,10

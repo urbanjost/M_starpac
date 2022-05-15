@@ -27,13 +27,13 @@
      +   LA
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   A(LA),RR(LA)
       INTEGER
      +   IR(LA)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   R,RT,RTT,T,TT
       INTEGER
      +   I,IJ,IT,ITT,J,K,L,M
@@ -47,7 +47,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION A(LA)
+!     REAL(KIND=WP) :: A(LA)
 !        INPUT/OUTPUT PARAMETER.  THE KEY ARRAY.
 !     INTEGER I
 !        *
@@ -78,18 +78,18 @@
 !        A, IR, AND RR.
 !     INTEGER M
 !        *
-!     DOUBLE PRECISION R
+!     REAL(KIND=WP) :: R
 !        *
-!     DOUBLE PRECISION RR(LA)
+!     REAL(KIND=WP) :: RR(LA)
 !        INPUT/OUTPUT PARAMETER.  THE ARRAY CARRIED ALONG IN
 !        THE SORT.  IT MIGHT BE THE SET OF WEIGHTS FOR A.
-!     DOUBLE PRECISION RT
+!     REAL(KIND=WP) :: RT
 !        *
-!     DOUBLE PRECISION RTT
+!     REAL(KIND=WP) :: RTT
 !        *
-!     DOUBLE PRECISION T
+!     REAL(KIND=WP) :: T
 !        *
-!     DOUBLE PRECISION TT
+!     REAL(KIND=WP) :: TT
 !
       M = 1
       I = 1

@@ -1,5 +1,8 @@
 !I1MACH
-      INTEGER FUNCTION I1MACH(I)
+      integer function i1mach(i)
+      use,intrinsic :: iso_fortran_env, only : stdin=>input_unit
+      use,intrinsic :: iso_fortran_env, only : stdout=>output_unit
+      use,intrinsic :: iso_fortran_env, only : stderr=>error_unit
 !
 !     MODIFIED JANUARY 24, 1990 TO ACCORD WITH CMLIB AND PORT VERSIONS
 !
@@ -73,23 +76,42 @@
 !  SET OF CONSTANTS BELOW SHOULD BE APPROPRIATE, EXCEPT PERHAPS
 !  FOR IMACH(1) - IMACH(4).
 !
+! intrinsics
+! exponent     -  Exponent function
+! fraction     -  Fractional part of the model representation
+! nearest      -  Nearest representable number
+! rrspacing    -  Reciprocal of the relative spacing
+! scale        -  Scale a real value
+! set_exponent -  Set the exponent of the model
+! spacing      -  Smallest distance between two numbers of a given type
+! digits       -  Significant digits function
+! epsilon      -  Epsilon function
+! maxexponent  -  Maximum exponent of a real kind
+! minexponent  -  Minimum exponent of a real kind
+! precision    -  Decimal precision of a real kind
+! radix        -  Base of a model number
+! range        -  Decimal exponent range of a real kind
+! tiny         -  Smallest positive number of a real kind
+! huge         -  Largest number of a kind
+! bit_size     -  Bit size inquiry function
+! storage_size - Storage size in bits
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER I
+      integer i
 !
 !  LOCAL SCALARS
-      INTEGER OUTPUT,SANITY
+      integer output,sanity
 !
 !  LOCAL ARRAYS
-      INTEGER IMACH(16)
+      integer imach(16)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL FDUMP
+      external fdump
 !
 !  EQUIVALENCES
-      EQUIVALENCE (IMACH(4),OUTPUT)
+      equivalence (imach(4),output)
 !
 !
 !     MACHINE CONSTANTS FOR IEEE ARITHMETIC MACHINES, SUCH AS THE AT&T
@@ -665,23 +687,62 @@
 !     DATA IMACH(14) /    56/
 !     DATA IMACH(15) /  -127/
 !     DATA IMACH(16) /   127/, SANITY/987/
+      integer,parameter :: bpi=bit_size(0)
+      integer,parameter :: cpi=storage_size(0)/storage_size('a')
+      integer,parameter :: ia=radix(0)
+      integer,parameter :: is=digits(0)
+      integer,parameter :: ibig=huge(0)
+      integer,parameter :: rb=radix(0.0e0)
+      integer,parameter :: rt=digits(0.0e0)
+      integer,parameter :: rmine=minexponent(0.0e0)
+      integer,parameter :: rmaxe=maxexponent(0.0e0)
+      integer,parameter :: dt=digits(0.0d0)
+      integer,parameter :: dmine=minexponent(0.0d0)
+      integer,parameter :: dmaxe=maxexponent(0.0d0)
+      data IMACH( 1)/stdin/                               ! I/O UNIT NUMBERS : THE STANDARD INPUT UNIT.
+      data IMACH( 2)/stdout/                              ! I/O UNIT NUMBERS : THE STANDARD OUTPUT UNIT.
+      data IMACH( 3)/7/                                   ! I/O UNIT NUMBERS : THE STANDARD PUNCH UNIT.
+      data IMACH( 4)/stderr/                              ! I/O UNIT NUMBERS : THE STANDARD ERROR MESSAGE UNIT.
+      data IMACH( 5)/bpi/                                 ! WORDS            : THE NUMBER OF BITS PER INTEGER STORAGE UNIT.
+      data IMACH( 6)/cpi/                                 ! WORDS            : THE NUMBER OF CHARACTERS PER INTEGER STORAGE UNIT.
+!  INTEGERS.
+!    ASSUME INTEGERS ARE REPRESENTED IN THE S-DIGIT, BASE-A FORM
+!               SIGN ( X(S-1)*A**(S-1) + ... + X(1)*A + X(0) )
+!               WHERE 0 .LE. X(I) .LT. A FOR I=0,...,S-1.
+      data IMACH( 7)/ia/                ! A, THE BASE.
+      data IMACH( 8)/is/                ! S, THE NUMBER OF BASE-A DIGITS.
+      data IMACH( 9)/ibig/              ! A**S - 1, THE LARGEST MAGNITUDE.
+!  FLOATING-POINT NUMBERS.
+!    ASSUME FLOATING-POINT NUMBERS ARE REPRESENTED IN THE T-DIGIT, BASE-B FORM
+!         SIGN (B**E)*( (X(1)/B) + ... + (X(T)/B**T) )
+!         WHERE 0 .LE. X(I) .LT. B FOR I=1,...,T,
+!         0 .LT. X(1), AND EMIN .LE. E .LE. EMAX.
+      data IMACH(10)/rb/                 ! B, THE BASE.
+!  SINGLE-PRECISION
+      data IMACH(11)/rt/                 ! T, THE NUMBER OF BASE-B DIGITS.
+      data IMACH(12)/rmine/              ! EMIN, THE SMALLEST EXPONENT E.
+      data IMACH(13)/rmaxe/              ! EMAX, THE LARGEST EXPONENT E.
+!  DOUBLE-PRECISION
+      data IMACH(14)/dt/                 ! T, THE NUMBER OF BASE-B DIGITS.
+      data IMACH(15)/dmine/              ! EMIN, THE SMALLEST EXPONENT E.
+      data IMACH(16)/dmaxe/, SANITY/987/ ! EMAX, THE LARGEST EXPONENT E.
 !
 !  ***  ISSUE STOP IF ALL DATA STATEMENTS ARE COMMENTED...
-      IF (SANITY .NE. 987) THEN
-         STOP 'I1MACH, D1MACH AND R1MACH HAVE NOT BEEN INITIALIZED'
-      ELSE
+      if (sanity .ne. 987) then
+         stop 'I1MACH, D1MACH AND R1MACH HAVE NOT BEEN INITIALIZED'
+      else
 !
-         IF (I .LT. 1  .OR.  I .GT. 16) THEN
-            WRITE(OUTPUT,9000)
-            CALL FDUMP
-            STOP
-         ELSE
-            I1MACH=IMACH(I)
-         END IF
-      END IF
+         if (i .lt. 1  .or.  i .gt. 16) then
+            write(output,9000)
+!            call fdump()
+            stop
+         else
+            i1mach=imach(i)
+         end if
+      end if
 !
-      RETURN
+      return
 !
- 9000 FORMAT('1ERROR    1 IN I1MACH - I OUT OF BOUNDS')
+ 9000 format('1ERROR    1 IN I1MACH - I OUT OF BOUNDS')
 !
-      END
+      end function i1mach

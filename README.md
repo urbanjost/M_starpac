@@ -1338,7 +1338,7 @@ library callable from fpm(Fortran Package Manager). *
 
  NOTE:  Argument definitions and sample programs are given  in  section  D  and
  section  F,  respectively.  The  conventions  used  to  present  the following
- declaration and CALL statments are given in chapter 1, sections B and D.
+ declaration and CALL statements are given in chapter 1, sections B and D.
 
 
                                    Page Plots
@@ -2279,7 +2279,7 @@ library callable from fpm(Fortran Package Manager). *
 
  NOTE:  Argument  definitions  and  a sample program are given in section D and
  section F,  respectively.  The  conventions  used  to  present  the  following
- declaration and CALL statments are given in chapter 1, sections B and D.
+ declaration and CALL statements are given in chapter 1, sections B and D.
 
 
  NRAND:   Generate  a vector of normal pseudo-random numbers with zero mean and
@@ -2687,7 +2687,7 @@ library callable from fpm(Fortran Package Manager). *
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The conventions used to present the following  declaration  and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
 
  HIST:   Compute  and print a histogram  and summary statistics, with automatic
@@ -3177,7 +3177,7 @@ library callable from fpm(Fortran Package Manager). *
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The  conventions  used to present the following declaration and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
 
  STAT:   Compute and print 53 statistics describing the input data
@@ -3837,7 +3837,7 @@ library callable from fpm(Fortran Package Manager). *
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The  conventions  used to present the following declaration and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
 
  AOV1:   Compute and print a one-way analysis of variance of the input data
@@ -4019,7 +4019,7 @@ library callable from fpm(Fortran Package Manager). *
  limits are formed by taking the grand mean plus (and minus) the product of the
  percentage point of Student's t distribution and the standard deviation of the
  mean.  Let k be the number of groups and n be the total number of observations
- with postitive tag.   Then, the  standard deviation of the mean  is the square
+ with positive tag.   Then, the  standard deviation of the mean  is the square
  root of the variance of the mean formed as follows:
 
    Model                    Variance                 Variance of     Degrees of
@@ -4374,7 +4374,7 @@ library callable from fpm(Fortran Package Manager). *
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The  conventions  used to present the following declaration and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
 
  CORR:   Compute  and  print a  correlation analysis of  a multivariate  random
@@ -6532,7 +6532,7 @@ library callable from fpm(Fortran Package Manager). *
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The  conventions  used to present the following declaration and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
 
                  Nonlinear Least Squares Estimation Subroutines
@@ -9488,7 +9488,7 @@ library callable from fpm(Fortran Package Manager). *
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The  conventions  used to present the following declaration and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
 
            Subroutines Supporting Symmetric Linear Filter Operations
@@ -10848,7 +10848,7 @@ library callable from fpm(Fortran Package Manager). *
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The conventions used to present the following  declaration  and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
  DEMOD:   Compute  and plot the results of a complex  demodulation of the input
           series
@@ -12151,7 +12151,7 @@ library callable from fpm(Fortran Package Manager). *
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The  conventions  used to present the following declaration and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
                                     <12-6>
 1
@@ -16475,7 +16475,7 @@ library callable from fpm(Fortran Package Manager). *
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The  conventions  used to present the following declaration and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
       The <basic declaration block> identifies declaration statements  that are
  needed by all of the  ARIMA estimation and forecasting subroutines.   The user
@@ -18311,7 +18311,7 @@ library callable from fpm(Fortran Package Manager). *
  BFSS     BFSV     BFSVS    CCF      CCFER    CCFF     CCFFS    CCFLST   CCFM
  CCFMN    CCFMNF   CCFMNM   CCFMS    CCFOUT   CCFS     CCFSD    CCFSDM   CCFXP
  CCVF     CCVFF    CCVFM    CDFCHI   CDFF     CDFNML   CDFT     CENTER   CHIRHO
- CMPFD    CNTR     CORR     CORRER   CORRHD   CORRMN   CORRS    CORRXP   CPYASF
+ CMPFD    CNTR     CORR    !CORRER   CORRHD   CORRMN   CORRS    CORRXP   CPYASF
  CPYMSS   CPYVII   DCKCNT   DCKCRV   DCKDRV   DCKER    DCKFPA   DCKHDR   DCKLS
  DCKLSC   DCKLS1   DCKMN    DCKOUT   DCKZRO   DCOEF    DEMDRV   DEMOD    DEMODS
  DEMODU   DEMORD   DEMOUT   DFBW     DFBWM    DIF      DIFC     DIFM     DIFMC
@@ -18337,7 +18337,7 @@ library callable from fpm(Fortran Package Manager). *
  NLSWS    NLSX1    NLSX2    NRAND    NRANDC   OANOVA   OBSSM2   OBSSUM   PARZEN
  PGM      PGMEST   PGMMN    PGMS     PGORD    PGOUT    PLINE    PLTCHK   PLTPLX
  PLTSYM   POLAR    PP       PPC      PPCNT    PPFCHS   PPFF     PPFNML   PPFT
- PPL      PPLMT    PPM      PPMC     PPML     PPMN     PRTCNT   RANDN    RANDU
+ PPL      PPLMT    PPM      PPMC     PPML     PPMN     PRTCNT   RANDN   !RANDU
  RANKO    REALTR   RELCOM   REPCK    SAMPLE   SETESL   SETFRQ   SETIV    SETLAG
  SETRA    SETROW   SETRV    SLFLT    SMPLY    SPCCK    SPP      SPPC     SPPL
  SPPLTC   SPPLTD   SPPLTL   SPPM     SPPMC    SPPML    SRTIR    SRTIRR   SRTRI
@@ -20073,3 +20073,5 @@ toc.doc
  We welcome your comments on STARPAC, the STARPAC release, and STARPAC
  portability.
 -->
+ !1000 FORMAT (105X, 'STARPAC 2.08 (03/15/90)')
+ !1010 FORMAT (54X, 'STARPAC 2.08 (03/15/90)')

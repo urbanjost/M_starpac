@@ -1,5 +1,6 @@
 !XAOV1
-      SUBROUTINE XAOV1(LDSTAK)
+      SUBROUTINE XAOV1(LDSTAK,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -24,16 +25,16 @@
      +   IERR
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   FI
       INTEGER
      +   I,IGSTAT,IPRT,LDSMIN,N,NG
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   GSTAT(10,4),TAG(20),Y(20),Z(10),ZTAG(10)
 !
 !  EXTERNAL SUBROUTINES
@@ -45,11 +46,11 @@
 !
 !     VARIABLE DEFINITIONS (APHABETICALLY)
 !
-!     DOUBLE PRECISION DSTAK(12)
+!     REAL(KIND=WP) :: DSTAK(12)
 !        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
-!     DOUBLE PRECISION FI
+!     REAL(KIND=WP) :: FI
 !        FLOAT OF INDEX I
-!     DOUBLE PRECISION GSTAT(10,4)
+!     REAL(KIND=WP) :: GSTAT(10,4)
 !        THE GROUP STATISTICS.  COLUMNS CORRESPOND TO THE TAG
 !        VALUE, SAMPLE SIZE, GROUP MEAN, AND GROUP STANDARD DEVIATION.
 !     INTEGER I
@@ -68,32 +69,32 @@
 !        THE NUMBER OF OBSERVATIONS
 !     INTEGER NG
 !        THE NUMBER OF DIFFERENT GROUPS
-!     DOUBLE PRECISION TAG(20)
+!     REAL(KIND=WP) :: TAG(20)
 !        THE TAG VALUES FOR EACH OBSERVATION
-!     DOUBLE PRECISION Y(20)
+!     REAL(KIND=WP) :: Y(20)
 !        THE VECTOR OF OBSERVATIONS
-!     DOUBLE PRECISION Z(10)
+!     REAL(KIND=WP) :: Z(10)
 !        TEST VECTOR
-!     DOUBLE PRECISION ZTAG(10)
+!     REAL(KIND=WP) :: ZTAG(10)
 !        TEST TAG VECTOR
 !
       DATA   Y( 1),   Y( 2),   Y( 3),   Y( 4),   Y( 5)
-     +   /    61.0D0,    61.0D0,    67.0D0,    67.0D0,    64.0D0/
+     +   /    61.0E0_WP,    61.0E0_WP,    67.0E0_WP,    67.0E0_WP,    64.0E0_WP/
       DATA   Y( 6),   Y( 7),   Y( 8),   Y( 9),   Y(10)
-     +   /    78.0D0,    71.0D0,    75.0D0,    72.0D0,    74.0D0/
+     +   /    78.0E0_WP,    71.0E0_WP,    75.0E0_WP,    72.0E0_WP,    74.0E0_WP/
       DATA   Y(11),   Y(12),   Y(13),   Y(14),   Y(15)
-     +   /    83.0D0,    81.0D0,    76.0D0,    78.0D0,    79.0D0/
+     +   /    83.0E0_WP,    81.0E0_WP,    76.0E0_WP,    78.0E0_WP,    79.0E0_WP/
       DATA   Y(16),   Y(17)
-     +   /    72.0D0,   72.0D0/
+     +   /    72.0E0_WP,   72.0E0_WP/
 !
       DATA TAG( 1), TAG( 2), TAG( 3), TAG( 4), TAG( 5)
      +   /    11.5D0,    11.5D0,    11.5D0,    11.5D0,    11.5D0/
       DATA TAG( 6), TAG( 7), TAG( 8), TAG( 9), TAG(10)
-     +   /    12.0D0,    12.0D0,    12.0D0,    12.0D0,    12.0D0/
+     +   /    12.0E0_WP,    12.0E0_WP,    12.0E0_WP,    12.0E0_WP,    12.0E0_WP/
       DATA TAG(11), TAG(12), TAG(13), TAG(14), TAG(15)
-     +   /    11.0D0,    11.0D0,    11.0D0,    11.0D0,    11.0D0/
+     +   /    11.0E0_WP,    11.0E0_WP,    11.0E0_WP,    11.0E0_WP,    11.0E0_WP/
       DATA TAG(16), TAG(17)
-     +   /   -11.0D0,   11.0D0/
+     +   /   -11.0E0_WP,   11.0E0_WP/
 !
       CALL IPRINT(IPRT)
 !
@@ -150,11 +151,11 @@
 !
       WRITE (IPRT,1100)
       WRITE (IPRT,1000)
-      CALL SETRV(Z, 10, 0.0D0)
+      CALL SETRV(Z, 10, 0.0E0_WP)
       CALL AOV1(Z, TAG, 10, LDSTAK)
       CALL MSGX(0, IPRT)
 !
-      CALL SETRV(Z, 10, 2.0D0)
+      CALL SETRV(Z, 10, 2.0E0_WP)
       WRITE (IPRT,1100)
       WRITE (IPRT,1030)
       CALL AOV1S(Z, TAG, 10, LDSTAK, 1, GSTAT, IGSTAT, NG)
@@ -200,7 +201,7 @@
       DO 20 I=1,10
          FI = I
          ZTAG(I) = FI
-         Z(I) = 13.0D0 - FI
+         Z(I) = 13.0E0_WP - FI
    20 CONTINUE
       CALL AOV1(Z, ZTAG, 10, LDSTAK)
       CALL MSGX(1, IPRT)
@@ -210,7 +211,7 @@
 !**** LESS THAN 2 DIFFERENT TAG GROUPS ****
 !
       WRITE (IPRT,1130)
-      CALL SETRV(ZTAG, 10, 1.0D0)
+      CALL SETRV(ZTAG, 10, 1.0E0_WP)
       CALL AOV1(Z, ZTAG, 10, LDSTAK)
       CALL MSGX(1, IPRT)
       CALL AOV1S(Z, ZTAG, 10, LDSTAK, 1, GSTAT, IGSTAT, NG)
@@ -218,7 +219,7 @@
 !
 !**** LESS THAN 2 TAGS ****
 !
-      CALL SETRV(ZTAG, 9, 0.0D0)
+      CALL SETRV(ZTAG, 9, 0.0E0_WP)
       WRITE (IPRT,1140)
       CALL AOV1(Z, ZTAG, 10, LDSTAK)
       CALL MSGX(1, IPRT)
@@ -233,26 +234,26 @@
 !
 !**** ALL OBSERVATIONS WITHIN A GROUP SAME VALUE ****
 !
-      Z(1) = 53.0D0
-      ZTAG(1) = 1.0D0
-      Z(2) = 62.0D0
-      ZTAG(2) = 3.0D0
-      Z(3) = 53.0D0
-      ZTAG(3) = 1.0D0
-      Z(4) = 71.0D0
-      ZTAG(4) = 4.0D0
-      Z(5) = 89.0D0
-      ZTAG(5) = 2.0D0
-      Z(6) = 71.0D0
-      ZTAG(6) = 4.0D0
-      Z(7) = 89.0D0
-      ZTAG(7) = 2.0D0
-      Z(8) = 62.0D0
-      ZTAG(8) = 3.0D0
-      Z(9) = 71.0D0
-      ZTAG(9) = 4.0D0
-      Z(10) = 62.0D0
-      ZTAG(10) = 3.0D0
+      Z(1) = 53.0E0_WP
+      ZTAG(1) = 1.0E0_WP
+      Z(2) = 62.0E0_WP
+      ZTAG(2) = 3.0E0_WP
+      Z(3) = 53.0E0_WP
+      ZTAG(3) = 1.0E0_WP
+      Z(4) = 71.0E0_WP
+      ZTAG(4) = 4.0E0_WP
+      Z(5) = 89.0E0_WP
+      ZTAG(5) = 2.0E0_WP
+      Z(6) = 71.0E0_WP
+      ZTAG(6) = 4.0E0_WP
+      Z(7) = 89.0E0_WP
+      ZTAG(7) = 2.0E0_WP
+      Z(8) = 62.0E0_WP
+      ZTAG(8) = 3.0E0_WP
+      Z(9) = 71.0E0_WP
+      ZTAG(9) = 4.0E0_WP
+      Z(10) = 62.0E0_WP
+      ZTAG(10) = 3.0E0_WP
       WRITE (IPRT,1160)
       CALL AOV1(Z, ZTAG, 10, LDSTAK)
       CALL MSGX(0, IPRT)

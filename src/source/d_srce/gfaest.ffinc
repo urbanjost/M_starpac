@@ -17,17 +17,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   DELTA
       INTEGER
      +   IAR,NF
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   FREQ(NF),GAIN(NF),PHAS(NF),PHI(IAR)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   ARG,C,PI,S,V0,V1,V2,Z0,Z1,Z2
       INTEGER
      +   I,J,JJ
@@ -40,16 +40,16 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION ARG
+!     REAL(KIND=WP) :: ARG
 !        A VALUE USED TO COMPUTE THE GAIN FUNCTION ESTIMATES.
-!     DOUBLE PRECISION C
+!     REAL(KIND=WP) :: C
 !        A VALUE USED TO COMPUTE THE GAIN FUNCTION ESTIMATES.
-!     DOUBLE PRECISION DELTA
+!     REAL(KIND=WP) :: DELTA
 !        THE SAMPLING INTERVAL OF THE ORIGINAL SERIES.
-!     DOUBLE PRECISION FREQ(NF)
+!     REAL(KIND=WP) :: FREQ(NF)
 !        THE VECTOR OF FREQUENCIES AT WHICH THE GAIN FUNCTION IS TO
 !        BE ESTIMATED.
-!     DOUBLE PRECISION GAIN(NF)
+!     REAL(KIND=WP) :: GAIN(NF)
 !        THE ARRAY IN WHICH THE GAIN FUNCTION ESTIMATES ARE RETURNED.
 !     INTEGER I
 !        AN INDEX VARIABLE.
@@ -60,17 +60,17 @@
 !     INTEGER NF
 !        THE NUMBER OF FREQUENCIES FOR WHICH THE GAIN FUNCTION ESTIMATES
 !        ARE TO BE COMPUTED.
-!     DOUBLE PRECISION PHAS(NF)
+!     REAL(KIND=WP) :: PHAS(NF)
 !        THE ARRAY IN WHICH THE PHASE OF THE FILTER IS RETURNED.
-!     DOUBLE PRECISION PHI(IAR)
+!     REAL(KIND=WP) :: PHI(IAR)
 !        THE VECTOR CONTAINING THE AUTOREGRESSIVE FILTER COEFFICIENTS.
-!     DOUBLE PRECISION PI
+!     REAL(KIND=WP) :: PI
 !        THE VALUE OF PI.
-!     DOUBLE PRECISION S
+!     REAL(KIND=WP) :: S
 !        A VALUE USED TO COMPUTE THE GAIN FUNCTION ESTIMATES.
-!     DOUBLE PRECISION V0, V1, V2
+!     REAL(KIND=WP) :: V0, V1, V2
 !        CONSTANTS USED FOR COMPUTING THE GAIN FUNCTION ESTIMATES.
-!     DOUBLE PRECISION Z0, Z1, Z2
+!     REAL(KIND=WP) :: Z0, Z1, Z2
 !        CONSTANTS USED FOR COMPUTING THE GAIN FUNCTION ESTIMATES.
 !
       CALL GETPI(PI)
@@ -78,27 +78,27 @@
 !     COMPUTE GAIN FUNCTION ESTIMATES AND THEIR CONFIDENCE LIMITS.
 !
       DO 30 I = 1, NF
-         IF (FREQ(I).EQ.0.0D0) THEN
-            ARG = 0.0D0
-            C = 1.0D0
-            S = 0.0D0
-         ELSE IF (FREQ(I).EQ.0.25D0) THEN
-            ARG = PI/2.0D0
-            C = 0.0D0
-            S = 1.0D0
-         ELSE IF (FREQ(I).EQ.0.5D0) THEN
+         IF (FREQ(I).EQ.0.0E0_WP) THEN
+            ARG = 0.0E0_WP
+            C = 1.0E0_WP
+            S = 0.0E0_WP
+         ELSE IF (FREQ(I).EQ.0.25D0_WP) THEN
+            ARG = PI/2.0E0_WP
+            C = 0.0E0_WP
+            S = 1.0E0_WP
+         ELSE IF (FREQ(I).EQ.0.5D0_WP) THEN
             ARG = PI
-            C = -1.0D0
-            S = 0.0D0
+            C = -1.0E0_WP
+            S = 0.0E0_WP
          ELSE
-            ARG = 2.0D0 * PI * FREQ(I)
+            ARG = 2.0E0_WP * PI * FREQ(I)
             C = COS(ARG)
             S = SIN(ARG)
          END IF
-         V0 = 0.0D0
-         V1 = 0.0D0
-         Z0 = 0.0D0
-         Z1 = 0.0D0
+         V0 = 0.0E0_WP
+         V1 = 0.0E0_WP
+         Z0 = 0.0E0_WP
+         Z1 = 0.0E0_WP
 !
          JJ = IAR + 1
 !
@@ -114,14 +114,14 @@
             Z1 = Z2
    20    CONTINUE
 !
-         V2 = DELTA * (1.0D0 + (V1 * C - V0))
+         V2 = DELTA * (1.0E0_WP + (V1 * C - V0))
 !
          Z2 = DELTA * Z1 * S
 !
          GAIN(I) = SQRT(V2*V2 + Z2*Z2)
 !
-         PHAS(I) = -0.5D0 * PI
-         IF (Z2.NE.0.0D0 .AND. V2.NE.0.0D0) PHAS(I) = ATAN2(Z2, V2)
+         PHAS(I) = -0.5D0_WP * PI
+         IF (Z2.NE.0.0E0_WP .AND. V2.NE.0.0E0_WP) PHAS(I) = ATAN2(Z2, V2)
 !
    30 CONTINUE
 !

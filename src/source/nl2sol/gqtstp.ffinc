@@ -31,9 +31,10 @@
      +   restrt
 !
 !  EXTERNAL FUNCTIONS
+!     REAL(KIND=WP) :: RMDCON
       real(kind=wp) ::
-     +   dotprd,lsvmin,rmdcon,v2norm
-      external dotprd,lsvmin,rmdcon,v2norm
+     +   dotprd,lsvmin,v2norm
+      external dotprd,lsvmin,v2norm
 !
 !  EXTERNAL SUBROUTINES
       external litvmu,livmul,lsqrt
@@ -198,8 +199,8 @@
 !/
 !  ***  EXTERNAL FUNCTIONS AND SUBROUTINES  ***
 !
-!     EXTERNAL DOTPRD, LITVMU, LIVMUL, LSQRT, LSVMIN, RMDCON, V2NORM
-!     REAL(KIND=WP) :: DOTPRD, LSVMIN, RMDCON, V2NORM
+!     EXTERNAL DOTPRD, LITVMU, LIVMUL, LSQRT, LSVMIN, V2NORM
+!     REAL(KIND=WP) :: DOTPRD, LSVMIN, V2NORM
 !
 !  ***  SUBSCRIPTS FOR V  ***
 !
@@ -487,7 +488,7 @@
 !  ***  DECIDE HOW TO HANDLE (NEARLY) SINGULAR H + ALPHA*D**2  ***
 !
 !     ***  IF NOT YET AVAILABLE, OBTAIN MACHINE DEPENDENT VALUE DGXFAC.
- 270  if (dgxfac .eq. zero) dgxfac = epsfac * rmdcon(3)
+ 270  if (dgxfac .eq. zero) dgxfac = epsfac * rmdcon(3,typ=0.0_wp)
 !
 !     ***  NOW DECIDE.  ***
       if (delta .gt. dgxfac*w(dggdmx)) go to 350

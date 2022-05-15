@@ -4,8 +4,7 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
-     +   idummy
+      integer :: idummy
 !
 !     *****PURPOSE...
 !     THIS FUNCTION MAY SERVE AS THE STOPX (ASYNCHRONOUS INTERRUPTION)

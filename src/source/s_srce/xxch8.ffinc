@@ -1,5 +1,6 @@
 !XXCH8
-      SUBROUTINE XXCH8(LDSTAK)
+      SUBROUTINE XXCH8(LDSTAK,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !

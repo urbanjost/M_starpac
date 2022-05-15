@@ -16,13 +16,13 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   RSD
       INTEGER
      +   IVCV,MOD,N,NNZW,NPAR,NPARE
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   PAR(NPAR),PV(N),RES(N),SDPV(N),SDRES(N),VCV(IVCV,IVCV)
 !
 !  SCALARS IN COMMON
@@ -60,20 +60,20 @@
 !        THE NUMBER OF PARAMETERS ESTIMATED BY THE ROUTINE.
 !     INTEGER NNZW
 !        THE NUMBER OF NONZERO WEIGHTS.
-!     DOUBLE PRECISION PAR(NPAR)
+!     REAL(KIND=WP) :: PAR(NPAR)
 !        THE ARRAY IN WHICH THE CURRENT ESTIMATES OF THE UNKNOWN
 !        PARAMETERS ARE STORED.
-!     DOUBLE PRECISION PV(N)
+!     REAL(KIND=WP) :: PV(N)
 !        THE PREDICTED VALUES.
-!     DOUBLE PRECISION RES(N)
+!     REAL(KIND=WP) :: RES(N)
 !        THE RESIDUALS.
-!     DOUBLE PRECISION RSD
+!     REAL(KIND=WP) :: RSD
 !        THE RESIDUAL STANDARD DEVIATION.
-!     DOUBLE PRECISION SDPV(N)
+!     REAL(KIND=WP) :: SDPV(N)
 !        THE STANDARD DEVIATION OF THE PREDICTED VALUES.
-!     DOUBLE PRECISION SDRES(N)
+!     REAL(KIND=WP) :: SDRES(N)
 !        THE STANDARDIZED RESIDUALS.
-!     DOUBLE PRECISION VCV(IVCV,IVCV)
+!     REAL(KIND=WP) :: VCV(IVCV,IVCV)
 !        THE VARIANCE COVARIANCE MATRIX.
 !
 !
@@ -81,28 +81,28 @@
       GO TO (10, 20, 30, 40, 50, 60), MOD
 !
    10 PAR(1) = 0.725D0
-      PAR(2) = 4.0D0
+      PAR(2) = 4.0E0_WP
 !
       GO TO 70
 !
 !
-   20 PAR(1) = 1.0D0
-      PAR(2) = 2.0D0
-      PAR(3) = 3.0D0
+   20 PAR(1) = 1.0E0_WP
+      PAR(2) = 2.0E0_WP
+      PAR(3) = 3.0E0_WP
 !
       GO TO 70
 !
 !
-   30 PAR(1) = 6.0D0
-      PAR(2) = 5.0D0
-      PAR(3) = 4.0D0
-      PAR(4) = 3.0D0
-      PAR(5) = 2.0D0
+   30 PAR(1) = 6.0E0_WP
+      PAR(2) = 5.0E0_WP
+      PAR(3) = 4.0E0_WP
+      PAR(4) = 3.0E0_WP
+      PAR(5) = 2.0E0_WP
 !
       GO TO 70
 !
 !
-   40 CALL SETRV(PAR, NPAR, 0.0D0)
+   40 CALL SETRV(PAR, NPAR, 0.0E0_WP)
 !
       GO TO 70
 !
@@ -112,27 +112,27 @@
       GO TO 70
 !
 !
-   60 PAR(1) = 100.0D0
-      PAR(2) = 15.0D0
+   60 PAR(1) = 100.0E0_WP
+      PAR(2) = 15.0E0_WP
 !
    70 CONTINUE
 !
       DO 80 I=1,N
-         RES(I) = -1.0D0
-         PV(I) = -1.0D0
-         SDPV(I) = -1.0D0
-         SDRES(I) = -1.0D0
+         RES(I) = -1.0E0_WP
+         PV(I) = -1.0E0_WP
+         SDPV(I) = -1.0E0_WP
+         SDRES(I) = -1.0E0_WP
    80 CONTINUE
 !
       DO 100 I=1,IVCV
          DO 90 J=1,IVCV
-            VCV(I,J) = -1.0D0
+            VCV(I,J) = -1.0E0_WP
    90    CONTINUE
   100 CONTINUE
 !
       NNZW = -1
       NPARE = -1
-      RSD = -1.0D0
+      RSD = -1.0E0_WP
 !
       IERR = -1
 !

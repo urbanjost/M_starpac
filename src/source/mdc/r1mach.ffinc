@@ -1,5 +1,5 @@
 !R1MACH
-      REAL FUNCTION R1MACH(I)
+      real function r1mach(i)
 !
 !     MODIFIED JANUARY 22, 1990 TO ACCORD WITH CMLIB AND PORT VERSIONS
 !
@@ -30,25 +30,25 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER I
+      integer i
 !
 !  LOCAL ARRAYS
-      REAL RMACH(5)
-      INTEGER DIVER(2),LARGE(2),LOG10(2),RIGHT(2),SMALL(2)
+      real rmach(5)
+      integer diver(2),large(2),log10(2),right(2),small(2)
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER I1MACH
-      EXTERNAL I1MACH
+      integer i1mach
+      external i1mach
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL SETERR
+      external seterr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (RMACH(1),SMALL(1))
-      EQUIVALENCE (RMACH(2),LARGE(1))
-      EQUIVALENCE (RMACH(3),RIGHT(1))
-      EQUIVALENCE (RMACH(4),DIVER(1))
-      EQUIVALENCE (RMACH(5),LOG10(1))
+      equivalence (rmach(1),small(1))
+      equivalence (rmach(2),large(1))
+      equivalence (rmach(3),right(1))
+      equivalence (rmach(4),diver(1))
+      equivalence (rmach(5),log10(1))
 !
 !     MACHINE CONSTANTS FOR IEEE ARITHMETIC MACHINES, SUCH AS THE AT&T
 !     3B SERIES, MOTOROLA 68000 BASED MACHINES (E.G. SUN 3 AND AT&T
@@ -304,14 +304,24 @@
 !     DATA DIVER(1),DIVER(2) /     0,  27136/
 !     DATA LOG10(1),LOG10(2) /  8347,  32538/
 !
-!     CHECK FOR INITIALIZATION WITH DUMMY CALL TO I1MACH
+      integer,parameter       :: b = radix(0.0e0)
+      integer,parameter       :: t = digits (0.0e0 )
+      real,parameter :: emin=minexponent(0.0e0)
+      real,parameter :: emax=maxexponent(0.0e0)
+
+      select case(i)
+      case(1); r1mach = tiny(0.0e0)                ! B**(EMIN-1), the smallest positive magnitude.
+      case(2); r1mach = huge(0.0e0)                ! B**EMAX*(1-B**(-T)), the largest magnitude.
+                                                   ! calculating this by formula could cause overflow without using a larger type
+      case(3); r1mach = real(b)**(-t)              ! B**(-T), the smallest relative spacing.
+      case(4); r1mach = epsilon(0.0e0)             ! B**(1-T), the largest relative spacing.
+      case(5); 
+      block
+      intrinsic log10
+      r1mach = log10(real(b))             ! log10(B).
+      endblock
+      case default
+         call seterr('R1MACH - I OUT OF BOUNDS',24,1,2)
+      end select
 !
-      R1MACH = I1MACH(I)
-!
-      IF (I .LT. 1  .OR.  I .GT. 5)
-     +   CALL SETERR('R1MACH - I OUT OF BOUNDS',24,1,2)
-!
-      R1MACH = RMACH(I)
-      RETURN
-!
-      END
+      end function r1mach

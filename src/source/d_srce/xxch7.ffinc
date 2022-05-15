@@ -1,5 +1,6 @@
 !XXCH7
-      SUBROUTINE XXCH7(LDSTAK)
+      SUBROUTINE XXCH7(LDSTAK,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -26,14 +27,14 @@
      +   IERR
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
      +   IPRT,IYM,M,N
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   YM(10,5)
 !
 !  EXTERNAL SUBROUTINES
@@ -45,7 +46,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION DSTAK(12)
+!     REAL(KIND=WP) :: DSTAK(12)
 !        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
 !     INTEGER IERR
 !        THE INTEGER VALUE DESIGNATING WHETHER ANY ERRORS WERE
@@ -62,7 +63,7 @@
 !        THE NUMBER OF VARIABLES MEASURED FOR EACH OBSERVATION.
 !     INTEGER N
 !        THE NUMBER OF OBSERVATIONS.
-!     DOUBLE PRECISION YM(10,5)
+!     REAL(KIND=WP) :: YM(10,5)
 !        THE OBSERVED MULTIVARIATE DATA.
 !
 !
@@ -73,7 +74,7 @@
       DATA     YM(3,1),   YM(3,2),   YM(3,3),   YM(3,4)
      +    /      42.6D0,  10.6D0,  28.7D0, 160.8D0/
       DATA     YM(4,1),   YM(4,2),   YM(4,3),   YM(4,4)
-     +    /      39.0D0,  10.4D0,  26.1D0, 162.0D0/
+     +    /      39.0E0_WP,  10.4D0,  26.1D0, 162.0E0_WP/
       DATA     YM(5,1),   YM(5,2),   YM(5,3),   YM(5,4)
      +    /      34.7D0,   9.3D0,  30.1D0, 140.8D0/
       DATA     YM(6,1),   YM(6,2),   YM(6,3),   YM(6,4)
@@ -81,9 +82,9 @@
       DATA     YM(7,1),   YM(7,2),   YM(7,3),   YM(7,4)
      +    /      39.1D0,  10.7D0,  24.3D0, 163.7D0/
       DATA     YM(8,1),   YM(8,2),   YM(8,3),   YM(8,4)
-     +    /      40.1D0,  10.0D0,  18.6D0, 174.5D0/
+     +    /      40.1D0,  10.0E0_WP,  18.6D0, 174.5D0/
       DATA     YM(9,1),   YM(9,2),   YM(9,3),   YM(9,4)
-     +    /      45.9D0,  12.0D0,  20.4D0, 185.7D0/
+     +    /      45.9D0,  12.0E0_WP,  20.4D0, 185.7D0/
 !
 !
 !     SET PARAMETERS NECESSARY FOR THE COMPUTATIONS

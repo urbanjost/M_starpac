@@ -34,9 +34,7 @@
      +   cngd(12)*1,dflt(12)*1,vn(8,27)*1,which(12)*1
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     +   rmdcon
-      external rmdcon
+!     REAL(KIND=WP) :: RMDCON
 !
 !  EXTERNAL SUBROUTINES
       external dfault,vcopy
@@ -45,8 +43,7 @@
 !     REAL(KIND=WP) :: V(33)
 !     DIMENSION IV(*), V(*)
 !
-!     EXTERNAL DFAULT, RMDCON, VCOPY
-!     REAL(KIND=WP) :: RMDCON
+!     EXTERNAL DFAULT, VCOPY
 ! DFAULT -- SUPPLIES DFAULT PARAMETER VALUES.
 ! RMDCON -- RETURNS MACHINE-DEPENDENT CONSTANTS.
 ! VCOPY  -- COPIES ONE VECTOR TO ANOTHER.
@@ -242,9 +239,9 @@
  75   continue
 !
  80   if (big .gt. tiny) go to 90
-         tiny = rmdcon(1)
-         machep = rmdcon(3)
-         big = rmdcon(6)
+         tiny = rmdcon(1,typ=0.0_wp)
+         machep = rmdcon(3,typ=0.0_wp)
+         big = rmdcon(6,typ=0.0_wp)
          vm(12) = machep
          vx(12) = big
          vm(13) = tiny
@@ -257,7 +254,7 @@
          vx(20) = big
          vx(21) = big
          vm(22) = machep
-         vx(24) = rmdcon(5)
+         vx(24) = rmdcon(5,typ=0.0_wp)
          vm(25) = machep
          vm(26) = machep
  90   m = 0

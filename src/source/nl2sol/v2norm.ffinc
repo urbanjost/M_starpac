@@ -24,9 +24,7 @@
      +   i,j
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     +   rmdcon
-      external rmdcon
+!     REAL(KIND=WP) :: RMDCON
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,sqrt
@@ -48,7 +46,7 @@
          v2norm = scale
          go to 999
  40   t = one
-      if (sqteta .eq. zero) sqteta = rmdcon(2)
+      if (sqteta .eq. zero) sqteta = rmdcon(2,typ=0.0_wp)
 !
 !     ***  SQTETA IS (SLIGHTLY LARGER THAN) THE SQUARE ROOT OF THE
 !     ***  SMALLEST POSITIVE FLOATING POINT NUMBER ON THE MACHINE.

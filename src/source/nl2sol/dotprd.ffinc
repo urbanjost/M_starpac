@@ -23,9 +23,7 @@
      +   i
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     +   rmdcon
-      external rmdcon
+!     REAL(KIND=WP) :: RMDCON
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,max
@@ -38,8 +36,6 @@
 !/+
 !     REAL(KIND=WP) :: MAX, ABS
 !/
-!     EXTERNAL RMDCON
-!     REAL(KIND=WP) :: RMDCON
 !
 !  ***  RMDCON(2) RETURNS A MACHINE-DEPENDENT CONSTANT, SQTETA, WHICH
 !  ***  IS SLIGHTLY LARGER THAN THE SMALLEST POSITIVE NUMBER THAT
@@ -49,7 +45,7 @@
 !
       dotprd = zero
       if (p .le. 0) go to 999
-      if (sqteta .eq. zero) sqteta = rmdcon(2)
+      if (sqteta .eq. zero) sqteta = rmdcon(2,typ=0.0_wp)
       do 20 i = 1, p
          t = max(abs(x(i)), abs(y(i)))
          if (t .gt. one) go to 10

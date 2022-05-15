@@ -46,9 +46,7 @@
      +   LN(8)*1,LONE(8)*1,LSIGMA(8)*1,LZERO(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   RANDN
-      EXTERNAL RANDN
+!     REAL(TYPE=WP) :: RANDN
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL EISGE,EISRNG,ERSGE,IPRINT
@@ -125,9 +123,9 @@
 !
 !     GENERATE THE PSEUDO-RANDOM NUMBERS
 !
-        Y(1) = RANDN(ISEEDU)
+        Y(1) = RANDN(ISEEDU,typ=0.0_wp)
         DO 20 I=1,N
-           Y(I) = RANDN(0)*SIGMA + YMEAN
+           Y(I) = RANDN(0,typ=0.0_wp)*SIGMA + YMEAN
    20   CONTINUE
       END IF
 !

@@ -28,25 +28,25 @@
      +   IA,IER,IR,N,NP
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   A(IA,NP),B(N),C(NP),D(NP),R(IR,NP),X(NP)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   SM1,SM2
       INTEGER
      +   I,J,JJ,K,NPJJMJ
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION A(IA,NP)
+!     REAL(KIND=WP) :: A(IA,NP)
 !           THE COEFFICIENTS MATRIX (NOT PRESERVED ON OUTPUT)
-!     DOUBLE PRECISION B(N)
+!     REAL(KIND=WP) :: B(N)
 !           THE CONSTANT COLUMN MATRIX OF THE SYSTEM (NOT PRESERVED
 !           ON OUTPUT)
-!     DOUBLE PRECISION C(NP)
+!     REAL(KIND=WP) :: C(NP)
 !           THE MATRIX C DESCRIBED ABOVE
-!     DOUBLE PRECISION D(NP)
+!     REAL(KIND=WP) :: D(NP)
 !           THE DIAGONAL ELEMENTS OF THE MATRIX D DESCRIBED ABOVE
 !     INTEGER I
 !           *
@@ -68,31 +68,31 @@
 !           THE NUMBER OF PARAMETERS
 !     INTEGER NPJJMJ
 !           *
-!     DOUBLE PRECISION R(IR,NP)
+!     REAL(KIND=WP) :: R(IR,NP)
 !           THE UPPER ELEMENTS OF THE MATRIX R DESCRIBED ABOVE
-!     DOUBLE PRECISION SM1
+!     REAL(KIND=WP) :: SM1
 !           *
-!     DOUBLE PRECISION SM2
+!     REAL(KIND=WP) :: SM2
 !           *
-!     DOUBLE PRECISION X(NP)
+!     REAL(KIND=WP) :: X(NP)
 !           THE SOLUTION MATRIX
 !
 !
       IER = 0
 !
-      SM1 = 0.0D0
-      SM2 = 0.0D0
+      SM1 = 0.0E0_WP
+      SM2 = 0.0E0_WP
       DO 10 I=1,N
          SM1 = A(I,1)*A(I,1) + SM1
          SM2 = A(I,1)*B(I) + SM2
    10 CONTINUE
-      IF (SM1.EQ.0.0D0) GO TO 100
+      IF (SM1.EQ.0.0E0_WP) GO TO 100
       D(1) = SM1
       C(1) = SM2/SM1
       IF (NP.EQ.1) GO TO 70
       DO 60 K=2,NP
          DO 40 J=K,NP
-            SM1 = 0.0D0
+            SM1 = 0.0E0_WP
             DO 20 I=1,N
                SM1 = A(I,K-1)*A(I,J) + SM1
    20       CONTINUE
@@ -101,14 +101,14 @@
                A(I,J) = A(I,J) - A(I,K-1)*R(K-1,J)
    30       CONTINUE
    40    CONTINUE
-         SM1 = 0.0D0
-         SM2 = 0.0D0
+         SM1 = 0.0E0_WP
+         SM2 = 0.0E0_WP
          DO 50 I=1,N
             B(I) = B(I) - A(I,K-1)*C(K-1)
             SM1 = A(I,K)*A(I,K) + SM1
             SM2 = A(I,K)*B(I) + SM2
    50    CONTINUE
-         IF (SM1.EQ.0.0D0) GO TO 100
+         IF (SM1.EQ.0.0E0_WP) GO TO 100
          D(K) = SM1
          C(K) = SM2/SM1
    60 CONTINUE
@@ -120,7 +120,7 @@
       DO 90 I=2,NP
          K = NP + 1 - I
          JJ = K + 1
-         SM1 = 0.0D0
+         SM1 = 0.0E0_WP
          DO 80 J=JJ,NP
             NPJJMJ = NP + JJ - J
             SM1 = R(K,NPJJMJ)*X(NPJJMJ) + SM1

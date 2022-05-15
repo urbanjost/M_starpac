@@ -1,5 +1,6 @@
 !XLLS
-      SUBROUTINE XLLS(LDS)
+      SUBROUTINE XLLS(LDS,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -23,16 +24,16 @@
      +   IERR
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   RSD,SUM,TERM
       INTEGER
      +   I,IPRT,IVCV,IXM,J,LDSMIN,LDSTAK,LPAR,N,NDEG,NPAR,NPRT
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   PAR(10),PV(50),RAND(1),RES(50),SDPV(50),SDRES(50),VCV(10,10),
      +   WT(50),X(50,9),XM(50,10),XM1(50,10),Y(50),Y1(50)
 !
@@ -49,7 +50,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION DSTAK(12)
+!     REAL(KIND=WP) :: DSTAK(12)
 !        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
 !     INTEGER I
 !        AN INDEX.
@@ -83,60 +84,60 @@
 !     INTEGER NPRT
 !        THE INDICATOR VARIABLE USED TO DESIGNATE THE AMOUNT OF
 !        PRINTED OUTPUT.
-!     DOUBLE PRECISION PAR(10)
+!     REAL(KIND=WP) :: PAR(10)
 !        THE PARAMETERS  TO BE ESTIMATED.
-!     DOUBLE PRECISION PV(50)
+!     REAL(KIND=WP) :: PV(50)
 !        THE PREDICTED VALUES.
-!     DOUBLE PRECISION RAND(1)
+!     REAL(KIND=WP) :: RAND(1)
 !        *
-!     DOUBLE PRECISION RES(50)
+!     REAL(KIND=WP) :: RES(50)
 !        THE RESIDUALS.
-!     DOUBLE PRECISION RSD
+!     REAL(KIND=WP) :: RSD
 !        THE RESIDUAL STANDARD DEVIATION.
-!     DOUBLE PRECISION SDPV(50)
+!     REAL(KIND=WP) :: SDPV(50)
 !        THE STANDARD DEVIATIONS OF THE PREDICTED VALUES.
-!     DOUBLE PRECISION SDRES(50)
+!     REAL(KIND=WP) :: SDRES(50)
 !        THE STANDARDIZED RESIDUALS.
-!     DOUBLE PRECISION SUM, TERM
+!     REAL(KIND=WP) :: SUM, TERM
 !        *
-!     DOUBLE PRECISION VCV(10,10)
+!     REAL(KIND=WP) :: VCV(10,10)
 !        THE VARIANCE COVARIANCE MATRIX.
-!     DOUBLE PRECISION WT(50)
+!     REAL(KIND=WP) :: WT(50)
 !        THE WEIGHTS (A DUMMY VECTOR IN THE UNWEIGHTED CASE).
-!     DOUBLE PRECISION X(50,9)
+!     REAL(KIND=WP) :: X(50,9)
 !        THE INDEPENDENT VARIABLE.
-!     DOUBLE PRECISION XM(50,10)
+!     REAL(KIND=WP) :: XM(50,10)
 !        THE INDEPENDENT VARIABLE.
-!     DOUBLE PRECISION XM1(50,10)
+!     REAL(KIND=WP) :: XM1(50,10)
 !        THE INDEPENDENT VARIABLE.
-!     DOUBLE PRECISION Y(50)
+!     REAL(KIND=WP) :: Y(50)
 !        THE DEPENDENT VARIABLE.
-!     DOUBLE PRECISION Y1(50)
+!     REAL(KIND=WP) :: Y1(50)
 !        THE DEPENDENT VARIABLE.
 !
 !
       DATA      XM(1,1),  XM(1,2),  XM(1,3),  XM(1,4)
-     +    /      1.0D0, 42.2D0, 11.2D0, 31.9D0/
+     +    /      1.0E0_WP, 42.2D0, 11.2D0, 31.9D0/
       DATA      XM(2,1),  XM(2,2),  XM(2,3),  XM(2,4)
-     +    /      1.0D0, 48.6D0, 10.6D0, 13.2D0/
+     +    /      1.0E0_WP, 48.6D0, 10.6D0, 13.2D0/
       DATA      XM(3,1),  XM(3,2),  XM(3,3),  XM(3,4)
-     +    /      1.0D0, 42.6D0, 10.6D0, 28.7D0/
+     +    /      1.0E0_WP, 42.6D0, 10.6D0, 28.7D0/
       DATA      XM(4,1),  XM(4,2),  XM(4,3),  XM(4,4)
-     +    /      1.0D0, 39.0D0, 10.4D0, 26.1D0/
+     +    /      1.0E0_WP, 39.0E0_WP, 10.4D0, 26.1D0/
       DATA      XM(5,1),  XM(5,2),  XM(5,3),  XM(5,4)
-     +    /      1.0D0, 34.7D0,  9.3D0, 30.1D0/
+     +    /      1.0E0_WP, 34.7D0,  9.3D0, 30.1D0/
       DATA      XM(6,1),  XM(6,2),  XM(6,3),  XM(6,4)
-     +    /      1.0D0, 44.5D0, 10.8D0,  8.5D0/
+     +    /      1.0E0_WP, 44.5D0, 10.8D0,  8.5D0/
       DATA      XM(7,1),  XM(7,2),  XM(7,3),  XM(7,4)
-     +    /      1.0D0, 39.1D0, 10.7D0, 24.3D0/
+     +    /      1.0E0_WP, 39.1D0, 10.7D0, 24.3D0/
       DATA      XM(8,1),  XM(8,2),  XM(8,3),  XM(8,4)
-     +    /      1.0D0, 40.1D0, 10.0D0, 18.6D0/
+     +    /      1.0E0_WP, 40.1D0, 10.0E0_WP, 18.6D0/
       DATA      XM(9,1),  XM(9,2),  XM(9,3),  XM(9,4)
-     +    /      1.0D0, 45.9D0, 12.0D0, 20.4D0/
+     +    /      1.0E0_WP, 45.9D0, 12.0E0_WP, 20.4D0/
       DATA         Y(1),     Y(2),     Y(3)
      +    /    167.1D0,174.4D0,160.8D0/
       DATA         Y(4),     Y(5),     Y(6)
-     +    /    162.0D0,140.8D0,174.6D0/
+     +    /    162.0E0_WP,140.8D0,174.6D0/
       DATA         Y(7),     Y(8),     Y(9)
      +    /    163.7D0,174.5D0,185.7D0/
 !
@@ -152,7 +153,7 @@
       IXM = 50
       LDSTAK = LDS
 !
-      CALL SETRV(WT, N, 1.0D0)
+      CALL SETRV(WT, N, 1.0E0_WP)
 !
 !     CHECK ERROR HANDLING
 !
@@ -244,7 +245,7 @@
 !
 !        ERROR 3  -  NEGATIVE WEIGHTS
 !
-      WT(1) = -1.0D0
+      WT(1) = -1.0E0_WP
       WRITE (IPRT,1240)
       WRITE (IPRT,1020)
       CALL LLSW(Y, WT, XM, N, IXM, NPAR, RES, LDSTAK)
@@ -260,11 +261,11 @@
       CALL LLSPWS(Y, WT, X, N, NDEG, RES, LDSTAK,
      +   NPRT, LPAR, PAR, NPAR, RSD, PV, SDPV, SDRES, VCV, IVCV)
       WRITE (IPRT,1500) IERR
-      WT(1) = 1.0D0
+      WT(1) = 1.0E0_WP
 !
 !        ERROR 4  -  TOO FEW POSITIVE WEIGHTS
 !
-      CALL SETRV(WT(2), N-1, 0.0D0)
+      CALL SETRV(WT(2), N-1, 0.0E0_WP)
       WRITE (IPRT,1250)
       WRITE (IPRT,1020)
       CALL LLSW(Y, WT, XM, N, IXM, NPAR, RES, LDSTAK)
@@ -280,7 +281,7 @@
       CALL LLSPWS(Y, WT, X, N, NDEG, RES, LDSTAK,
      +   NPRT, LPAR, PAR, NPAR, RSD, PV, SDPV, SDRES, VCV, IVCV)
       WRITE (IPRT,1500) IERR
-      CALL SETRV(WT(2), N-1, 1.0D0)
+      CALL SETRV(WT(2), N-1, 1.0E0_WP)
 !
 !     CHECK RESULTS FROM VALID CALL
 !
@@ -359,7 +360,7 @@
 !
       N = 9
 !
-      CALL SETRV(WT(NPAR+1), N-NPAR, 0.0D0)
+      CALL SETRV(WT(NPAR+1), N-NPAR, 0.0E0_WP)
 !
       WRITE (IPRT,1270)
       WRITE (IPRT,1020)
@@ -384,7 +385,7 @@
       WRITE (IPRT,1500) IERR
       CALL FITSXP(PAR, PV, SDPV, RES, SDRES, VCV, N, NPAR, IVCV, RSD)
 !
-      CALL SETRV(WT(NPAR+1), N-NPAR, 1.0D0)
+      CALL SETRV(WT(NPAR+1), N-NPAR, 1.0E0_WP)
 !
 !     CHECK RESULTS FROM RANK DEFICIENT FIT
 !
@@ -433,7 +434,7 @@
 !     CHECK RESULTS FOR WEIGHTED ANALYSIS
 !
       NPRT = 1111
-      CALL SETRV(WT, N, 100.0D0)
+      CALL SETRV(WT, N, 100.0E0_WP)
       WRITE (IPRT,1310)
       WRITE (IPRT,1030)
       CALL LLSWS(Y, WT, XM, N, IXM, NPAR, RES, LDSTAK,
@@ -441,9 +442,9 @@
       WRITE (IPRT,1500) IERR
       CALL FITSXP(PAR, PV, SDPV, RES, SDRES, VCV, N, NPAR, IVCV, RSD)
 !
-      WT(1) = 0.0D0
-      WT(5) = 0.0D0
-      WT(9) = 0.0D0
+      WT(1) = 0.0E0_WP
+      WT(5) = 0.0E0_WP
+      WT(9) = 0.0E0_WP
 !
       WRITE (IPRT,1310)
       WRITE (IPRT,1030)
@@ -451,16 +452,16 @@
      +   NPRT, PAR, RSD, PV,SDPV, SDRES, VCV, IVCV)
       WRITE (IPRT,1500) IERR
       CALL FITSXP(PAR, PV, SDPV, RES, SDRES, VCV, N, NPAR, IVCV, RSD)
-      CALL SETRV(WT, N, 100.0D0)
+      CALL SETRV(WT, N, 100.0E0_WP)
 !
-      CALL GENR(WT, N, 1.0D0, 1.0D0)
+      CALL GENR(WT, N, 1.0E0_WP, 1.0E0_WP)
       WRITE (IPRT,1310)
       WRITE (IPRT,1030)
       CALL LLSWS(Y, WT, XM, N, IXM, NPAR, RES, LDSTAK,
      +   NPRT, PAR, RSD, PV,SDPV, SDRES, VCV, IVCV)
       WRITE (IPRT,1500) IERR
       CALL FITSXP(PAR, PV, SDPV, RES, SDRES, VCV, N, NPAR, IVCV, RSD)
-      CALL SETRV(WT, N, 100.0D0)
+      CALL SETRV(WT, N, 100.0E0_WP)
 !
 !     CHECK PRINT CONTROL
 !
@@ -557,8 +558,8 @@
 !     ILL-CONDITIONED
 !
       DO 40 I = 1, 50
-         TERM = 1.0D0
-         SUM = 0.0D0
+         TERM = 1.0E0_WP
+         SUM = 0.0E0_WP
          DO 35 J = 1, 6
             XM1(I,J) = TERM
             SUM = SUM + TERM
@@ -619,7 +620,7 @@
       CALL FITSXP(PAR, PV, SDPV, RES, SDRES, VCV, N, NPAR, IVCV, RSD)
 !
       N = 45
-      CALL SETRV(WT, N, 1.0D0)
+      CALL SETRV(WT, N, 1.0E0_WP)
       WRITE (IPRT,1340)
       WRITE (IPRT,1010)
       CALL LLSWS(Y1, WT, XM1, N, IXM, NPAR, RES, LDSTAK,

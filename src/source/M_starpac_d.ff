@@ -4,98 +4,100 @@
       integer,parameter :: wp=kind(0.0d0)
 
       private ::  mach
+      private ::  randu
+      private ::  correr
 
-      public  ::  nl2itr,  qapply,  livmul,  lsqrt,   imdcon,  linvrt
+      public  ::  nl2itr,  qapply,  livmul,  lsqrt,   linvrt
       public  ::  vscopy,  lmstep,  qrfact,  nl2sno
-      public  ::  stopx,   madr,    v2norm,  itsmry,  dotprd,  vcopy
+      public  ::  madr,    v2norm,  itsmry,  dotprd,  vcopy
       public  ::  parchk,  assess,  nl2x,    covclc
       public  ::  rmdcon,  lsvmin,  madj,    vaxpy,   rptmul,  slvmul
       public  ::  ltsqar,  litvmu,  gqtstp,  dupdat
-      public  ::  dfault,  ufparm,  reldst,  slupdt,  nl2sol
+      public  ::  dfault,  reldst,  slupdt,  nl2sol
 
       public  ::  amecnt,  gfsest,  vpm,     mdl1,    stpamo,  nlinit
-      public  ::  amfmn,   acffs,   icopy,   uasdv,   pgms,    llcntp
-      public  ::  ufsout,  setrv,   stphdr,  nlout,   ccfer,   matprf
+      public  ::  amfmn,   acffs,   uasdv,   pgms,    llcntp
+      public  ::  ufsout,  setrv,   nlout,   matprf
       public  ::  sumwts,  cdff,    lpcoef,  stpsel,  aoslst,  xxch9
-      public  ::  arcoef,  llsps,   corrhd,  gfout,   vpcnt,   acfm
+      public  ::  arcoef,  llsps,   gfout,   vpcnt,   acfm
       public  ::  mppml,   xlls,    vpmc,    demord,  polar,   xvp
-      public  ::  cdfnml,  aov1mn,  dckout,  stpcnt,  eivii,   msgx
+      public  ::  cdfnml,  aov1mn,  dckout,  stpcnt
       public  ::  gfarf,   uaser,   drv3,    bfsv,    mvpm,    nlsupk
       public  ::  fltar,   nlsc,    chirho,  xaimt,   ufsmv,   nrand
       public  ::  ersgt,   amean,   xstplt,  bfsdrv,  vpc,     lstvcf
       public  ::  ccf,     xpp,     nlswdc,  spcck,   ipgms,   acvff
-      public  ::  uasfs,   acvf,    fftlen,  nlism,   nlsw,    pp
+      public  ::  uasfs,   acvf,    nlism,   nlsw,    pp
       public  ::  fftr,    bfsmvs,  xxch10,  dckdrv,  drv4a,   drv4b
-      public  ::  stkrel,  ccvf,    pplmt,   sumts,   stat,    dotcm
+      public  ::  ccvf,    pplmt,   sumts,   stat,    dotcm
       public  ::  mvpc,    acflst,  pgm,     histc,   xxch3,   dcoef
-      public  ::  ppm,     sumds,   corrmn,  acfdtl,  xxch13,  versp
-      public  ::  xdcklt,  ppmn,    geni,    setra,   mpp,     center
-      public  ::  eisrng,  ppl,     gfarfs,  svpl,    cpymss,  fitext
-      public  ::  iprint,  nlfin,   dckfpa,  uasest,  dif,     demods
+      public  ::  ppm,     sumds,   corrmn,  xxch13  
+      public  ::  xdcklt,  ppmn,    setra,   mpp,     center
+      public  ::  ppl,     gfarfs,  svpl,    cpymss,  fitext
+      public  ::  nlfin,   dckfpa,  uasest,  dif,     demods
       public  ::  pgmmn,   sppm,    pltchk,  bfsvs,   amestp,  nlswd
       public  ::  demout,  amdrv,   ranko,   ufsmvs,  bfs,     mppl
       public  ::  taper,   amlst1,  erslf,   acfmnf,  aimf,    realtr
-      public  ::  amedrv,  getpi,   nlerr,   fitxsp,  sumwss,  ervgt
-      public  ::  aov1xp,  ccfxp,   gfaest,  xuas,    mvpl,    aov1hd
-      public  ::  ersge,   xaov1,   eiveq,   mdl4,    backop,  slflt
+      public  ::  amedrv,  getpi,   fitxsp,  sumwss,  ervgt
+      public  ::  aov1xp,  ccfxp,   gfaest,  xuas,    mvpl
+      public  ::  ersge,   xaov1,   mdl4,    slflt
       public  ::  cdft,    acvfm,   xccf,    statws,  nlsd,    fltma
-      public  ::  setiv,   ccfmnf,  lpflt,   dcklsc,  hstmn,   ufsms
+      public  ::  ccfmnf,  lpflt,   dcklsc,  hstmn,   ufsms
       public  ::  ppfchs,  oanova,  ppff,    aimx1,   stat2w,  xdflt
       public  ::  amfcnt,  mppm,    ervgtm,  ppfnml,  ameism,  arflt
-      public  ::  eisii,   multbp,  vcvotf,  ppmc,    bfsfs,   lopass
-      public  ::  stpdrv,  xacf,    amfer,   ccfout,  randu,   amefin
-      public  ::  amfhdr,  gfslf,   sppltd,  mvpml,   setfrq,  ccfmn
-      public  ::  ipgdv,   dckmn,   acfms,   amept2,  eiseq,   inperl
-      public  ::  eiage,   eiagep,  ecvf,    nlhdrn,  amlst,   xstat
+      public  ::  multbp,  vcvotf,  ppmc,    bfsfs,   lopass
+      public  ::  stpdrv,  xacf,    ccfout,  amefin
+      public  ::  gfslf,   sppltd,  mvpml,   setfrq,  ccfmn
+      public  ::  ipgdv,   dckmn,   acfms,   amept2
+      public  ::  amlst,   xstat
       public  ::  spp,     nlitrp,  adjlmt,  xxch7,   ller,    mvp
-      public  ::  erdf,    stat2,   ipgm,    repck,   mdflt,   llsp
+      public  ::  stat2,   ipgm,    repck,   mdflt,   llsp
       public  ::  xxch8,   sumid,   ufsest,  erslfs,  uas,     uasout
       public  ::  mgs,     ufsdrv,  acf,     xdemod,  ufs,     xnlsd
-      public  ::  bfsf,    acfer,   eisge,   loglmt,  uascft,  amemn
-      public  ::  bfser,   drv2,    llspws,  cpyvii,  lls,     llsws
-      public  ::  ipgmp,   xstpld,  extend,  uass,    stkget,  uasvar
+      public  ::  bfsf,    loglmt,  uascft,  amemn
+      public  ::  drv2,    llspws,  lls,     llsws
+      public  ::  ipgmp,   xstpld,  extend,  uass,    uasvar
       public  ::  sppml,   ccfs,    aime,    uasvs,   acfmn,   ervii
-      public  ::  fltarm,  relcom,  ccffs,   ccvff,   xbfs,    enfft
-      public  ::  obssm2,  amfout,  stkclr,  cmpfd,   xxch2,   xxch1
-      public  ::  amehdr,  ipgmps,  nrandc,  modsum,  acfsdm,  stpout
+      public  ::  fltarm,  relcom,  ccffs,   ccvff,   xbfs
+      public  ::  obssm2,  amfout,  cmpfd,   xxch2,   xxch1
+      public  ::  ipgmps,  nrandc,  acfsdm,  stpout
       public  ::  bfss,    fft,     dcker,   obssum,  ufsf,    xstple
-      public  ::  srtrri,  nlhdra,  nlcmp,   stater,  ccvfm,   mppmc
+      public  ::  srtrri,  nlcmp,   stater,  ccvfm,   mppmc
       public  ::  nlmn,    vpml,    ppcnt,   fltsl,   sumwds,  bfsmn
-      public  ::  ldscmp,  bfsms,   srtirr,  xnrand,  uasf,    eragt
+      public  ::  bfsms,   srtirr,  xnrand,  uasf,    eragt
       public  ::  llss,    svpc,    stats,   ppml,    xufs,    nlcnt
-      public  ::  amept1,  fitpt1,  difm,    pline,   stper,   nlsdc
+      public  ::  amept1,  fitpt1,  difm,    stper,   nlsdc
       public  ::  xnlst,   ameanm,  etamdl,  nls,     nlcntn,  mdlts3
-      public  ::  fixprt,  bfsm,    ufss,    ccfsdm,  dckhdr,  xpgm
-      public  ::  difmc,   eisle,   gmean,   matprt,  accdig,  svpm
-      public  ::  ccfsd,   aimec,   llhdrp,  eriodd,  llsw,    stpls2
+      public  ::  bfsm,    ufss,    ccfsdm,  xpgm
+      public  ::  difmc,   gmean,   matprt,  accdig,  svpm
+      public  ::  ccfsd,   aimec,   llsw,    stpls2
       public  ::  nlss,    corrs,   randn,   hist,    pgmest,  ccflst
       public  ::  mdlts2,  corrxp,  mppc,    acfmnm,  xxch11,  demdrv
-      public  ::  difc,    nlspk,   setesl,  acff,    ersii,   stat1
-      public  ::  mdlts1,  acfd,    factor,  dckcnt,  aov1s,   ccff
-      public  ::  pgord,   pgout,   xdckle,  drv,     aos,     nchose
+      public  ::  difc,    nlspk,   acff,    ersii,   stat1
+      public  ::  mdlts1,  acfd,    dckcnt,  aov1s,   ccff
+      public  ::  pgord,   pgout,   xdckle,  drv,     aos
       public  ::  ppc,     svp,     dckls,   acfs,    nlsds,   difser
-      public  ::  dckcrv,  hipass,  ipgord,  mvpmc,   setlag,  sppltl
+      public  ::  dckcrv,  hipass,  ipgord,  mvpmc,   sppltl
       public  ::  vcvout,  xnlse,   lstvec,  acfout,  sppmc,   xaimd
       public  ::  ufsv,    nlswds,  ccfmnm,  svpmc,   nldrvn,  vpmn
       public  ::  mdl2,    xxch12,  aimes,   stat1w,  statw,   dckzro
       public  ::  axpby,   uasv,    vphead,  stplsc,  sppc,    sumidw
-      public  ::  ufsmn,   icnti,   drv1a,   sumss,   nlswc,   llcnt
+      public  ::  ufsmn,   drv1a,   sumss,   nlswc,   llcnt
       public  ::  dotc,    xxch5,   ameout,  mdl3,    hster,   fltmd
       public  ::  genr,    srtir,   nlsws,   ufspcv,  ppft,    ccfms
-      public  ::  hpflt,   pltsym,  cdfchi,  ufsm,    ipgmn,   drv1b
+      public  ::  hpflt,   cdfchi,  ufsm,    ipgmn,   drv1b
       public  ::  abscom,  aov1er,  sumot,   demod,   aov1,    nlsx1
       public  ::  ervwt,   dfbw,    cpyasf,  srtri,   dckls1,  llspw
-      public  ::  parzen,  sumbs,   stkset,  fftct,   correr,  ufser
-      public  ::  xcorr,   demodu,  ehdr,    aimfs,   maflt,   nler
+      public  ::  parzen,  sumbs,   fftct
+      public  ::  xcorr,   demodu,  aimfs,   maflt,   nler
       public  ::  gfslfs,  stpadj,  xhist,   ccfm,    vplmt,   ameer
-      public  ::  nldrva,  smply,   llcntg,  sppltc,  pltplx,  lstlag
-      public  ::  corr,    stkst,   vp,      fitsxp,  ufslag,  llsmn
-      public  ::  hpcoef,  xxch4,   nlskl,   eragtm,  sppl,    acfsd
+      public  ::  nldrva,  smply,   llcntg,  sppltc,  pltplx
+      public  ::  corr,    vp,      fitsxp,  ufslag,  llsmn
+      public  ::  hpcoef,  xxch4,   eragtm,  sppl,    acfsd
       public  ::  ufsvs,   cntr,    gford,   fitpt2,  svpml,   mvchk
       public  ::  stpls1,  stpmn,   sample,  ervgtp,  stpls,   ipgout
       public  ::  ersei,   xdckld,  setrow,  bfsmv,   nlsx2,   nlcnta
-      public  ::  xxch6,   prtcnt,  ufsfs,   uasord,  ersie,   llhdrg
-      public  ::  dfbwm,   eiveo,   vpl,     bfslag,  eragtp
+      public  ::  xxch6,   ufsfs,   uasord,  ersie
+      public  ::  dfbwm,   vpl,     bfslag,  eragtp
 
       contains
 $INCLUDE "./mdc/mach.ffinc"
@@ -108,15 +110,12 @@ $INCLUDE "./d_srce/stpamo.ffinc"
 $INCLUDE "./d_srce/nlinit.ffinc"
 $INCLUDE "./d_srce/amfmn.ffinc"
 $INCLUDE "./d_srce/acffs.ffinc"
-$INCLUDE "./d_srce/icopy.ffinc"
 $INCLUDE "./d_srce/uasdv.ffinc"
 $INCLUDE "./d_srce/pgms.ffinc"
 $INCLUDE "./d_srce/llcntp.ffinc"
 $INCLUDE "./d_srce/ufsout.ffinc"
 $INCLUDE "./d_srce/setrv.ffinc"
-$INCLUDE "./d_srce/stphdr.ffinc"
 $INCLUDE "./d_srce/nlout.ffinc"
-$INCLUDE "./d_srce/ccfer.ffinc"
 $INCLUDE "./d_srce/matprf.ffinc"
 $INCLUDE "./d_srce/sumwts.ffinc"
 $INCLUDE "./d_srce/cdff.ffinc"
@@ -126,7 +125,6 @@ $INCLUDE "./d_srce/aoslst.ffinc"
 $INCLUDE "./d_srce/xxch9.ffinc"
 $INCLUDE "./d_srce/arcoef.ffinc"
 $INCLUDE "./d_srce/llsps.ffinc"
-$INCLUDE "./d_srce/corrhd.ffinc"
 $INCLUDE "./d_srce/gfout.ffinc"
 $INCLUDE "./d_srce/vpcnt.ffinc"
 $INCLUDE "./d_srce/acfm.ffinc"
@@ -140,8 +138,6 @@ $INCLUDE "./d_srce/cdfnml.ffinc"
 $INCLUDE "./d_srce/aov1mn.ffinc"
 $INCLUDE "./d_srce/dckout.ffinc"
 $INCLUDE "./d_srce/stpcnt.ffinc"
-$INCLUDE "./d_srce/eivii.ffinc"
-$INCLUDE "./d_srce/msgx.ffinc"
 $INCLUDE "./d_srce/gfarf.ffinc"
 $INCLUDE "./d_srce/uaser.ffinc"
 $INCLUDE "./d_srce/drv3.ffinc"
@@ -168,7 +164,6 @@ $INCLUDE "./d_srce/ipgms.ffinc"
 $INCLUDE "./d_srce/acvff.ffinc"
 $INCLUDE "./d_srce/uasfs.ffinc"
 $INCLUDE "./d_srce/acvf.ffinc"
-$INCLUDE "./d_srce/fftlen.ffinc"
 $INCLUDE "./d_srce/nlism.ffinc"
 $INCLUDE "./d_srce/nlsw.ffinc"
 $INCLUDE "./d_srce/pp.ffinc"
@@ -178,7 +173,6 @@ $INCLUDE "./d_srce/xxch10.ffinc"
 $INCLUDE "./d_srce/dckdrv.ffinc"
 $INCLUDE "./d_srce/drv4a.ffinc"
 $INCLUDE "./d_srce/drv4b.ffinc"
-$INCLUDE "./d_srce/stkrel.ffinc"
 $INCLUDE "./d_srce/ccvf.ffinc"
 $INCLUDE "./d_srce/pplmt.ffinc"
 $INCLUDE "./d_srce/sumts.ffinc"
@@ -193,22 +187,17 @@ $INCLUDE "./d_srce/dcoef.ffinc"
 $INCLUDE "./d_srce/ppm.ffinc"
 $INCLUDE "./d_srce/sumds.ffinc"
 $INCLUDE "./d_srce/corrmn.ffinc"
-$INCLUDE "./d_srce/acfdtl.ffinc"
 $INCLUDE "./d_srce/xxch13.ffinc"
-$INCLUDE "./d_srce/versp.ffinc"
 $INCLUDE "./d_srce/xdcklt.ffinc"
 $INCLUDE "./d_srce/ppmn.ffinc"
-$INCLUDE "./d_srce/geni.ffinc"
 $INCLUDE "./d_srce/setra.ffinc"
 $INCLUDE "./d_srce/mpp.ffinc"
 $INCLUDE "./d_srce/center.ffinc"
-$INCLUDE "./d_srce/eisrng.ffinc"
 $INCLUDE "./d_srce/ppl.ffinc"
 $INCLUDE "./d_srce/gfarfs.ffinc"
 $INCLUDE "./d_srce/svpl.ffinc"
 $INCLUDE "./d_srce/cpymss.ffinc"
 $INCLUDE "./d_srce/fitext.ffinc"
-$INCLUDE "./d_srce/iprint.ffinc"
 $INCLUDE "./d_srce/nlfin.ffinc"
 $INCLUDE "./d_srce/dckfpa.ffinc"
 $INCLUDE "./d_srce/uasest.ffinc"
@@ -234,7 +223,6 @@ $INCLUDE "./d_srce/aimf.ffinc"
 $INCLUDE "./d_srce/realtr.ffinc"
 $INCLUDE "./d_srce/amedrv.ffinc"
 $INCLUDE "./d_srce/getpi.ffinc"
-$INCLUDE "./d_srce/nlerr.ffinc"
 $INCLUDE "./d_srce/fitxsp.ffinc"
 $INCLUDE "./d_srce/sumwss.ffinc"
 $INCLUDE "./d_srce/ervgt.ffinc"
@@ -243,12 +231,9 @@ $INCLUDE "./d_srce/ccfxp.ffinc"
 $INCLUDE "./d_srce/gfaest.ffinc"
 $INCLUDE "./d_srce/xuas.ffinc"
 $INCLUDE "./d_srce/mvpl.ffinc"
-$INCLUDE "./d_srce/aov1hd.ffinc"
 $INCLUDE "./d_srce/ersge.ffinc"
 $INCLUDE "./d_srce/xaov1.ffinc"
-$INCLUDE "./d_srce/eiveq.ffinc"
 $INCLUDE "./d_srce/mdl4.ffinc"
-$INCLUDE "./d_srce/backop.ffinc"
 $INCLUDE "./d_srce/slflt.ffinc"
 $INCLUDE "./d_srce/cdft.ffinc"
 $INCLUDE "./d_srce/acvfm.ffinc"
@@ -256,7 +241,6 @@ $INCLUDE "./d_srce/xccf.ffinc"
 $INCLUDE "./d_srce/statws.ffinc"
 $INCLUDE "./d_srce/nlsd.ffinc"
 $INCLUDE "./d_srce/fltma.ffinc"
-$INCLUDE "./d_srce/setiv.ffinc"
 $INCLUDE "./d_srce/ccfmnf.ffinc"
 $INCLUDE "./d_srce/lpflt.ffinc"
 $INCLUDE "./d_srce/dcklsc.ffinc"
@@ -274,7 +258,6 @@ $INCLUDE "./d_srce/ervgtm.ffinc"
 $INCLUDE "./d_srce/ppfnml.ffinc"
 $INCLUDE "./d_srce/ameism.ffinc"
 $INCLUDE "./d_srce/arflt.ffinc"
-$INCLUDE "./d_srce/eisii.ffinc"
 $INCLUDE "./d_srce/multbp.ffinc"
 $INCLUDE "./d_srce/vcvotf.ffinc"
 $INCLUDE "./d_srce/ppmc.ffinc"
@@ -282,11 +265,9 @@ $INCLUDE "./d_srce/bfsfs.ffinc"
 $INCLUDE "./d_srce/lopass.ffinc"
 $INCLUDE "./d_srce/stpdrv.ffinc"
 $INCLUDE "./d_srce/xacf.ffinc"
-$INCLUDE "./d_srce/amfer.ffinc"
 $INCLUDE "./d_srce/ccfout.ffinc"
 $INCLUDE "./d_srce/randu.ffinc"
 $INCLUDE "./d_srce/amefin.ffinc"
-$INCLUDE "./d_srce/amfhdr.ffinc"
 $INCLUDE "./d_srce/gfslf.ffinc"
 $INCLUDE "./d_srce/sppltd.ffinc"
 $INCLUDE "./d_srce/mvpml.ffinc"
@@ -296,12 +277,6 @@ $INCLUDE "./d_srce/ipgdv.ffinc"
 $INCLUDE "./d_srce/dckmn.ffinc"
 $INCLUDE "./d_srce/acfms.ffinc"
 $INCLUDE "./d_srce/amept2.ffinc"
-$INCLUDE "./d_srce/eiseq.ffinc"
-$INCLUDE "./d_srce/inperl.ffinc"
-$INCLUDE "./d_srce/eiage.ffinc"
-$INCLUDE "./d_srce/eiagep.ffinc"
-$INCLUDE "./d_srce/ecvf.ffinc"
-$INCLUDE "./d_srce/nlhdrn.ffinc"
 $INCLUDE "./d_srce/amlst.ffinc"
 $INCLUDE "./d_srce/xstat.ffinc"
 $INCLUDE "./d_srce/spp.ffinc"
@@ -310,7 +285,6 @@ $INCLUDE "./d_srce/adjlmt.ffinc"
 $INCLUDE "./d_srce/xxch7.ffinc"
 $INCLUDE "./d_srce/ller.ffinc"
 $INCLUDE "./d_srce/mvp.ffinc"
-$INCLUDE "./d_srce/erdf.ffinc"
 $INCLUDE "./d_srce/stat2.ffinc"
 $INCLUDE "./d_srce/ipgm.ffinc"
 $INCLUDE "./d_srce/repck.ffinc"
@@ -329,22 +303,17 @@ $INCLUDE "./d_srce/xdemod.ffinc"
 $INCLUDE "./d_srce/ufs.ffinc"
 $INCLUDE "./d_srce/xnlsd.ffinc"
 $INCLUDE "./d_srce/bfsf.ffinc"
-$INCLUDE "./d_srce/acfer.ffinc"
-$INCLUDE "./d_srce/eisge.ffinc"
 $INCLUDE "./d_srce/loglmt.ffinc"
 $INCLUDE "./d_srce/uascft.ffinc"
 $INCLUDE "./d_srce/amemn.ffinc"
-$INCLUDE "./d_srce/bfser.ffinc"
 $INCLUDE "./d_srce/drv2.ffinc"
 $INCLUDE "./d_srce/llspws.ffinc"
-$INCLUDE "./d_srce/cpyvii.ffinc"
 $INCLUDE "./d_srce/lls.ffinc"
 $INCLUDE "./d_srce/llsws.ffinc"
 $INCLUDE "./d_srce/ipgmp.ffinc"
 $INCLUDE "./d_srce/xstpld.ffinc"
 $INCLUDE "./d_srce/extend.ffinc"
 $INCLUDE "./d_srce/uass.ffinc"
-$INCLUDE "./d_srce/stkget.ffinc"
 $INCLUDE "./d_srce/uasvar.ffinc"
 $INCLUDE "./d_srce/sppml.ffinc"
 $INCLUDE "./d_srce/ccfs.ffinc"
@@ -357,17 +326,13 @@ $INCLUDE "./d_srce/relcom.ffinc"
 $INCLUDE "./d_srce/ccffs.ffinc"
 $INCLUDE "./d_srce/ccvff.ffinc"
 $INCLUDE "./d_srce/xbfs.ffinc"
-$INCLUDE "./d_srce/enfft.ffinc"
 $INCLUDE "./d_srce/obssm2.ffinc"
 $INCLUDE "./d_srce/amfout.ffinc"
-$INCLUDE "./d_srce/stkclr.ffinc"
 $INCLUDE "./d_srce/cmpfd.ffinc"
 $INCLUDE "./d_srce/xxch2.ffinc"
 $INCLUDE "./d_srce/xxch1.ffinc"
-$INCLUDE "./d_srce/amehdr.ffinc"
 $INCLUDE "./d_srce/ipgmps.ffinc"
 $INCLUDE "./d_srce/nrandc.ffinc"
-$INCLUDE "./d_srce/modsum.ffinc"
 $INCLUDE "./d_srce/acfsdm.ffinc"
 $INCLUDE "./d_srce/stpout.ffinc"
 $INCLUDE "./d_srce/bfss.ffinc"
@@ -377,7 +342,6 @@ $INCLUDE "./d_srce/obssum.ffinc"
 $INCLUDE "./d_srce/ufsf.ffinc"
 $INCLUDE "./d_srce/xstple.ffinc"
 $INCLUDE "./d_srce/srtrri.ffinc"
-$INCLUDE "./d_srce/nlhdra.ffinc"
 $INCLUDE "./d_srce/nlcmp.ffinc"
 $INCLUDE "./d_srce/stater.ffinc"
 $INCLUDE "./d_srce/ccvfm.ffinc"
@@ -388,7 +352,6 @@ $INCLUDE "./d_srce/ppcnt.ffinc"
 $INCLUDE "./d_srce/fltsl.ffinc"
 $INCLUDE "./d_srce/sumwds.ffinc"
 $INCLUDE "./d_srce/bfsmn.ffinc"
-$INCLUDE "./d_srce/ldscmp.ffinc"
 $INCLUDE "./d_srce/bfsms.ffinc"
 $INCLUDE "./d_srce/srtirr.ffinc"
 $INCLUDE "./d_srce/xnrand.ffinc"
@@ -403,7 +366,6 @@ $INCLUDE "./d_srce/nlcnt.ffinc"
 $INCLUDE "./d_srce/amept1.ffinc"
 $INCLUDE "./d_srce/fitpt1.ffinc"
 $INCLUDE "./d_srce/difm.ffinc"
-$INCLUDE "./d_srce/pline.ffinc"
 $INCLUDE "./d_srce/stper.ffinc"
 $INCLUDE "./d_srce/nlsdc.ffinc"
 $INCLUDE "./d_srce/xnlst.ffinc"
@@ -412,22 +374,17 @@ $INCLUDE "./d_srce/etamdl.ffinc"
 $INCLUDE "./d_srce/nls.ffinc"
 $INCLUDE "./d_srce/nlcntn.ffinc"
 $INCLUDE "./d_srce/mdlts3.ffinc"
-$INCLUDE "./d_srce/fixprt.ffinc"
 $INCLUDE "./d_srce/bfsm.ffinc"
 $INCLUDE "./d_srce/ufss.ffinc"
 $INCLUDE "./d_srce/ccfsdm.ffinc"
-$INCLUDE "./d_srce/dckhdr.ffinc"
 $INCLUDE "./d_srce/xpgm.ffinc"
 $INCLUDE "./d_srce/difmc.ffinc"
-$INCLUDE "./d_srce/eisle.ffinc"
 $INCLUDE "./d_srce/gmean.ffinc"
 $INCLUDE "./d_srce/matprt.ffinc"
 $INCLUDE "./d_srce/accdig.ffinc"
 $INCLUDE "./d_srce/svpm.ffinc"
 $INCLUDE "./d_srce/ccfsd.ffinc"
 $INCLUDE "./d_srce/aimec.ffinc"
-$INCLUDE "./d_srce/llhdrp.ffinc"
-$INCLUDE "./d_srce/eriodd.ffinc"
 $INCLUDE "./d_srce/llsw.ffinc"
 $INCLUDE "./d_srce/stpls2.ffinc"
 $INCLUDE "./d_srce/nlss.ffinc"
@@ -444,13 +401,11 @@ $INCLUDE "./d_srce/xxch11.ffinc"
 $INCLUDE "./d_srce/demdrv.ffinc"
 $INCLUDE "./d_srce/difc.ffinc"
 $INCLUDE "./d_srce/nlspk.ffinc"
-$INCLUDE "./d_srce/setesl.ffinc"
 $INCLUDE "./d_srce/acff.ffinc"
 $INCLUDE "./d_srce/ersii.ffinc"
 $INCLUDE "./d_srce/stat1.ffinc"
 $INCLUDE "./d_srce/mdlts1.ffinc"
 $INCLUDE "./d_srce/acfd.ffinc"
-$INCLUDE "./d_srce/factor.ffinc"
 $INCLUDE "./d_srce/dckcnt.ffinc"
 $INCLUDE "./d_srce/aov1s.ffinc"
 $INCLUDE "./d_srce/ccff.ffinc"
@@ -459,7 +414,6 @@ $INCLUDE "./d_srce/pgout.ffinc"
 $INCLUDE "./d_srce/xdckle.ffinc"
 $INCLUDE "./d_srce/drv.ffinc"
 $INCLUDE "./d_srce/aos.ffinc"
-$INCLUDE "./d_srce/nchose.ffinc"
 $INCLUDE "./d_srce/ppc.ffinc"
 $INCLUDE "./d_srce/svp.ffinc"
 $INCLUDE "./d_srce/dckls.ffinc"
@@ -470,7 +424,6 @@ $INCLUDE "./d_srce/dckcrv.ffinc"
 $INCLUDE "./d_srce/hipass.ffinc"
 $INCLUDE "./d_srce/ipgord.ffinc"
 $INCLUDE "./d_srce/mvpmc.ffinc"
-$INCLUDE "./d_srce/setlag.ffinc"
 $INCLUDE "./d_srce/sppltl.ffinc"
 $INCLUDE "./d_srce/vcvout.ffinc"
 $INCLUDE "./d_srce/xnlse.ffinc"
@@ -497,7 +450,6 @@ $INCLUDE "./d_srce/stplsc.ffinc"
 $INCLUDE "./d_srce/sppc.ffinc"
 $INCLUDE "./d_srce/sumidw.ffinc"
 $INCLUDE "./d_srce/ufsmn.ffinc"
-$INCLUDE "./d_srce/icnti.ffinc"
 $INCLUDE "./d_srce/drv1a.ffinc"
 $INCLUDE "./d_srce/sumss.ffinc"
 $INCLUDE "./d_srce/nlswc.ffinc"
@@ -515,7 +467,6 @@ $INCLUDE "./d_srce/ufspcv.ffinc"
 $INCLUDE "./d_srce/ppft.ffinc"
 $INCLUDE "./d_srce/ccfms.ffinc"
 $INCLUDE "./d_srce/hpflt.ffinc"
-$INCLUDE "./d_srce/pltsym.ffinc"
 $INCLUDE "./d_srce/cdfchi.ffinc"
 $INCLUDE "./d_srce/ufsm.ffinc"
 $INCLUDE "./d_srce/ipgmn.ffinc"
@@ -534,13 +485,10 @@ $INCLUDE "./d_srce/dckls1.ffinc"
 $INCLUDE "./d_srce/llspw.ffinc"
 $INCLUDE "./d_srce/parzen.ffinc"
 $INCLUDE "./d_srce/sumbs.ffinc"
-$INCLUDE "./d_srce/stkset.ffinc"
 $INCLUDE "./d_srce/fftct.ffinc"
 $INCLUDE "./d_srce/correr.ffinc"
-$INCLUDE "./d_srce/ufser.ffinc"
 $INCLUDE "./d_srce/xcorr.ffinc"
 $INCLUDE "./d_srce/demodu.ffinc"
-$INCLUDE "./d_srce/ehdr.ffinc"
 $INCLUDE "./d_srce/aimfs.ffinc"
 $INCLUDE "./d_srce/maflt.ffinc"
 $INCLUDE "./d_srce/nler.ffinc"
@@ -555,16 +503,13 @@ $INCLUDE "./d_srce/smply.ffinc"
 $INCLUDE "./d_srce/llcntg.ffinc"
 $INCLUDE "./d_srce/sppltc.ffinc"
 $INCLUDE "./d_srce/pltplx.ffinc"
-$INCLUDE "./d_srce/lstlag.ffinc"
 $INCLUDE "./d_srce/corr.ffinc"
-$INCLUDE "./d_srce/stkst.ffinc"
 $INCLUDE "./d_srce/vp.ffinc"
 $INCLUDE "./d_srce/fitsxp.ffinc"
 $INCLUDE "./d_srce/ufslag.ffinc"
 $INCLUDE "./d_srce/llsmn.ffinc"
 $INCLUDE "./d_srce/hpcoef.ffinc"
 $INCLUDE "./d_srce/xxch4.ffinc"
-$INCLUDE "./d_srce/nlskl.ffinc"
 $INCLUDE "./d_srce/eragtm.ffinc"
 $INCLUDE "./d_srce/sppl.ffinc"
 $INCLUDE "./d_srce/acfsd.ffinc"
@@ -587,13 +532,10 @@ $INCLUDE "./d_srce/bfsmv.ffinc"
 $INCLUDE "./d_srce/nlsx2.ffinc"
 $INCLUDE "./d_srce/nlcnta.ffinc"
 $INCLUDE "./d_srce/xxch6.ffinc"
-$INCLUDE "./d_srce/prtcnt.ffinc"
 $INCLUDE "./d_srce/ufsfs.ffinc"
 $INCLUDE "./d_srce/uasord.ffinc"
 $INCLUDE "./d_srce/ersie.ffinc"
-$INCLUDE "./d_srce/llhdrg.ffinc"
 $INCLUDE "./d_srce/dfbwm.ffinc"
-$INCLUDE "./d_srce/eiveo.ffinc"
 $INCLUDE "./d_srce/vpl.ffinc"
 $INCLUDE "./d_srce/bfslag.ffinc"
 $INCLUDE "./d_srce/eragtp.ffinc"
@@ -601,13 +543,11 @@ $INCLUDE "./d_srce/eragtp.ffinc"
 $INCLUDE "./nl2sol/qapply.ffinc"
 $INCLUDE "./nl2sol/livmul.ffinc"
 $INCLUDE "./nl2sol/lsqrt.ffinc"
-$INCLUDE "./nl2sol/imdcon.ffinc"
 $INCLUDE "./nl2sol/linvrt.ffinc"
 $INCLUDE "./nl2sol/vscopy.ffinc"
 $INCLUDE "./nl2sol/lmstep.ffinc"
 $INCLUDE "./nl2sol/qrfact.ffinc"
 $INCLUDE "./nl2sol/nl2sno.ffinc"
-$INCLUDE "./nl2sol/stopx.ffinc"
 $INCLUDE "./nl2sol/madr.ffinc"
 $INCLUDE "./nl2sol/v2norm.ffinc"
 $INCLUDE "./nl2sol/itsmry.ffinc"
@@ -626,7 +566,6 @@ $INCLUDE "./nl2sol/litvmu.ffinc"
 $INCLUDE "./nl2sol/gqtstp.ffinc"
 $INCLUDE "./nl2sol/dupdat.ffinc"
 $INCLUDE "./nl2sol/dfault.ffinc"
-$INCLUDE "./nl2sol/ufparm.ffinc"
 $INCLUDE "./nl2sol/reldst.ffinc"
 $INCLUDE "./nl2sol/slupdt.ffinc"
 

@@ -1,5 +1,6 @@
 !XNLST
-      SUBROUTINE XNLST(LDSTAK)
+      SUBROUTINE XNLST(LDSTAK,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -43,9 +44,7 @@
      +   IFIXED(10),IVCTST(9)
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   RMDCON
-      EXTERNAL RMDCON
+!     REAL(KIND=WP) :: RMDCON
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL DRV1A,DRV2,DRV3,FITXSP,IPRINT,LDSCMP,MDL1,MDL2,MDL3,NLSC,
@@ -244,9 +243,9 @@
 !
       WRITE (IPRT,1240)
 !
-      STOP(1) = RMDCON(3)
+      STOP(1) = RMDCON(3,typ=0.0_wp)
       STOP(2) = 0.1E0
-      STOP(3) = 0.9E0*RMDCON(3)
+      STOP(3) = 0.9E0*RMDCON(3,typ=0.0_wp)
       STOP(4) = 0.11E0
       STOP(5) = 0.0E0
       STOP(6) = 1.0E0

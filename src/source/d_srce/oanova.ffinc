@@ -20,37 +20,37 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   RVAR,YSUM
       INTEGER
      +   IPRT,NNZW,NPAR
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   RED(NPAR),TEMP(NPAR)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   ASUM,CR,F1,F2,FPLM,PF1,PF2,RESMS,RESSS,SSU,V1F2,VR
       INTEGER
      +   I,K,NSUA
 !
 !  EXTERNAL FUNCTIONS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   CDFF,D1MACH
       EXTERNAL CDFF,D1MACH
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION ASUM
+!     REAL(KIND=WP) :: ASUM
 !        *
-!     DOUBLE PRECISION CR
+!     REAL(KIND=WP) :: CR
 !        *
-!     DOUBLE PRECISION FPLM
+!     REAL(KIND=WP) :: FPLM
 !        THE FLOATING POINT LARGEST MAGNITUDE.
-!     DOUBLE PRECISION F1
+!     REAL(KIND=WP) :: F1
 !        *
-!     DOUBLE PRECISION F2
+!     REAL(KIND=WP) :: F2
 !        *
 !     INTEGER I
 !        AN INDEX.
@@ -64,27 +64,27 @@
 !        THE NUMBER OF NON ZERO WEIGHTS.
 !     INTEGER NSUA
 !        *
-!     DOUBLE PRECISION PF1
+!     REAL(KIND=WP) :: PF1
 !        *
-!     DOUBLE PRECISION PF2
+!     REAL(KIND=WP) :: PF2
 !        *
-!     DOUBLE PRECISION RED(NPAR)
+!     REAL(KIND=WP) :: RED(NPAR)
 !        THE REDUCTION TO THE SUM OF SQUARES DUE TO EACH PARAMETER.
-!     DOUBLE PRECISION RESMS
+!     REAL(KIND=WP) :: RESMS
 !        *
-!     DOUBLE PRECISION RESSS
+!     REAL(KIND=WP) :: RESSS
 !        *
-!     DOUBLE PRECISION RVAR
+!     REAL(KIND=WP) :: RVAR
 !        THE RESIDUAL VARIANCE.
-!     DOUBLE PRECISION SSU
+!     REAL(KIND=WP) :: SSU
 !        *
-!     DOUBLE PRECISION TEMP(NPAR)
+!     REAL(KIND=WP) :: TEMP(NPAR)
 !        A WORK VECTOR.
-!     DOUBLE PRECISION VR
+!     REAL(KIND=WP) :: VR
 !        *
-!     DOUBLE PRECISION V1F2
+!     REAL(KIND=WP) :: V1F2
 !        *
-!     DOUBLE PRECISION YSUM
+!     REAL(KIND=WP) :: YSUM
 !        THE SUM OF THE WEIGHTED DEPENDENT VARIABLES SQUARED.
 !
 !
@@ -93,7 +93,7 @@
       RESMS = YSUM/NNZW
       NSUA = NNZW
       WRITE (IPRT,1000)
-      ASUM = 0.0D0
+      ASUM = 0.0E0_WP
       VR = NNZW-NPAR
       RESSS = VR*RVAR
       TEMP(NPAR) = RESSS
@@ -107,27 +107,27 @@
       DO 50 I=1,NPAR
          NSUA = NSUA - 1
          ASUM = ASUM + RED(I)
-         SSU = SSU - 1.0D0
+         SSU = SSU - 1.0E0_WP
          CR = ASUM/I
-         RESMS = 0.0D0
-         IF (SSU.GT.0.0D0) RESMS = TEMP(I)/SSU
-         V1F2 = V1F2 - 1.0D0
+         RESMS = 0.0E0_WP
+         IF (SSU.GT.0.0E0_WP) RESMS = TEMP(I)/SSU
+         V1F2 = V1F2 - 1.0E0_WP
 !
 !     NEVER POOL
 !
-         IF (RVAR.GT.0.0D0) GO TO 30
+         IF (RVAR.GT.0.0E0_WP) GO TO 30
          F1 = FPLM
          F2 = FPLM
-         PF1 = 0.0D0
-         PF2 = 0.0D0
+         PF1 = 0.0E0_WP
+         PF2 = 0.0E0_WP
          GO TO 40
    30    F1 = RED(I)/RVAR
-         PF1 = 1.0D0 - CDFF(F1,1.0D0,VR)
+         PF1 = 1.0E0_WP - CDFF(F1,1.0E0_WP,VR)
 !
 !     TEST HIGHER SUB-HYPOTHESES
 !
          F2 = (TEMP(I)+RED(I)-RESSS)/V1F2/RVAR
-         PF2 = 1.0D0 - CDFF(F2,V1F2,VR)
+         PF2 = 1.0E0_WP - CDFF(F2,V1F2,VR)
    40    CONTINUE
          WRITE (IPRT,1010) I, RED(I), CR, I, RESMS, NSUA, F1, PF1, F2,
      +      PF2

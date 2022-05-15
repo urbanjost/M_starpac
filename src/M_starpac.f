@@ -1,8 +1,941 @@
       module M_starpac
       use M_starpac_s
-      use M_starpac_d
+      use M_starpac_d, only : abscom_d =>abscom
+      use M_starpac_d, only : accdig_d =>accdig
+      use M_starpac_d, only : acf_d =>acf
+      use M_starpac_d, only : acfd_d =>acfd
+      use M_starpac_d, only : acff_d =>acff
+      use M_starpac_d, only : acffs_d =>acffs
+      use M_starpac_d, only : acflst_d =>acflst
+      use M_starpac_d, only : acfm_d =>acfm
+      use M_starpac_d, only : acfmn_d =>acfmn
+      use M_starpac_d, only : acfmnf_d =>acfmnf
+      use M_starpac_d, only : acfmnm_d =>acfmnm
+      use M_starpac_d, only : acfms_d =>acfms
+      use M_starpac_d, only : acfout_d =>acfout
+      use M_starpac_d, only : acfs_d =>acfs
+      use M_starpac_d, only : acfsd_d =>acfsd
+      use M_starpac_d, only : acfsdm_d =>acfsdm
+      use M_starpac_d, only : acvf_d =>acvf
+      use M_starpac_d, only : acvff_d =>acvff
+      use M_starpac_d, only : acvfm_d =>acvfm
+      use M_starpac_d, only : adjlmt_d =>adjlmt
+      use M_starpac_d, only : aimec_d =>aimec
+      use M_starpac_d, only : aime_d =>aime
+      use M_starpac_d, only : aimes_d =>aimes
+      use M_starpac_d, only : aimf_d =>aimf
+      use M_starpac_d, only : aimfs_d =>aimfs
+      use M_starpac_d, only : aimx1_d =>aimx1
+      use M_starpac_d, only : amdrv_d =>amdrv
+      use M_starpac_d, only : amean_d =>amean
+      use M_starpac_d, only : ameanm_d =>ameanm
+      use M_starpac_d, only : amecnt_d =>amecnt
+      use M_starpac_d, only : amedrv_d =>amedrv
+      use M_starpac_d, only : ameer_d =>ameer
+      use M_starpac_d, only : amefin_d =>amefin
+      use M_starpac_d, only : ameism_d =>ameism
+      use M_starpac_d, only : amemn_d =>amemn
+      use M_starpac_d, only : ameout_d =>ameout
+      use M_starpac_d, only : amept1_d =>amept1
+      use M_starpac_d, only : amept2_d =>amept2
+      use M_starpac_d, only : amestp_d =>amestp
+      use M_starpac_d, only : amfcnt_d =>amfcnt
+      use M_starpac_d, only : amfmn_d =>amfmn
+      use M_starpac_d, only : amfout_d =>amfout
+      use M_starpac_d, only : amlst1_d =>amlst1
+      use M_starpac_d, only : amlst_d =>amlst
+      use M_starpac_d, only : aos_d =>aos
+      use M_starpac_d, only : aoslst_d =>aoslst
+      use M_starpac_d, only : aov1_d =>aov1
+      use M_starpac_d, only : aov1er_d =>aov1er
+      use M_starpac_d, only : aov1mn_d =>aov1mn
+      use M_starpac_d, only : aov1s_d =>aov1s
+      use M_starpac_d, only : aov1xp_d =>aov1xp
+      use M_starpac_d, only : arcoef_d =>arcoef
+      use M_starpac_d, only : arflt_d =>arflt
+      use M_starpac_d, only : assess_d =>assess
+      use M_starpac_d, only : axpby_d =>axpby
+      use M_starpac_d, only : bfs_d =>bfs
+      use M_starpac_d, only : bfsdrv_d =>bfsdrv
+      use M_starpac_d, only : bfsf_d =>bfsf
+      use M_starpac_d, only : bfsfs_d =>bfsfs
+      use M_starpac_d, only : bfslag_d =>bfslag
+      use M_starpac_d, only : bfsm_d =>bfsm
+      use M_starpac_d, only : bfsmn_d =>bfsmn
+      use M_starpac_d, only : bfsms_d =>bfsms
+      use M_starpac_d, only : bfsmv_d =>bfsmv
+      use M_starpac_d, only : bfsmvs_d =>bfsmvs
+      use M_starpac_d, only : bfss_d =>bfss
+      use M_starpac_d, only : bfsv_d =>bfsv
+      use M_starpac_d, only : bfsvs_d =>bfsvs
+      use M_starpac_d, only : ccf_d =>ccf
+      use M_starpac_d, only : ccff_d =>ccff
+      use M_starpac_d, only : ccffs_d =>ccffs
+      use M_starpac_d, only : ccflst_d =>ccflst
+      use M_starpac_d, only : ccfm_d =>ccfm
+      use M_starpac_d, only : ccfmn_d =>ccfmn
+      use M_starpac_d, only : ccfmnf_d =>ccfmnf
+      use M_starpac_d, only : ccfmnm_d =>ccfmnm
+      use M_starpac_d, only : ccfms_d =>ccfms
+      use M_starpac_d, only : ccfout_d =>ccfout
+      use M_starpac_d, only : ccfs_d =>ccfs
+      use M_starpac_d, only : ccfsd_d =>ccfsd
+      use M_starpac_d, only : ccfsdm_d =>ccfsdm
+      use M_starpac_d, only : ccfxp_d =>ccfxp
+      use M_starpac_d, only : ccvf_d =>ccvf
+      use M_starpac_d, only : ccvff_d =>ccvff
+      use M_starpac_d, only : ccvfm_d =>ccvfm
+      use M_starpac_d, only : cdfchi_d =>cdfchi
+      use M_starpac_d, only : cdff_d =>cdff
+      use M_starpac_d, only : cdfnml_d =>cdfnml
+      use M_starpac_d, only : cdft_d =>cdft
+      use M_starpac_d, only : center_d =>center
+      use M_starpac_d, only : chirho_d =>chirho
+      use M_starpac_d, only : cmpfd_d =>cmpfd
+      use M_starpac_d, only : cntr_d =>cntr
+      use M_starpac_d, only : corr_d =>corr
+      use M_starpac_d, only : corrmn_d =>corrmn
+      use M_starpac_d, only : corrs_d =>corrs
+      use M_starpac_d, only : corrxp_d =>corrxp
+      use M_starpac_d, only : covclc_d =>covclc
+      use M_starpac_d, only : cpyasf_d =>cpyasf
+      use M_starpac_d, only : cpymss_d =>cpymss
+      use M_starpac_d, only : dckcnt_d =>dckcnt
+      use M_starpac_d, only : dckcrv_d =>dckcrv
+      use M_starpac_d, only : dckdrv_d =>dckdrv
+      use M_starpac_d, only : dcker_d =>dcker
+      use M_starpac_d, only : dckfpa_d =>dckfpa
+      use M_starpac_d, only : dckls1_d =>dckls1
+      use M_starpac_d, only : dcklsc_d =>dcklsc
+      use M_starpac_d, only : dckls_d =>dckls
+      use M_starpac_d, only : dckmn_d =>dckmn
+      use M_starpac_d, only : dckout_d =>dckout
+      use M_starpac_d, only : dckzro_d =>dckzro
+      use M_starpac_d, only : dcoef_d =>dcoef
+      use M_starpac_d, only : demdrv_d =>demdrv
+      use M_starpac_d, only : demod_d =>demod
+      use M_starpac_d, only : demods_d =>demods
+      use M_starpac_d, only : demodu_d =>demodu
+      use M_starpac_d, only : demord_d =>demord
+      use M_starpac_d, only : demout_d =>demout
+      use M_starpac_d, only : dfault_d =>dfault
+      use M_starpac_d, only : dfbw_d =>dfbw
+      use M_starpac_d, only : dfbwm_d =>dfbwm
+      use M_starpac_d, only : difc_d =>difc
+      use M_starpac_d, only : dif_d =>dif
+      use M_starpac_d, only : difmc_d =>difmc
+      use M_starpac_d, only : difm_d =>difm
+      use M_starpac_d, only : difser_d =>difser
+      use M_starpac_d, only : dotc_d =>dotc
+      use M_starpac_d, only : dotcm_d =>dotcm
+      use M_starpac_d, only : dotprd_d =>dotprd
+      use M_starpac_d, only : drv1a_d =>drv1a
+      use M_starpac_d, only : drv1b_d =>drv1b
+      use M_starpac_d, only : drv2_d =>drv2
+      use M_starpac_d, only : drv3_d =>drv3
+      use M_starpac_d, only : drv4a_d =>drv4a
+      use M_starpac_d, only : drv4b_d =>drv4b
+      use M_starpac_d, only : drv_d =>drv
+      use M_starpac_d, only : dupdat_d =>dupdat
+      use M_starpac_d, only : eragt_d =>eragt
+      use M_starpac_d, only : eragtm_d =>eragtm
+      use M_starpac_d, only : eragtp_d =>eragtp
+      use M_starpac_d, only : ersei_d =>ersei
+      use M_starpac_d, only : ersge_d =>ersge
+      use M_starpac_d, only : ersgt_d =>ersgt
+      use M_starpac_d, only : ersie_d =>ersie
+      use M_starpac_d, only : ersii_d =>ersii
+      use M_starpac_d, only : erslf_d =>erslf
+      use M_starpac_d, only : erslfs_d =>erslfs
+      use M_starpac_d, only : ervgt_d =>ervgt
+      use M_starpac_d, only : ervgtm_d =>ervgtm
+      use M_starpac_d, only : ervgtp_d =>ervgtp
+      use M_starpac_d, only : ervii_d =>ervii
+      use M_starpac_d, only : ervwt_d =>ervwt
+      use M_starpac_d, only : etamdl_d =>etamdl
+      use M_starpac_d, only : extend_d =>extend
+      use M_starpac_d, only : fftct_d =>fftct
+      use M_starpac_d, only : fft_d =>fft
+      use M_starpac_d, only : fftr_d =>fftr
+      use M_starpac_d, only : fitext_d =>fitext
+      use M_starpac_d, only : fitpt1_d =>fitpt1
+      use M_starpac_d, only : fitpt2_d =>fitpt2
+      use M_starpac_d, only : fitsxp_d =>fitsxp
+      use M_starpac_d, only : fitxsp_d =>fitxsp
+      use M_starpac_d, only : fltar_d =>fltar
+      use M_starpac_d, only : fltarm_d =>fltarm
+      use M_starpac_d, only : fltma_d =>fltma
+      use M_starpac_d, only : fltmd_d =>fltmd
+      use M_starpac_d, only : fltsl_d =>fltsl
+      use M_starpac_d, only : genr_d =>genr
+      use M_starpac_d, only : getpi_d =>getpi
+      use M_starpac_d, only : gfaest_d =>gfaest
+      use M_starpac_d, only : gfarf_d =>gfarf
+      use M_starpac_d, only : gfarfs_d =>gfarfs
+      use M_starpac_d, only : gford_d =>gford
+      use M_starpac_d, only : gfout_d =>gfout
+      use M_starpac_d, only : gfsest_d =>gfsest
+      use M_starpac_d, only : gfslf_d =>gfslf
+      use M_starpac_d, only : gfslfs_d =>gfslfs
+      use M_starpac_d, only : gmean_d =>gmean
+      use M_starpac_d, only : gqtstp_d =>gqtstp
+      use M_starpac_d, only : hipass_d =>hipass
+      use M_starpac_d, only : histc_d =>histc
+      use M_starpac_d, only : hist_d =>hist
+      use M_starpac_d, only : hpcoef_d =>hpcoef
+      use M_starpac_d, only : hpflt_d =>hpflt
+      use M_starpac_d, only : hster_d =>hster
+      use M_starpac_d, only : hstmn_d =>hstmn
+      use M_starpac_d, only : ipgdv_d =>ipgdv
+      use M_starpac_d, only : ipgm_d =>ipgm
+      use M_starpac_d, only : ipgmn_d =>ipgmn
+      use M_starpac_d, only : ipgmp_d =>ipgmp
+      use M_starpac_d, only : ipgmps_d =>ipgmps
+      use M_starpac_d, only : ipgms_d =>ipgms
+      use M_starpac_d, only : ipgord_d =>ipgord
+      use M_starpac_d, only : ipgout_d =>ipgout
+      use M_starpac_d, only : itsmry_d =>itsmry
+      use M_starpac_d, only : linvrt_d =>linvrt
+      use M_starpac_d, only : litvmu_d =>litvmu
+      use M_starpac_d, only : livmul_d =>livmul
+      use M_starpac_d, only : llcnt_d =>llcnt
+      use M_starpac_d, only : llcntg_d =>llcntg
+      use M_starpac_d, only : llcntp_d =>llcntp
+      use M_starpac_d, only : ller_d =>ller
+      use M_starpac_d, only : lls_d =>lls
+      use M_starpac_d, only : llsmn_d =>llsmn
+      use M_starpac_d, only : llsp_d =>llsp
+      use M_starpac_d, only : llsps_d =>llsps
+      use M_starpac_d, only : llspw_d =>llspw
+      use M_starpac_d, only : llspws_d =>llspws
+      use M_starpac_d, only : llss_d =>llss
+      use M_starpac_d, only : llsw_d =>llsw
+      use M_starpac_d, only : llsws_d =>llsws
+      use M_starpac_d, only : lmstep_d =>lmstep
+      use M_starpac_d, only : loglmt_d =>loglmt
+      use M_starpac_d, only : lopass_d =>lopass
+      use M_starpac_d, only : lpcoef_d =>lpcoef
+      use M_starpac_d, only : lpflt_d =>lpflt
+      use M_starpac_d, only : lsqrt_d =>lsqrt
+      use M_starpac_d, only : lstvcf_d =>lstvcf
+      use M_starpac_d, only : lstvec_d =>lstvec
+      use M_starpac_d, only : lsvmin_d =>lsvmin
+      use M_starpac_d, only : ltsqar_d =>ltsqar
+      use M_starpac_d, only : madj_d =>madj
+      use M_starpac_d, only : madr_d =>madr
+      use M_starpac_d, only : maflt_d =>maflt
+      use M_starpac_d, only : matprf_d =>matprf
+      use M_starpac_d, only : matprt_d =>matprt
+      use M_starpac_d, only : mdflt_d =>mdflt
+      use M_starpac_d, only : mdl1_d =>mdl1
+      use M_starpac_d, only : mdl2_d =>mdl2
+      use M_starpac_d, only : mdl3_d =>mdl3
+      use M_starpac_d, only : mdl4_d =>mdl4
+      use M_starpac_d, only : mdlts1_d =>mdlts1
+      use M_starpac_d, only : mdlts2_d =>mdlts2
+      use M_starpac_d, only : mdlts3_d =>mdlts3
+      use M_starpac_d, only : mgs_d =>mgs
+      use M_starpac_d, only : mppc_d =>mppc
+      use M_starpac_d, only : mpp_d =>mpp
+      use M_starpac_d, only : mppl_d =>mppl
+      use M_starpac_d, only : mppmc_d =>mppmc
+      use M_starpac_d, only : mppm_d =>mppm
+      use M_starpac_d, only : mppml_d =>mppml
+      use M_starpac_d, only : multbp_d =>multbp
+      use M_starpac_d, only : mvchk_d =>mvchk
+      use M_starpac_d, only : mvpc_d =>mvpc
+      use M_starpac_d, only : mvp_d =>mvp
+      use M_starpac_d, only : mvpl_d =>mvpl
+      use M_starpac_d, only : mvpmc_d =>mvpmc
+      use M_starpac_d, only : mvpm_d =>mvpm
+      use M_starpac_d, only : mvpml_d =>mvpml
+      use M_starpac_d, only : nl2itr_d =>nl2itr
+      use M_starpac_d, only : nl2sno_d =>nl2sno
+      use M_starpac_d, only : nl2sol_d =>nl2sol
+      use M_starpac_d, only : nl2x_d =>nl2x
+      use M_starpac_d, only : nlcmp_d =>nlcmp
+      use M_starpac_d, only : nlcnta_d =>nlcnta
+      use M_starpac_d, only : nlcnt_d =>nlcnt
+      use M_starpac_d, only : nlcntn_d =>nlcntn
+      use M_starpac_d, only : nldrva_d =>nldrva
+      use M_starpac_d, only : nldrvn_d =>nldrvn
+      use M_starpac_d, only : nler_d =>nler
+      use M_starpac_d, only : nlfin_d =>nlfin
+      use M_starpac_d, only : nlinit_d =>nlinit
+      use M_starpac_d, only : nlism_d =>nlism
+      use M_starpac_d, only : nlitrp_d =>nlitrp
+      use M_starpac_d, only : nlmn_d =>nlmn
+      use M_starpac_d, only : nlout_d =>nlout
+      use M_starpac_d, only : nlsc_d =>nlsc
+      use M_starpac_d, only : nlsdc_d =>nlsdc
+      use M_starpac_d, only : nlsd_d =>nlsd
+      use M_starpac_d, only : nls_d =>nls
+      use M_starpac_d, only : nlsds_d =>nlsds
+      use M_starpac_d, only : nlspk_d =>nlspk
+      use M_starpac_d, only : nlss_d =>nlss
+      use M_starpac_d, only : nlsupk_d =>nlsupk
+      use M_starpac_d, only : nlswc_d =>nlswc
+      use M_starpac_d, only : nlswdc_d =>nlswdc
+      use M_starpac_d, only : nlswd_d =>nlswd
+      use M_starpac_d, only : nlsw_d =>nlsw
+      use M_starpac_d, only : nlswds_d =>nlswds
+      use M_starpac_d, only : nlsws_d =>nlsws
+      use M_starpac_d, only : nlsx1_d =>nlsx1
+      use M_starpac_d, only : nlsx2_d =>nlsx2
+      use M_starpac_d, only : nrandc_d =>nrandc
+      use M_starpac_d, only : nrand_d =>nrand
+      use M_starpac_d, only : oanova_d =>oanova
+      use M_starpac_d, only : obssm2_d =>obssm2
+      use M_starpac_d, only : obssum_d =>obssum
+      use M_starpac_d, only : parchk_d =>parchk
+      use M_starpac_d, only : parzen_d =>parzen
+      use M_starpac_d, only : pgm_d =>pgm
+      use M_starpac_d, only : pgmest_d =>pgmest
+      use M_starpac_d, only : pgmmn_d =>pgmmn
+      use M_starpac_d, only : pgms_d =>pgms
+      use M_starpac_d, only : pgord_d =>pgord
+      use M_starpac_d, only : pgout_d =>pgout
+      use M_starpac_d, only : pltchk_d =>pltchk
+      use M_starpac_d, only : pltplx_d =>pltplx
+      use M_starpac_d, only : polar_d =>polar
+      use M_starpac_d, only : ppc_d =>ppc
+      use M_starpac_d, only : ppcnt_d =>ppcnt
+      use M_starpac_d, only : pp_d =>pp
+      use M_starpac_d, only : ppfchs_d =>ppfchs
+      use M_starpac_d, only : ppff_d =>ppff
+      use M_starpac_d, only : ppfnml_d =>ppfnml
+      use M_starpac_d, only : ppft_d =>ppft
+      use M_starpac_d, only : ppl_d =>ppl
+      use M_starpac_d, only : pplmt_d =>pplmt
+      use M_starpac_d, only : ppmc_d =>ppmc
+      use M_starpac_d, only : ppm_d =>ppm
+      use M_starpac_d, only : ppml_d =>ppml
+      use M_starpac_d, only : ppmn_d =>ppmn
+      use M_starpac_d, only : qapply_d =>qapply
+      use M_starpac_d, only : qrfact_d =>qrfact
+      use M_starpac_d, only : randn_d =>randn
+      use M_starpac_d, only : ranko_d =>ranko
+      use M_starpac_d, only : realtr_d =>realtr
+      use M_starpac_d, only : relcom_d =>relcom
+      use M_starpac_d, only : reldst_d =>reldst
+      use M_starpac_d, only : repck_d =>repck
+      use M_starpac_d, only : rmdcon_d =>rmdcon
+      use M_starpac_d, only : rptmul_d =>rptmul
+      use M_starpac_d, only : sample_d =>sample
+      use M_starpac_d, only : setfrq_d =>setfrq
+      use M_starpac_d, only : setra_d =>setra
+      use M_starpac_d, only : setrow_d =>setrow
+      use M_starpac_d, only : setrv_d =>setrv
+      use M_starpac_d, only : slflt_d =>slflt
+      use M_starpac_d, only : slupdt_d =>slupdt
+      use M_starpac_d, only : slvmul_d =>slvmul
+      use M_starpac_d, only : smply_d =>smply
+      use M_starpac_d, only : spcck_d =>spcck
+      use M_starpac_d, only : sppc_d =>sppc
+      use M_starpac_d, only : spp_d =>spp
+      use M_starpac_d, only : sppl_d =>sppl
+      use M_starpac_d, only : sppltc_d =>sppltc
+      use M_starpac_d, only : sppltd_d =>sppltd
+      use M_starpac_d, only : sppltl_d =>sppltl
+      use M_starpac_d, only : sppmc_d =>sppmc
+      use M_starpac_d, only : sppm_d =>sppm
+      use M_starpac_d, only : sppml_d =>sppml
+      use M_starpac_d, only : srtir_d =>srtir
+      use M_starpac_d, only : srtirr_d =>srtirr
+      use M_starpac_d, only : srtri_d =>srtri
+      use M_starpac_d, only : srtrri_d =>srtrri
+      use M_starpac_d, only : stat1_d =>stat1
+      use M_starpac_d, only : stat1w_d =>stat1w
+      use M_starpac_d, only : stat2_d =>stat2
+      use M_starpac_d, only : stat2w_d =>stat2w
+      use M_starpac_d, only : stat_d =>stat
+      use M_starpac_d, only : stater_d =>stater
+      use M_starpac_d, only : stats_d =>stats
+      use M_starpac_d, only : statw_d =>statw
+      use M_starpac_d, only : statws_d =>statws
+      use M_starpac_d, only : stpadj_d =>stpadj
+      use M_starpac_d, only : stpamo_d =>stpamo
+      use M_starpac_d, only : stpcnt_d =>stpcnt
+      use M_starpac_d, only : stpdrv_d =>stpdrv
+      use M_starpac_d, only : stper_d =>stper
+      use M_starpac_d, only : stpls1_d =>stpls1
+      use M_starpac_d, only : stpls2_d =>stpls2
+      use M_starpac_d, only : stplsc_d =>stplsc
+      use M_starpac_d, only : stpls_d =>stpls
+      use M_starpac_d, only : stpmn_d =>stpmn
+      use M_starpac_d, only : stpout_d =>stpout
+      use M_starpac_d, only : stpsel_d =>stpsel
+      use M_starpac_d, only : sumbs_d =>sumbs
+      use M_starpac_d, only : sumds_d =>sumds
+      use M_starpac_d, only : sumid_d =>sumid
+      use M_starpac_d, only : sumidw_d =>sumidw
+      use M_starpac_d, only : sumot_d =>sumot
+      use M_starpac_d, only : sumss_d =>sumss
+      use M_starpac_d, only : sumts_d =>sumts
+      use M_starpac_d, only : sumwds_d =>sumwds
+      use M_starpac_d, only : sumwss_d =>sumwss
+      use M_starpac_d, only : sumwts_d =>sumwts
+      use M_starpac_d, only : svpc_d =>svpc
+      use M_starpac_d, only : svp_d =>svp
+      use M_starpac_d, only : svpl_d =>svpl
+      use M_starpac_d, only : svpmc_d =>svpmc
+      use M_starpac_d, only : svpm_d =>svpm
+      use M_starpac_d, only : svpml_d =>svpml
+      use M_starpac_d, only : taper_d =>taper
+      use M_starpac_d, only : uascft_d =>uascft
+      use M_starpac_d, only : uas_d =>uas
+      use M_starpac_d, only : uasdv_d =>uasdv
+      use M_starpac_d, only : uaser_d =>uaser
+      use M_starpac_d, only : uasest_d =>uasest
+      use M_starpac_d, only : uasf_d =>uasf
+      use M_starpac_d, only : uasfs_d =>uasfs
+      use M_starpac_d, only : uasord_d =>uasord
+      use M_starpac_d, only : uasout_d =>uasout
+      use M_starpac_d, only : uass_d =>uass
+      use M_starpac_d, only : uasvar_d =>uasvar
+      use M_starpac_d, only : uasv_d =>uasv
+      use M_starpac_d, only : uasvs_d =>uasvs
+      use M_starpac_d, only : ufsdrv_d =>ufsdrv
+      use M_starpac_d, only : ufs_d =>ufs
+      use M_starpac_d, only : ufsest_d =>ufsest
+      use M_starpac_d, only : ufsf_d =>ufsf
+      use M_starpac_d, only : ufsfs_d =>ufsfs
+      use M_starpac_d, only : ufslag_d =>ufslag
+      use M_starpac_d, only : ufsm_d =>ufsm
+      use M_starpac_d, only : ufsmn_d =>ufsmn
+      use M_starpac_d, only : ufsms_d =>ufsms
+      use M_starpac_d, only : ufsmv_d =>ufsmv
+      use M_starpac_d, only : ufsmvs_d =>ufsmvs
+      use M_starpac_d, only : ufsout_d =>ufsout
+      use M_starpac_d, only : ufspcv_d =>ufspcv
+      use M_starpac_d, only : ufss_d =>ufss
+      use M_starpac_d, only : ufsv_d =>ufsv
+      use M_starpac_d, only : ufsvs_d =>ufsvs
+      use M_starpac_d, only : v2norm_d =>v2norm
+      use M_starpac_d, only : vaxpy_d =>vaxpy
+      use M_starpac_d, only : vcopy_d =>vcopy
+      use M_starpac_d, only : vcvotf_d =>vcvotf
+      use M_starpac_d, only : vcvout_d =>vcvout
+      use M_starpac_d, only : vpc_d =>vpc
+      use M_starpac_d, only : vpcnt_d =>vpcnt
+      use M_starpac_d, only : vp_d =>vp
+      use M_starpac_d, only : vphead_d =>vphead
+      use M_starpac_d, only : vpl_d =>vpl
+      use M_starpac_d, only : vplmt_d =>vplmt
+      use M_starpac_d, only : vpmc_d =>vpmc
+      use M_starpac_d, only : vpm_d =>vpm
+      use M_starpac_d, only : vpml_d =>vpml
+      use M_starpac_d, only : vpmn_d =>vpmn
+      use M_starpac_d, only : vscopy_d =>vscopy
+      use M_starpac_d, only : xacf_d =>xacf
+      use M_starpac_d, only : xaimd_d =>xaimd
+      use M_starpac_d, only : xaimt_d =>xaimt
+      use M_starpac_d, only : xaov1_d =>xaov1
+      use M_starpac_d, only : xbfs_d =>xbfs
+      use M_starpac_d, only : xccf_d =>xccf
+      use M_starpac_d, only : xcorr_d =>xcorr
+      use M_starpac_d, only : xdckld_d =>xdckld
+      use M_starpac_d, only : xdckle_d =>xdckle
+      use M_starpac_d, only : xdcklt_d =>xdcklt
+      use M_starpac_d, only : xdemod_d =>xdemod
+      use M_starpac_d, only : xdflt_d =>xdflt
+      use M_starpac_d, only : xhist_d =>xhist
+      use M_starpac_d, only : xlls_d =>xlls
+      use M_starpac_d, only : xnlsd_d =>xnlsd
+      use M_starpac_d, only : xnlse_d =>xnlse
+      use M_starpac_d, only : xnlst_d =>xnlst
+      use M_starpac_d, only : xnrand_d =>xnrand
+      use M_starpac_d, only : xpgm_d =>xpgm
+      use M_starpac_d, only : xpp_d =>xpp
+      use M_starpac_d, only : xstat_d =>xstat
+      use M_starpac_d, only : xstpld_d =>xstpld
+      use M_starpac_d, only : xstple_d =>xstple
+      use M_starpac_d, only : xstplt_d =>xstplt
+      use M_starpac_d, only : xuas_d =>xuas
+      use M_starpac_d, only : xufs_d =>xufs
+      use M_starpac_d, only : xvp_d =>xvp
+      use M_starpac_d, only : xxch10_d =>xxch10
+      use M_starpac_d, only : xxch11_d =>xxch11
+      use M_starpac_d, only : xxch12_d =>xxch12
+      use M_starpac_d, only : xxch13_d =>xxch13
+      use M_starpac_d, only : xxch1_d =>xxch1
+      use M_starpac_d, only : xxch2_d =>xxch2
+      use M_starpac_d, only : xxch3_d =>xxch3
+      use M_starpac_d, only : xxch4_d =>xxch4
+      use M_starpac_d, only : xxch5_d =>xxch5
+      use M_starpac_d, only : xxch6_d =>xxch6
+      use M_starpac_d, only : xxch7_d =>xxch7
+      use M_starpac_d, only : xxch8_d =>xxch8
+      use M_starpac_d, only : xxch9_d =>xxch9
       implicit none
       private
+      interface abscom; module procedure abscom_d,abscom; end interface
+      interface accdig; module procedure accdig_d,accdig; end interface
+      interface acfd; module procedure acfd_d,acfd; end interface
+      interface acff; module procedure acff_d,acff; end interface
+      interface acffs; module procedure acffs_d,acffs; end interface
+      interface acflst; module procedure acflst_d,acflst; end interface
+      interface acfm; module procedure acfm_d,acfm; end interface
+      interface acfmnf; module procedure acfmnf_d,acfmnf; end interface
+      interface acfmnm; module procedure acfmnm_d,acfmnm; end interface
+      interface acfmn; module procedure acfmn_d,acfmn; end interface
+      interface acf; module procedure acf_d,acf; end interface
+      interface acfms; module procedure acfms_d,acfms; end interface
+      interface acfout; module procedure acfout_d,acfout; end interface
+      interface acfsdm; module procedure acfsdm_d,acfsdm; end interface
+      interface acfsd; module procedure acfsd_d,acfsd; end interface
+      interface acfs; module procedure acfs_d,acfs; end interface
+      interface acvff; module procedure acvff_d,acvff; end interface
+      interface acvfm; module procedure acvfm_d,acvfm; end interface
+      interface acvf; module procedure acvf_d,acvf; end interface
+      interface adjlmt; module procedure adjlmt_d,adjlmt; end interface
+      interface aimec; module procedure aimec_d,aimec; end interface
+      interface aime; module procedure aime_d,aime; end interface
+      interface aimes; module procedure aimes_d,aimes; end interface
+      interface aimf; module procedure aimf_d,aimf; end interface
+      interface aimfs; module procedure aimfs_d,aimfs; end interface
+      interface aimx1; module procedure aimx1_d,aimx1; end interface
+      interface amdrv; module procedure amdrv_d,amdrv; end interface
+      interface ameanm; module procedure ameanm_d,ameanm; end interface
+      interface amean; module procedure amean_d,amean; end interface
+      interface amecnt; module procedure amecnt_d,amecnt; end interface
+      interface amedrv; module procedure amedrv_d,amedrv; end interface
+      interface ameer; module procedure ameer_d,ameer; end interface
+      interface amefin; module procedure amefin_d,amefin; end interface
+      interface ameism; module procedure ameism_d,ameism; end interface
+      interface amemn; module procedure amemn_d,amemn; end interface
+      interface ameout; module procedure ameout_d,ameout; end interface
+      interface amept1; module procedure amept1_d,amept1; end interface
+      interface amept2; module procedure amept2_d,amept2; end interface
+      interface amestp; module procedure amestp_d,amestp; end interface
+      interface amfcnt; module procedure amfcnt_d,amfcnt; end interface
+      interface amfmn; module procedure amfmn_d,amfmn; end interface
+      interface amfout; module procedure amfout_d,amfout; end interface
+      interface amlst1; module procedure amlst1_d,amlst1; end interface
+      interface amlst; module procedure amlst_d,amlst; end interface
+      interface aoslst; module procedure aoslst_d,aoslst; end interface
+      interface aos; module procedure aos_d,aos; end interface
+      interface aov1er; module procedure aov1er_d,aov1er; end interface
+      interface aov1mn; module procedure aov1mn_d,aov1mn; end interface
+      interface aov1; module procedure aov1_d,aov1; end interface
+      interface aov1s; module procedure aov1s_d,aov1s; end interface
+      interface aov1xp; module procedure aov1xp_d,aov1xp; end interface
+      interface arcoef; module procedure arcoef_d,arcoef; end interface
+      interface arflt; module procedure arflt_d,arflt; end interface
+      interface assess; module procedure assess_d,assess; end interface
+      interface axpby; module procedure axpby_d,axpby; end interface
+      interface bfsdrv; module procedure bfsdrv_d,bfsdrv; end interface
+      interface bfsf; module procedure bfsf_d,bfsf; end interface
+      interface bfsfs; module procedure bfsfs_d,bfsfs; end interface
+      interface bfslag; module procedure bfslag_d,bfslag; end interface
+      interface bfsm; module procedure bfsm_d,bfsm; end interface
+      interface bfsmn; module procedure bfsmn_d,bfsmn; end interface
+      interface bfs; module procedure bfs_d,bfs; end interface
+      interface bfsms; module procedure bfsms_d,bfsms; end interface
+      interface bfsmv; module procedure bfsmv_d,bfsmv; end interface
+      interface bfsmvs; module procedure bfsmvs_d,bfsmvs; end interface
+      interface bfss; module procedure bfss_d,bfss; end interface
+      interface bfsv; module procedure bfsv_d,bfsv; end interface
+      interface bfsvs; module procedure bfsvs_d,bfsvs; end interface
+      interface ccff; module procedure ccff_d,ccff; end interface
+      interface ccffs; module procedure ccffs_d,ccffs; end interface
+      interface ccflst; module procedure ccflst_d,ccflst; end interface
+      interface ccfm; module procedure ccfm_d,ccfm; end interface
+      interface ccfmnf; module procedure ccfmnf_d,ccfmnf; end interface
+      interface ccfmnm; module procedure ccfmnm_d,ccfmnm; end interface
+      interface ccfmn; module procedure ccfmn_d,ccfmn; end interface
+      interface ccf; module procedure ccf_d,ccf; end interface
+      interface ccfms; module procedure ccfms_d,ccfms; end interface
+      interface ccfout; module procedure ccfout_d,ccfout; end interface
+      interface ccfsdm; module procedure ccfsdm_d,ccfsdm; end interface
+      interface ccfsd; module procedure ccfsd_d,ccfsd; end interface
+      interface ccfs; module procedure ccfs_d,ccfs; end interface
+      interface ccfxp; module procedure ccfxp_d,ccfxp; end interface
+      interface ccvff; module procedure ccvff_d,ccvff; end interface
+      interface ccvfm; module procedure ccvfm_d,ccvfm; end interface
+      interface ccvf; module procedure ccvf_d,ccvf; end interface
+      interface cdfchi; module procedure cdfchi_d,cdfchi; end interface
+      interface cdff; module procedure cdff_d,cdff; end interface
+      interface cdfnml; module procedure cdfnml_d,cdfnml; end interface
+      interface cdft; module procedure cdft_d,cdft; end interface
+      interface center; module procedure center_d,center; end interface
+      interface chirho; module procedure chirho_d,chirho; end interface
+      interface cmpfd; module procedure cmpfd_d,cmpfd; end interface
+      interface cntr; module procedure cntr_d,cntr; end interface
+      interface corrmn; module procedure corrmn_d,corrmn; end interface
+      interface corr; module procedure corr_d,corr; end interface
+      interface corrs; module procedure corrs_d,corrs; end interface
+      interface corrxp; module procedure corrxp_d,corrxp; end interface
+      interface covclc; module procedure covclc_d,covclc; end interface
+      interface cpyasf; module procedure cpyasf_d,cpyasf; end interface
+      interface cpymss; module procedure cpymss_d,cpymss; end interface
+      interface dckcnt; module procedure dckcnt_d,dckcnt; end interface
+      interface dckcrv; module procedure dckcrv_d,dckcrv; end interface
+      interface dckdrv; module procedure dckdrv_d,dckdrv; end interface
+      interface dcker; module procedure dcker_d,dcker; end interface
+      interface dckfpa; module procedure dckfpa_d,dckfpa; end interface
+      interface dckls1; module procedure dckls1_d,dckls1; end interface
+      interface dcklsc; module procedure dcklsc_d,dcklsc; end interface
+      interface dckls; module procedure dckls_d,dckls; end interface
+      interface dckmn; module procedure dckmn_d,dckmn; end interface
+      interface dckout; module procedure dckout_d,dckout; end interface
+      interface dckzro; module procedure dckzro_d,dckzro; end interface
+      interface dcoef; module procedure dcoef_d,dcoef; end interface
+      interface demdrv; module procedure demdrv_d,demdrv; end interface
+      interface demod; module procedure demod_d,demod; end interface
+      interface demods; module procedure demods_d,demods; end interface
+      interface demodu; module procedure demodu_d,demodu; end interface
+      interface demord; module procedure demord_d,demord; end interface
+      interface demout; module procedure demout_d,demout; end interface
+      interface dfault; module procedure dfault_d,dfault; end interface
+      interface dfbwm; module procedure dfbwm_d,dfbwm; end interface
+      interface dfbw; module procedure dfbw_d,dfbw; end interface
+      interface difc; module procedure difc_d,difc; end interface
+      interface difmc; module procedure difmc_d,difmc; end interface
+      interface difm; module procedure difm_d,difm; end interface
+      interface dif; module procedure dif_d,dif; end interface
+      interface difser; module procedure difser_d,difser; end interface
+      interface dotcm; module procedure dotcm_d,dotcm; end interface
+      interface dotc; module procedure dotc_d,dotc; end interface
+      interface dotprd; module procedure dotprd_d,dotprd; end interface
+      interface drv1a; module procedure drv1a_d,drv1a; end interface
+      interface drv1b; module procedure drv1b_d,drv1b; end interface
+      interface drv2; module procedure drv2_d,drv2; end interface
+      interface drv3; module procedure drv3_d,drv3; end interface
+      interface drv4a; module procedure drv4a_d,drv4a; end interface
+      interface drv4b; module procedure drv4b_d,drv4b; end interface
+      interface drv; module procedure drv_d,drv; end interface
+      interface dupdat; module procedure dupdat_d,dupdat; end interface
+      interface eragtm; module procedure eragtm_d,eragtm; end interface
+      interface eragt; module procedure eragt_d,eragt; end interface
+      interface eragtp; module procedure eragtp_d,eragtp; end interface
+      interface ersei; module procedure ersei_d,ersei; end interface
+      interface ersge; module procedure ersge_d,ersge; end interface
+      interface ersgt; module procedure ersgt_d,ersgt; end interface
+      interface ersie; module procedure ersie_d,ersie; end interface
+      interface ersii; module procedure ersii_d,ersii; end interface
+      interface erslf; module procedure erslf_d,erslf; end interface
+      interface erslfs; module procedure erslfs_d,erslfs; end interface
+      interface ervgtm; module procedure ervgtm_d,ervgtm; end interface
+      interface ervgt; module procedure ervgt_d,ervgt; end interface
+      interface ervgtp; module procedure ervgtp_d,ervgtp; end interface
+      interface ervii; module procedure ervii_d,ervii; end interface
+      interface ervwt; module procedure ervwt_d,ervwt; end interface
+      interface etamdl; module procedure etamdl_d,etamdl; end interface
+      interface extend; module procedure extend_d,extend; end interface
+      interface fftct; module procedure fftct_d,fftct; end interface
+      interface fft; module procedure fft_d,fft; end interface
+      interface fftr; module procedure fftr_d,fftr; end interface
+      interface fitext; module procedure fitext_d,fitext; end interface
+      interface fitpt1; module procedure fitpt1_d,fitpt1; end interface
+      interface fitpt2; module procedure fitpt2_d,fitpt2; end interface
+      interface fitsxp; module procedure fitsxp_d,fitsxp; end interface
+      interface fitxsp; module procedure fitxsp_d,fitxsp; end interface
+      interface fltarm; module procedure fltarm_d,fltarm; end interface
+      interface fltar; module procedure fltar_d,fltar; end interface
+      interface fltma; module procedure fltma_d,fltma; end interface
+      interface fltmd; module procedure fltmd_d,fltmd; end interface
+      interface fltsl; module procedure fltsl_d,fltsl; end interface
+      interface genr; module procedure genr_d,genr; end interface
+      interface getpi; module procedure getpi_d,getpi; end interface
+      interface gfaest; module procedure gfaest_d,gfaest; end interface
+      interface gfarf; module procedure gfarf_d,gfarf; end interface
+      interface gfarfs; module procedure gfarfs_d,gfarfs; end interface
+      interface gford; module procedure gford_d,gford; end interface
+      interface gfout; module procedure gfout_d,gfout; end interface
+      interface gfsest; module procedure gfsest_d,gfsest; end interface
+      interface gfslf; module procedure gfslf_d,gfslf; end interface
+      interface gfslfs; module procedure gfslfs_d,gfslfs; end interface
+      interface gmean; module procedure gmean_d,gmean; end interface
+      interface gqtstp; module procedure gqtstp_d,gqtstp; end interface
+      interface hipass; module procedure hipass_d,hipass; end interface
+      interface histc; module procedure histc_d,histc; end interface
+      interface hist; module procedure hist_d,hist; end interface
+      interface hpcoef; module procedure hpcoef_d,hpcoef; end interface
+      interface hpflt; module procedure hpflt_d,hpflt; end interface
+      interface hster; module procedure hster_d,hster; end interface
+      interface hstmn; module procedure hstmn_d,hstmn; end interface
+      interface ipgdv; module procedure ipgdv_d,ipgdv; end interface
+      interface ipgm; module procedure ipgm_d,ipgm; end interface
+      interface ipgmn; module procedure ipgmn_d,ipgmn; end interface
+      interface ipgmp; module procedure ipgmp_d,ipgmp; end interface
+      interface ipgmps; module procedure ipgmps_d,ipgmps; end interface
+      interface ipgms; module procedure ipgms_d,ipgms; end interface
+      interface ipgord; module procedure ipgord_d,ipgord; end interface
+      interface ipgout; module procedure ipgout_d,ipgout; end interface
+      interface itsmry; module procedure itsmry_d,itsmry; end interface
+      interface linvrt; module procedure linvrt_d,linvrt; end interface
+      interface litvmu; module procedure litvmu_d,litvmu; end interface
+      interface livmul; module procedure livmul_d,livmul; end interface
+      interface llcntg; module procedure llcntg_d,llcntg; end interface
+      interface llcnt; module procedure llcnt_d,llcnt; end interface
+      interface llcntp; module procedure llcntp_d,llcntp; end interface
+      interface ller; module procedure ller_d,ller; end interface
+      interface llsmn; module procedure llsmn_d,llsmn; end interface
+      interface lls; module procedure lls_d,lls; end interface
+      interface llsp; module procedure llsp_d,llsp; end interface
+      interface llsps; module procedure llsps_d,llsps; end interface
+      interface llspw; module procedure llspw_d,llspw; end interface
+      interface llspws; module procedure llspws_d,llspws; end interface
+      interface llss; module procedure llss_d,llss; end interface
+      interface llsw; module procedure llsw_d,llsw; end interface
+      interface llsws; module procedure llsws_d,llsws; end interface
+      interface lmstep; module procedure lmstep_d,lmstep; end interface
+      interface loglmt; module procedure loglmt_d,loglmt; end interface
+      interface lopass; module procedure lopass_d,lopass; end interface
+      interface lpcoef; module procedure lpcoef_d,lpcoef; end interface
+      interface lpflt; module procedure lpflt_d,lpflt; end interface
+      interface lsqrt; module procedure lsqrt_d,lsqrt; end interface
+      interface lstvcf; module procedure lstvcf_d,lstvcf; end interface
+      interface lstvec; module procedure lstvec_d,lstvec; end interface
+      interface lsvmin; module procedure lsvmin_d,lsvmin; end interface
+      interface ltsqar; module procedure ltsqar_d,ltsqar; end interface
+      interface madj; module procedure madj_d,madj; end interface
+      interface madr; module procedure madr_d,madr; end interface
+      interface maflt; module procedure maflt_d,maflt; end interface
+      interface matprf; module procedure matprf_d,matprf; end interface
+      interface matprt; module procedure matprt_d,matprt; end interface
+      interface mdflt; module procedure mdflt_d,mdflt; end interface
+      interface mdl1; module procedure mdl1_d,mdl1; end interface
+      interface mdl2; module procedure mdl2_d,mdl2; end interface
+      interface mdl3; module procedure mdl3_d,mdl3; end interface
+      interface mdl4; module procedure mdl4_d,mdl4; end interface
+      interface mdlts1; module procedure mdlts1_d,mdlts1; end interface
+      interface mdlts2; module procedure mdlts2_d,mdlts2; end interface
+      interface mdlts3; module procedure mdlts3_d,mdlts3; end interface
+      interface mgs; module procedure mgs_d,mgs; end interface
+      interface mppc; module procedure mppc_d,mppc; end interface
+      interface mppl; module procedure mppl_d,mppl; end interface
+      interface mppmc; module procedure mppmc_d,mppmc; end interface
+      interface mppml; module procedure mppml_d,mppml; end interface
+      interface mppm; module procedure mppm_d,mppm; end interface
+      interface mpp; module procedure mpp_d,mpp; end interface
+      interface multbp; module procedure multbp_d,multbp; end interface
+      interface mvchk; module procedure mvchk_d,mvchk; end interface
+      interface mvpc; module procedure mvpc_d,mvpc; end interface
+      interface mvpl; module procedure mvpl_d,mvpl; end interface
+      interface mvpmc; module procedure mvpmc_d,mvpmc; end interface
+      interface mvpml; module procedure mvpml_d,mvpml; end interface
+      interface mvpm; module procedure mvpm_d,mvpm; end interface
+      interface mvp; module procedure mvp_d,mvp; end interface
+      interface nl2itr; module procedure nl2itr_d,nl2itr; end interface
+      interface nl2sno; module procedure nl2sno_d,nl2sno; end interface
+      interface nl2sol; module procedure nl2sol_d,nl2sol; end interface
+      interface nl2x; module procedure nl2x_d,nl2x; end interface
+      interface nlcmp; module procedure nlcmp_d,nlcmp; end interface
+      interface nlcnta; module procedure nlcnta_d,nlcnta; end interface
+      interface nlcnt; module procedure nlcnt_d,nlcnt; end interface
+      interface nlcntn; module procedure nlcntn_d,nlcntn; end interface
+      interface nldrva; module procedure nldrva_d,nldrva; end interface
+      interface nldrvn; module procedure nldrvn_d,nldrvn; end interface
+      interface nler; module procedure nler_d,nler; end interface
+      interface nlfin; module procedure nlfin_d,nlfin; end interface
+      interface nlinit; module procedure nlinit_d,nlinit; end interface
+      interface nlism; module procedure nlism_d,nlism; end interface
+      interface nlitrp; module procedure nlitrp_d,nlitrp; end interface
+      interface nlmn; module procedure nlmn_d,nlmn; end interface
+      interface nlout; module procedure nlout_d,nlout; end interface
+      interface nlsc; module procedure nlsc_d,nlsc; end interface
+      interface nlsdc; module procedure nlsdc_d,nlsdc; end interface
+      interface nlsd; module procedure nlsd_d,nlsd; end interface
+      interface nlsds; module procedure nlsds_d,nlsds; end interface
+      interface nls; module procedure nls_d,nls; end interface
+      interface nlspk; module procedure nlspk_d,nlspk; end interface
+      interface nlss; module procedure nlss_d,nlss; end interface
+      interface nlsupk; module procedure nlsupk_d,nlsupk; end interface
+      interface nlswc; module procedure nlswc_d,nlswc; end interface
+      interface nlswdc; module procedure nlswdc_d,nlswdc; end interface
+      interface nlswd; module procedure nlswd_d,nlswd; end interface
+      interface nlswds; module procedure nlswds_d,nlswds; end interface
+      interface nlsw; module procedure nlsw_d,nlsw; end interface
+      interface nlsws; module procedure nlsws_d,nlsws; end interface
+      interface nlsx1; module procedure nlsx1_d,nlsx1; end interface
+      interface nlsx2; module procedure nlsx2_d,nlsx2; end interface
+      interface nrandc; module procedure nrandc_d,nrandc; end interface
+      interface nrand; module procedure nrand_d,nrand; end interface
+      interface oanova; module procedure oanova_d,oanova; end interface
+      interface obssm2; module procedure obssm2_d,obssm2; end interface
+      interface obssum; module procedure obssum_d,obssum; end interface
+      interface parchk; module procedure parchk_d,parchk; end interface
+      interface parzen; module procedure parzen_d,parzen; end interface
+      interface pgmest; module procedure pgmest_d,pgmest; end interface
+      interface pgmmn; module procedure pgmmn_d,pgmmn; end interface
+      interface pgm; module procedure pgm_d,pgm; end interface
+      interface pgms; module procedure pgms_d,pgms; end interface
+      interface pgord; module procedure pgord_d,pgord; end interface
+      interface pgout; module procedure pgout_d,pgout; end interface
+      interface pltchk; module procedure pltchk_d,pltchk; end interface
+      interface pltplx; module procedure pltplx_d,pltplx; end interface
+      interface polar; module procedure polar_d,polar; end interface
+      interface ppc; module procedure ppc_d,ppc; end interface
+      interface ppcnt; module procedure ppcnt_d,ppcnt; end interface
+      interface ppfchs; module procedure ppfchs_d,ppfchs; end interface
+      interface ppff; module procedure ppff_d,ppff; end interface
+      interface ppfnml; module procedure ppfnml_d,ppfnml; end interface
+      interface ppft; module procedure ppft_d,ppft; end interface
+      interface ppl; module procedure ppl_d,ppl; end interface
+      interface pplmt; module procedure pplmt_d,pplmt; end interface
+      interface ppmc; module procedure ppmc_d,ppmc; end interface
+      interface ppml; module procedure ppml_d,ppml; end interface
+      interface ppm; module procedure ppm_d,ppm; end interface
+      interface ppmn; module procedure ppmn_d,ppmn; end interface
+      interface pp; module procedure pp_d,pp; end interface
+      interface qapply; module procedure qapply_d,qapply; end interface
+      interface qrfact; module procedure qrfact_d,qrfact; end interface
+      interface randn; module procedure randn_d,randn; end interface
+      interface ranko; module procedure ranko_d,ranko; end interface
+      interface realtr; module procedure realtr_d,realtr; end interface
+      interface relcom; module procedure relcom_d,relcom; end interface
+      interface reldst; module procedure reldst_d,reldst; end interface
+      interface repck; module procedure repck_d,repck; end interface
+      interface rmdcon; module procedure rmdcon_d,rmdcon; end interface
+      interface rptmul; module procedure rptmul_d,rptmul; end interface
+      interface sample; module procedure sample_d,sample; end interface
+      interface setfrq; module procedure setfrq_d,setfrq; end interface
+      interface setra; module procedure setra_d,setra; end interface
+      interface setrow; module procedure setrow_d,setrow; end interface
+      interface setrv; module procedure setrv_d,setrv; end interface
+      interface slflt; module procedure slflt_d,slflt; end interface
+      interface slupdt; module procedure slupdt_d,slupdt; end interface
+      interface slvmul; module procedure slvmul_d,slvmul; end interface
+      interface smply; module procedure smply_d,smply; end interface
+      interface spcck; module procedure spcck_d,spcck; end interface
+      interface sppc; module procedure sppc_d,sppc; end interface
+      interface sppl; module procedure sppl_d,sppl; end interface
+      interface sppltc; module procedure sppltc_d,sppltc; end interface
+      interface sppltd; module procedure sppltd_d,sppltd; end interface
+      interface sppltl; module procedure sppltl_d,sppltl; end interface
+      interface sppmc; module procedure sppmc_d,sppmc; end interface
+      interface sppml; module procedure sppml_d,sppml; end interface
+      interface sppm; module procedure sppm_d,sppm; end interface
+      interface spp; module procedure spp_d,spp; end interface
+      interface srtir; module procedure srtir_d,srtir; end interface
+      interface srtirr; module procedure srtirr_d,srtirr; end interface
+      interface srtri; module procedure srtri_d,srtri; end interface
+      interface srtrri; module procedure srtrri_d,srtrri; end interface
+      interface stat1; module procedure stat1_d,stat1; end interface
+      interface stat1w; module procedure stat1w_d,stat1w; end interface
+      interface stat2; module procedure stat2_d,stat2; end interface
+      interface stat2w; module procedure stat2w_d,stat2w; end interface
+      interface stater; module procedure stater_d,stater; end interface
+      interface stat; module procedure stat_d,stat; end interface
+      interface stats; module procedure stats_d,stats; end interface
+      interface statw; module procedure statw_d,statw; end interface
+      interface statws; module procedure statws_d,statws; end interface
+      interface stpadj; module procedure stpadj_d,stpadj; end interface
+      interface stpamo; module procedure stpamo_d,stpamo; end interface
+      interface stpcnt; module procedure stpcnt_d,stpcnt; end interface
+      interface stpdrv; module procedure stpdrv_d,stpdrv; end interface
+      interface stper; module procedure stper_d,stper; end interface
+      interface stpls1; module procedure stpls1_d,stpls1; end interface
+      interface stpls2; module procedure stpls2_d,stpls2; end interface
+      interface stplsc; module procedure stplsc_d,stplsc; end interface
+      interface stpls; module procedure stpls_d,stpls; end interface
+      interface stpmn; module procedure stpmn_d,stpmn; end interface
+      interface stpout; module procedure stpout_d,stpout; end interface
+      interface stpsel; module procedure stpsel_d,stpsel; end interface
+      interface sumbs; module procedure sumbs_d,sumbs; end interface
+      interface sumds; module procedure sumds_d,sumds; end interface
+      interface sumid; module procedure sumid_d,sumid; end interface
+      interface sumidw; module procedure sumidw_d,sumidw; end interface
+      interface sumot; module procedure sumot_d,sumot; end interface
+      interface sumss; module procedure sumss_d,sumss; end interface
+      interface sumts; module procedure sumts_d,sumts; end interface
+      interface sumwds; module procedure sumwds_d,sumwds; end interface
+      interface sumwss; module procedure sumwss_d,sumwss; end interface
+      interface sumwts; module procedure sumwts_d,sumwts; end interface
+      interface svpc; module procedure svpc_d,svpc; end interface
+      interface svpl; module procedure svpl_d,svpl; end interface
+      interface svpmc; module procedure svpmc_d,svpmc; end interface
+      interface svpml; module procedure svpml_d,svpml; end interface
+      interface svpm; module procedure svpm_d,svpm; end interface
+      interface svp; module procedure svp_d,svp; end interface
+      interface taper; module procedure taper_d,taper; end interface
+      interface uascft; module procedure uascft_d,uascft; end interface
+      interface uasdv; module procedure uasdv_d,uasdv; end interface
+      interface uaser; module procedure uaser_d,uaser; end interface
+      interface uasest; module procedure uasest_d,uasest; end interface
+      interface uasf; module procedure uasf_d,uasf; end interface
+      interface uasfs; module procedure uasfs_d,uasfs; end interface
+      interface uas; module procedure uas_d,uas; end interface
+      interface uasord; module procedure uasord_d,uasord; end interface
+      interface uasout; module procedure uasout_d,uasout; end interface
+      interface uass; module procedure uass_d,uass; end interface
+      interface uasvar; module procedure uasvar_d,uasvar; end interface
+      interface uasv; module procedure uasv_d,uasv; end interface
+      interface uasvs; module procedure uasvs_d,uasvs; end interface
+      interface ufsdrv; module procedure ufsdrv_d,ufsdrv; end interface
+      interface ufsest; module procedure ufsest_d,ufsest; end interface
+      interface ufsf; module procedure ufsf_d,ufsf; end interface
+      interface ufsfs; module procedure ufsfs_d,ufsfs; end interface
+      interface ufslag; module procedure ufslag_d,ufslag; end interface
+      interface ufsm; module procedure ufsm_d,ufsm; end interface
+      interface ufsmn; module procedure ufsmn_d,ufsmn; end interface
+      interface ufs; module procedure ufs_d,ufs; end interface
+      interface ufsms; module procedure ufsms_d,ufsms; end interface
+      interface ufsmv; module procedure ufsmv_d,ufsmv; end interface
+      interface ufsmvs; module procedure ufsmvs_d,ufsmvs; end interface
+      interface ufsout; module procedure ufsout_d,ufsout; end interface
+      interface ufspcv; module procedure ufspcv_d,ufspcv; end interface
+      interface ufss; module procedure ufss_d,ufss; end interface
+      interface ufsv; module procedure ufsv_d,ufsv; end interface
+      interface ufsvs; module procedure ufsvs_d,ufsvs; end interface
+      interface v2norm; module procedure v2norm_d,v2norm; end interface
+      interface vaxpy; module procedure vaxpy_d,vaxpy; end interface
+      interface vcopy; module procedure vcopy_d,vcopy; end interface
+      interface vcvotf; module procedure vcvotf_d,vcvotf; end interface
+      interface vcvout; module procedure vcvout_d,vcvout; end interface
+      interface vpc; module procedure vpc_d,vpc; end interface
+      interface vpcnt; module procedure vpcnt_d,vpcnt; end interface
+      interface vphead; module procedure vphead_d,vphead; end interface
+      interface vpl; module procedure vpl_d,vpl; end interface
+      interface vplmt; module procedure vplmt_d,vplmt; end interface
+      interface vpmc; module procedure vpmc_d,vpmc; end interface
+      interface vpml; module procedure vpml_d,vpml; end interface
+      interface vpm; module procedure vpm_d,vpm; end interface
+      interface vpmn; module procedure vpmn_d,vpmn; end interface
+      interface vp; module procedure vp_d,vp; end interface
+      interface vscopy; module procedure vscopy_d,vscopy; end interface
+      interface xacf; module procedure xacf_d,xacf; end interface
+      interface xaimd; module procedure xaimd_d,xaimd; end interface
+      interface xaimt; module procedure xaimt_d,xaimt; end interface
+      interface xaov1; module procedure xaov1_d,xaov1; end interface
+      interface xbfs; module procedure xbfs_d,xbfs; end interface
+      interface xccf; module procedure xccf_d,xccf; end interface
+      interface xcorr; module procedure xcorr_d,xcorr; end interface
+      interface xdckld; module procedure xdckld_d,xdckld; end interface
+      interface xdckle; module procedure xdckle_d,xdckle; end interface
+      interface xdcklt; module procedure xdcklt_d,xdcklt; end interface
+      interface xdemod; module procedure xdemod_d,xdemod; end interface
+      interface xdflt; module procedure xdflt_d,xdflt; end interface
+      interface xhist; module procedure xhist_d,xhist; end interface
+      interface xlls; module procedure xlls_d,xlls; end interface
+      interface xnlsd; module procedure xnlsd_d,xnlsd; end interface
+      interface xnlse; module procedure xnlse_d,xnlse; end interface
+      interface xnlst; module procedure xnlst_d,xnlst; end interface
+      interface xnrand; module procedure xnrand_d,xnrand; end interface
+      interface xpgm; module procedure xpgm_d,xpgm; end interface
+      interface xpp; module procedure xpp_d,xpp; end interface
+      interface xstat; module procedure xstat_d,xstat; end interface
+      interface xstpld; module procedure xstpld_d,xstpld; end interface
+      interface xstple; module procedure xstple_d,xstple; end interface
+      interface xstplt; module procedure xstplt_d,xstplt; end interface
+      interface xuas; module procedure xuas_d,xuas; end interface
+      interface xufs; module procedure xufs_d,xufs; end interface
+      interface xvp; module procedure xvp_d,xvp; end interface
+      interface xxch10; module procedure xxch10_d,xxch10; end interface
+      interface xxch11; module procedure xxch11_d,xxch11; end interface
+      interface xxch12; module procedure xxch12_d,xxch12; end interface
+      interface xxch13; module procedure xxch13_d,xxch13; end interface
+      interface xxch1; module procedure xxch1_d,xxch1; end interface
+      interface xxch2; module procedure xxch2_d,xxch2; end interface
+      interface xxch3; module procedure xxch3_d,xxch3; end interface
+      interface xxch4; module procedure xxch4_d,xxch4; end interface
+      interface xxch5; module procedure xxch5_d,xxch5; end interface
+      interface xxch6; module procedure xxch6_d,xxch6; end interface
+      interface xxch7; module procedure xxch7_d,xxch7; end interface
+      interface xxch8; module procedure xxch8_d,xxch8; end interface
+      interface xxch9; module procedure xxch9_d,xxch9; end interface
 
       public :: ssifa,  dswap,  dtrdi,  dscal,   strco
       public :: dasum,  dnrm2,  dsifa,  sscal,   isamax
@@ -23,6 +956,99 @@
       public :: albeta,  xersav,  dgamit,  gamit,   dlgams
       public :: gamr,    xerclr,  betai,   j4save,  xgetf
       public :: d9lgmc,  algams,  dgami
+
+
+      public  ::  nl2itr,  qapply,  livmul,  lsqrt,   imdcon,  linvrt
+      public  ::  vscopy,  lmstep,  qrfact,  nl2sno
+      public  ::  stopx,   madr,    v2norm,  itsmry,  dotprd,  vcopy
+      public  ::  parchk,  assess,  nl2x,    covclc
+      public  ::  rmdcon,  lsvmin,  madj,    vaxpy,   rptmul,  slvmul
+      public  ::  ltsqar,  litvmu,  gqtstp,  dupdat
+      public  ::  dfault,  ufparm,  reldst,  slupdt,  nl2sol
+
+      public  ::  amecnt,  gfsest,  vpm,     mdl1,    stpamo,  nlinit
+      public  ::  amfmn,   acffs,   icopy,   uasdv,   pgms,    llcntp
+      public  ::  ufsout,  setrv,   stphdr,  nlout,   ccfer,   matprf
+      public  ::  sumwts,  cdff,    lpcoef,  stpsel,  aoslst,  xxch9
+      public  ::  arcoef,  llsps,   corrhd,  gfout,   vpcnt,   acfm
+      public  ::  mppml,   xlls,    vpmc,    demord,  polar,   xvp
+      public  ::  cdfnml,  aov1mn,  dckout,  stpcnt,  eivii,   msgx
+      public  ::  gfarf,   uaser,   drv3,    bfsv,    mvpm,    nlsupk
+      public  ::  fltar,   nlsc,    chirho,  xaimt,   ufsmv,   nrand
+      public  ::  ersgt,   amean,   xstplt,  bfsdrv,  vpc,     lstvcf
+      public  ::  ccf,     xpp,     nlswdc,  spcck,   ipgms,   acvff
+      public  ::  uasfs,   acvf,    fftlen,  nlism,   nlsw,    pp
+      public  ::  fftr,    bfsmvs,  xxch10,  dckdrv,  drv4a,   drv4b
+      public  ::  stkrel,  ccvf,    pplmt,   sumts,   stat,    dotcm
+      public  ::  mvpc,    acflst,  pgm,     histc,   xxch3,   dcoef
+      public  ::  ppm,     sumds,   corrmn,  acfdtl,  xxch13,  versp
+      public  ::  xdcklt,  ppmn,    geni,    setra,   mpp,     center
+      public  ::  eisrng,  ppl,     gfarfs,  svpl,    cpymss,  fitext
+      public  ::  iprint,  nlfin,   dckfpa,  uasest,  dif,     demods
+      public  ::  pgmmn,   sppm,    pltchk,  bfsvs,   amestp,  nlswd
+      public  ::  demout,  amdrv,   ranko,   ufsmvs,  bfs,     mppl
+      public  ::  taper,   amlst1,  erslf,   acfmnf,  aimf,    realtr
+      public  ::  amedrv,  getpi,   nlerr,   fitxsp,  sumwss,  ervgt
+      public  ::  aov1xp,  ccfxp,   gfaest,  xuas,    mvpl,    aov1hd
+      public  ::  ersge,   xaov1,   eiveq,   mdl4,    backop,  slflt
+      public  ::  cdft,    acvfm,   xccf,    statws,  nlsd,    fltma
+      public  ::  setiv,   ccfmnf,  lpflt,   dcklsc,  hstmn,   ufsms
+      public  ::  ppfchs,  oanova,  ppff,    aimx1,   stat2w,  xdflt
+      public  ::  amfcnt,  mppm,    ervgtm,  ppfnml,  ameism,  arflt
+      public  ::  eisii,   multbp,  vcvotf,  ppmc,    bfsfs,   lopass
+      public  ::  stpdrv,  xacf,    amfer,   ccfout,  amefin
+      public  ::  amfhdr,  gfslf,   sppltd,  mvpml,   setfrq,  ccfmn
+      public  ::  ipgdv,   dckmn,   acfms,   amept2,  eiseq,   inperl
+      public  ::  eiage,   eiagep,  ecvf,    nlhdrn,  amlst,   xstat
+      public  ::  spp,     nlitrp,  adjlmt,  xxch7,   ller,    mvp
+      public  ::  erdf,    stat2,   ipgm,    repck,   mdflt,   llsp
+      public  ::  xxch8,   sumid,   ufsest,  erslfs,  uas,     uasout
+      public  ::  mgs,     ufsdrv,  acf,     xdemod,  ufs,     xnlsd
+      public  ::  bfsf,    acfer,   eisge,   loglmt,  uascft,  amemn
+      public  ::  bfser,   drv2,    llspws,  cpyvii,  lls,     llsws
+      public  ::  ipgmp,   xstpld,  extend,  uass,    stkget,  uasvar
+      public  ::  sppml,   ccfs,    aime,    uasvs,   acfmn,   ervii
+      public  ::  fltarm,  relcom,  ccffs,   ccvff,   xbfs,    enfft
+      public  ::  obssm2,  amfout,  stkclr,  cmpfd,   xxch2,   xxch1
+      public  ::  amehdr,  ipgmps,  nrandc,  modsum,  acfsdm,  stpout
+      public  ::  bfss,    fft,     dcker,   obssum,  ufsf,    xstple
+      public  ::  srtrri,  nlhdra,  nlcmp,   stater,  ccvfm,   mppmc
+      public  ::  nlmn,    vpml,    ppcnt,   fltsl,   sumwds,  bfsmn
+      public  ::  ldscmp,  bfsms,   srtirr,  xnrand,  uasf,    eragt
+      public  ::  llss,    svpc,    stats,   ppml,    xufs,    nlcnt
+      public  ::  amept1,  fitpt1,  difm,    pline,   stper,   nlsdc
+      public  ::  xnlst,   ameanm,  etamdl,  nls,     nlcntn,  mdlts3
+      public  ::  fixprt,  bfsm,    ufss,    ccfsdm,  dckhdr,  xpgm
+      public  ::  difmc,   eisle,   gmean,   matprt,  accdig,  svpm
+      public  ::  ccfsd,   aimec,   llhdrp,  eriodd,  llsw,    stpls2
+      public  ::  nlss,    corrs,   randn,   hist,    pgmest,  ccflst
+      public  ::  mdlts2,  corrxp,  mppc,    acfmnm,  xxch11,  demdrv
+      public  ::  difc,    nlspk,   setesl,  acff,    ersii,   stat1
+      public  ::  mdlts1,  acfd,    factor,  dckcnt,  aov1s,   ccff
+      public  ::  pgord,   pgout,   xdckle,  drv,     aos,     nchose
+      public  ::  ppc,     svp,     dckls,   acfs,    nlsds,   difser
+      public  ::  dckcrv,  hipass,  ipgord,  mvpmc,   setlag,  sppltl
+      public  ::  vcvout,  xnlse,   lstvec,  acfout,  sppmc,   xaimd
+      public  ::  ufsv,    nlswds,  ccfmnm,  svpmc,   nldrvn,  vpmn
+      public  ::  mdl2,    xxch12,  aimes,   stat1w,  statw,   dckzro
+      public  ::  axpby,   uasv,    vphead,  stplsc,  sppc,    sumidw
+      public  ::  ufsmn,   icnti,   drv1a,   sumss,   nlswc,   llcnt
+      public  ::  dotc,    xxch5,   ameout,  mdl3,    hster,   fltmd
+      public  ::  genr,    srtir,   nlsws,   ufspcv,  ppft,    ccfms
+      public  ::  hpflt,   pltsym,  cdfchi,  ufsm,    ipgmn,   drv1b
+      public  ::  abscom,  aov1er,  sumot,   demod,   aov1,    nlsx1
+      public  ::  ervwt,   dfbw,    cpyasf,  srtri,   dckls1,  llspw
+      public  ::  parzen,  sumbs,   stkset,  fftct,   ufser
+      public  ::  xcorr,   demodu,  ehdr,    aimfs,   maflt,   nler
+      public  ::  gfslfs,  stpadj,  xhist,   ccfm,    vplmt,   ameer
+      public  ::  nldrva,  smply,   llcntg,  sppltc,  pltplx,  lstlag
+      public  ::  corr,    stkst,   vp,      fitsxp,  ufslag,  llsmn
+      public  ::  hpcoef,  xxch4,   nlskl,   eragtm,  sppl,    acfsd
+      public  ::  ufsvs,   cntr,    gford,   fitpt2,  svpml,   mvchk
+      public  ::  stpls1,  stpmn,   sample,  ervgtp,  stpls,   ipgout
+      public  ::  ersei,   xdckld,  setrow,  bfsmv,   nlsx2,   nlcnta
+      public  ::  xxch6,   prtcnt,  ufsfs,   uasord,  ersie,   llhdrg
+      public  ::  dfbwm,   eiveo,   vpl,     bfslag,  eragtp
 
       contains
 
@@ -6754,7 +7780,10 @@
       END
 
 !I1MACH
-      INTEGER FUNCTION I1MACH(I)
+      integer function i1mach(i)
+      use,intrinsic :: iso_fortran_env, only : stdin=>input_unit
+      use,intrinsic :: iso_fortran_env, only : stdout=>output_unit
+      use,intrinsic :: iso_fortran_env, only : stderr=>error_unit
 !
 !     MODIFIED JANUARY 24, 1990 TO ACCORD WITH CMLIB AND PORT VERSIONS
 !
@@ -6828,23 +7857,42 @@
 !  SET OF CONSTANTS BELOW SHOULD BE APPROPRIATE, EXCEPT PERHAPS
 !  FOR IMACH(1) - IMACH(4).
 !
+! intrinsics
+! exponent     -  Exponent function
+! fraction     -  Fractional part of the model representation
+! nearest      -  Nearest representable number
+! rrspacing    -  Reciprocal of the relative spacing
+! scale        -  Scale a real value
+! set_exponent -  Set the exponent of the model
+! spacing      -  Smallest distance between two numbers of a given type
+! digits       -  Significant digits function
+! epsilon      -  Epsilon function
+! maxexponent  -  Maximum exponent of a real kind
+! minexponent  -  Minimum exponent of a real kind
+! precision    -  Decimal precision of a real kind
+! radix        -  Base of a model number
+! range        -  Decimal exponent range of a real kind
+! tiny         -  Smallest positive number of a real kind
+! huge         -  Largest number of a kind
+! bit_size     -  Bit size inquiry function
+! storage_size - Storage size in bits
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER I
+      integer i
 !
 !  LOCAL SCALARS
-      INTEGER OUTPUT,SANITY
+      integer output,sanity
 !
 !  LOCAL ARRAYS
-      INTEGER IMACH(16)
+      integer imach(16)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL FDUMP
+      external fdump
 !
 !  EQUIVALENCES
-      EQUIVALENCE (IMACH(4),OUTPUT)
+      equivalence (imach(4),output)
 !
 !
 !     MACHINE CONSTANTS FOR IEEE ARITHMETIC MACHINES, SUCH AS THE AT&T
@@ -7420,28 +8468,67 @@
 !     DATA IMACH(14) /    56/
 !     DATA IMACH(15) /  -127/
 !     DATA IMACH(16) /   127/, SANITY/987/
+      integer,parameter :: bpi=bit_size(0)
+      integer,parameter :: cpi=storage_size(0)/storage_size('a')
+      integer,parameter :: ia=radix(0)
+      integer,parameter :: is=digits(0)
+      integer,parameter :: ibig=huge(0)
+      integer,parameter :: rb=radix(0.0e0)
+      integer,parameter :: rt=digits(0.0e0)
+      integer,parameter :: rmine=minexponent(0.0e0)
+      integer,parameter :: rmaxe=maxexponent(0.0e0)
+      integer,parameter :: dt=digits(0.0d0)
+      integer,parameter :: dmine=minexponent(0.0d0)
+      integer,parameter :: dmaxe=maxexponent(0.0d0)
+      data IMACH( 1)/stdin/                               ! I/O UNIT NUMBERS : THE STANDARD INPUT UNIT.
+      data IMACH( 2)/stdout/                              ! I/O UNIT NUMBERS : THE STANDARD OUTPUT UNIT.
+      data IMACH( 3)/7/                                   ! I/O UNIT NUMBERS : THE STANDARD PUNCH UNIT.
+      data IMACH( 4)/stderr/                              ! I/O UNIT NUMBERS : THE STANDARD ERROR MESSAGE UNIT.
+      data IMACH( 5)/bpi/                                 ! WORDS            : THE NUMBER OF BITS PER INTEGER STORAGE UNIT.
+      data IMACH( 6)/cpi/                                 ! WORDS            : THE NUMBER OF CHARACTERS PER INTEGER STORAGE UNIT.
+!  INTEGERS.
+!    ASSUME INTEGERS ARE REPRESENTED IN THE S-DIGIT, BASE-A FORM
+!               SIGN ( X(S-1)*A**(S-1) + ... + X(1)*A + X(0) )
+!               WHERE 0 .LE. X(I) .LT. A FOR I=0,...,S-1.
+      data IMACH( 7)/ia/                ! A, THE BASE.
+      data IMACH( 8)/is/                ! S, THE NUMBER OF BASE-A DIGITS.
+      data IMACH( 9)/ibig/              ! A**S - 1, THE LARGEST MAGNITUDE.
+!  FLOATING-POINT NUMBERS.
+!    ASSUME FLOATING-POINT NUMBERS ARE REPRESENTED IN THE T-DIGIT, BASE-B FORM
+!         SIGN (B**E)*( (X(1)/B) + ... + (X(T)/B**T) )
+!         WHERE 0 .LE. X(I) .LT. B FOR I=1,...,T,
+!         0 .LT. X(1), AND EMIN .LE. E .LE. EMAX.
+      data IMACH(10)/rb/                 ! B, THE BASE.
+!  SINGLE-PRECISION
+      data IMACH(11)/rt/                 ! T, THE NUMBER OF BASE-B DIGITS.
+      data IMACH(12)/rmine/              ! EMIN, THE SMALLEST EXPONENT E.
+      data IMACH(13)/rmaxe/              ! EMAX, THE LARGEST EXPONENT E.
+!  DOUBLE-PRECISION
+      data IMACH(14)/dt/                 ! T, THE NUMBER OF BASE-B DIGITS.
+      data IMACH(15)/dmine/              ! EMIN, THE SMALLEST EXPONENT E.
+      data IMACH(16)/dmaxe/, SANITY/987/ ! EMAX, THE LARGEST EXPONENT E.
 !
 !  ***  ISSUE STOP IF ALL DATA STATEMENTS ARE COMMENTED...
-      IF (SANITY .NE. 987) THEN
-         STOP 'I1MACH, D1MACH AND R1MACH HAVE NOT BEEN INITIALIZED'
-      ELSE
+      if (sanity .ne. 987) then
+         stop 'I1MACH, D1MACH AND R1MACH HAVE NOT BEEN INITIALIZED'
+      else
 !
-         IF (I .LT. 1  .OR.  I .GT. 16) THEN
-            WRITE(OUTPUT,9000)
-            CALL FDUMP
-            STOP
-         ELSE
-            I1MACH=IMACH(I)
-         END IF
-      END IF
+         if (i .lt. 1  .or.  i .gt. 16) then
+            write(output,9000)
+!            call fdump()
+            stop
+         else
+            i1mach=imach(i)
+         end if
+      end if
 !
-      RETURN
+      return
 !
- 9000 FORMAT('1ERROR    1 IN I1MACH - I OUT OF BOUNDS')
+ 9000 format('1ERROR    1 IN I1MACH - I OUT OF BOUNDS')
 !
-      END
+      end function i1mach
 !R1MACH
-      REAL FUNCTION R1MACH(I)
+      real function r1mach(i)
 !
 !     MODIFIED JANUARY 22, 1990 TO ACCORD WITH CMLIB AND PORT VERSIONS
 !
@@ -7472,25 +8559,25 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER I
+      integer i
 !
 !  LOCAL ARRAYS
-      REAL RMACH(5)
-      INTEGER DIVER(2),LARGE(2),LOG10(2),RIGHT(2),SMALL(2)
+      real rmach(5)
+      integer diver(2),large(2),log10(2),right(2),small(2)
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER I1MACH
-      EXTERNAL I1MACH
+      integer i1mach
+      external i1mach
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL SETERR
+      external seterr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (RMACH(1),SMALL(1))
-      EQUIVALENCE (RMACH(2),LARGE(1))
-      EQUIVALENCE (RMACH(3),RIGHT(1))
-      EQUIVALENCE (RMACH(4),DIVER(1))
-      EQUIVALENCE (RMACH(5),LOG10(1))
+      equivalence (rmach(1),small(1))
+      equivalence (rmach(2),large(1))
+      equivalence (rmach(3),right(1))
+      equivalence (rmach(4),diver(1))
+      equivalence (rmach(5),log10(1))
 !
 !     MACHINE CONSTANTS FOR IEEE ARITHMETIC MACHINES, SUCH AS THE AT&T
 !     3B SERIES, MOTOROLA 68000 BASED MACHINES (E.G. SUN 3 AND AT&T
@@ -7746,19 +8833,29 @@
 !     DATA DIVER(1),DIVER(2) /     0,  27136/
 !     DATA LOG10(1),LOG10(2) /  8347,  32538/
 !
-!     CHECK FOR INITIALIZATION WITH DUMMY CALL TO I1MACH
+      integer,parameter       :: b = radix(0.0e0)
+      integer,parameter       :: t = digits (0.0e0 )
+      real,parameter :: emin=minexponent(0.0e0)
+      real,parameter :: emax=maxexponent(0.0e0)
+
+      select case(i)
+      case(1); r1mach = tiny(0.0e0)                ! B**(EMIN-1), the smallest positive magnitude.
+      case(2); r1mach = huge(0.0e0)                ! B**EMAX*(1-B**(-T)), the largest magnitude.
+                                                   ! calculating this by formula could cause overflow without using a larger type
+      case(3); r1mach = real(b)**(-t)              ! B**(-T), the smallest relative spacing.
+      case(4); r1mach = epsilon(0.0e0)             ! B**(1-T), the largest relative spacing.
+      case(5);
+      block
+      intrinsic log10
+      r1mach = log10(real(b))             ! log10(B).
+      endblock
+      case default
+         call seterr('R1MACH - I OUT OF BOUNDS',24,1,2)
+      end select
 !
-      R1MACH = I1MACH(I)
-!
-      IF (I .LT. 1  .OR.  I .GT. 5)
-     +   CALL SETERR('R1MACH - I OUT OF BOUNDS',24,1,2)
-!
-      R1MACH = RMACH(I)
-      RETURN
-!
-      END
+      end function r1mach
 !D1MACH
-      DOUBLE PRECISION FUNCTION D1MACH(I)
+      double precision function d1mach(i)
 !
 !     MODIFIED JANUARY 24, 1990 TO ACCORD WITH CMLIB AND PORT VERSIONS
 !
@@ -7789,25 +8886,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER I
+      integer i
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION DMACH(5)
-      INTEGER DIVER(4),LARGE(4),LOG10(4),RIGHT(4),SMALL(4)
+      double precision dmach(5)
+      integer diver(4),large(4),log10(4),right(4),small(4)
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER I1MACH
-      EXTERNAL I1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL SETERR
+      external seterr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DMACH(1),SMALL(1))
-      EQUIVALENCE (DMACH(2),LARGE(1))
-      EQUIVALENCE (DMACH(3),RIGHT(1))
-      EQUIVALENCE (DMACH(4),DIVER(1))
-      EQUIVALENCE (DMACH(5),LOG10(1))
+      equivalence (dmach(1),small(1))
+      equivalence (dmach(2),large(1))
+      equivalence (dmach(3),right(1))
+      equivalence (dmach(4),diver(1))
+      equivalence (dmach(5),log10(1))
 !
 !
 !     MACHINE CONSTANTS FOR IEEE ARITHMETIC MACHINES, SUCH AS THE AT&T
@@ -8213,18 +9308,5757 @@
 !     DATA DIVER(1),DIVER(2) / '00002500'X, '00000000'X /
 !     DATA LOG10(1),LOG10(2) / '209A3F9A'X, 'CFF884FB'X /
 !
+      integer,parameter       :: b = radix(0.0d0)
+      integer,parameter       :: t = digits (0.0d0)
+      double precision,parameter :: emin=minexponent(0.0d0)
+      double precision,parameter :: emax=maxexponent(0.0d0)
+
+      select case(i)
+      case(1); d1mach = tiny(0.0d0)                        ! B**(EMIN-1), the smallest positive magnitude.
+      case(2); d1mach = huge(0.0d0)                        ! B**EMAX*(1-B**(-T)), the largest magnitude.
+                                                           ! calculating this by formula could cause overflow without using a larger type
+      case(3); d1mach = real(b,kind=kind(0.0d0))**(-t)     ! B**(-T), the smallest relative spacing.
+      case(4); d1mach = epsilon(0.0d0)                     ! B**(1-T), the largest relative spacing.
+      case(5)
+      block
+      intrinsic log10
+      d1mach = log10(real(b,kind=kind(0.0d0)))    ! log10(B).
+      endblock
+      case default
+         call seterr('D1MACH - I OUT OF BOUNDS',24,1,2)
+      end select
 !
-!     CHECK FOR INITIALIZATION WITH DUMMY CALL TO I1MACH
+      end function d1mach
+
+!SETIV
+      SUBROUTINE SETIV(VECTOR, N, VALUE)
 !
-      D1MACH = I1MACH(I)
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE SETS THE FIRST N ELEMENTS OF AN INTEGER VECTOR
+!
+!     WRITTEN BY  -  JOHN E. KOONTZ
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 7, 1981
+!        ADAPTED FROM SETRV, WRITTEN BY LINDA L. MITCHELL
 !
 !
-      IF (I .LT. 1  .OR.  I .GT. 5)
-     1   CALL SETERR('D1MACH - I OUT OF BOUNDS',24,1,2)
+!  VARIABLE DECLARATIONS
 !
-      D1MACH = DMACH(I)
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   N,VALUE
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   VECTOR(N)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER I
+!        *
+!     INTEGER N
+!        NUMBER OF ELEMENTS TO SET
+!     INTEGER VALUE
+!        VALUE TO WHICH THE ELEMENTS ARE TO BE SET
+!     INTEGER VECTOR(N)
+!        VECTOR WHOSE FIRST N ELEMENTS ARE TO BE SET.
+!
+      DO 10 I=1,N
+         VECTOR(I) = VALUE
+   10 CONTINUE
+!
       RETURN
 !
+      END
+!FIXPRT
+      SUBROUTINE FIXPRT(IFIX, FIXED)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE SETS THE CHARACTER ARRAY FIXED.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  APRIL 2, 1981
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   IFIX
+!
+!  ARRAY ARGUMENTS
+      CHARACTER
+     +   FIXED(3)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I
+!
+!  LOCAL ARRAYS
+      CHARACTER
+     +   NO(3)*1,YES(3)*1
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     CHARACTER*1 FIXED(3)
+!        THE CHARACTERS USED TO LABEL THE PARAMETERS FIXED OR NOT.
+!     INTEGER I
+!        AN INDEX VARIABLE.
+!     INTEGER IFIX
+!        THE INDICATOR VALUES USED TO DESIGNATE WHETHER THE
+!        PARAMETERS ARE TO BE OPTIMIZED OR ARE TO BE HELD FIXED.
+!        IF IFIX.EQ.0, THEN FIXED WILL BE SET TO NO.
+!        IF IFIX.NE.0, THEN FIXED WILL BE SET TO YES.
+!     CHARACTER*1 NO(3)
+!        THE CHARACTERS BLANK, N, AND O
+!     CHARACTER*1 YES(3)
+!        THE CHARACTERS Y, E, AND S
+!
+      DATA NO(1)/' '/, NO(2)/'N'/, NO(3)/'O'/
+      DATA YES(1)/'Y'/, YES(2)/'E'/, YES(3)/'S'/
+!
+      IF (IFIX.NE.0) THEN
+!
+!     SET FIXED TO YES
+!
+         DO 10 I = 1, 3
+            FIXED(I) = YES(I)
+   10    CONTINUE
+!
+      ELSE
+!
+!     SET FIXED TO NO
+!
+         DO 20 I = 1, 3
+            FIXED(I) = NO(I)
+   20    CONTINUE
+      END IF
+!
+      RETURN
+!
+      END
+!BACKOP
+      SUBROUTINE BACKOP (MSPEC, NFAC, NPARDF, MBOL, MBO, NPARMA, NPARAR)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     COMPUTE NUMBER OF BACK ORDER TERMS FOR ARIMA MODEL
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  JANUARY 4, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   MBO,MBOL,NFAC,NPARAR,NPARDF,NPARMA
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   MSPEC(4,*)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   J
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MAX
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER J
+!        AN INDEX VARIABLE.
+!     INTEGER MBO
+!        THE MAXIMUM BACK ORDER OPERATOR.
+!     INTEGER MBOL
+!        THE MAXIMUM BACK ORDER ON THE LEFT
+!     INTEGER MSPEC(4,NFAC)
+!        THE ARRAY CONTAINING THE VALUES OF P, D, Q, AND S FOR EACH FACT
+!     INTEGER NFAC
+!        THE NUMBER OF FACTORS IN THE MODEL
+!     INTEGER NPARAR
+!        THE NUMBER OF AUTOREGRESSIVE PARAMETERS
+!     INTEGER NPARDF
+!        THE ORDER OF THE EXPANDED DIFFERENCE FILTER.
+!     INTEGER NPARMA
+!        THE LENGTH OF THE VECTOR PARMA
+!
+!     COMPUTE DEGREE OF BACK OPERATOR RESULTING FROM THE NDF
+!     DIFFERENCING FACTORS (= ND DOT IOD).
+!
+      NPARAR = 0
+      NPARDF = 0
+      NPARMA = 0
+      IF (NFAC .EQ. 0) GO TO 20
+      DO 10 J = 1, NFAC
+         NPARAR = NPARAR + MSPEC(1,J)*MSPEC(4,J)
+         NPARDF = NPARDF + MSPEC(2,J)*MSPEC(4,J)
+         NPARMA = NPARMA + MSPEC(3,J)*MSPEC(4,J)
+   10 CONTINUE
+!
+   20 CONTINUE
+!
+      MBOL = NPARDF + NPARAR
+      MBO = MAX(MBOL,NPARMA)
+!
+      RETURN
+!
+      END
+!IPRINT
+      SUBROUTINE IPRINT(IPRT)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE SETS THE LOGICAL UNIT FOR PRINTED OUTPUT.
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  NOVEMBER 21, 1980
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   IPRT
+!
+!  EXTERNAL FUNCTIONS
+      INTEGER
+     +   I1MACH
+      EXTERNAL I1MACH
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR OUTPUT.
+!
+      IPRT = I1MACH(2)
+      RETURN
+      END
+!FFTLEN
+      SUBROUTINE FFTLEN(N, NDIV, NFFT)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE COMPUTES THE SMALLEST VALUE OF NFFT WHICH
+!     EQUALS OR EXCEEDS N + 2, SUCH THAT NFFT - 2 IS DIVISIBLE BY
+!     NDIV AND HAS NO PRIME FACTORS GREATER THAN 23, AND THE
+!     PRODUCT OF THE NON SQUARE PRIME FACTORS OF NFFT - 2 DO NOT
+!     EXCEED 209.  THE VALUE OF NFFT THUS MEET THE REQUIREMENTS OF
+!     THE EXTENDED LENGTH OF THE SERIES REQUIRED FOR ANY ROUTINE
+!     USING THE SINGLETON FFT PROVIDING THE PROPER VALUE OF NDIV
+!     IS CHOSEN.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  NOVEMBER 21, 1980
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   N,NDIV,NFFT
+!
+!  SCALARS IN COMMON
+      INTEGER
+     +   IERR
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT
+      LOGICAL
+     +   ERR01,ERR02,HEAD
+!
+!  LOCAL ARRAYS
+      CHARACTER
+     +   LN(8)*1,LNDIV(8)*1,NMSUB(6)*1
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EISGE,IPRINT,SETESL
+!
+!  COMMON BLOCKS
+      COMMON /ERRCHK/IERR
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERR01, ERR02
+!        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER IERR
+!        THE INTEGER VALUE RETURNED BY THIS ROUTINE DESIGNATING
+!        WHETHER ANY ERRORS WERE DETECTED IN THE PARAMETER LIST.
+!        IF IERR .EQ. 0, NO ERRORS WERE DETECTED.
+!        IF IERR .EQ. 1, ERRORS WERE DETECTED.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     CHARACTER*1 LN(8), LNDIV(8)
+!        THE ARRAY(S) CONTAINING THE NAME(S) OF INPUT PARAMETER(S)
+!        CHECKED FOR ERRORS.
+!     INTEGER N
+!        THE NUMBER UPON WHICH NFFT IS BASED.
+!     INTEGER NDIV
+!        A REQUIRED FACTOR OF NFFT - 2.
+!     INTEGER NFFT
+!        THE RETURNED VALUE WHICH MEETS THE ABOVE DESCRIPTION.
+!     CHARACTER*1 NMSUB(6)
+!        THE NAME OF THE ROUTINE CALLING THE ERROR CHECKING
+!        SUBROUTINE.
+!
+!     SET UP NAME ARRAYS
+!
+      DATA
+     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     + /     'F',       'F',       'T',       'L',       'E',       'N'/
+      DATA
+     +     LN(1),     LN(2),     LN(3),     LN(4),     LN(5),     LN(6)
+     + /     'N',       ' ',       ' ',       ' ',       ' ',       ' '/
+      DATA
+     +     LN(7),     LN(8)
+     + /     ' ',       ' '/
+      DATA
+     +  LNDIV(1),  LNDIV(2),  LNDIV(3),  LNDIV(4),  LNDIV(5),  LNDIV(6)
+     + /     'N',       'D',       'I',       'V',       ' ',       ' '/
+      DATA
+     +  LNDIV(7),  LNDIV(8)
+     + /     ' ',       ' '/
+!
+!     ERROR CHECKING
+!
+      IERR = 0
+      HEAD = .TRUE.
+!
+      CALL EISGE(NMSUB, LN, N, 1, 1, HEAD, ERR01, LN)
+!
+      CALL EISGE(NMSUB, LNDIV, NDIV, 1, 1, HEAD, ERR02, LNDIV)
+!
+!
+      IF ((.NOT. ERR01) .AND. (.NOT. ERR02)) GO TO 10
+!
+!     PRINT PROPER CALL SEQUENCE
+!
+      IERR = 1
+      CALL IPRINT (IPRT)
+      WRITE (IPRT, 1000)
+!
+      RETURN
+!
+   10 CONTINUE
+!
+      CALL SETESL(N, NDIV, NFFT)
+!
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+     +   34H       CALL FFTLEN (N, NDIV, NFFT))
+!
+      END
+!ECVF
+      SUBROUTINE ECVF(NMSUB)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE PRINTS AN ERROR MESSAGE WHEN THE LAG VALUE OF
+!     THE LAST COVARIANCE COMPUTED BEFORE ONE WAS NOT COMPUTED
+!     DUE TO MISSING DATA DOES NOT EXCEED ZERO.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  JUNE 10, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  ARRAY ARGUMENTS
+      CHARACTER
+     +   NMSUB(6)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT
+      LOGICAL
+     +   HEAD
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EHDR,IPRINT
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER IPRT
+!        THE LOGICAL UNIT USED FOR PRINTED OUTPUT.
+!     CHARACTER*1 NMSUB(6)
+!        THE ARRAY CONTAINING THE NAME OF THIS SUBROUTINE.
+!
+      CALL IPRINT(IPRT)
+!
+      HEAD = .TRUE.
+!
+      CALL EHDR(NMSUB, HEAD)
+!
+      WRITE(IPRT, 1010)
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1010 FORMAT (/
+     +   46H THE COVARIANCES AT LAGS ZERO AND/OR ONE COULD,
+     +   16H NOT BE COMPUTED/
+     +   49H BECAUSE OF MISSING DATA.  NO FURTHER ANALYSIS IS,
+     +   10H POSSIBLE.)
+!
+      END
+!AMEHDR
+      SUBROUTINE AMEHDR(PAGE, WIDE, ISUBHD)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS SUBROUTINE PRINTS THE PAGE HEADINGS FOR THE NONLINEAR
+!     LEAST SQUARES ESTIMATION ROUTINES FOR ARIMA MODELS THAT USE
+!     NUMERICAL APPROXIMATIONS TO THE DERIVATIVES.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  AUGUST 1, 1985
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ISUBHD
+      LOGICAL
+     +   PAGE,WIDE
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT,VERSP
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER ISUBHD
+!        AN INDICATOR VALUE SPECIFYING SUBHEADINGS TO BE PRINTED.
+!     LOGICAL PAGE
+!        THE VARIABLE USED TO INDICATE WHETHER A GIVEN SECTION OF
+!        THE OUTPUT IS TO BEGIN ON A NEW PAGE (TRUE) OR NOT (FALSE).
+!     LOGICAL WIDE
+!        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
+!        BE FULL WIDTH (TRUE) OR NOT (FALSE).
+!
+      CALL IPRINT(IPRT)
+      IF (PAGE) WRITE (IPRT, 1020)
+      CALL VERSP(WIDE)
+      IF (PAGE) WRITE (IPRT,1000)
+      IF (.NOT.PAGE) WRITE (IPRT,1010)
+      PAGE = .TRUE.
+!
+      IF (ISUBHD.EQ.0) RETURN
+!
+      GO TO (10), ISUBHD
+!
+   10 WRITE (IPRT, 1030)
+!
+      RETURN
+!
+!     FORMAT STATEMENTS FOR PAGE HEADINGS
+!
+ 1000 FORMAT ('+NONLINEAR LEAST SQUARES ESTIMATION',
+     +   ' FOR THE PARAMETERS OF AN ARIMA MODEL, CONTINUED')
+ 1010 FORMAT ('+', 77(1H*)/
+     +   1X, 37H*  NONLINEAR LEAST SQUARES ESTIMATION,
+     +   40H FOR THE PARAMETERS OF AN ARIMA MODEL  */
+     +   2H *, 16X, 45H             USING BACKFORECASTS             ,
+     +   14X, 1H*/1X, 77(1H*))
+ 1020 FORMAT ('1')
+ 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
+      END
+!LLHDRP
+      SUBROUTINE LLHDRP(PAGE, WIDE, ISUBHD)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS SUBROUTINE PRINTS THE PAGE HEADINGS FOR THE POLYNOMIAL LINEAR
+!     LEAST SQUARES LLSTING ROUTINES.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 29, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ISUBHD
+      LOGICAL
+     +   PAGE,WIDE
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT,VERSP
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER ISUBHD
+!        AN INDICATOR VALUE SPECIFYING SUBHEADINGS TO BE PRINTED.
+!     LOGICAL PAGE
+!        THE VARIABLE USED TO INDICATE WHETHER A GIVEN SECTION OF
+!        THE OUTPUT IS TO BEGIN ON A NEW PAGE (TRUE) OR NOT (FALSE).
+!     LOGICAL WIDE
+!        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
+!        BE FULL WIDTH (TRUE) OR NOT (FALSE).
+!
+      CALL IPRINT(IPRT)
+      IF (PAGE) WRITE (IPRT,1020)
+      CALL VERSP(WIDE)
+      IF (PAGE) WRITE (IPRT,1000)
+      IF (.NOT.PAGE) WRITE (IPRT,1010)
+      PAGE = .TRUE.
+!
+      IF (ISUBHD.EQ.0) RETURN
+!
+      GO TO (10), ISUBHD
+!
+   10 WRITE (IPRT,1030)
+!
+      RETURN
+!
+!     FORMAT STATEMENTS FOR PAGE HEADINGS
+!
+ 1000 FORMAT (32H+LINEAR LEAST SQUARES ESTIMATION,
+     +   33H WITH POLYNOMIAL MODEL, CONTINUED)
+ 1010 FORMAT ('+', 59('*')/
+     +   1X, 34H*  LINEAR LEAST SQUARES ESTIMATION,
+     +   25H WITH POLYNOMIAL MODEL  */ 1X,
+     +   59('*'))
+ 1020 FORMAT ('1')
+ 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
+      END
+!EIAGEP
+      SUBROUTINE EIAGEP (NMSUB, NMVAR, YMMN, NVMX, HEAD, MSGTYP, NV,
+     +   NMMIN)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE PRINTS THE ERROR MESSAGES FOR ERAGT AND ERAGTM.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  JUNE 10, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   MSGTYP,NV,NVMX,YMMN
+      LOGICAL
+     +   HEAD
+!
+!  ARRAY ARGUMENTS
+      CHARACTER
+     +   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EHDR,IPRINT
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER I
+!        AN INDEX ARGUMENT.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER MSGTYP
+!        THE INDICATOR ARGUMENT FOR THE TYPE OF MESSAGE.
+!        IF (MSGTYP.GE.3) THE MESSAGE PRINTED WILL USE NMMIN
+!        OTHERWISE IT WILL USE YMMN.
+!        IF (MSGTYP = 1 OR 3) NO VIOLATIONS ARE ALLOWED.
+!        IF (MSGTYP = 2 OR 4) THE NUMBER OF VIOLATIONS MUST
+!                             BE LESS THAN   NVMX   .
+!     CHARACTER*1 NMMIN(8)
+!        THE NAME OF THE ARGUMENT SPECIFYING THE MINIMUM.
+!     CHARACTER*1 NMSUB(6)
+!        THE CHARACTERS OF THE CALLING ROUTINES NAME.
+!     CHARACTER*1 NMVAR(8)
+!        THE CHARACTERS OF THE PARAMETERS NAME.
+!     INTEGER NV
+!        THE NUMBER OF VIOLATIONS FOUND.
+!     INTEGER NVMX
+!        THE LARGEST NUMBER OF VIOLATIONS ALLOWED.
+!     INTEGER YMMN
+!        THE MINIMUM ACCEPTABLE VALUE.
+!
+      CALL IPRINT(IPRT)
+      CALL EHDR(NMSUB, HEAD)
+!
+      IF (MSGTYP.LE.2)
+     +   WRITE (IPRT, 1000) (NMVAR(I),I=1,6), YMMN, NV
+      IF (MSGTYP.GE.3)
+     +   WRITE (IPRT, 1005) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8), NV
+!
+      GO TO (10, 20, 30, 40), MSGTYP
+!
+   10 WRITE(IPRT, 1010) (NMVAR(I),I=1,6), YMMN
+      RETURN
+!
+   20 WRITE(IPRT, 1020) (NMVAR(I),I=1,6), YMMN, NVMX
+      RETURN
+!
+   30 WRITE(IPRT, 1030) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8)
+      RETURN
+!
+   40 WRITE(IPRT, 1040) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8), NVMX
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (/
+     +   31H THE NUMBER OF VALUES IN ARRAY , 6A1,
+     +   ' LESS THAN ', I5, 4H IS , I6, '.')
+ 1005 FORMAT (/
+     +   31H THE NUMBER OF VALUES IN ARRAY , 6A1,
+     +   ' LESS THAN ', 8A1, 4H IS , I6, '.')
+ 1010 FORMAT(
+     +   25H THE VALUES IN THE ARRAY , 6A1,
+     +   ' MUST ALL BE GREATER THAN OR EQUAL TO ', I5, '.')
+ 1020 FORMAT(
+     +   35H THE NUMBER OF VALUES IN THE ARRAY , 6A1,
+     +   ' LESS THAN ', 8A1/
+     +   19H MUST BE LESS THAN , I5, '.')
+ 1030 FORMAT(
+     +   25H THE VALUES IN THE ARRAY , 6A1,
+     +   ' MUST ALL BE GREATER THAN OR EQUAL TO ', I5, '.')
+ 1040 FORMAT(
+     +   35H THE NUMBER OF VALUES IN THE ARRAY , 6A1,
+     +   ' LESS THAN ', 8A1/
+     +   19H MUST BE LESS THAN , I5, '.')
+!
+      END
+!EIVEQ
+      SUBROUTINE EIVEQ (NMSUB, NMVAR1, IVEC, N, IVAL, NEQMN, HEAD, NEQ,
+     +                  NNE, MSGTYP, ERROR, NMVAR2, NMVAR3)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE CHECKS WHETHER THE NUMBER OF ELEMENTS OF IVEC EQUAL
+!     TO IVAL IS AT LEAST NEQMN.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  AUGUST 3, 1987
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   IVAL,MSGTYP,N,NEQ,NEQMN,NNE
+      LOGICAL
+     +   ERROR,HEAD
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   IVEC(*)
+      CHARACTER
+     +   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1,NMVAR3(8)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EHDR,IPRINT
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERROR
+!        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER I
+!        AN INDEX ARGUMENT.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER IVEC(N)
+!        THE VECTOR BEING CHECKED.
+!     INTEGER MSGTYP
+!        AN ARGUMENT USED TO INDICATE THE TYPE OF MESSAGE TO BE
+!        PRINTED, WHERE IF ERROR IS TRUE AND
+!        MSGTYP = 1, THE INPUT VALUE WAS TOO SMALL BASED ON LIMITS
+!                    IMPOSED BY STARPAC.
+!     INTEGER N
+!        THE NUMBER OF OBSERVATIONS.
+!     CHARACTER*1 NMSUB(6)
+!        THE CHARACTERS OF THE CALLING SUBROUTINES NAME.
+!     CHARACTER*1 NMVAR1(8)
+!        THE CHARACTERS OF THE NAME OF THE ARGUMENT BEING CHECKED.
+!     CHARACTER*1 NMVAR2(8)
+!        THE CHARACTERS OF THE NAME OF THE ARGUMENT BEING CHECKED
+!        AGAINST.
+!     CHARACTER*1 NMVAR3(8)
+!        THE CHARACTERS OF THE NAME OF THE ARGUMENT THAT THE ELEMENTS
+!        MUST BE EQUAL TO.
+!     INTEGER NEQ
+!        THE NUMBER OF ELEMENTS EQUAL TO IVAL.
+!     INTEGER NEQMN
+!        THE MINIMUM NUMBER OF ELEMENTS EQUAL TO IVAL WHICH IS OK.
+!     INTEGER NNE
+!        THE NUMBER OF ELEMENTS NOT EQUAL TO IVAL.
+!
+      ERROR = .FALSE.
+!
+      IF (N.LE.0) RETURN
+!
+!     CHECK FOR VALUES EQUAL TO IVAL
+!
+      NEQ = 0
+      DO 10 I = 1, N
+         IF (IVEC(I) .EQ. IVAL) NEQ = NEQ + 1
+   10 CONTINUE
+!
+      NNE = N - NEQ
+      IF (NEQ .GE. NEQMN) RETURN
+!
+!     INSUFFICIENT NUMBER OF ELEMENTS EQUAL TO IVAL.
+!
+      ERROR = .TRUE.
+!
+      CALL IPRINT(IPRT)
+!
+      CALL EHDR(NMSUB, HEAD)
+!
+      IF (MSGTYP.EQ.1) WRITE(IPRT, 1000)
+     +   (NMVAR1(I),I=1,8), (NMVAR2(I),I=1,8), NEQ,
+     +   (NMVAR2(I),I=1,8), (NMVAR3(I),I=1,8)
+!
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT(
+     +   ' THE NUMBER OF ELEMENTS IN ', 8A1,
+     +   ' EQUAL TO ', 8A1, ' IS ', I6, '.'/
+     +   ' THE NUMBER OF ELEMENTS EQUAL TO ', 8A1,
+     +   ' MUST BE GREATER THAN OR EQUAL TO ', 8A1, '.')
+!
+      END
+!ACFER
+      SUBROUTINE ACFER(NMSUB, N, LAGMAX, LACOV, LDSTAK, LDSMIN,
+     +  DIFFER, NFAC, ND, IOD, ISFFT, LYFFT, NFFT)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS IS THE ERROR CHECKING ROUTINE FOR THE ACF FAMILY
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 2, 1985
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   LACOV,LAGMAX,LDSMIN,LDSTAK,LYFFT,N,NFAC,NFFT
+      LOGICAL
+     +   DIFFER,ISFFT
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   IOD(*),ND(*)
+      CHARACTER
+     +   NMSUB(6)*1
+!
+!  SCALARS IN COMMON
+      INTEGER
+     +   IERR
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I
+      LOGICAL
+     +   HEAD
+!
+!  LOCAL ARRAYS
+      LOGICAL
+     +   ERR(15)
+      CHARACTER
+     +   LLACOV(8)*1,LLAGMX(8)*1,LLDS(8)*1,LLGMX1(8)*1,
+     +   LLYFFT(8)*1,LN(8)*1,LNFFT(8)*1,LNM1(8)*1,LONE(8)*1,
+     +   LTHREE(8)*1
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EISGE,EISII,ERDF
+!
+!  COMMON BLOCKS
+      COMMON /ERRCHK/IERR
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL DIFFER
+!        THE INDICATOR VARIABLE USED TO DESIGNATE WHETHER THE CALLING
+!        ROUTINE IS ACFD (DIFFER = TRUE) OR NOT (DIFFER = FALSE)
+!     LOGICAL ERR(15)
+!        VALUES INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER I
+!        AN INDEX VARIABLE.
+!     INTEGER IERR
+!        THE INTEGER VALUE RETURNED BY THIS ROUTINE DESIGNATING
+!        WHETHER ANY ERRORS WERE DETECTED IN THE PARAMETER LIST
+!        IF IERR .EQ. 0, NO ERRORS WERE DETECTED
+!     INTEGER IOD(NFAC)
+!        THE ORDER OF EACH OF THE DIFFERENCE VACTORS
+!     LOGICAL ISFFT
+!        THE INDICATOR VARIABLE USED TO DESIGNATE WHETHER THE CALLING
+!        ROUTINE HAS SUFFIX F (ISFFT = TRUE) OR NOT (ISFFT = FALSE)
+!     INTEGER LACOV
+!        THE LENGTH OF THE VECTOR ACOV.
+!     INTEGER LAGMAX
+!        THE MAXIMUM LAG VALUE REQUESTED.
+!     INTEGER LDSMIN
+!        THE MINIMUM LENGTH ALLOWED FOR THE ARRAY DSTAK.
+!     INTEGER LDSTAK
+!        THE LENGTH OF THE ARRAY DSTAK.
+!     CHARACTER*1 LLACOV(8), LLAGMX(8), LLDS(8), LLGMX1(8), LLYFFT(8),
+!    *  LN(8), LNFFT(8), LNM1(8), LONE(8), LTHREE(8)
+!        THE ARRAY(S) CONTAINING THE NAME(S) OF INPUT PARAMETER(S)
+!        CHECKED FOR ERRORS.
+!     INTEGER LYFFT
+!        THE LENGTH OF THE VECTOR YFFT.
+!     INTEGER N
+!        THE INTEGER NUMBER OF OBSERVATIONS IN EACH SERIES
+!     INTEGER ND(NFAC)
+!        THE ARRAY CONTAINING THE NUMBER OF TIMES THE DIFFERENCE FACTORS
+!        ARE TO BE APPLIED
+!     INTEGER NFAC
+!        THE NUMBER OF FACTORS.
+!     INTEGER NFFT
+!        THE NUMBER OF OBSERVATIONS IN THE EXTENDED SERIES.
+!     CHARACTER*1 NMSUB(6)
+!        THE NAME OF THE SUBROUTINE CALLING THE ERROR CHECKING
+!        SUBROUTINE.
+!
+!
+!     SET UP NAME ARRAYS
+!
+      DATA
+     + LLACOV(1), LLACOV(2), LLACOV(3), LLACOV(4), LLACOV(5),
+     + LLACOV(6), LLACOV(7), LLACOV(8) /'L','A','C','O','V',' ',' ',' '/
+      DATA
+     + LLAGMX(1), LLAGMX(2), LLAGMX(3), LLAGMX(4), LLAGMX(5),
+     + LLAGMX(6), LLAGMX(7), LLAGMX(8) /'L','A','G','M','A','X',' ',' '/
+      DATA
+     + LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
+     + LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
+      DATA
+     + LLGMX1(1), LLGMX1(2), LLGMX1(3), LLGMX1(4), LLGMX1(5),
+     + LLGMX1(6), LLGMX1(7), LLGMX1(8) /'L','A','G','M','A','X','+','1'/
+      DATA
+     + LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
+     + LLYFFT(6), LLYFFT(7), LLYFFT(8) /'L','Y','F','F','T',' ',' ',' '/
+      DATA
+     + LN(1), LN(2), LN(3), LN(4), LN(5),
+     + LN(6), LN(7), LN(8) /'N',' ',' ',' ',' ',' ',' ',' '/
+      DATA
+     + LNM1(1), LNM1(2), LNM1(3), LNM1(4), LNM1(5),
+     + LNM1(6), LNM1(7), LNM1(8) /'(','N','-','1',')',' ',' ',' '/
+      DATA
+     + LNFFT(1), LNFFT(2), LNFFT(3), LNFFT(4), LNFFT(5),
+     + LNFFT(6), LNFFT(7), LNFFT(8) /'N','F','F','T',' ',' ',' ',' '/
+      DATA
+     + LONE(1), LONE(2), LONE(3), LONE(4), LONE(5),
+     + LONE(6), LONE(7), LONE(8) /'O','N','E',' ',' ',' ',' ',' '/
+      DATA
+     + LTHREE(1), LTHREE(2), LTHREE(3), LTHREE(4), LTHREE(5),
+     + LTHREE(6), LTHREE(7), LTHREE(8) /'T','H','R','E','E',' ',' ',' '/
+!
+!     SET UP FOR ERROR CHECKING
+!
+      IERR = 0
+      HEAD = .TRUE.
+      DO 10 I = 1, 15
+        ERR(I) = .FALSE.
+   10 CONTINUE
+!
+!     CALL ERROR CHECKING ROUTINES
+!
+      CALL EISGE(NMSUB, LN, N, 3, 2, HEAD, ERR(1), LTHREE)
+!
+      IF (.NOT.ERR(1)) THEN
+!
+        CALL EISII(NMSUB, LLAGMX, LAGMAX, 1, N-1, 1, HEAD, ERR(2), LONE,
+     +    LNM1)
+!
+        IF (DIFFER) CALL ERDF(NMSUB, NFAC, ND, IOD, N, HEAD, ERR(3))
+!
+        IF (.NOT.ERR(2)) THEN
+!
+          CALL EISGE(NMSUB, LLACOV, LACOV, LAGMAX+1, 2, HEAD, ERR(4),
+     +      LLGMX1)
+!
+          CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR(5), LLDS)
+!
+          IF (ISFFT)
+     +      CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 2, HEAD, ERR(6),
+     +      LNFFT)
+        END IF
+      END IF
+!
+      DO 20 I = 1, 15
+        IF (ERR(I)) IERR = 1
+   20 CONTINUE
+!
+      RETURN
+!
+      END
+!NCHOSE
+      INTEGER FUNCTION NCHOSE(N,K)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE IS USED TO COMBINE THE DIFFERENCE FACTORS FROM A
+!     (BOX-JENKINS) TIME SERIES MODEL.
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  NOVEMBER 21, 1980
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   K,N
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,KK,NN
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MIN
+!
+!
+      IF (N .GT. K) GO TO 10
+      NCHOSE = 1
+      RETURN
+!
+   10 KK = MIN(K, N - K)
+      NN = 1
+      DO 20 I = 1, KK
+         NN = (NN*(N - I + 1))/I
+   20 CONTINUE
+      NCHOSE = NN
+      RETURN
+      END
+!INPERL
+      INTEGER FUNCTION INPERL (IDUM)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE COMPUTES THE NUMBER OF VECTOR ELEMENTS THAT CAN
+!     BE PRINTED IN A LINE OF OUTPUT ON THE STANDARD OUTPUT FILE.
+!
+!     ASSUMPTIONS RE -
+!
+!        1) MAXIMUM WIDTH OF LINE TO USE (IMAXW) IS 132.
+!        2) NUMBER OF CHARACTERS NOT VECTOR ELEMENTS PER LINE
+!                (IOCPL) IS 15.
+!        2) WIDTH OF FIELD FOR AN ELEMENT, INCLUDING SPACING
+!                BETWEEN ELEMENTS (IEW) IS 15.
+!        4) MAXIMUM ELEMENTS PER LINE (IMAXE) IS 7.
+!
+!     WRITTEN BY - JOHN E. KOONTZ
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 29, 1982
+!                       EXTRACTED FROM EARLIER LSTVEC.
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   IDUM
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IEW,IMAXE,IMAXW,IOCPL,IWIDTH
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MIN
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IDUM
+!        INPUT PARAMETER.  UNUSED ARGUMENT.
+!     INTEGER IEW
+!        WIDTH OF A FIELD FOR PRINTING OUT A VECTOR ELEMENT,
+!        INCLUDING SPACES BETWEEN ADJACENT ELEMENTS.
+!     INTEGER IMAXE
+!        MAXIMUM NUMBER OF ARRAY ELEMENTS PER LINE.
+!     INTEGER IMAXW
+!        MAXIMUM NUMBER OF CHARACTERS TO ALLOW PER LINE.
+!     INTEGER IOCPL
+!        NUMBER OF CHARACTERS TO BE INTRODUCED TO LINE IN ADDITION
+!        TO CHARACTERS IN THE ELEMENT FIELDS.
+!     INTEGER IWIDTH
+!        NUMBER OF CHARACTERS IN A LINE ON THE STANDARD OUTPUT FILE.
+!
+!
+!     INITIALIZATIONS
+!
+      DATA IEW /15/, IMAXE /7/, IMAXW /132/, IOCPL /15/
+!
+!     COMMENCE BODY OF ROUTINE
+!
+      IWIDTH = 132
+      INPERL = (MIN(IWIDTH, IMAXW) - IOCPL)/IEW
+      INPERL = MIN(INPERL, IMAXE)
+      RETURN
+      END
+!EISII
+      SUBROUTINE EISII(NMSUB, NMVAR, IVAL, IVALMN, IVALMX, MSGTYP,
+     +   HEAD, ERROR, NMMIN, NMMAX)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THE ROUTINE CHECKS WHETHER THE VALUE   IVAL   IS WITHIN THE
+!     THE RANGE IVALMN (INCLUSIVE) TO IVALMX (INCLUSIVE), AND PRINTS A
+!     DIAGNOSTIC IF IT IS NOT.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 29, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   IVAL,IVALMN,IVALMX,MSGTYP
+      LOGICAL
+     +   ERROR,HEAD
+!
+!  ARRAY ARGUMENTS
+      CHARACTER
+     +   NMMAX(8)*1,NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EHDR,IPRINT
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERROR
+!        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER I
+!        AN INDEX ARGUMENT.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER IVAL
+!        THE INPUT VALUE OF THE ARGUMENT BEING CHECKED.
+!     INTEGER IVALMN, IVALMX
+!        THE MINIMUM AND MAXIMUM OF THE RANGE WITHIN WHICH THE
+!        ARGUMENT MUST LIE.
+!     INTEGER MSGTYP
+!        AN ARGUMENT USED TO INDICATE THE TYPE OF MESSAGE TO BE
+!        PRINTED, WHERE IF ERROR IS .TRUE. AND
+!        MSGTYP = 1 THE INPUT VALUE WAS OUTSIDE THE RANGE DETERMINED
+!                   FROM OTHER INPUT ARGUMENTS
+!        MSGTYP = 2 THE INPUT VALUE WAS OUTSIDE THE RANGE IMPOSED BY
+!                   STARPAC
+!     CHARACTER*1 NMMAX(8)
+!        THE NAME OF THE ARGUMENT SPECIFYING THE MAXIMUM.
+!     CHARACTER*1 NMMIN(8)
+!        THE NAME OF THE ARGUMENT SPECIFYING THE MINIMUM.
+!     CHARACTER*1 NMSUB(6)
+!        THE CHARACTERS OF THE CALLING SUBROUTINES NAME.
+!     CHARACTER*1 NMVAR(8)
+!        THE CHARACTERS OF THE ARGUMENTS NAME.
+!
+      ERROR = .FALSE.
+!
+      IF (((IVALMN.LE.IVAL) .AND. (IVAL.LE.IVALMX)) .OR.
+     +   (IVALMX.LT.IVALMN)) RETURN
+!
+      ERROR = .TRUE.
+      CALL IPRINT(IPRT)
+      CALL EHDR(NMSUB, HEAD)
+!
+      IF (MSGTYP.LE.2) WRITE (IPRT, 1000) (NMVAR(I),I=1,6), IVAL
+!
+!     PRINT MESSAGE FOR VALUE OUTSIDE OF RANGE DETERMINED FROM
+!     OTHER INPUT ARGUMENTS.
+!
+      IF (MSGTYP .EQ. 1)
+     +   WRITE (IPRT, 1010) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8),
+     +      (NMMAX(I),I=1,8)
+!
+!     PRINT MESSAGE FOR VALUE OUTSIDE OF RANGE IMPOSED BY STARPAC
+!
+      IF (MSGTYP .EQ. 2)
+     +   WRITE (IPRT, 1020) (NMVAR(I),I=1,6), IVALMN, IVALMX
+!
+!     PRINT MESSAGE FOR AOV ROUTINES
+!
+      IF (MSGTYP .EQ. 3)
+     +   WRITE (IPRT, 1030)
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (/20H THE INPUT VALUE OF , 6A1, 4H IS , I6, '.')
+ 1010 FORMAT(
+     +   27H THE VALUE OF THE ARGUMENT , 6A1,
+     +   16H MUST BE BETWEEN, 1X, 8A1,
+     +   5H AND , 8A1, 12H, INCLUSIVE.)
+ 1020 FORMAT(
+     +   27H THE VALUE OF THE ARGUMENT , 6A1,
+     +   16H MUST BE BETWEEN, 1X, I6,
+     +   5H AND , I6, 12H, INCLUSIVE.)
+ 1030 FORMAT(/' THE NUMBER OF DISTINCT GROUPS (NG) MUST BE BETWEEN'/
+     +  ' TWO AND ONE LESS THAN THE NUMBER OF POSITIVE TAG VALUES.')
+!
+      END
+!EIAGE
+      SUBROUTINE EIAGE (NMSUB, NMVAR, YM, N, M, IYM, YMMN, NVMX,
+     +   HEAD, MSGTYP, NV, ERROR, NMMIN)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE CHECKS TO ENSURE THAT NO VALUES, OR ONLY A MAXIMUM
+!     OF NVMX, ARE NOT GREATER THAN A SPECIFIED LOWER BOUND YMMN,
+!     WITH NAME NMMIN.   THE CHECKING OPTION IS SPECIFIED
+!     WITH MSGTYP.  IF AN ERROR IS FOUND, THE ERROR IS PRINTED AND
+!     AN ERROR FLAG AND THE NUMBER OF VIOLATINS ARE RETURNED.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  JUNE 10, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   IYM,M,MSGTYP,N,NV,NVMX,YMMN
+      LOGICAL
+     +   ERROR,HEAD
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   YM(*)
+      CHARACTER
+     +   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,J
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EIAGEP
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERROR
+!        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER I
+!        AN INDEX VARIABLE.
+!     INTEGER IYM
+!        THE FIRST DIMENSION OF THE ARRAY YM.
+!     INTEGER J
+!        AN INDEXING VARIABLE.
+!     INTEGER M
+!        THE NUMBER OF COLUMNS OF DATA IN YM.
+!     INTEGER MSGTYP
+!        THE INDICATOR ARGUMENT FOR THE TYPE OF MESSAGE.
+!        IF (MSGTYP.GE.3) THE MESSAGE PRINTED WILL USE NMMIN
+!        OTHERWISE IT WILL USE YMMN.
+!        IF (MSGTYP = 1 OR 3) NO VIOLATIONS ARE ALLOWED.
+!        IF (MSGTYP = 2 OR 4) THE NUMBER OF VIOLATIONS MUST
+!                             BE LESS THAN   NVMX   .
+!     INTEGER N
+!        THE NUMBER OF OBSERVATIONS.
+!     CHARACTER*1 NMMIN(8)
+!        THE NAME OF THE ARGUMENT SPECIFYING THE MINIMUM.
+!     CHARACTER*1 NMSUB(6)
+!        THE CHARACTERS OF THE CALLING ROUTINES NAME.
+!     CHARACTER*1 NMVAR(8)
+!        THE CHARACTERS OF THE PARAMETERS NAME.
+!     INTEGER NV
+!        THE NUMBER OF VIOLATIONS FOUND.
+!     INTEGER NVMX
+!        THE LARGEST NUMBER OF VIOLATIONS ALLOWED.
+!     INTEGER YM(IYM,M)
+!        THE ARRAY BEING TESTED.
+!     INTEGER YMMN
+!        THE MINIMUM ACCEPTABLE VALUE.
+!
+      ERROR = .FALSE.
+!
+      IF ((N.LE.0) .OR. (M.LE.0)) RETURN
+!
+!     CHECK FOR VIOLATIONS
+!
+      NV = 0
+      DO 5 I = 1, N
+         DO 1 J = 1, M
+            IF (YM(I+(J-1)*IYM) .LT. YMMN) NV = NV + 1
+    1    CONTINUE
+    5 CONTINUE
+!
+      IF (NV .LE. NVMX) RETURN
+!
+!     VIOLATIONS FOUND
+!
+      ERROR = .TRUE.
+!
+      CALL EIAGEP (NMSUB, NMVAR, YMMN, NVMX, HEAD, MSGTYP, NV,
+     +   NMMIN)
+!
+      RETURN
+!
+      END
+!NLSKL
+      SUBROUTINE NLSKL(ISKULL, PAGE, WIDE, NLHDR)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE PRINTS A HEADING AND WARNING MESSAGES FOR
+!     SERIOUS ERRORS DETECTED BY THE NONLINEAR LEAST SQUARES ROUTINES.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  APRIL 2, 1981
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      LOGICAL
+     +   PAGE,WIDE
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   ISKULL(10)
+!
+!  SUBROUTINE ARGUMENTS
+      EXTERNAL NLHDR
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT,ISUBHD
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     EXTERNAL NLHDR
+!        THE NAME OF THE ROUTINE WHICH PRODUCES THE HEADING.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER ISKULL(10)
+!        AN ERROR MESSAGE INDICATOR VARIABLE.
+!     INTEGER ISUBHD
+!        AN INTEGER VALUE SPECIFYING SUBHEADINGS TO BE PRINTED.
+!     LOGICAL PAGE
+!        THE VARIABLE USED TO INDICATE WHETHER OR NOT THE OUTPUT
+!        IS TO BEGIN ON A NEW PAGE.
+!     LOGICAL WIDE
+!        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
+!        BE FULL WIDTH (TRUE) OR NOT (FALSE).
+!
+      CALL IPRINT(IPRT)
+!
+      ISUBHD = 0
+      CALL NLHDR(PAGE, WIDE, ISUBHD)
+!
+      IF (WIDE) THEN
+         WRITE (IPRT,1010)
+         WRITE (IPRT,1020)
+!        WRITE (IPRT,1030)
+!        WRITE (IPRT,1040)
+!        WRITE (IPRT,1050)
+         WRITE (IPRT,1000)
+      END IF
+      WRITE (IPRT,1060)
+!
+!     VCV COMPUTATION NOT COMPLETED
+!
+      IF (ISKULL(7).NE.0) WRITE (IPRT,1120)
+!
+!     MAXIMUM NUMBER OF ITERATIONS REACHED BEFORE CONVERGENCE
+!
+      IF (ISKULL(6).NE.0) WRITE (IPRT,1100)
+!
+!     FALSE CONVERGENCE
+!
+      IF (ISKULL(5).NE.0) WRITE (IPRT,1090)
+!
+!     MEANINGLESS VCV MATRIX
+!
+      IF (ISKULL(4).NE.0) WRITE (IPRT,1080)
+!
+!     PROBLEM IS COMPUTATIONALLY SINGULAR
+!
+      IF (ISKULL(3).NE.0) WRITE (IPRT,1070)
+!
+!     INITIAL RESIDUAL SUM OF SQUARES COMPUTATION OVERFLOWED
+!
+      IF (ISKULL(2).NE.0) WRITE (IPRT,1110)
+!
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (///)
+ 1010 FORMAT (/48H  W      W     AA     RRRRRRR   N      N    IIII,
+     +   19H    N      N    GGG/31H  W      W    A  A    R     RR ,
+     +   38H NN     N     II     NN     N   G    G/12H  W      W  ,
+     +   51H  A  A    R      R  N N    N     II     N N    N  G/
+     +   59H  WW    WW   AA  AA   R     RR  N  N   N     II     N  N   ,
+     +   4HN  G/47H   W    W    AAAAAA   RRRRRRR   N  NN  N     II,
+     +   23H     N  NN  N  G  GGGGG)
+ 1020 FORMAT (49H   W WW W    A    A   R R       N   N  N     II  ,
+     +   21H   N   N  N  G      G/29H   W WW W    A    A   R  R   ,
+     +   41H   N    N N     II     N    N N  G      G/9H    W  W ,
+     +   59H   AA    AA  R   R     N     NN     II     N     NN   G    ,
+     +   2HGG/49H    W  W    A      A  R    R    N      N    IIII ,
+     +   21H   N      N    GGGG G/)
+!1010 FORMAT (/30X, 48H  W      W     AA     RRRRRRR   N      N    IIII,
+!    *   19H    N      N    GGG/30X, 31H  W      W    A  A    R     RR ,
+!    *   38H NN     N     II     NN     N   G    G/30X, 12H  W      W  ,
+!    *   51H  A  A    R      R  N N    N     II     N N    N  G/30X,
+!    *   59H  WW    WW   AA  AA   R     RR  N  N   N     II     N  N   ,
+!    *   4HN  G/30X, 47H   W    W    AAAAAA   RRRRRRR   N  NN  N     II,
+!    *   23H     N  NN  N  G  GGGGG)
+!1020 FORMAT (30X, 49H   W WW W    A    A   R R       N   N  N     II  ,
+!    *   21H   N   N  N  G      G/30X, 29H   W WW W    A    A   R  R   ,
+!    *   41H   N    N N     II     N    N N  G      G/30X, 9H    W  W ,
+!    *   59H   AA    AA  R   R     N     NN     II     N     NN   G    ,
+!    *   2HGG/30X, 49H    W  W    A      A  R    R    N      N    IIII ,
+!    *   21H   N      N    GGGG G/)
+!1030 FORMAT (1(34X, 3HXXX, 58X, 3HXXX/), 31X, 6('X'), 58X, 6('X')/31X,
+!    *   7('X'), 56X, 7('X')/31X, 9('X'), 52X, 9('X')/36X, 5('X'), 17X,
+!    *   '(', 14('-'), ')', 17X, 5('X')/38X, 5('X'), 14X, 2H((, 14X,
+!    *   2H)), 14X, 5('X')/40X, 5('X'), 10X, 2H((, 18X, 2H)), 10X,
+!    *   5('X')/41X, 5('X'), 8X, 2H((, 20X, 2H)), 8X, 5('X')/43X,
+!    *   5('X'), 5X, 2H((, 22X, 2H)), 5X, 5('X')/44X, 5('X'), 3X, 2H((,
+!    *   24X, 2H)), 3X, 5('X'))
+!1040 FORMAT (46X, 7HXXXXX (, 26X, 7H) XXXXX/48X,
+!    *   5HXXX((, 7X, 2HOO, 8X, 2HOO, 7X, 5H))XXX/49X, 3HXX(, 7X,
+!    *   4HO  O, 6X, 4HO  O, 7X, 3H)XX/50X, 2HX(, 7X, 4HO  O, 6X,
+!    *   4HO  O, 7X, 2H)X/51X, '(', 8X, 2HOO, 8X, 2HOO, 8X, ')'/2(51X,
+!    *   '(', 28X, ')'/), 51X, '(', 11X, 6HOO  OO, 11X, ')'/51X, 2H((,
+!    *   10X, 6HOO  OO, 10X, 2H))/52X, 2H((, 24X, 2H))/53X, '(', 24X,
+!    *   ')'/54X, '(', 22X, ')')
+!1050 FORMAT (55X, 4H(--(, 14X, 4H)--)/59X, '(', 12X, ')'/58X,
+!    *   3HX((, 10X, 3H))X/56X, 5HXXXX(, 10X, 5H)XXXX/54X, 9HXXXXX (II,
+!    *   15HIIIIIIII) XXXXX/53X, 5('X'), 2X, 12H(IIIIIIIIII), 2X, 5('X')
+!    *   /51X, 5('X'), 4X, '(', 10X, ')', 4X, 5('X')/49X, 5('X'), 6X,
+!    *   2H((, 8X, 2H)), 6X, 5('X')/48X, 5('X'), 8X, 10H(--------), 8X,
+!    *   5('X')/46X, 5('X'), 30X, 5('X')/44X, 5('X'), 34X, 5('X')/43X,
+!    *   5('X'), 36X, 5('X')/41X, 5('X'), 40X, 5('X')/40X, 4HXXXX, 44X,
+!    *   4HXXXX/38X, 5('X'), 46X, 5('X')/36X, 5('X'), 50X, 5('X')/31X,
+!    *   9('X'), 52X, 9('X')/31X, 7('X'), 56X, 7('X')/31X, 6('X'), 58X,
+!    *   6('X')/1(34X, 3HXXX, 58X, 3HXXX))
+ 1060 FORMAT (22H **  ERROR SUMMARY  **)
+ 1070 FORMAT (/50H THIS MODEL AND DATA ARE COMPUTATIONALLY SINGULAR.,
+     +   29H CHECK YOUR INPUT FOR ERRORS.)
+ 1080 FORMAT (/43H AT LEAST ONE OF THE STANDARDIZED RESIDUALS, 6H COULD,
+     +   47H NOT BE COMPUTED BECAUSE THE STANDARD DEVIATION, 8H OF THE ,
+     +   18HRESIDUAL WAS ZERO./37H THE VALIDITY OF THE COVARIANCE MATRI,
+     +   18HX IS QUESTIONABLE.)
+ 1090 FORMAT (/46H THE ITERATIONS DO NOT APPEAR TO BE CONVERGING,
+     +   13H TO A MINIMUM, 41H (FALSE CONVERGENCE), INDICATING THAT THE,
+     +   12H CONVERGENCE, 16H CRITERIA STOPSS/22H AND STOPP MAY BE TOO ,
+     +   35HSMALL FOR THE ACCURACY OF THE MODEL, 17H AND DERIVATIVES,,
+     +   52H THAT THERE IS AN ERROR IN THE DERIVATIVE MATRIX, OR/
+     +   15H THAT THE MODEL, 39H IS DISCONTINUOUS NEAR THE CURRENT COEF,
+     +   18HFICIENT ESTIMATES.)
+ 1100 FORMAT (/53H PROGRAM DID NOT CONVERGE IN THE NUMBER OF ITERATIONS,
+     +   13H OR NUMBER OF, 32H MODEL SUBROUTINE CALLS ALLOWED.)
+ 1110 FORMAT (/50H THE RESIDUAL SUM OF SQUARES COULD NOT BE COMPUTED,
+     +   19H USING THE STARTING, 26H MODEL COEFFICIENT VALUES.)
+ 1120 FORMAT (/44H THE VARIANCE-COVARIANCE MATRIX COULD NOT BE,
+     +   26H COMPUTED AT THE SOLUTION.)
+      END
+!BFSER
+      SUBROUTINE BFSER(NMSUB, N, LAGMAX, ICCOV, JCCOV, INLPPC, JNLPPC,
+     +   M, INDEX1, INDEX2, ICSPC2, IPHAS, NF, NW, LAGS,
+     +   LDSTAK, LDSMIN, LYFFT, NFFT, OPTION)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS IS THE ERROR CHECKING ROUTINE FOR THE TIME SERIES
+!     FOURIER UNIVARIATE SPECTRUM ANALYSIS ROUTINES.
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 2, 1985
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ICCOV,ICSPC2,INDEX1,INDEX2,INLPPC,IPHAS,JCCOV,JNLPPC,
+     +   LAGMAX,LDSMIN,LDSTAK,LYFFT,M,N,NF,NFFT,NW
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   LAGS(*)
+      LOGICAL
+     +   OPTION(4)
+      CHARACTER
+     +   NMSUB(6)*1
+!
+!  SCALARS IN COMMON
+      INTEGER
+     +   IERR
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,NV
+      LOGICAL
+     +   HEAD
+!
+!  LOCAL ARRAYS
+      LOGICAL
+     +   ERROR(30)
+      CHARACTER
+     +   L1(8)*1,LICCOV(8)*1,LICSPC(8)*1,LINDX1(8)*1,LINDX2(8)*1,
+     +   LINLPP(8)*1,LIPHAS(8)*1,LJCCOV(8)*1,LJNLPP(8)*1,
+     +   LLAGMX(8)*1,LLAGS(8)*1,LLDS(8)*1,LLGMX1(8)*1,
+     +   LLYFFT(8)*1,LM(8)*1,LN(8)*1,LNF(8)*1,LNM1(8)*1,LNW(8)*1
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EISGE,EISII,EISLE,EIVII
+!
+!  COMMON BLOCKS
+      COMMON /ERRCHK/IERR
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERROR(30)
+!        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER I
+!        AN INDEX VALUE.
+!     INTEGER ICCOV
+!        THE FIRST DIMENSION OF THE ARRAY CCOV.
+!     INTEGER ICSPC2
+!        THE FIRST DIMENSION OF THE ARRAY CSPC2.
+!     INTEGER IERR
+!        THE INTEGER VALUE RETURNED BY THIS ROUTINE DESIGNATING
+!        WHETHER ANY ERRORS WERE DETECTED IN THE PARAMETER LIST
+!        IF ERR01, NO ERRORS WERE DETECTED
+!        IF IERR .EQ. 1, ERRORS HAVE BEEN DETECTED
+!     INTEGER INDEX1, INDEX2
+!        THE INDICES OF THE COVARIANCES OF THE TWO SERIES.
+!     INTEGER INLPPC
+!        THE FIRST DIMENSION OF THE ARRAY NLPPC.
+!     INTEGER IPHAS
+!        THE FIRST DIMENSION OF THE ARRAY PHAS.
+!     INTEGER JCCOV
+!        THE FIRST DIMENSION OF THE ARRAY CCOV.
+!     INTEGER JNLPPC
+!        THE FIRST DIMENSION OF THE ARRAY NLPPC.
+!     INTEGER LAGMAX
+!        THE MAXIMUM LAG VALUE TO BE USED.
+!     INTEGER LAGS(NW)
+!        THE ARRAY USED TO SPECIFY THE LAG WINDOW TRUNCATION
+!        POINTS USED FOR EACH SET OF SPECTRUM VALUES.
+!     INTEGER LDSTAK
+!        THE LENGTH OF THE VECTOR DSTAK IN COMMON CSTAK.
+!     INTEGER LDSMIN
+!        THE MINIMUM LENGTH ALLOWED FOR DSTAK.
+!     CHARACTER*1 LICCOV(8), LICSPC(8), LINDX1(8),
+!    *   LINDX2(8), LINLPP(8), LIPHAS(8), LJCCOV(8), LJNLPP(8),
+!    *   LLAGMX(8), LLAGS(8), LLDS(8), LLGMX1(8), LLYFFT(8), LM(8),
+!    *   LN(8), LNF(8), LNM1(8), LNW(8), L1(8)
+!        THE ARRAY(S) CONTAINING THE NAME(S) OF THE ARGUMENT(S)
+!        CHECKED FOR ERRORS.
+!     INTEGER LYFFT
+!        THE LENGTH OF VECTOR YFFT.
+!     INTEGER M
+!        THE NUMBER OF SERIES FOR WHICH THE COVARIANCES WERE
+!        COMPUTED
+!     INTEGER N
+!        THE INTEGER NUMBER OF OBSERVATIONS IN THE SERIES.
+!     INTEGER NF
+!        THE NUMBER OF FREQUENCIES AT WHICH THE SPECTRUM IS
+!        TO BE COMPUTED.
+!     INTEGER NFFT
+!        THE NUMBER OF OBSERVATIONS IN THE EXTENDED SERIES.
+!     CHARACTER*1 NMSUB(6)
+!        THE ARRAY CONTAINING THE NAME OF THE USER CALLED SUBROUTINE.
+!     INTEGER NV
+!        THE NUMBER OF VIOLATIONS FOUND WHEN CHECKING VECTOR LAGS.
+!     INTEGER NW
+!        THE ARGUMENT USED TO DETERMINE THE NUMBER OF DIFFERENT
+!        BANDWIDTHS TO BE USED.
+!     LOGICAL OPTION(4)
+!        AN INDICATOR ARRAY USED TO DESIGNATE WHETHER ANY OF THE
+!        FOUR POSSIBLE OPTIONS (F, M, V, OR S) HAVE BEEN USED (TRUE)
+!        OR NOT (FALSE).
+!
+!     SET UP NAME ARRAYS
+!
+      DATA LICCOV(1), LICCOV(2), LICCOV(3), LICCOV(4), LICCOV(5),
+     +   LICCOV(6), LICCOV(7), LICCOV(8) /'I','C','C','O','V',' ',' ',
+     +   ' '/
+      DATA LICSPC(1), LICSPC(2), LICSPC(3), LICSPC(4), LICSPC(5),
+     +   LICSPC(6), LICSPC(7), LICSPC(8) /'I','C','S','P','C','2',' ',
+     +   ' '/
+      DATA LINDX1(1), LINDX1(2), LINDX1(3), LINDX1(4), LINDX1(5),
+     +   LINDX1(6), LINDX1(7), LINDX1(8) /'I','N','D','E','X','1',' ',
+     +   ' '/
+      DATA LINDX2(1), LINDX2(2), LINDX2(3), LINDX2(4), LINDX2(5),
+     +   LINDX2(6), LINDX2(7), LINDX2(8) /'I','N','D','E','X','2',' ',
+     +   ' '/
+      DATA LIPHAS(1), LIPHAS(2), LIPHAS(3), LIPHAS(4), LIPHAS(5),
+     +   LIPHAS(6), LIPHAS(7), LIPHAS(8) /'I','P','H','A','S',' ',' ',
+     +   ' '/
+      DATA LINLPP(1), LINLPP(2), LINLPP(3), LINLPP(4), LINLPP(5),
+     +   LINLPP(6), LINLPP(7), LINLPP(8) /'I','N','L','P','P','C',' ',
+     +   ' '/
+      DATA LJCCOV(1), LJCCOV(2), LJCCOV(3), LJCCOV(4), LJCCOV(5),
+     +   LJCCOV(6), LJCCOV(7), LJCCOV(8) /'J','C','C','O','V',' ',' ',
+     +   ' '/
+      DATA LJNLPP(1), LJNLPP(2), LJNLPP(3), LJNLPP(4), LJNLPP(5),
+     +   LJNLPP(6), LJNLPP(7), LJNLPP(8) /'J','N','L','P','P','C',' ',
+     +   ' '/
+      DATA LLAGMX(1), LLAGMX(2), LLAGMX(3), LLAGMX(4), LLAGMX(5),
+     +   LLAGMX(6), LLAGMX(7), LLAGMX(8) /'L','A','G','M','A','X',' ',
+     +   ' '/
+      DATA LLAGS(1), LLAGS(2), LLAGS(3), LLAGS(4), LLAGS(5), LLAGS(6),
+     +   LLAGS(7), LLAGS(8) /'L','A','G','S',' ',' ',' ',' '/
+      DATA LLGMX1(1), LLGMX1(2), LLGMX1(3), LLGMX1(4), LLGMX1(5),
+     +   LLGMX1(6), LLGMX1(7), LLGMX1(8) /'L','A','G','M','A','X','+',
+     +   '1'/
+      DATA LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
+     +   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
+      DATA LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8) /'N',
+     +   ' ',' ',' ',' ',' ',' ',' '/
+      DATA LM(1), LM(2), LM(3), LM(4), LM(5), LM(6), LM(7), LM(8) /'M',
+     +   ' ',' ',' ',' ',' ',' ',' '/
+      DATA LNF(1), LNF(2), LNF(3), LNF(4), LNF(5), LNF(6), LNF(7),
+     +   LNF(8) /'N','F',' ',' ',' ',' ',' ',' '/
+      DATA LNM1(1), LNM1(2), LNM1(3), LNM1(4), LNM1(5), LNM1(6),
+     +   LNM1(7), LNM1(8) /'N','-','1',' ',' ',' ',' ',' '/
+      DATA LNW(1), LNW(2), LNW(3), LNW(4), LNW(5), LNW(6), LNW(7),
+     +   LNW(8) /'N','W',' ',' ',' ',' ',' ',' '/
+      DATA LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
+     +   LLYFFT(6), LLYFFT(7), LLYFFT(8) /'L','Y','F','F','T',' ',' ',
+     +   ' '/
+      DATA L1(1), L1(2), L1(3), L1(4), L1(5), L1(6), L1(7), L1(8) /'1',
+     +   ' ',' ',' ',' ',' ',' ',' '/
+!
+!     SET UP FOR ERROR CHECKING
+!
+      IERR = 0
+      HEAD = .TRUE.
+!
+      DO 10 I=1,30
+         ERROR(I) = .FALSE.
+   10 CONTINUE
+!
+!     CALL ERROR CHECKING ROUTINES
+!
+      CALL EISGE(NMSUB, LN, N, 17, 1, HEAD, ERROR(1), LN)
+!
+      IF ((.NOT.OPTION(3))) GO TO 20
+!
+      CALL EISII(NMSUB, LLAGMX, LAGMAX, 1, N-1, 1, HEAD, ERROR(2), L1,
+     +   LNM1)
+!
+      CALL EISGE(NMSUB, LM, M, 2, 1, HEAD, ERROR(3), LM)
+!
+      CALL EISGE(NMSUB, LICCOV, ICCOV, LAGMAX+1, 3, HEAD, ERROR(4),
+     +   LLGMX1)
+!
+      CALL EISGE(NMSUB, LJCCOV, JCCOV, M, 4, HEAD, ERROR(5), LM)
+!
+      IF (OPTION(2)) THEN
+        CALL EISGE(NMSUB, LINLPP, INLPPC, LAGMAX+1, 3, HEAD, ERROR(6),
+     +     LLGMX1)
+!
+        CALL EISGE(NMSUB, LJNLPP, JNLPPC, M, 4, HEAD, ERROR(7), LM)
+      END IF
+!
+      CALL EISLE(NMSUB, LINDX1, INDEX1, M, 2, HEAD, ERROR(8), LM)
+!
+      CALL EISLE(NMSUB, LINDX2, INDEX2, M, 2, HEAD, ERROR(9), LM)
+!
+   20 CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 9, HEAD, ERROR(10), LLYFFT)
+!
+      IF (OPTION(1) .AND. (.NOT.OPTION(4))) CALL EISGE(NMSUB, LLDS,
+     +   LDSTAK, LDSMIN, 9, HEAD, ERROR(15), LLDS)
+!
+      IF (OPTION(4)) GO TO 40
+!
+      DO 30 I=1,15
+         IF (ERROR(I)) GO TO 70
+   30 CONTINUE
+!
+      RETURN
+!
+   40 CONTINUE
+!
+      CALL EISGE(NMSUB, LNF, NF, 1, 1, HEAD, ERROR(16), LNF)
+!
+      CALL EISGE(NMSUB, LNW, NW, 1, 1, HEAD, ERROR(18), LNW)
+!
+      IF (ERROR(18)) GO TO 50
+      IF (OPTION(3)) THEN
+         CALL EIVII(NMSUB, LLAGS, LAGS, NW, 1, LAGMAX, 0,
+     +      HEAD, 4, NV, ERROR(19), L1, LLAGMX)
+      ELSE
+         CALL EIVII(NMSUB, LLAGS, LAGS, NW, 1, N-1, 0,
+     +      HEAD, 4, NV, ERROR(19), L1, LNM1)
+      END IF
+!
+   50 CONTINUE
+!
+      CALL EISGE(NMSUB, LICSPC, ICSPC2, NF, 3, HEAD, ERROR(24), LNF)
+!
+      CALL EISGE(NMSUB, LIPHAS, IPHAS, NF, 3, HEAD, ERROR(25), LNF)
+!
+      IF (ERROR(2) .OR. ERROR(16) .OR. ERROR(18) .OR. ERROR(19)) GO TO
+     +   70
+!
+      CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERROR(30), LLDS)
+!
+      DO 60 I=1,30
+         IF (ERROR(I)) GO TO 70
+   60 CONTINUE
+!
+      RETURN
+!
+   70 CONTINUE
+      IERR = 1
+      RETURN
+!
+      END
+!AOV1HD
+      SUBROUTINE AOV1HD(IPRT)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     A SUBROUTINE TO PRINT OUT THE HEADING FOR THE ONEWAY ANOVA
+!     FAMILY, AND IS THE ONLY SOURCE FOR HEADINGS IN THAT FAMILY
+!
+!     AUTHOR -
+!        JOHN E. KOONTZ
+!        STATISTICAL ENGINEERING DIVISION
+!        NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  MAY 17, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL VERSP
+!
+!  VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IPRT
+!        THE OUTPUT LOGICAL UNIT NUMBER
+!
+      CALL VERSP(.TRUE.)
+      WRITE (IPRT,1000)
+      RETURN
+ 1000 FORMAT(///48X, 20HANALYSIS OF VARIANCE//)
+      END
+!EISEQ
+      SUBROUTINE EISEQ(NMSUB, NMVAR1, NVAL, NEQ, MSGTYP, HEAD, ERROR,
+     +   NMVAR2)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE CHECKS WHETHER THE VALUE   NVAL   IS
+!     OQUAL TO   NEQ  AND PRINTS A DIAGNOSTIC IF IT IS NOT.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 2, 1985
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   MSGTYP,NEQ,NVAL
+      LOGICAL
+     +   ERROR,HEAD
+!
+!  ARRAY ARGUMENTS
+      CHARACTER
+     +   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EHDR,IPRINT
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERROR
+!        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER I
+!        AN INDEX ARGUMENT.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER MSGTYP
+!        AN ARGUMENT USED TO INDICATE THE TYPE OF MESSAGE TO BE
+!        PRINTED, WHERE IF ERROR IS TRUE AND
+!        MSGTYP = 1 THE INPUT VALUE WAS NOT EQUAL TO THE NUMBER OF PARAM
+!                   SPECIFIED BY MSPEC (ARIMA ESTIMATION AND FORECASTING
+!     INTEGER NEQ
+!        THE ACCEPTABLE VALUE FOR THE ARGUMENT BEING TESTED.
+!     CHARACTER*1 NMSUB(6)
+!        THE CHARACTERS OF THE CALLING SUBROUTINES NAME.
+!     CHARACTER*1 NMVAR1(8)
+!        THE CHARACTERS OF THE NAME OF THE ARGUMENT BEING CHECKED.
+!     CHARACTER*1 NMVAR2(8)
+!        THE CHARACTERS OF THE NAME OF THE ARGUMENT BEING CHECKED
+!        AGAINST.
+!     INTEGER NVAL
+!        THE INPUT VALUE OF THE ARGUMENT BEING CHECKED.
+!
+      ERROR = .FALSE.
+!
+      IF (NVAL .EQ. NEQ) RETURN
+!
+      ERROR = .TRUE.
+!
+      CALL IPRINT (IPRT)
+!
+      CALL EHDR(NMSUB, HEAD)
+!
+      WRITE (IPRT, 1000) (NMVAR1(I), I=1,6), NVAL
+!
+!     PRINT MESSAGE FOR ARIMA ROUTINES
+!
+      WRITE (IPRT, 1010) (NMVAR1(I), I=1,6), NEQ
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (/20H THE INPUT VALUE OF , 6A1, 4H IS , I5, '.')
+ 1010 FORMAT(
+     +   27H THE VALUE OF THE ARGUMENT , 6A1,
+     +   ' MUST BE GREATER THAN OR EQUAL TO'/
+     +   1X, I5, ' = ONE PLUS THE SUM OF MSPEC(1,J)+MSPEC(3,J) FOR',
+     +   ' J = 1, ..., NFAC,'/
+     +   6X, ' = ONE PLUS THE NUMBER OF AUTOREGRESSIVE PARAMETERS PLUS'/
+     +   9X, ' THE NUMBER OF MOVING AVERAGE PARAMETERS.')
+!
+      END
+!PLTSYM
+      SUBROUTINE PLTSYM(IPTSYM, I, J, ISYM, N, IPOINT, LINE, ICOUNT)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE SUPPLIES THE APPROPRIATE PLOT SYMBOL FOR
+!     THE PLOT LINE.
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  JANUARY 21, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   I,IPOINT,IPTSYM,J,N
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   ICOUNT(103),ISYM(N)
+      CHARACTER
+     +   LINE(103)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   ISYMBL
+!
+!  LOCAL ARRAYS
+      CHARACTER
+     +   SYM(30)*1,SYM1(10)*1
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MAX,MIN
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER I
+!        AN INDEXING VARIABLE.
+!     INTEGER ICOUNT(103)
+!        THE NUMBER OF PLOT SYMBOLS AT EACH LOCATION.
+!     INTEGER IPOINT
+!        THE LOCATION IN THE PLOT STRING OF THE VALUE BEING PLOTTED.
+!     INTEGER IPTSYM
+!        AN INDICATOR VARIABLE USED TO DESIGNATE THE TYPE
+!        OF PLOT.  IF IPTSYM = 1, THE PLOT IS A SYMPLE PAGE
+!        OR VERTICAL PLOT.  IF IPTSYM = 2, THE PLOT IS A SYMBOL
+!        PLOT.  IF IPTSYM = 3, THE PLOT IS A MULTIVARIATE PLOT.
+!     INTEGER ISYM(N)
+!        VECTOR CONTAINING SYMBOL DESIGNATIONS FOR PLOTTING
+!     INTEGER ISYMBL
+!        THE INDEX OF THE PLOT SYMBOL TO BE USED.
+!     INTEGER J
+!        AN INDEX VARIABLE.
+!     CHARACTER*1 LINE(103)
+!        THE VECTOR USED FOR THE PLOT STRING.
+!     INTEGER N
+!        THE NUMBER OF OBSERVATIONS.
+!     CHARACTER*1 SYM(30), SYM1(10)
+!        THE PLOT SYMBOLS.
+!
+      DATA SYM( 1)/'+'/,SYM( 2)/'.'/,SYM( 3)/'*'/,SYM( 4)/'-'/,
+     +     SYM( 5)/'A'/,SYM( 6)/'B'/,SYM( 7)/'C'/,SYM( 8)/'D'/,
+     +     SYM( 9)/'E'/,SYM(10)/'F'/,SYM(11)/'G'/,SYM(12)/'H'/,
+     +     SYM(13)/'I'/,SYM(14)/'J'/,SYM(15)/'K'/,SYM(16)/'L'/,
+     +     SYM(17)/'M'/,SYM(18)/'N'/,SYM(19)/'O'/,SYM(20)/'P'/,
+     +     SYM(21)/'Q'/,SYM(22)/'R'/,SYM(23)/'S'/,SYM(24)/'T'/,
+     +     SYM(25)/'U'/,SYM(26)/'V'/,SYM(27)/'W'/,SYM(28)/'Y'/,
+     +     SYM(29)/'Z'/,SYM(30)/'Z'/
+      DATA SYM1(1)/'1'/,SYM1(2)/'2'/,SYM1(3)/'3'/,SYM1(4)/'4'/,
+     +     SYM1(5)/'5'/,SYM1(6)/'6'/,SYM1(7)/'7'/,SYM1(8)/'8'/,
+     +     SYM1(9)/'9'/,SYM1(10)/'X'/
+!
+      ICOUNT(IPOINT) = ICOUNT(IPOINT) + 1
+      IF (ICOUNT(IPOINT) .EQ. 1) GO TO 5
+!
+      ISYMBL = MIN(ICOUNT(IPOINT), 10)
+      LINE(IPOINT) = SYM1(ISYMBL)
+      RETURN
+!
+    5 CONTINUE
+      GO TO (10, 20, 30), IPTSYM
+!
+   10 LINE(IPOINT) = SYM(1)
+      RETURN
+!
+   20 ISYMBL = MIN(29, MAX(1, ISYM(I)))
+      LINE(IPOINT) = SYM(ISYMBL)
+      RETURN
+!
+   30 ISYMBL = MIN(29, MAX(1, J+4))
+      LINE(IPOINT) = SYM(ISYMBL)
+!
+      RETURN
+      END
+!PLINE
+      SUBROUTINE PLINE(IMIN, IMAX, ISYMBL, LINE)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE DEFINES ONE LINE OF A PLOT STRING FOR THE
+!     VERTICAL PLOT ROUTINES.
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  JANUARY 21, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   IMAX,IMIN
+      CHARACTER
+     +   ISYMBL*1
+!
+!  ARRAY ARGUMENTS
+      CHARACTER
+     +   LINE(103)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER I
+!        AN INDEXING VARIABLE.
+!     INTEGER IMAX
+!        THE LARGEST LOCATION IN THE PLOT STRING BEING DEFINED.
+!     INTEGER IMIN
+!        THE SMALLEST LOCATION IN THE PLOT STRING BEING DEFINED.
+!     CHARACTER*1 ISYMBL
+!        THE PLOTTING SYMBOL BEING USED.
+!     CHARACTER*1 LINE(103)
+!        THE VECTOR USED FOR THE PLOT STRING.
+!
+      DO 10 I = IMIN, IMAX
+         LINE(I) = ISYMBL
+   10 CONTINUE
+      RETURN
+      END
+!MODSUM
+      SUBROUTINE MODSUM(NFAC, MSPECT)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE PRINTS THE MODEL SUMMARY FOR THE ARIMA ROUTINES
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  JANUARY 4, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   NFAC
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   MSPECT(NFAC,4)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IPRT,J
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER NFAC
+!        THE NUMBER OF FACTORS IN THE MODEL
+!     INTEGER I
+!        AN INDEX VARIABLE.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER J
+!        AN INDEX VARIABLE.
+!     INTEGER MSPECT(NFAC,4)
+!        THE ARRAY CONTAINING THE VALUES OF P, D, Q, AND S FOR EACH FACT
+!
+!
+      CALL IPRINT(IPRT)
+!
+!     PRINT MODEL SPECIFICATION
+!
+      WRITE(IPRT, 1002) (I, (MSPECT(I,J),J=1,4), I=1,NFAC)
+!
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1002 FORMAT(//
+     +   '    MODEL SPECIFICATION'//
+     +   '       FACTOR          (P     D     Q)    S'//
+     +   (7X, I6, 6X, 4I6))
+      END
+!DCKHDR
+      SUBROUTINE DCKHDR(PAGE, WIDE, ISUBHD)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS SUBROUTINE PRINTS THE PAGE HEADINGS FOR THE
+!     DERIVATIVE CHECKING ROUTINES.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  OCTOBER 3, 1983
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ISUBHD
+      LOGICAL
+     +   PAGE,WIDE
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT,VERSP
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER ISUBHD
+!        AN INDICATOR VALUE SPECIFYING SUBHEADINGS TO BE PRINTED.
+!     LOGICAL PAGE
+!        THE VARIABLE USED TO INDICATE WHETHER A GIVEN SECTION OF
+!        THE OUTPUT IS TO BEGIN ON A NEW PAGE (TRUE) OR NOT (FALSE).
+!     LOGICAL WIDE
+!       THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
+!        FULL WIDTH (TRUE) OR NOT (FALSE).
+!
+      CALL IPRINT(IPRT)
+      IF (PAGE) WRITE (IPRT, 1020)
+      CALL VERSP(WIDE)
+      IF (PAGE) WRITE (IPRT,1000)
+      IF (.NOT.PAGE) WRITE (IPRT,1010)
+      PAGE = .TRUE.
+!
+      IF (ISUBHD.EQ.0) RETURN
+!
+      GO TO (10), ISUBHD
+!
+   10 WRITE (IPRT, 1030)
+!
+      RETURN
+!
+!     FORMAT STATEMENTS FOR PAGE HEADINGS
+!
+ 1000 FORMAT (21H+DERIVATIVE CHECKING,,
+     +   10H CONTINUED)
+ 1010 FORMAT ('+', 23(1H*)/ 24H * DERIVATIVE CHECKING */ 1X, 23(1H*))
+ 1020 FORMAT ('1')
+ 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
+      END
+!NLERR
+      SUBROUTINE NLERR (ICNVCD, ISKULL)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE SETS THE ERROR FLAG IERR BASED ON THE CONVERGENCE
+!     CODE RETURNED BY NL2.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  APRIL 2, 1981
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ICNVCD
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   ISKULL(10)
+!
+!  SCALARS IN COMMON
+      INTEGER
+     +   IERR
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I
+!
+!  COMMON BLOCKS
+      COMMON /ERRCHK/IERR
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER I
+!        AN INDEX VARIABLE.
+!     INTEGER ICNVCD
+!        THE CONVERGENCE CODE FROM NL2.
+!     INTEGER IERR
+!        THE VALUE RETURNED BY THIS ROUTINE DESIGNATING
+!        WHETHER ANY ERRORS WERE DETECTED IN THE PARAMETER LIST.
+!        IF IERR .EQ. 0, NO ERRORS WERE DETECTED.
+!        IF IERR .GE. 1, ERRORS WERE DETECTED.
+!     INTEGER ISKULL(10)
+!        AN ERROR MESSAGE INDICATOR VARIABLE.
+!
+!     INITIALIZE MESSAGE INDICATOR VARIABLE
+!
+      DO 5 I = 1, 10
+         ISKULL(I) = 0
+    5 CONTINUE
+!
+!     SET ERROR FLAG
+!
+      GO TO (10, 10, 20, 20, 20, 20, 40, 50, 60, 60, 10, 30, 10, 10,
+     +   10), ICNVCD
+!
+!     BAD VALUE
+!
+   10 IERR = 1
+      RETURN
+!
+!     ACCEPTABLE STOPPING CONDITION
+!
+   20 IERR = 0
+      RETURN
+!
+!     INITIAL VARIANCE COMPUTATION OVERFLOWS
+!
+   30 IERR = 2
+      ISKULL(2) = 1
+      RETURN
+!
+!     SINGULAR CONVERGENCE
+!
+   40 IERR = 3
+      ISKULL(3) = 1
+      RETURN
+!
+!     FALSE CONVERGENCE
+!
+   50 IERR = 5
+      ISKULL(5) = 1
+      RETURN
+!
+!     ITERATION OR FUNCTION EVALUATION LIMIT
+!
+   60 IERR = 6
+      ISKULL(6) = 1
+      RETURN
+!
+      END
+!EIVII
+      SUBROUTINE EIVII (NMSUB, NMVAR, IVEC, N, IVECLB, IVECUB, NVMX,
+     +   HEAD, MSGTYP, NV, ERROR, NMMIN, NMMAX)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE CHECKS FOR VALUES IN THE INPUT VECTOR IVEC
+!     WHICH ARE OUTSIDE THE (INCLUSIVE) LIMITS IVECLB TO IVECUB, PRINTS
+!     AN ERROR MESSAGE IF THE NUMBER OF VIOLATIONS EXCEEDS THE LARGEST
+!     NUMBER OF VIOLATIONS ALLOWED, AND RETURNS THE NUMBER OF
+!     VIOLATIONS AND AN ERROR FLAG INDICATING THE RESULTS.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  JUNE 10, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   IVECLB,IVECUB,MSGTYP,N,NV,NVMX
+      LOGICAL
+     +   ERROR,HEAD
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   IVEC(*)
+      CHARACTER
+     +   NMMAX(8)*1,NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EHDR,IPRINT
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERROR
+!        THE VALUE RETURNED FROM THE ERROR CHECKING ROUTINES TO INDICATE
+!        WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED (TRUE)
+!        OR NOT (FALSE).
+!     INTEGER I
+!        AN INDEX ARGUMENT.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER IVEC(N)
+!        THE VECTOR BEING TESTED.
+!     INTEGER IVECLB, IVECUB
+!        THE (INCLUSIVE) RANGE THAT THE VECTOR IS BEING TESTED
+!        AGAINST.
+!     INTEGER MSGTYP
+!        THE INDICATOR ARGUMENT FOR THE TYPE OF MESSAGE.
+!        IF (MSGTYP.GE.4) THE MESSAGE PRINTED WILL USE NMMIN AND
+!        NMMAX, OTHERWISE IT WILL USE IVECLB AND IVECUB.
+!        IF (MSGTYP = 1 OR 4) NO VIOLATIONS ARE ALLOWED.
+!        IF (MSGTYP = 2 OR 5) THE NUMBER OF VIOLATIONS MUST
+!                             BE LESS THAN   NVMX   .
+!        IF (MSGTYP = 3 OR 6) VIOLATIONS ARE COUNTED ONLY IF THE
+!                             THE FIRST ELEMENT IS NOT IN VIOLATION.
+!     INTEGER N
+!        THE NUMBER OF OBSERVATIONS.
+!     CHARACTER*1 NMMAX(8)
+!        THE NAME OF THE ARGUMENT SPECIFYING THE MAXIMUM.
+!     CHARACTER*1 NMMIN(8)
+!        THE NAME OF THE ARGUMENT SPECIFYING THE MINIMUM.
+!     CHARACTER*1 NMSUB(6)
+!        THE CHARACTERS OF THE CALLING SUBROUTINES NAME.
+!     CHARACTER*1 NMVAR(8)
+!        THE CHARACTERS OF THE ARGUMENTS NAME.
+!     INTEGER NV
+!        THE NUMBER OF VIOLATIONS FOUND.
+!     INTEGER NVMX
+!        THE LARGEST NUMBER OF VIOLATIONS ALLOWED.
+!
+      ERROR = .FALSE.
+!
+      IF (N.LE.0) RETURN
+      IF (IVECUB.LT.IVECLB) RETURN
+!
+!     TEST WHETHER TESTING IS NECESSRY
+!
+      IF ((MOD(MSGTYP,3) .EQ. 0) .AND.
+     +    ((IVEC(1) .LT. IVECLB) .OR. (IVEC(1) .GT. IVECUB))) RETURN
+!
+!     CHECK FOR VIOLATIONS
+!
+      NV = 0
+      DO 5 I = 1, N
+         IF ((IVEC(I).LT.IVECLB) .OR. (IVEC(I).GT.IVECUB)) NV = NV + 1
+    5 CONTINUE
+!
+      IF (NV .LE. NVMX) RETURN
+!
+!     VIOLATIONS FOUND
+!
+      ERROR = .TRUE.
+      CALL IPRINT(IPRT)
+      CALL EHDR(NMSUB, HEAD)
+!
+      IF (MSGTYP.LE.3)
+     +   WRITE (IPRT, 1000) (NMVAR(I),I=1,6), IVECLB, IVECUB, NV
+      IF (MSGTYP.GE.4)
+     +   WRITE (IPRT, 1005) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8),
+     +   (NMMAX(I),I=1,8), NV
+!
+      GO TO (10, 20, 30, 10, 20, 30), MSGTYP
+!
+   10 WRITE(IPRT, 1010) (NMVAR(I),I=1,6)
+      RETURN
+!
+   20 WRITE(IPRT, 1020) (NMVAR(I),I=1,6), NVMX
+      RETURN
+!
+   30 WRITE(IPRT, 1030) (NMVAR(I),I=1,6)
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (/
+     +   32H THE NUMBER OF VALUES IN VECTOR , 6A1,
+     +   19H OUTSIDE THE RANGE , I6, 3H TO/
+     +   1X, I6, 16H, INCLUSIVE, IS , I6, '.')
+ 1005 FORMAT (/
+     +   32H THE NUMBER OF VALUES IN VECTOR , 6A1,
+     +   19H OUTSIDE THE RANGE , 8A1, 3H TO/
+     +   1X, 8A1, 16H, INCLUSIVE, IS , I6, '.')
+ 1010 FORMAT(
+     +   26H THE VALUES IN THE VECTOR , 6A1,
+     +   31H MUST ALL BE WITHIN THIS RANGE.)
+ 1020 FORMAT(
+     +   36H THE NUMBER OF VALUES IN THE VECTOR , 6A1,
+     +   19H OUTSIDE THIS RANGE/
+     +   19H MUST BE LESS THAN , I5, '.')
+ 1030 FORMAT(
+     +   34H IF THE FIRST VALUE OF THE VECTOR , 6A1,
+     +   21H IS WITHIN THIS RANGE/
+     +   45H ALL OF THE VALUES MUST BE WITHIN THIS RANGE.)
+!
+      END
+!STKREL
+      SUBROUTINE STKREL(NUMBER)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!  DE-ALLOCATES THE LAST (NUMBER) ALLOCATIONS MADE IN THE STACK
+!  BY STKGET.
+!
+!  ERROR STATES -
+!
+!    1 - NUMBER .LT. 0
+!    2 - LNOW, LUSED, LMAX OR LBOOK OVERWRITTEN
+!    3 - ATTEMPT TO DE-ALLOCATE NON-EXISTENT ALLOCATION
+!    4 - THE POINTER AT ISTAK(LNOW) OVERWRITTEN
+!
+!     THIS FUNCTION WAS ADAPTED FROM THE FRAMEWORK FUNCTION ISTKGT
+!
+!     ADAPTED BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  NOVEMBER 26, 1980
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   NUMBER
+!
+!  SCALARS IN COMMON
+      INTEGER
+     +   IERR
+!
+!  ARRAYS IN COMMON
+      DOUBLE PRECISION DSTAK(12)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IN,IPRT,LBOOK,LMAX,LNOW,LOUT,LUSED
+!
+!  LOCAL ARRAYS
+      INTEGER
+     +   ISTAK(12)
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT
+!
+!  COMMON BLOCKS
+      COMMON /CSTAK/DSTAK
+      COMMON /ERRCHK/IERR
+!
+!  EQUIVALENCES
+      EQUIVALENCE (DSTAK(1),ISTAK(1))
+      EQUIVALENCE (ISTAK(1),LOUT)
+      EQUIVALENCE (ISTAK(2),LNOW)
+      EQUIVALENCE (ISTAK(3),LUSED)
+      EQUIVALENCE (ISTAK(4),LMAX)
+      EQUIVALENCE (ISTAK(5),LBOOK)
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     DOUBLE PRECISION DSTAK(12)
+!        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
+!     INTEGER IERR
+!        THE INTEGER VALUE RETURNED BY THIS ROUTINE DESIGNATING
+!        WHETHER ANY ERRORS WERE DETECTED IN THE PARAMETER LIST
+!        IF IERR .EQ. 0, NO ERRORS WERE DETECTED
+!        IF IERR .EQ. 1, ERRORS HAVE BEEN DETECTED
+!     INTEGER IN
+!        ...
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER ISTAK(12)
+!        THE INTEGER VERSION OF THE /CSTAK/ WORK AREA.
+!     INTEGER LBOOK
+!        THE NUMBER OF WORDS USED FOR BOOKEEPING.
+!     INTEGER LMAX
+!        THE MAXIMUM LENGTH OF THE STACK.
+!     INTEGER LNOW
+!        THE CURRENT ACTIVE LENGTH OF THE STACK.
+!     INTEGER LOUT
+!        THE NUMBER OF CURRENT ALLOCATIONS.
+!     INTEGER LUSED
+!        THE MAXIMUM VALUE OF ISTAK(2) ACHIEVED.
+!     INTEGER NUMBER
+!        THE NUMBER OF ALLOCATIONS TO BE FREED FROM THE STACK.
+!
+!
+      IF (LNOW.LT.LBOOK.OR.LNOW.GT.LUSED.OR.LUSED.GT.LMAX) GO TO 20
+!
+      IN = NUMBER
+ 10      IF (IN.EQ.0) RETURN
+!
+         IF (LNOW.LE.LBOOK) GO TO 30
+!
+!     CHECK TO MAKE SURE THE BACK POINTERS ARE MONOTONE.
+!
+         IF (ISTAK(LNOW).LT.LBOOK.OR.ISTAK(LNOW).GE.LNOW-1) GO TO 40
+!
+         LOUT = LOUT-1
+         LNOW = ISTAK(LNOW)
+         IN = IN-1
+         GO TO 10
+!
+!     PRINT ERROR MESSAGES
+!
+   20 IERR = 1
+      CALL IPRINT(IPRT)
+      WRITE (IPRT, 1000)
+      RETURN
+!
+   30 IERR = 1
+      CALL IPRINT(IPRT)
+      WRITE (IPRT, 1010)
+      RETURN
+!
+   40 IERR = 1
+      CALL IPRINT(IPRT)
+      WRITE (IPRT, 1020) LOUT
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (///18H ***** ERROR *****//
+     +   50H DSTAK BOOKKEEPING ELEMENTS HAVE BEEN OVERWRITTEN.)
+ 1010 FORMAT (///18H ***** ERROR *****//
+     +   52H ATTEMPT HAS BEEN MADE TO DE-ALLOCATE A NON-EXISTANT,
+     +   21H ALLOCATION IN DSTAK.)
+ 1020 FORMAT (///18H ***** ERROR *****//
+     +   35H THE POINTER FOR ALLOCATION NUMBER , I3, 9H HAS BEEN,
+     +   13H OVERWRITTEN.)
+!
+      END
+!STPHDR
+      SUBROUTINE STPHDR(PAGE, WIDE, ISUBHD)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS SUBROUTINE PRINTS THE PAGE HEADINGS FOR THE
+!     STEP SIZE SELECTION ROUTINES.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  OCTOBER 3, 1983
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ISUBHD
+      LOGICAL
+     +   PAGE,WIDE
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT,VERSP
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER ISUBHD
+!        AN INDICATOR VALUE SPECIFYING SUBHEADINGS TO BE PRINTED.
+!     LOGICAL PAGE
+!        THE VARIABLE USED TO INDICATE WHETHER A GIVEN SECTION OF
+!        THE OUTPUT IS TO BEGIN ON A NEW PAGE (TRUE) OR NOT (FALSE).
+!     LOGICAL WIDE
+!       THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
+!        FULL WIDTH (TRUE) OR NOT (FALSE).
+!
+      CALL IPRINT(IPRT)
+      IF (PAGE) WRITE (IPRT, 1020)
+      CALL VERSP(WIDE)
+      IF (PAGE) WRITE (IPRT,1000)
+      IF (.NOT.PAGE) WRITE (IPRT,1010)
+      PAGE = .TRUE.
+!
+      IF (ISUBHD.EQ.0) RETURN
+!
+      GO TO (10), ISUBHD
+!
+   10 WRITE (IPRT, 1030)
+!
+      RETURN
+!
+!     FORMAT STATEMENTS FOR PAGE HEADINGS
+!
+ 1000 FORMAT (32H+DERIVATIVE STEP SIZE SELECTION,,
+     +   10H CONTINUED)
+ 1010 FORMAT ('+', 34(1H*)/ 35H * DERIVATIVE STEP SIZE SELECTION */
+     +   1X, 34(1H*))
+ 1020 FORMAT ('1')
+ 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
+      END
+!CORRHD
+      SUBROUTINE CORRHD(IPRT, M, N)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     A SUBROUTINE TO PRINT OUT THE HEADING FOR THE CORRELATION FAMILY.
+!
+!     AUTHOR -
+!        JOHN E. KOONTZ
+!        STATISTICAL ENGINEERING DIVISION
+!        NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  MAY 17, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   IPRT,M,N
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL VERSP
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IPRT
+!        THE OUTPUT LOGICAL UNIT NUMBER
+!     INTEGER M
+!        THE NUMBER OF VARIABLES
+!     INTEGER N
+!        THE NUMBER OF OBSERVATIONS FOR EACH VARIABLE
+!
+      CALL VERSP(.TRUE.)
+      WRITE (IPRT,1000) M, N
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (/25H CORRELATION ANALYSIS FOR, I3, 15H VARIABLES WITH,
+     +   I5, 13H OBSERVATIONS/)
+      END
+!EIVEO
+      SUBROUTINE EIVEO (NMSUB, NMVAR, IVEC, N, EVEN, HEAD)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE CHECKS WHETHER EACH OF THE VALUES IN THE INPUT
+!     VECTOR IVEC ARE EVEN (OR ODD) AND PRINTS A
+!     DIAGNOSTIC IF THEY ARE NOT.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 7, 1981
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   N
+      LOGICAL
+     +   EVEN,HEAD
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   IVEC(*)
+      CHARACTER
+     +   NMSUB(6)*1,NMVAR(8)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EHDR,IPRINT
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL EVEN
+!        AN INDICATOR VARIABLE DESIGNATING WHETHER THE VALUES OF IVEC
+!        SHOULD BE EVEN (TRUE) OR NOT (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER I
+!        AN INDEX VARIABLE.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER IVEC(N)
+!        THE VECTOR BEING TESTED.
+!     INTEGER N
+!        THE NUMBER OF OBSERVATIONS.
+!     CHARACTER*1 NMSUB(6)
+!        THE CHARACTERS OF THE CALLING SUBROUTINES NAME.
+!     CHARACTER*1 NMVAR(8)
+!        THE CHARACTERS OF THE PARAMETERS NAME.
+!
+!     CHECK FOR VIOLATIONS
+!
+      DO 10 I = 1, N
+         IF ((EVEN .AND. (MOD(IVEC(I), 2) .EQ. 1)) .OR.
+     +       ((.NOT.EVEN) .AND. (MOD(IVEC(I), 2) .EQ. 1))) GO TO 20
+   10 CONTINUE
+!
+      RETURN
+!
+!     VIOLATIONS FOUND
+!
+   20 CONTINUE
+!
+      CALL IPRINT(IPRT)
+!
+      CALL EHDR(NMSUB, HEAD)
+!
+      IF (EVEN) GO TO 40
+!
+      WRITE (IPRT, 1010) (NMVAR(I), I = 1, 6)
+      RETURN
+!
+   40 CONTINUE
+      WRITE (IPRT, 1020) (NMVAR(I), I = 1, 6)
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1010 FORMAT(/
+     +   26H THE VALUES IN THE VECTOR , 6A1,
+     +   27H MUST ALL BE ODD.  THE NEXT/
+     +   53H LARGER INTEGER WILL BE USED IN PLACE OF EVEN VALUES.)
+ 1020 FORMAT(/
+     +   26H THE VALUES IN THE VECTOR , 6A1,
+     +   28H MUST ALL BE EVEN.  THE NEXT/
+     +   52H LARGER INTEGER WILL BE USED IN PLACE OF ODD VALUES.)
+!
+      END
+!CCFER
+      SUBROUTINE CCFER(NMSUB, N, LAGMAX, LDSTAK, LDSMIN, ICCOV, JCCOV,
+     +  INLPPC, JNLPPC, M, LYFFT, NFFT, IYM, IYMFFT, ISFFT, ISLONG)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS IS THE ERROR CHECKING ROUTINE FOR THE CCF FAMILY
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 2, 1985
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ICCOV,INLPPC,IYM,IYMFFT,JCCOV,JNLPPC,LAGMAX,LDSMIN,LDSTAK,
+     +   LYFFT,M,N,NFFT
+      LOGICAL
+     +   ISFFT,ISLONG
+!
+!  ARRAY ARGUMENTS
+      CHARACTER
+     +   NMSUB(6)*1
+!
+!  SCALARS IN COMMON
+      INTEGER
+     +   IERR
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I
+      LOGICAL
+     +   HEAD
+!
+!  LOCAL ARRAYS
+      LOGICAL
+     +   ERR(15)
+      CHARACTER
+     +   LICCOV(8)*1,LINLPP(8)*1,LIYM(8)*1,LIYMFF(8)*1,
+     +   LJCCOV(8)*1,LJNLPP(8)*1,LLAGMX(8)*1,LLDS(8)*1,
+     +   LLGMX1(8)*1,LLYFFT(8)*1,LM(8)*1,LN(8)*1,LNFFT(8)*1,
+     +   LNM1(8)*1,LONE(8)*1,LTHREE(8)*1
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EISGE,EISII
+!
+!  COMMON BLOCKS
+      COMMON /ERRCHK/IERR
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERR(15)
+!        VALUES INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER I
+!        AN INDEX VARIABLE.
+!     INTEGER ICCOV
+!        THE FIRST DIMENSION OF THE ARRAY CCOV.
+!     INTEGER IERR
+!        THE INTEGER VALUE RETURNED BY THIS ROUTINE DESIGNATING
+!        WHETHER ANY ERRORS WERE DETECTED IN THE PARAMETER LIST
+!        IF IERR .EQ. 0, NO ERRORS WERE DETECTED
+!     INTEGER INLPPC
+!        THE FIRST DIMENSION OF THE ARRAY NLPPC.
+!     LOGICAL ISFFT
+!        THE INDICATOR VARIABLE USED TO DESIGNATE WHETHER THE CALLING
+!        ROUTINE HAS SUFFIX F (ISFFT = TRUE) OR NOT (ISFFT = FALSE)
+!     LOGICAL ISLONG
+!        THE INDICATOR VARIABLE USED TO DESIGNATE WHETHER THE CALLING
+!        ROUTINE HAS SUFFIX S (ISLONG = TRUE) OR NOT (ISLONG = FALSE)
+!     INTEGER IYM, IYMFFT
+!        THE FIRST DIMENSION OF THE ARRAYS YM AND YMFFT, RESPECTIVELY.
+!     INTEGER JCCOV, JNLPPC
+!        THE SECOND DIMENSIONS OF THE ARRAYS CCOV AND NLPPC,
+!        RESPECTIVELY.
+!     INTEGER LAGMAX
+!        THE MAXIMUM LAG VALUE REQUESTED.
+!     INTEGER LDSMIN
+!        THE MINIMUM LENGTH ALLOWED FOR THE ARRAY DSTAK.
+!     INTEGER LDSTAK
+!        THE LENGTH OF THE ARRAY DSTAK.
+!     CHARACTER*1 LICCOV(8), LINLPP(8), LIYM(8), LIYMFF(8), LJCCOV(8),
+!    *  LJNLPP(8), LLAGMX(8), LLDS(8), LLGMX1(8), LLYFFT(8),
+!    *  LM(8), LN(8), LNFFT(8), LNM1(8), LONE(8), LTHREE(8)
+!        THE ARRAY(S) CONTAINING THE NAME(S) OF INPUT PARAMETER(S)
+!        CHECKED FOR ERRORS.
+!     INTEGER M
+!        THE NUMBER OF SERIES BEING ANALYZED
+!     INTEGER N
+!        THE INTEGER NUMBER OF OBSERVATIONS IN EACH SERIES
+!     INTEGER NFFT
+!        THE NUMBER OF OBSERVATIONS IN THE EXTENDED SERIES.
+!     CHARACTER*1 NMSUB(6)
+!        THE NAME OF THE SUBROUTINE CALLING THE ERROR CHECKING
+!        SUBROUTINE.
+!
+!     SET UP NAME ARRAYS
+!
+      DATA
+     + LICCOV(1), LICCOV(2), LICCOV(3), LICCOV(4), LICCOV(5),
+     + LICCOV(6), LICCOV(7), LICCOV(8) /'I','C','C','O','V',' ',' ',' '/
+      DATA
+     + LINLPP(1), LINLPP(2), LINLPP(3), LINLPP(4), LINLPP(5),
+     + LINLPP(6), LINLPP(7), LINLPP(8) /'I','N','L','P','P','C',' ',' '/
+      DATA
+     + LIYM(1), LIYM(2), LIYM(3), LIYM(4), LIYM(5),
+     + LIYM(6), LIYM(7), LIYM(8) /'I','Y','M',' ',' ',' ',' ',' '/
+      DATA
+     + LIYMFF(1), LIYMFF(2), LIYMFF(3), LIYMFF(4), LIYMFF(5),
+     + LIYMFF(6), LIYMFF(7), LIYMFF(8) /'I','Y','M','F','F','T',' ',' '/
+      DATA
+     + LJCCOV(1), LJCCOV(2), LJCCOV(3), LJCCOV(4), LJCCOV(5),
+     + LJCCOV(6), LJCCOV(7), LJCCOV(8) /'J','C','C','O','V',' ',' ',' '/
+      DATA
+     + LJNLPP(1), LJNLPP(2), LJNLPP(3), LJNLPP(4), LJNLPP(5),
+     + LJNLPP(6), LJNLPP(7), LJNLPP(8) /'J','N','L','P','P','C',' ',' '/
+      DATA
+     + LLAGMX(1), LLAGMX(2), LLAGMX(3), LLAGMX(4), LLAGMX(5),
+     + LLAGMX(6), LLAGMX(7), LLAGMX(8) /'L','A','G','M','A','X',' ',' '/
+      DATA
+     + LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
+     + LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
+      DATA
+     + LLGMX1(1), LLGMX1(2), LLGMX1(3), LLGMX1(4), LLGMX1(5),
+     + LLGMX1(6), LLGMX1(7), LLGMX1(8) /'L','A','G','M','A','X','+','1'/
+      DATA
+     + LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
+     + LLYFFT(6), LLYFFT(7), LLYFFT(8) /'L','Y','F','F','T',' ',' ',' '/
+      DATA
+     + LM(1), LM(2), LM(3), LM(4), LM(5),
+     + LM(6), LM(7), LM(8) /'M',' ',' ',' ',' ',' ',' ',' '/
+      DATA
+     + LN(1), LN(2), LN(3), LN(4), LN(5),
+     + LN(6), LN(7), LN(8) /'N',' ',' ',' ',' ',' ',' ',' '/
+      DATA
+     + LNM1(1), LNM1(2), LNM1(3), LNM1(4), LNM1(5),
+     + LNM1(6), LNM1(7), LNM1(8) /'(','N','-','1',')',' ',' ',' '/
+      DATA
+     + LNFFT(1), LNFFT(2), LNFFT(3), LNFFT(4), LNFFT(5),
+     + LNFFT(6), LNFFT(7), LNFFT(8) /'N','F','F','T',' ',' ',' ',' '/
+      DATA
+     + LONE(1), LONE(2), LONE(3), LONE(4), LONE(5),
+     + LONE(6), LONE(7), LONE(8) /'O','N','E',' ',' ',' ',' ',' '/
+      DATA
+     + LTHREE(1), LTHREE(2), LTHREE(3), LTHREE(4), LTHREE(5),
+     + LTHREE(6), LTHREE(7), LTHREE(8) /'T','H','R','E','E',' ',' ',' '/
+!
+!     SET UP FOR ERROR CHECKING
+!
+      IERR = 0
+      HEAD = .TRUE.
+      DO 10 I = 1, 15
+        ERR(I) = .FALSE.
+   10 CONTINUE
+!
+!     CALL ERROR CHECKING ROUTINES
+!
+      CALL EISGE(NMSUB, LN, N, 3, 2, HEAD, ERR(1), LTHREE)
+!
+      CALL EISGE(NMSUB, LM, M, 1, 2, HEAD, ERR(2), LONE)
+!
+      IF (.NOT.ERR(1)) THEN
+!
+        CALL EISII(NMSUB, LLAGMX, LAGMAX, 1, N-1, 1, HEAD, ERR(3), LONE,
+     +    LNM1)
+!
+        IF (ISFFT) THEN
+          IF (ISLONG) THEN
+            CALL EISGE(NMSUB, LIYMFF, IYMFFT, NFFT, 3, HEAD, ERR(4),
+     +        LNFFT)
+          ELSE
+            CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 3, HEAD, ERR(4),
+     +        LNFFT)
+          END IF
+        ELSE
+          CALL EISGE(NMSUB, LIYM, IYM, N, 3, HEAD, ERR(4), LN)
+        END IF
+!
+        IF (.NOT.ERR(3)) THEN
+!
+          IF (ISLONG) THEN
+            CALL EISGE(NMSUB, LICCOV, ICCOV, LAGMAX+1, 3, HEAD, ERR(5),
+     +        LLGMX1)
+            CALL EISGE(NMSUB, LJCCOV, JCCOV, M, 3, HEAD, ERR(6),
+     +        LLGMX1)
+            CALL EISGE(NMSUB, LINLPP, INLPPC, LAGMAX+1, 3, HEAD, ERR(7),
+     +        LLGMX1)
+            CALL EISGE(NMSUB, LJNLPP, JNLPPC, M, 3, HEAD, ERR(8),
+     +        LLGMX1)
+          END IF
+!
+          CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR(9), LLDS)
+!
+        END IF
+      END IF
+!
+      DO 20 I = 1, 15
+        IF (ERR(I)) IERR = 1
+   20 CONTINUE
+!
+      RETURN
+!
+      END
+!ACFDTL
+      SUBROUTINE ACFDTL (NDF, ND, IOD, NTIMES)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE PRINTS TITLING FOR ACORRD.
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  NOVEMBER 21, 1980
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   NDF,NTIMES
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   IOD(*),ND(*)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IPRT,ISTOP
+      CHARACTER
+     +   ICOM*1,IPER*1,IPUNCT*1
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER I
+!        AN INDEX VARIABLE.
+!     CHARACTER*1 ICOM
+!        THE HOLLERITH VALUE -,- (COMMA)
+!     INTEGER IOD(NDF)
+!        THE ORDER OF EACH OF THE DIFFERENCE FACTORS.
+!     CHARACTER*1 IPER
+!        THE HOLLERITH VALUE -.- (PERIOD)
+!     INTEGER IPRT
+!        THE UNIT NUMBER OF THE DEVICE USED FOR PRINTED
+!        OUTPUT.
+!     CHARACTER*1 IPUNCT
+!        THE HOLLERITH VALUE OF EITHER COMMA OR PERIOD.
+!     INTEGER ISTOP
+!        ONE LESS THAN THE NUMBER OF DIFFERENCE FACTORS.
+!     INTEGER ND(NDF)
+!        THE ARRAY CONTAINING THE NUMBER OF TIMES THE DIFFERENCE
+!        FACTORS ARE TO BE APPLIED.
+!     INTEGER NDF
+!        THE NUMBER OF DIFFERENCE FACTORS.
+!     INTEGER NTIMES
+!        THE NUMBER OF TIMES THE DIFFERENCING FACTOR HAS BEEN APPLIED.
+!
+      DATA ICOM/','/, IPER/'.'/
+!
+      CALL IPRINT (IPRT)
+!
+      IF (NDF .LE. 1) GO TO 10
+!
+      ISTOP = NDF - 1
+      IPUNCT = IPER
+      IF (NTIMES .GE. 1) IPUNCT = ICOM
+      WRITE(IPRT, 1000)
+      IF (NDF .EQ. 2)  WRITE(IPRT, 1001) ND(2), IOD(2), IPER
+      IF (NDF .GE. 3) WRITE(IPRT, 1001)
+     +   (ND(I), IOD(I), ICOM, I = 1, ISTOP), ND(NDF), IOD(NDF), IPUNCT
+      GO TO 20
+!
+   10 WRITE(IPRT, 1002)
+!
+   20 IF (NTIMES .EQ. 0) RETURN
+!
+      IF (NDF .GE. 2) WRITE(IPRT, 1003) NTIMES, IOD(1)
+      IF (NDF .EQ. 1) WRITE(IPRT, 1004) NTIMES, IOD(1)
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT(//47H SERIES ANALYZED IS INPUT SERIES DIFFERENCED BY/)
+ 1001 FORMAT(3X, 3(I3, ' FACTOR(S) OF ORDER ', I3, A1, 1X)/)
+ 1002 FORMAT(//' SERIES ANALYZED IS ORIGINAL INPUT SERIES'/)
+ 1003 FORMAT(4X, 34H AND, IN ADDITION, DIFFERENCED BY , I3,
+     +   18H FACTORS OF ORDER , I3, '.'//)
+ 1004 FORMAT(4X, 16H DIFFERENCED BY , I3, 18H FACTORS OF ORDER ,
+     +   I3, '.'//)
+      END
+!ERIODD
+      SUBROUTINE ERIODD(NMSUB, NMVAR, NVAL, MSGTYP, HEAD, ERROR)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE SETS ERROR TO TRUE IF THE VALUE   NVAL   IS NOT EVEN
+!     OR ODD, AS SPECIFIED BY THE PARAMETER ODD.  IN ADDITION, IF THIS
+!     IS THE FIRST ERROR FOUND FOR THE CALLING SUBROUTINE   NMSUB   , IE
+!     IF   HEAD   IS TRUE, THEN A HEADING FOR THE CALLING SUBROUTINE
+!     IS ALSO PRINTED OUT.
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  NOVEMBER 26, 1980
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   MSGTYP,NVAL
+      LOGICAL
+     +   ERROR,HEAD
+!
+!  ARRAY ARGUMENTS
+      CHARACTER
+     +   NMSUB(6)*1,NMVAR(8)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EHDR,IPRINT
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERROR
+!        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER I
+!        AN INDEX VARIABLE.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER MSGTYP
+!        A VARIABLE USED TO INDICATE THE TYPE OF MESSAGE TO BE
+!        PRINTED, WHERE IF
+!        MSGTYP = 1, THE INPUT VALUE SHOULD BE ODD AND
+!        MSGTYP = 2, THE INPUT VALUE SHOULD BE EVEN.
+!     CHARACTER*1 NMSUB(6)
+!        THE ARRAY CONTAINING THE NAME OF THE CALLING SUBROUTINE.
+!     CHARACTER*1 NMVAR(8)
+!        THE ARRAY CONTAINING THE NAME OF THE VARIABLE BEING CHECKED.
+!     INTEGER NVAL
+!        THE VALUE OF THE VARIABLE BEING CHECKED.
+!
+      ERROR = .FALSE.
+!
+      IF (MSGTYP .EQ. 2) GO TO 10
+!
+!     CHECK FOR ODD
+!
+      IF (MOD(NVAL, 2) .EQ. 1) RETURN
+!
+      CALL IPRINT(IPRT)
+      CALL EHDR(NMSUB, HEAD)
+      WRITE(IPRT, 1010) (NMVAR(I), I = 1, 6), (NMVAR(I), I = 1, 6), NVAL
+      ERROR = .TRUE.
+      RETURN
+!
+   10 CONTINUE
+!
+!     CHECK FOR EVEN
+!
+      IF (MOD(NVAL, 2) .EQ. 0) RETURN
+!
+      CALL IPRINT(IPRT)
+      CALL EHDR(NMSUB, HEAD)
+      WRITE(IPRT, 1020) (NMVAR(I), I = 1, 6), (NMVAR(I), I = 1, 6), NVAL
+      ERROR = .TRUE.
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1010 FORMAT(/
+     +   27H THE VALUE OF THE VARIABLE , 6A1,
+     +   34H MUST BE ODD.  THE INPUT VALUE OF , 6A1/
+     +    4H IS , I5, '.')
+ 1020 FORMAT(/
+     +   27H THE VALUE OF THE VARIABLE , 6A1,
+     +   35H MUST BE EVEN.  THE INPUT VALUE OF , 6A1/
+     +    4H IS , I5, '.')
+!
+      END
+!AMFER
+      SUBROUTINE AMFER(NMSUB, N, NPAR, LDSTAK, LDSMIN,
+     +  SAVE, MSPEC, NFAC, IFCST, NFCST)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS IS THE ERROR CHECKING ROUTINE FOR NONLINEAR LEAST SQUARES
+!     ESTIMATION ROUTINES.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 2, 1985
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   IFCST,LDSMIN,LDSTAK,N,NFAC,NFCST,NPAR
+      LOGICAL
+     +   SAVE
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   MSPEC(4,*)
+      CHARACTER
+     +   NMSUB(6)*1
+!
+!  SCALARS IN COMMON
+      INTEGER
+     +   IERR
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,NP,NV
+      LOGICAL
+     +   HEAD
+!
+!  LOCAL ARRAYS
+      LOGICAL
+     +   ERROR(20)
+      CHARACTER
+     +   LIFCST(8)*1,LLDS(8)*1,LMSPEC(8)*1,LN(8)*1,LNFAC(8)*1,
+     +   LNFCST(8)*1,LNPAR(8)*1,LONE(8)*1
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EIAGE,EISEQ,EISGE
+!
+!  COMMON BLOCKS
+      COMMON /ERRCHK/IERR
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERROR(20)
+!        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        THE VARIABLE USED TO INDICATE WHETHER A HEADING IS TO BE
+!        PRINTED DURING A GIVEN CALL TO THE ITERATION REPORT (TRUE)
+!        OR NOT (FALSE).
+!     INTEGER IERR
+!        THE VALUE RETURNED BY THIS ROUTINE DESIGNATING
+!        WHETHER ANY ERRORS WERE DETECTED IN THE PARAMETER LIST.
+!        IF IERR .EQ. 0, NO ERRORS WERE DETECTED.
+!        IF IERR .GE. 1, ERRORS WERE DETECTED.
+!     INTEGER LDSMIN
+!        THE MINIMUM LENGTH ALLOWED FOR THE ARRAY DSTAK.
+!     INTEGER LDSTAK
+!        THE LENGTH OF THE ARRAY DSTAK.
+!     CHARACTER*1 LIFCST(8), LLDS(8), LMSPEC(8), LN(8), LNFAC(8),
+!    *  LNPAR(8), LNFCST(8), LONE(8)
+!        THE ARRAY(S) CONTAINING THE NAME(S) OF INPUT PARAMETER(S)
+!        CHECKED FOR ERRORS.
+!     INTEGER MSPEC(4,NFAC)
+!        THE ARRAY CONTAINING THE VALUES OF P, D, Q, AND S FOR EACH FACT
+!     INTEGER N
+!        THE NUMBER OF OBSERVATIONS.
+!     INTEGER NFAC
+!        THE NUMBER OF FACTORS IN THE MODEL
+!     INTEGER NFCST
+!        THE NUMBER OF FORECASTS.
+!     CHARACTER*1 NMSUB(6)
+!        THE NAME OF THE ROUTINE CALLING THE ERROR CHECKING ROUTINE
+!     INTEGER NPAR
+!        THE NUMBER OF PARAMETERS IN THE MODEL.
+!     INTEGER NV
+!        *
+!     LOGICAL SAVE
+!        THE VARIABLE USED TO INDICATE WHETHER ANY RESULTS OTHER THAN
+!        THE RESIDUALS AND PARAMETERS ARE TO BE SAVED (TRUE) OR NOT
+!        (FALSE).
+!
+!     SET UP NAME ARRAYS
+!
+      DATA LIFCST(1), LIFCST(2), LIFCST(3), LIFCST(4), LIFCST(5),
+     +   LIFCST(6), LIFCST(7), LIFCST(8)
+     +  /'I','F','C','S','T',' ',' ',' '/
+      DATA LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
+     +   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
+      DATA LMSPEC(1), LMSPEC(2), LMSPEC(3), LMSPEC(4), LMSPEC(5),
+     +   LMSPEC(6), LMSPEC(7), LMSPEC(8)
+     +  /'M','S','P','C',' ',' ',' ',' '/
+      DATA LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8) /'N',
+     +   ' ',' ',' ',' ',' ',' ',' '/
+      DATA LNFAC(1), LNFAC(2), LNFAC(3), LNFAC(4), LNFAC(5),
+     +   LNFAC(6), LNFAC(7), LNFAC(8) /'N','F','A','C',' ',' ',' ',' '/
+      DATA LNFCST(1), LNFCST(2), LNFCST(3), LNFCST(4), LNFCST(5),
+     +   LNFCST(6), LNFCST(7), LNFCST(8)
+     +  /'N','F','C','S','T',' ',' ',' '/
+      DATA LNPAR(1), LNPAR(2), LNPAR(3), LNPAR(4), LNPAR(5),
+     +   LNPAR(6), LNPAR(7), LNPAR(8) /'N','P','A','R',' ',' ',' ',
+     +   ' '/
+      DATA LONE(1), LONE(2), LONE(3), LONE(4), LONE(5),
+     +   LONE(6), LONE(7), LONE(8) /'1',' ',' ',' ',' ',' ',' ',' '/
+!
+!     ERROR CHECKING
+!
+      DO 10 I=1,20
+         ERROR(I) = .FALSE.
+   10 CONTINUE
+!
+      IERR = 0
+      HEAD = .TRUE.
+!
+      CALL EISGE(NMSUB, LN, N, 1, 2, HEAD, ERROR(1), LONE)
+!
+      CALL EISGE(NMSUB, LNFAC, NFAC, 1, 2, HEAD, ERROR(2), LONE)
+!
+      IF (.NOT. ERROR(2))
+     +  CALL EIAGE(NMSUB, LMSPEC, MSPEC, 4, NFAC, 4, 0, 0, HEAD, 1, NV,
+     +  ERROR(3), LMSPEC)
+!
+      IF ((.NOT. ERROR(2)) .AND. (.NOT. ERROR(3))) THEN
+        NP = 1
+         DO 15 I = 1, NFAC
+           NP = NP + MSPEC(1,I) + MSPEC(3,I)
+   15   CONTINUE
+        CALL EISEQ(NMSUB, LNPAR, NPAR, NP, 1, HEAD, ERROR(4), LNPAR)
+      END IF
+!
+      IF ((.NOT.ERROR(1)) .AND. (.NOT.ERROR(2)) .AND. (.NOT.ERROR(3))
+     +   .AND. (.NOT.ERROR(4)) .AND. (.NOT.ERROR(5)))
+     +   CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERROR(6),
+     +   LLDS)
+!
+      IF (SAVE)
+     +   CALL EISGE(NMSUB, LIFCST, IFCST, NFCST, 3, HEAD, ERROR(15),
+     +   LNFCST)
+!
+      DO 20 I=1,20
+         IF (ERROR(I)) GO TO 30
+   20 CONTINUE
+      RETURN
+!
+   30 CONTINUE
+      IERR = 1
+      RETURN
+!
+      END
+!NLHDRA
+      SUBROUTINE NLHDRA(PAGE, WIDE, ISUBHD)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS SUBROUTINE PRINTS THE PAGE HEADINGS FOR THE NONLINEAR
+!     LEAST SQUARES ESTIMATION ROUTINES THAT USE ANALYTIC
+!     (USER-SUPPLIED) DERIVATIVES.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  OCTOBER 3, 1983
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ISUBHD
+      LOGICAL
+     +   PAGE,WIDE
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT,VERSP
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER ISUBHD
+!        AN INDICATOR VALUE SPECIFYING SUBHEADINGS TO BE PRINTED.
+!     LOGICAL PAGE
+!        THE VARIABLE USED TO INDICATE WHETHER A GIVEN SECTION OF
+!        THE OUTPUT IS TO BEGIN ON A NEW PAGE (TRUE) OR NOT (FALSE).
+!     LOGICAL WIDE
+!        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
+!        BE FULL WIDTH (TRUE) OR NOT (FALSE).
+!
+!
+      CALL IPRINT(IPRT)
+      IF (PAGE) WRITE (IPRT, 1020)
+      CALL VERSP(WIDE)
+      IF (PAGE) WRITE (IPRT,1000)
+      IF (.NOT.PAGE) WRITE (IPRT,1010)
+      PAGE = .TRUE.
+!
+      IF (ISUBHD.EQ.0) RETURN
+!
+      GO TO (10), ISUBHD
+!
+   10 WRITE (IPRT, 1030)
+!
+      RETURN
+!
+!     FORMAT STATEMENTS FOR PAGE HEADINGS
+!
+ 1000 FORMAT (35H+NONLINEAR LEAST SQUARES ESTIMATION,
+     +   42H WITH USER-SUPPLIED DERIVATIVES, CONTINUED)
+ 1010 FORMAT ('+', 71(1H*)/
+     +   1X, 37H*  NONLINEAR LEAST SQUARES ESTIMATION,
+     +   34H WITH USER-SUPPLIED DERIVATIVES  */ 1X, 71(1H*))
+ 1020 FORMAT ('1')
+ 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
+      END
+!EHDR
+      SUBROUTINE EHDR(NMSUB, HEAD)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE PRINTS THE HEADING FOR THE ERROR CHECKING ROUTINES.
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 29, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      LOGICAL
+     +   HEAD
+!
+!  ARRAY ARGUMENTS
+      CHARACTER
+     +   NMSUB(6)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT,VERSP
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER I
+!        AN INDEX ARGUMENT.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     CHARACTER*1 NMSUB(6)
+!        THE CHARACTERS OF THE CALLING ROUTINES NAME.
+!
+      IF (.NOT.HEAD) RETURN
+!
+      CALL IPRINT(IPRT)
+!
+      CALL VERSP(.FALSE.)
+      WRITE(IPRT,1010)
+      WRITE (IPRT, 1000) (NMSUB(I), I=1,6)
+      HEAD = .FALSE.
+!
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (/31H ERROR CHECKING FOR SUBROUTINE , 6A1/ 1X, 37('-'))
+ 1010 FORMAT ('+', 18(1H*)/19H * ERROR MESSAGES */1X, 18(1H*))
+!
+      END
+!ICNTI
+      INTEGER FUNCTION ICNTI (IV, NIV, I)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE COUNTS THE NUMBER OF OCCURENCES OF I IN IV.
+!
+!     WRITTEN BY - JOHN E. KOONTZ
+!                  STATISTICAL ENGINEERING LAB/BOULDER
+!                  NATIONAL BUREAU OF STANDARDS
+!
+!     CREATION DATE  -  APRIL 20, 1981
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   I,NIV
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   IV(NIV)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   J
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER I
+!        INPUT PARAMETER.  THE INTEGER TO COUNT OCCURENCES OF.
+!     INTEGER IV(NIV)
+!        INPUT PARAMETER.  THE VECTOR IN WHICH TO COUNT.
+!     INTEGER J
+!        LOOP PARAMETER.
+!     INTEGER NIV
+!        INPUT PARAMETER.  THE LENGTH OF IV.
+!
+!     COMMENCE BODY OF ROUTINE
+!
+      ICNTI = 0
+      DO 10 J = 1, NIV
+         IF (IV(J) .EQ. I) ICNTI = ICNTI + 1
+   10 CONTINUE
+      RETURN
+      END
+!LLHDRG
+      SUBROUTINE LLHDRG(PAGE, WIDE, ISUBHD)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS SUBROUTINE PRINTS THE PAGE HEADINGS FOR THE UNRESTRICTED
+!     LINEAR LEAST SQUARES ROUTINES.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 29, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ISUBHD
+      LOGICAL
+     +   PAGE,WIDE
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT,VERSP
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER ISUBHD
+!        AN INDICATOR VALUE SPECIFYING SUBHEADINGS TO BE PRINTED.
+!     LOGICAL PAGE
+!        THE VARIABLE USED TO INDICATE WHETHER A GIVEN SECTION OF
+!        THE OUTPUT IS TO BEGIN ON A NEW PAGE (TRUE) OR NOT (FALSE).
+!     LOGICAL WIDE
+!        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
+!        BE FULL WIDTH (TRUE) OR NOT (FALSE).
+!
+!
+      CALL IPRINT(IPRT)
+      IF (PAGE) WRITE (IPRT,1020)
+      CALL VERSP(WIDE)
+      IF (PAGE) WRITE (IPRT,1000)
+      IF (.NOT.PAGE) WRITE (IPRT,1010)
+      PAGE = .TRUE.
+!
+      IF (ISUBHD.EQ.0) RETURN
+!
+      GO TO (10), ISUBHD
+!
+   10 WRITE (IPRT,1030)
+!
+      RETURN
+!
+!     FORMAT STATEMENTS FOR PAGE HEADINGS
+!
+ 1000 FORMAT (32H+LINEAR LEAST SQUARES ESTIMATION,
+     +  ' WITH USER-SPECIFIED MODEL, CONTINUED')
+ 1010 FORMAT ('+', 63('*')/
+     +   1X, 34H*  LINEAR LEAST SQUARES ESTIMATION,
+     +   ' WITH USER-SPECIFIED MODEL  *'/ 1X, 63('*'))
+ 1020 FORMAT ('1')
+ 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
+      END
+!ERDF
+      SUBROUTINE ERDF(NMSUB, NDF, IOD, ND, N, HEAD, ERROR)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS SUBROUTINE PERFORMS ERROR CHECKING FOR THE INPUT
+!     VALUES USED TO SPECIFY DIFFERENCING ON A TIME SERIES
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  NOVEMBER 21, 1980
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   N,NDF
+      LOGICAL
+     +   ERROR,HEAD
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   IOD(*),ND(*)
+      CHARACTER
+     +   NMSUB(6)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IER,IPRT,MBOD
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EHDR,IPRINT
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERROR
+!        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER I
+!        AN INDEX VARIABLE.
+!     INTEGER IER
+!        AN ERROR INDICATOR.
+!     INTEGER IOD(NDF)
+!        THE VECTOR CONTAINING THE ORDERS OF EACH DIFFERENCE FACTOR.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER MBOD
+!        THE MAXIMUM BACKORDER DUE TO DIFFERENCING.
+!     INTEGER N
+!        THE INTEGER NUMBER OF OBSERVATIONS IN EACH SERIES
+!     INTEGER ND(NDF)
+!        THE VECTOR CONTAINING THE NUMBER OF TIMES EACH DIFFERENCE
+!        FACTOR IS APPLIED.
+!     INTEGER NDF
+!        THE NUMBER OF DIFFERENCE FACTORS TO BE APPLIED TO THE SERIES.
+!     CHARACTER*1 NMSUB(6)
+!        THE CHARACTERS OF THE CALLING SUBROUTINE NAME.
+!
+      ERROR = .FALSE.
+!
+      IF (NDF .GE. 0) GO TO 10
+      CALL IPRINT(IPRT)
+      CALL EHDR(NMSUB, HEAD)
+      WRITE (IPRT, 1001) NDF
+      ERROR = .TRUE.
+      RETURN
+!
+   10 IF (NDF .EQ. 0) RETURN
+!
+      IER = 0
+      MBOD = 0
+      DO 30 I = 1, NDF
+         IF (IOD(I) .GE. 1 .AND. ND(I) .GE. 1) GO TO 20
+         IER = 1
+         GO TO 40
+   20    MBOD = MBOD + IOD(I) * ND(I)
+   30 CONTINUE
+      IF (MBOD .LE. N - 1) RETURN
+!
+   40 CONTINUE
+      CALL IPRINT(IPRT)
+      CALL EHDR(NMSUB, HEAD)
+      IF (IER .EQ. 1)
+     +   WRITE (IPRT, 1002) (I, ND(I), IOD(I), I = 1, NDF)
+      IF (IER .EQ. 0 .AND. MBOD .GE. N) WRITE (IPRT, 1003) MBOD, N
+      ERROR = .TRUE.
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1001 FORMAT(/44H THE NUMBER OF DIFFERENCE FACTORS (NDF) MUST/
+     +   54H BE GREATER THAN OR EQUAL TO ZERO.  THE INPUT VALUE OF/
+     +   8H NDF IS , I6, '.')
+ 1002 FORMAT (/46H THE ORDER OF EACH DIFFERENCE FACTOR (IOD) AND/
+     +   56H NUMBER OF TIMES IT IS APPLIED (ND) MUST BE GREATER THAN/
+     +   52H EQUAL TO ONE.  THE INPUT VALUES OF THESE ARRAYS ARE/
+     +   25H    DIF. FACT.   ND   IOD/
+     +   (1X, I13, I5, I6))
+ 1003 FORMAT (/50H THE MAXIMUM BACKORDER DUE TO DIFFERENCING (MBOD),
+     +  /54H THAT IS, THE SUM OF ND(I)*IOD(I), I = 1, 2, ..., NDF,/
+     +   59H MUST BE LESS THAN OR EQUAL TO N-1.  THE COMPUTED VALUE FOR/
+     +   9H MBOD IS , I6, 33H, WHILE THE INPUT VALUE FOR N IS , I6, '.')
+      END
+!STKST
+      INTEGER FUNCTION STKST (NFACT)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE REPLACES INTEGER FUNCTION ISTKST IN THE FRAMEWORK
+!     FOR USE WITH STARPAC.  RETURNS ONE OF FOUR STATISTICS ON THE
+!     STATE OF THE CSTAK STACK.
+!
+!     IMPORTANT - THIS ROUTINE ASSUMES THAT THE STACK IS INITIALIZED.
+!                 IT DOES NOT CHECK TO SEE IF IT IS.  IN FACT, THERE
+!                 IS NO WAY THAT IT COULD CHECK.
+!
+!     WRITTEN BY - JOHN E. KOONTZ
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  JANUARY 14, 1983
+!        BASED ON FRAMEWORK ROUTINE ISTKST.
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   NFACT
+!
+!  ARRAYS IN COMMON
+      DOUBLE PRECISION DSTAK(12)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT
+!
+!  LOCAL ARRAYS
+      INTEGER
+     +   ISTAK(12),ISTATS(4)
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT
+!
+!  COMMON BLOCKS
+      COMMON /CSTAK/DSTAK
+!
+!  EQUIVALENCES
+      EQUIVALENCE (DSTAK(1),ISTAK(1))
+      EQUIVALENCE (ISTAK(1),ISTATS(1))
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     DOUBLE PRECISION DSTAK(12)
+!        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
+!     INTEGER IPRT
+!        THE NUMBER OF THE STANDARD OUTPUT UNIT.
+!     INTEGER ISTAK(12)
+!        THE INTEGER VERSION OF THE /CSTAK/ WORK AREA.
+!     INTEGER ISTATS(4)
+!        INTEGER ARRAY INCLUDING THE FOUR STACK STATISTICS.
+!     INTEGER NFACT
+!
+!
+!     COMMENCE BODY OF ROUTINE
+!
+      IF (NFACT .GT. 0 .AND. NFACT .LT. 6) GO TO 10
+!
+!     REPORT ERROR STATUS
+!
+      CALL IPRINT (IPRT)
+      WRITE (IPRT, 1000) IPRT
+      STKST = 0
+      RETURN
+!
+!     REPORT TRUE VALUE OF A STATISTIC, ASSUMING STACK IS
+!     DEFINED.
+!
+   10 STKST = ISTATS(NFACT)
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (///18H ***** ERROR *****//
+     +   24H ILLEGAL STACK STATISTIC, I5, 11H REQUESTED.)
+      END
+!EISGE
+      SUBROUTINE EISGE(NMSUB, NMVAR1, NVAL, NMIN, MSGTYP, HEAD, ERROR,
+     +   NMVAR2)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE CHECKS WHETHER THE VALUE   NVAL   IS GREATER THAN
+!     OR EQUAL TO   NMIN   AND PRINTS A DIAGNOSTIC IF IT IS NOT.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 29, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   MSGTYP,NMIN,NVAL
+      LOGICAL
+     +   ERROR,HEAD
+!
+!  ARRAY ARGUMENTS
+      CHARACTER
+     +   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EHDR,IPRINT
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERROR
+!        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER I
+!        AN INDEX ARGUMENT.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER MSGTYP
+!        AN ARGUMENT USED TO INDICATE THE TYPE OF MESSAGE TO BE
+!        PRINTED, WHERE IF ERROR IS TRUE AND
+!        MSGTYP = 1 THE INPUT VALUE WAS TOO SMALL BASED
+!                   ON LIMITS IMPOSED BY STARPAC
+!        MSGTYP = 2 THE INPUT VALUE WAS TOO SMALL BASED ON OTHER INPUT
+!                   ARGUMENTS.
+!        MSGTYP = 3 THE INPUT VALUE WAS TOO SMALL BASED ON OTHER INPUT
+!                   ARGUMENTS, WHERE THE VALUE INDICATES THE FIRST
+!                   DIMENSION OF A DIMENSIONED ARRAY
+!                   N.B.  IT IS ASSUMED THAT THE DIMENSION NAME IS THE
+!                         ARRAY NAME PRECEDED BY THE LETTER I.  IF THE
+!                         ARRAY NAME IS 6 LETTERS, THE DIMENSION NAME
+!                         SHOULD OMIT THE LAST LETTER.  THE DIMENSION
+!                         NAME WILL BE PRINTED USING (NMVAR(I),I=1,6),
+!                         AND THE ARRAY NAME USING (NMVAR(I),I=2,7).
+!        MSGTYP = 4 THE INPUT VALUE WAS TOO SMALL BASED ON OTHER INPUT
+!                   ARGUMENTS, WHERE THE VALUE INDICATES THE SECOND
+!                   DIMENSION OF A DIMENSIONED ARRAY
+!                   N.B.  IT IS ASSUMED THAT THE DIMENSION NAME IS THE
+!                         ARRAY NAME PRECEDED BY THE LETTER J.  IF THE
+!                         ARRAY NAME IS 6 LETTERS, THE DIMENSION NAME
+!                         SHOULD OMIT THE LAST LETTER.  THE DIMENSION
+!                         NAME WILL BE PRINTED USING (NMVAR(I),I=1,6),
+!                         AND THE ARRAY NAME USING (NMVAR(I),I=2,7).
+!        MSGTYP = 5 THE ARGUMENT BEING CHECKED IS LDSTAK.
+!                   NO LONGER USED.
+!        MSGTYP = 6 THE ARGUMENT INDICATES THE FIRST DIMENSION OF
+!                   AN ARRAY BEING CHECKED AGAINST THE NUMBER OF
+!                   UNFIXED PARAMETERS.
+!        MSGTYP = 7 THE INPUT VALUE WAS TOO SMALL BASED ON OTHER INPUT
+!                   ARGUMENTS, WHERE THE VALUE INDICATES THE
+!                   DIMENSION OF A VECTOR.
+!                   N.B.  IT IS ASSUMED THAT THE DIMENSION NAME IS THE
+!                         ARRAY NAME PRECEDED BY THE LETTER L.  IF THE
+!                         ARRAY NAME IS 6 LETTERS, THE DIMENSION NAME
+!                         SHOULD OMIT THE LAST LETTER.  THE DIMENSION
+!                         NAME WILL BE PRINTED USING (NMVAR(I),I=1,6),
+!                         AND THE ARRAY NAME USING (NMVAR(I),I=2,7).
+!        MSGTYP = 8 THE INPUT VALUE WAS TOO SMALL BASED ON OTHER INPUT
+!                   ARGUMENTS, WHERE THE VALUE INDICATES THE
+!                   DIMENSION OF THE VECTORS ACOV AND NLPPA.
+!        MSGTYP = 9 THE INPUT VALUE WAS TOO SMALL BASED ON LIMITS
+!                   IMPOSED BY STARPAC, WHERE THE VALUE INDICATES THE
+!                   DIMENSION OF A VECTOR.
+!                   N.B.  IT IS ASSUMED THAT THE DIMENSION NAME IS THE
+!                         ARRAY NAME PRECEDED BY THE LETTER L.  IF THE
+!                         ARRAY NAME IS 6 LETTERS, THE DIMENSION NAME
+!                         SHOULD OMIT THE LAST LETTER.  THE DIMENSION
+!                         NAME WILL BE PRINTED USING (NMVAR(I),I=1,6),
+!                         AND THE ARRAY NAME USING (NMVAR(I),I=2,7).
+!     INTEGER NMIN
+!        THE MINIMUM ACCEPTABLE VALUE FOR THE ARGUMENT BEING TESTED.
+!     CHARACTER*1 NMSUB(6)
+!        THE CHARACTERS OF THE CALLING SUBROUTINES NAME.
+!     CHARACTER*1 NMVAR1(8)
+!        THE CHARACTERS OF THE NAME OF THE ARGUMENT BEING CHECKED.
+!     CHARACTER*1 NMVAR2(8)
+!        THE CHARACTERS OF THE NAME OF THE ARGUMENT BEING CHECKED
+!        AGAINST.
+!     INTEGER NVAL
+!        THE INPUT VALUE OF THE ARGUMENT BEING CHECKED.
+!
+      ERROR = .FALSE.
+!
+      IF (NVAL .GE. NMIN) RETURN
+!
+      ERROR = .TRUE.
+!
+      CALL IPRINT (IPRT)
+!
+      CALL EHDR(NMSUB, HEAD)
+!
+      WRITE (IPRT, 1000) (NMVAR1(I), I=1,6), NVAL
+!
+      GO TO (20, 30, 40, 50, 60, 70, 80, 90, 100), MSGTYP
+!
+!     PRINT MESSAGE FOR VALUE TOO SMALL BASED ON LIMITS IMPOSED
+!     BY STARPAC.
+!
+   20 WRITE (IPRT, 1010) (NMVAR1(I), I=1,6), NMIN
+      RETURN
+!
+!     PRINT MESSAGE FOR VALUE TOO SMALL BASED ON OTHER INPUT
+!     ARGUMENTS.
+!
+   30 WRITE (IPRT, 1020) (NMVAR1(I), I=1,6), (NMVAR2(I), I=1,8)
+      RETURN
+!
+!     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
+!     FIRST DIMENSION OF A DIMENSIONED ARRAY.
+!
+   40 WRITE (IPRT, 1030) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6),
+     +   (NMVAR2(I), I=1,8)
+      RETURN
+!
+!     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
+!     SECOND DIMENSION OF A DIMENSIONED ARRAY.
+!
+   50 WRITE (IPRT, 1040) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6),
+     +   (NMVAR2(I), I=1,8)
+      RETURN
+!
+!     PRINT MESSAGE FOR VALUE TOO SMALL, WHEN ARGUMENT IS LDSTAK.
+!
+   60 WRITE(IPRT, 1050) NMIN
+      RETURN
+!
+!     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
+!     FIRST DIMENSION OF A DIMENSIONED ARRAY CHECK AGAINST THE NUMBER OF
+!     UNFIXED PARAMETERS.
+!
+   70 WRITE (IPRT, 1060) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6)
+      RETURN
+!
+!     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
+!     DIMENSION OF A VECTOR.
+!
+   80 WRITE (IPRT, 1070) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6),
+     +   (NMVAR2(I), I=1,8)
+      RETURN
+!
+!     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
+!     DIMENSION OF THE VECTORS ACOV AND NLPPA.
+!
+   90 WRITE (IPRT, 1080) (NMVAR1(I), I=1,6), (NMVAR2(I), I=1,8)
+      RETURN
+!
+!     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
+!     DIMENSION OF A VECTOR.
+!
+  100 WRITE (IPRT, 1090) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6),
+     +   NMIN
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (/20H THE INPUT VALUE OF , 6A1, 4H IS , I5, '.')
+ 1010 FORMAT(
+     +   27H THE VALUE OF THE ARGUMENT , 6A1,
+     +   34H MUST BE GREATER THAN OR EQUAL TO , I5, '.')
+ 1020 FORMAT(
+     +   27H THE VALUE OF THE ARGUMENT , 6A1,
+     +   34H MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
+ 1030 FORMAT(
+     +   24H THE FIRST DIMENSION OF , 6A1,
+     +   30H, AS INDICATED BY THE ARGUMENT/
+     +    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
+ 1040 FORMAT(
+     +   25H THE SECOND DIMENSION OF , 6A1,
+     +   30H, AS INDICATED BY THE ARGUMENT/
+     +    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
+ 1050 FORMAT(
+     +   55H THE DIMENSION OF THE DOUBLE PRECISION VECTOR DSTAK, AS,
+     +   13H INDICATED BY/
+     +   54H THE ARGUMENT LDSTAK, MUST BE GREATER THAN OR EQUAL TO,
+     +   I5, '.')
+ 1060 FORMAT(
+     +   24H THE FIRST DIMENSION OF , 6A1,
+     +   30H, AS INDICATED BY THE ARGUMENT/
+     +    1X, 6A1, 34H, MUST BE GREATER THAN OR EQUAL TO,
+     +   34H THE NUMBER OF UNFIXED PARAMETERS.)
+ 1070 FORMAT(
+     +   15H THE LENGTH OF , 6A1,
+     +   30H, AS INDICATED BY THE ARGUMENT/
+     +    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
+ 1080 FORMAT(
+     +   29H THE LENGTH OF ACOV AND NLPPA,
+     +   30H, AS INDICATED BY THE ARGUMENT/
+     +    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
+ 1090 FORMAT(
+     +   15H THE LENGTH OF , 6A1,
+     +   30H, AS INDICATED BY THE ARGUMENT/
+     +    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , I6, '.')
+!
+      END
+!GENI
+      SUBROUTINE GENI(IVECT, N, IINIT, ISTP)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     PUT VALUES IINIT STEP ISTP THROUGH IINIT + (N - 1)*ISTP INTO
+!     A VECTOR IVECT OF LENGTH N.  NO ERROR CHECKING IS DONE.
+!
+!     WRITTEN BY - JOHN E. KOONTZ
+!                  STATISTICAL ENGINEERING LAB/BOULDER
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  MAY 17, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   IINIT,ISTP,N
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   IVECT(N)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,J
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER I
+!        INITIALIZATION VALUE.
+!     INTEGER IINIT, ISTP
+!        INPUT PARAMETERS.  THE INITIAL VALUE AND THE INCREMENT USED
+!        IN CREATING THE INITIALIZATION VALUES.
+!     INTEGER IVECT(N)
+!        OUTPUT PARAMETER.  THE VECTOR INTO WHICH TO PUT THE VALUES
+!        IINIT, IINIT + ISTP, ..., IINIT + (N - 1)*ISTP.
+!     INTEGER J
+!        LOOP PARAMETER.
+!     INTEGER N
+!        INPUT PARAMETER.  THE LENGTH OF IVECT.
+!
+      I = IINIT
+      DO 10 J=1,N
+         IVECT(J) = I
+         I = I + ISTP
+   10 CONTINUE
+      RETURN
+      END
+!EISLE
+      SUBROUTINE EISLE(NMSUB, NMVAR1, NVAL, NMAX, MSGTYP, HEAD, ERROR,
+     +   NMVAR2)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE CHECKS WHETHER THE VALUE   NVAL   IS LESS THAN
+!     OR EQUAL TO   NMAX   AND PRINTS A DIAGNOSTIC IF IT IS NOT.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  OCTOBER 3, 1983
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   MSGTYP,NMAX,NVAL
+      LOGICAL
+     +   ERROR,HEAD
+!
+!  ARRAY ARGUMENTS
+      CHARACTER
+     +   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EHDR,IPRINT
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERROR
+!        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER NMAX
+!        THE MAXIMUM ACCEPTABLE VALUE FOR THE ARGUMENT BEING TESTED.
+!     INTEGER MSGTYP
+!        AN ARGUMENT USED TO INDICATE THE TYPE OF MESSAGE TO BE
+!        PRINTED, WHERE IF ERROR IS TRUE AND
+!        MSGTYP = 1 THE INPUT VALUE WAS TOO LARGE BASED
+!                   ON LIMITS IMPOSED BY STARPAC
+!        MSGTYP = 2 THE INPUT VALUE WAS TOO LARGE BASED ON OTHER INPUT
+!                   ARGUMENTS.
+!     CHARACTER*1 NMSUB(6)
+!        THE CHARACTERS OF THE CALLING SUBROUTINES NAME.
+!     CHARACTER*1 NMVAR1(8)
+!        THE CHARACTERS OF THE NAME OF THE ARGUMENT BEING CHECKED.
+!     CHARACTER*1 NMVAR2(8)
+!        THE CHARACTERS OF THE NAME OF THE ARGUMENT BEING CHECKED
+!        AGAINST.
+!     INTEGER NVAL
+!        THE INPUT VALUE OF THE ARGUMENT BEING CHECKED.
+!
+      ERROR = .FALSE.
+!
+      IF (NVAL .LE. NMAX) RETURN
+!
+      ERROR = .TRUE.
+!
+      CALL IPRINT (IPRT)
+!
+      CALL EHDR(NMSUB, HEAD)
+!
+      WRITE (IPRT, 1000) (NMVAR1(I), I=1,6), NVAL
+!
+      GO TO (10, 20), MSGTYP
+!
+!     PRINT MESSAGE FOR VALUE TOO LARGE BASED ON LIMITS IMPOSED
+!     BY STARPAC.
+!
+   10 WRITE (IPRT, 1010) (NMVAR1(I), I=1,6), NMAX
+      RETURN
+!
+!     PRINT MESSAGE FOR VALUE TOO LARGE BASED ON OTHER INPUT
+!     ARGUMENTS.
+!
+   20 WRITE (IPRT, 1020) (NMVAR1(I), I=1,6), (NMVAR2(I), I=1,8)
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (/20H THE INPUT VALUE OF , 6A1, 4H IS , I5, '.')
+ 1010 FORMAT(
+     +   27H THE VALUE OF THE ARGUMENT , 6A1,
+     +   31H MUST BE LESS THAN OR EQUAL TO , I5, '.')
+ 1020 FORMAT(
+     +   27H THE VALUE OF THE ARGUMENT , 6A1,
+     +   31H MUST BE LESS THAN OR EQUAL TO , 8A1, '.')
+!
+      END
+!STKCLR
+      SUBROUTINE STKCLR (NALL0)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE IS AN ADDITION TO THE FRAMEWORK AREA MANIPULATION
+!     ROUTINES.  IT CLEARS ALL ALLOCATIONS MADE SINCE THE FIRST NALL0.
+!     IT IS INTENDED FOR USE DURING ERROR OR FINAL EXITS FROM STARPAC
+!     ROUTINES WHICH MAKE ALLOCATIONS, TO RELEASE ALL ALLOCATIONS
+!     MADE SINCE THE NALL0 EXISTING ON ENTRY TO THE STARPAC ROUTINE,
+!     WITHOUT KNOWING HOW MANY ALLOCATIONS MUST BE RELEASED.
+!
+!     WRITTEN BY - JOHN E. KOONTZ
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 7, 1981
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   NALL0
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   NALLN
+!
+!  EXTERNAL FUNCTIONS
+      INTEGER
+     +   STKST
+      EXTERNAL STKST
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL STKREL
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER NALL0
+!        INPUT PARAMETER.  THE NUMBER OF ALLOCATIONS TO BE PRESERVED
+!        WHEN ALL LATER ONES ARE RELEASED.
+!     INTEGER NALLN
+!        THE TOTAL NUMBER OF ALLOCATIONS EXISTING BEFORE ANY ARE
+!        RELEASED.
+!
+!     COMMENCE BODY OF ROUTINE
+!
+      NALLN = STKST(1)
+      CALL STKREL (NALLN - NALL0)
+      RETURN
+      END
+!LSTLAG
+      INTEGER FUNCTION LSTLAG (NLPPA, LAGMAX, LACOV)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE FINDS THE LAG VALUE OF THE LAST AUTOCOVARIANCE
+!     COMPUTED BEFORE ONE COULD NOT BE COMPUTED DUE TO MISSING DATA.
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 7, 1981
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   LACOV,LAGMAX
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   NLPPA(LACOV)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   LAG
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER LACOV
+!        THE LENGTH OF THE VECTOR ACOV.
+!     INTEGER LAG
+!        THE INDEXING VARIABLE INDICATING THE LAG VALUE OF THE
+!        AUTOCORRELATION.
+!     INTEGER NLPPA(LACOV)
+!        THE ARRAY CONTAINING THE NUMBERS OF LAGGED PRODUCT PAIRS
+!        USED TO COMPUTE THE ACVF AT EACH LAG.
+!
+!     FIND THE LAST AUTOCORRELATION TO BE COMPUTED BEFORE
+!     ONE COULD NOT BE COMPUTED DUE TO MISSING DATA
+!
+      LSTLAG = -1
+      IF (NLPPA(1) .LE. 0) RETURN
+      DO 20 LAG = 1, LAGMAX
+         IF (NLPPA(LAG + 1) .GE. 1) GO TO 20
+         LSTLAG = LAG - 1
+         RETURN
+   20 CONTINUE
+      LSTLAG = LAGMAX
+      RETURN
+      END
+!EISRNG
+      SUBROUTINE EISRNG (NMSUB, ISEED, ISEEDU, HEAD)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE CHECKS WHETHER THE INPUT VARIABLE ISEED IS
+!     WITHIN [0, 2**MDIG], AND, IF NONZERO, IS ODD.
+!
+!     IF ISEED IS WITHIN [0, 2**MDIG] THEN
+!        ISEEDU = ISEED-MOD(ISEED,2)+1
+!     ELSE
+!        ISEEDU = MIN[ ABS(ISEED)-MOD(ABS(ISEED),2)+1, 2**(MDIG-1)-1]
+!                 AND AN ERROR MESSAGE IS PRINTED.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    CENTER FOR COMPUTING AND APPLIED MATHEMATICS
+!                    NATIONAL INSTITUTE OF STANDARDS AND TECHNOLOGY
+!                    BOULDER, COLORADO
+!
+!     CREATION DATE  -  JANUARY 17, 1990
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ISEED,ISEEDU
+      LOGICAL
+     +   HEAD
+!
+!  ARRAY ARGUMENTS
+      CHARACTER
+     +   NMSUB(6)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT,MDIG
+!
+!  EXTERNAL FUNCTIONS
+      INTEGER
+     +   I1MACH
+      EXTERNAL I1MACH
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EHDR,IPRINT
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC ABS,MIN,MOD
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER ISEED
+!        THE VALUE OF THE SEED BEING TESTED.
+!     INTEGER ISEEDU
+!        THE VALUE OF THE SEED ACTUALLY USED BY NRAND AND NRANDC.
+!     INTEGER MDIG
+!        A LOWER BOUND ON THE NUMBER OF BINARY DIGITS AVAILABLE
+!        FOR REPRESENTING INTEGERS, INCLUDING THE SIGN BIT.
+!     CHARACTER*1 NMSUB(6)
+!        THE CHARACTERS OF THE CALLING SUBROUTINES NAME.
+!
+      MDIG = MIN(I1MACH(8)+1,32)
+!
+!     CHECK FOR VIOLATIONS
+!
+      IF ((ISEED.EQ.0) .OR.
+     +    ((ISEED.GE.1) .AND.
+     +     (ISEED.LE.2**(MDIG-1)-1) .AND.
+     +     (MOD(ISEED,2).EQ.1))) THEN
+!
+!     SUPPLIED SEED WILL BE USED
+!
+         ISEEDU = ISEED
+      ELSE
+!
+!     VIOLATIONS FOUND
+!
+         ISEEDU = MIN( ABS(ISEED)+MOD(ABS(ISEED),2)-1, 2**(MDIG-1)-1)
+         CALL IPRINT(IPRT)
+         CALL EHDR(NMSUB, HEAD)
+         WRITE (IPRT, 1010) MDIG-1,ISEEDU
+      END IF
+!
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1010 FORMAT(/
+     +   ' THE VALUE OF ISEED MUST BE BETWEEN 0 AND 2**',I2,' - 1,'/
+     +   ' INCLUSIVE, AND, IF ISEED IS NOT 0, ISEED MUST BE ODD.  THE'/
+     +   ' SEED ACTUALLY USED BY THE RANDOM NUMBER GENERATOR HAS BEEN'/
+     +   ' SET TO', I10,'.')
+!
+      END
+!SETESL
+      SUBROUTINE SETESL(N, NDIV, NFFT)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE COMPUTES THE SMALLEST VALUE OF NFFT WHICH
+!     EQUALS OR EXCEEDS N + 2, SUCH THAT NFFT - 2 IS
+!     1. DIVISIBLE BY NDIV,
+!     2. HAS NO MORE THAN 11 PRIME FACTORS,
+!     3. HAS NO PRIME FACTOR GREATER THAN 23, AND
+!     4. THE PRODUCT OF THE SQUARE FREE PRIME FACTORS OF
+!        (NFFT-2)/NDIV DO NOT EXCEED 210 IF NDIV = 2, AND
+!                                    105 IF NDIV = 4.
+!     THE VALUE OF NFFT THUS MEET THE REQUIREMENTS OF
+!     THE EXTENDED LENGTH OF THE SERIES REQUIRED FOR ANY ROUTINE
+!     USING THE SINGLETON FFT PROVIDING THE PROPER VALUE OF NDIV
+!     IS CHOSEN.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 7, 1981
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   N,NDIV,NFFT
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,NPF,NSFP
+!
+!  LOCAL ARRAYS
+      INTEGER
+     +   IPF(50),IPFEXP(50)
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL FACTOR
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER I
+!       AN INDEX VARIABLE.
+!     INTEGER IPF(50), IPFEXP(50)
+!        THE VECTORS OF PRIME FACTORS OF NFFT AND THEIR EXPONENTS,
+!        RESPECTIVELY, WHERE THE LENGTH OF THESE VECTORS IS
+!        SUFFICIENT TO ACCOMODATE THE PRIME FACTORS OF AN INTEGER
+!        UP TO 2 ** 128 (APPROXIMATELY 10 ** 40).
+!     INTEGER N
+!        THE NUMBER UPON WHICH NFFT IS BASED.
+!     INTEGER NDIV
+!        A REQUIRED FACTOR OF NFFT - 2.
+!     INTEGER NFFT
+!        THE RETURNED VALUE WHICH MEETS THE ABOVE DESCRIPTION.
+!     INTEGER NPF
+!        THE NUMBER OF PRIME FACTORS IN NFFT.
+!     INTEGER NSFP
+!        THE PRODUCT OF THE NON SQUARE FACTORS.
+!
+      NFFT = N
+      IF (NFFT.LE.0) RETURN
+      IF (MOD(NFFT, NDIV) .NE. 0) NFFT = NFFT + NDIV - MOD(NFFT, NDIV)
+      NFFT = NFFT - NDIV
+   20 NFFT = NFFT + NDIV
+      CALL FACTOR(NFFT/NDIV, NPF, IPF, IPFEXP)
+      IF ((NPF.GE.11) .OR. (IPF(NPF).GT.23)) GO TO 20
+      NSFP = 1
+      IF (NDIV.EQ.4) NSFP = 2
+      DO 30 I = 1, NPF
+         IF (MOD(IPFEXP(I), 2).EQ.1) NSFP = NSFP * IPF(I)
+   30 CONTINUE
+      IF (NSFP .GE. 210) GO TO 20
+!
+      NFFT = NFFT + 2
+!
+      RETURN
+!
+      END
+!ENFFT
+      SUBROUTINE ENFFT(NMSUB, NFFT, NDIV, N, LYFFT, NFFT2, HEAD, ERROR)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE CHECKS WHETHER THE VALUE NFFT IS SUCH THAT NFFT-2 IS
+!     DIVISIBLE BY NDIV AND HAS NO PRIME FACTORS GREATER THAN 23, AND
+!     THE PRODUCT OF THE SQUARE FREE PRIME FACTORS OF NFFT - 2 DO NOT
+!     EXCEED 209, I.E., THE VALUE OF NFFT MEETS THE REQUIREMENTS OF
+!     THE EXTENDED LENGTH OF THE SERIES REQUIRED FOR ANY ROUTINE
+!     USING THE SINGLETON FFT PROVIDING THE PROPER VALUE OF NDIV
+!     IS CHOSEN.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 7, 1981
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   LYFFT,N,NDIV,NFFT,NFFT2
+      LOGICAL
+     +   ERROR,HEAD
+!
+!  ARRAY ARGUMENTS
+      CHARACTER
+     +   NMSUB(6)*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT,NFFT1
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EHDR,IPRINT,SETESL
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MAX
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERROR
+!        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER LYFFT
+!        THE LENGTH OF THE VECTOR CONTAINING THE SERIES TO BE EXTENDED.
+!     INTEGER N
+!        THE ACTUAL NUMBER OF OBSERVATIONS IN THE SERIES.
+!     CHARACTER*1 NMSUB(6)
+!        THE CHARACTERS OF THE CALLING SUBROUTINES NAME.
+!     INTEGER NFFT
+!        THE USER SUPPLIED EXTENDED SERIES LENGTH.
+!     INTEGER NFFT1
+!        THE MAXIMUM OF NFFT AND N+2.
+!     INTEGER NFFT2
+!        THE SMALLEST EXTENDED SERIES LENGTH WHICH EQUALS OR
+!        EXCEEDS NFFT AND WHICH MEETS THE REQUIREMENTS OF
+!        SINGLETONS FFT CODE.
+!
+      ERROR = .FALSE.
+      CALL IPRINT (IPRT)
+!
+      IF (NFFT .GE. N+2) GO TO 20
+!
+!     PRINT WARNING
+!
+      CALL EHDR(NMSUB, HEAD)
+!
+      WRITE (IPRT, 1050) N
+!
+   20 CONTINUE
+      NFFT1 = MAX(NFFT, N+2)
+      CALL SETESL(NFFT1-2, NDIV, NFFT2)
+!
+      IF (NFFT .EQ. NFFT2) RETURN
+!
+!     PRINT WARNING
+!
+      CALL EHDR(NMSUB, HEAD)
+!
+      WRITE (IPRT, 1020) NFFT, NFFT2
+!
+      IF (NFFT .GT. LYFFT) GO TO 40
+!
+      WRITE (IPRT, 1030) NFFT2
+      RETURN
+!
+   40 CONTINUE
+!
+      ERROR = .TRUE.
+!
+      WRITE (IPRT, 1040) NFFT2, LYFFT
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1020 FORMAT (/
+     +   40H THE INPUT VALUE OF THE PARAMETER NFFT (, I5,
+     +   15H) DOES NOT MEET/
+     +   51H THE REQUIREMENTS OF SINGLETONS FFT CODE.  THE NEXT,
+     +   13H LARGER VALUE/
+     +   15H WHICH DOES IS , I5, '.')
+ 1030 FORMAT (/
+     +   11H THE VALUE , I5, 37H WILL BE USED FOR THE EXTENDED SERIES,
+     +    8H LENGTH.)
+ 1040 FORMAT (/
+     +   20H HOWEVER, THE VALUE , I5, 27H EXCEEDS THE LENGTH LYFFT (,
+     +   I5, 8H) OF THE/
+     +   58H VECTOR YFFT, AND THEREFORE CANNOT BE USED AS THE EXTENDED/
+     +   43H SERIES LENGTH WITHOUT REDIMENSIONING YFFT.)
+ 1050 FORMAT (/
+     +   56H THE EXTENDED SERIES LENGTH (NFFT) MUST EQUAL OR EXCEED,/
+     +   45H THE NUMBER OF OBSERVATIONS IN THE SERIES (N=, I5,
+     +    9H) PLUS 2.)
+!
+      END
+!UFSER
+      SUBROUTINE UFSER(NMSUB, N, LAGMAX, LACOV, NF, ISPCF, NW,
+     +    LAGS, LDSTAK, LDSMIN, LYFFT, NFFT, OPTION)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS IS THE ERROR CHECKING ROUTINE FOR THE TIME SERIES
+!     FOURIER UNIVARIATE SPECTRUM ANALYSIS ROUTINES.
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  JUNE 10, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ISPCF,LACOV,LAGMAX,LDSMIN,LDSTAK,LYFFT,N,NF,NFFT,NW
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   LAGS(*)
+      LOGICAL
+     +   OPTION(4)
+      CHARACTER
+     +   NMSUB(6)*1
+!
+!  SCALARS IN COMMON
+      INTEGER
+     +   IERR
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,NV
+      LOGICAL
+     +   HEAD
+!
+!  LOCAL ARRAYS
+      LOGICAL
+     +   ERR(15)
+      CHARACTER
+     +   L1(8)*1,LISPCF(8)*1,LLACOV(8)*1,LLAGMX(8)*1,LLAGS(8)*1,
+     +   LLDS(8)*1,LLGMX1(8)*1,LLYFFT(8)*1,LN(8)*1,LNF(8)*1,
+     +   LNM1(8)*1,LNW(8)*1
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL EISGE,EISII,EIVII
+!
+!  COMMON BLOCKS
+      COMMON /ERRCHK/IERR
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     LOGICAL ERR(15)
+!        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
+!        (FALSE).
+!     LOGICAL HEAD
+!        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
+!        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
+!        OF HEAD WILL BE CHANGED TO FALSE.
+!     INTEGER IERR
+!        THE INTEGER VALUE RETURNED BY THIS ROUTINE DESIGNATING
+!        WHETHER ANY ERRORS WERE DETECTED IN THE PARAMETER LIST
+!        IF ERR01, NO ERRORS WERE DETECTED
+!        IF IERR .EQ. 1, ERRORS HAVE BEEN DETECTED
+!     INTEGER ISPCF
+!         THE ACTUAL FIRST DIMENSION OF THE SPECTRUM ARRAYS.
+!     INTEGER LACOV
+!        THE LENGTH OF THE VECTOR ACOV.
+!     INTEGER LAGMAX
+!        THE MAXIMUM LAG VALUE TO BE USED.
+!     INTEGER LAGS(NW)
+!        THE ARRAY USED TO SPECIFY THE LAG WINDOW TRUNCATION
+!        POINTS USED FOR EACH SET OF SPECTRUM VALUES.
+!     INTEGER LDSMIN
+!        THE MINIMUM LENGTH ALLOWED FOR DSTAK.
+!     INTEGER LDSTAK
+!        THE LENGTH OF THE VECTOR DSTAK IN COMMON CSTAK.
+!     CHARACTER*1 LISPCF(8), LLACOV(8), LLAGMX(8),
+!    *   LLAGS(8), LLGMX1(8), LLDS(8), LN(8), LNF(8), LNM1(8),
+!    *   LNW(8), LLYFFT(8), L1(8)
+!        THE ARRAY(S) CONTAINING THE NAME(S) OF THE ARGUMENT(S)
+!        CHECKED FOR ERRORS.
+!     INTEGER LYFFT
+!        THE LENGTH OF THE VECTOR YFFT.
+!     INTEGER N
+!        THE INTEGER NUMBER OF OBSERVATIONS IN THE SERIES.
+!     INTEGER NF
+!        THE NUMBER OF FREQUENCIES AT WHICH THE SPECTRUM IS
+!        TO BE COMPUTED.
+!     INTEGER NFFT
+!        THE NUMBER OF OBSERVATIONS IN THE EXTENDED SERIES.
+!     CHARACTER*1 NMSUB(6)
+!        THE ARRAY CONTAINING THE NAME OF THE USER CALLED SUBROUTINE.
+!     INTEGER NV
+!        THE NUMBER OF VIOLATIONS FOUND WHEN CHECKING VECTOR LAGS.
+!     INTEGER NW
+!        THE ARGUMENT USED TO DETERMINE THE NUMBER OF DIFFERENT
+!        BANDWIDTHS TO BE USED.
+!     LOGICAL OPTION(4)
+!        AN INDICATOR ARRAY USED TO DESIGNATE WHETHER ANY OF THE
+!        FOUR POSSIBLE OPTIONS (F, M, V, OR S) HAVE BEEN USED (TRUE)
+!        OR NOT (FALSE).
+!
+!     SET UP NAME ARRAYS
+!
+      DATA LISPCF(1), LISPCF(2), LISPCF(3), LISPCF(4), LISPCF(5),
+     +   LISPCF(6), LISPCF(7), LISPCF(8) /'I','S','P','C','F',' ',' ',
+     +   ' '/
+      DATA LLACOV(1), LLACOV(2), LLACOV(3), LLACOV(4), LLACOV(5),
+     +   LLACOV(6), LLACOV(7), LLACOV(8) /'L','A','C','O','V',' ',' ',
+     +   ' '/
+      DATA LLAGMX(1), LLAGMX(2), LLAGMX(3), LLAGMX(4), LLAGMX(5),
+     +   LLAGMX(6), LLAGMX(7), LLAGMX(8) /'L','A','G','M','A','X',' ',
+     +   ' '/
+      DATA LLAGS(1), LLAGS(2), LLAGS(3), LLAGS(4), LLAGS(5), LLAGS(6),
+     +   LLAGS(7), LLAGS(8) /'L','A','G','S',' ',' ',' ',' '/
+      DATA LLGMX1(1), LLGMX1(2), LLGMX1(3), LLGMX1(4), LLGMX1(5),
+     +   LLGMX1(6), LLGMX1(7), LLGMX1(8) /'L','A','G','M','A','X','+',
+     +   '1'/
+      DATA LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
+     +   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
+      DATA LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8) /'N',
+     +   ' ',' ',' ',' ',' ',' ',' '/
+      DATA LNF(1), LNF(2), LNF(3), LNF(4), LNF(5), LNF(6), LNF(7),
+     +   LNF(8) /'N','F',' ',' ',' ',' ',' ',' '/
+      DATA LNM1(1), LNM1(2), LNM1(3), LNM1(4), LNM1(5), LNM1(6),
+     +   LNM1(7), LNM1(8) /'N','-','1',' ',' ',' ',' ',' '/
+      DATA LNW(1), LNW(2), LNW(3), LNW(4), LNW(5), LNW(6), LNW(7),
+     +   LNW(8) /'N','W',' ',' ',' ',' ',' ',' '/
+      DATA LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
+     +   LLYFFT(6), LLYFFT(7), LLYFFT(8) /'L','Y','F','F','T',' ',' ',
+     +   ' '/
+      DATA L1(1), L1(2), L1(3), L1(4), L1(5), L1(6), L1(7), L1(8) /'1',
+     +   ' ',' ',' ',' ',' ',' ',' '/
+!
+!     SET UP FOR ERROR CHECKING
+!
+      IERR = 0
+      HEAD = .TRUE.
+!
+      DO 10 I=1,15
+         ERR(I) = .FALSE.
+   10 CONTINUE
+!
+!     CALL ERROR CHECKING ROUTINES
+!
+      CALL EISGE(NMSUB, LN, N, 17, 1, HEAD, ERR(1), LN)
+!
+      IF (OPTION(4)) THEN
+        CALL EISGE(NMSUB, LNF, NF, 1, 1, HEAD, ERR(6), LNF)
+        IF (.NOT.ERR(6))
+     +     CALL EISGE(NMSUB, LISPCF, ISPCF, NF, 3, HEAD, ERR(7), LNF)
+        CALL EISGE(NMSUB, LNW, NW, 1, 1, HEAD, ERR(8), LNW)
+      END IF
+!
+      IF (.NOT.ERR(1)) THEN
+        IF (OPTION(3)) THEN
+          CALL EISII(NMSUB, LLAGMX, LAGMAX, 1, N-1, 1, HEAD, ERR(2),
+     +       L1, LNM1)
+          IF (.NOT.ERR(2)) THEN
+            IF (OPTION(2)) THEN
+              CALL EISGE(NMSUB, LLACOV, LACOV, LAGMAX+1, 8, HEAD,
+     +          ERR(3), LLGMX1)
+            ELSE
+              CALL EISGE(NMSUB, LLACOV, LACOV, LAGMAX+1, 7, HEAD,
+     +          ERR(3), LLGMX1)
+            END IF
+          END IF
+        END IF
+        IF (.NOT.ERR(2)) THEN
+          IF (OPTION(1))
+     +      CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 9, HEAD, ERR(4),
+     +        LLYFFT)
+!
+          IF (.NOT.ERR(8)) THEN
+           IF (OPTION(4)) THEN
+            IF (OPTION(3)) THEN
+             CALL EIVII(NMSUB, LLAGS, LAGS, NW, 1, LAGMAX, 0, HEAD, 3,
+     +         NV, ERR(9), L1, LLAGMX)
+            ELSE
+             CALL EIVII(NMSUB, LLAGS, LAGS, NW, 1, N-1, 0, HEAD, 3, NV,
+     +         ERR(9), L1, LNM1)
+            END IF
+           END IF
+!
+            IF ((.NOT.ERR(6)) .AND. (.NOT.ERR(9)))
+     +         CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR(14),
+     +            LLDS)
+          END IF
+        END IF
+      END IF
+!
+      DO 40 I=1,15
+         IF (ERR(I)) IERR = 1
+   40 CONTINUE
+!
+      RETURN
+!
+      END
+!FACTOR
+      SUBROUTINE FACTOR(N, NPF, IPF, IPFEXP)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE FACTORS AN INPUT INTEGER   N   AND RETURNS
+!     THE NUMBER OF PRIME FACTORS IN   NPF   , THE VALUE OF THE
+!     PRIME FACTORS IN THE VECTOR   IPF   , AND THE EXPONENT
+!     OF EACH OF THE PRIME FACTORS IN THE VECTOR   IPFEXP   .
+!     THE ELEMENTS OF    IPF   ARE STORED IN INCREASING ORDER.
+!     THE LENGTH OF THE VECTORS IS SUFFICIENT TO ACCOMODATE
+!     THE PRIME FACTORS OF AN INTEGER UP TO 2 ** 128 (APPROXIMATELY
+!     10 ** 40).
+!
+!     THIS ROUTINE IS ADAPTED FROM THE FACTORING ROUTINE GIVEN
+!     IN ACM ALGORITHM 467 (CACM, 1973, VOL. 16, NO. 11, PAGE 692-694).
+!
+!     ADAPTED BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  OCTOBER 23, 1980
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   N,NPF
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   IPF(50),IPFEXP(50)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IDIV,IFCUR,IQUOT,NPART
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IDIV, IFCUR
+!        VARIOUS VARIABLES USED TO FACTOR    N   .
+!     INTEGER IPF(50), IPFEXP(50)
+!        THE VECTORS OF PRIME FACTORS OF   N   , AND THEIR EXPONENTS,
+!        RESPECTIVELY.
+!     INTEGER IQUOT
+!        A VARIABLE USED TO FACTOR   N   .
+!     INTEGER N
+!        THE VALUE TO BE FACTORED.
+!     INTEGER NPART
+!        A VARIABLE USED TO FACTOR   N   .
+!     INTEGER NPF
+!        THE NUMBER OF FACTORS FOUND IN    N   .
+!
+!  DETERMINE THE FACTORS OF N
+!
+      NPF = 0
+      IFCUR = 0
+      NPART = N
+      IDIV = 2
+   10 IQUOT = NPART/IDIV
+      IF (NPART.NE.IDIV*IQUOT) GO TO 40
+      IF (IDIV.LE.IFCUR) GO TO 20
+      NPF = NPF + 1
+      IPF(NPF) = IDIV
+      IFCUR = IDIV
+      IPFEXP(NPF) = 1
+      GO TO 30
+   20 IPFEXP(NPF) = IPFEXP(NPF) + 1
+   30 NPART = IQUOT
+      GO TO 10
+   40 IF (IQUOT.LE.IDIV) GO TO 60
+      IF (IDIV.GE.3) GO TO 50
+      IDIV = 3
+      GO TO 10
+   50 IDIV = IDIV + 2
+      GO TO 10
+   60 IF (NPART.LE.1) RETURN
+      IF (NPART.LE.IFCUR) GO TO 70
+      NPF = NPF + 1
+      IPF(NPF) = NPART
+      IPFEXP(NPF) = 1
+      RETURN
+   70 IPFEXP(NPF) = IPFEXP(NPF) + 1
+!
+      RETURN
+      END
+!MSGX
+      SUBROUTINE MSGX(IER, IPRT)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE PRINTS THE RETURNED AND EXPECTED VALUES FOR THE
+!     ERROR FLAG IERR
+!
+!     WRITTEN BY -
+!        LINDA MITCHELL
+!        STATISTICAL ENGINEERING DIVISION
+!        NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  MAY 17, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   IER,IPRT
+!
+!  SCALARS IN COMMON
+      INTEGER
+     +   IERR
+!
+!  COMMON BLOCKS
+      COMMON /ERRCHK/IERR
+!
+!     VARIBLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IER
+!        EXPECTED VALUE OF ERROR FLAG IERR
+!     INTEGER IERR
+!        RETURNED ERROR FLAG FOUND IN THE COMMON ERRCHK
+!     INTEGER IPRT
+!        LOGICAL OUTPUT DEVICE
+!
+!
+!     PRINT MESSAGE
+      WRITE (IPRT,1000) IER, IERR
+!
+      IF (IER.NE.IERR) WRITE (IPRT,1010)
+!
+      RETURN
+!
+!     FORMAT STATEMENT
+!
+ 1000 FORMAT(/28H EXPECTED VALUE FOR IERR IS , I1/15H RETURNED VALUE,
+     +   12H FOR IERR IS, I2)
+ 1010 FORMAT(48H POSSIBLE ERROR, UNEXPECTED VALUE FOR ERROR FLAG)
+      END
+!CPYVII
+      SUBROUTINE CPYVII(N,X,INCX,Y,INCY)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     COPY INTEGER X TO INTEGER Y.
+!     FOR I = 0 TO N-1, COPY  X(LX+I*INCX) TO Y(LY+I*INCY),
+!     WHERE LX = 1 IF INCX .GE. 0, ELSE LX = (-INCX)*N, AND LY IS
+!     DEFINED IN A SIMILAR WAY USING INCY.
+!
+!     MODELED AFTER BLAS COPY ROUTINES.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  OCTOBER 3, 1983
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   INCX,INCY,N
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   X(N),Y(N)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IX,IY,M,MP1,NS
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER I
+!        AN INDEX VALUE.
+!     INTEGER INCX
+!        THE INCREMENT FOR THE MATRIX X.
+!     INTEGER INCY
+!        THE INCREMENT FOR THE MATRIX Y.
+!     INTEGER N
+!        THE NUMBER OF ROWS OF DATA TO BE COPIED FROM MATRIX X.
+!     INTEGER X(N)
+!        THE MATRIX TO BE COPIED FROM.
+!     INTEGER Y(N)
+!        THE MATRIX TO BE COPIED TO.
+!
+      IF(N.LE.0)RETURN
+      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
+    5 CONTINUE
+!
+!        CODE FOR UNEQUAL OR NONPOSITIVE INCREMENTS.
+!
+      IX = 1
+      IY = 1
+      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
+      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
+      DO 10 I = 1,N
+        Y(IY) = X(IX)
+        IX = IX + INCX
+        IY = IY + INCY
+   10 CONTINUE
+      RETURN
+!
+!        CODE FOR BOTH INCREMENTS EQUAL TO 1
+!
+!        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 7.
+!
+   20 M = MOD(N,7)
+      IF( M .EQ. 0 ) GO TO 40
+      DO 30 I = 1,M
+        Y(I) = X(I)
+   30 CONTINUE
+      IF( N .LT. 7 ) RETURN
+   40 MP1 = M + 1
+      DO 50 I = MP1,N,7
+        Y(I) = X(I)
+        Y(I + 1) = X(I + 1)
+        Y(I + 2) = X(I + 2)
+        Y(I + 3) = X(I + 3)
+        Y(I + 4) = X(I + 4)
+        Y(I + 5) = X(I + 5)
+        Y(I + 6) = X(I + 6)
+   50 CONTINUE
+      RETURN
+!
+!        CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
+!
+   60 CONTINUE
+      NS = N*INCX
+          DO 70 I=1,NS,INCX
+          Y(I) = X(I)
+   70     CONTINUE
+      RETURN
+      END
+!STKGET
+      INTEGER FUNCTION STKGET(NITEMS, ITYPE)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!  ALLOCATES SPACE OUT OF THE INTEGER ARRAY ISTAK (IN COMMON
+!  BLOCK CSTAK) FOR AN ARRAY OF LENGTH NITEMS AND OF TYPE
+!  DETERMINED BY ITYPE AS FOLLOWS
+!
+!    1 - LOGICAL
+!    2 - INTEGER
+!    3 - REAL
+!    4 - DOUBLE PRECISION
+!    5 - COMPLEX
+!
+!  ON RETURN, THE ARRAY WILL OCCUPY
+!
+!    STAK(STKGET), STAK(STKGET+1), ..., STAK(STKGET-NITEMS+1)
+!
+!  WHERE STAK IS AN ARRAY OF TYPE ITYPE EQUIVALENCED TO ISTAK.
+!
+!  (FOR THOSE WANTING TO MAKE MACHINE DEPENDENT MODIFICATIONS
+!  TO SUPPORT OTHER TYPES, CODES 6, 7, 8, 9, 10, 11 AND 12 HAVE
+!  BEEN RESERVED FOR 1/4 LOGICAL, 1/2 LOGICAL, 1/4 INTEGER,
+!  1/2 INTEGER, QUAD PRECISION, DOUBLE COMPLEX AND QUAD
+!  COMPLEX, RESPECTIVELY.)
+!
+!  THE USE OF THE FIRST FIVE WORDS IS DESCRIBED BELOW.
+!
+!    ISTAK( 1) - LOUT,  THE NUMBER OF CURRENT ALLOCATIONS.
+!    ISTAK( 2) - LNOW,  THE CURRENT ACTIVE LENGTH OF THE STACK.
+!    ISTAK( 3) - LUSED, THE MAXIMUM VALUE OF ISTAK(2) ACHIEVED.
+!    ISTAK( 4) - LMAX,  THE MAXIMUM LENGTH THE STACK.
+!    ISTAK( 5) - LBOOK, THE NUMBER OF WORDS USED FOR BOOKEEPING.
+!
+!  THE NEXT FIVE WORDS CONTAIN INTEGERS DESCRIBING THE AMOUNT
+!  OF STORAGE ALLOCATED BY THE FORTRAN SYSTEM TO THE VARIOUS
+!  DATA TYPES.  THE UNIT OF MEASUREMENT IS ARBITRARY AND MAY
+!  BE WORDS, BYTES OR BITS OR WHATEVER IS CONVENIENT.  THE
+!  VALUES CURRENTLY ASSUMED CORRESPOND TO AN ANS FORTRAN
+!  ENVIRONMENT.  FOR SOME MINI-COMPUTER SYSTEMS THE VALUES MAY
+!  HAVE TO BE CHANGED (SEE I0TK00).
+!
+!    ISTAK( 6) - THE NUMBER OF UNITS ALLOCATED TO LOGICAL
+!    ISTAK( 7) - THE NUMBER OF UNITS ALLOCATED TO INTEGER
+!    ISTAK( 8) - THE NUMBER OF UNITS ALLOCATED TO REAL
+!    ISTAK( 9) - THE NUMBER OF UNITS ALLOCATED TO DOUBLE PRECISION
+!    ISTAK(10) - THE NUMBER OF UNITS ALLOCATED TO COMPLEX
+!
+!     THIS FUNCTION WAS ADAPTED FROM THE FRAMEWORK FUNCTION ISTKGT
+!
+!     ADAPTED BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  NOVEMBER 26, 1980
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ITYPE,NITEMS
+!
+!  SCALARS IN COMMON
+      INTEGER
+     +   IERR
+!
+!  ARRAYS IN COMMON
+      DOUBLE PRECISION DSTAK(12)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IPRT,LBOOK,LMAX,LNOW,LOUT,LUSED
+!
+!  LOCAL ARRAYS
+      INTEGER
+     +   ISIZE(5),ISTAK(12)
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MAX
+!
+!  COMMON BLOCKS
+      COMMON /CSTAK/DSTAK
+      COMMON /ERRCHK/IERR
+!
+!  EQUIVALENCES
+      EQUIVALENCE (DSTAK(1),ISTAK(1))
+      EQUIVALENCE (ISTAK(1),LOUT)
+      EQUIVALENCE (ISTAK(2),LNOW)
+      EQUIVALENCE (ISTAK(3),LUSED)
+      EQUIVALENCE (ISTAK(4),LMAX)
+      EQUIVALENCE (ISTAK(5),LBOOK)
+      EQUIVALENCE (ISTAK(6),ISIZE(1))
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     DOUBLE PRECISION DSTAK(12)
+!        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
+!     INTEGER I
+!        THE LOCATION OF A POINTER TO THE END OF THE PREVIOUS ALLOCATION
+!     INTEGER IERR
+!        THE INTEGER VALUE RETURNED BY THIS ROUTINE DESIGNATING
+!        WHETHER ANY ERRORS WERE DETECTED IN THE PARAMETER LIST
+!        IF IERR .EQ. 0, NO ERRORS WERE DETECTED
+!        IF IERR .EQ. 1, ERRORS HAVE BEEN DETECTED
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER ISIZE(5)
+!        THE NUMBER OF WORDS IN EACH OF THE VARIOUS DATA TYPES.
+!     INTEGER ISTAK(12)
+!        THE INTEGER VERSION OF THE /CSTAK/ WORK AREA.
+!     INTEGER ITYPE
+!        THE TYPE OF ARRAY OF LENGTH NITEMS TO BE ALLOCATED.
+!     INTEGER LBOOK
+!        THE NUMBER OF WORDS USED FOR BOOKEEPING.
+!     INTEGER LMAX
+!        THE MAXIMUM LENGTH OF THE STACK.
+!     INTEGER LNOW
+!        THE CURRENT ACTIVE LENGTH OF THE STACK.
+!     INTEGER LOUT
+!        THE NUMBER OF CURRENT ALLOCATIONS.
+!     INTEGER LUSED
+!        THE MAXIMUM VALUE OF ISTAK(2) ACHIEVED.
+!     INTEGER NITEMS
+!        THE LENGTH OF THE ARRAY OF ITYPE TO BE ALLOCATED.
+!
+!
+      STKGET = (LNOW*ISIZE(2)-1)/ISIZE(ITYPE) + 2
+      I = ( (STKGET-1+NITEMS)*ISIZE(ITYPE) - 1 )/ISIZE(2) + 3
+!
+!  STACK OVERFLOW IS AN UNRECOVERABLE ERROR.
+!
+      IF (I .LE. LMAX) GO TO 10
+!
+      IERR = 1
+      CALL IPRINT(IPRT)
+      WRITE(IPRT, 1000)
+      RETURN
+!
+   10 CONTINUE
+!
+!  ISTAK(I-1) CONTAINS THE TYPE FOR THIS ALLOCATION.
+!  ISTAK(I  ) CONTAINS A POINTER TO THE END OF THE PREVIOUS
+!             ALLOCATION.
+!
+      ISTAK(I-1) = ITYPE
+      ISTAK(I  ) = LNOW
+      LOUT = LOUT+1
+      LNOW = I
+      LUSED = MAX(LUSED, LNOW)
+!
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT(20H DSTAK IS TOO SHORT.)
+!
+      END
+!SETLAG
+      SUBROUTINE SETLAG (N, LAGMAX)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE SETS THE NUMBER OF AUTOCORRELATIONS TO BE
+!     COMPUTED.
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  NOVEMBER 21, 1980
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   LAGMAX,N
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MIN
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER LAGMAX
+!        THE NUMBER OF LAGS AT WHICH THE AUTOCOVARIANCES ARE TO BE
+!        COMPUTED.
+!     INTEGER N
+!        THE INTEGER NUMBER OF OBSERVATIONS IN EACH SERIES
+!
+      IF (N .GE. 96)                 LAGMAX = MIN(N / 3, 100)
+      IF (33 .LE. N .AND. N .LE. 95) LAGMAX = 32
+      IF (N .LE. 32)                 LAGMAX = N - 1
+      RETURN
+      END
+!LDSCMP
+      SUBROUTINE LDSCMP (NARR, NLOG, NINT, NREAL, NDBL, NCMP,
+     +   FLAG, NFP, LDSMIN)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     COMPUTES LDSMIN, THE MINIMUM NUMBER OF DOUBLE PRECISION LOCATIONS
+!     NEEDED BY THE FRAMEWORK TO STORE NARR ARRAYS, COMPRISING NLOG
+!     LOGICAL LOCATIONS, NINT INTEGER LOCATIONS, NREAL REAL LOCATIONS,
+!     NDBL DOUBLE PRECISION LOCATIONS, AND NCMP COMPLEX LOCATIONS,
+!     TOGETHER WITH THE NOVER OVERHEAD INTEGER LOCATIONS THAT THE
+!     FRAMEWORK ALWAYS USES AND THE 3 OVERHEAD LOCATIONS THAT IT USES
+!     PER ARRAY STORED.  (ALL THE LOCATIONS ARE ASSIGNED OUT OF THE
+!     LABELED COMMON CSTAK, USING A STACK DISCIPLINE.)
+!
+!     IT IS ASSUMED, BASED UPON THE FORTRAN STANDARD (ANSI X3.9 1966),
+!     THAT DOUBLE PRECISION AND COMPLEX DATA ELEMENTS ARE TWICE AS LONG
+!     AS INTEGER AND LOGICAL ELEMENTS.
+!
+!     WRITTEN BY - JOHN E. KOONTZ
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 7, 1981
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   LDSMIN,NARR,NCMP,NDBL,NFP,NINT,NLOG,NREAL
+      CHARACTER
+     +   FLAG*1
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   NOVER
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     CHARACTER*1 FLAG
+!        THE INDICATOR VARIABLE USED TO DESIGNATE WHETHER THE NFP
+!        ELEMENTS ARE REAL OR DOUBLE PRECISION, WHERE FLAG=S INDICATES
+!        THE NFP ELEMENTS ARE REAL (SINGLE PRECISION), AND FLAG=D
+!        INDICATES THE ELEMENTS ARE DOUBLE PRECISION.
+!     INTEGER LDSMIN
+!        OUTPUT PARAMETER.  THE MINIMUM NUMBER OF DOUBLE PRECISION
+!        LOCATIONS IN CSTAK REQUIRED FOR THE QUANTITIES OF ARRAY
+!        ELEMENTS AND ARRAYS SPECIFIED BY THE INPUT PARAMETERS.
+!     INTEGER NARR
+!        INPUT PARAMETER.  THE NUMBER OF ARRAYS TO BE STORED IN CSTAK.
+!     INTEGER NCMP
+!        INPUT PARAMETER.  THE NUMBER OF COMPLEX ELEMENTS IN THE
+!        ARRAYS TO BE STORED IN CSTAK.
+!     INTEGER NDBL
+!        INPUT PARAMETER.  THE NUMBER OF DOUBLE PRECISION ELEMENTS IN
+!        THE ARRAYS TO BE STORED, IN CSTAK.
+!     INTEGER NFP
+!        THE NUMBER OF ELEMENTS WHICH DEPEND ON THE PRECISION OF THE
+!        VERSION OF STARPAC BEING USED.
+!     INTEGER NINT
+!        INPUT PARAMETER.  THE NUMBER OF INTEGER ELEMENTS IN THE
+!        ARRAYS TO BE STORED IN CSTAK.
+!     INTEGER NLOG
+!        INPUT PARAMETER.  THE NUMBER OF LOGICAL ELEMENTS IN THE
+!        ARRAYS TO BE STORED IN CSTAK.
+!     INTEGER NOVER
+!        THE NUMBER OF INTEGER LOCATIONS THAT THE FRAMEWORK ALWAYS
+!        USES FOR OVERHEAD PURPOSES.
+!     INTEGER NREAL
+!        INPUT PARAMETER.  THE NUMBER OF REAL ELEMENTS IN THE ARRAYS
+!        TO BE STORED IN CSTAK.
+!
+!     DEFINE CONSTANTS
+!
+      DATA NOVER /10/
+!
+!     COMMENCE BODY OF ROUTINE
+!
+      LDSMIN = (NLOG + NINT + NREAL + 3*NARR + NOVER + 1)/2
+     +       + NDBL + NCMP
+      IF (FLAG.EQ.'S') THEN
+         LDSMIN = LDSMIN + (NFP+1)/2
+      ELSE
+         LDSMIN = LDSMIN + NFP
+      END IF
+      RETURN
+      END
+!PRTCNT
+      SUBROUTINE PRTCNT(NPRT, NDIGIT, IPTOUT)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE SETS UP THE PRINT CONTROL PARAMETERS.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  DECEMBER 29, 1982
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   NDIGIT,NPRT
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   IPTOUT(NDIGIT)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IFAC1,IFAC2
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER I, IFAC1, IFAC2
+!     INTEGER IPTOUT(NDIGIT)
+!        THE VARIABLE USED TO CONTROL PRINTED OUTPUT FOR EACH SECTION.
+!     INTEGER NDIGIT
+!        THE NUMBER OF DIGITS IN THE PRINT CONTROL VALUE.
+!     INTEGER NPRT
+!        THE PARAMETER USED TO INDICATE HOW MUCH PRINTED OUTPUT IS
+!        TO BE PROVIDED.
+!
+!
+      IF (NPRT.LE.-1) GO TO 20
+!
+      IFAC1 = 10 ** (NDIGIT)
+      DO 10 I = 1, NDIGIT
+         IFAC2 = IFAC1/10
+         IPTOUT(I) = MOD(NPRT, IFAC1) / IFAC2
+         IFAC1 = IFAC2
+   10 CONTINUE
+      RETURN
+!
+   20 DO 30 I = 1, NDIGIT
+         IPTOUT(I) = 1
+   30 CONTINUE
+      IPTOUT (NDIGIT) = 2
+!
+      RETURN
+!
+      END
+!NLHDRN
+      SUBROUTINE NLHDRN(PAGE, WIDE, ISUBHD)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS SUBROUTINE PRINTS THE PAGE HEADINGS FOR THE NONLINEAR
+!     LEAST SQUARES ESTIMATION ROUTINES THAT USE NUMERICAL
+!     APPROXIMATIONS TO THE DERIVATIVES.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  OCTOBER 3, 1983
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ISUBHD
+      LOGICAL
+     +   PAGE,WIDE
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT,VERSP
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER ISUBHD
+!        AN INDICATOR VALUE SPECIFYING SUBHEADINGS TO BE PRINTED.
+!     LOGICAL PAGE
+!        THE VARIABLE USED TO INDICATE WHETHER A GIVEN SECTION OF
+!        THE OUTPUT IS TO BEGIN ON A NEW PAGE (TRUE) OR NOT (FALSE).
+!     LOGICAL WIDE
+!        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
+!        BE FULL WIDTH (TRUE) OR NOT (FALSE).
+!
+!
+      CALL IPRINT(IPRT)
+      IF (PAGE) WRITE (IPRT, 1020)
+      CALL VERSP(WIDE)
+      IF (PAGE) WRITE (IPRT,1000)
+      IF (.NOT.PAGE) WRITE (IPRT,1010)
+      PAGE = .TRUE.
+!
+      IF (ISUBHD.EQ.0) RETURN
+!
+      GO TO (10), ISUBHD
+!
+   10 WRITE (IPRT, 1030)
+!
+      RETURN
+!
+!     FORMAT STATEMENTS FOR PAGE HEADINGS
+!
+ 1000 FORMAT (35H+NONLINEAR LEAST SQUARES ESTIMATION,
+     +   53H WITH NUMERICALLY APPROXIMATED DERIVATIVES, CONTINUED)
+ 1010 FORMAT ('+', 82(1H*)/
+     +   1X, 37H*  NONLINEAR LEAST SQUARES ESTIMATION,
+     +   45H WITH NUMERICALLY APPROXIMATED DERIVATIVES  */ 1X, 82(1H*))
+ 1020 FORMAT ('1')
+ 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
+      END
+!AMFHDR
+      SUBROUTINE AMFHDR(PAGE, WIDE, ISUBHD)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS SUBROUTINE PRINTS THE PAGE HEADINGS FOR THE NONLINEAR
+!     LEAST SQUARES ESTIMATION ROUTINES FOR ARIMA MODELS THAT USE
+!     NUMERICAL APPROXIMATIONS TO THE DERIVATIVES.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  AUGUST 1, 1985
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ISUBHD
+      LOGICAL
+     +   PAGE,WIDE
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT,VERSP
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IPRT
+!        THE UNIT NUMBER FOR PRINTED OUTPUT.
+!     INTEGER ISUBHD
+!        AN INDICATOR VALUE SPECIFYING SUBHEADINGS TO BE PRINTED.
+!     LOGICAL PAGE
+!        THE VARIABLE USED TO INDICATE WHETHER A GIVEN SECTION OF
+!        THE OUTPUT IS TO BEGIN ON A NEW PAGE (TRUE) OR NOT (FALSE).
+!     LOGICAL WIDE
+!        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
+!        BE FULL WIDTH (TRUE) OR NOT (FALSE).
+!
+      CALL IPRINT(IPRT)
+      IF (PAGE) WRITE (IPRT, 1020)
+      CALL VERSP(WIDE)
+      IF (PAGE) WRITE (IPRT,1000)
+      IF (.NOT.PAGE) WRITE (IPRT,1010)
+      PAGE = .TRUE.
+!
+      IF (ISUBHD.EQ.0) RETURN
+!
+      GO TO (10), ISUBHD
+!
+   10 WRITE (IPRT, 1030)
+!
+      RETURN
+!
+!     FORMAT STATEMENTS FOR PAGE HEADINGS
+!
+ 1000 FORMAT ('+ARIMA FORECASTING, CONTINUED')
+ 1010 FORMAT ('+', 23(1H*)/ ' *  ARIMA FORECASTING  *', /1X, 23(1H*))
+ 1020 FORMAT ('1')
+ 1030 FORMAT (//' MODEL SUMMARY'/' -------------')
+      END
+!ICOPY
+      SUBROUTINE ICOPY(N,ISX,INCX,ISY,INCY)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE IS A ADAPTATION OF THE BLAS SUBROUTINE SCOPY,
+!     MODIFIED TO HANDLE INTEGER ARRAYS.
+!
+!     COPY INTEGER ISX TO INTEGER ISY.
+!     FOR I = 0 TO N-1, COPY  ISX(LX+I*INCX) TO ISY(LY+I*INCY),
+!     WHERE LX = 1 IF INCX .GE. 0, ELSE LX = (-INCX)*N, AND LY IS
+!     DEFINED IN A SIMILAR WAY USING INCY.
+!
+!     WRITTEN BY  -  JANET R. DONALDSON
+!                    STATISTICAL ENGINEERING DIVISION
+!                    NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  APRIL 2, 1981
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   INCX,INCY,N
+!
+!  ARRAY ARGUMENTS
+      INTEGER
+     +   ISX(N),ISY(N)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   I,IX,IY,M,MP1,NS
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MOD
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER I
+!        AN INDEXING VARIABLE.
+!     INTEGER INCX, INCY
+!        THE INCREMENT USED FOR THE COPY FROM ONE VARIABLE TO THE OTHER.
+!     INTEGER ISX(N)
+!        THE ARRAY TO BE COPIED FROM.
+!     INTEGER ISY(N)
+!        THE ARRAY TO BE COPIED TO.
+!     INTEGER IX, IY
+!        INDEX VARIABLES.
+!     INTEGER M
+!        THE VALUE OF N MODULO 7.
+!     INTEGER MP1
+!        THE VALUE OF M + 1.
+!     INTEGER N
+!        THE NUMBER OF OBSERVATIONS IN THE ARRAYS ISX AND ISY.
+!     INTEGER NS
+!        THE VALUE OF N * INCX.
+!
+      IF(N.LE.0)RETURN
+      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
+    5 CONTINUE
+!
+!        CODE FOR UNEQUAL OR NONPOSITIVE INCREMENTS.
+!
+      IX = 1
+      IY = 1
+      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
+      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
+      DO 10 I = 1,N
+        ISY(IY) = ISX(IX)
+        IX = IX + INCX
+        IY = IY + INCY
+   10 CONTINUE
+      RETURN
+!
+!        CODE FOR BOTH INCREMENTS EQUAL TO 1
+!
+!
+!        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 7.
+!
+   20 M = MOD(N,7)
+      IF( M .EQ. 0 ) GO TO 40
+      DO 30 I = 1,M
+        ISY(I) = ISX(I)
+   30 CONTINUE
+      IF( N .LT. 7 ) RETURN
+   40 MP1 = M + 1
+      DO 50 I = MP1,N,7
+        ISY(I) = ISX(I)
+        ISY(I + 1) = ISX(I + 1)
+        ISY(I + 2) = ISX(I + 2)
+        ISY(I + 3) = ISX(I + 3)
+        ISY(I + 4) = ISX(I + 4)
+        ISY(I + 5) = ISX(I + 5)
+        ISY(I + 6) = ISX(I + 6)
+   50 CONTINUE
+      RETURN
+!
+!        CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
+!
+   60 CONTINUE
+      NS = N*INCX
+      DO 70 I=1,NS,INCX
+          ISY(I) = ISX(I)
+   70 CONTINUE
+      RETURN
+      END
+
+!IMDCON
+      integer function imdcon(k)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!  ***  RETURN INTEGER MACHINE-DEPENDENT CONSTANTS  ***
+!
+!     ***  K = 1 MEANS RETURN STANDARD OUTPUT UNIT NUMBER.   ***
+!     ***  K = 2 MEANS RETURN ALTERNATE OUTPUT UNIT NUMBER.  ***
+!     ***  K = 3 MEANS RETURN  INPUT UNIT NUMBER.            ***
+!          (NOTE -- K = 2, 3 ARE USED ONLY BY TEST PROGRAMS.)
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer k
+!
+!  LOCAL ARRAYS
+      integer mdcon(3)
+!
+!  EXTERNAL FUNCTIONS
+      integer i1mach
+      external i1mach
+!
+      mdcon(1) = i1mach(2)
+      mdcon(2) = i1mach(3)
+      mdcon(3) = i1mach(1)
+!
+      imdcon = mdcon(k)
+      end function imdcon
+!STOPX
+      logical function stopx(idummy)
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      integer :: idummy
+!
+!     *****PURPOSE...
+!     THIS FUNCTION MAY SERVE AS THE STOPX (ASYNCHRONOUS INTERRUPTION)
+!     FUNCTION FOR THE NL2SOL (NONLINEAR LEAST-SQUARES) PACKAGE AT
+!     THOSE INSTALLATIONS WHICH DO NOT WISH TO IMPLEMENT A
+!     DYNAMIC STOPX.
+!
+!     *****ALGORITHM NOTES...
+!     AT INSTALLATIONS WHERE THE NL2SOL SYSTEM IS USED
+!     INTERACTIVELY, THIS DUMMY STOPX SHOULD BE REPLACED BY A
+!     FUNCTION THAT RETURNS .TRUE. IF AND ONLY IF THE INTERRUPT
+!     (BREAK) KEY HAS BEEN PRESSED SINCE THE LAST CALL ON STOPX.
+!
+!
+      stopx = .false.
+
+      end function stopx
+!UFPARM
+      subroutine ufparm
+
+      end subroutine ufparm
+!STKSET
+      SUBROUTINE STKSET (NITEMS, ITYPE)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!  INITIALIZES THE STACK TO NITEMS OF TYPE ITYPE
+!
+!     THIS FUNCTION WAS ADAPTED FROM THE FRAMEWORK SUBROUTINE ISTKIN
+!
+!     ADAPTED BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  NOVEMBER 26, 1980
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      INTEGER
+     +   ITYPE,NITEMS
+!
+!  ARRAYS IN COMMON
+      DOUBLE PRECISION DSTAK(12)
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   LBOOK,LMAX,LNOW,LOUT,LUSED
+!
+!  LOCAL ARRAYS
+      INTEGER
+     +   ISIZE(5),ISTAK(12)
+!
+!  INTRINSIC FUNCTIONS
+      INTRINSIC MAX
+!
+!  COMMON BLOCKS
+      COMMON /CSTAK/DSTAK
+!
+!  EQUIVALENCES
+      EQUIVALENCE (DSTAK(1),ISTAK(1))
+      EQUIVALENCE (ISTAK(1),LOUT)
+      EQUIVALENCE (ISTAK(2),LNOW)
+      EQUIVALENCE (ISTAK(3),LUSED)
+      EQUIVALENCE (ISTAK(4),LMAX)
+      EQUIVALENCE (ISTAK(5),LBOOK)
+      EQUIVALENCE (ISTAK(6),ISIZE(1))
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     DOUBLE PRECISION DSTAK(12)
+!        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
+!     INTEGER ISIZE(5)
+!        THE NUMBER OF WORDS IN EACH OF THE VARIOUS DATA TYPES.
+!     INTEGER ISTAK(12)
+!        THE INTEGER VERSION OF THE /CSTAK/ WORK AREA.
+!     INTEGER ITYPE
+!        THE TYPE OF ARRAY OF LENGTH NITEMS TO BE ALLOCATED.
+!     INTEGER LBOOK
+!        THE NUMBER OF WORDS USED FOR BOOKEEPING.
+!     INTEGER LMAX
+!        THE MAXIMUM LENGTH OF THE STACK.
+!     INTEGER LNOW
+!        THE CURRENT ACTIVE LENGTH OF THE STACK.
+!     INTEGER LOUT
+!        THE NUMBER OF CURRENT ALLOCATIONS.
+!     INTEGER LUSED
+!        THE MAXIMUM VALUE OF ISTAK(2) ACHIEVED.
+!     INTEGER NITEMS
+!        THE LENGTH OF THE ARRAY OF ITYPE TO BE ALLOCATED.
+!
+!  HERE TO INITIALIZE
+!
+!  SET DATA SIZES APPROPRIATE FOR A STANDARD CONFORMING
+!  FORTRAN SYSTEM USING THE FORTRAN "STORAGE UNIT" AS THE
+!  MEASURE OF SIZE.
+!
+!  LOGICAL
+      ISIZE(1) = 1
+!  INTEGER
+      ISIZE(2) = 1
+!  REAL
+      ISIZE(3) = 1
+!  DOUBLE PRECISION
+      ISIZE(4) = 2
+!  COMPLEX
+      ISIZE(5) = 2
+!
+      LBOOK = 10
+      LNOW  = LBOOK
+      LUSED = LBOOK
+      LMAX  = MAX( (NITEMS*ISIZE(ITYPE))/ISIZE(2), 12 )
+      LOUT  = 0
+!
+      RETURN
+!
+      END
+!VERSP
+      SUBROUTINE VERSP (WIDE)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     THIS ROUTINE PRINTS THE VERSION NUMBER.
+!
+!     WRITTEN BY - JANET R. DONALDSON
+!                  STATISTICAL ENGINEERING DIVISION
+!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!
+!     CREATION DATE  -  OCTOBER 4, 1983
+!
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+      LOGICAL
+     +   WIDE
+!
+!  LOCAL SCALARS
+      INTEGER
+     +   IPRT
+!
+!  EXTERNAL SUBROUTINES
+      EXTERNAL IPRINT
+!
+!     VARIABLE DEFINITIONS (ALPHABETICALLY)
+!
+!     INTEGER IPRT
+!        THE UNIT NUMBER OF THE DEVICE USED FOR PRINTED OUTPUT.
+!     LOGICAL WIDE
+!        THE MAXIMUM NUMBER OF COLUMNS THE PRINTED OUTPUT CAN USE.
+!
+      CALL IPRINT(IPRT)
+!
+      IF (WIDE) THEN
+         WRITE(IPRT, 1000)
+      ELSE
+         WRITE(IPRT, 1010)
+      END IF
+!
+      RETURN
+!
+!     FORMAT STATEMENTS
+!
+ 1000 FORMAT (105X, 'STARPAC 3.00 (05/15/2022)')
+ 1010 FORMAT (54X, 'STARPAC 3.00 (05/15/2022)')
       END
 
       end module M_starpac

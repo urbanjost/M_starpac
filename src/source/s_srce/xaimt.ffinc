@@ -1,5 +1,6 @@
 !XAIMT
-      SUBROUTINE XAIMT(LDSTAK)
+      SUBROUTINE XAIMT(LDSTAK,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !

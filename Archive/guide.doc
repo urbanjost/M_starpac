@@ -1328,7 +1328,7 @@
 
  NOTE:  Argument definitions and sample programs are given  in  section  D  and
  section  F,  respectively.  The  conventions  used  to  present  the following
- declaration and CALL statments are given in chapter 1, sections B and D.
+ declaration and CALL statements are given in chapter 1, sections B and D.
 
 
                                    Page Plots
@@ -2269,7 +2269,7 @@
 
  NOTE:  Argument  definitions  and  a sample program are given in section D and
  section F,  respectively.  The  conventions  used  to  present  the  following
- declaration and CALL statments are given in chapter 1, sections B and D.
+ declaration and CALL statements are given in chapter 1, sections B and D.
 
 
  NRAND:   Generate  a vector of normal pseudo-random numbers with zero mean and
@@ -2677,7 +2677,7 @@
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The conventions used to present the following  declaration  and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
 
  HIST:   Compute  and print a histogram  and summary statistics, with automatic
@@ -3167,7 +3167,7 @@
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The  conventions  used to present the following declaration and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
 
  STAT:   Compute and print 53 statistics describing the input data
@@ -3827,7 +3827,7 @@
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The  conventions  used to present the following declaration and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
 
  AOV1:   Compute and print a one-way analysis of variance of the input data
@@ -4009,7 +4009,7 @@
  limits are formed by taking the grand mean plus (and minus) the product of the
  percentage point of Student's t distribution and the standard deviation of the
  mean.  Let k be the number of groups and n be the total number of observations
- with postitive tag.   Then, the  standard deviation of the mean  is the square
+ with positive tag.   Then, the  standard deviation of the mean  is the square
  root of the variance of the mean formed as follows:
 
    Model                    Variance                 Variance of     Degrees of
@@ -4364,7 +4364,7 @@
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The  conventions  used to present the following declaration and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
 
  CORR:   Compute  and  print a  correlation analysis of  a multivariate  random
@@ -6522,7 +6522,7 @@
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The  conventions  used to present the following declaration and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
 
                  Nonlinear Least Squares Estimation Subroutines
@@ -9478,7 +9478,7 @@
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The  conventions  used to present the following declaration and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
 
            Subroutines Supporting Symmetric Linear Filter Operations
@@ -10838,7 +10838,7 @@
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The conventions used to present the following  declaration  and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
  DEMOD:   Compute  and plot the results of a complex  demodulation of the input
           series
@@ -12141,7 +12141,7 @@
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The  conventions  used to present the following declaration and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
                                     <12-6>
 1
@@ -16465,7 +16465,7 @@
 
  NOTE:  Argument definitions and sample programs are given in sections D and F,
  respectively.  The  conventions  used to present the following declaration and
- CALL statments are given in chapter 1, sections B and D.
+ CALL statements are given in chapter 1, sections B and D.
 
       The <basic declaration block> identifies declaration statements  that are
  needed by all of the  ARIMA estimation and forecasting subroutines.   The user

@@ -33,9 +33,7 @@
      +   strted
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     +   rmdcon
-      external rmdcon
+!     REAL(KIND=WP) :: RMDCON
 !
 !  EXTERNAL SUBROUTINES
       external dfault,itsmry,nl2itr,vscopy
@@ -93,8 +91,7 @@
 !/
 !  ***  EXTERNAL FUNCTIONS AND SUBROUTINES  ***
 !
-!     EXTERNAL DFAULT, ITSMRY, NL2ITR, RMDCON, VSCOPY
-!     REAL(KIND=WP) :: RMDCON
+!     EXTERNAL DFAULT, ITSMRY, NL2ITR, VSCOPY
 !
 ! DFAULT... SUPPLIES DEFAULT PARAMETER VALUES.
 ! ITSMRY... PRINTS ITERATION SUMMARY AND INFO ABOUT INITIAL AND FINAL X.
@@ -167,7 +164,7 @@
          nf = iv(nfgcal)
          call calcr (n, p, x, nf, v(j1k), uiparm, urparm, ufparm)
          if (nf .gt. 0) go to 50
-              if (hlim .eq. zero) hlim = hfac * rmdcon(3)
+              if (hlim .eq. zero) hlim = hfac * rmdcon(3,typ=0.0_wp)
 !             ***  HLIM = HFAC TIMES THE UNIT ROUNDOFF  ***
               h = negpt5 * h
               if (abs(h) .ge. hlim) go to 40

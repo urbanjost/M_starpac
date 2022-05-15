@@ -15,17 +15,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   FC
       INTEGER
      +   K
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   HLP(K)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   ARG,CON,PI,SUM
       INTEGER
      +   I,IHM,IHP,KHALF,KMID
@@ -38,12 +38,12 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION ARG, CON
+!     REAL(KIND=WP) :: ARG, CON
 !        VARIABLES USED IN THE COMPUTATION OF THE LOW PASS FILTER
 !        COEFFICIENTS.
-!     DOUBLE PRECISION FC
+!     REAL(KIND=WP) :: FC
 !        THE CUTOFF FREQUENCY USED FOR THE LOW PASS FILTER.
-!     DOUBLE PRECISION HLP(K)
+!     REAL(KIND=WP) :: HLP(K)
 !        THE ARRAY IN WHICH THE INPUT LOW PASS FILTER COEFFICIENTS
 !        ARE STORED.
 !     INTEGER I
@@ -57,21 +57,21 @@
 !        THE VALUE OF THE MIDPOINT OF K MINUS 1.
 !     INTEGER KMID
 !        THE MIDPOINT OF THE FILTER.
-!     DOUBLE PRECISION PI
+!     REAL(KIND=WP) :: PI
 !        THE VALUE OF PI.
-!     DOUBLE PRECISION SUM
+!     REAL(KIND=WP) :: SUM
 !        A VALUE USED FOR SUMMING.
 !
       CALL GETPI(PI)
 !
       KMID = (K + 1) / 2
 !
-      HLP(KMID) = 1.0D0
+      HLP(KMID) = 1.0E0_WP
 !
       IF (K .EQ. 1) RETURN
 !
-      HLP(KMID) = 2.0D0 * FC
-      CON = 2.0D0 * PI / K
+      HLP(KMID) = 2.0E0_WP * FC
+      CON = 2.0E0_WP * PI / K
       SUM = HLP(KMID)
 !
       KHALF = (K - 1) / 2
@@ -79,7 +79,7 @@
       DO 10 I = 1, KHALF
          ARG = I * CON
          IHP = KMID + I
-         HLP(IHP) = SIN(I * FC * 2.0D0 * PI) * SIN(ARG) /
+         HLP(IHP) = SIN(I * FC * 2.0E0_WP * PI) * SIN(ARG) /
      +      (I * PI * ARG)
          IHM = KMID - I
          HLP(IHM) = HLP(IHP)

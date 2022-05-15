@@ -1,5 +1,6 @@
 !XLLS
-      SUBROUTINE XLLS(LDS)
+      SUBROUTINE XLLS(LDS,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !

@@ -128,3 +128,5 @@ man:
 	$(F90) $(F90FLAGS) -c $<
 
 M_starpac.o: M_starpac_s.o M_starpac_d.o
+#M_starpac_s.o: M_starpac_g.o 
+#M_starpac_d.o: M_starpac_g.o 

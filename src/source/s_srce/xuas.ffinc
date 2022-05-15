@@ -1,5 +1,6 @@
 !XUAS
-      SUBROUTINE XUAS(LDSTAK)
+      SUBROUTINE XUAS(LDSTAK,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !

@@ -23,17 +23,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   FD
       INTEGER
      +   N
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   AMPL(N),PHAS(N),Y(N)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   ARG,PI
       INTEGER
      +   I
@@ -46,36 +46,36 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION AMPL(N)
+!     REAL(KIND=WP) :: AMPL(N)
 !        THE ARRAY IN WHICH THE AMPLITUDES ARE STORED.
-!     DOUBLE PRECISION ARG
+!     REAL(KIND=WP) :: ARG
 !        A VALUE USED IN COMPUTING THE DEMODULATED SERIES.
-!     DOUBLE PRECISION FD
+!     REAL(KIND=WP) :: FD
 !        THE DEMODULATION FREQUENCY.
 !     INTEGER I
 !        AN INDEXING VARIABLE.
 !     INTEGER N
 !        THE NUMBER OF OBSERVATIONS IN THE SERIES BEING DEMODULATED.
-!     DOUBLE PRECISION PHAS(N)
+!     REAL(KIND=WP) :: PHAS(N)
 !        THE ARRAYS CONTAINING THE PRIMARY PHASE ESTIMATES.
-!     DOUBLE PRECISION PI
+!     REAL(KIND=WP) :: PI
 !        THE VALUE OF PI.
-!     DOUBLE PRECISION Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        THE INPUT ARRAY ARRAY CONTAINING THE OBSERVED SERIES.
 !
       CALL GETPI(PI)
 !
       DO 10 I = 1, N
-         IF (FD.EQ.0.25D0) THEN
-            AMPL(I) = 0.0D0
-            PHAS(I) = -2.0D0*Y(I)
-         ELSE IF (FD.EQ.0.5D0) THEN
-            AMPL(I) = -2.0D0*Y(I)
-            PHAS(I) = 0.0D0
+         IF (FD.EQ.0.25D0_WP) THEN
+            AMPL(I) = 0.0E0_WP
+            PHAS(I) = -2.0E0_WP*Y(I)
+         ELSE IF (FD.EQ.0.5D0_WP) THEN
+            AMPL(I) = -2.0E0_WP*Y(I)
+            PHAS(I) = 0.0E0_WP
          ELSE
-            ARG = (I-1) * FD * 2.0D0 * PI
-            AMPL(I) = Y(I)*COS(ARG)*2.0D0
-            PHAS(I) = -Y(I)*SIN(ARG)*2.0D0
+            ARG = (I-1) * FD * 2.0E0_WP * PI
+            AMPL(I) = Y(I)*COS(ARG)*2.0E0_WP
+            PHAS(I) = -Y(I)*SIN(ARG)*2.0E0_WP
          END IF
    10 CONTINUE
       RETURN

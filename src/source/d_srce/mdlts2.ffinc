@@ -17,20 +17,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   PMU
       INTEGER
      +   IFLAG,MBO,N,N1,N2,NFAC,NPAR,NPARDF
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   PAR(NPAR),PARAR(*),PARDF(*),PARMA(*),RESTS(N1:N2),T(*),
      +   TEMP(*),Y(N)
       INTEGER
      +   MSPECT(NFAC,4)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   FPLPM,RESMAX,WTEST
       INTEGER
      +   I,IMOD,IMOD1,IPAR,IPQ,ISTART,J,K,L,MAXORD,MBO1,NP,NPARAR,
@@ -39,7 +39,7 @@
      +   PARLE1
 !
 !  EXTERNAL FUNCTIONS
-      DOUBLE PRECISION
+      REAL(KIND=WP) ::
      +   D1MACH
       EXTERNAL D1MACH
 !
@@ -48,7 +48,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     DOUBLE PRECISION FPLPM
+!     REAL(KIND=WP) :: FPLPM
 !        THE FLOATING POINT LARGEST POSITIVE MAGNITUDE.
 !     INTEGER I
 !        AN INDEX VARIABLE.
@@ -95,32 +95,32 @@
 !        THE LOWER BOUND FOR RESTS.
 !     INTEGER N2
 !        THE UPPER BOUND FOR RESTS.
-!     DOUBLE PRECISION PAR(NPAR)
+!     REAL(KIND=WP) :: PAR(NPAR)
 !        THE CURRENT ESTIMATES OF THE PARAMETERS.
-!     DOUBLE PRECISION PARAR(MBO)
+!     REAL(KIND=WP) :: PARAR(MBO)
 !        THE AUTOREGRESSIVE PARAMETERS
-!     DOUBLE PRECISION PARDF(NPARDF)
+!     REAL(KIND=WP) :: PARDF(NPARDF)
 !        THE VECTOR CONTAINING THE DIFFERENCE FILTER PARAMETERS.
 !     LOGICAL PARLE1
 !        A FLAG INDICATING WHETHER ALL OF THE MOVING AVERAGE PARAMETERS
 !        ARE LESS THAN OR EQUAL TO 1 (PARLE1 = .TRUE.) OR NOT
 !        (PARLE1 = .FALSE.)
-!     DOUBLE PRECISION PARMA(MBO)
+!     REAL(KIND=WP) :: PARMA(MBO)
 !        THE MOVING AVERAGE PARAMETERS
-!     DOUBLE PRECISION PMU
+!     REAL(KIND=WP) :: PMU
 !        THE VALUE OF MU, I.E., THE TREND OR MEAN.
-!     DOUBLE PRECISION RESMAX
+!     REAL(KIND=WP) :: RESMAX
 !        THE LARGEST POSSIBLE RESIDUAL WHICH WILL STILL AVOID OVERFLOW.
-!     DOUBLE PRECISION RESTS(N1:N2)
+!     REAL(KIND=WP) :: RESTS(N1:N2)
 !        THE PREDICTED VALUE OF THE FIT.
-!     DOUBLE PRECISION T(2*MBO)
+!     REAL(KIND=WP) :: T(2*MBO)
 !        A TEMPORARY WORK VECTOR.
-!     DOUBLE PRECISION TEMP(MBO)
+!     REAL(KIND=WP) :: TEMP(MBO)
 !        A TEMPORARY WORK VECTOR
-!     DOUBLE PRECISION WTEST
+!     REAL(KIND=WP) :: WTEST
 !        THE TEST VALUE USED TO DETERMINE IF THE DIFFERENCED SERIES
 !        BACK FORECAST IS EFFECTIVELY ZERO OR NOT.
-!     DOUBLE PRECISION Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        THE DEPENDENT VARIABLE.
 !
       FPLPM = D1MACH(2)
@@ -128,8 +128,8 @@
 !     ZERO THE PARAMETER ARRAYS PARAR AND PARMA
 !
       DO 10 I=1,MBO
-         T(I) = 0.0D0
-         TEMP(I) = 0.0D0
+         T(I) = 0.0E0_WP
+         TEMP(I) = 0.0E0_WP
    10 CONTINUE
 !
       NP = 0
@@ -162,8 +162,8 @@
             NPARAR = NP
             DO 105 K =1, NPARAR
                PARAR(K) = T(K)
-               T(K) = 0.0D0
-               TEMP(K) = 0.0D0
+               T(K) = 0.0E0_WP
+               TEMP(K) = 0.0E0_WP
   105       CONTINUE
             NP = 0
          END IF
@@ -172,7 +172,7 @@
       PARLE1 = .TRUE.
       DO 115 K =1, NPARMA
          PARMA(K) = T(K)
-         IF (ABS(PARMA(K)).GT.1.0D0) PARLE1 = .FALSE.
+         IF (ABS(PARMA(K)).GT.1.0E0_WP) PARLE1 = .FALSE.
   115 CONTINUE
 !
 !     COMPUTE FITTED VALUES AND RESIDUALS FOR MODEL.
@@ -206,7 +206,7 @@
   170 CONTINUE
       DO 175 I = NPARDF,N1,-1
          IMOD = MOD(I+1-N1,MBO1) + 1
-         RESTS(I) = 0.0D0
+         RESTS(I) = 0.0E0_WP
          DO 163 J = 1,NPARAR
             RESTS(I) = RESTS(I) + PARAR(J)*RESTS(I+J)
   163    CONTINUE
@@ -245,12 +245,12 @@
             DO 205 J = 1,NPARMA
                IF (I-J.GE.ISTART) THEN
                   IMOD1 = MOD(I-J+1-N1,MBO1)+1
-                  IF (PARMA(J).NE.0.0D0 .AND. T(IMOD1).NE.0.0D0) THEN
+                  IF (PARMA(J).NE.0.0E0_WP .AND. T(IMOD1).NE.0.0E0_WP) THEN
                      IF (LOG(ABS(PARMA(J)))+LOG(ABS(T(IMOD1))).LT.
      +                         LOG(FPLPM)
      +                     .AND.
-     +                     (SIGN(1.0D0,T(IMOD)).NE.
-     +                         SIGN(1.0D0,PARMA(J)*T(IMOD1))
+     +                     (SIGN(1.0E0_WP,T(IMOD)).NE.
+     +                         SIGN(1.0E0_WP,PARMA(J)*T(IMOD1))
      +                     .OR.
      +                     LOG(ABS(PARMA(J)))+LOG(ABS(T(IMOD1))).LT.
      +                         LOG(FPLPM-ABS(T(IMOD))))) THEN
@@ -271,7 +271,7 @@
   220 CONTINUE
 !
       DO 230 I = N1, ISTART-1
-         RESTS(I) = 0.0D0
+         RESTS(I) = 0.0E0_WP
   230 CONTINUE
 !
       RETURN

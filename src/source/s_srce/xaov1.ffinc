@@ -1,5 +1,6 @@
 !XAOV1
-      SUBROUTINE XAOV1(LDSTAK)
+      SUBROUTINE XAOV1(LDSTAK,typ)
+      real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !

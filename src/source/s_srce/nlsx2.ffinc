@@ -35,9 +35,7 @@
      +   I
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   RMDCON
-      EXTERNAL RMDCON
+!     REAL(KIND=WP) :: RMDCON
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SQRT
@@ -117,7 +115,7 @@
 !
 !     **SET UP FOR NORMAL STATEMENT**
 !
-      SQMEPS = SQRT(RMDCON(3))
+      SQMEPS = SQRT(RMDCON(3,typ=0.0_wp))
 !
       N = 6
       M = 1
