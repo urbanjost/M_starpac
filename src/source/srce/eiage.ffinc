@@ -1,6 +1,6 @@
 !EIAGE
       SUBROUTINE EIAGE (NMSUB, NMVAR, YM, N, M, IYM, YMMN, NVMX,
-     +   HEAD, MSGTYP, NV, ERROR, NMMIN)
+     &   HEAD, MSGTYP, NV, ERROR, NMMIN)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -21,19 +21,19 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IYM,M,MSGTYP,N,NV,NVMX,YMMN
+     &   IYM,M,MSGTYP,N,NV,NVMX,YMMN
       LOGICAL
-     +   ERROR,HEAD
+     &   ERROR,HEAD
 !
 !  ARRAY ARGUMENTS
       INTEGER
-     +   YM(*)
+     &   YM(*)
       CHARACTER
-     +   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     &   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,J
+     &   I,J
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL EIAGEP
@@ -99,7 +99,7 @@
       ERROR = .TRUE.
 !
       CALL EIAGEP (NMSUB, NMVAR, YMMN, NVMX, HEAD, MSGTYP, NV,
-     +   NMMIN)
+     &   NMMIN)
 !
       RETURN
 !

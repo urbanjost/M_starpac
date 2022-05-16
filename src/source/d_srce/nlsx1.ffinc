@@ -1,6 +1,6 @@
 !NLSX1
       SUBROUTINE NLSX1(MOD, PAR, NPAR, PV, SDPV, RES, SDRES, VCV, N,
-     +   IVCV, NNZW, NPARE, RSD)
+     &   IVCV, NNZW, NPARE, RSD)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,21 +17,21 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   RSD
+     &   RSD
       INTEGER
-     +   IVCV,MOD,N,NNZW,NPAR,NPARE
+     &   IVCV,MOD,N,NNZW,NPAR,NPARE
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PAR(NPAR),PV(N),RES(N),SDPV(N),SDRES(N),VCV(IVCV,IVCV)
+     &   PAR(NPAR),PV(N),RES(N),SDPV(N),SDRES(N),VCV(IVCV,IVCV)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,J
+     &   I,J
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL SETRV
@@ -80,59 +80,59 @@
 !
       GO TO (10, 20, 30, 40, 50, 60), MOD
 !
-   10 PAR(1) = 0.725D0
-      PAR(2) = 4.0E0_WP
+   10 PAR(1) = 0.725_WP
+      PAR(2) = 4.0_WP
 !
       GO TO 70
 !
 !
-   20 PAR(1) = 1.0E0_WP
-      PAR(2) = 2.0E0_WP
-      PAR(3) = 3.0E0_WP
+   20 PAR(1) = 1.0_WP
+      PAR(2) = 2.0_WP
+      PAR(3) = 3.0_WP
 !
       GO TO 70
 !
 !
-   30 PAR(1) = 6.0E0_WP
-      PAR(2) = 5.0E0_WP
-      PAR(3) = 4.0E0_WP
-      PAR(4) = 3.0E0_WP
-      PAR(5) = 2.0E0_WP
+   30 PAR(1) = 6.0_WP
+      PAR(2) = 5.0_WP
+      PAR(3) = 4.0_WP
+      PAR(4) = 3.0_WP
+      PAR(5) = 2.0_WP
 !
       GO TO 70
 !
 !
-   40 CALL SETRV(PAR, NPAR, 0.0E0_WP)
+   40 CALL SETRV(PAR, NPAR, 0.0_WP)
 !
       GO TO 70
 !
 !
-   50 CALL SETRV(PAR, NPAR, 0.5D0)
+   50 CALL SETRV(PAR, NPAR, 0.5_WP)
 !
       GO TO 70
 !
 !
-   60 PAR(1) = 100.0E0_WP
-      PAR(2) = 15.0E0_WP
+   60 PAR(1) = 100.0_WP
+      PAR(2) = 15.0_WP
 !
    70 CONTINUE
 !
       DO 80 I=1,N
-         RES(I) = -1.0E0_WP
-         PV(I) = -1.0E0_WP
-         SDPV(I) = -1.0E0_WP
-         SDRES(I) = -1.0E0_WP
+         RES(I) = -1.0_WP
+         PV(I) = -1.0_WP
+         SDPV(I) = -1.0_WP
+         SDRES(I) = -1.0_WP
    80 CONTINUE
 !
       DO 100 I=1,IVCV
          DO 90 J=1,IVCV
-            VCV(I,J) = -1.0E0_WP
+            VCV(I,J) = -1.0_WP
    90    CONTINUE
   100 CONTINUE
 !
       NNZW = -1
       NPARE = -1
-      RSD = -1.0E0_WP
+      RSD = -1.0_WP
 !
       IERR = -1
 !

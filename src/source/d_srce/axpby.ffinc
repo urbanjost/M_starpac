@@ -22,17 +22,17 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   SA,SB
+     &   SA,SB
       INTEGER
-     +   INCX,INCY,INCZ,N
+     &   INCX,INCY,INCZ,N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   SX(*),SY(*),SZ(*)
+     &   SX(*),SY(*),SZ(*)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,IX,IY,IZ,M,MP1,NS
+     &   I,IX,IY,IZ,M,MP1,NS
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MOD
@@ -43,9 +43,9 @@
 !
       IF(N.LE.0) RETURN
       IF ((INCX .EQ. 1) .AND. (INCY .EQ. 1) .AND. (INCZ .EQ. 1))
-     +   GO TO 20
+     &   GO TO 20
       IF ((INCX .GE. 2) .AND. (INCX .EQ. INCY) .AND. (INCX .EQ. INCZ))
-     +   GO TO 60
+     &   GO TO 60
 !
 !        CODE FOR NONEQUAL OR NONPOSITIVE INCREMENTS.
 !

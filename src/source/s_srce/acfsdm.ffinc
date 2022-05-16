@@ -17,17 +17,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NC
+     &   N,NC
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   RHO(*),SDRHO(*)
+      REAL(KIND=WP) ::
+     &   RHO(*),SDRHO(*)
       INTEGER
-     +   NLPPA(*)
+     &   NLPPA(*)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   K,KLAST,LAG
+     &   K,KLAST,LAG
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MIN,REAL,SQRT
@@ -64,7 +64,7 @@
             SDRHO(LAG) = SDRHO(LAG) + (N-LAG-K) * RHO(K) * RHO(K)
    10    CONTINUE
          SDRHO(LAG) = SQRT((N-LAG) + 2.0E0 * SDRHO(LAG)) *
-     +      (N-LAG) / (N*NLPPA(LAG))
+     &      (N-LAG) / (N*NLPPA(LAG))
    20 CONTINUE
       RETURN
       END

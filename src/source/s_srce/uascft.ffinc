@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   VAR
+      REAL(KIND=WP) ::
+     &   VAR
       INTEGER
-     +   IAR,LACOV,LAGMAX,N
+     &   IAR,LACOV,LAGMAX,N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   ACOV(LACOV),PHI(IAR)
+      REAL(KIND=WP) ::
+     &   ACOV(LACOV),PHI(IAR)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   RSS
+      REAL(KIND=WP) ::
+     &   RSS
       INTEGER
-     +   L
+     &   L
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL ARCOEF

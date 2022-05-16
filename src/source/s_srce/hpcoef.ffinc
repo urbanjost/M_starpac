@@ -17,28 +17,28 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   K
+     &   K
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   HHP(*),HLP(*)
+      REAL(KIND=WP) ::
+     &   HHP(*),HLP(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT
+     &   IPRT
       LOGICAL
-     +   ERR01,ERR02,ERR03,HEAD
+     &   ERR01,ERR02,ERR03,HEAD
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LHLP(8)*1,LK(8)*1,NMSUB(6)*1
+     &   LHLP(8)*1,LK(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,ERIODD,ERSLF,HPFLT,IPRINT
+!      EXTERNAL EISGE,ERIODD,ERSLF,HPFLT,IPRINT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -75,15 +75,15 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'H',       'P',       'C',       'O',       'E',       'F'/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'H',       'P',       'C',       'O',       'E',       'F'/
       DATA
-     +  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
-     + /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
+     & /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LHLP(1), LHLP(2), LHLP(3), LHLP(4), LHLP(5), LHLP(6), LHLP(7),
-     +  LHLP(8)
-     + /  'H',   'L',   'P',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LHLP(1), LHLP(2), LHLP(3), LHLP(4), LHLP(5), LHLP(6), LHLP(7),
+     &  LHLP(8)
+     & /  'H',   'L',   'P',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -118,5 +118,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   32H       CALL HPCOEF (HLP, K, HHP))
+     &   32H       CALL HPCOEF (HLP, K, HHP))
       END

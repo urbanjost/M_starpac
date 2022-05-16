@@ -17,15 +17,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NS,NYS
+     &   N,NS,NYS
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   Y(N),YS(N)
+     &   Y(N),YS(N)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,I1
+     &   I,I1
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -49,7 +49,7 @@
    30 CONTINUE
       I1 = NYS + 1
       DO 40 I = I1, N
-         YS(I) = 0.0E0_WP
+         YS(I) = 0.0_WP
    40 CONTINUE
 !
       RETURN

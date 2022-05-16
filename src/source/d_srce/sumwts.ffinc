@@ -1,6 +1,6 @@
 !SUMWTS
       SUBROUTINE SUMWTS(X, W, N, NNZW, ALPHA, SUMT1, SUMTW1, XTRM,
-     +   XTRMW)
+     &   XTRMW)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,19 +19,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   ALPHA,SUMT1,SUMTW1,XTRM,XTRMW
+     &   ALPHA,SUMT1,SUMTW1,XTRM,XTRMW
       INTEGER
-     +   N,NNZW
+     &   N,NNZW
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   W(N),X(N)
+     &   W(N),X(N)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   SUMW
+     &   SUMW
       INTEGER
-     +   CURHI,CURLO,I,IREV,ITHI,ITLO,MID,NALPHA,NUM
+     &   CURHI,CURLO,I,IREV,ITHI,ITLO,MID,NALPHA,NUM
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL SUMBS
@@ -97,7 +97,7 @@
       NALPHA = ALPHA*NNZW
       NUM = 0
       DO 10 I=1,N
-         IF (W(I).EQ.0.0E0_WP) GO TO 10
+         IF (W(I).EQ.0.0_WP) GO TO 10
          NUM = NUM + 1
          IF (NUM.EQ.NALPHA+1) GO TO 20
    10 CONTINUE
@@ -105,7 +105,7 @@
       NUM = 0
       DO 30 I=1,N
          IREV = N - I + 1
-         IF (W(IREV).EQ.0.0E0_WP) GO TO 30
+         IF (W(IREV).EQ.0.0_WP) GO TO 30
          NUM = NUM + 1
          IF (NUM.EQ.NALPHA+1) GO TO 40
    30 CONTINUE
@@ -114,10 +114,10 @@
 !
 !     INITIALIZE SUMMATION VARIABLES.
 !
-      SUMT1 = 0.0E0_WP
-      SUMTW1 = 0.0E0_WP
-      SUMW = 0.0E0_WP
-      IF (W(MID).EQ.0.0E0_WP) GO TO 50
+      SUMT1 = 0.0_WP
+      SUMTW1 = 0.0_WP
+      SUMW = 0.0_WP
+      IF (W(MID).EQ.0.0_WP) GO TO 50
       SUMT1 = X(MID)
       SUMTW1 = W(MID)*X(MID)
       SUMW = W(MID)
@@ -129,13 +129,13 @@
 !
    60 IF (CURHI.GT.ITHI .OR. CURLO.LT.ITLO) GO TO 100
       IF (ABS(X(CURHI)).LT.ABS(X(CURLO))) GO TO 80
-      IF (W(CURLO).EQ.0.0E0_WP) GO TO 70
+      IF (W(CURLO).EQ.0.0_WP) GO TO 70
       SUMT1 = SUMT1 + X(CURLO)
       SUMTW1 = SUMTW1 + W(CURLO)*X(CURLO)
       SUMW = SUMW + W(CURLO)
    70 CURLO = CURLO - 1
       GO TO 60
-   80 IF (W(CURHI).EQ.0.0E0_WP) GO TO 90
+   80 IF (W(CURHI).EQ.0.0_WP) GO TO 90
       SUMT1 = SUMT1 + X(CURHI)
       SUMTW1 = SUMTW1 + W(CURHI)*X(CURHI)
       SUMW = SUMW + W(CURHI)
@@ -148,7 +148,7 @@
   100 IF (CURHI.GT.ITHI) GO TO 120
       CURHI = MAX(CURHI,ITLO)
       DO 110 I=CURHI,ITHI
-         IF (W(I).EQ.0.0E0_WP) GO TO 110
+         IF (W(I).EQ.0.0_WP) GO TO 110
          SUMT1 = SUMT1 + X(I)
          SUMTW1 = SUMTW1 + W(I)*X(I)
          SUMW = SUMW + W(I)
@@ -157,7 +157,7 @@
       CURLO = MIN(CURLO,ITHI)
       DO 130 IREV=ITLO,CURLO
          I = ITLO - IREV + CURLO
-         IF (W(I).EQ.0.0E0_WP) GO TO 130
+         IF (W(I).EQ.0.0_WP) GO TO 130
          SUMT1 = SUMT1 + X(I)
          SUMTW1 = SUMTW1 + W(I)*X(I)
          SUMW = SUMW + W(I)

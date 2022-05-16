@@ -12,25 +12,25 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   n,p
+     &   n,p
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   urparm(1),v(1),x(p)
+     &   urparm(1),v(1),x(p)
       integer
-     +   iv(1),uiparm(1)
+     &   iv(1),uiparm(1)
 !
 !  SUBROUTINE ARGUMENTS
       external calcr,ufparm
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   h,hfac,hlim,negpt5,one,xk,zero
+     &   h,hfac,hlim,negpt5,one,xk,zero
       integer
-     +   covprt,covreq,d,d1,dk,dltfdj,dtype,i,j,j1,j1k,k,nf,nfcall,
-     +   nfgcal,r,r1,rn,toobig
+     &   covprt,covreq,d,d1,dk,dltfdj,dtype,i,j,j1,j1k,k,nf,nfcall,
+     &   nfgcal,r,r1,rn,toobig
       logical
-     +   strted
+     &   strted
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON
@@ -110,12 +110,12 @@
 !    1        TOOBIG
 !
       data hfac/1.0e3_wp/, hlim/0.0_wp/, negpt5/-0.5_wp/,
-     +     one/1.0_wp/, zero/0.0_wp/
+     &     one/1.0_wp/, zero/0.0_wp/
 !
 !  ***  IV SUBSCRIPT VALUES  ***
 !
       data covprt/14/, covreq/15/, d/27/, dtype/16/, j/33/,
-     +     nfcall/6/, nfgcal/7/, r/50/, toobig/2/
+     &     nfcall/6/, nfgcal/7/, r/50/, toobig/2/
 !
 !  ***  V SUBSCRIPT VALUES  ***
 !

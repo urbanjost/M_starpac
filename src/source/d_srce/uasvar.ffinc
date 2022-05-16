@@ -17,19 +17,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   VAR,YMEAN
+     &   VAR,YMEAN
       INTEGER
-     +   IAR,N
+     &   IAR,N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PHI(IAR),Y(N)
+     &   PHI(IAR),Y(N)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   RES,RSS
+     &   RES,RSS
       INTEGER
-     +   I,IAR1,J,K
+     &   I,IAR1,J,K
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -57,7 +57,7 @@
 !     REAL(KIND=WP) :: YMEAN
 !        THE MEAN OF THE OBSERVED TIME SERIES
 !
-      RSS = 0.0E0_WP
+      RSS = 0.0_WP
       IAR1 = IAR+1
       DO 20 I = IAR1, N
          RES = Y(I) - YMEAN

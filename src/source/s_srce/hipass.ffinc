@@ -20,31 +20,31 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   FC
+      REAL(KIND=WP) ::
+     &   FC
       INTEGER
-     +   K,N,NYF
+     &   K,N,NYF
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   HHP(*),Y(*),YF(*)
+      REAL(KIND=WP) ::
+     &   HHP(*),Y(*),YF(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT
+     &   IPRT
       LOGICAL
-     +   ERR01,ERR02,ERR03,ERR04,ERR05,HEAD
+     &   ERR01,ERR02,ERR03,ERR04,ERR05,HEAD
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LFC(8)*1,LK(8)*1,LN(8)*1,NMSUB(6)*1
+     &   LFC(8)*1,LK(8)*1,LN(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,EISII,ERIODD,ERSII,ERSLFS,FLTSL,HPFLT,IPRINT,LPFLT
+!      EXTERNAL EISGE,EISII,ERIODD,ERSII,ERSLFS,FLTSL,HPFLT,IPRINT,LPFLT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -88,17 +88,17 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'H',       'I',       'P',       'A',       'S',       'S'/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'H',       'I',       'P',       'A',       'S',       'S'/
       DATA
-     +  LFC(1), LFC(2), LFC(3), LFC(4), LFC(5), LFC(6), LFC(7), LFC(8)
-     + /  'F',   'C',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LFC(1), LFC(2), LFC(3), LFC(4), LFC(5), LFC(6), LFC(7), LFC(8)
+     & /  'F',   'C',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
-     + /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
+     & /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
-     + /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     & /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -110,7 +110,7 @@
       CALL EISGE(NMSUB, LN, N, 3, 1, HEAD, ERR01, LN)
 !
       CALL ERSII(NMSUB, LFC, FC, 0.0E0,
-     +           0.5E0, 2, HEAD, ERR02, LFC, LFC)
+     &           0.5E0, 2, HEAD, ERR02, LFC, LFC)
 !
       CALL EISII(NMSUB, LK, K, 1, N, 2, HEAD, ERR03, LK, LK)
 !
@@ -141,5 +141,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   46H       CALL HIPASS (Y, N, FC, K, HHP, YF, NYF))
+     &   46H       CALL HIPASS (Y, N, FC, K, HHP, YF, NYF))
       END

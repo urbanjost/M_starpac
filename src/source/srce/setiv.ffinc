@@ -17,15 +17,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,VALUE
+     &   N,VALUE
 !
 !  ARRAY ARGUMENTS
       INTEGER
-     +   VECTOR(N)
+     &   VECTOR(N)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

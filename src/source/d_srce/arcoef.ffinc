@@ -18,19 +18,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   ACOV0,RSS
+     &   ACOV0,RSS
       INTEGER
-     +   LAG,LAGMAX
+     &   LAG,LAGMAX
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   ACOV(*),PHI(*)
+     &   ACOV(*),PHI(*)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   SUM1,SUM2,T
+     &   SUM1,SUM2,T
       INTEGER
-     +   J,L1,L2,LJ
+     &   J,L1,L2,LJ
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -56,8 +56,8 @@
 !        A TEMPORARY STORAGE LOCATION.
 !
       L1 = LAG - 1
-      SUM1 = 0.0E0_WP
-      SUM2 = 0.0E0_WP
+      SUM1 = 0.0_WP
+      SUM2 = 0.0_WP
       DO 10 J = 1, L1
          LJ = LAG - J
          SUM1 = SUM1 + PHI(J) * ACOV(LJ)
@@ -72,7 +72,7 @@
          PHI(J) = T
    20 CONTINUE
 !
-      RSS = RSS * (1.0E0_WP - PHI(LAG)*PHI(LAG))
+      RSS = RSS * (1.0_WP - PHI(LAG)*PHI(LAG))
 !
       RETURN
       END

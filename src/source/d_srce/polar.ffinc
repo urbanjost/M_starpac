@@ -25,17 +25,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   AMPL(N),PHAS(N)
+     &   AMPL(N),PHAS(N)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   PHASE,R
+     &   PHASE,R
       INTEGER
-     +   I
+     &   I
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ATAN2,SQRT
@@ -57,8 +57,8 @@
 !
       DO 10 I = 1, N
          R = SQRT(AMPL(I)*AMPL(I) + PHAS(I)*PHAS(I))
-         PHASE = 0.0E0_WP
-         IF (R .NE. 0.0E0_WP) PHASE = ATAN2(PHAS(I), AMPL(I))
+         PHASE = 0.0_WP
+         IF (R .NE. 0.0_WP) PHASE = ATAN2(PHAS(I), AMPL(I))
          AMPL(I) = R
          PHAS(I) = PHASE
    10 CONTINUE

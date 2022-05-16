@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   RINIT,RSTP
+      REAL(KIND=WP) ::
+     &   RINIT,RSTP
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   RVECT(N)
+      REAL(KIND=WP) ::
+     &   RVECT(N)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   R
+      REAL(KIND=WP) ::
+     &   R
       INTEGER
-     +   J
+     &   J
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

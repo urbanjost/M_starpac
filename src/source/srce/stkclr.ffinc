@@ -21,15 +21,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   NALL0
+     &   NALL0
 !
 !  LOCAL SCALARS
       INTEGER
-     +   NALLN
+     &   NALLN
 !
 !  EXTERNAL FUNCTIONS
       INTEGER
-     +   STKST
+     &   STKST
       EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES

@@ -26,30 +26,30 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   FC
+     &   FC
       INTEGER
-     +   K
+     &   K
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   HLP(*)
+     &   HLP(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT
+     &   IPRT
       LOGICAL
-     +   ERR01,ERR02,ERR03,ERR04,HEAD
+     &   ERR01,ERR02,ERR03,ERR04,HEAD
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LFC(8)*1,LK(8)*1,NMSUB(6)*1
+     &   LFC(8)*1,LK(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISII,ERIODD,ERSII,ERSLFS,IPRINT,LPFLT
+!      EXTERNAL EISII,ERIODD,ERSII,ERSLFS,IPRINT,LPFLT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -85,14 +85,14 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'L',       'P',       'C',       'O',       'E',       'F'/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'L',       'P',       'C',       'O',       'E',       'F'/
       DATA
-     +  LFC(1), LFC(2), LFC(3), LFC(4), LFC(5), LFC(6), LFC(7), LFC(8)
-     + /  'F',   'C',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LFC(1), LFC(2), LFC(3), LFC(4), LFC(5), LFC(6), LFC(7), LFC(8)
+     & /  'F',   'C',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
-     + /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
+     & /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -101,7 +101,7 @@
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL ERSII(NMSUB, LFC, FC, 0.0E0_WP, 0.5D0, 2, HEAD, ERR01, LFC, LFC)
+      CALL ERSII(NMSUB, LFC, FC, 0.0_WP,0.5_WP,2, HEAD, ERR01, LFC, LFC)
 !
       CALL EISII(NMSUB, LK, K, 1, K, 2, HEAD, ERR02, LK, LK)
 !
@@ -128,5 +128,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   31H       CALL LPCOEF (FC, K, HLP))
+     &   31H       CALL LPCOEF (FC, K, HLP))
       END

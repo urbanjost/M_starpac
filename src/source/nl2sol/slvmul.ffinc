@@ -9,21 +9,21 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   p
+     &   p
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   s(1),x(p),y(p)
+     &   s(1),x(p),y(p)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   xi
+     &   xi
       integer
-     +   i,im1,j,k
+     &   i,im1,j,k
 !
 !  EXTERNAL FUNCTIONS
       real(kind=wp) ::
-     +   dotprd
+     &   dotprd
       external dotprd
 !
 !  ***  PARAMETER DECLARATIONS  ***

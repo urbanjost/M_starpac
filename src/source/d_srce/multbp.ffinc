@@ -17,15 +17,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LC,LT,LTEMP,MBO
+     &   LC,LT,LTEMP,MBO
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   C(MBO),T(2*MBO),TEMP(MBO)
+     &   C(MBO),T(2*MBO),TEMP(MBO)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,J,JI,K
+     &   I,J,JI,K
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -59,7 +59,7 @@
    10 CONTINUE
    15 K = LC + 1
       DO 20 J=K,LTEMP
-         TEMP(J) = 0.0E0_WP
+         TEMP(J) = 0.0_WP
    20 CONTINUE
       IF (LT .EQ. 0) GO TO 50
       DO 40 J=1,LT

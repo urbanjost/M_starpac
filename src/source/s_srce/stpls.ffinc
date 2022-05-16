@@ -19,36 +19,36 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IXM,LDSTAK,M,N,NPAR
+     &   IXM,LDSTAK,M,N,NPAR
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PAR(*),STP(*),XM(*)
+      REAL(KIND=WP) ::
+     &   PAR(*),STP(*),XM(*)
 !
 !  SUBROUTINE ARGUMENTS
       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       DOUBLE PRECISION DSTAK(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   EXMPT
+      REAL(KIND=WP) ::
+     &   EXMPT
       INTEGER
-     +   IPRT,LSCALE,NETA,NPRT
+     &   IPRT,LSCALE,NETA,NPRT
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   SCALE(1)
+      REAL(KIND=WP) ::
+     &   SCALE(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,STPDRV
+!      EXTERNAL IPRINT,STPDRV
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -107,7 +107,7 @@
 !     SET UP NAME ARRAYS
 !
       DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
-     +   'S','T','P','L','S',' '/
+     &   'S','T','P','L','S',' '/
 !
 !     SET UP DEFAULT VALUES
 !
@@ -120,7 +120,7 @@
 !     PASS CONTROL TO STEP SIZE SELECTION DRIVER
 !
       CALL STPDRV(NMSUB, XM, N, M, IXM, MDL, PAR, NPAR, LDSTAK, STP,
-     +   NETA, EXMPT, SCALE, LSCALE, NPRT)
+     &   NETA, EXMPT, SCALE, LSCALE, NPRT)
 !
       IF (IERR.NE.1) RETURN
 !
@@ -132,6 +132,6 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL STPLS (XM, N, M, IXM, NLSMDL, PAR, NPAR, LDSTAK,',
-     +   ' STP)')
+     &   '       CALL STPLS (XM, N, M, IXM, NLSMDL, PAR, NPAR, LDSTAK,',
+     &   ' STP)')
       END

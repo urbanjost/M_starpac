@@ -18,17 +18,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IAR,N,NYF
+     &   IAR,N,NYF
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PHI(*),Y(*),YF(*)
+     &   PHI(*),Y(*),YF(*)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   TEMP
+     &   TEMP
       INTEGER
-     +   I,I1,J,K
+     &   I,I1,J,K
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -70,7 +70,7 @@
       I1 = NYF + 1
 !
       DO 40 I = I1, N
-         YF(I) = 0.0E0_WP
+         YF(I) = 0.0_WP
    40 CONTINUE
       RETURN
       END

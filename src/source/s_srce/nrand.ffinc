@@ -23,31 +23,31 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   ISEED,N
+     &   ISEED,N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   Y(*)
+      REAL(KIND=WP) ::
+     &   Y(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,IPRT,ISEEDU
+     &   I,IPRT,ISEEDU
       LOGICAL
-     +   ERR01,HEAD
+     &   ERR01,HEAD
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LN(8)*1,LONE(8)*1,NMSUB(6)*1
+     &   LN(8)*1,LONE(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(TYPE=WP) :: RANDN
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,EISRNG,IPRINT
+!      EXTERNAL EISGE,EISRNG,IPRINT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -87,11 +87,11 @@
 !        THE GENERATED RANDOM VALUES.
 !
       DATA  NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6)
-     +   /       'N',      'R',      'A',      'N',      'D',      ' '/
+     &   /       'N',      'R',      'A',      'N',      'D',      ' '/
       DATA     LN(1),    LN(2),    LN(3),    LN(4),    LN(5),    LN(6),
-     +         LN(7),    LN(8)/'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
+     &         LN(7),    LN(8)/'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
       DATA   LONE(1),  LONE(2),  LONE(3),  LONE(4),  LONE(5),  LONE(6),
-     +       LONE(7),  LONE(8)/'O', 'N', 'E', ' ', ' ', ' ', ' ', ' '/
+     &       LONE(7),  LONE(8)/'O', 'N', 'E', ' ', ' ', ' ', ' ', ' '/
 !
       IERR = 0
 !
@@ -123,5 +123,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL NRAND(Y, N, ISEED)')
+     &   '       CALL NRAND(Y, N, ISEED)')
       END

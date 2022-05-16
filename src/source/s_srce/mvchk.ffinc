@@ -17,8 +17,8 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   X,XMISS
+      REAL(KIND=WP) ::
+     &   X,XMISS
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS
@@ -33,7 +33,7 @@
 !        THE VALUE IS ASSUMED MISSING, OTHERWISE IT IS NOT.
 !
       IF ((X .GT. 0.0E0 .AND. XMISS .LT. 0.0E0) .OR.
-     +    (X .LT. 0.0E0 .AND. XMISS .GT. 0.0E0)) GO TO 10
+     &    (X .LT. 0.0E0 .AND. XMISS .GT. 0.0E0)) GO TO 10
 !
       IF (ABS(X) .EQ. ABS(XMISS)) GO TO 20
 !

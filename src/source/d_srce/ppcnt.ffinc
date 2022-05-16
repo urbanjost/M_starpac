@@ -1,7 +1,7 @@
 !PPCNT
       SUBROUTINE PPCNT (YM, YMMISS, X, XMISS, N, M, IYM, MULTI, ILOG,
-     +  YLB, YUB, XLB, XUB, NMSUB, ISCHCK, ISYM, ISIZE, NOUT, MISS,
-     +  LISYM)
+     &  YLB, YUB, XLB, XUB, NMSUB, ISCHCK, ISYM, ISIZE, NOUT, MISS,
+     &  LISYM)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,29 +18,29 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   XLB,XMISS,XUB,YLB,YUB
+     &   XLB,XMISS,XUB,YLB,YUB
       INTEGER
-     +   ILOG,ISCHCK,ISIZE,IYM,LISYM,M,N,NOUT
+     &   ILOG,ISCHCK,ISIZE,IYM,LISYM,M,N,NOUT
       LOGICAL
-     +   MISS,MULTI
+     &   MISS,MULTI
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   X(*),YM(*),YMMISS(*)
+     &   X(*),YM(*),YMMISS(*)
       INTEGER
-     +   ISYM(*)
+     &   ISYM(*)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   XMN,XMX,YMN,YMX
+     &   XMN,XMX,YMN,YMX
       LOGICAL
-     +   ERROR,XCHECK
+     &   ERROR,XCHECK
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL PLTCHK,PPLMT,PPMN,VERSP
@@ -129,7 +129,7 @@
 !
       XCHECK = .TRUE.
       CALL PLTCHK (YM, YMMISS, X, XMISS, N, M, IYM, MULTI, ILOG,
-     +   YLB, YUB, XLB, XUB, NMSUB, MISS, XCHECK)
+     &   YLB, YUB, XLB, XUB, NMSUB, MISS, XCHECK)
 !
       IF (IERR.EQ.0) THEN
 !
@@ -137,7 +137,7 @@
 !       CHECKING
 !
         CALL PPLMT (YM, YMMISS, X, XMISS, N, M, IYM, YLB, YUB, YMN, YMX,
-     +    XLB, XUB, XMN, XMX, ERROR, NMSUB, MISS)
+     &    XLB, XUB, XMN, XMX, ERROR, NMSUB, MISS)
 !
         IF (ERROR) THEN
           IERR = 1
@@ -151,7 +151,7 @@
           CALL VERSP(.FALSE.)
         END IF
         CALL PPMN (YM, YMMISS, X, XMISS, N, M, IYM, ISCHCK, ISYM,
-     +    LISYM, ISIZE, NOUT, YMN, YMX, XMN, XMX, MISS, ILOG)
+     &    LISYM, ISIZE, NOUT, YMN, YMX, XMN, XMX, MISS, ILOG)
 !
         END IF
       END IF

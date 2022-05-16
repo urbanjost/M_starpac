@@ -17,19 +17,19 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   NPAR
+     &   NPAR
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   STP(NPAR)
+      REAL(KIND=WP) ::
+     &   STP(NPAR)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR

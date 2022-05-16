@@ -19,35 +19,35 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IXM,LDSTAK,N,NPAR
+     &   IXM,LDSTAK,N,NPAR
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   RES(*),XM(*),Y(*)
+      REAL(KIND=WP) ::
+     &   RES(*),XM(*),Y(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       DOUBLE PRECISION DSTAK(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   RSD
+      REAL(KIND=WP) ::
+     &   RSD
       INTEGER
-     +   IPRT,IVCV,LPAR,LPV,LSDPV,LSDRES,LWT,NPRT
+     &   IPRT,IVCV,LPAR,LPV,LSDPV,LSDRES,LWT,NPRT
       LOGICAL
-     +   SAVE,WEIGHT
+     &   SAVE,WEIGHT
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   PAR(1),PV(1),SDPV(1),SDRES(1),VCV(1,1),WT(1)
+      REAL(KIND=WP) ::
+     &   PAR(1),PV(1),SDPV(1),SDRES(1),VCV(1,1),WT(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,LLCNTG
+!      EXTERNAL IPRINT,LLCNTG
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -125,7 +125,7 @@
 !
 !
       DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
-     +   'L','L','S',' ',' ',' '/
+     &   'L','L','S',' ',' ',' '/
 !
 !     SET PARAMETERS NECESSARY FOR THE COMPUTATIONS
 !
@@ -140,8 +140,8 @@
       LWT = 1
 !
       CALL LLCNTG(Y, WT, LWT, XM, N, IXM, NPAR, RES, LDSTAK, NPRT,
-     +   PAR, LPAR, RSD, PV, LPV, SDPV, LSDPV, SDRES, LSDRES, VCV, IVCV,
-     +   NMSUB, WEIGHT, SAVE)
+     &   PAR, LPAR, RSD, PV, LPV, SDPV, LSDPV, SDRES, LSDRES, VCV, IVCV,
+     &   NMSUB, WEIGHT, SAVE)
 !
       IF (IERR.NE.1) RETURN
 !
@@ -154,5 +154,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (//42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   50H       CALL LLS (Y, XM, N, IXM, NPAR, RES, LSDTAK))
+     &   50H       CALL LLS (Y, XM, N, IXM, NPAR, RES, LSDTAK))
       END

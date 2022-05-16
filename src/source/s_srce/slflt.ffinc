@@ -17,28 +17,28 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   K,N,NYF
+     &   K,N,NYF
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   H(*),Y(*),YF(*)
+      REAL(KIND=WP) ::
+     &   H(*),Y(*),YF(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT
+     &   IPRT
       LOGICAL
-     +   ERR01,ERR02,ERR03,ERR04,HEAD
+     &   ERR01,ERR02,ERR03,ERR04,HEAD
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LH(8)*1,LK(8)*1,LN(8)*1,LONE(8)*1,NMSUB(6)*1
+     &   LH(8)*1,LK(8)*1,LN(8)*1,LONE(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,EISII,ERIODD,ERSLF,FLTSL,IPRINT
+!      EXTERNAL EISGE,EISII,ERIODD,ERSLF,FLTSL,IPRINT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -79,20 +79,20 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'S',       'L',       'F',       'L',       'T',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'S',       'L',       'F',       'L',       'T',       ' '/
       DATA
-     +  LH(1), LH(2), LH(3), LH(4), LH(5), LH(6), LH(7), LH(8)
-     + /  'H',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LH(1), LH(2), LH(3), LH(4), LH(5), LH(6), LH(7), LH(8)
+     & /  'H',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
-     + /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
+     & /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
-     + /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     & /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LONE(1), LONE(2), LONE(3), LONE(4), LONE(5), LONE(6), LONE(7),
-     +  LONE(8) /'O', 'N', 'E', ' ', ' ', ' ', ' ', ' '/
+     &  LONE(1), LONE(2), LONE(3), LONE(4), LONE(5), LONE(6), LONE(7),
+     &  LONE(8) /'O', 'N', 'E', ' ', ' ', ' ', ' ', ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -128,5 +128,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   39H       CALL SLFLT (Y, N, K, H, YF, NYF))
+     &   39H       CALL SLFLT (Y, N, K, H, YF, NYF))
       END

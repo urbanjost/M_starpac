@@ -1,6 +1,6 @@
 !ERAGT
       SUBROUTINE ERAGT (NMSUB, NMVAR, YM, N, M, IYM, YMMN, NVMX,
-     +   HEAD, MSGTYP, NV, ERROR, NMMIN)
+     &   HEAD, MSGTYP, NV, ERROR, NMMIN)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -21,21 +21,21 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   YMMN
+     &   YMMN
       INTEGER
-     +   IYM,M,MSGTYP,N,NV,NVMX
+     &   IYM,M,MSGTYP,N,NV,NVMX
       LOGICAL
-     +   ERROR,HEAD
+     &   ERROR,HEAD
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   YM(*)
+     &   YM(*)
       CHARACTER
-     +   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     &   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,J
+     &   I,J
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL ERAGTP
@@ -101,7 +101,7 @@
       ERROR = .TRUE.
 !
       CALL ERAGTP (NMSUB, NMVAR, YMMN, NVMX, HEAD, MSGTYP, NV,
-     +   NMMIN)
+     &   NMMIN)
 !
       RETURN
 !

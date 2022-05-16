@@ -1,6 +1,6 @@
 !DIFC
       SUBROUTINE DIFC (Y, N, NFAC, ND, IOD, IAR, PHI, LPHI, YF, NYF,
-     +   LDSTAK)
+     &   LDSTAK)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,40 +20,40 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IAR,LDSTAK,LPHI,N,NFAC,NYF
+     &   IAR,LDSTAK,LPHI,N,NFAC,NYF
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PHI(*),Y(*),YF(*)
+      REAL(KIND=WP) ::
+     &   PHI(*),Y(*),YF(*)
       INTEGER
-     +   IOD(*),ND(*)
+     &   IOD(*),ND(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       DOUBLE PRECISION DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,IPRT,LDSMIN,NALL0,WORK
+     &   I,IPRT,LDSMIN,NALL0,WORK
       LOGICAL
-     +   ERR01,ERR02,ERR03,ERR04,HEAD
+     &   ERR01,ERR02,ERR03,ERR04,HEAD
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   RSTAK(12)
+      REAL(KIND=WP) ::
+     &   RSTAK(12)
       CHARACTER
-     +   LLDS(8)*1,LLPHI(8)*1,LN(8)*1,NMSUB(6)*1
+     &   LLDS(8)*1,LLPHI(8)*1,LN(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL STKGET,STKST
+!      INTEGER
+!     +   STKST
+!      EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL DCOEF,EISGE,ERDF,FLTAR,IPRINT,LDSCMP,STKCLR,STKSET
+!      EXTERNAL DCOEF,EISGE,ERDF,FLTAR,IPRINT,LDSCMP,STKCLR,STKSET
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -122,19 +122,19 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'D',       'I',       'F',       'C',       ' ',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'D',       'I',       'F',       'C',       ' ',       ' '/
       DATA
-     +  LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
-     +  LLDS(7), LLDS(8)
-     + /  'L',   'D',   'S',   'T',   'A',   'K',   ' ',   ' '/
+     &  LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
+     &  LLDS(7), LLDS(8)
+     & /  'L',   'D',   'S',   'T',   'A',   'K',   ' ',   ' '/
       DATA
-     +  LLPHI(1), LLPHI(2), LLPHI(3), LLPHI(4), LLPHI(5), LLPHI(6),
-     +  LLPHI(7), LLPHI(8)
-     + /  'L',   'P',   'H',   'I',   ' ',   ' ',   ' ',   ' '/
+     &  LLPHI(1), LLPHI(2), LLPHI(3), LLPHI(4), LLPHI(5), LLPHI(6),
+     &  LLPHI(7), LLPHI(8)
+     & /  'L',   'P',   'H',   'I',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
-     + /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     & /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -210,7 +210,7 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL DIFC (Y, N,'/
-     +   '      +           NFAC, ND, IOD, IAR, PHI, LPHI,'/
-     +   '      +           YF, NYF, LDSTAK)')
+     &   '       CALL DIFC (Y, N,'/
+     &   '      +           NFAC, ND, IOD, IAR, PHI, LPHI,'/
+     &   '      +           YF, NYF, LDSTAK)')
       END

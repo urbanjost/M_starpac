@@ -17,35 +17,35 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   Y1(*),Y2(*)
+     &   Y1(*),Y2(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   Y1MEAN,Y1SD,Y2MEAN,Y2SD
+     &   Y1MEAN,Y1SD,Y2MEAN,Y2SD
       INTEGER
-     +   ICCOV,INLPPC,IPRT,IYM,IYMFFT,JCCOV,JNLPPC,LAGMAX,LDSMIN,
-     +   LDSTAK,LYFFT,M,NFFT
+     &   ICCOV,INLPPC,IPRT,IYM,IYMFFT,JCCOV,JNLPPC,LAGMAX,LDSMIN,
+     &   LDSTAK,LYFFT,M,NFFT
       LOGICAL
-     +   ISFFT,ISLONG
+     &   ISFFT,ISLONG
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   CCOV(101,2,2),RHOC(201),SDRHOC(201)
+     &   CCOV(101,2,2),RHOC(201),SDRHOC(201)
       INTEGER
-     +   NDUM(1)
+     &   NDUM(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ACVF,CCFER,CCFMN,CCFOUT,IPRINT,SETLAG
+!      EXTERNAL ACVF,CCFER,CCFMN,CCFOUT,IPRINT,SETLAG
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SQRT
@@ -118,8 +118,8 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'C',       'C',       'F',       ' ',       ' ',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'C',       'C',       'F',       ' ',       ' ',       ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -142,7 +142,7 @@
 !     CALL ERROR CHECKING ROUTINES
 !
       CALL CCFER(NMSUB, N, LAGMAX, LDSTAK, LDSMIN, ICCOV, JCCOV,
-     +  INLPPC, JNLPPC, M, LYFFT, NFFT, IYM, IYMFFT, ISFFT, ISLONG)
+     &  INLPPC, JNLPPC, M, LYFFT, NFFT, IYM, IYMFFT, ISFFT, ISLONG)
 !
 !     CHECK WHETHER AN ERROR HAS BEEN DETECTED
 !
@@ -162,16 +162,16 @@
 !
 !       CALL ROUTINE FOR MAIN AUTOCORRELATION COMPUTATIONS.
 !
-        IF (CCOV(1,1,1)*CCOV(1,2,2) .NE. 0.0E0_WP)
-     +    CALL CCFMN (Y1, Y2, N, LAGMAX, 2*LAGMAX+1, CCOV(1,1,1),
-     +     CCOV(1,2,2), CCOV(1,1,2), CCOV(1,2,1), 101, Y1MEAN, Y2MEAN,
-     +     RHOC, SDRHOC, 1)
+        IF (CCOV(1,1,1)*CCOV(1,2,2) .NE. 0.0_WP)
+     &    CALL CCFMN (Y1, Y2, N, LAGMAX, 2*LAGMAX+1, CCOV(1,1,1),
+     &     CCOV(1,2,2), CCOV(1,1,2), CCOV(1,2,1), 101, Y1MEAN, Y2MEAN,
+     &     RHOC, SDRHOC, 1)
 !
 !       CALL ROUTINE TO PRINT OUT AUTOCORRELATIONS
 !
         CALL CCFOUT (1, Y1MEAN, Y1SD, N, N, 2, Y2MEAN, Y2SD, N,
-     +     N, LAGMAX, 2*LAGMAX+1, RHOC, SDRHOC, .FALSE., NDUM, NDUM, 1,
-     +     0.0E0_WP, 0.0E0_WP, .FALSE.)
+     &     N, LAGMAX, 2*LAGMAX+1, RHOC, SDRHOC, .FALSE., NDUM, NDUM, 1,
+     &     0.0_WP, 0.0_WP, .FALSE.)
       END IF
 !
       IF (IERR.NE.0) THEN
@@ -188,5 +188,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT(/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   27H       CALL CCF (Y1, Y2, N))
+     &   27H       CALL CCF (Y1, Y2, N))
       END

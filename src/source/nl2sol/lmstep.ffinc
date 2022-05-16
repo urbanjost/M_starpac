@@ -12,27 +12,27 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   ierr,ka,p
+     &   ierr,ka,p
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   d(p),g(p),qtr(p),r(1),step(p),v(21),w(1)
+     &   d(p),g(p),qtr(p),r(1),step(p),v(21),w(1)
       integer
-     +   ipivot(p)
+     &   ipivot(p)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   a,adi,alphak,b,d1,d2,dfac,dfacsq,dst,dtol,eight,half,lk,
-     +   negone,oldphi,one,p001,phi,phimax,phimin,psifac,rad,si,sj,
-     +   sqrtak,t,three,ttol,twopsi,uk,wl,zero
+     &   a,adi,alphak,b,d1,d2,dfac,dfacsq,dst,dtol,eight,half,lk,
+     &   negone,oldphi,one,p001,phi,phimax,phimin,psifac,rad,si,sj,
+     &   sqrtak,t,three,ttol,twopsi,uk,wl,zero
       integer
-     +   dgnorm,dst0,dstnrm,dstsav,epslon,gtstep,i,i1,ip1,j1,k,
-     +   kalim,l,lk0,nreduc,phipin,phmnfc,phmxfc,pp1o2,preduc,rad0,
-     +   radius,res,res0,rmat,rmat0,stppar,uk0
+     &   dgnorm,dst0,dstnrm,dstsav,epslon,gtstep,i,i1,ip1,j1,k,
+     &   kalim,l,lk0,nreduc,phipin,phmnfc,phmxfc,pp1o2,preduc,rad0,
+     &   radius,res,res0,rmat,rmat0,stppar,uk0
 !
 !  EXTERNAL FUNCTIONS
       real(kind=wp) ::
-     +   dotprd,v2norm
+     &   dotprd,v2norm
       external dotprd,v2norm
 !
 !  EXTERNAL SUBROUTINES
@@ -182,13 +182,13 @@
 !     INTEGER DGNORM, DSTNRM, DST0, EPSLON, GTSTEP, NREDUC, PHMNFC,
 !    1        PHMXFC, PREDUC, RADIUS, RAD0, STPPAR
       data dgnorm/1/, dstnrm/2/, dst0/3/, epslon/19/,
-     +     gtstep/4/, nreduc/6/, phmnfc/20/,
-     +     phmxfc/21/, preduc/7/, radius/8/,
-     +     rad0/9/, stppar/5/
+     &     gtstep/4/, nreduc/6/, phmnfc/20/,
+     &     phmxfc/21/, preduc/7/, radius/8/,
+     &     rad0/9/, stppar/5/
 !
       data dfac/256.0_wp/, eight/8.0_wp/, half/0.5_wp/, negone/-1.0_wp/,
-     +     one/1.0_wp/, p001/1.0e-3_wp/, three/3.0_wp/, ttol/2.5_wp/,
-     +     zero/0.0_wp/
+     &     one/1.0_wp/, p001/1.0e-3_wp/, three/3.0_wp/, ttol/2.5_wp/,
+     &     zero/0.0_wp/
 !
 !  ***  BODY  ***
 !
@@ -214,7 +214,7 @@
       res = res0 + 1
       rad = v(radius)
       if (rad .gt. zero)
-     +   psifac = v(epslon)/((eight*(v(phmnfc) + one) + three) * rad**2)
+     &   psifac = v(epslon)/((eight*(v(phmnfc) + one) + three) * rad**2)
       phimax = v(phmxfc) * rad
       phimin = v(phmnfc) * rad
 !     ***  DTOL, DFAC, AND DFACSQ ARE USED IN RESCALING THE FAST GIVENS
@@ -297,7 +297,7 @@
 !  ***  SAFEGUARD ALPHAK AND INITIALIZE FAST GIVENS SCALE VECTOR.  ***
 !
       if (alphak .le. zero .or. alphak .lt. lk .or. alphak .ge. uk)
-     +             alphak = uk * max(p001, sqrt(lk/uk))
+     &             alphak = uk * max(p001, sqrt(lk/uk))
       sqrtak = sqrt(alphak)
       do 120 i = 1, p
  120     w(i) = one

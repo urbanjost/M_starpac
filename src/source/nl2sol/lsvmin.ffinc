@@ -10,21 +10,21 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   p
+     &   p
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   l(1),x(p),y(p)
+     &   l(1),x(p),y(p)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   b,half,one,psj,r9973,sminus,splus,t,xminus,xplus,zero
+     &   b,half,one,psj,r9973,sminus,splus,t,xminus,xplus,zero
       integer
-     +   i,ii,ix,j,j0,ji,jj,jjj,jm1,pplus1
+     &   i,ii,ix,j,j0,ji,jj,jjj,jm1,pplus1
 !
 !  EXTERNAL FUNCTIONS
       real(kind=wp) ::
-     +   v2norm
+     &   v2norm
       external v2norm
 !
 !  INTRINSIC FUNCTIONS

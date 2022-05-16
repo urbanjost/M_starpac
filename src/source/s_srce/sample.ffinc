@@ -17,28 +17,28 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NS,NYS
+     &   N,NS,NYS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   Y(*),YS(*)
+      REAL(KIND=WP) ::
+     &   Y(*),YS(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT
+     &   IPRT
       LOGICAL
-     +   ERR01,ERR02,HEAD
+     &   ERR01,ERR02,HEAD
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LN(8)*1,LNS(8)*1,LONE(8)*1,NMSUB(6)*1
+     &   LN(8)*1,LNS(8)*1,LONE(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,EISII,IPRINT,SMPLY
+!      EXTERNAL EISGE,EISII,IPRINT,SMPLY
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -77,18 +77,18 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'S',       'A',       'M',       'P',       'L',       'E'/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'S',       'A',       'M',       'P',       'L',       'E'/
       DATA
-     +  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
-     + /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     & /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LNS(1), LNS(2), LNS(3), LNS(4), LNS(5), LNS(6), LNS(7), LNS(8)
-     + /  'N',   'S',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LNS(1), LNS(2), LNS(3), LNS(4), LNS(5), LNS(6), LNS(7), LNS(8)
+     & /  'N',   'S',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LONE(1), LONE(2), LONE(3), LONE(4), LONE(5), LONE(6), LONE(7),
-     +  LONE(8)
-     + /  'O',   'N',   'E',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LONE(1), LONE(2), LONE(3), LONE(4), LONE(5), LONE(6), LONE(7),
+     &  LONE(8)
+     & /  'O',   'N',   'E',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -119,5 +119,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   38H       CALL SAMPLE (Y, N, NS, YS, NYS))
+     &   38H       CALL SAMPLE (Y, N, NS, YS, NYS))
       END

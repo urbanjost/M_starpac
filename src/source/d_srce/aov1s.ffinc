@@ -22,39 +22,36 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IGSTAT,LDSTAK,N,NG,NPRT
+     &   IGSTAT,LDSTAK,N,NG,NPRT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   GSTAT(*),TAG(*),Y(*)
+     &   GSTAT(*),TAG(*),Y(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   B10,GPMAX,GPMIN,IFP,INDEX,INT,IPRT,ITEMP,NALL0,NZTAGS,
-     +   RANKS,SRANK
+     &   B10,GPMAX,GPMIN,IFP,INDEX,INT,IPRT,ITEMP,NALL0,NZTAGS,
+     &   RANKS,SRANK
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   RSTAK(12)
+     &   RSTAK(12)
       INTEGER
-     +   ISTAK(12)
+     &   ISTAK(12)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET
-      EXTERNAL STKGET
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AOV1ER,AOV1HD,AOV1MN,IPRINT,STKCLR
+!      EXTERNAL AOV1ER,AOV1HD,AOV1MN,IPRINT,STKCLR
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -129,7 +126,7 @@
 !        THE VECTOR OF OBSERVATIONS
 !
       DATA   NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6)
-     +     /      'A',      'O',      'V',      '1',      'S',      ' '/
+     &     /      'A',      'O',      'V',      '1',      'S',      ' '/
 !
 !     SET UP FRAMEWORK VARIABLES FOR NUMBER TYPES
 !
@@ -142,7 +139,7 @@
 !     NALL0.
 !
       CALL AOV1ER(Y, TAG, N, IGSTAT, NZTAGS, NG, LDSTAK, NMSUB, INDEX,
-     +   0, NALL0)
+     &   0, NALL0)
 !
       IF (IERR.EQ.0) GO TO 20
 !
@@ -167,11 +164,11 @@
       ITEMP = STKGET(NZTAGS,INT)
 !
       CALL AOV1MN(Y, TAG, N,
-     +            GSTAT(1), GSTAT(IGSTAT+1),
-     +            GSTAT(2*IGSTAT+1), GSTAT(3*IGSTAT+1),
-     +            NPRT, ISTAK(INDEX), RSTAK(SRANK), RSTAK(GPMIN),
-     +            RSTAK(GPMAX), RSTAK(B10), RSTAK(RANKS),
-     +            ISTAK(ITEMP), NG, NZTAGS)
+     &            GSTAT(1), GSTAT(IGSTAT+1),
+     &            GSTAT(2*IGSTAT+1), GSTAT(3*IGSTAT+1),
+     &            NPRT, ISTAK(INDEX), RSTAK(SRANK), RSTAK(GPMIN),
+     &            RSTAK(GPMAX), RSTAK(B10), RSTAK(RANKS),
+     &            ISTAK(ITEMP), NG, NZTAGS)
 !
 !     RELEASE THE STACK AREA
 !
@@ -182,5 +179,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT(/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     + '       CALL AOV1S (Y, TAG, N, LDSTAK, NPRT, GSTAT, IGSTAT, NG)')
+     & '       CALL AOV1S (Y, TAG, N, LDSTAK, NPRT, GSTAT, IGSTAT, NG)')
       END

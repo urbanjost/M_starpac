@@ -23,20 +23,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   FD
+      REAL(KIND=WP) ::
+     &   FD
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   AMPL(N),PHAS(N),Y(N)
+      REAL(KIND=WP) ::
+     &   AMPL(N),PHAS(N),Y(N)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   ARG,PI
+      REAL(KIND=WP) ::
+     &   ARG,PI
       INTEGER
-     +   I
+     &   I
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL GETPI

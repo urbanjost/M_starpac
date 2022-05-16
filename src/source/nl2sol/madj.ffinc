@@ -5,13 +5,13 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   n,nf,p
+     &   n,nf,p
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   j(n,p),urparm(*),x(p)
+     &   j(n,p),urparm(*),x(p)
       integer
-     +   uiparm(*)
+     &   uiparm(*)
 !
 !  SUBROUTINE ARGUMENTS
       external ufparm

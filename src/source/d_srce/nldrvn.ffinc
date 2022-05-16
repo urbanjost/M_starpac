@@ -1,6 +1,6 @@
 !NLDRVN
       SUBROUTINE NLDRVN (MDL, DRV, DONE, IFIXD, PAR, NPAR, XM, N, M,
-     +   IXM, PVT, D, WEIGHT, WT, LWT, STPT, LSTPT, SCL, LSCL)
+     &   IXM, PVT, D, WEIGHT, WT, LWT, STPT, LSTPT, SCL, LSCL)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,29 +18,29 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IXM,LSCL,LSTPT,LWT,M,N,NPAR
+     &   IXM,LSCL,LSTPT,LWT,M,N,NPAR
       LOGICAL
-     +   DONE,WEIGHT
+     &   DONE,WEIGHT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   D(N,NPAR),PAR(NPAR),PVT(N),SCL(LSCL),STPT(LSTPT),WT(LWT),
-     +   XM(IXM,M)
+     &   D(N,NPAR),PAR(NPAR),PVT(N),SCL(LSCL),STPT(LSTPT),WT(LWT),
+     &   XM(IXM,M)
       INTEGER
-     +   IFIXD(NPAR)
+     &   IFIXD(NPAR)
 !
 !  SUBROUTINE ARGUMENTS
       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   PJ,STPJ,WTSQRT
+     &   PJ,STPJ,WTSQRT
       INTEGER
-     +   I,J,JPK
+     &   I,J,JPK
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,MAX,SIGN,SQRT
@@ -121,16 +121,16 @@
          IF (IFIXD(J).EQ.0) THEN
             JPK = JPK + 1
             PJ = PAR(J)
-            IF (SCL(JPK).EQ.0.0E0_WP) THEN
-               IF (PAR(J).NE.0.0E0_WP) THEN
-                  STPJ = STPT(J)*SIGN(1.0E0_WP,PAR(J))*ABS(PAR(J))
+            IF (SCL(JPK).EQ.0.0_WP) THEN
+               IF (PAR(J).NE.0.0_WP) THEN
+                  STPJ = STPT(J)*SIGN(1.0_WP,PAR(J))*ABS(PAR(J))
                ELSE
                   STPJ = STPT(J)
                END IF
             ELSE
                STPJ = STPT(J)*
-     +                SIGN(1.0E0_WP,PAR(J))*MAX(ABS(PAR(J)),1.0E0_WP/
-     +                ABS(SCL(JPK)))
+     &                SIGN(1.0_WP,PAR(J))*MAX(ABS(PAR(J)),1.0_WP/
+     &                ABS(SCL(JPK)))
             END IF
 !
             STPJ = STPJ + PAR(J)
@@ -140,7 +140,7 @@
             CALL MDL(PAR, NPAR, XM, N, M, IXM, D(1,J))
 !
             DO 10 I=1,N
-               WTSQRT = 1.0E0_WP
+               WTSQRT = 1.0_WP
                IF (WEIGHT .AND. (.NOT.DONE)) WTSQRT = SQRT(WT(I))
                D(I,JPK) = WTSQRT*(PVT(I)-D(I,J))/STPJ
    10       CONTINUE

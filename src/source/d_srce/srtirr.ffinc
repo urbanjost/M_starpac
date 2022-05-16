@@ -24,23 +24,23 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LA
+     &   LA
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   A(LA),RR(LA)
+     &   A(LA),RR(LA)
       INTEGER
-     +   IR(LA)
+     &   IR(LA)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   R,RT,RTT,T,TT
+     &   R,RT,RTT,T,TT
       INTEGER
-     +   I,IJ,IT,ITT,J,K,L,M
+     &   I,IJ,IT,ITT,J,K,L,M
 !
 !  LOCAL ARRAYS
       INTEGER
-     +   IL(21),IU(21)
+     &   IL(21),IU(21)
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC INT
@@ -94,12 +94,12 @@
       M = 1
       I = 1
       J = LA
-      R = .375D0
+      R = .375_WP
    10 IF (I.EQ.J) GO TO 90
-      IF (R.GT.0.5898437D0) GO TO 20
-      R = R + 3.90625D-2
+      IF (R.GT.0.5898437_WP) GO TO 20
+      R = R + 3.90625E-2_WP
       GO TO 30
-   20 R = R - .21875D0
+   20 R = R - .21875_WP
    30 K = I
 !                                  SELECT A CENTRAL ELEMENT OF THE
 !                                  ARRAY AND SAVE IT IN LOCATION T

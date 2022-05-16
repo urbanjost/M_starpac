@@ -15,20 +15,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   CNST
+      REAL(KIND=WP) ::
+     &   CNST
       INTEGER
-     +   LPER,NF,NFFT
+     &   LPER,NF,NFFT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PER(LPER),YFFT(NFFT)
+      REAL(KIND=WP) ::
+     &   PER(LPER),YFFT(NFFT)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   FAC
+      REAL(KIND=WP) ::
+     &   FAC
       INTEGER
-     +   I,ISN,NFFT2
+     &   I,ISN,NFFT2
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL FFT,REALTR

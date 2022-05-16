@@ -17,15 +17,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IXM,M,N,NROW,NROWU
+     &   IXM,M,N,NROW,NROWU
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   XM(IXM,M)
+     &   XM(IXM,M)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,J
+     &   I,J
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -55,7 +55,7 @@
 !
       DO 20 I = 1, N
          DO 10 J = 1, M
-            IF (XM(I,J) .EQ. 0.0E0_WP) GO TO 20
+            IF (XM(I,J) .EQ. 0.0_WP) GO TO 20
    10    CONTINUE
          NROWU = I
          RETURN

@@ -10,17 +10,17 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   n
+     &   n
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   l(1),x(n),y(n)
+     &   l(1),x(n),y(n)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   xi,zero
+     &   xi,zero
       integer
-     +   i,i0,ii,ij,im1,j,np1
+     &   i,i0,ii,ij,im1,j,np1
 !
       data zero/0.0_wp/
 !

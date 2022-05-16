@@ -18,24 +18,24 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LDSTAK
+     &   LDSTAK
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   SIGMA,YMEAN
+      REAL(KIND=WP) ::
+     &   SIGMA,YMEAN
       INTEGER
-     +   I,IPRT,ISEED,IYM,M,N
+     &   I,IPRT,ISEED,IYM,M,N
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   YM(50,2)
+      REAL(KIND=WP) ::
+     &   YM(50,2)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,MVP,NRAND,NRANDC
+!      EXTERNAL IPRINT,MVP,NRAND,NRANDC
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR

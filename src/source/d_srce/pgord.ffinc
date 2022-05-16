@@ -16,21 +16,21 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   NPRT,NPTS
+     &   NPRT,NPTS
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PER(NPTS),YAXIS(NPTS)
+     &   PER(NPTS),YAXIS(NPTS)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   FPLM
+     &   FPLM
       INTEGER
-     +   I
+     &   I
 !
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
-     +   D1MACH
+     &   D1MACH
       EXTERNAL D1MACH
 !
 !  INTRINSIC FUNCTIONS
@@ -69,9 +69,9 @@
 !
       DO 10 I = 2, NPTS
          YAXIS(I) = FPLM
-         IF (PER(I) .LE. 0.0E0_WP) GO TO 10
+         IF (PER(I) .LE. 0.0_WP) GO TO 10
             YAXIS(I) = PER(I)
-            IF (IABS(NPRT) .EQ. 1) YAXIS(I) = 10.0E0_WP*LOG10(YAXIS(I))
+            IF (IABS(NPRT) .EQ. 1) YAXIS(I) = 10.0_WP*LOG10(YAXIS(I))
    10 CONTINUE
 !
       RETURN

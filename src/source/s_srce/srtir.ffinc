@@ -23,23 +23,23 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LA
+     &   LA
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   A(LA)
+      REAL(KIND=WP) ::
+     &   A(LA)
       INTEGER
-     +   IR(LA)
+     &   IR(LA)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   R,T,TT
+      REAL(KIND=WP) ::
+     &   R,T,TT
       INTEGER
-     +   I,IJ,IT,ITT,J,K,L,M
+     &   I,IJ,IT,ITT,J,K,L,M
 !
 !  LOCAL ARRAYS
       INTEGER
-     +   IL(21),IU(21)
+     &   IL(21),IU(21)
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC INT

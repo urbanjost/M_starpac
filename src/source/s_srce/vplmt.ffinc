@@ -1,6 +1,6 @@
 !VPLMT
       SUBROUTINE VPLMT (YM, YMMISS, N, M, IYM, YLB, YUB, YMN,
-     +  YMX, ERROR, NMSUB, MISS, NSAMPL)
+     &  YMX, ERROR, NMSUB, MISS, NSAMPL)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,32 +16,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   YLB,YMN,YMX,YUB
+      REAL(KIND=WP) ::
+     &   YLB,YMN,YMX,YUB
       INTEGER
-     +   IYM,M,N,NSAMPL
+     &   IYM,M,N,NSAMPL
       LOGICAL
-     +   ERROR,MISS
+     &   ERROR,MISS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   YM(IYM,M),YMMISS(M)
+      REAL(KIND=WP) ::
+     &   YM(IYM,M),YMMISS(M)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,II,IPRT,J
+     &   I,II,IPRT,J
       LOGICAL
-     +   HEAD,SETLMT
+     &   HEAD,SETLMT
 !
 !  EXTERNAL FUNCTIONS
-      LOGICAL
-     +   MVCHK
-      EXTERNAL MVCHK
+!      LOGICAL
+!     +   MVCHK
+!      EXTERNAL MVCHK
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ADJLMT,EHDR,IPRINT
+!      EXTERNAL ADJLMT,EHDR,IPRINT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MAX,MIN
@@ -111,7 +111,7 @@
            DO 10 J=1,M
               IF (MISS .AND. MVCHK(YM(I,J),YMMISS(J))) GO TO 10
               IF ((YLB.LT.YUB) .AND. ((YM(I,J).LT.YLB) .OR.
-     +           (YUB.LT.YM(I,J)))) GO TO 10
+     &           (YUB.LT.YM(I,J)))) GO TO 10
               IF (SETLMT) THEN
                 YMN = MIN(YMN, YM(I,J))
                 YMX = MAX(YMX, YM(I,J))
@@ -149,7 +149,7 @@
                DO 40 J=1,M
                   IF (MISS .AND. MVCHK(YM(I,J),YMMISS(J))) GO TO 40
                   IF ((YLB.LT.YUB) .AND. ((YM(I,J).LT.YLB) .OR.
-     +               (YUB.LT.YM(I,J)))) GO TO 40
+     &               (YUB.LT.YM(I,J)))) GO TO 40
                   YMN = MIN(YMN, YM(I,J))
                   YMX = MAX(YMX, YM(I,J))
    40          CONTINUE
@@ -168,10 +168,10 @@
 !     FORMAT STATEMENTS
 !
  1010 FORMAT (/
-     +   44H NO NON-MISSING PLOT COORDINATES WERE FOUND.)
+     &   44H NO NON-MISSING PLOT COORDINATES WERE FOUND.)
  1020 FORMAT (/
-     +   40H NO NON-MISSING VALUES WERE FOUND WITHIN,
-     +   26H THE USER SUPPLIED LIMITS.)
+     &   40H NO NON-MISSING VALUES WERE FOUND WITHIN,
+     &   26H THE USER SUPPLIED LIMITS.)
  1030 FORMAT (/
-     +   30H THE PLOT HAS BEEN SUPPRESSED.)
+     &   30H THE PLOT HAS BEEN SUPPRESSED.)
       END

@@ -16,21 +16,21 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   NPRT,NPTS
+     &   NPRT,NPTS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PER(NPTS),YAXIS(NPTS)
+      REAL(KIND=WP) ::
+     &   PER(NPTS),YAXIS(NPTS)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   FPLM
+      REAL(KIND=WP) ::
+     &   FPLM
       INTEGER
-     +   I
+     &   I
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   R1MACH
+      REAL(KIND=WP) ::
+     &   R1MACH
       EXTERNAL R1MACH
 !
 !  INTRINSIC FUNCTIONS

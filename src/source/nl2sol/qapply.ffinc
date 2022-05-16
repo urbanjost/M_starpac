@@ -8,21 +8,21 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   ierr,n,nn,p
+     &   ierr,n,nn,p
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   j(nn,p),r(n)
+     &   j(nn,p),r(n)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   t
+     &   t
       integer
-     +   i,k,l,nl1
+     &   i,k,l,nl1
 !
 !  EXTERNAL FUNCTIONS
       real(kind=wp) ::
-     +   dotprd
+     &   dotprd
       external dotprd
 !
 !  INTRINSIC FUNCTIONS

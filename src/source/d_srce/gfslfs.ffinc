@@ -17,45 +17,45 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   FMAX,FMIN
+     &   FMAX,FMIN
       INTEGER
-     +   K,LDSTAK,NF,NPRT
+     &   K,LDSTAK,NF,NPRT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   FREQ(*),GAIN(*),H(*)
+     &   FREQ(*),GAIN(*),H(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   DELTA,FMN,FMX,YPLTMN,YPLTMX
+     &   DELTA,FMN,FMX,YPLTMN,YPLTMX
       INTEGER
-     +   IGFERR,IO,IPRT,ISORT,LDSMIN,NALL0,NORD,XORD,YORD
+     &   IGFERR,IO,IPRT,ISORT,LDSMIN,NALL0,NORD,XORD,YORD
       LOGICAL
-     +   ERR01,ERR02,ERR03,ERR04,ERR05,HEAD,SYM
+     &   ERR01,ERR02,ERR03,ERR04,ERR05,HEAD,SYM
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   RSTAK(12)
+     &   RSTAK(12)
       INTEGER
-     +   ISTAK(12)
+     &   ISTAK(12)
       CHARACTER
-     +   LH(8)*1,LK(8)*1,LLDS(8)*1,LNF(8)*1,NMSUB(6)*1
+     &   LH(8)*1,LK(8)*1,LLDS(8)*1,LNF(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL STKGET,STKST
+!      INTEGER
+!     +   STKST
+!      EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,ERIODD,ERSLF,GFORD,GFOUT,GFSEST,IPRINT,LDSCMP,
-     +   SETFRQ,STKCLR,STKSET
+!      EXTERNAL EISGE,ERIODD,ERSLF,GFORD,GFOUT,GFSEST,IPRINT,LDSCMP,
+!     +   SETFRQ,STKCLR,STKSET
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MAX,MIN
@@ -151,20 +151,20 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'G',       'F',       'S',       'L',       'F',       'S'/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'G',       'F',       'S',       'L',       'F',       'S'/
       DATA
-     +  LH(1), LH(2), LH(3), LH(4), LH(5), LH(6), LH(7), LH(8)
-     + /  'H',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LH(1), LH(2), LH(3), LH(4), LH(5), LH(6), LH(7), LH(8)
+     & /  'H',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6),
-     +  LK(7), LK(8) /'K', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
+     &  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6),
+     &  LK(7), LK(8) /'K', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
       DATA
-     +  LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6), LLDS(7),
-     +  LLDS(8) /  'L',   'D',   'S',   'T',   'A',   'K',   ' ',   ' '/
+     &  LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6), LLDS(7),
+     &  LLDS(8) /  'L',   'D',   'S',   'T',   'A',   'K',   ' ',   ' '/
       DATA
-     +  LNF(1), LNF(2), LNF(3), LNF(4), LNF(5), LNF(6), LNF(7), LNF(8)
-     + /  'N',   'F',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LNF(1), LNF(2), LNF(3), LNF(4), LNF(5), LNF(6), LNF(7), LNF(8)
+     & /  'N',   'F',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -180,7 +180,7 @@
       CALL ERIODD(NMSUB, LK, K, 1, HEAD, ERR02)
       ERR03 = .TRUE.
       IF ((.NOT. ERR01) .AND. (.NOT. ERR02))
-     +   CALL ERSLF(NMSUB, LH, K, H, HEAD, ERR03)
+     &   CALL ERSLF(NMSUB, LH, K, H, HEAD, ERR03)
       CALL EISGE(NMSUB, LNF, NF, 1, 1, HEAD, ERR04, LNF)
 !
       IF (ERR04) GO TO 10
@@ -210,15 +210,15 @@
 !
       SYM = .TRUE.
 !
-      DELTA = 1.0E0_WP
+      DELTA = 1.0_WP
 !
 !     SET FREQUENCIES AT WHICH THE GAIN FUNCTION IS TO BE ESTIMATED
 !
-      FMN = MAX(FMIN, 0.0E0_WP)
-      FMX = MIN(FMAX, 0.5D0_WP)
+      FMN = MAX(FMIN, 0.0_WP)
+      FMX = MIN(FMAX, 0.5_WP)
       IF (FMN.GE.FMX) THEN
-        FMN = 0.0E0_WP
-        FMX = 0.5D0_WP
+        FMN = 0.0_WP
+        FMX = 0.5_WP
       END IF
       CALL SETFRQ (FREQ, NF, 2, FMN, FMX, DELTA)
 !
@@ -240,9 +240,9 @@
 !     PLOT THE RESULTS
 !
       CALL GFORD (FREQ, GAIN, ISTAK(ISORT), NF, RSTAK(XORD),
-     +   RSTAK(YORD), NORD, YPLTMN, YPLTMX, NPRT, IGFERR)
+     &   RSTAK(YORD), NORD, YPLTMN, YPLTMX, NPRT, IGFERR)
       CALL GFOUT (RSTAK(XORD), RSTAK(YORD), NORD, FREQ, GAIN, NF, K,
-     +   SYM, FMN, FMX, YPLTMN, YPLTMX, NPRT, IGFERR, NMSUB)
+     &   SYM, FMN, FMX, YPLTMN, YPLTMX, NPRT, IGFERR, NMSUB)
 !
       CALL STKCLR(NALL0)
 !
@@ -253,6 +253,6 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL GFSLFS (H, K, NF, FMIN, FMAX, GAIN, FREQ, NPRT,',
-     +   ' LDSTAK)')
+     &   '       CALL GFSLFS (H, K, NF, FMIN, FMAX, GAIN, FREQ, NPRT,',
+     &   ' LDSTAK)')
       END

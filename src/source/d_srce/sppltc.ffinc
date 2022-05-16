@@ -1,6 +1,6 @@
 !SPPLTC
       SUBROUTINE SPPLTC (XAXIS, YAXIS, ISYM, NPTS, XPLTMN, XPLTMX, BW,
-     +   CILOW, CIMID, CIUP, LPCV)
+     &   CILOW, CIMID, CIUP, LPCV)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,15 +18,15 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   BW,CILOW,CIMID,CIUP,XPLTMN,XPLTMX
+     &   BW,CILOW,CIMID,CIUP,XPLTMN,XPLTMX
       INTEGER
-     +   LPCV,NPTS
+     &   LPCV,NPTS
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   XAXIS(LPCV),YAXIS(LPCV)
+     &   XAXIS(LPCV),YAXIS(LPCV)
       INTEGER
-     +   ISYM(LPCV)
+     &   ISYM(LPCV)
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MAX
@@ -53,26 +53,26 @@
 !
       IF (XPLTMX - XPLTMN .GE. BW) GO TO 10
 !
-      XPLTMX = MAX(XPLTMX + (BW - XPLTMX + XPLTMN) / 2.0E0_WP, 0.5D0)
+      XPLTMX = MAX(XPLTMX + (BW - XPLTMX + XPLTMN) / 2.0_WP, 0.5_WP)
       XPLTMN = XPLTMX - BW
 !
    10 CONTINUE
 !
       NPTS = NPTS + 1
 !
-      XAXIS(NPTS) = XPLTMX - 0.5D0 * BW
+      XAXIS(NPTS) = XPLTMX - 0.5_WP * BW
       YAXIS(NPTS) = CIUP
       ISYM(NPTS) = 7
 !
       NPTS = NPTS + 1
 !
-      XAXIS(NPTS) = XPLTMX - 0.5D0 * BW
+      XAXIS(NPTS) = XPLTMX - 0.5_WP * BW
       YAXIS(NPTS) = CIMID
       ISYM(NPTS) = 3
 !
       NPTS = NPTS + 1
 !
-      XAXIS(NPTS) = XPLTMX - 0.5D0 * BW
+      XAXIS(NPTS) = XPLTMX - 0.5_WP * BW
       YAXIS(NPTS) = CILOW
       ISYM(NPTS) = 13
 !

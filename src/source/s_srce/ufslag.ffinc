@@ -17,19 +17,19 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LACOV,LAGMAX,N,NW,NWUSED
+     &   LACOV,LAGMAX,N,NW,NWUSED
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   ACOV(LACOV)
+      REAL(KIND=WP) ::
+     &   ACOV(LACOV)
       INTEGER
-     +   LAGS(NW)
+     &   LAGS(NW)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   ACOVMX,P95LIM
+      REAL(KIND=WP) ::
+     &   ACOVMX,P95LIM
       INTEGER
-     +   I,J,K,LAG,NWM1
+     &   I,J,K,LAG,NWM1
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,REAL,SQRT

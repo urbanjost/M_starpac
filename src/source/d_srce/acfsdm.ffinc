@@ -17,17 +17,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NC
+     &   N,NC
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   RHO(*),SDRHO(*)
+     &   RHO(*),SDRHO(*)
       INTEGER
-     +   NLPPA(*)
+     &   NLPPA(*)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   K,KLAST,LAG
+     &   K,KLAST,LAG
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MIN,DBLE,SQRT
@@ -58,13 +58,13 @@
       SDRHO(1) = SQRT(DBLE(NLPPA(1))) * (N-1) / (N * NLPPA(1))
       IF (NC .EQ. 1) RETURN
       DO 20 LAG = 2, NC
-         SDRHO(LAG) = 0.0E0_WP
+         SDRHO(LAG) = 0.0_WP
          KLAST = MIN(LAG-1, N-LAG)
          DO 10 K = 1, KLAST
             SDRHO(LAG) = SDRHO(LAG) + (N-LAG-K) * RHO(K) * RHO(K)
    10    CONTINUE
-         SDRHO(LAG) = SQRT((N-LAG) + 2.0E0_WP * SDRHO(LAG)) *
-     +      (N-LAG) / (N*NLPPA(LAG))
+         SDRHO(LAG) = SQRT((N-LAG) + 2.0_WP * SDRHO(LAG)) *
+     &      (N-LAG) / (N*NLPPA(LAG))
    20 CONTINUE
       RETURN
       END

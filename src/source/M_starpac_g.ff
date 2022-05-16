@@ -1,9 +1,194 @@
       module M_starpac_g
       implicit none
+      private
+      public  ::  ssifa,  dswap,  dtrdi,  dscal,   strco
+      public  ::  dasum,  dnrm2,  dsifa,  sscal,   isamax
+      public  ::  ddot,   daxpy,  sdot,   idamax,  sswap
+      public  ::  dsidi,  dtrco,  ssidi,  strdi,   scopy
+      public  ::  saxpy,  sasum,  dcopy,  snrm2
+            
+      public  ::  r9lgic,  gamma,   dlngam,  erfc,    eprint
+      public  ::  dgamr,   dlbeta,  dcsevl,  gamlim,  r9lgmc
+      public  ::  alngam,  xerprt,  inits,   csevl,   xgetua
+      public  ::  e9rint,  xerror,  d9gmit,  xsetf,   r9gmit
+      public  ::  dlnrel,  gami,    d9lgic,  derf,    xerrwv
+      public  ::  d9lgit,  seterr,  fdump,   r9lgit,  xerctl
+      public  ::  s88fmt,  erf,     xerabt,  alnrel,  initds
+      public  ::  dbetai,  i8save,  dgamma,  derfc,   dgamlm
+      public  ::  albeta,  xersav,  dgamit,  gamit,   dlgams
+      public  ::  gamr,    xerclr,  betai,   j4save,  xgetf
+      public  ::  d9lgmc,  algams,  dgami
+            
+      public  ::  i1mach,  r1mach,  d1mach
+            
+      public  ::  setiv,   fixprt,  backop,  iprint,  fftlen
+      public  ::  ecvf,    amehdr,  llhdrp,  eiagep,  eiveq
+      public  ::  acfer,   nchose,  inperl,  eisii,   eiage
+      public  ::  nlskl,   bfser,   aov1hd,  eiseq,   pltsym
+      public  ::  pline,   modsum,  dckhdr,  nlerr,   eivii
+      public  ::  stkrel,  stphdr,  corrhd,  eiveo,   ccfer
+      public  ::  acfdtl,  eriodd,  amfer,   nlhdra,  ehdr
+      public  ::  icnti,   llhdrg,  erdf,    stkst,   eisge
+      public  ::  geni,    eisle,   stkclr,  lstlag,  eisrng
+      public  ::  setesl,  enfft,   ufser,   factor,  msgx
+      public  ::  cpyvii,  stkget,  setlag,  ldscmp,  prtcnt
+      public  ::  nlhdrn,  amfhdr,  icopy,   stkset,  versp
+            
+      public  ::  imdcon,  stopx,  ufparm
       integer,save,public :: G_IERR
 !        THE INTEGER VALUE RETURNED BY THIS ROUTINE DESIGNATING
 !        WHETHER ANY ERRORS WERE DETECTED IN THE PARAMETER LIST
 !        IF G_IERR .EQ. 0, NO ERRORS WERE DETECTED
 !        IF G_IERR .EQ. 1, ERRORS HAVE BEEN DETECTED
-      private
+
+      contains
+
+$INCLUDE "./lpk_bls/ssifa.ffinc"
+$INCLUDE "./lpk_bls/dswap.ffinc"
+$INCLUDE "./lpk_bls/dtrdi.ffinc"
+$INCLUDE "./lpk_bls/dscal.ffinc"
+$INCLUDE "./lpk_bls/strco.ffinc"
+$INCLUDE "./lpk_bls/dasum.ffinc"
+$INCLUDE "./lpk_bls/dnrm2.ffinc"
+$INCLUDE "./lpk_bls/dsifa.ffinc"
+$INCLUDE "./lpk_bls/sscal.ffinc"
+$INCLUDE "./lpk_bls/isamax.ffinc"
+$INCLUDE "./lpk_bls/ddot.ffinc"
+$INCLUDE "./lpk_bls/daxpy.ffinc"
+$INCLUDE "./lpk_bls/sdot.ffinc"
+$INCLUDE "./lpk_bls/idamax.ffinc"
+$INCLUDE "./lpk_bls/sswap.ffinc"
+$INCLUDE "./lpk_bls/dsidi.ffinc"
+$INCLUDE "./lpk_bls/dtrco.ffinc"
+$INCLUDE "./lpk_bls/ssidi.ffinc"
+$INCLUDE "./lpk_bls/strdi.ffinc"
+$INCLUDE "./lpk_bls/scopy.ffinc"
+$INCLUDE "./lpk_bls/saxpy.ffinc"
+$INCLUDE "./lpk_bls/sasum.ffinc"
+$INCLUDE "./lpk_bls/dcopy.ffinc"
+$INCLUDE "./lpk_bls/snrm2.ffinc"
+
+$INCLUDE "./misc/r9lgic.ffinc"
+$INCLUDE "./misc/gamma.ffinc"
+$INCLUDE "./misc/dlngam.ffinc"
+$INCLUDE "./misc/erfc.ffinc"
+$INCLUDE "./misc/eprint.ffinc"
+$INCLUDE "./misc/dgamr.ffinc"
+$INCLUDE "./misc/dlbeta.ffinc"
+$INCLUDE "./misc/dcsevl.ffinc"
+$INCLUDE "./misc/gamlim.ffinc"
+$INCLUDE "./misc/r9lgmc.ffinc"
+$INCLUDE "./misc/alngam.ffinc"
+$INCLUDE "./misc/xerprt.ffinc"
+$INCLUDE "./misc/inits.ffinc"
+$INCLUDE "./misc/csevl.ffinc"
+$INCLUDE "./misc/xgetua.ffinc"
+$INCLUDE "./misc/e9rint.ffinc"
+$INCLUDE "./misc/xerror.ffinc"
+$INCLUDE "./misc/d9gmit.ffinc"
+$INCLUDE "./misc/xsetf.ffinc"
+$INCLUDE "./misc/r9gmit.ffinc"
+$INCLUDE "./misc/dlnrel.ffinc"
+$INCLUDE "./misc/gami.ffinc"
+$INCLUDE "./misc/d9lgic.ffinc"
+$INCLUDE "./misc/derf.ffinc"
+$INCLUDE "./misc/xerrwv.ffinc"
+$INCLUDE "./misc/d9lgit.ffinc"
+$INCLUDE "./misc/seterr.ffinc"
+$INCLUDE "./misc/fdump.ffinc"
+$INCLUDE "./misc/r9lgit.ffinc"
+$INCLUDE "./misc/xerctl.ffinc"
+$INCLUDE "./misc/s88fmt.ffinc"
+$INCLUDE "./misc/erf.ffinc"
+$INCLUDE "./misc/xerabt.ffinc"
+$INCLUDE "./misc/alnrel.ffinc"
+$INCLUDE "./misc/initds.ffinc"
+$INCLUDE "./misc/dbetai.ffinc"
+$INCLUDE "./misc/i8save.ffinc"
+$INCLUDE "./misc/dgamma.ffinc"
+$INCLUDE "./misc/derfc.ffinc"
+$INCLUDE "./misc/dgamlm.ffinc"
+$INCLUDE "./misc/albeta.ffinc"
+$INCLUDE "./misc/xersav.ffinc"
+$INCLUDE "./misc/dgamit.ffinc"
+$INCLUDE "./misc/gamit.ffinc"
+$INCLUDE "./misc/dlgams.ffinc"
+$INCLUDE "./misc/gamr.ffinc"
+$INCLUDE "./misc/xerclr.ffinc"
+$INCLUDE "./misc/betai.ffinc"
+$INCLUDE "./misc/j4save.ffinc"
+$INCLUDE "./misc/xgetf.ffinc"
+$INCLUDE "./misc/d9lgmc.ffinc"
+$INCLUDE "./misc/algams.ffinc"
+$INCLUDE "./misc/dgami.ffinc"
+
+$INCLUDE "./mdc/i1mach.ffinc"
+$INCLUDE "./mdc/r1mach.ffinc"
+$INCLUDE "./mdc/d1mach.ffinc"
+
+$INCLUDE "./srce/setiv.ffinc"
+$INCLUDE "./srce/fixprt.ffinc"
+$INCLUDE "./srce/backop.ffinc"
+$INCLUDE "./srce/iprint.ffinc"
+$INCLUDE "./srce/fftlen.ffinc"
+$INCLUDE "./srce/ecvf.ffinc"
+$INCLUDE "./srce/amehdr.ffinc"
+$INCLUDE "./srce/llhdrp.ffinc"
+$INCLUDE "./srce/eiagep.ffinc"
+$INCLUDE "./srce/eiveq.ffinc"
+$INCLUDE "./srce/acfer.ffinc"
+$INCLUDE "./srce/nchose.ffinc"
+$INCLUDE "./srce/inperl.ffinc"
+$INCLUDE "./srce/eisii.ffinc"
+$INCLUDE "./srce/eiage.ffinc"
+$INCLUDE "./srce/nlskl.ffinc"
+$INCLUDE "./srce/bfser.ffinc"
+$INCLUDE "./srce/aov1hd.ffinc"
+$INCLUDE "./srce/eiseq.ffinc"
+$INCLUDE "./srce/pltsym.ffinc"
+$INCLUDE "./srce/pline.ffinc"
+$INCLUDE "./srce/modsum.ffinc"
+$INCLUDE "./srce/dckhdr.ffinc"
+$INCLUDE "./srce/nlerr.ffinc"
+$INCLUDE "./srce/eivii.ffinc"
+$INCLUDE "./srce/stkrel.ffinc"
+$INCLUDE "./srce/stphdr.ffinc"
+$INCLUDE "./srce/corrhd.ffinc"
+$INCLUDE "./srce/eiveo.ffinc"
+$INCLUDE "./srce/ccfer.ffinc"
+$INCLUDE "./srce/acfdtl.ffinc"
+$INCLUDE "./srce/eriodd.ffinc"
+$INCLUDE "./srce/amfer.ffinc"
+$INCLUDE "./srce/nlhdra.ffinc"
+$INCLUDE "./srce/ehdr.ffinc"
+$INCLUDE "./srce/icnti.ffinc"
+$INCLUDE "./srce/llhdrg.ffinc"
+$INCLUDE "./srce/erdf.ffinc"
+$INCLUDE "./srce/stkst.ffinc"
+$INCLUDE "./srce/eisge.ffinc"
+$INCLUDE "./srce/geni.ffinc"
+$INCLUDE "./srce/eisle.ffinc"
+$INCLUDE "./srce/stkclr.ffinc"
+$INCLUDE "./srce/lstlag.ffinc"
+$INCLUDE "./srce/eisrng.ffinc"
+$INCLUDE "./srce/setesl.ffinc"
+$INCLUDE "./srce/enfft.ffinc"
+$INCLUDE "./srce/ufser.ffinc"
+$INCLUDE "./srce/factor.ffinc"
+$INCLUDE "./srce/msgx.ffinc"
+$INCLUDE "./srce/cpyvii.ffinc"
+$INCLUDE "./srce/stkget.ffinc"
+$INCLUDE "./srce/setlag.ffinc"
+$INCLUDE "./srce/ldscmp.ffinc"
+$INCLUDE "./srce/prtcnt.ffinc"
+$INCLUDE "./srce/nlhdrn.ffinc"
+$INCLUDE "./srce/amfhdr.ffinc"
+$INCLUDE "./srce/icopy.ffinc"
+$INCLUDE "./srce/stkset.ffinc"
+$INCLUDE "./srce/versp.ffinc"
+
+$INCLUDE "./nl2sol/imdcon.ffinc"
+$INCLUDE "./nl2sol/stopx.ffinc"
+$INCLUDE "./nl2sol/ufparm.ffinc"
+
       end module M_starpac_g

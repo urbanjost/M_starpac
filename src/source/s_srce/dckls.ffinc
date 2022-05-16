@@ -18,34 +18,34 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IXM,LDSTAK,M,N,NPAR
+     &   IXM,LDSTAK,M,N,NPAR
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PAR(*),XM(*)
+      REAL(KIND=WP) ::
+     &   PAR(*),XM(*)
 !
 !  SUBROUTINE ARGUMENTS
       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       DOUBLE PRECISION DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT,LSCALE,NETA,NPRT,NROW,NTAU
+     &   IPRT,LSCALE,NETA,NPRT,NROW,NTAU
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   SCALE(1)
+      REAL(KIND=WP) ::
+     &   SCALE(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL DCKDRV,IPRINT
+!      EXTERNAL DCKDRV,IPRINT
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -107,7 +107,7 @@
 !     SET UP NAME ARRAYS
 !
       DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
-     +   'D','C','K','L','S',' '/
+     &   'D','C','K','L','S',' '/
 !
 !     SET DEFAULT VALUES
 !
@@ -121,7 +121,7 @@
 !     PASS CONTROL OF DERIVATIVE CHECKING TO DCKDRV
 !
       CALL DCKDRV(NMSUB, LDSTAK, XM, N, M, IXM, MDL, DRV, PAR, NPAR,
-     +   NETA, NTAU, SCALE, LSCALE, NROW, NPRT)
+     &   NETA, NTAU, SCALE, LSCALE, NROW, NPRT)
 !
       IF (IERR.NE.1) RETURN
 !
@@ -132,6 +132,6 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL DCKLS (XM, N, M, IXM, NLSMDL, NLSDRV,'/
-     +   '      +            PAR, NPAR, LDSTAK)')
+     &   '       CALL DCKLS (XM, N, M, IXM, NLSMDL, NLSDRV,'/
+     &   '      +            PAR, NPAR, LDSTAK)')
       END

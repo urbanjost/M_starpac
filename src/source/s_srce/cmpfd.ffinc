@@ -17,24 +17,24 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   STP
+      REAL(KIND=WP) ::
+     &   STP
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   FD(*),PV(*),PVSTP(*)
+      REAL(KIND=WP) ::
+     &   FD(*),PV(*),PVSTP(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   FPLRS
+      REAL(KIND=WP) ::
+     &   FPLRS
       INTEGER
-     +   I
+     &   I
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   R1MACH
+      REAL(KIND=WP) ::
+     &   R1MACH
       EXTERNAL R1MACH
 !
 !  INTRINSIC FUNCTIONS

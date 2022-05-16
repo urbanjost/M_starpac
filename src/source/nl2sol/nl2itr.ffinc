@@ -20,16 +20,16 @@
 !  LOCAL SCALARS
       real(kind=wp) :: e,half,negone,one,rdof1,sttsst,t,t1,zero
       integer
-     +   cnvcod,cosmin,covmat,covprt,covreq,d0init,dgnorm,dig,dig1,
-     +   dinit,dstnrm,dtype,dummy,f,f0,fdif,fuzz,g,g01,g1,gtstep,h,
-     +   h0,h1,i,ierr,im1,incfac,inits,ipiv0,ipiv1,ipivi,ipivk,
-     +   ipivot,ipk,irc,jtinit,jtol1,k,kagqt,kalm,km1,l,lky,lky1,
-     +   lmat,lmat1,lmax0,lstgst,m,mode,model,mxfcal,mxiter,nfcall,
-     +   nfcov,nfgcal,ngcall,ngcov,niter,nvsave,phmxfc,pp1o2,
-     +   preduc,qtr,qtr1,rad0,radfac,radinc,radius,rd,rd0,rd1,rdk,
-     +   restor,rlimit,rsave,rsave1,s,s1,size,smh,sstep,step,step1,
-     +   stglim,stlstg,stpmod,stppar,sused,switch,temp1,temp2,
-     +   toobig,tuner4,tuner5,vsave1,w,w1,wscale,x0,x01,xirc
+     &   cnvcod,cosmin,covmat,covprt,covreq,d0init,dgnorm,dig,dig1,
+     &   dinit,dstnrm,dtype,dummy,f,f0,fdif,fuzz,g,g01,g1,gtstep,h,
+     &   h0,h1,i,ierr,im1,incfac,inits,ipiv0,ipiv1,ipivi,ipivk,
+     &   ipivot,ipk,irc,jtinit,jtol1,k,kagqt,kalm,km1,l,lky,lky1,
+     &   lmat,lmat1,lmax0,lstgst,m,mode,model,mxfcal,mxiter,nfcall,
+     &   nfcov,nfgcal,ngcall,ngcov,niter,nvsave,phmxfc,pp1o2,
+     &   preduc,qtr,qtr1,rad0,radfac,radinc,radius,rd,rd0,rd1,rdk,
+     &   restor,rlimit,rsave,rsave1,s,s1,size,smh,sstep,step,step1,
+     &   stglim,stlstg,stpmod,stppar,sused,switch,temp1,temp2,
+     &   toobig,tuner4,tuner5,vsave1,w,w1,wscale,x0,x01,xirc
 !
 !  EXTERNAL FUNCTIONS
       real(kind=wp) :: dotprd,v2norm
@@ -38,7 +38,7 @@
 !
 !  EXTERNAL SUBROUTINES
       external assess,covclc,dupdat,gqtstp,itsmry,lmstep,parchk,qapply,
-     +   qrfact,rptmul,slupdt,slvmul,vaxpy,vcopy,vscopy
+     &   qrfact,rptmul,slupdt,slvmul,vaxpy,vcopy,vscopy
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,sqrt
@@ -161,26 +161,26 @@
 !  ***  IV SUBSCRIPT VALUES  ***
 !
       data cnvcod/34/, covmat/26/, covprt/14/,
-     +     covreq/15/, dig/43/, dtype/16/, g/28/, h/44/,
-     +     ierr/32/, inits/25/, ipivot/61/, ipiv0/60/,
-     +     irc/3/, kagqt/35/, kalm/36/, lky/37/, lmat/58/,
-     +     mode/38/, model/5/, mxfcal/17/, mxiter/18/,
-     +     nfcall/6/, nfgcal/7/, nfcov/40/, ngcov/41/,
-     +     ngcall/30/, niter/31/, qtr/49/,
-     +     radinc/8/, rd/51/, restor/9/, rsave/52/, s/53/,
-     +     step/55/, stglim/11/, stlstg/56/, sused/57/,
-     +     switch/12/, toobig/2/, w/59/, xirc/13/, x0/60/
+     &     covreq/15/, dig/43/, dtype/16/, g/28/, h/44/,
+     &     ierr/32/, inits/25/, ipivot/61/, ipiv0/60/,
+     &     irc/3/, kagqt/35/, kalm/36/, lky/37/, lmat/58/,
+     &     mode/38/, model/5/, mxfcal/17/, mxiter/18/,
+     &     nfcall/6/, nfgcal/7/, nfcov/40/, ngcov/41/,
+     &     ngcall/30/, niter/31/, qtr/49/,
+     &     radinc/8/, rd/51/, restor/9/, rsave/52/, s/53/,
+     &     step/55/, stglim/11/, stlstg/56/, sused/57/,
+     &     switch/12/, toobig/2/, w/59/, xirc/13/, x0/60/
 !
 !  ***  V SUBSCRIPT VALUES  ***
 !
       data cosmin/43/, dgnorm/1/, dinit/38/, dstnrm/2/,
-     +     d0init/37/, f/10/, fdif/11/, fuzz/45/,
-     +     f0/13/, gtstep/4/, incfac/23/,
-     +     jtinit/39/, jtol1/87/, lmax0/35/,
-     +     nvsave/9/, phmxfc/21/, preduc/7/,
-     +     radfac/16/, radius/8/, rad0/9/, rlimit/42/,
-     +     size/47/, stppar/5/, tuner4/29/, tuner5/30/,
-     +     vsave1/78/, wscale/48/
+     &     d0init/37/, f/10/, fdif/11/, fuzz/45/,
+     &     f0/13/, gtstep/4/, incfac/23/,
+     &     jtinit/39/, jtol1/87/, lmax0/35/,
+     &     nvsave/9/, phmxfc/21/, preduc/7/,
+     &     radfac/16/, radius/8/, rad0/9/, rlimit/42/,
+     &     size/47/, stppar/5/, tuner4/29/, tuner5/30/,
+     &     vsave1/78/, wscale/48/
 !
 !
       data half/0.5_wp/, negone/-1.0_wp/, one/1.0_wp/, zero/0.0_wp/
@@ -369,7 +369,7 @@
          if (iv(kalm) .ge. 0) go to 215
               rd1 = iv(rd)
               if (-1 .eq. iv(kalm)) call qrfact(nn, n, p, j, v(rd1),
-     +                                   iv(ipivot), iv(ierr), 0, v(w1))
+     &                                   iv(ipivot), iv(ierr), 0, v(w1))
               call qapply(nn, n, p, j, v(qtr1), iv(ierr))
  215     h1 = iv(h)
          if (h1 .gt. 0) go to 230
@@ -391,7 +391,7 @@
 !
  230     g1 = iv(g)
          call lmstep(d, v(g1), iv(ierr), iv(ipivot), iv(kalm), p,
-     +               v(qtr1), v(h1), v(step1), v, v(w1))
+     &               v(qtr1), v(h1), v(step1), v, v(w1))
          go to 310
 !
 !  ***  COMPUTE GOLDFELD-QUANDT-TROTTER STEP (AUGMENTED MODEL)  ***
@@ -441,7 +441,7 @@
               if (i .eq. 1) go to 290
               l = h1 + ipiv1
               if (ipivi .lt. ipiv1) l = l +
-     +                               ((ipiv1-ipivi)*(ipiv1+ipivi-3))/2
+     &                               ((ipiv1-ipivi)*(ipiv1+ipivi-3))/2
               m = l + smh
 !             ***  V(L) = H(IPIVOT(I), IPIVOT(1))  ***
 !             ***  V(M) = S(IPIVOT(I), IPIVOT(1))  ***
@@ -453,14 +453,14 @@
                    ipivk = iv(ipk)
                    l = h1 + ipivk
                    if (ipivi .lt. ipivk) l = l +
-     +                               ((ipivk-ipivi)*(ipivk+ipivi-3))/2
+     &                               ((ipivk-ipivi)*(ipivk+ipivi-3))/2
                    m = l + smh
 !                  ***  V(L) = H(IPIVOT(I), IPIVOT(K))  ***
 !                  ***  V(M) = S(IPIVOT(I), IPIVOT(K))  ***
                    km1 = k - 1
                    rdk = rd0 + k
                    v(l) = t * (dotprd(km1, j(1,i), j(1,k)) +
-     +                            v(rdk)*j(k,i) + v(m)) / d(ipivk)
+     &                            v(rdk)*j(k,i) + v(m)) / d(ipivk)
  280               continue
  290          continue
 !
@@ -470,7 +470,7 @@
       dig1 = iv(dig)
       lmat1 = iv(lmat)
       call gqtstp(d, v(dig1), v(h1), iv(kagqt), v(lmat1), p, v(step1),
-     +            v, v(w1))
+     &            v, v(w1))
 !
 !
 !  ***  COMPUTE R(X0 + STEP)  ***
@@ -582,7 +582,7 @@
       rd1 = iv(rd)
       temp1 = iv(stlstg)
       call rptmul(3, iv(ipivot), j, nn, p, v(rd1), v(qtr1), v(lky1),
-     +            v(temp1))
+     &            v(temp1))
 !
 !  ***  SEE WHETHER TO SET V(RADFAC) BY GRADIENT TESTS  ***
 !
@@ -600,7 +600,7 @@
 !
               rd1 = iv(rd)
               call rptmul(2, iv(ipivot), j, nn, p, v(rd1),
-     +                    v(step1), v(temp1), v(temp2))
+     &                    v(step1), v(temp1), v(temp2))
               go to 560
 !
 !     ***  STEP COMPUTED USING AUGMENTED MODEL  ***
@@ -653,7 +653,7 @@
 !
          if (v2norm(p, v(temp1)) .le. v(dgnorm) * v(tuner4))  go to 590
               if (dotprd(p, v(g1), v(step1))
-     +                  .ge. v(gtstep) * v(tuner5))  go to 600
+     &                  .ge. v(gtstep) * v(tuner5))  go to 600
  590               v(radfac) = v(incfac)
 !
 !  ***  FINISH COMPUTING LKY = ((J(X) - J(X0))**T) * R  ***
@@ -677,7 +677,7 @@
 !  ***  UPDATE S  ***
 !
       call slupdt(v(s1), v(cosmin), p, v(size), v(step1), v(temp1),
-     +            v(temp2), v(g01), v(wscale), v(lky1))
+     &            v(temp2), v(g01), v(wscale), v(lky1))
       iv(1) = 2
       go to 150
 !

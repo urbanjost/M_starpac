@@ -49,7 +49,7 @@
 !...SCALAR ARGUMENTS
       REAL RCOND
       INTEGER
-     +   JOB,LDT,N
+     &   JOB,LDT,N
 
 !...ARRAY ARGUMENTS
       REAL T(LDT,*),Z(*)
@@ -57,22 +57,22 @@
 !...LOCAL SCALARS
       REAL EK,S,SM,TNORM,W,WK,WKM,YNORM
       INTEGER
-     +   I1,J,J1,J2,K,KK,L
+     &   I1,J,J1,J2,K,KK,L
       LOGICAL
-     +   LOWER
+     &   LOWER
 
 !...EXTERNAL FUNCTIONS
       REAL SASUM
       EXTERNAL
-     +   SASUM
+     &   SASUM
 
 !...EXTERNAL SUBROUTINES
       EXTERNAL
-     +   SAXPY,SSCAL
+     &   SAXPY,SSCAL
 
 !...INTRINSIC FUNCTIONS
       INTRINSIC
-     +   ABS,AMAX1,SIGN
+     &   ABS,AMAX1,SIGN
 
 
 !***FIRST EXECUTABLE STATEMENT  STRCO

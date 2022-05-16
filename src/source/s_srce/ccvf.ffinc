@@ -1,6 +1,6 @@
 !CCVF
       SUBROUTINE CCVF(Y1, Y2, N, LAGMAX, Y1MEAN, Y2MEAN, CCOV12, CCOV21,
-     +   ICCOV)
+     &   ICCOV)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,20 +17,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   Y1MEAN,Y2MEAN
+      REAL(KIND=WP) ::
+     &   Y1MEAN,Y2MEAN
       INTEGER
-     +   ICCOV,LAGMAX,N
+     &   ICCOV,LAGMAX,N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   CCOV12(ICCOV),CCOV21(ICCOV),Y1(N),Y2(N)
+      REAL(KIND=WP) ::
+     &   CCOV12(ICCOV),CCOV21(ICCOV),Y1(N),Y2(N)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   DOTXY
+      REAL(KIND=WP) ::
+     &   DOTXY
       INTEGER
-     +   LAG,NDOTXY
+     &   LAG,NDOTXY
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL DOTC
@@ -68,11 +68,11 @@
       DO 10 LAG = 1, LAGMAX
 !
          CALL DOTC (Y1, Y1MEAN, N, Y2(LAG + 1), Y2MEAN, N - LAG,
-     +       DOTXY, NDOTXY)
+     &       DOTXY, NDOTXY)
          CCOV12(LAG+1) = DOTXY / N
 !
          CALL DOTC (Y2, Y2MEAN, N, Y1(LAG + 1), Y1MEAN, N - LAG,
-     +       DOTXY, NDOTXY)
+     &       DOTXY, NDOTXY)
          CCOV21(LAG+1) = DOTXY / N
 !
    10 CONTINUE

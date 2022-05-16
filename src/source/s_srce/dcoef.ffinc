@@ -17,21 +17,21 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   MBO,NDF,NPARDF
+     &   MBO,NDF,NPARDF
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PARDF(*),WORK(*)
+      REAL(KIND=WP) ::
+     &   PARDF(*),WORK(*)
       INTEGER
-     +   IOD(*),ND(*)
+     &   IOD(*),ND(*)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   K,KK,L,NTIMES,NWORK1,NWORK2
+     &   K,KK,L,NTIMES,NWORK1,NWORK2
 !
 !  EXTERNAL FUNCTIONS
       INTEGER
-     +   NCHOSE
+     &   NCHOSE
       EXTERNAL NCHOSE
 !
 !  EXTERNAL SUBROUTINES
@@ -81,7 +81,7 @@
    20    CONTINUE
          NWORK2 = NWORK1 + NPARDF
          CALL MULTBP (WORK(1), NWORK1, PARDF, NPARDF, WORK(MBO+1),
-     +      NWORK2, MBO)
+     &      NWORK2, MBO)
    30 CONTINUE
       RETURN
       END

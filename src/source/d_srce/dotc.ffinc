@@ -17,17 +17,17 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   DOTXY,XMEAN,YMEAN
+     &   DOTXY,XMEAN,YMEAN
       INTEGER
-     +   NDOTXY,NX,NY
+     &   NDOTXY,NX,NY
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   X(NX),Y(NY)
+     &   X(NX),Y(NY)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,M
+     &   I,M
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MIN
@@ -55,7 +55,7 @@
 !        THE MEAN OF THE FIRST SERIES.
 !
       NDOTXY = 0
-      DOTXY = 0.0E0_WP
+      DOTXY = 0.0_WP
       M = MIN(NY, NX)
       DO 10 I = 1, M
          DOTXY = DOTXY + (Y(I) - YMEAN) * (X(I) - XMEAN)

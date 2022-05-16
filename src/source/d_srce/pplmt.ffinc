@@ -1,6 +1,6 @@
 !PPLMT
       SUBROUTINE PPLMT (YM, YMMISS, X, XMISS, N, M, IYM, YLB, YUB, YMN,
-     +  YMX, XLB, XUB, XMN, XMX, ERROR, NMSUB, MISS)
+     &  YMX, XLB, XUB, XMN, XMX, ERROR, NMSUB, MISS)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,31 +18,31 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   XLB,XMISS,XMN,XMX,XUB,YLB,YMN,YMX,YUB
+     &   XLB,XMISS,XMN,XMX,XUB,YLB,YMN,YMX,YUB
       INTEGER
-     +   IYM,M,N
+     &   IYM,M,N
       LOGICAL
-     +   ERROR,MISS
+     &   ERROR,MISS
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   X(N),YM(IYM,M),YMMISS(M)
+     &   X(N),YM(IYM,M),YMMISS(M)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,II,IPRT,J
+     &   I,II,IPRT,J
       LOGICAL
-     +   HEAD,SETLMT,SKPROW
+     &   HEAD,SETLMT,SKPROW
 !
 !  EXTERNAL FUNCTIONS
-      LOGICAL
-     +   MVCHK
-      EXTERNAL MVCHK
+!      LOGICAL
+!     +   MVCHK
+!      EXTERNAL MVCHK
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ADJLMT,EHDR,IPRINT
+!      EXTERNAL ADJLMT,EHDR,IPRINT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MAX,MIN
@@ -128,13 +128,13 @@
         DO 20 I=1,N
            IF (MISS .AND. MVCHK(X(I),XMISS)) GO TO 20
            IF ((XLB.LT.XUB) .AND. ((X(I).LT.XLB) .OR.
-     +        (XUB.LT.X(I)))) GO TO 20
+     &        (XUB.LT.X(I)))) GO TO 20
            XMN = X(I)
            XMX = X(I)
            DO 10 J=1,M
               IF (MISS .AND. MVCHK(YM(I,J),YMMISS(J))) GO TO 10
               IF ((YLB.LT.YUB) .AND. ((YM(I,J).LT.YLB) .OR.
-     +           (YUB.LT.YM(I,J)))) GO TO 10
+     &           (YUB.LT.YM(I,J)))) GO TO 10
               IF (SETLMT) GO TO 5
               YMN = YM(I,J)
               YMX = YM(I,J)
@@ -170,12 +170,12 @@
             DO 50 I=II,N
                IF (MISS .AND. MVCHK(X(I),XMISS)) GO TO 50
                IF ((XLB.LT.XUB) .AND. ((X(I).LT.XLB) .OR.
-     +            (XUB.LT.X(I)))) GO TO 50
+     &            (XUB.LT.X(I)))) GO TO 50
                SKPROW = .TRUE.
                DO 40 J=1,M
                   IF (MISS .AND. MVCHK(YM(I,J),YMMISS(J))) GO TO 40
                   IF ((YLB.LT.YUB) .AND. ((YM(I,J).LT.YLB) .OR.
-     +               (YUB.LT.YM(I,J)))) GO TO 40
+     &               (YUB.LT.YM(I,J)))) GO TO 40
                   SKPROW = .FALSE.
                   YMN = MIN(YMN, YM(I,J))
                   YMX = MAX(YMX, YM(I,J))
@@ -221,10 +221,10 @@
 !     FORMAT STATEMENTS
 !
  1010 FORMAT (/
-     +   44H NO NON-MISSING PLOT COORDINATES WERE FOUND.)
+     &   44H NO NON-MISSING PLOT COORDINATES WERE FOUND.)
  1020 FORMAT (/
-     +   40H NO NON-MISSING VALUES WERE FOUND WITHIN,
-     +   26H THE USER SUPPLIED LIMITS.)
+     &   40H NO NON-MISSING VALUES WERE FOUND WITHIN,
+     &   26H THE USER SUPPLIED LIMITS.)
  1030 FORMAT (/
-     +   30H THE PLOT HAS BEEN SUPPRESSED.)
+     &   30H THE PLOT HAS BEEN SUPPRESSED.)
       END

@@ -1,6 +1,6 @@
 !EIVEQ
       SUBROUTINE EIVEQ (NMSUB, NMVAR1, IVEC, N, IVAL, NEQMN, HEAD, NEQ,
-     +                  NNE, MSGTYP, ERROR, NMVAR2, NMVAR3)
+     &                  NNE, MSGTYP, ERROR, NMVAR2, NMVAR3)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,22 +18,22 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IVAL,MSGTYP,N,NEQ,NEQMN,NNE
+     &   IVAL,MSGTYP,N,NEQ,NEQMN,NNE
       LOGICAL
-     +   ERROR,HEAD
+     &   ERROR,HEAD
 !
 !  ARRAY ARGUMENTS
       INTEGER
-     +   IVEC(*)
+     &   IVEC(*)
       CHARACTER
-     +   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1,NMVAR3(8)*1
+     &   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1,NMVAR3(8)*1
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,IPRT
+     &   I,IPRT
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EHDR,IPRINT
+!      EXTERNAL EHDR,IPRINT
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -97,17 +97,17 @@
       CALL EHDR(NMSUB, HEAD)
 !
       IF (MSGTYP.EQ.1) WRITE(IPRT, 1000)
-     +   (NMVAR1(I),I=1,8), (NMVAR2(I),I=1,8), NEQ,
-     +   (NMVAR2(I),I=1,8), (NMVAR3(I),I=1,8)
+     &   (NMVAR1(I),I=1,8), (NMVAR2(I),I=1,8), NEQ,
+     &   (NMVAR2(I),I=1,8), (NMVAR3(I),I=1,8)
 !
       RETURN
 !
 !     FORMAT STATEMENTS
 !
  1000 FORMAT(
-     +   ' THE NUMBER OF ELEMENTS IN ', 8A1,
-     +   ' EQUAL TO ', 8A1, ' IS ', I6, '.'/
-     +   ' THE NUMBER OF ELEMENTS EQUAL TO ', 8A1,
-     +   ' MUST BE GREATER THAN OR EQUAL TO ', 8A1, '.')
+     &   ' THE NUMBER OF ELEMENTS IN ', 8A1,
+     &   ' EQUAL TO ', 8A1, ' IS ', I6, '.'/
+     &   ' THE NUMBER OF ELEMENTS EQUAL TO ', 8A1,
+     &   ' MUST BE GREATER THAN OR EQUAL TO ', 8A1, '.')
 !
       END

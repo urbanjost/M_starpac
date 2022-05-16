@@ -16,15 +16,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NC
+     &   N,NC
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   RHO(*),SDRHO(*)
+      REAL(KIND=WP) ::
+     &   RHO(*),SDRHO(*)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   K,KLAST,LAG
+     &   K,KLAST,LAG
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MIN,REAL,SQRT

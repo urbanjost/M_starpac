@@ -1,6 +1,6 @@
 !SUMDS
       SUBROUTINE SUMDS(X, N, LO, MID, HI, XMEANW, SUMDA, SUMD2, SUMD3,
-     +   SUMD4)
+     &   SUMD4)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,19 +20,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   SUMD2,SUMD3,SUMD4,SUMDA,XMEANW
+     &   SUMD2,SUMD3,SUMD4,SUMDA,XMEANW
       INTEGER
-     +   HI,LO,MID,N
+     &   HI,LO,MID,N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   X(N)
+     &   X(N)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   DIFF
+     &   DIFF
       INTEGER
-     +   CURHI,CURLO,I,IREV
+     &   CURHI,CURLO,I,IREV
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS

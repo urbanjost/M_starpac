@@ -17,30 +17,30 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IEXTND,LAB,N,NF,NFFT
+     &   IEXTND,LAB,N,NF,NFFT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   AB(*),YFFT(*)
+      REAL(KIND=WP) ::
+     &   AB(*),YFFT(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   YEXTND
+      REAL(KIND=WP) ::
+     &   YEXTND
       INTEGER
-     +   I,IPRT,ISN,N1,NFFT1,NFFT2
+     &   I,IPRT,ISN,N1,NFFT1,NFFT2
       LOGICAL
-     +   ERR01,ERR02,ERR03,HEAD
+     &   ERR01,ERR02,ERR03,HEAD
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LLAB(8)*1,LN(8)*1,NMSUB(6)*1
+     &   LLAB(8)*1,LN(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMEAN,EISGE,ENFFT,FFT,IPRINT,REALTR
+!      EXTERNAL AMEAN,EISGE,ENFFT,FFT,IPRINT,REALTR
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -98,20 +98,20 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'F',       'F',       'T',       'R',       ' ',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'F',       'F',       'T',       'R',       ' ',       ' '/
       DATA
-     +   LLAB(1),   LLAB(2),   LLAB(3),   LLAB(4),   LLAB(5),   LLAB(6)
-     + /     'L',       'A',       'B',       ' ',       ' ',       ' '/
+     &   LLAB(1),   LLAB(2),   LLAB(3),   LLAB(4),   LLAB(5),   LLAB(6)
+     & /     'L',       'A',       'B',       ' ',       ' ',       ' '/
       DATA
-     +   LLAB(7),   LLAB(8)
-     + /     ' ',       ' '/
+     &   LLAB(7),   LLAB(8)
+     & /     ' ',       ' '/
       DATA
-     +     LN(1),     LN(2),     LN(3),     LN(4),     LN(5),     LN(6)
-     + /     'N',       ' ',       ' ',       ' ',       ' ',       ' '/
+     &     LN(1),     LN(2),     LN(3),     LN(4),     LN(5),     LN(6)
+     & /     'N',       ' ',       ' ',       ' ',       ' ',       ' '/
       DATA
-     +     LN(7),     LN(8)
-     + /     ' ',       ' '/
+     &     LN(7),     LN(8)
+     & /     ' ',       ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -123,7 +123,7 @@
       CALL EISGE(NMSUB, LN, N, 17, 1, HEAD, ERR01, LN)
       IF (ERR01) GO TO 5
 !
-      CALL ENFFT(NMSUB, NFFT, 2, N, LAB, NFFT1, HEAD, ERR02, LN)
+      CALL ENFFT(NMSUB, NFFT, 2, N, LAB, NFFT1, HEAD, ERR02) !LN
       NF = NFFT1/2
 !
       CALL EISGE(NMSUB, LLAB, LAB, NFFT1, 9, HEAD, ERR03, LLAB)
@@ -164,5 +164,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   53H       CALL FFTR (YFFT, N, NFFT, IEXTND, NF, AB, LAB))
+     &   53H       CALL FFTR (YFFT, N, NFFT, IEXTND, NF, AB, LAB))
       END

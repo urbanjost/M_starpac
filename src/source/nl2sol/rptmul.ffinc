@@ -17,23 +17,23 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   func,nn,p
+     &   func,nn,p
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   j(nn,p),rd(p),x(p),y(p),z(p)
+     &   j(nn,p),rd(p),x(p),y(p),z(p)
       integer
-     +   ipivot(p)
+     &   ipivot(p)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   zk
+     &   zk
       integer
-     +   i,im1,k,km1
+     &   i,im1,k,km1
 !
 !  EXTERNAL FUNCTIONS
       real(kind=wp) ::
-     +   dotprd
+     &   dotprd
       external dotprd
 !
 !

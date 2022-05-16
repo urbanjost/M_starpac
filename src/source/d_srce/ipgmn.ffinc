@@ -16,17 +16,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   ISPCER,NF
+     &   ISPCER,NF
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PER(NF),PERI(NF)
+     &   PER(NF),PERI(NF)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   SM
+     &   SM
       INTEGER
-     +   I
+     &   I
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -45,7 +45,7 @@
 !        A VALUE USED TO COMPUTE THE INTEGRATED PERIODOGRAM ESTIMATES.
 !
 !
-      SM = 0.0E0_WP
+      SM = 0.0_WP
 !
       DO 30 I = 1, NF
          SM = SM + PER(I)
@@ -53,7 +53,7 @@
    30 CONTINUE
 !
       ISPCER = 1
-      IF (SM .EQ. 0.0E0_WP) RETURN
+      IF (SM .EQ. 0.0_WP) RETURN
 !
       ISPCER = 0
 !

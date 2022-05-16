@@ -16,15 +16,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   I,NIV
+     &   I,NIV
 !
 !  ARRAY ARGUMENTS
       INTEGER
-     +   IV(NIV)
+     &   IV(NIV)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   J
+     &   J
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

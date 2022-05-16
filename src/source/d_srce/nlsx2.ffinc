@@ -1,6 +1,6 @@
 !NLSX2
       SUBROUTINE NLSX2(N, M, IXM, NPAR, IFIXED, STP, IDRVCK, MIT,
-     +   STOPSS, STOPP, SCALE, DELTA, IVAPRX, NPRT, IVCV)
+     &   STOPSS, STOPP, SCALE, DELTA, IVAPRX, NPRT, IVCV)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,21 +18,21 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   DELTA,STOPP,STOPSS
+     &   DELTA,STOPP,STOPSS
       INTEGER
-     +   IDRVCK,IVAPRX,IVCV,IXM,M,MIT,N,NPAR,NPRT
+     &   IDRVCK,IVAPRX,IVCV,IXM,M,MIT,N,NPAR,NPRT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   SCALE(10),STP(10)
+     &   SCALE(10),STP(10)
       INTEGER
-     +   IFIXED(10)
+     &   IFIXED(10)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   SQMEPS
+     &   SQMEPS
       INTEGER
-     +   I
+     &   I
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON
@@ -124,13 +124,13 @@
       MIT = 500
       DO 10 I=1,10
          STP(I) = SQMEPS
-         SCALE(I) = 1.0E0_WP
+         SCALE(I) = 1.0_WP
    10 CONTINUE
       IFIXED(1) = -1
       IDRVCK = 0
-      STOPSS = 10.0D-5
-      STOPP = 10.0D-5
-      DELTA = 0.5D0
+      STOPSS = 10.0E-5_WP
+      STOPP = 10.0E-5_WP
+      DELTA = 0.5_WP
       NPRT = 11111
       IVAPRX = 3
       IVCV = 6

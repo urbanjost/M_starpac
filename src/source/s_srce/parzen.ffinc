@@ -16,15 +16,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LAG,LW
+     &   LAG,LW
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   W(LW)
+      REAL(KIND=WP) ::
+     &   W(LW)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   K,L
+     &   K,L
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC REAL

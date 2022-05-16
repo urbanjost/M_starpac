@@ -33,16 +33,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   DF1,DF2,F
+      REAL(KIND=WP) ::
+     &   DF1,DF2,F
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   FTRANS
+      REAL(KIND=WP) ::
+     &   FTRANS
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +    BETAI,CDFCHI,CDFNML
+      REAL(KIND=WP) ::
+     &    BETAI,CDFCHI,CDFNML
       EXTERNAL  BETAI,CDFCHI,CDFNML
 !
 !  INTRINSIC FUNCTIONS
@@ -84,9 +84,9 @@
 !     TO COMPUTE THE F CDF.
 !
       FTRANS =
-     +   (((1.0E0-(2.0E0/(9.0E0*DF2)))*
-     +     (F**(1.0E0/3.0E0)))-(1.0E0-(2.0E0/(9.0E0*DF1)))) /
-     +   SQRT(((F**(2.0E0/3.0E0))/(4.5E0*DF2))+(2.0E0/(9.0E0*DF1)))
+     &   (((1.0E0-(2.0E0/(9.0E0*DF2)))*
+     &     (F**(1.0E0/3.0E0)))-(1.0E0-(2.0E0/(9.0E0*DF1)))) /
+     &   SQRT(((F**(2.0E0/3.0E0))/(4.5E0*DF2))+(2.0E0/(9.0E0*DF1)))
 !
       CDFF = CDFNML(FTRANS)
       RETURN
@@ -98,8 +98,8 @@
 !     USE THE CHI SQUARE APPROXIMATION TO COMPUTE THE F CDF.
 !
       FTRANS =
-     +   (DF1 + (DF1/DF2)*(0.5E0*DF1-1.0E0))/
-     +   ((1.0E0/F)+(DF1/DF2)*0.5E0)
+     &   (DF1 + (DF1/DF2)*(0.5E0*DF1-1.0E0))/
+     &   ((1.0E0/F)+(DF1/DF2)*0.5E0)
 !
       CDFF = CDFCHI(FTRANS, DF1)
 !
@@ -112,7 +112,7 @@
 !     USE THE CHI SQUARE APPROXIMATION TO COMPUTE THE F CDF.
 !
       FTRANS =
-     +   (DF2+(DF2/DF1)*(0.5E0*DF2-1.0E0))/(F+(DF2/DF1)*0.5E0)
+     &   (DF2+(DF2/DF1)*(0.5E0*DF2-1.0E0))/(F+(DF2/DF1)*0.5E0)
 !
       CDFF = 1.0E0 - CDFCHI(FTRANS, DF2)
 !

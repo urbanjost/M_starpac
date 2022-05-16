@@ -25,17 +25,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   AMPL(N),PHAS(N)
+      REAL(KIND=WP) ::
+     &   AMPL(N),PHAS(N)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   PHASE,R
+      REAL(KIND=WP) ::
+     &   PHASE,R
       INTEGER
-     +   I
+     &   I
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ATAN2,SQRT

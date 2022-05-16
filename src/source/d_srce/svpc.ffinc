@@ -1,6 +1,6 @@
 !SVPC
       SUBROUTINE SVPC(YM, N, NS, ISYM, ILOG, ISIZE, IRLIN, IBAR,
-     +   YLB, YUB, XLB, XINC)
+     &   YLB, YUB, XLB, XINC)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,33 +17,29 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     +   XINC,XLB,YLB,YUB
-      INTEGER
-     +   IBAR,ILOG,IRLIN,ISIZE,N,NS
+      REAL(KIND=WP) :: XINC,XLB,YLB,YUB
+      INTEGER :: IBAR,ILOG,IRLIN,ISIZE,N,NS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     +   YM(*)
-      INTEGER
-     +   ISYM(*)
+      REAL(KIND=WP) :: YM(*)
+      INTEGER :: ISYM(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT,ISCHCK,IYM,LISYM,M
+     &   IPRT,ISCHCK,IYM,LISYM,M
       LOGICAL
-     +   MISS,MULTI
+     &   MISS,MULTI
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,VPCNT
+!      EXTERNAL IPRINT,VPCNT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -120,8 +116,8 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     +    /  'S',       'V',       'P',       'C',       ' ',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     &    /  'S',       'V',       'P',       'C',       ' ',       ' '/
 !
 !     SET DEFAULT VALUES
 !
@@ -135,8 +131,8 @@
 !     COMMENCE BODY OF ROUTINE
 !
       CALL VPCNT (YM, YM, N, M, IYM, MULTI, ILOG, YLB, YUB,
-     +  XLB, XINC, NS, IRLIN, IBAR, NMSUB, ISCHCK, ISYM, ISIZE,
-     +  MISS, LISYM)
+     &  XLB, XINC, NS, IRLIN, IBAR, NMSUB, ISCHCK, ISYM, ISIZE,
+     &  MISS, LISYM)
 !
       IF (IERR.NE.0) THEN
         IERR = 1
@@ -148,6 +144,6 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +  '       CALL SVPC (Y, N, NS, ISYM, ILOG,'/
-     +  '      +           ISIZE, IRLIN, IBAR, YLB, YUB, XLB, XINC)')
+     &  '       CALL SVPC (Y, N, NS, ISYM, ILOG,'/
+     &  '      +           ISIZE, IRLIN, IBAR, YLB, YUB, XLB, XINC)')
       END

@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   SUMDI,XMEAN
+      REAL(KIND=WP) ::
+     &   SUMDI,XMEAN
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   X(N)
+      REAL(KIND=WP) ::
+     &   X(N)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   DIFF
+      REAL(KIND=WP) ::
+     &   DIFF
       INTEGER
-     +   I
+     &   I
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

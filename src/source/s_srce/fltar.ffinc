@@ -18,17 +18,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IAR,N,NYF
+     &   IAR,N,NYF
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PHI(*),Y(*),YF(*)
+      REAL(KIND=WP) ::
+     &   PHI(*),Y(*),YF(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   TEMP
+      REAL(KIND=WP) ::
+     &   TEMP
       INTEGER
-     +   I,I1,J,K
+     &   I,I1,J,K
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

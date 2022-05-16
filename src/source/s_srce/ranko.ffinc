@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   T
+      REAL(KIND=WP) ::
+     &   T
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   R(N),Y(N)
+      REAL(KIND=WP) ::
+     &   R(N),Y(N)
       INTEGER
-     +   H(N)
+     &   H(N)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,IJ,J,K,K2
+     &   I,IJ,J,K,K2
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL SRTIR,SRTRI

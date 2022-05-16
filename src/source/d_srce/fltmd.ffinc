@@ -17,23 +17,23 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   SYM
+     &   SYM
       INTEGER
-     +   KMD,N
+     &   KMD,N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   X(N),Y(N)
+     &   X(N),Y(N)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   CON
+     &   CON
       INTEGER
-     +   I,J,KUSED,LIM
+     &   I,J,KUSED,LIM
 !
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
-     +   EXTEND
+     &   EXTEND
       EXTERNAL EXTEND
 !
 !  INTRINSIC FUNCTIONS
@@ -57,7 +57,7 @@
 !        THE NUMBER OF POINTS IN THE SERIES TO BE FILTERED.
 !     REAL(KIND=WP) :: SYM
 !        AN INDICATOR VARIABLE USED TO DESIGNATE WHETHER THE SERIES
-!        IS SYMMETRIC (SYM = 1.0E0_WP) OR NOT (SYM = -1.0E0_WP).
+!        IS SYMMETRIC (SYM = 1.0_WP) OR NOT (SYM = -1.0_WP).
 !     REAL(KIND=WP) :: X(N)
 !        ON INPUT, THE SERIES TO BE FILTERED.  ON OUTPUT, THE
 !        SMOOTHED SERIES.
@@ -75,16 +75,16 @@
       IF (KUSED .GT. N) KUSED = KUSED - 2
 !
       LIM = KUSED-1
-      CON = 1.0E0_WP / (2*KUSED)
+      CON = 1.0_WP / (2*KUSED)
       DO 40 I = 1, N
          X(I) = Y(I)
          IF (LIM .EQ. 0) GO TO 30
          DO 20 J = 1, LIM
             X(I) = X(I) + EXTEND(Y, I-J, N, SYM)
-     +         + EXTEND(Y, I+J, N, SYM)
+     &         + EXTEND(Y, I+J, N, SYM)
    20    CONTINUE
    30    X(I) = (X(I) + (EXTEND(Y, I-KUSED, N, SYM)
-     +      + EXTEND(Y, I+KUSED, N, SYM)) * 0.5D0_WP) * CON
+     &      + EXTEND(Y, I+KUSED, N, SYM)) * 0.5_WP) * CON
    40 CONTINUE
 !
       RETURN

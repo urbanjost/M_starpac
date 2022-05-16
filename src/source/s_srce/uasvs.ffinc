@@ -1,6 +1,6 @@
 !UASVS
       SUBROUTINE UASVS (ACOV, LAGMAX, Y, N, IAR, PHI, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDSTAK)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDSTAK)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,47 +18,47 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   FMAX,FMIN
+      REAL(KIND=WP) ::
+     &   FMAX,FMIN
       INTEGER
-     +   IAR,LAG,LAGMAX,LDSTAK,N,NF,NPRT
+     &   IAR,LAG,LAGMAX,LDSTAK,N,NF,NPRT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   ACOV(*),FREQ(*),PHI(*),SPCA(*),SPCF(*),Y(*)
+      REAL(KIND=WP) ::
+     &   ACOV(*),FREQ(*),PHI(*),SPCA(*),SPCF(*),Y(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       DOUBLE PRECISION DSTAK(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   ALPHA,DELTA,FMN,FMX,VAR,YMEAN
+      REAL(KIND=WP) ::
+     &   ALPHA,DELTA,FMN,FMX,VAR,YMEAN
       INTEGER
-     +   AIC,FTEST,IA,IFP,IO,IPRT,ISORT,ISYM,LACOV,LAIC,LDSMIN,
-     +   LPCV,LPHI,LSPC,LWORK,NALL0,WORK,XAXIS,YAXIS
+     &   AIC,FTEST,IA,IFP,IO,IPRT,ISORT,ISYM,LACOV,LAIC,LDSMIN,
+     &   LPCV,LPHI,LSPC,LWORK,NALL0,WORK,XAXIS,YAXIS
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   RSTAK(12)
+      REAL(KIND=WP) ::
+     &   RSTAK(12)
       INTEGER
-     +   ISTAK(12)
+     &   ISTAK(12)
       LOGICAL
-     +   OPTION(4)
+     &   OPTION(4)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL STKGET,STKST
+!      INTEGER
+!     +   STKST
+!      EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMEAN,IPRINT,LDSCMP,PARZEN,STKCLR,STKSET,UASDV,UASER,
-     +   UASVAR
+!      EXTERNAL AMEAN,IPRINT,LDSCMP,PARZEN,STKCLR,STKSET,UASDV,UASER,
+!     +   UASVAR
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MAX,MIN
@@ -191,8 +191,8 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'U',       'A',       'S',       'V',       'S',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'U',       'A',       'S',       'V',       'S',       ' '/
 !
       IFP = 3
 !
@@ -211,12 +211,12 @@
       IF (IAR .NE. 0) IA = 0
 !
       CALL LDSCMP(6, 0, IO*(2*NF+5), 0, 0, 0, 'S',
-     +   LAGMAX + 1 + IA*(3*LAGMAX+1) + IO*(4*NF+10), LDSMIN)
+     &   LAGMAX + 1 + IA*(3*LAGMAX+1) + IO*(4*NF+10), LDSMIN)
 !
 !     CALL ERROR CHECKING ROUTINE
 !
       CALL UASER(NMSUB, N, ACOV, IAR, PHI, LAGMAX, LAG, LACOV,
-     +   NF, LDSTAK, LDSMIN, N, N, OPTION)
+     &   NF, LDSTAK, LDSMIN, N, N, OPTION)
 !
     5 IF (IERR.NE.0) THEN
          IERR = 1
@@ -288,10 +288,10 @@
 !     CALL THE MAIN DRIVER FOR AUTOREGRESSIVE SPECTRUM ROUTINES.
 !
       CALL UASDV(ACOV, SPCA, SPCF, LSPC, IAR, PHI, NF, FMN,
-     +   FMX, FREQ, N, LAGMAX, RSTAK(FTEST), RSTAK(AIC), RSTAK(WORK),
-     +   LACOV, LWORK, DELTA, ISTAK(ISORT), ISTAK(ISYM), RSTAK(XAXIS),
-     +   RSTAK(YAXIS), LPCV, ALPHA, LAG, LAIC, LPHI, NPRT, VAR, PARZEN,
-     +   NMSUB)
+     &   FMX, FREQ, N, LAGMAX, RSTAK(FTEST), RSTAK(AIC), RSTAK(WORK),
+     &   LACOV, LWORK, DELTA, ISTAK(ISORT), ISTAK(ISYM), RSTAK(XAXIS),
+     &   RSTAK(YAXIS), LPCV, ALPHA, LAG, LAIC, LPHI, NPRT, VAR, PARZEN,
+     &   NMSUB)
 !
       CALL STKCLR(NALL0)
 !
@@ -300,7 +300,7 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +  '       CALL UASVS (ACOV, LAGMAX, Y, N,'/
-     +  '      +            IAR, PHI, LAG, NF, FMIN, FMAX, NPRT,'/
-     +  '      +            SPCA, SPCF, FREQ, LDSTAK)')
+     &  '       CALL UASVS (ACOV, LAGMAX, Y, N,'/
+     &  '      +            IAR, PHI, LAG, NF, FMIN, FMAX, NPRT,'/
+     &  '      +            SPCA, SPCF, FREQ, LDSTAK)')
       END

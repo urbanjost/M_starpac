@@ -24,19 +24,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   FD
+     &   FD
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   AMPL(N),PHAS(N),Y(N)
+     &   AMPL(N),PHAS(N),Y(N)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   ARG,PI
+     &   ARG,PI
       INTEGER
-     +   I
+     &   I
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL GETPI
@@ -66,16 +66,16 @@
       CALL GETPI(PI)
 !
       DO 10 I = 1, N
-         IF (FD.EQ.0.25D0_WP) THEN
-            AMPL(I) = 0.0E0_WP
-            PHAS(I) = -2.0E0_WP*Y(I)
-         ELSE IF (FD.EQ.0.5D0_WP) THEN
-            AMPL(I) = -2.0E0_WP*Y(I)
-            PHAS(I) = 0.0E0_WP
+         IF (FD.EQ.0.25_WP) THEN
+            AMPL(I) = 0.0_WP
+            PHAS(I) = -2.0_WP*Y(I)
+         ELSE IF (FD.EQ.0.5_WP) THEN
+            AMPL(I) = -2.0_WP*Y(I)
+            PHAS(I) = 0.0_WP
          ELSE
-            ARG = (I-1) * FD * 2.0E0_WP * PI
-            AMPL(I) = Y(I)*COS(ARG)*2.0E0_WP
-            PHAS(I) = -Y(I)*SIN(ARG)*2.0E0_WP
+            ARG = (I-1) * FD * 2.0_WP * PI
+            AMPL(I) = Y(I)*COS(ARG)*2.0_WP
+            PHAS(I) = -Y(I)*SIN(ARG)*2.0_WP
          END IF
    10 CONTINUE
       RETURN

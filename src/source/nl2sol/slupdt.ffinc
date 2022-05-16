@@ -1,6 +1,6 @@
 !SLUPDT
       subroutine slupdt(a, cosmin, p, size, step, u, w, wchmtd, wscale,
-     +                  y)
+     &                  y)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -13,23 +13,23 @@
 !
 !  SCALAR ARGUMENTS
       real(kind=wp) ::
-     +   cosmin,size,wscale
+     &   cosmin,size,wscale
       integer
-     +   p
+     &   p
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   a(1),step(p),u(p),w(p),wchmtd(p),y(p)
+     &   a(1),step(p),u(p),w(p),wchmtd(p),y(p)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   denmin,half,one,sdotwm,t,ui,wi,zero
+     &   denmin,half,one,sdotwm,t,ui,wi,zero
       integer
-     +   i,j,k
+     &   i,j,k
 !
 !  EXTERNAL FUNCTIONS
       real(kind=wp) ::
-     +   dotprd,v2norm
+     &   dotprd,v2norm
       external dotprd,v2norm
 !
 !  EXTERNAL SUBROUTINES

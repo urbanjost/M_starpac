@@ -18,23 +18,23 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   STP
+     &   STP
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   FD(*),PV(*),PVSTP(*)
+     &   FD(*),PV(*),PVSTP(*)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   FPLRS
+     &   FPLRS
       INTEGER
-     +   I
+     &   I
 !
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
-     +   D1MACH
+     &   D1MACH
       EXTERNAL D1MACH
 !
 !  INTRINSIC FUNCTIONS
@@ -62,7 +62,7 @@
          IF (ABS(FD(I)).GE.5*FPLRS*MIN(ABS(PVSTP(I)),ABS(PV(I)))) THEN
             FD(I) = FD(I) / STP
          ELSE
-            FD(I) = 0.0E0_WP
+            FD(I) = 0.0_WP
          END IF
    10 CONTINUE
       RETURN

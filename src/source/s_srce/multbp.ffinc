@@ -17,15 +17,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LC,LT,LTEMP,MBO
+     &   LC,LT,LTEMP,MBO
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   C(MBO),T(2*MBO),TEMP(MBO)
+      REAL(KIND=WP) ::
+     &   C(MBO),T(2*MBO),TEMP(MBO)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,J,JI,K
+     &   I,J,JI,K
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

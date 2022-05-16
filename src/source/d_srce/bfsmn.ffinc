@@ -1,7 +1,7 @@
 !BFSMN
       SUBROUTINE BFSMN(SPCF1, SPCF2, CEVEN, CODD, W, LW, LAG, DF, NPRT,
-     +   NF, CSPC2, PHAS, FREQ, NPTS, XAXIS, YAXIS, ISYM, LPCV, ALPHA,
-     +   LAGMX1, DELTA)
+     &   NF, CSPC2, PHAS, FREQ, NPTS, XAXIS, YAXIS, ISYM, LPCV, ALPHA,
+     &   LAGMX1, DELTA)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -22,27 +22,27 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   ALPHA,DELTA,DF
+     &   ALPHA,DELTA,DF
       INTEGER
-     +   LAG,LAGMX1,LPCV,LW,NF,NPRT,NPTS
+     &   LAG,LAGMX1,LPCV,LW,NF,NPRT,NPTS
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   CEVEN(*),CODD(*),CSPC2(*),FREQ(*),PHAS(*),SPCF1(*),SPCF2(*),
-     +   W(*),XAXIS(*),YAXIS(*)
+     &   CEVEN(*),CODD(*),CSPC2(*),FREQ(*),PHAS(*),SPCF1(*),SPCF2(*),
+     &   W(*),XAXIS(*),YAXIS(*)
       INTEGER
-     +   ISYM(*)
+     &   ISYM(*)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   ARG,BARL,BARQ,BARY,C,CI,FAC,FPLM,FPLRS,FPSPM,G,PI,PIT2,SN,V0,
-     +   V1,V2,Z0,Z1,Z2
+     &   ARG,BARL,BARQ,BARY,C,CI,FAC,FPLM,FPLRS,FPSPM,G,PI,PIT2,SN,V0,
+     &   V1,V2,Z0,Z1,Z2
       INTEGER
-     +   I,K
+     &   I,K
 !
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
-     +   PPFNML,D1MACH
+     &   PPFNML,D1MACH
       EXTERNAL PPFNML,D1MACH
 !
 !  EXTERNAL SUBROUTINES
@@ -134,13 +134,13 @@
 !
 !
       CALL GETPI(PI)
-      PIT2 = PI*2.0E0_WP
+      PIT2 = PI*2.0_WP
 !
       FPSPM = D1MACH(1)
       FPLM = D1MACH(2)
       FPLRS = D1MACH(4)
 !
-      FAC = 180.0E0_WP/PI
+      FAC = 180.0_WP/PI
 !
 !
 !     COMPUTE SMOOTHED CO-SPECTRAL ESTIMATE
@@ -150,38 +150,38 @@
 !           COMPUTE SMOOTHED CO- AND QUADRATURE SPECTRA USING
 !           THE ALGORITHM SHOWN ON PAGE 420 OF JENKINS AND WATTS
 !
-         IF (FREQ(I).EQ.0.0E0_WP) THEN
-            C = 1.0E0_WP
-            SN = 0.0E0_WP
-         ELSE IF (FREQ(I).EQ.0.25D0_WP) THEN
-            C = 0.0E0_WP
-            SN = 1.0E0_WP
-         ELSE IF (FREQ(I).EQ.0.5D0_WP) THEN
-            C = -1.0E0_WP
+         IF (FREQ(I).EQ.0.0_WP) THEN
+            C = 1.0_WP
+            SN = 0.0_WP
+         ELSE IF (FREQ(I).EQ.0.25_WP) THEN
+            C = 0.0_WP
+            SN = 1.0_WP
+         ELSE IF (FREQ(I).EQ.0.5_WP) THEN
+            C = -1.0_WP
             SN = 0.0
          ELSE
             ARG = PIT2*FREQ(I)
             C = COS(ARG)
             SN = SIN(ARG)
          END IF
-         V0 = 0.0E0_WP
-         V1 = 0.0E0_WP
-         Z0 = 0.0E0_WP
-         Z1 = 0.0E0_WP
+         V0 = 0.0_WP
+         V1 = 0.0_WP
+         Z0 = 0.0_WP
+         Z1 = 0.0_WP
          DO 10 K=LAG-1,1,-1
-            V2 = 2.0E0_WP*C*V1 - V0 + W(K+1)*CEVEN(K+1)
-            Z2 = 2.0E0_WP*C*Z1 - Z0 + W(K+1)*CODD(K+1)
+            V2 = 2.0_WP*C*V1 - V0 + W(K+1)*CEVEN(K+1)
+            Z2 = 2.0_WP*C*Z1 - Z0 + W(K+1)*CODD(K+1)
             V0 = V1
             V1 = V2
             Z0 = Z1
             Z1 = Z2
    10    CONTINUE
-         BARL = DELTA*(CEVEN(1)+2.0E0_WP*(V1*C-V0))
-         BARQ = 2.0E0_WP*DELTA*Z1*SN
+         BARL = DELTA*(CEVEN(1)+2.0_WP*(V1*C-V0))
+         BARQ = 2.0_WP*DELTA*Z1*SN
 !
 !     COMPUTE THE SMOOTHED SQUARED COHERENCY SPECTRA
 !
-         IF (SPCF1(I)*SPCF2(I).GT.0.0E0_WP) THEN
+         IF (SPCF1(I)*SPCF2(I).GT.0.0_WP) THEN
             CSPC2(I) = (BARL*BARL+BARQ*BARQ)
             CSPC2(I) = CSPC2(I)/(SPCF1(I)*SPCF2(I))
          ELSE
@@ -190,11 +190,11 @@
 !
 !     COMPUTE PHASE (IN RADIANS)
 !
-         IF ((BARQ.NE.0.0E0_WP) .OR. (BARL.NE.0.0E0_WP)) THEN
+         IF ((BARQ.NE.0.0_WP) .OR. (BARL.NE.0.0_WP)) THEN
             PHAS(I) = ATAN2(-BARQ,BARL)
          ELSE
             IF (I.EQ.1) THEN
-               PHAS(I) = 0.0E0_WP
+               PHAS(I) = 0.0_WP
             ELSE
                PHAS(I) = SIGN(PI,PHAS(I-1))
             END IF
@@ -205,9 +205,9 @@
 !
 !     COMPUTE SMOOTHED SQUARED COHERENCY PLOT VECTORS
 !
-      CI = PPFNML(ALPHA)*SQRT(1.0E0_WP/DF)
-      G = 2.0E0_WP/DF
-      G = 1.0E0_WP - (1.0E0_WP-ALPHA)**(G/(1.0E0_WP-G))
+      CI = PPFNML(ALPHA)*SQRT(1.0_WP/DF)
+      G = 2.0_WP/DF
+      G = 1.0_WP - (1.0_WP-ALPHA)**(G/(1.0_WP-G))
       NPTS = 0
       DO 60 I=1,NF
          NPTS = NPTS + 1
@@ -217,11 +217,11 @@
          YAXIS(NPTS) = G
          XAXIS(NPTS) = FREQ(I)
          ISYM(NPTS) = 4
-         IF (SPCF1(I)*SPCF2(I).LE.0.0E0_WP) GO TO 60
+         IF (SPCF1(I)*SPCF2(I).LE.0.0_WP) GO TO 60
 !
 !     COMPUTE COHERENCE SPECTRAL ESTIMATE
 !
-         IF (CSPC2(I).GT.1.0E0_WP) GO TO 60
+         IF (CSPC2(I).GT.1.0_WP) GO TO 60
          NPTS = NPTS + 1
          YAXIS(NPTS) = CSPC2(I)
          XAXIS(NPTS) = FREQ(I)
@@ -231,7 +231,7 @@
 !     COMPUTE CONFIDENCE INTERVAL
 !
          BARY = SQRT(CSPC2(I))
-         BARY = 0.5D0_WP*(LOG((1.0E0_WP+BARY)/(1.0E0_WP-BARY)))
+         BARY = 0.5_WP*(LOG((1.0_WP+BARY)/(1.0_WP-BARY)))
          NPTS = NPTS + 1
          YAXIS(NPTS) = (TANH(BARY+CI))*(TANH(BARY+CI))
          XAXIS(NPTS) = FREQ(I)

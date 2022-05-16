@@ -1,6 +1,6 @@
 !SUMWSS
       SUBROUTINE SUMWSS(X, W, N, LO, MID, HI, NNZW, SUM1, SUMW1, SUMW2,
-     +   SUMWA, SUMW, XMEAN, XMEANW)
+     &   SUMWA, SUMW, XMEAN, XMEANW)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,17 +20,17 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   SUM1,SUMW,SUMW1,SUMW2,SUMWA,XMEAN,XMEANW
+     &   SUM1,SUMW,SUMW1,SUMW2,SUMWA,XMEAN,XMEANW
       INTEGER
-     +   HI,LO,MID,N,NNZW
+     &   HI,LO,MID,N,NNZW
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   W(N),X(N)
+     &   W(N),X(N)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   CURHI,CURLO,I,IREV
+     &   CURHI,CURLO,I,IREV
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS
@@ -85,12 +85,12 @@
 !
 !     INITIALIZE SUMMATION VARIABLES.
 !
-      SUM1 = 0.0E0_WP
-      SUMW1 = 0.0E0_WP
-      SUMW2 = 0.0E0_WP
-      SUMWA = 0.0E0_WP
-      SUMW = 0.0E0_WP
-      IF (W(MID).EQ.0.0E0_WP) GO TO 10
+      SUM1 = 0.0_WP
+      SUMW1 = 0.0_WP
+      SUMW2 = 0.0_WP
+      SUMWA = 0.0_WP
+      SUMW = 0.0_WP
+      IF (W(MID).EQ.0.0_WP) GO TO 10
       SUM1 = X(MID)
       SUMW1 = W(MID)*X(MID)
       SUMW2 = W(MID)*X(MID)*X(MID)
@@ -104,7 +104,7 @@
 !
    20 IF (CURHI.GT.HI .OR. CURLO.LT.LO) GO TO 60
       IF (ABS(X(CURHI)).LT.ABS(X(CURLO))) GO TO 40
-      IF (W(CURLO).EQ.0.0E0_WP) GO TO 30
+      IF (W(CURLO).EQ.0.0_WP) GO TO 30
       SUM1 = SUM1 + X(CURLO)
       SUMW1 = SUMW1 + W(CURLO)*X(CURLO)
       SUMW2 = SUMW2 + W(CURLO)*X(CURLO)*X(CURLO)
@@ -112,7 +112,7 @@
       SUMW = SUMW + W(CURLO)
    30 CURLO = CURLO - 1
       GO TO 20
-   40 IF (W(CURHI).EQ.0.0E0_WP) GO TO 50
+   40 IF (W(CURHI).EQ.0.0_WP) GO TO 50
       SUM1 = SUM1 + X(CURHI)
       SUMW1 = SUMW1 + W(CURHI)*X(CURHI)
       SUMW2 = SUMW2 + W(CURHI)*X(CURHI)*X(CURHI)
@@ -126,7 +126,7 @@
 !
    60 IF (CURHI.GT.HI) GO TO 80
       DO 70 I=CURHI,HI
-         IF (W(I).EQ.0.0E0_WP) GO TO 70
+         IF (W(I).EQ.0.0_WP) GO TO 70
          SUM1 = SUM1 + X(I)
          SUMW1 = SUMW1 + W(I)*X(I)
          SUMW2 = SUMW2 + W(I)*X(I)*X(I)
@@ -136,7 +136,7 @@
    80 IF (CURLO.LT.LO) GO TO 100
       DO 90 IREV=LO,CURLO
          I = LO - IREV + CURLO
-         IF (W(I).EQ.0.0E0_WP) GO TO 90
+         IF (W(I).EQ.0.0_WP) GO TO 90
          SUM1 = SUM1 + X(I)
          SUMW1 = SUMW1 + W(I)*X(I)
          SUMW2 = SUMW2 + W(I)*X(I)*X(I)

@@ -1,6 +1,6 @@
 !UFSEST
       SUBROUTINE UFSEST(ACOV, W, LAG, SPCF, ISPCF, LACOV, LW, NF, FREQ,
-     +   DELTA)
+     &   DELTA)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,20 +18,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   DELTA
+      REAL(KIND=WP) ::
+     &   DELTA
       INTEGER
-     +   ISPCF,LACOV,LAG,LW,NF
+     &   ISPCF,LACOV,LAG,LW,NF
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   ACOV(LACOV),FREQ(NF),SPCF(ISPCF),W(LW)
+      REAL(KIND=WP) ::
+     &   ACOV(LACOV),FREQ(NF),SPCF(ISPCF),W(LW)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   C,PI,V0,V1,V2
+      REAL(KIND=WP) ::
+     &   C,PI,V0,V1,V2
       INTEGER
-     +   I,K,KK
+     &   I,K,KK
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL GETPI

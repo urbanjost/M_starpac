@@ -16,15 +16,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IXM,M,N,NCOEF
+     &   IXM,M,N,NCOEF
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   COEF(NCOEF),D(N,NCOEF),XM(IXM,M)
+      REAL(KIND=WP) ::
+     &   COEF(NCOEF),D(N,NCOEF),XM(IXM,M)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC EXP
@@ -54,10 +54,10 @@
       DO 10 I = 1, N
          D(I,1) = 1.0E0
          D(I,2) = (COEF(3)*2.0E0*(XM(I,1)-COEF(2))/COEF(4)) *
-     +      EXP(-((XM(I,1)-COEF(2))**2)/COEF(4))
+     &      EXP(-((XM(I,1)-COEF(2))**2)/COEF(4))
          D(I,3) = EXP(-((XM(I,1)-COEF(2))**2)/COEF(4))
          D(I,4) = -COEF(3)*(-((XM(I,1)-COEF(2))**2) /
-     +      (COEF(4)**2)) * EXP(-((XM(I,1)-COEF(2))**2)/COEF(4))
+     &      (COEF(4)**2)) * EXP(-((XM(I,1)-COEF(2))**2)/COEF(4))
    10 CONTINUE
 !
       RETURN

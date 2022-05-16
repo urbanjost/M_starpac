@@ -73,7 +73,7 @@
                   FAC1 = 0.0E0
                ELSE
                   IF (LOG(ABS(FAC1)) + LOG(ABS(I-PS)) + LOG(Y) -
-     +                LOG(REAL(I)) .LT. ALNSML) THEN
+     &                LOG(REAL(I)) .LT. ALNSML) THEN
                      FAC1 = 0.0E0
                   ELSE
                      FAC1 = FAC1 * (I-PS)*Y/I
@@ -104,7 +104,7 @@
           TERM = 0.0E0
         ELSE
           IF (LOG(ABS(Q-I+1.0E0)) + LOG(ABS(C)) + LOG(ABS(TERM)) -
-     +        LOG(ABS(P+Q-I)) .LT. ALNSML) THEN
+     &        LOG(ABS(P+Q-I)) .LT. ALNSML) THEN
             TERM = 0.0E0
           ELSE
             TERM = (Q-I+1.0E0)*C*TERM/(P+Q-I)

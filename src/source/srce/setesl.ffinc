@@ -27,15 +27,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NDIV,NFFT
+     &   N,NDIV,NFFT
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,NPF,NSFP
+     &   I,NPF,NSFP
 !
 !  LOCAL ARRAYS
       INTEGER
-     +   IPF(50),IPFEXP(50)
+     &   IPF(50),IPFEXP(50)
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL FACTOR

@@ -21,17 +21,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   NPAR,NPARE
+     &   NPAR,NPARE
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PAR(NPAR),PARE(NPAR)
+      REAL(KIND=WP) ::
+     &   PAR(NPAR),PARE(NPAR)
       INTEGER
-     +   MASK(NPAR)
+     &   MASK(NPAR)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,JPK
+     &   I,JPK
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

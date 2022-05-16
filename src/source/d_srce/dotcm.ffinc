@@ -1,6 +1,6 @@
 !DOTCM
       SUBROUTINE DOTCM (Y, YMEAN, YMISS, NY, X, XMEAN, XMISS,
-     +   NX, DOTXY, NDOTXY)
+     &   NX, DOTXY, NDOTXY)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,22 +17,21 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     +   DOTXY,XMEAN,XMISS,YMEAN,YMISS
+      REAL(KIND=WP) :: DOTXY,XMEAN,XMISS,YMEAN,YMISS
       INTEGER
-     +   NDOTXY,NX,NY
+     &   NDOTXY,NX,NY
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   X(NX),Y(NY)
+     &   X(NX),Y(NY)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,M
+     &   I,M
 !
 !  EXTERNAL FUNCTIONS
       LOGICAL
-     +   MVCHK
+     &   MVCHK
       EXTERNAL MVCHK
 !
 !  INTRINSIC FUNCTIONS
@@ -69,7 +68,7 @@
 !        THE VALUE IS ASSUMED MISSING, OTHERWISE IT IS NOT.
 !
       NDOTXY = 0
-      DOTXY = 0.0E0_WP
+      DOTXY = 0.0_WP
       M = MIN(NY, NX)
       DO 10 I = 1, M
          IF (MVCHK(Y(I), YMISS) .OR. MVCHK(X(I), XMISS)) GO TO 10

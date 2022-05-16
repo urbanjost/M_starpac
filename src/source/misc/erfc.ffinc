@@ -147,10 +147,10 @@
  30   Y = Y*Y
       IF (Y.LE.4.) THEN
          ERFC = EXP(-Y)/ABS(X) *
-     +         (0.5 + CSEVL ((8.0/Y-5.0)/3.0, ERC2CS, NTERC2) )
+     &         (0.5 + CSEVL ((8.0/Y-5.0)/3.0, ERC2CS, NTERC2) )
       ELSE
          ERFC = EXP(-Y)/ABS(X) *
-     +          (0.5 + CSEVL (8.0/Y-1.0, ERFCCS, NTERFC) )
+     &          (0.5 + CSEVL (8.0/Y-1.0, ERFCCS, NTERFC) )
       END IF
       IF (X.LT.0.0) ERFC = 2.0 - ERFC
       RETURN

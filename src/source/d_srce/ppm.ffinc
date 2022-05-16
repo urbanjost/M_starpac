@@ -1,5 +1,5 @@
 !PPM
-      SUBROUTINE PPM(YM, YMMISS, X, XMISS, N)
+      SUBROUTINE PPM(YM, YMISS, X, XMISS, N)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,35 +16,34 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     +   XMISS
+      REAL(KIND=WP) :: YMISS, XMISS
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     +   X(*),YM(*),YMMISS(1)
+      REAL(KIND=WP) :: X(*),YM(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   XLB,XUB,YLB,YUB
+     &   XLB,XUB,YLB,YUB
       INTEGER
-     +   ILOG,IPRT,ISCHCK,ISIZE,IYM,LISYM,M,NOUT
+     &   ILOG,IPRT,ISCHCK,ISIZE,IYM,LISYM,M,NOUT
       LOGICAL
-     +   MISS,MULTI
+     &   MISS,MULTI
 !
 !  LOCAL ARRAYS
+      REAL(KIND=WP) :: YMMISS(1)
       INTEGER
-     +   ISYM(1)
+     &   ISYM(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,PPCNT
+!      EXTERNAL IPRINT,PPCNT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -101,6 +100,8 @@
 !     REAL(KIND=WP) :: XLB
 !        THE LOWER BOUND FOR THE X-AXIS.  (XLB=XUB INDICATES LIMITS ARE
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
+!     REAL(KIND=WP) :: YMISS
+!        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: XMISS
 !        THE MISSING VALUE CODE FOR THE X-AXIS.
 !     REAL(KIND=WP) :: XUB
@@ -121,21 +122,22 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     +    /  'P',       'P',       'M',       ' ',       ' ',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     &    /  'P',       'P',       'M',       ' ',       ' ',       ' '/
 !
 !     COMMENCE BODY OF ROUTINE
 !
 !     SET DEFAULT VALUES
 !
+      YMMISS=YMISS
       M = 1
       IYM = N
       MULTI = .FALSE.
       ILOG = -1
-      YLB = 0.0E0_WP
-      YUB = 0.0E0_WP
-      XLB = 0.0E0_WP
-      XUB = 0.0E0_WP
+      YLB = 0.0_WP
+      YUB = 0.0_WP
+      XLB = 0.0_WP
+      XUB = 0.0_WP
       ISCHCK = 0
       ISIZE = -1
       NOUT = 0
@@ -143,8 +145,8 @@
       LISYM = 1
 !
       CALL PPCNT (YM, YMMISS, X, XMISS, N, M, IYM, MULTI, ILOG,
-     +  YLB, YUB, XLB, XUB, NMSUB, ISCHCK, ISYM, ISIZE, NOUT, MISS,
-     +  LISYM)
+     &  YLB, YUB, XLB, XUB, NMSUB, ISCHCK, ISYM, ISIZE, NOUT, MISS,
+     &  LISYM)
 !
       IF (IERR.NE.0) THEN
         IERR = 1
@@ -157,5 +159,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL PPM (Y, YMISS, X, XMISS, N)')
+     &   '       CALL PPM (Y, YMISS, X, XMISS, N)')
       END

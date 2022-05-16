@@ -20,25 +20,25 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LDSTAK
+     &   LDSTAK
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT,IYM,M,N
+     &   IPRT,IYM,M,N
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   YM(10,5)
+     &   YM(10,5)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CORR,IPRINT
+!      EXTERNAL CORR,IPRINT
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -68,23 +68,23 @@
 !
 !
       DATA     YM(1,1),   YM(1,2),   YM(1,3),   YM(1,4)
-     +    /      42.2D0,  11.2D0,  31.9D0, 167.1D0/
+     &    /      42.2_WP,  11.2_WP,  31.9_WP, 167.1_WP/
       DATA     YM(2,1),   YM(2,2),   YM(2,3),   YM(2,4)
-     +    /      48.6D0,  10.6D0,  13.2D0, 174.4D0/
+     &    /      48.6_WP,  10.6_WP,  13.2_WP, 174.4_WP/
       DATA     YM(3,1),   YM(3,2),   YM(3,3),   YM(3,4)
-     +    /      42.6D0,  10.6D0,  28.7D0, 160.8D0/
+     &    /      42.6_WP,  10.6_WP,  28.7_WP, 160.8_WP/
       DATA     YM(4,1),   YM(4,2),   YM(4,3),   YM(4,4)
-     +    /      39.0E0_WP,  10.4D0,  26.1D0, 162.0E0_WP/
+     &    /      39.0_WP,  10.4_WP,  26.1_WP, 162.0_WP/
       DATA     YM(5,1),   YM(5,2),   YM(5,3),   YM(5,4)
-     +    /      34.7D0,   9.3D0,  30.1D0, 140.8D0/
+     &    /      34.7_WP,   9.3_WP,  30.1_WP, 140.8_WP/
       DATA     YM(6,1),   YM(6,2),   YM(6,3),   YM(6,4)
-     +    /      44.5D0,  10.8D0,   8.5D0, 174.6D0/
+     &    /      44.5_WP,  10.8_WP,   8.5_WP, 174.6_WP/
       DATA     YM(7,1),   YM(7,2),   YM(7,3),   YM(7,4)
-     +    /      39.1D0,  10.7D0,  24.3D0, 163.7D0/
+     &    /      39.1_WP,  10.7_WP,  24.3_WP, 163.7_WP/
       DATA     YM(8,1),   YM(8,2),   YM(8,3),   YM(8,4)
-     +    /      40.1D0,  10.0E0_WP,  18.6D0, 174.5D0/
+     &    /      40.1_WP,  10.0_WP,  18.6_WP, 174.5_WP/
       DATA     YM(9,1),   YM(9,2),   YM(9,3),   YM(9,4)
-     +    /      45.9D0,  12.0E0_WP,  20.4D0, 185.7D0/
+     &    /      45.9_WP,  12.0_WP,  20.4_WP, 185.7_WP/
 !
 !
 !     SET PARAMETERS NECESSARY FOR THE COMPUTATIONS

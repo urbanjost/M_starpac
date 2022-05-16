@@ -25,17 +25,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IA,IER,IR,N,NP
+     &   IA,IER,IR,N,NP
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   A(IA,NP),B(N),C(NP),D(NP),R(IR,NP),X(NP)
+      REAL(KIND=WP) ::
+     &   A(IA,NP),B(N),C(NP),D(NP),R(IR,NP),X(NP)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   SM1,SM2
+      REAL(KIND=WP) ::
+     &   SM1,SM2
       INTEGER
-     +   I,J,JJ,K,NPJJMJ
+     &   I,J,JJ,K,NPJJMJ
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

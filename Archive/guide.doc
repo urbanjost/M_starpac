@@ -4490,7 +4490,7 @@
  E.2  Computed Results and Printed Output
 
       The argument controlling  the  printed  output,  NPRT,  is  discussed  in
- ection D.
+ section D.
 
       STARPAC correlation  analysis subroutines compute and print  a seven-part
  correlation  analysis.  The output  for each  part  is discussed  individually
@@ -13618,7 +13618,7 @@
 
                hP(j) = 1/KMD(p)      for j = 2, ..., KMD(p)-1;
 
-             PERF(p,.) is the periodgram smoothed using the first p filters
+             PERF(p,.) is the periodogram smoothed using the first p filters
                (PERF(0,.) is the input periodogram and PERF(NK,.) is the series
                actually returned to the user);
 

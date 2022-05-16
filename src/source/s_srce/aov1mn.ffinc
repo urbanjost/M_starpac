@@ -1,6 +1,6 @@
 !AOV1MN
       SUBROUTINE AOV1MN(Y, TAG, N, TVALUE, TSIZE, TMEAN, TSD, NPRT,
-     +   INDEX, SRANK, GPMIN, GPMAX, B10, RANKS, ITEMP, NG, NZW)
+     &   INDEX, SRANK, GPMIN, GPMAX, B10, RANKS, ITEMP, NG, NZW)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -24,39 +24,39 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NG,NPRT,NZW
+     &   N,NG,NPRT,NZW
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   B10(*),GPMAX(*),GPMIN(*),RANKS(*),SRANK(*),TAG(*),TMEAN(*),
-     +   TSD(*),TSIZE(*),TVALUE(*),Y(*)
+      REAL(KIND=WP) ::
+     &   B10(*),GPMAX(*),GPMIN(*),RANKS(*),SRANK(*),TAG(*),TMEAN(*),
+     &   TSD(*),TSIZE(*),TVALUE(*),Y(*)
       INTEGER
-     +   INDEX(*),ITEMP(*)
+     &   INDEX(*),ITEMP(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   AF,BF,BFRAT,BFSIG,BMS,BSS,C,CC,CFKW,DF,DFRAT,DFSIG,DMS,DSS,F,
-     +   F1KW,F2KW,FMLC,FMUC,FNZW,FPLM,FSTAT,G1,GM,GR,HSTAT,IBAR,K0,
-     +   MF,MKW,Q,RESSQ,RMLC,RMUC,RX,SBMS,SC,SFRAT,SFSIG,SIGKW,SLBF,
-     +   SLCC,SMAX,SMIN,SMS,SNC,SOS,SQB,SQMS,SQOM,SQT,SSF,SSS,STMS,
-     +   SUM,SWMS,T1,T2,T3,TIES,TMS,TSS,U1,U2,UMLC,UMUC,V1,V2,VKW,VLS,
-     +   WMS,WSS,YBMAX,YBMIN,YMAX,YMIN
+      REAL(KIND=WP) ::
+     &   AF,BF,BFRAT,BFSIG,BMS,BSS,C,CC,CFKW,DF,DFRAT,DFSIG,DMS,DSS,F,
+     &   F1KW,F2KW,FMLC,FMUC,FNZW,FPLM,FSTAT,G1,GM,GR,HSTAT,IBAR,K0,
+     &   MF,MKW,Q,RESSQ,RMLC,RMUC,RX,SBMS,SC,SFRAT,SFSIG,SIGKW,SLBF,
+     &   SLCC,SMAX,SMIN,SMS,SNC,SOS,SQB,SQMS,SQOM,SQT,SSF,SSS,STMS,
+     &   SUM,SWMS,T1,T2,T3,TIES,TMS,TSS,U1,U2,UMLC,UMUC,V1,V2,VKW,VLS,
+     &   WMS,WSS,YBMAX,YBMIN,YMAX,YMIN
       INTEGER
-     +   I,IPRT,ISZ,J,K,KK,KKK,L,M,M28,M3,M5,NN,NNE1,NZPNTR
+     &   I,IPRT,ISZ,J,K,KK,KKK,L,M,M28,M3,M5,NN,NNE1,NZPNTR
       CHARACTER
-     +   BLANK*1,HIGH*1,ISD*1,LOW*1,MEAN*1
+     &   BLANK*1,HIGH*1,ISD*1,LOW*1,MEAN*1
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   STATS(15)
+      REAL(KIND=WP) ::
+     &   STATS(15)
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   CDFF,PPFF,PPFT,R1MACH
-      EXTERNAL CDFF,PPFF,PPFT,R1MACH
+!      REAL(KIND=WP) ::
+!     +   CDFF,PPFF,PPFT,R1MACH
+!      EXTERNAL CDFF,PPFF,PPFT,R1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL GENI,IPRINT,RANKO,SRTIR,SRTRI,SRTRRI
+!      EXTERNAL GENI,IPRINT,RANKO,SRTIR,SRTRI,SRTRRI
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,ANINT,INT,LOG,MAX,MIN,NINT,REAL,SQRT
@@ -312,38 +312,38 @@
 !     ZERO WORK VECTORS
 !
       DO 10 I=1,NG
-         TVALUE(I) = 0.0E0
-         TSIZE(I) = 0.0E0
-         TMEAN(I) = 0.0E0
-         TSD(I) = 0.0E0
-         SRANK(I) = 0.0E0
-         GPMIN(I) = 0.0E0
-         GPMAX(I) = 0.0E0
-         B10(I) = 0.0E0
+         TVALUE(I) = 0.0_WP
+         TSIZE(I) = 0.0_WP
+         TMEAN(I) = 0.0_WP
+         TSD(I) = 0.0_WP
+         SRANK(I) = 0.0_WP
+         GPMIN(I) = 0.0_WP
+         GPMAX(I) = 0.0_WP
+         B10(I) = 0.0_WP
    10 CONTINUE
 !
       DO 20 I=1,15
-         STATS(I) = 0.0E0
+         STATS(I) = 0.0_WP
    20 CONTINUE
 !
-      CC = 0.0E0
-      F = 0.0E0
-      DMS = 0.0E0
-      BSS = 0.0E0
-      WSS = 0.0E0
-      HSTAT = 0.0E0
-      MF = 0.0E0
-      SC = 0.0E0
-      SMAX = 0.0E0
+      CC = 0.0_WP
+      F = 0.0_WP
+      DMS = 0.0_WP
+      BSS = 0.0_WP
+      WSS = 0.0_WP
+      HSTAT = 0.0_WP
+      MF = 0.0_WP
+      SC = 0.0_WP
+      SMAX = 0.0_WP
       NNE1 = 0
-      SNC = 0.0E0
-      SOS = 0.0E0
-      SSS = 0.0E0
-      SUM = 0.0E0
-      TIES = 0.0E0
-      TSS = 0.0E0
-      SMIN = 0.0E0
-      SFRAT = 0.0E0
+      SNC = 0.0_WP
+      SOS = 0.0_WP
+      SSS = 0.0_WP
+      SUM = 0.0_WP
+      TIES = 0.0_WP
+      TSS = 0.0_WP
+      SMIN = 0.0_WP
+      SFRAT = 0.0_WP
 !
 !     BEGIN COMPUTATIONS
 !
@@ -360,9 +360,9 @@
       YMIN = GPMIN(1)
       YMAX = GPMAX(1)
       GM = Y(NZPNTR)
-      IBAR = 1.0E0
+      IBAR = 1.0_WP
       TMEAN(1) = Y(NZPNTR)
-      TSIZE(1) = 1.0E0
+      TSIZE(1) = 1.0_WP
 !
 !     DETERMINE MEANS AND MAXS, DO SUMMATION PRIOR TO
 !     DETERIMING MEANS
@@ -378,7 +378,7 @@
          TVALUE(J) = TAG(I)
          GPMIN(J) = Y(I)
          GPMAX(J) = Y(I)
-   40    TSIZE(J) = TSIZE(J) + 1.0E0
+   40    TSIZE(J) = TSIZE(J) + 1.0_WP
          TMEAN(J) = TMEAN(J) + Y(I)
          GM = GM + Y(I)
 !
@@ -401,7 +401,7 @@
       K = NZPNTR-1
       I = NZPNTR
       DO 70 J=1,NG
-         IF (TSIZE(J).GE.2.0E0) THEN
+         IF (TSIZE(J).GE.2.0_WP) THEN
             TMEAN(J) = TMEAN(J)/TSIZE(J)
          ELSE
             TMEAN(J) = TMEAN(J)
@@ -434,8 +434,8 @@
 !
       DO 80 J=1,NG
          TSD(J) = SQRT(TSD(J))
-         IF (TSIZE(J).LE.1.0E0) GO TO 80
-         TSD(J) = TSD(J)/SQRT(TSIZE(J)-1.0E0)
+         IF (TSIZE(J).LE.1.0_WP) GO TO 80
+         TSD(J) = TSD(J)/SQRT(TSIZE(J)-1.0_WP)
    80 CONTINUE
 !
 !     COMPUTATIONS COMPLETE FOR STORED OUTPUT - RETURN IF PRINTED
@@ -447,20 +447,20 @@
       SMIN = FPLM
 !     HERE I IS THE GROUP NUMBER
       DO 120 I=1,NG
-         IF (TSD(I).GT.0.0E0) THEN
-            B10(I) = TSIZE(I)*(TSIZE(I)-1.0E0)/TSD(I)
+         IF (TSD(I).GT.0.0_WP) THEN
+            B10(I) = TSIZE(I)*(TSIZE(I)-1.0_WP)/TSD(I)
             STATS(1) = STATS(1) + B10(I)*TMEAN(I)
             STATS(2) = STATS(2) + B10(I)
-            IF (TSIZE(I).GT.1.0E0) THEN
-               TSD(I) = SQRT(TSD(I)/(TSIZE(I)-1.0E0))
+            IF (TSIZE(I).GT.1.0_WP) THEN
+               TSD(I) = SQRT(TSD(I)/(TSIZE(I)-1.0_WP))
             END IF
-            MF = MF + (TSIZE(I)-1.0E0)*LOG(TSD(I)*TSD(I))
+            MF = MF + (TSIZE(I)-1.0_WP)*LOG(TSD(I)*TSD(I))
          END IF
          IF (NINT(TSIZE(I)).GE.2) THEN
             NNE1 = NNE1 + 1
             SMAX = MAX(SMAX,TSD(I))
             SMIN = MIN(SMIN,TSD(I))
-            STATS(3) = STATS(3) + 1.0E0/(TSIZE(I)-1.0E0)
+            STATS(3) = STATS(3) + 1.0_WP/(TSIZE(I)-1.0_WP)
          END IF
          SSS = SSS + TSIZE(I)*(I-IBAR)*(TMEAN(I)-GM)
          STATS(4) = STATS(4) + TSIZE(I)*(I-IBAR)*(I-IBAR)
@@ -471,14 +471,14 @@
          YBMAX = MAX(YBMAX,TMEAN(I))
 !
          HSTAT = HSTAT + SRANK(I)*SRANK(I)/TSIZE(I)
-         SUM = SUM + 1.0E0/TSIZE(I)
+         SUM = SUM + 1.0_WP/TSIZE(I)
          STATS(5) = STATS(5) + (TMEAN(I)-GM)*(TMEAN(I)-GM)
          SOS = SOS + TSD(I)*TSD(I)
          SNC = SNC + TSIZE(I)*TSIZE(I)
          SC = SC + TSIZE(I)*TSIZE(I)*TSIZE(I)
   120 CONTINUE
-      IF (STATS(2).NE.0.0E0) STATS(1) = STATS(1)/STATS(2)
-      IF (STATS(4).NE.0.0E0) SSS = SSS*SSS/STATS(4)
+      IF (STATS(2).NE.0.0_WP) STATS(1) = STATS(1)/STATS(2)
+      IF (STATS(4).NE.0.0_WP) SSS = SSS*SSS/STATS(4)
       DSS = BSS - SSS
 !
 !     DEGREES OF FREEDOM FOR ANOVA
@@ -496,34 +496,34 @@
       WMS = WSS/GR
       TMS = TSS/M5
       IF (WMS.EQ.BMS) THEN
-         BFRAT = 1.0E0
-         BFSIG = 1.0E0
-      ELSE IF (WMS.EQ.0.0E0) THEN
+         BFRAT = 1.0_WP
+         BFSIG = 1.0_WP
+      ELSE IF (WMS.EQ.0.0_WP) THEN
          BFRAT = FPLM
-         BFSIG = 0.0E0
+         BFSIG = 0.0_WP
       ELSE
          BFRAT = BMS/WMS
-         BFSIG = 1.0E0 - CDFF(BFRAT,G1,GR)
+         BFSIG = 1.0_WP - CDFF(BFRAT,G1,GR)
       END IF
       IF (WMS.EQ.DMS) THEN
-         DFRAT = 1.0E0
-         DFSIG = 1.0E0
-      ELSE IF (WMS.EQ.0.0E0) THEN
+         DFRAT = 1.0_WP
+         DFSIG = 1.0_WP
+      ELSE IF (WMS.EQ.0.0_WP) THEN
          DFRAT = FPLM
-         DFSIG = 0.0E0
+         DFSIG = 0.0_WP
       ELSE
          DFRAT = DMS/WMS
-         DFSIG = 1.0E0 - CDFF(DFRAT,REAL(M3),REAL(NZW-2))
+         DFSIG = 1.0_WP - CDFF(DFRAT,REAL(M3),REAL(NZW-2))
       END IF
       IF (SMS.EQ.DSS+WSS) THEN
-         SFRAT = 1.0E0
-         SFSIG = 1.0E0
-      ELSE IF (DSS+WSS.EQ.0.0E0) THEN
+         SFRAT = 1.0_WP
+         SFSIG = 1.0_WP
+      ELSE IF (DSS+WSS.EQ.0.0_WP) THEN
          SFRAT = FPLM
-         SFSIG = 0.0E0
+         SFSIG = 0.0_WP
       ELSE
-         SFRAT = SMS/((DSS+WSS)/(FNZW-2.0E0))
-         SFSIG = 1.0E0 - CDFF(SFRAT,1.0E0,GR)
+         SFRAT = SMS/((DSS+WSS)/(FNZW-2.0_WP))
+         SFSIG = 1.0_WP - CDFF(SFRAT,1.0_WP,GR)
       END IF
 !
 !     COMPUTE FOR KRUSKAL-WALLIS TEST
@@ -532,27 +532,27 @@
 !     PP. 238 - 240
 !
       STATS(6) = NZW*(NZW+1)
-      HSTAT = (12.0E0*HSTAT/STATS(6)) - (3.0E0*(NZW+1))
+      HSTAT = (12.0_WP*HSTAT/STATS(6)) - (3.0_WP*(NZW+1))
       IF (TIES.EQ.NZW*NZW*NZW-NZW) THEN
-         CFKW = 0.0E0
-         HSTAT = 0.0E0
-         MKW = 0.0E0
+         CFKW = 0.0_WP
+         HSTAT = 0.0_WP
+         MKW = 0.0_WP
       ELSE
-         CFKW = 1.0E0 - TIES/(NZW*NZW*NZW-NZW)
+         CFKW = 1.0_WP - TIES/(NZW*NZW*NZW-NZW)
          HSTAT = HSTAT/CFKW
          MKW = ((NZW*NZW*NZW-SC)/STATS(6))/CFKW
       END IF
-      VKW = 2.0E0*G1 -
-     +   (0.4E0*(3*NG*M3+NZW*(2*NG*(NG-3)+1)))/STATS(6)
-     +   - 6.0E0*SUM/5.0E0
-      IF (MKW-HSTAT.GT.0.0E0 .AND.
-     +    MKW.NE.0.0E0 .AND. VKW.NE.0.0E0) THEN
-         F1KW = (G1*(G1*(MKW-G1)-VKW))/(0.5E0*VKW*MKW)
+      VKW = 2.0_WP*G1 -
+     &   (0.4_WP*(3*NG*M3+NZW*(2*NG*(NG-3)+1)))/STATS(6)
+     &   - 6.0_WP*SUM/5.0_WP
+      IF (MKW-HSTAT.GT.0.0_WP .AND.
+     &    MKW.NE.0.0_WP .AND. VKW.NE.0.0_WP) THEN
+         F1KW = (G1*(G1*(MKW-G1)-VKW))/(0.5_WP*VKW*MKW)
          F2KW = (MKW-G1)*F1KW/G1
          FSTAT = (HSTAT*(MKW-G1))/(G1*(MKW-HSTAT))
-         SIGKW = 1.0E0 - CDFF(FSTAT,ANINT(F1KW),ANINT(F2KW))
+         SIGKW = 1.0_WP - CDFF(FSTAT,ANINT(F1KW),ANINT(F2KW))
       ELSE
-         SIGKW = 0.0E0
+         SIGKW = 0.0_WP
       END IF
 !
 !     COMPUTE TOTAL STATISTICS
@@ -563,9 +563,9 @@
       SQMS = SWMS/(SQRT(FNZW))
       SQB = SBMS/(SQRT(REAL(NG)))
       SQT = STMS/(SQRT(FNZW))
-      T1 = PPFT(0.975E0,INT(GR))
-      T2 = PPFT(0.975E0,INT(G1))
-      T3 = PPFT(0.975E0,M5)
+      T1 = PPFT(0.975_WP,INT(GR))
+      T2 = PPFT(0.975_WP,INT(G1))
+      T3 = PPFT(0.975_WP,M5)
       FMLC = GM - SQMS*T1
       RMLC = GM - SQB*T2
       UMLC = GM - SQT*T3
@@ -573,43 +573,43 @@
       RMUC = GM + SQB*T2
       UMUC = GM + SQT*T3
 !
-      SSF = SWMS*SQRT(G1*PPFF(0.95E0,INT(G1),INT(GR)))
+      SSF = SWMS*SQRT(G1*PPFF(0.95_WP,INT(G1),INT(GR)))
 !
 !     TESTS FOR HOMOGENEITY OF VARIANCES
 !
       IF (SMAX*SMAX.EQ.SOS) THEN
-         CC = 1.0E0
-      ELSE IF (SOS.NE.0.0E0) THEN
+         CC = 1.0_WP
+      ELSE IF (SOS.NE.0.0_WP) THEN
          CC = SMAX*SMAX/SOS
       END IF
       STATS(7) = ANINT(FNZW/NG)
-      IF ((NNE1.GE.2) .AND. (CC.NE.1.0E0)) THEN
-         SLCC = 1.0E0 -
-     +          CDFF((NNE1-1)*CC/(1.0E0-CC),STATS(7),
-     +          STATS(7)*(NNE1-1))
+      IF ((NNE1.GE.2) .AND. (CC.NE.1.0_WP)) THEN
+         SLCC = 1.0_WP -
+     &          CDFF((NNE1-1)*CC/(1.0_WP-CC),STATS(7),
+     &          STATS(7)*(NNE1-1))
       ELSE
-         SLCC = 1.0E0
+         SLCC = 1.0_WP
       END IF
       SLCC = (NNE1-1)*SLCC
-      IF (SLCC.GT.1.0E0) SLCC = 1.0E0
+      IF (SLCC.GT.1.0_WP) SLCC = 1.0_WP
 !
       IF (SMIN.EQ.SMAX) THEN
-         VLS = 1.0E0
+         VLS = 1.0_WP
       ELSE
-         IF (SMIN.EQ.0.0E0) THEN
+         IF (SMIN.EQ.0.0_WP) THEN
             VLS = FPLM
          ELSE
             VLS = (SMAX/SMIN)*(SMAX/SMIN)
          END IF
       END IF
-      IF (WMS.GT.0.0E0) MF = GR*LOG(WMS) - MF
-      AF = (STATS(3)-(1.0E0/GR))/(3.0E0*G1)
-      SLBF = 1.0E0
-      IF ((AF.NE.1.0E0) .AND. (NNE1.GE.2)) THEN
+      IF (WMS.GT.0.0_WP) MF = GR*LOG(WMS) - MF
+      AF = (STATS(3)-(1.0_WP/GR))/(3.0_WP*G1)
+      SLBF = 1.0_WP
+      IF ((AF.NE.1.0_WP) .AND. (NNE1.GE.2)) THEN
          DF = (NNE1+1)/(AF*AF)
-         BF = (DF*MF)/((NNE1-1)*(DF/(1.0E0-AF+(2.0E0/DF))-MF))
-         IF (BF.LT.0.0E0) BF = 0.0E0
-         SLBF = 1.0E0 - CDFF(BF,REAL(NNE1-1),ANINT(DF))
+         BF = (DF*MF)/((NNE1-1)*(DF/(1.0_WP-AF+(2.0_WP/DF))-MF))
+         IF (BF.LT.0.0_WP) BF = 0.0_WP
+         SLBF = 1.0_WP - CDFF(BF,REAL(NNE1-1),ANINT(DF))
       ELSE
          BF = FPLM
       END IF
@@ -650,19 +650,19 @@
          ISZ = INT(TSIZE(I))
          IF (ISZ.LE.1) THEN
             WRITE (IPRT,1090) TVALUE(I), ISZ, TMEAN(I), MEAN, GPMIN(I),
-     +         GPMAX(I), SRANK(I)
+     &         GPMAX(I), SRANK(I)
          ELSE
             STATS(9) = TSD(I)/SQRT(TSIZE(I))
-            STATS(10) = PPFT(0.975E0,ISZ-1)
+            STATS(10) = PPFT(0.975_WP,ISZ-1)
             STATS(8) = TMEAN(I) - STATS(9)*STATS(10)
             STATS(11) = TMEAN(I) + STATS(9)*STATS(10)
             WRITE (IPRT,1080) TVALUE(I), ISZ, TMEAN(I), MEAN, TSD(I),
-     +                        ISD, STATS(9), GPMIN(I), GPMAX(I),
-     +                        SRANK(I), STATS(8), STATS(11)
+     &                        ISD, STATS(9), GPMIN(I), GPMAX(I),
+     &                        SRANK(I), STATS(8), STATS(11)
          END IF
   200 CONTINUE
       WRITE (IPRT,1100) NZW, GM, YMIN, YMAX, SWMS, SQMS, FMLC, FMUC,
-     +   SBMS, SQB, RMLC, RMUC, STMS, SQT, UMLC, UMUC
+     &   SBMS, SQB, RMLC, RMUC, STMS, SQT, UMLC, UMUC
       IF (BFSIG.LT.0.10) THEN
 !
 !     SORT YBAR FOR MULTIPLE COMPARISIONS OF MEANS
@@ -678,9 +678,9 @@
 !     NEWMAN-KEULS-HARTLEY
 !
          WRITE (IPRT,1120)
-         RX = -.283917E0 + 2.63532E0*(GR-1.00123E0)**(-.95862E0)
-         U1 = -.314115E0 + 2.38301E0*(GR-1.03428E0)**(-.864005E0)
-         U2 = 3.65961E0*U1**2 - 1.00891E0*U1 - 0.166346E0
+         RX = -.283917_WP + 2.63532_WP*(GR-1.00123_WP)**(-.95862_WP)
+         U1 = -.314115_WP + 2.38301_WP*(GR-1.03428_WP)**(-.864005_WP)
+         U2 = 3.65961_WP*U1**2 - 1.00891_WP*U1 - 0.166346_WP
          J = 1
          M28 = 0
   210    I = NG
@@ -691,19 +691,19 @@
 !     MANDEL APPROXIMATION TO PERCENT POINT OF STUDENTIZED RANGE
 !
          STATS(12) = I-J+1
-         C = 2.3849867E0 -
-     +       2.9051857E0*(STATS(12)-0.57583164E0)**(-.069648109E0)
-         V1 = 1.30153E0 -
-     +        1.95073E0*(STATS(12)+.394915E0)**(-.139783E0)
-         V2 = 4.72863E0*V1**2 + 0.404271E0*V1 - 0.135104E0
-         STATS(13) = 6.15075E0 + 4.441409E0*RX +
-     +               6.7514569E0*C + 7.4671282E0*U1*V1 -
-     +               0.157537E0*U2*V2
+         C = 2.3849867_WP -
+     &       2.9051857_WP*(STATS(12)-0.57583164_WP)**(-.069648109_WP)
+         V1 = 1.30153_WP -
+     &        1.95073_WP*(STATS(12)+.394915_WP)**(-.139783_WP)
+         V2 = 4.72863_WP*V1**2 + 0.404271_WP*V1 - 0.135104_WP
+         STATS(13) = 6.15075_WP + 4.441409_WP*RX +
+     &               6.7514569_WP*C + 7.4671282_WP*U1*V1 -
+     &               0.157537_WP*U2*V2
          KK = INDEX(I)
          KKK = INDEX(J)
          STATS(13) = STATS(13)*
-     +            SQRT(0.5E0*((1.0E0/TSIZE(KK))+(1.0E0/TSIZE(KKK))))*
-     +            SWMS
+     &            SQRT(0.5_WP*((1.0_WP/TSIZE(KK))+(1.0_WP/TSIZE(KKK))))*
+     &            SWMS
          IF (STATS(14).LE.STATS(13)) GO TO 230
          I = I - 1
          GO TO 220
@@ -729,8 +729,8 @@
          KK = INDEX(I)
          KKK = INDEX(J)
          STATS(14) = ABS(TMEAN(I)-TMEAN(J))
-         STATS(13) = SSF*SQRT((1.0E0/TSIZE(KK))+(1./TSIZE(KKK)))
-         IF (STATS(14)-STATS(13).LE.0.0E0) GO TO 300
+         STATS(13) = SSF*SQRT((1.0_WP/TSIZE(KK))+(1./TSIZE(KKK)))
+         IF (STATS(14)-STATS(13).LE.0.0_WP) GO TO 300
          I = I - 1
          GO TO 290
   300    IF (J.EQ.1) GO TO 320
@@ -751,21 +751,21 @@
 !
       IF (NNE1.LE.1) RETURN
       WRITE (IPRT,1170) CC, SLCC, BF, SLBF, VLS
-      IF (SLCC.GT.0.1E0 .AND. SLBF.GT.0.1E0) GO TO 390
+      IF (SLCC.GT.0.1_WP .AND. SLBF.GT.0.1_WP) GO TO 390
       DO 360 I=1,NG
          F = F + B10(I)*(TMEAN(I)-STATS(1))*(TMEAN(I)-STATS(1))
-         IF (STATS(2).EQ.0.0E0 .OR. TSIZE(I).LE.1.0E0) GO TO 360
+         IF (STATS(2).EQ.0.0_WP .OR. TSIZE(I).LE.1.0_WP) GO TO 360
          STATS(15) = STATS(15) +
-     +               (1.0E0-B10(I)*B10(I)/STATS(2)/STATS(2))/
-     +               (TSIZE(I)-1.0E0)
+     &               (1.0_WP-B10(I)*B10(I)/STATS(2)/STATS(2))/
+     &               (TSIZE(I)-1.0_WP)
   360 CONTINUE
-      IF (STATS(15).EQ.0.0E0) GO TO 370
-      STATS(15) = (NG*NG-1.0E0)/(3.0E0*STATS(15))
+      IF (STATS(15).EQ.0.0_WP) GO TO 370
+      STATS(15) = (NG*NG-1.0_WP)/(3.0_WP*STATS(15))
       IF (NG.LE.1) GO TO 370
-      F = (F/G1)/(1.0E0+(2.0E0*M3/(3.0E0*STATS(15))))
+      F = (F/G1)/(1.0_WP+(2.0_WP*M3/(3.0_WP*STATS(15))))
       GO TO 380
-  370 F = 0.0E0
-  380 Q = 1.0E0 - CDFF(F,G1,ANINT(STATS(15)))
+  370 F = 0.0_WP
+  380 Q = 1.0_WP - CDFF(F,G1,ANINT(STATS(15)))
       WRITE (IPRT,1180) F, Q
   390 WRITE (IPRT,1190) SQOM
       RETURN
@@ -775,55 +775,55 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT(54H *GROUP NUMBERS HAVE BEEN ASSIGNED ACCORDING TO TAG VA,
-     +   59HLUES GIVEN, WHERE THE SMALLEST TAG GREATER THAN ZERO HAS BE,
-     +   14HEN ASSIGNED  */41H *GROUP NUMBER 1, THE NEXT SMALLEST, GROU,
-     +   59HP NUMBER 2, ETC.  TAGS LESS THAN OR EQUAL TO ZERO HAVE NOT ,
-     +   27HBEEN INCLUDED IN ANALYSIS.*/28H *NUMBER OF VALUES EXCLUDED ,
-     +   17HFROM ANALYSIS IS , I4, 77X, 1H*//17X, 6HSOURCE, 14X, 4HD.F.,
-     +   4X, 14HSUM OF SQUARES, 5X, 12HMEAN SQUARES, 9X, 7HF RATIO, 4X,
-     +   7HF PROB./)
+     &   59HLUES GIVEN, WHERE THE SMALLEST TAG GREATER THAN ZERO HAS BE,
+     &   14HEN ASSIGNED  */41H *GROUP NUMBER 1, THE NEXT SMALLEST, GROU,
+     &   59HP NUMBER 2, ETC.  TAGS LESS THAN OR EQUAL TO ZERO HAVE NOT ,
+     &   27HBEEN INCLUDED IN ANALYSIS.*/28H *NUMBER OF VALUES EXCLUDED ,
+     &   17HFROM ANALYSIS IS , I4, 77X, 1H*//17X, 6HSOURCE, 14X, 4HD.F.,
+     &   4X, 14HSUM OF SQUARES, 5X, 12HMEAN SQUARES, 9X, 7HF RATIO, 4X,
+     &   7HF PROB./)
  1010 FORMAT(17X, 14HBETWEEN GROUPS, 5X, I4, 1P2E18.6, 4X, 0PE11.3,
-     +   F10.3)
+     &   F10.3)
  1020 FORMAT(20X, 5HSLOPE, 14X, I4, 1P2E18.6, 3X, 0PE11.3, F10.3)
  1030 FORMAT(20X, 16HDEVS. ABOUT LINE, 3X, I4, 1P2E18.6, 3X, 0PE11.3,
-     +   F10.3)
+     &   F10.3)
  1040 FORMAT(17X, 13HWITHIN GROUPS, 6X, I4, 1P2E18.6)
  1050 FORMAT(17X, 5HTOTAL, 14X, I4, 1PE18.6//)
  1060 FORMAT(11X, 49HKRUSKAL-WALLIS RANK TEST FOR DIFFERENCE BETWEEN G,
-     +   16HROUP MEANS * H =, E11.3, 10H, F PROB =, F6.3, 10H (APPROX.)
-     +   /)
+     &   16HROUP MEANS * H =, E11.3, 10H, F PROB =, F6.3, 10H (APPROX.)
+     &   /)
  1070 FORMAT(55X, 9HESTIMATES/96X, 6HSUM OF/5X, 5H TAG , 10X, 3HNO.,
-     +   6X, 4HMEAN, 7X, 11HWITHIN S.D., 2X, 12HS.D. OF MEAN, 5X,
-     +   7HMINIMUM, 7X, 7HMAXIMUM, 6X, 5HRANKS, 3X, 16H95PCT CONF INT F,
-     +   7HOR MEAN/)
+     &   6X, 4HMEAN, 7X, 11HWITHIN S.D., 2X, 12HS.D. OF MEAN, 5X,
+     &   7HMINIMUM, 7X, 7HMAXIMUM, 6X, 5HRANKS, 3X, 16H95PCT CONF INT F,
+     &   7HOR MEAN/)
  1080 FORMAT(1X, 1PE14.6, I8, E14.5, A1, E13.5, A1, E13.5, 2E14.5,
-     +   0PF9.1, 1PE13.5, 3H TO, E12.5)
+     &   0PF9.1, 1PE13.5, 3H TO, E12.5)
  1090 FORMAT(1X, 1PE14.6, I8, E14.5, A1, 3X, 23H ESTIMATE NOT AVAILABLE,
-     +   ' ', 2E14.5, 0PF9.1, 3X, 25H********** TO ********** )
+     &   ' ', 2E14.5, 0PF9.1, 3X, 25H********** TO ********** )
  1100 FORMAT(/11X, 5HTOTAL, I7, 1PE14.5, 28X, 2E14.5//
-     +   17X, 20HFIXED EFFECTS MODEL , 2E14.5, 37X, E13.5, 3H TO, E12.5/
-     +   17X, 7HRANDOM ,
-     +   13HEFFECTS MODEL, 2E14.5, 37X, E13.5, 3H TO, E12.5/17X,
-     +   14HUNGROUPED DATA, 6X, 2E14.5, 37X, E13.5, 3H TO, E12.5/)
+     &   17X, 20HFIXED EFFECTS MODEL , 2E14.5, 37X, E13.5, 3H TO, E12.5/
+     &   17X, 7HRANDOM ,
+     &   13HEFFECTS MODEL, 2E14.5, 37X, E13.5, 3H TO, E12.5/17X,
+     &   14HUNGROUPED DATA, 6X, 2E14.5, 37X, E13.5, 3H TO, E12.5/)
  1110 FORMAT(1X, 50HPAIRWISE MULTIPLE COMPARISON OF MEANS.  THE MEANS ,
-     +   59HARE PUT IN INCREASING ORDER IN GROUPS SEPARATED BY *****.  ,
-     +   11HA MEAN IS  /44H ADJUDGED NON-SIGNIFICANTLY DIFFERENT FROM A,
-     +   59HNY MEAN IN THE SAME GROUP AND SIGNIFICANTLY DIFFERENT AT TH,
-     +   17HE .05 LEVEL FROM /38H ANY MEAN IN ANOTHER GROUP.  ***** ***,
-     +   59H** INDICATES ADJACENT GROUPS HAVE NO COMMON MEAN.          ,
-     +   23H                       )
+     &   59HARE PUT IN INCREASING ORDER IN GROUPS SEPARATED BY *****.  ,
+     &   11HA MEAN IS  /44H ADJUDGED NON-SIGNIFICANTLY DIFFERENT FROM A,
+     &   59HNY MEAN IN THE SAME GROUP AND SIGNIFICANTLY DIFFERENT AT TH,
+     &   17HE .05 LEVEL FROM /38H ANY MEAN IN ANOTHER GROUP.  ***** ***,
+     &   59H** INDICATES ADJACENT GROUPS HAVE NO COMMON MEAN.          ,
+     &   23H                       )
  1120 FORMAT(/3X, 49HNEWMAN-KEULS TECHNIQUE, HARTLEY MODIFICATION. (AP,
-     +   40HPROXIMATE IF GROUP NUMBERS ARE UNEQUAL.))
+     &   40HPROXIMATE IF GROUP NUMBERS ARE UNEQUAL.))
  1130 FORMAT(/3X, 18HSCHEFFE TECHNIQUE.)
  1140 FORMAT(3X, 9(1PE12.5, ','))
  1150 FORMAT(6X, 5H*****)
  1160 FORMAT(3X, 11H***** *****)
  1170 FORMAT(/36H TESTS FOR HOMOGENEITY OF VARIANCES./7X, 9HCOCHRANS ,
-     +   35HC = MAX. VARIANCE/SUM(VARIANCES) = , F7.4, 6H, P = , F6.3,
-     +   10H (APPROX.)/7X, 17HBARTLETT-BOX F = , F9.3, 6H, P = ,
-     +   F6.3/7X, 38HMAXIMUM VARIANCE / MINIMUM VARIANCE = , F14.4)
+     &   35HC = MAX. VARIANCE/SUM(VARIANCES) = , F7.4, 6H, P = , F6.3,
+     &   10H (APPROX.)/7X, 17HBARTLETT-BOX F = , F9.3, 6H, P = ,
+     &   F6.3/7X, 38HMAXIMUM VARIANCE / MINIMUM VARIANCE = , F14.4)
  1180 FORMAT(7X, 50HAPPROX BETWEEN MEANS F-TEST IN PRESENCE OF HETEROG,
-     +   20HENEOUS VARIANCE. F =, F8.3, 5H, P =, F6.3)
+     &   20HENEOUS VARIANCE. F =, F8.3, 5H, P =, F6.3)
  1190 FORMAT(/35H MODEL II - COMPONENTS OF VARIANCE./7X, 10HESTIMATE O,
-     +   20HF BETWEEN COMPONENT , 1PE14.6)
+     &   20HF BETWEEN COMPONENT , 1PE14.6)
       END

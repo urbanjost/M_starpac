@@ -1,6 +1,6 @@
 !CCFS
       SUBROUTINE CCFS (YM, N, M, IYM, LAGMAX, CCOV, ICCOV, JCCOV,
-     +   NPRT, LDSTAK)
+     &   NPRT, LDSTAK)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,41 +18,41 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   ICCOV,IYM,JCCOV,LAGMAX,LDSTAK,M,N,NPRT
+     &   ICCOV,IYM,JCCOV,LAGMAX,LDSTAK,M,N,NPRT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   CCOV(*),YM(*)
+      REAL(KIND=WP) ::
+     &   CCOV(*),YM(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       DOUBLE PRECISION DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,IFP,INLPPC,IO,IPRT,IYMFFT,J,JNLPPC,K,LDSMIN,LYFFT,NALL0,
-     +   NFFT,RHOC,SDRHOC,YMEAN,YMEANJ,YMEANK,YSD,YSDJ,YSDK
+     &   I,IFP,INLPPC,IO,IPRT,IYMFFT,J,JNLPPC,K,LDSMIN,LYFFT,NALL0,
+     &   NFFT,RHOC,SDRHOC,YMEAN,YMEANJ,YMEANK,YSD,YSDJ,YSDK
       LOGICAL
-     +   ISFFT,ISLONG,NEWPG
+     &   ISFFT,ISLONG,NEWPG
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   RSTAK(12)
+      REAL(KIND=WP) ::
+     &   RSTAK(12)
       INTEGER
-     +   NDUM(1)
+     &   NDUM(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL STKGET,STKST
+!      INTEGER
+!     +   STKST
+!      EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ACVF,CCFER,CCFMN,CCFOUT,IPRINT,LDSCMP,STKCLR,STKSET
+!      EXTERNAL ACVF,CCFER,CCFMN,CCFOUT,IPRINT,LDSCMP,STKCLR,STKSET
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SQRT
@@ -63,7 +63,7 @@
 !
 !  STATEMENT FUNCTIONS
       INTEGER
-     +   I2,I3
+     &   I2,I3
 !
 !  EQUIVALENCES
       EQUIVALENCE (DSTAK(1),RSTAK(1))
@@ -170,8 +170,8 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'C',       'C',       'F',       'S',       ' ',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'C',       'C',       'F',       'S',       ' ',       ' '/
 !
       I2(I,J) = I + (J-1)*IYM
       I3(I,J,K) = I + (J-1)*ICCOV + (K-1)*JCCOV*ICCOV
@@ -191,10 +191,10 @@
       IF (NPRT .EQ. 0) IO = 0
 !
       CALL LDSCMP(2+2*IO, 0, 0, 0, 0, 0, 'S',
-     +            2*M+IO*(4*LAGMAX+2), LDSMIN)
+     &            2*M+IO*(4*LAGMAX+2), LDSMIN)
 !
       CALL CCFER(NMSUB, N, LAGMAX, LDSTAK, LDSMIN, ICCOV, JCCOV,
-     +  INLPPC, JNLPPC, M, LYFFT, NFFT, IYM, IYMFFT, ISFFT, ISLONG)
+     &  INLPPC, JNLPPC, M, LYFFT, NFFT, IYM, IYMFFT, ISFFT, ISLONG)
 !
 !     CHECK WHETHER AN ERROR HAS BEEN DETECTED
 !
@@ -229,7 +229,7 @@
              YSDK = YSD + K - 1
 !
              CALL ACVF (YM(I2(1,K)), N, RSTAK(YMEANK),
-     +                  CCOV(I3(1,K,K)), LAGMAX, ICCOV)
+     &                  CCOV(I3(1,K,K)), LAGMAX, ICCOV)
              RSTAK(YSDK) = SQRT(CCOV(I3(1,K,K)) * N / (N - 1))
 !
              IF ((K-1).LE.0) GO TO 40
@@ -240,20 +240,20 @@
                 YSDJ = YSD + J - 1
 !
                 CALL CCFMN (YM(I2(1,J)), YM(I2(1,K)),
-     +                      N, LAGMAX, 2*LAGMAX+1,
-     +                      CCOV(I3(1,J,J)), CCOV(I3(1,K,K)),
-     +                      CCOV(I3(1,J,K)), CCOV(I3(1,K,J)),
-     +                      ICCOV, RSTAK(YMEANJ), RSTAK(YMEANK),
-     +                      RSTAK(RHOC), RSTAK(SDRHOC), NPRT)
+     &                      N, LAGMAX, 2*LAGMAX+1,
+     &                      CCOV(I3(1,J,J)), CCOV(I3(1,K,K)),
+     &                      CCOV(I3(1,J,K)), CCOV(I3(1,K,J)),
+     &                      ICCOV, RSTAK(YMEANJ), RSTAK(YMEANK),
+     &                      RSTAK(RHOC), RSTAK(SDRHOC), NPRT)
 !
                 IF (NPRT .EQ. 0) GO TO 30
 !
 !         CALL ROUTINE TO PRINT OUT CORRELATIONS
 !
                 CALL CCFOUT (J, RSTAK(YMEANJ), RSTAK(YSDJ), N, N, K,
-     +             RSTAK(YMEANK), RSTAK(YSDK), N, N, LAGMAX, 2*LAGMAX+1,
-     +             RSTAK(RHOC), RSTAK(SDRHOC), .FALSE., NDUM, NDUM, 1,
-     +             0.0E0, 0.0E0, NEWPG)
+     &             RSTAK(YMEANK), RSTAK(YSDK), N, N, LAGMAX, 2*LAGMAX+1,
+     &             RSTAK(RHOC), RSTAK(SDRHOC), .FALSE., NDUM, NDUM, 1,
+     &             0.0E0, 0.0E0, NEWPG)
 !
                 NEWPG = .TRUE.
 !
@@ -278,6 +278,6 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT(/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL CCFS (YM, N, M, IYM,'/
-     +   '      +           LAGMAX, CCOV, ICCOV, JCCOV, NPRT, LDSTAK)')
+     &   '       CALL CCFS (YM, N, M, IYM,'/
+     &   '      +           LAGMAX, CCOV, ICCOV, JCCOV, NPRT, LDSTAK)')
       END

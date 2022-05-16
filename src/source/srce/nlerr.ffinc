@@ -17,19 +17,19 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   ICNVCD
+     &   ICNVCD
 !
 !  ARRAY ARGUMENTS
       INTEGER
-     +   ISKULL(10)
+     &   ISKULL(10)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -57,7 +57,7 @@
 !     SET ERROR FLAG
 !
       GO TO (10, 10, 20, 20, 20, 20, 40, 50, 60, 60, 10, 30, 10, 10,
-     +   10), ICNVCD
+     &   10), ICNVCD
 !
 !     BAD VALUE
 !

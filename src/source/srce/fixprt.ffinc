@@ -16,19 +16,19 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IFIX
+     &   IFIX
 !
 !  ARRAY ARGUMENTS
       CHARACTER
-     +   FIXED(3)*1
+     &   FIXED(3)*1
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   NO(3)*1,YES(3)*1
+     &   NO(3)*1,YES(3)*1
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

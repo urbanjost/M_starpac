@@ -1,10 +1,10 @@
 !BFSDRV
       SUBROUTINE BFSDRV(Y1, Y2, YMISS1, YMISS2, CCOV, NLPPC, SPCF1,
-     +   SPCF2, NF, FMIN, FMAX, FREQ, N, NW, LAGMAX, LAGS, LAGMX1,
-     +   WORK, LWORK, DELTA, ISYM, XAXIS, YAXIS, LPCV, ALPHA, NPRT,
-     +   WINDOW, ICCOV, JCCOV, M, INDEX1, INDEX2, CSPC2, PHAS, ICSPC2,
-     +   IPHAS, CODD, CEVEN, W, LW, NMSUB, LDSMIN, LDSTAK, OPTION,
-     +   NFFT, INLPPC, JNLPPC, LY)
+     &   SPCF2, NF, FMIN, FMAX, FREQ, N, NW, LAGMAX, LAGS, LAGMX1,
+     &   WORK, LWORK, DELTA, ISYM, XAXIS, YAXIS, LPCV, ALPHA, NPRT,
+     &   WINDOW, ICCOV, JCCOV, M, INDEX1, INDEX2, CSPC2, PHAS, ICSPC2,
+     &   IPHAS, CODD, CEVEN, W, LW, NMSUB, LDSMIN, LDSTAK, OPTION,
+     &   NFFT, INLPPC, JNLPPC, LY)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -21,47 +21,46 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     +   ALPHA,DELTA,FMAX,FMIN,YMISS1,YMISS2
+      REAL(KIND=WP) :: ALPHA,DELTA,FMAX,FMIN,YMISS1,YMISS2
       INTEGER
-     +   ICCOV,ICSPC2,INDEX1,INDEX2,INLPPC,IPHAS,JCCOV,JNLPPC,
-     +   LAGMAX,LAGMX1,LDSMIN,LDSTAK,LPCV,LW,LWORK,LY,M,N,NF,NFFT,
-     +   NPRT,NW
+     &   ICCOV,ICSPC2,INDEX1,INDEX2,INLPPC,IPHAS,JCCOV,JNLPPC,
+     &   LAGMAX,LAGMX1,LDSMIN,LDSTAK,LPCV,LW,LWORK,LY,M,N,NF,NFFT,
+     &   NPRT,NW
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   CCOV(*),CEVEN(*),CODD(*),CSPC2(*),FREQ(*),PHAS(*),SPCF1(*),
-     +   SPCF2(*),W(*),WORK(*),XAXIS(*),Y1(*),Y2(*),YAXIS(*)
+     &   CCOV(*),CEVEN(*),CODD(*),CSPC2(*),FREQ(*),PHAS(*),SPCF1(*),
+     &   SPCF2(*),W(*),WORK(*),XAXIS(*),Y1(*),Y2(*),YAXIS(*)
       INTEGER
-     +   ISYM(*),LAGS(*),NLPPC(*)
+     &   ISYM(*),LAGS(*),NLPPC(*)
       LOGICAL
-     +   OPTION(4)
+     &   OPTION(4)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  SUBROUTINE ARGUMENTS
       EXTERNAL WINDOW
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   BW,DF,FMN,FMX,XPLTMN,XPLTMX,YMEAN1,YMEAN2,YPLTMN,YPLTMX
+     &   BW,DF,FMN,FMX,XPLTMN,XPLTMX,YMEAN1,YMEAN2,YPLTMN,YPLTMX
       INTEGER
-     +   I,ILOG,ISPCER,J,K,LAG,LAGLST,NFUSED,NPTS,NWUSED
+     &   I,ILOG,ISPCER,J,K,LAG,LAGLST,NFUSED,NPTS,NWUSED
       LOGICAL
-     +   NEWPG,UNIVAR
+     &   NEWPG,UNIVAR
 !
 !  EXTERNAL FUNCTIONS
       INTEGER
-     +   LSTLAG
+     &   LSTLAG
       EXTERNAL LSTLAG
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL ACVF,ACVFF,ACVFM,BFSER,BFSLAG,BFSMN,CCVF,CCVFF,CCVFM,
-     +   DFBW,DFBWM,SETFRQ,UFSEST,UFSOUT
+     &   DFBW,DFBWM,SETFRQ,UFSEST,UFSOUT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC INT,MAX,MIN
@@ -71,7 +70,7 @@
 !
 !  STATEMENT FUNCTIONS
       INTEGER
-     +   I3C,I3N
+     &   I3C,I3N
 !
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
@@ -223,48 +222,48 @@
 !
       NFUSED = NF
       IF (OPTION(4)) THEN
-        FMN = MAX(FMIN, 0.0E0_WP)
-        FMX = MIN(FMAX, 0.5D0_WP)
+        FMN = MAX(FMIN, 0.0_WP)
+        FMX = MIN(FMAX, 0.5_WP)
         IF (FMN.GE.FMX) THEN
-          FMN = 0.0E0_WP
-          FMX = 0.5D0_WP
+          FMN = 0.0_WP
+          FMX = 0.5_WP
         END IF
       ELSE
 !
 !       SET VARIOUS VALUES FOR SHORT FORMS OF CALL STATEMENT
 !
         NPRT = -1
-        FMN = 0.0E0_WP
-        FMX = 0.5D0_WP
+        FMN = 0.0_WP
+        FMX = 0.5_WP
         LAGMX1 = LAGMAX + 1
       END IF
 !
 !     CHECK FOR ERRORS
 !
       CALL BFSER(NMSUB, N, LAGMAX, ICCOV, JCCOV, INLPPC, JNLPPC, M,
-     +           INDEX1, INDEX2, ICSPC2, IPHAS, NF, NW, LAGS,
-     +           LDSTAK, LDSMIN, LY, NFFT, OPTION)
+     &           INDEX1, INDEX2, ICSPC2, IPHAS, NF, NW, LAGS,
+     &           LDSTAK, LDSMIN, LY, NFFT, OPTION)
 !
       IF (IERR.EQ.1) RETURN
 !
 !     SET VARIOUS PROGRAM PARAMETERS.
 !
-      ALPHA = 0.95D0_WP
-      DELTA = 1.0E0_WP
+      ALPHA = 0.95_WP
+      DELTA = 1.0_WP
 !
 !     COMPUTE COVARIANCES
 !
       LAGLST = LAGMAX
       IF (OPTION(1)) THEN
         CALL ACVFF(Y1, N, NFFT, YMEAN1,
-     +             CCOV(I3C(1,INDEX1,INDEX1)),
-     +             LAGMAX, ICCOV, N, WORK, NFFT)
+     &             CCOV(I3C(1,INDEX1,INDEX1)),
+     &             LAGMAX, ICCOV, N, WORK, NFFT)
         CALL ACVFF(Y2, N, NFFT, YMEAN2,
-     +             CCOV(I3C(1,INDEX2,INDEX2)),
-     +             LAGMAX, ICCOV, N, WORK, NFFT)
+     &             CCOV(I3C(1,INDEX2,INDEX2)),
+     &             LAGMAX, ICCOV, N, WORK, NFFT)
         CALL CCVFF(Y1, Y2, N, NFFT, LAGMAX,
-     +             CCOV(I3C(1,INDEX1,INDEX2)),
-     +             CCOV(I3C(1,INDEX2,INDEX1)), ICCOV, N, WORK, LWORK)
+     &             CCOV(I3C(1,INDEX1,INDEX2)),
+     &             CCOV(I3C(1,INDEX2,INDEX1)), ICCOV, N, WORK, LWORK)
 !
       ELSE
         IF (OPTION(3)) THEN
@@ -272,25 +271,25 @@
         ELSE
           IF (OPTION(2)) THEN
             CALL ACVFM(Y1, YMISS1, N, YMEAN1,
-     +                 CCOV(I3C(1,INDEX1,INDEX1)),
-     +                 LAGMAX, LAGLST, NLPPC, ICCOV)
+     &                 CCOV(I3C(1,INDEX1,INDEX1)),
+     &                 LAGMAX, LAGLST, NLPPC, ICCOV)
             CALL ACVFM(Y2, YMISS2, N, YMEAN2,
-     +                 CCOV(I3C(1,INDEX2,INDEX2)),
-     +                 LAGMAX, LAGLST, NLPPC, ICCOV)
+     &                 CCOV(I3C(1,INDEX2,INDEX2)),
+     &                 LAGMAX, LAGLST, NLPPC, ICCOV)
             CALL CCVFM(Y1, YMISS1, Y2, YMISS2, N, LAGMAX, YMEAN1,
-     +                 YMEAN2, CCOV(I3C(1,INDEX1,INDEX2)),
-     +                 CCOV(I3C(1,INDEX2,INDEX1)), ICCOV,
-     +                 NLPPC(I3N(1,INDEX1,INDEX2)),
-     +                 NLPPC(I3N(1,INDEX2,INDEX1)))
+     &                 YMEAN2, CCOV(I3C(1,INDEX1,INDEX2)),
+     &                 CCOV(I3C(1,INDEX2,INDEX1)), ICCOV,
+     &                 NLPPC(I3N(1,INDEX1,INDEX2)),
+     &                 NLPPC(I3N(1,INDEX2,INDEX1)))
 !
           ELSE
             CALL ACVF(Y1, N, YMEAN1, CCOV(I3C(1,INDEX1,INDEX1)), LAGMAX,
-     +                ICCOV)
+     &                ICCOV)
             CALL ACVF(Y2, N, YMEAN2, CCOV(I3C(1,INDEX2,INDEX2)), LAGMAX,
-     +                ICCOV)
+     &                ICCOV)
             CALL CCVF(Y1, Y2, N, LAGMAX, YMEAN1, YMEAN2,
-     +                CCOV(I3C(1,INDEX1,INDEX2)),
-     +                CCOV(I3C(1,INDEX2,INDEX1)), ICCOV)
+     &                CCOV(I3C(1,INDEX1,INDEX2)),
+     &                CCOV(I3C(1,INDEX2,INDEX1)), ICCOV)
           END IF
         END IF
       END IF
@@ -308,7 +307,7 @@
 !
       NWUSED = NW
       IF (.NOT.OPTION(4)) CALL BFSLAG(CCOV, LAGLST, LAGS, N, NW, NWUSED,
-     +                                ICCOV, JCCOV, INDEX1, INDEX2)
+     &                                ICCOV, JCCOV, INDEX1, INDEX2)
 !
 !     BEGIN COMPUTING FOURIER SPECTRUM FOR SERIES
 !
@@ -319,8 +318,8 @@
       XPLTMN = FMN
       XPLTMX = FMX
 !
-      YPLTMN = 0.0E0_WP
-      YPLTMX = 1.0E0_WP
+      YPLTMN = 0.0_WP
+      YPLTMX = 1.0_WP
 !
 !     SET FREQUENCIES FOR THE SPECTRUM.
 !
@@ -333,21 +332,21 @@
 !     COMPUTE THE EVEN AND ODD CCVF ESTIMATES
 !
       CEVEN(1) = CCOV(I3C(1,INDEX1,INDEX2))
-      CODD(1) = 0.0E0_WP
+      CODD(1) = 0.0_WP
       DO 30 I=1,LAGLST
-         CEVEN(I+1) = 0.5D0_WP*
-     +                (CCOV(I3C(I+1,INDEX1,INDEX2))+
-     +                 CCOV(I3C(I+1,INDEX2,INDEX1)))
-         CODD(I+1) = 0.5D0_WP*
-     +               (CCOV(I3C(I+1,INDEX1,INDEX2))-
-     +                CCOV(I3C(I+1,INDEX2,INDEX1)))
+         CEVEN(I+1) = 0.5_WP*
+     &                (CCOV(I3C(I+1,INDEX1,INDEX2))+
+     &                 CCOV(I3C(I+1,INDEX2,INDEX1)))
+         CODD(I+1) = 0.5_WP*
+     &               (CCOV(I3C(I+1,INDEX1,INDEX2))-
+     &                CCOV(I3C(I+1,INDEX2,INDEX1)))
    30 CONTINUE
 !
       DO 60 I=1,NWUSED
          LAG = LAGS(I)
          IF (LAG.GT.LAGLST) THEN
             ISPCER = 2
-            DF = 0.0E0_WP
+            DF = 0.0_WP
          ELSE
 !
             ISPCER = 0
@@ -358,7 +357,7 @@
             CALL WINDOW(LAG, W, LW)
             IF (OPTION(2)) THEN
                CALL DFBWM(N, LAG, W, LW, NLPPC(I3N(1,INDEX1,INDEX2)),
-     +                    NLPPC(I3N(1,INDEX2,INDEX1)), INLPPC, DF, BW)
+     &                    NLPPC(I3N(1,INDEX2,INDEX1)), INLPPC, DF, BW)
             ELSE
                CALL DFBW(N, LAG, W, LW, DF, BW)
             END IF
@@ -366,23 +365,23 @@
 !     COMPUTE THE SPECTRUM FOR EACH INDIVIDUAL SERIES
 !
             CALL UFSEST(CCOV(I3C(1,INDEX1,INDEX1)), W, LAG, SPCF1,
-     +                  NFUSED, ICCOV, LAGMAX, NF, FREQ, DELTA)
+     &                  NFUSED, ICCOV, LAGMAX, NF, FREQ, DELTA)
 !
             CALL UFSEST(CCOV(I3C(1,INDEX2,INDEX2)), W, LAG, SPCF2,
-     +                  NFUSED, ICCOV, LAGMAX, NF, FREQ, DELTA)
+     &                  NFUSED, ICCOV, LAGMAX, NF, FREQ, DELTA)
 !
             CALL BFSMN(SPCF1, SPCF2, CEVEN, CODD, W, LW, LAG, DF, NPRT,
-     +                 NF, CSPC2(1+(I-1)*ICSPC2), PHAS(1+(I-1)*IPHAS),
-     +                 FREQ, NPTS, XAXIS,
-     +                 YAXIS, ISYM, LPCV, ALPHA, LAGMX1, DELTA)
+     &                 NF, CSPC2(1+(I-1)*ICSPC2), PHAS(1+(I-1)*IPHAS),
+     &                 FREQ, NPTS, XAXIS,
+     &                 YAXIS, ISYM, LPCV, ALPHA, LAGMX1, DELTA)
 !
             IF (NPRT.EQ.0) GO TO 60
 !
          END IF
-         CALL UFSOUT(XAXIS, YAXIS, ISYM, NPTS, BW, INT(DF+0.5D0_WP),LAG,
-     +               LAGMAX, NEWPG, ISPCER, NFUSED+5, XPLTMN, XPLTMX,
-     +               YPLTMN, YPLTMX, ILOG, PHAS(1+(I-1)*IPHAS), FREQ,
-     +               NF, UNIVAR, NMSUB)
+         CALL UFSOUT(XAXIS, YAXIS, ISYM, NPTS, BW, INT(DF+0.5_WP),LAG,
+     &               LAGMAX, NEWPG, ISPCER, NFUSED+5, XPLTMN, XPLTMX,
+     &               YPLTMN, YPLTMX, ILOG, PHAS(1+(I-1)*IPHAS), FREQ,
+     &               NF, UNIVAR, NMSUB)
 !
          NEWPG = .TRUE.
 !

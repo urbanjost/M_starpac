@@ -1,7 +1,7 @@
 !VPCNT
       SUBROUTINE VPCNT (YM, YMMISS, N, M, IYM, MULTI, ILOG, YLB, YUB,
-     +  XLB, XINC, NS, IRLIN, IBAR, NMSUB, ISCHCK, ISYM, ISIZE,
-     +  MISS, LISYM)
+     &  XLB, XINC, NS, IRLIN, IBAR, NMSUB, ISCHCK, ISYM, ISIZE,
+     &  MISS, LISYM)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,32 +17,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   XINC,XLB,YLB,YUB
+      REAL(KIND=WP) ::
+     &   XINC,XLB,YLB,YUB
       INTEGER
-     +   IBAR,ILOG,IRLIN,ISCHCK,ISIZE,IYM,LISYM,M,N,NS
+     &   IBAR,ILOG,IRLIN,ISCHCK,ISIZE,IYM,LISYM,M,N,NS
       LOGICAL
-     +   MISS,MULTI
+     &   MISS,MULTI
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   YM(*),YMMISS(*)
+      REAL(KIND=WP) ::
+     &   YM(*),YMMISS(*)
       INTEGER
-     +   ISYM(*)
+     &   ISYM(*)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   YMN,YMX
+      REAL(KIND=WP) ::
+     &   YMN,YMX
       INTEGER
-     +   NSAMPL
+     &   NSAMPL
       LOGICAL
-     +   ERROR,XCHECK
+     &   ERROR,XCHECK
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL PLTCHK,VERSP,VPLMT,VPMN
@@ -134,7 +134,7 @@
 !
       XCHECK = .FALSE.
       CALL PLTCHK (YM, YMMISS, YM, YMMISS, N, M, IYM, MULTI,
-     +   ILOG, YLB, YUB, XLB, XINC, NMSUB, MISS, XCHECK)
+     &   ILOG, YLB, YUB, XLB, XINC, NMSUB, MISS, XCHECK)
 !
       IF (IERR.EQ.0) THEN
 !
@@ -142,7 +142,7 @@
 !
         NSAMPL = MAX(1, NS)
         CALL VPLMT (YM, YMMISS, N, M, IYM, YLB, YUB, YMN, YMX,
-     +    ERROR, NMSUB, MISS, NSAMPL)
+     &    ERROR, NMSUB, MISS, NSAMPL)
 !
         IF (ERROR) THEN
           IERR = 1
@@ -156,7 +156,7 @@
           CALL VERSP(.FALSE.)
         END IF
         CALL VPMN (YM, YMMISS, N, M, IYM, NSAMPL, ISCHCK, ISYM, LISYM,
-     +    ISIZE, YMN, YMX, XLB, XINC, MISS, ILOG, IRLIN, IBAR)
+     &    ISIZE, YMN, YMX, XLB, XINC, MISS, ILOG, IRLIN, IBAR)
 !
         END IF
       END IF

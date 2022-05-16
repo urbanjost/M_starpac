@@ -17,20 +17,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   ACOV0,RSS
+      REAL(KIND=WP) ::
+     &   ACOV0,RSS
       INTEGER
-     +   LAG,LAGMAX
+     &   LAG,LAGMAX
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   ACOV(*),PHI(*)
+      REAL(KIND=WP) ::
+     &   ACOV(*),PHI(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   SUM1,SUM2,T
+      REAL(KIND=WP) ::
+     &   SUM1,SUM2,T
       INTEGER
-     +   J,L1,L2,LJ
+     &   J,L1,L2,LJ
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

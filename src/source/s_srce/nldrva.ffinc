@@ -1,6 +1,6 @@
 !NLDRVA
       SUBROUTINE NLDRVA (MDL, DRV, DONE, IFIXD, PAR, NPAR, XM, N, M,
-     +   IXM, PV, D, WEIGHT, WT, LWT, STP, LSTP, SCL, LSCL)
+     &   IXM, PV, D, WEIGHT, WT, LWT, STP, LSTP, SCL, LSCL)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,29 +18,29 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IXM,LSCL,LSTP,LWT,M,N,NPAR
+     &   IXM,LSCL,LSTP,LWT,M,N,NPAR
       LOGICAL
-     +   DONE,WEIGHT
+     &   DONE,WEIGHT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   D(N,NPAR),PAR(NPAR),PV(N),SCL(LSCL),STP(LSTP),WT(LWT),
-     +   XM(IXM,M)
+      REAL(KIND=WP) ::
+     &   D(N,NPAR),PAR(NPAR),PV(N),SCL(LSCL),STP(LSTP),WT(LWT),
+     &   XM(IXM,M)
       INTEGER
-     +   IFIXD(NPAR)
+     &   IFIXD(NPAR)
 !
 !  SUBROUTINE ARGUMENTS
       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   WTSQRT
+      REAL(KIND=WP) ::
+     &   WTSQRT
       INTEGER
-     +   I,J,JPK
+     &   I,J,JPK
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SQRT

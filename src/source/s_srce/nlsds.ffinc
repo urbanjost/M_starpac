@@ -1,7 +1,7 @@
 !NLSDS
       SUBROUTINE NLSDS(Y, XM, N, M, IXM, MDL, DRV, PAR, NPAR, RES,
-     +   LDSTAK, IFIXED, IDRVCK, MIT, STOPSS, STOPP, SCALE, DELTA,
-     +   IVAPRX, NPRT, NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)
+     &   LDSTAK, IFIXED, IDRVCK, MIT, STOPSS, STOPP, SCALE, DELTA,
+     &   IVAPRX, NPRT, NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,42 +20,42 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   DELTA,RSD,STOPP,STOPSS
+      REAL(KIND=WP) ::
+     &   DELTA,RSD,STOPP,STOPSS
       INTEGER
-     +   IDRVCK,IVAPRX,IVCV,IXM,LDSTAK,M,MIT,N,NPAR,NPARE,NPRT
+     &   IDRVCK,IVAPRX,IVCV,IXM,LDSTAK,M,MIT,N,NPAR,NPARE,NPRT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PAR(*),PV(*),RES(*),SCALE(*),SDPV(*),SDRES(*),VCV(*),XM(*),
-     +   Y(*)
+      REAL(KIND=WP) ::
+     &   PAR(*),PV(*),RES(*),SCALE(*),SDPV(*),SDRES(*),VCV(*),XM(*),
+     &   Y(*)
       INTEGER
-     +   IFIXED(*)
+     &   IFIXED(*)
 !
 !  SUBROUTINE ARGUMENTS
       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       DOUBLE PRECISION DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT,LIFIXD,LPV,LSCALE,LSDPV,LSDRES,LWT,NNZW
+     &   IPRT,LIFIXD,LPV,LSCALE,LSDPV,LSDRES,LWT,NNZW
       LOGICAL
-     +   SAVE,WEIGHT
+     &   SAVE,WEIGHT
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   WT(1)
+      REAL(KIND=WP) ::
+     &   WT(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,NLCNTA
+!      EXTERNAL IPRINT,NLCNTA
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -196,7 +196,7 @@
 !     SET UP NAME ARRAYS
 !
       DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
-     +   'N','L','S','D','S',' '/
+     &   'N','L','S','D','S',' '/
 !
 !     SET VARIOUS PROGRAM PARAMETERS
 !
@@ -212,9 +212,9 @@
       LWT = 1
 !
       CALL NLCNTA(Y, WT, LWT, XM, N, M, IXM, MDL, DRV, PAR, NPAR, RES,
-     +   LDSTAK, IFIXED, LIFIXD, IDRVCK, MIT, STOPSS, STOPP, SCALE,
-     +   LSCALE, DELTA, IVAPRX, NPRT, RSD, PV, LPV, SDPV, LSDPV, SDRES,
-     +   LSDRES, VCV, IVCV, NMSUB, WEIGHT, SAVE, NNZW, NPARE)
+     &   LDSTAK, IFIXED, LIFIXD, IDRVCK, MIT, STOPSS, STOPP, SCALE,
+     &   LSCALE, DELTA, IVAPRX, NPRT, RSD, PV, LPV, SDPV, LSDPV, SDRES,
+     &   LSDRES, VCV, IVCV, NMSUB, WEIGHT, SAVE, NNZW, NPARE)
 !
       IF (IERR.NE.1) RETURN
 !
@@ -227,9 +227,9 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL NLSDS (Y, XM, N, M, IXM, NLSMDL, NLSDRV,'/
-     +   '      +            PAR, NPAR, RES, LDSTAK,'/
-     +   '      +            IFIXED, IDRVCK, MIT, STOPSS, STOPP,'/
-     +   '      +            SCALE, DELTA, IVAPRX, NPRT,'/
-     +   '      +            NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)')
+     &   '       CALL NLSDS (Y, XM, N, M, IXM, NLSMDL, NLSDRV,'/
+     &   '      +            PAR, NPAR, RES, LDSTAK,'/
+     &   '      +            IFIXED, IDRVCK, MIT, STOPSS, STOPP,'/
+     &   '      +            SCALE, DELTA, IVAPRX, NPRT,'/
+     &   '      +            NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)')
       END

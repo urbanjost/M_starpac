@@ -1,6 +1,6 @@
 !LLER
       SUBROUTINE LLER(NMSUB, IXM, IVCV, N, NPAR, LPAR, LDSTAK, WT, LNWT,
-     +   WEIGHT, NNZW, IFIT, SAVE)
+     &   WEIGHT, NNZW, IFIT, SAVE)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,33 +18,33 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IFIT,IVCV,IXM,LDSTAK,LNWT,LPAR,N,NNZW,NPAR
+     &   IFIT,IVCV,IXM,LDSTAK,LNWT,LPAR,N,NNZW,NPAR
       LOGICAL
-     +   SAVE,WEIGHT
+     &   SAVE,WEIGHT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   WT(*)
+      REAL(KIND=WP) ::
+     &   WT(*)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,LDSMIN,NZW
+     &   I,LDSMIN,NZW
       LOGICAL
-     +   HEAD
+     &   HEAD
 !
 !  LOCAL ARRAYS
       LOGICAL
-     +   ERROR(10)
+     &   ERROR(10)
       CHARACTER
-     +   LIVCV(8)*1,LIXM(8)*1,LLDS(8)*1,LLPAR(8)*1,LN(8)*1,
-     +   LN1(8)*1,LNC(8)*1,LNDEG(8)*1,LNDEG1(8)*1,LNPAR(8)*1,
-     +   LONE(8)*1,LWT(8)*1,LZERO(8)*1
+     &   LIVCV(8)*1,LIXM(8)*1,LLDS(8)*1,LLPAR(8)*1,LN(8)*1,
+     &   LN1(8)*1,LNC(8)*1,LNDEG(8)*1,LNDEG1(8)*1,LNPAR(8)*1,
+     &   LONE(8)*1,LWT(8)*1,LZERO(8)*1
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL EISGE,EISII,ERVWT,LDSCMP
@@ -111,31 +111,31 @@
 !     SET UP NAME ARRAYS
 !
       DATA LIVCV(1), LIVCV(2), LIVCV(3), LIVCV(4), LIVCV(5), LIVCV(6),
-     +   LIVCV(7), LIVCV(8) /'I','V','C','V',' ',' ',' ',' '/
+     &   LIVCV(7), LIVCV(8) /'I','V','C','V',' ',' ',' ',' '/
       DATA LIXM(1), LIXM(2), LIXM(3), LIXM(4), LIXM(5), LIXM(6),
-     +   LIXM(7), LIXM(8) /'I','X','M',' ',' ',' ',' ',' '/
+     &   LIXM(7), LIXM(8) /'I','X','M',' ',' ',' ',' ',' '/
       DATA LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
-     +   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
+     &   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
       DATA LLPAR(1), LLPAR(2), LLPAR(3), LLPAR(4), LLPAR(5), LLPAR(6),
-     +   LLPAR(7), LLPAR(8) /'L','P','A','R',' ',' ',' ',' '/
+     &   LLPAR(7), LLPAR(8) /'L','P','A','R',' ',' ',' ',' '/
       DATA LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8) /'N',
-     +   ' ',' ',' ',' ',' ',' ',' '/
+     &   ' ',' ',' ',' ',' ',' ',' '/
       DATA LNDEG(1), LNDEG(2), LNDEG(3), LNDEG(4), LNDEG(5), LNDEG(6),
-     +   LNDEG(7), LNDEG(8) /'N','D','E','G',' ',' ',' ',' '/
+     &   LNDEG(7), LNDEG(8) /'N','D','E','G',' ',' ',' ',' '/
       DATA LNDEG1(1), LNDEG1(2), LNDEG1(3), LNDEG1(4), LNDEG1(5),
-     +   LNDEG1(6), LNDEG1(7), LNDEG1(8) /'N','D','E','G','+','1',
-     +   ' ',' '/
+     &   LNDEG1(6), LNDEG1(7), LNDEG1(8) /'N','D','E','G','+','1',
+     &   ' ',' '/
       DATA LNPAR(1), LNPAR(2), LNPAR(3), LNPAR(4), LNPAR(5),
-     +   LNPAR(6), LNPAR(7), LNPAR(8) /'N','P','A','R',' ',' ',' ',
-     +   ' '/
+     &   LNPAR(6), LNPAR(7), LNPAR(8) /'N','P','A','R',' ',' ',' ',
+     &   ' '/
       DATA LN1(1), LN1(2), LN1(3), LN1(4), LN1(5), LN1(6),
-     +   LN1(7), LN1(8) /'N','-','1',' ',' ',' ',' ',' '/
+     &   LN1(7), LN1(8) /'N','-','1',' ',' ',' ',' ',' '/
       DATA LONE(1), LONE(2), LONE(3), LONE(4), LONE(5), LONE(6),
-     +   LONE(7), LONE(8) /'O','N','E',' ',' ',' ',' ',' '/
+     &   LONE(7), LONE(8) /'O','N','E',' ',' ',' ',' ',' '/
       DATA LWT(1), LWT(2), LWT(3), LWT(4), LWT(5), LWT(6), LWT(7),
-     +   LWT(8) /'W','T',' ',' ',' ',' ',' ',' '/
+     &   LWT(8) /'W','T',' ',' ',' ',' ',' ',' '/
       DATA LZERO(1), LZERO(2), LZERO(3), LZERO(4), LZERO(5), LZERO(6),
-     +   LZERO(7), LZERO(8) /'Z','E','R','O',' ',' ',' ',' '/
+     &   LZERO(7), LZERO(8) /'Z','E','R','O',' ',' ',' ',' '/
 !
 !     ERROR CHECKING
 !
@@ -163,28 +163,28 @@
       CALL EISGE(NMSUB, LN, N, 1, 1, HEAD, ERROR(1), LN)
 !
       IF (IFIT.EQ.3)
-     +   CALL EISII(NMSUB, LNPAR, NPAR, 1, N, 1, HEAD, ERROR(2), LONE,
-     +   LN)
+     &   CALL EISII(NMSUB, LNPAR, NPAR, 1, N, 1, HEAD, ERROR(2), LONE,
+     &   LN)
       IF (IFIT.EQ.1)
-     +   CALL EISII(NMSUB, LNDEG, NPAR-1, 0, N-1, 1, HEAD, ERROR(2),
-     +      LZERO, LN1)
+     &   CALL EISII(NMSUB, LNDEG, NPAR-1, 0, N-1, 1, HEAD, ERROR(2),
+     &      LZERO, LN1)
 !
       CALL EISGE(NMSUB, LIXM, IXM, N, 3, HEAD, ERROR(4), LN)
 !
       IF (SAVE .AND. (IFIT.EQ.1))
-     +   CALL EISGE(NMSUB, LLPAR, LPAR, NPAR, 7, HEAD, ERROR(5), LNDEG1)
+     &   CALL EISGE(NMSUB, LLPAR, LPAR, NPAR, 7, HEAD, ERROR(5), LNDEG1)
 !
       IF (SAVE)
-     +    CALL EISGE(NMSUB, LIVCV, IVCV, NPAR, 3, HEAD, ERROR(6), LNC)
+     &    CALL EISGE(NMSUB, LIVCV, IVCV, NPAR, 3, HEAD, ERROR(6), LNC)
 !
       IF (ERROR(1) .OR. ERROR(2) .OR. ERROR(3)) GO TO 70
 !
       NNZW = N
       IF (WEIGHT) CALL ERVWT(NMSUB, LWT, WT, N, NPAR, HEAD, NNZW,
-     +   NZW, 2, ERROR(8), LNC)
+     &   NZW, 2, ERROR(8), LNC)
 !
       CALL LDSCMP(15, 0, 0, 0, 0, 0, 'S',
-     +            6*N + NPAR*(N+2*NPAR+5) + 1, LDSMIN)
+     &            6*N + NPAR*(N+2*NPAR+5) + 1, LDSMIN)
 !
       CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERROR(9), LLDS)
 !

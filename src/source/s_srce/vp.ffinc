@@ -17,34 +17,34 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NS
+     &   N,NS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   YM(*)
+      REAL(KIND=WP) ::
+     &   YM(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   XINC,XLB,YLB,YUB
+      REAL(KIND=WP) ::
+     &   XINC,XLB,YLB,YUB
       INTEGER
-     +   IBAR,ILOG,IPRT,IRLIN,ISCHCK,ISIZE,IYM,LISYM,M
+     &   IBAR,ILOG,IPRT,IRLIN,ISCHCK,ISIZE,IYM,LISYM,M
       LOGICAL
-     +   MISS,MULTI
+     &   MISS,MULTI
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   YMMISS(1)
+      REAL(KIND=WP) ::
+     &   YMMISS(1)
       INTEGER
-     +   ISYM(1)
+     &   ISYM(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,VPCNT
+!      EXTERNAL IPRINT,VPCNT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -123,8 +123,8 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     +    /  ' ',       'V',       'P',       ' ',       ' ',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     &    /  ' ',       'V',       'P',       ' ',       ' ',       ' '/
 !
 !     DEFINE CONSTANTS
 !
@@ -149,8 +149,8 @@
 !     COMMENCE BODY OF ROUTINE
 !
       CALL VPCNT (YM, YMMISS, N, M, IYM, MULTI, ILOG, YLB, YUB,
-     +  XLB, XINC, NS, IRLIN, IBAR, NMSUB, ISCHCK, ISYM, ISIZE,
-     +  MISS, LISYM)
+     &  XLB, XINC, NS, IRLIN, IBAR, NMSUB, ISCHCK, ISYM, ISIZE,
+     &  MISS, LISYM)
 !
       IF (IERR.NE.0) THEN
         IERR = 1
@@ -163,5 +163,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL VP (Y, N, NS)')
+     &   '       CALL VP (Y, N, NS)')
       END

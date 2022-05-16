@@ -21,23 +21,23 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   RVAR,YSUM
+     &   RVAR,YSUM
       INTEGER
-     +   IPRT,NNZW,NPAR
+     &   IPRT,NNZW,NPAR
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   RED(NPAR),TEMP(NPAR)
+     &   RED(NPAR),TEMP(NPAR)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   ASUM,CR,F1,F2,FPLM,PF1,PF2,RESMS,RESSS,SSU,V1F2,VR
+     &   ASUM,CR,F1,F2,FPLM,PF1,PF2,RESMS,RESSS,SSU,V1F2,VR
       INTEGER
-     +   I,K,NSUA
+     &   I,K,NSUA
 !
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
-     +   CDFF,D1MACH
+     &   CDFF,D1MACH
       EXTERNAL CDFF,D1MACH
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
@@ -93,7 +93,7 @@
       RESMS = YSUM/NNZW
       NSUA = NNZW
       WRITE (IPRT,1000)
-      ASUM = 0.0E0_WP
+      ASUM = 0.0_WP
       VR = NNZW-NPAR
       RESSS = VR*RVAR
       TEMP(NPAR) = RESSS
@@ -107,30 +107,30 @@
       DO 50 I=1,NPAR
          NSUA = NSUA - 1
          ASUM = ASUM + RED(I)
-         SSU = SSU - 1.0E0_WP
+         SSU = SSU - 1.0_WP
          CR = ASUM/I
-         RESMS = 0.0E0_WP
-         IF (SSU.GT.0.0E0_WP) RESMS = TEMP(I)/SSU
-         V1F2 = V1F2 - 1.0E0_WP
+         RESMS = 0.0_WP
+         IF (SSU.GT.0.0_WP) RESMS = TEMP(I)/SSU
+         V1F2 = V1F2 - 1.0_WP
 !
 !     NEVER POOL
 !
-         IF (RVAR.GT.0.0E0_WP) GO TO 30
+         IF (RVAR.GT.0.0_WP) GO TO 30
          F1 = FPLM
          F2 = FPLM
-         PF1 = 0.0E0_WP
-         PF2 = 0.0E0_WP
+         PF1 = 0.0_WP
+         PF2 = 0.0_WP
          GO TO 40
    30    F1 = RED(I)/RVAR
-         PF1 = 1.0E0_WP - CDFF(F1,1.0E0_WP,VR)
+         PF1 = 1.0_WP - CDFF(F1,1.0_WP,VR)
 !
 !     TEST HIGHER SUB-HYPOTHESES
 !
          F2 = (TEMP(I)+RED(I)-RESSS)/V1F2/RVAR
-         PF2 = 1.0E0_WP - CDFF(F2,V1F2,VR)
+         PF2 = 1.0_WP - CDFF(F2,V1F2,VR)
    40    CONTINUE
          WRITE (IPRT,1010) I, RED(I), CR, I, RESMS, NSUA, F1, PF1, F2,
-     +      PF2
+     &      PF2
    50 CONTINUE
       WRITE (IPRT,1020) RESSS, NSUA
       WRITE (IPRT,1030) YSUM, NNZW
@@ -139,15 +139,15 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (////50X, 20HANALYSIS OF VARIANCE/24X, 16H-DEPENDENT ON OR,
-     +   33HDER VARIABLES ARE ENTERED, UNLESS, 21H VECTORS ARE ORTHOGON,
-     +   3HAL-//
-     +   1X, 5H PAR , 4X, 14HSUM OF SQUARES, 63X,
-     +   19H------ PAR=0 ------, 4X, 19H------ PARS=0 -----/
-     +   1X, 5HINDEX, 4X, 14HRED DUE TO PAR, 7X, 10HCUM MS RED,
-     +   6X, 9HDF(MSRED), 6X, 10HCUM RES MS, 6X, 7HDF(RMS), 5X,
-     +   'F', 8X, 7HPROB(F), 7X, 'F', 8X, 7HPROB(F)/)
+     &   33HDER VARIABLES ARE ENTERED, UNLESS, 21H VECTORS ARE ORTHOGON,
+     &   3HAL-//
+     &   1X, 5H PAR , 4X, 14HSUM OF SQUARES, 63X,
+     &   19H------ PAR=0 ------, 4X, 19H------ PARS=0 -----/
+     &   1X, 5HINDEX, 4X, 14HRED DUE TO PAR, 7X, 10HCUM MS RED,
+     &   6X, 9HDF(MSRED), 6X, 10HCUM RES MS, 6X, 7HDF(RMS), 5X,
+     &   'F', 8X, 7HPROB(F), 7X, 'F', 8X, 7HPROB(F)/)
  1010 FORMAT (1X, I3, 6X, G16.9, 3X, G16.9, 1X, I6, 8X, G16.9, 1X, I5,
-     +   4X, G12.6, F7.3, 4X, G12.6, F7.3)
+     &   4X, G12.6, F7.3, 4X, G12.6, F7.3)
  1020 FORMAT (/1X, 10HRESIDUAL  , 1X, G14.7, 20X, I6)
  1030 FORMAT (1X, 10HTOTAL     , 1X, G14.7, 20X, I6)
       END

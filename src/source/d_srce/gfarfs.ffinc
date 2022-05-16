@@ -1,6 +1,6 @@
 !GFARFS
       SUBROUTINE GFARFS (PHI, IAR, NF, FMIN, FMAX, GAIN, PHAS, FREQ,
-     +   NPRT, LDSTAK)
+     &   NPRT, LDSTAK)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,45 +18,45 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   FMAX,FMIN
+     &   FMAX,FMIN
       INTEGER
-     +   IAR,LDSTAK,NF,NPRT
+     &   IAR,LDSTAK,NF,NPRT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   FREQ(*),GAIN(*),PHAS(*),PHI(*)
+     &   FREQ(*),GAIN(*),PHAS(*),PHI(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   DELTA,FMN,FMX,YPLTMN,YPLTMX
+     &   DELTA,FMN,FMX,YPLTMN,YPLTMX
       INTEGER
-     +   IGFERR,IO,IPRT,ISORT,LDSMIN,NALL0,NORD,XORD,YORD
+     &   IGFERR,IO,IPRT,ISORT,LDSMIN,NALL0,NORD,XORD,YORD
       LOGICAL
-     +   ERR01,ERR02,ERR03,HEAD,SYM
+     &   ERR01,ERR02,ERR03,HEAD,SYM
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   RSTAK(12)
+     &   RSTAK(12)
       INTEGER
-     +   ISTAK(12)
+     &   ISTAK(12)
       CHARACTER
-     +   LIAR(8)*1,LLDS(8)*1,LNF(8)*1,NMSUB(6)*1
+     &   LIAR(8)*1,LLDS(8)*1,LNF(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL STKGET,STKST
+!      INTEGER
+!     +   STKST
+!      EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,GFAEST,GFORD,GFOUT,IPRINT,LDSCMP,SETFRQ,STKCLR,
-     +   STKSET
+!      EXTERNAL EISGE,GFAEST,GFORD,GFOUT,IPRINT,LDSCMP,SETFRQ,STKCLR,
+!     +   STKSET
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MAX,MIN
@@ -154,17 +154,17 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'G',       'F',       'A',       'R',       'F',       'S'/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'G',       'F',       'A',       'R',       'F',       'S'/
       DATA
-     +  LIAR(1), LIAR(2), LIAR(3), LIAR(4), LIAR(5), LIAR(6),
-     +  LIAR(7), LIAR(8) /'I', 'A', 'R', ' ', ' ', ' ', ' ', ' '/
+     &  LIAR(1), LIAR(2), LIAR(3), LIAR(4), LIAR(5), LIAR(6),
+     &  LIAR(7), LIAR(8) /'I', 'A', 'R', ' ', ' ', ' ', ' ', ' '/
       DATA
-     +  LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6), LLDS(7),
-     +  LLDS(8) /  'L',   'D',   'S',   'T',   'A',   'K',   ' ',   ' '/
+     &  LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6), LLDS(7),
+     &  LLDS(8) /  'L',   'D',   'S',   'T',   'A',   'K',   ' ',   ' '/
       DATA
-     +  LNF(1), LNF(2), LNF(3), LNF(4), LNF(5), LNF(6), LNF(7), LNF(8)
-     + /  'N',   'F',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LNF(1), LNF(2), LNF(3), LNF(4), LNF(5), LNF(6), LNF(7), LNF(8)
+     & /  'N',   'F',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -207,15 +207,15 @@
 !
       SYM = .FALSE.
 !
-      DELTA = 1.0E0_WP
+      DELTA = 1.0_WP
 !
 !     SET FREQUENCIES AT WHICH THE GAIN FUNCTION IS TO BE ESTIMATED
 !
-      FMN = MAX(FMIN, 0.0E0_WP)
-      FMX = MIN(FMAX, 0.5D0_WP)
+      FMN = MAX(FMIN, 0.0_WP)
+      FMX = MIN(FMAX, 0.5_WP)
       IF (FMN.GE.FMX) THEN
-        FMN = 0.0E0_WP
-        FMX = 0.5D0_WP
+        FMN = 0.0_WP
+        FMX = 0.5_WP
       END IF
       CALL SETFRQ (FREQ, NF, 2, FMN, FMX, DELTA)
 !
@@ -237,9 +237,9 @@
 !     PLOT THE RESULTS
 !
       CALL GFORD (FREQ, GAIN, ISTAK(ISORT), NF, RSTAK(XORD),
-     +   RSTAK(YORD), NORD, YPLTMN, YPLTMX, NPRT, IGFERR)
+     &   RSTAK(YORD), NORD, YPLTMN, YPLTMX, NPRT, IGFERR)
       CALL GFOUT (RSTAK(XORD), RSTAK(YORD), NORD, FREQ, PHAS, NF,
-     +   IAR, SYM, FMN, FMX, YPLTMN, YPLTMX, NPRT, IGFERR, NMSUB)
+     &   IAR, SYM, FMN, FMX, YPLTMN, YPLTMX, NPRT, IGFERR, NMSUB)
 !
       CALL STKCLR(NALL0)
 !
@@ -250,7 +250,7 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     + '       CALL GFARFS (PHI, IAR,'/
-     + '      +             NF, FMIN, FMAX, GAIN, PHAS, FREQ, NPRT,',
-     + ' LDSTAK)')
+     & '       CALL GFARFS (PHI, IAR,'/
+     & '      +             NF, FMIN, FMAX, GAIN, PHAS, FREQ, NPRT,',
+     & ' LDSTAK)')
       END

@@ -16,24 +16,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     +   YMEAN,YMISS
+      REAL(KIND=WP) :: YMEAN,YMISS
       INTEGER
-     +   N,NUSED
+     &   N,NUSED
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   Y(*)
+     &   Y(*)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   SUMY
+     &   SUMY
       INTEGER
-     +   I
+     &   I
 !
 !  EXTERNAL FUNCTIONS
       LOGICAL
-     +   MVCHK
+     &   MVCHK
       EXTERNAL MVCHK
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
@@ -56,7 +55,7 @@
 !        THE VALUE IS ASSUMED MISSING, OTHERWISE IT IS NOT.
 !
       NUSED = 0
-      SUMY = 0.0E0_WP
+      SUMY = 0.0_WP
       DO 10 I = 1, N
          IF (MVCHK(Y(I), YMISS)) GO TO 10
          SUMY = SUMY + Y(I)

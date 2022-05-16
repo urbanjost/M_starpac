@@ -18,30 +18,30 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IAR,N,NYF
+     &   IAR,N,NYF
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PHI(*),Y(*),YF(*)
+     &   PHI(*),Y(*),YF(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   YMEAN
+     &   YMEAN
       INTEGER
-     +   I,IPRT
+     &   I,IPRT
       LOGICAL
-     +   ERR01,HEAD
+     &   ERR01,HEAD
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LN(8)*1,NMSUB(6)*1
+     &   LN(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMEAN,EISGE,FLTAR,IPRINT
+!      EXTERNAL AMEAN,EISGE,FLTAR,IPRINT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -87,11 +87,11 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'A',       'R',       'F',       'L',       'T',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'A',       'R',       'F',       'L',       'T',       ' '/
       DATA
-     +  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
-     + /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     & /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -127,5 +127,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   43H       CALL ARFLT (Y, N, IAR, PHI, YF, NYF))
+     &   43H       CALL ARFLT (Y, N, IAR, PHI, YF, NYF))
       END

@@ -18,12 +18,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   X
+      REAL(KIND=WP) ::
+     &   X
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +    ERF
+      REAL(KIND=WP) ::
+     &    ERF
       EXTERNAL  ERF
 !
 !  INTRINSIC FUNCTIONS

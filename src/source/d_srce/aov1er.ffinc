@@ -1,6 +1,6 @@
 !AOV1ER
       SUBROUTINE AOV1ER(Y, TAG, N, IGSTAT, NZTAGS, NG, LDSTAK, NMSUB,
-     +   INDEX, ISAOV1, NALL0)
+     &   INDEX, ISAOV1, NALL0)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,42 +19,42 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IGSTAT,INDEX,ISAOV1,LDSTAK,N,NALL0,NG,NZTAGS
+     &   IGSTAT,INDEX,ISAOV1,LDSTAK,N,NALL0,NG,NZTAGS
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   TAG(*),Y(*)
+     &   TAG(*),Y(*)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,IPRT,J,LDSMIN,NV
+     &   I,IPRT,J,LDSMIN,NV
       LOGICAL
-     +   ERROR,HEAD
+     &   ERROR,HEAD
 !
 !  LOCAL ARRAYS
       INTEGER
-     +   ISTAK(12)
+     &   ISTAK(12)
       CHARACTER
-     +   LIGSTA(8)*1,LLDS(8)*1,LN(8)*1,LNG(8)*1,LTAG(8)*1,
-     +   LTWO(8)*1,LZERO(8)*1
+     &   LIGSTA(8)*1,LLDS(8)*1,LN(8)*1,LNG(8)*1,LTAG(8)*1,
+     &   LTWO(8)*1,LZERO(8)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL STKGET,STKST
+!      INTEGER
+!     +   STKST
+!      EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,EISII,ERVGT,GENI,IPRINT,LDSCMP,SRTIRR,SRTRRI,
-     +   STKCLR,STKSET
+!      EXTERNAL EISGE,EISII,ERVGT,GENI,IPRINT,LDSCMP,SRTIRR,SRTRRI,
+!     +   STKCLR,STKSET
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -120,26 +120,26 @@
 !        THE VECTOR OF OBSERVATIONS.
 !
       DATA  LIGSTA(1),LIGSTA(2),LIGSTA(3),LIGSTA(4),LIGSTA(5),LIGSTA(6),
-     +      LIGSTA(7),LIGSTA(8)
-     +     / 'I', 'G', 'S', 'T', 'A', 'T', ' ', ' '/
+     &      LIGSTA(7),LIGSTA(8)
+     &     / 'I', 'G', 'S', 'T', 'A', 'T', ' ', ' '/
       DATA   LLDS(1),  LLDS(2),  LLDS(3),  LLDS(4),  LLDS(5),  LLDS(6),
-     +       LLDS(7),  LLDS(8)
-     +     / 'L', 'D', 'S', 'T', 'A', 'K', ' ', ' '/
+     &       LLDS(7),  LLDS(8)
+     &     / 'L', 'D', 'S', 'T', 'A', 'K', ' ', ' '/
       DATA     LN(1),    LN(2),    LN(3),    LN(4),    LN(5),    LN(6),
-     +         LN(7),    LN(8)
-     +     / 'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
+     &         LN(7),    LN(8)
+     &     / 'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
       DATA    LNG(1),   LNG(2),   LNG(3),   LNG(4),   LNG(5),   LNG(6),
-     +        LNG(7),   LNG(8)
-     +     / 'N', 'G', ' ', ' ', ' ', ' ', ' ', ' '/
+     &        LNG(7),   LNG(8)
+     &     / 'N', 'G', ' ', ' ', ' ', ' ', ' ', ' '/
       DATA   LTAG(1),  LTAG(2),  LTAG(3),  LTAG(4),  LTAG(5),  LTAG(6),
-     +       LTAG(7),  LTAG(8)
-     +     / 'T', 'A', 'G', ' ', ' ', ' ', ' ', ' '/
+     &       LTAG(7),  LTAG(8)
+     &     / 'T', 'A', 'G', ' ', ' ', ' ', ' ', ' '/
       DATA   LTWO(1),  LTWO(2),  LTWO(3),  LTWO(4),  LTWO(5),  LTWO(6),
-     +       LTWO(7),  LTWO(8)
-     +     / 'T', 'W', 'O', ' ', ' ', ' ', ' ', ' '/
+     &       LTWO(7),  LTWO(8)
+     &     / 'T', 'W', 'O', ' ', ' ', ' ', ' ', ' '/
       DATA  LZERO(1), LZERO(2), LZERO(3), LZERO(4), LZERO(5), LZERO(6),
-     +      LZERO(7), LZERO(8)
-     +     / 'Z', 'E', 'R', 'O', ' ', ' ', ' ', ' '/
+     &      LZERO(7), LZERO(8)
+     &     / 'Z', 'E', 'R', 'O', ' ', ' ', ' ', ' '/
 !
 !     COMMENCE BODY OF ROUTINE
 !
@@ -158,8 +158,8 @@
 !
 !     NUMBER OF NON-ZERO TAGS LESS THAN 2
 !
-      CALL ERVGT(NMSUB, LTAG, TAG, N, 0.0E0_WP, (N-2), HEAD, 7, NV, ERROR,
-     +   LZERO)
+      CALL ERVGT(NMSUB, LTAG, TAG, N, 0.0_WP, (N-2), HEAD, 7, NV, ERROR,
+     &   LZERO)
       IF (ERROR) GO TO 50
 !
       NZTAGS = N - NV
@@ -195,7 +195,7 @@
 !     LESS THAN 2 DIFFERENT TAG GROUPS
 !
       CALL EISII(NMSUB, LNG, NG, 2, NZTAGS-1, 3, HEAD, ERROR,
-     +  LTWO, LN)
+     &  LTWO, LN)
       IF (ERROR) GO TO 40
 !
 !     CHECK THAT DIMENSION OF STATISTICS MATRIX IS SUFFICIENT
@@ -206,7 +206,7 @@
 !     COMPUTE AND CHECK FOR SUFFICIENT STACK
 !
       CALL LDSCMP(11, 0, N+NZTAGS, 0, 0, 0,
-     +            'D', ISAOV1*4*NG+4*NG+NZTAGS, LDSMIN)
+     &            'D', ISAOV1*4*NG+4*NG+NZTAGS, LDSMIN)
 !
       CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERROR, LLDS)
       IF (.NOT.ERROR) RETURN
@@ -228,10 +228,10 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT(/' NOTE.  THE VALUE OF LDSTAK MENTIONED ABOVE IS THE',
-     +  ' MINIMUM NECESSARY'/
-     +  ' TO CONTINUE CHECKING FOR ERRORS AND',
-     +  ' TO CALCULATE THE CORRECT VALUE'/
-     +  ' OF LDSTAK.  THE CORRECT',
-     +  ' VALUE WILL BE LARGER.  CONSULT THE DOCUMENTATION'/
-     +  ' FOR THE FORMULAS USED TO CALCULATE LDSTAK.')
+     &  ' MINIMUM NECESSARY'/
+     &  ' TO CONTINUE CHECKING FOR ERRORS AND',
+     &  ' TO CALCULATE THE CORRECT VALUE'/
+     &  ' OF LDSTAK.  THE CORRECT',
+     &  ' VALUE WILL BE LARGER.  CONSULT THE DOCUMENTATION'/
+     &  ' FOR THE FORMULAS USED TO CALCULATE LDSTAK.')
       END

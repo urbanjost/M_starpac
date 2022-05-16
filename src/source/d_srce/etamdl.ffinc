@@ -1,6 +1,6 @@
 !ETAMDL
       SUBROUTINE ETAMDL(MDL, PAR, NPAR, XM, N, M, IXM, ETA, NETA,
-     +   PARTMP, PV, NROWIN)
+     &   PARTMP, PV, NROWIN)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,30 +18,30 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   ETA
+     &   ETA
       INTEGER
-     +   IXM,M,N,NETA,NPAR,NROWIN
+     &   IXM,M,N,NETA,NPAR,NROWIN
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PAR(NPAR),PARTMP(NPAR),PV(N),XM(IXM,M)
+     &   PAR(NPAR),PARTMP(NPAR),PV(N),XM(IXM,M)
 !
 !  SUBROUTINE ARGUMENTS
       EXTERNAL MDL
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   A,B,FAC,FPLRS,J,RSSSM,RSSSMJ,SQRTMP
+     &   A,B,FAC,FPLRS,J,RSSSM,RSSSMJ,SQRTMP
       INTEGER
-     +   I,K,NROW
+     &   I,K,NROW
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   RSS(5)
+     &   RSS(5)
 !
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
-     +   D1MACH
+     &   D1MACH
       EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
@@ -109,12 +109,12 @@
       CALL SETROW(NROWIN, XM, N, M, IXM, NROW)
 !
       SQRTMP = SQRT(FPLRS)
-      RSSSM = 0.0E0_WP
-      RSSSMJ = 0.0E0_WP
+      RSSSM = 0.0_WP
+      RSSSMJ = 0.0_WP
       DO 20 I=1,5
          J = I-3
          DO 10 K=1,NPAR
-            PARTMP(K) = PAR(K)*(1.0E0_WP+J*SQRTMP)
+            PARTMP(K) = PAR(K)*(1.0_WP+J*SQRTMP)
    10    CONTINUE
          CALL MDL(PARTMP, NPAR, XM, N, M, IXM, PV)
 !
@@ -123,16 +123,16 @@
          RSSSM = RSSSM + RSS(I)
          RSSSMJ = RSSSMJ + J*RSS(I)
    20 CONTINUE
-      A = 0.2E00_WP*RSSSM
-      B = 0.1E00_WP*RSSSMJ
-      FAC = 1.0E0_WP
-      IF (RSS(3).NE.0.0E0_WP) FAC = FAC/RSS(3)
+      A = 0.20_WP*RSSSM
+      B = 0.10_WP*RSSSMJ
+      FAC = 1.0_WP
+      IF (RSS(3).NE.0.0_WP) FAC = FAC/RSS(3)
       DO 30 I=1,5
          J = I-3
          RSS(I) = ABS((RSS(I)-(A+J*B))*FAC)
    30 CONTINUE
       ETA = MAX(RSS(1),RSS(2),RSS(3),RSS(4),RSS(5),FPLRS)
       NETA = -LOG10(ETA)
-      ETA = 10.0E0_WP**(-NETA)
+      ETA = 10.0_WP**(-NETA)
       RETURN
       END

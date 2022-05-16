@@ -17,29 +17,29 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IFIRST,ILAST,N
+     &   IFIRST,ILAST,N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PVT(N),RES(N),SDPVT(N),SDREST(N),Y(N)
+     &   PVT(N),RES(N),SDPVT(N),SDREST(N),Y(N)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   FPLM
+     &   FPLM
       INTEGER
-     +   I,IPRT
+     &   I,IPRT
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     +   D1MACH
-      EXTERNAL D1MACH
+!      REAL(KIND=WP) ::
+!     +   D1MACH
+!      EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT
+!      EXTERNAL IPRINT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -81,12 +81,12 @@
 !     PRINT DATA SUMMARY.
 !
          IF ((SDPVT(I).NE.FPLM) .AND. (SDREST(I).NE.FPLM))
-     +      WRITE (IPRT, 1060) I, Y(I), PVT(I), SDPVT(I), RES(I),
-     +      SDREST(I)
+     &      WRITE (IPRT, 1060) I, Y(I), PVT(I), SDPVT(I), RES(I),
+     &      SDREST(I)
          IF ((SDPVT(I).NE.FPLM) .AND. (SDREST(I).EQ.FPLM))
-     +      WRITE (IPRT, 1050) I, Y(I), PVT(I), SDPVT(I), RES(I)
+     &      WRITE (IPRT, 1050) I, Y(I), PVT(I), SDPVT(I), RES(I)
          IF ((SDPVT(I).EQ.FPLM) .AND. (SDREST(I).EQ.FPLM))
-     +      WRITE (IPRT, 1080) I, Y(I), PVT(I), RES(I)
+     &      WRITE (IPRT, 1080) I, Y(I), PVT(I), RES(I)
 !
   140 CONTINUE
 !
@@ -97,5 +97,5 @@
  1050 FORMAT (1X, I4, 4E16.8, 4X, 4HNC *, 1X, E9.3)
  1060 FORMAT (1X, I4, 4E16.8, 1X, F7.2, 1X, E9.3)
  1080 FORMAT (1X, I4, 2E16.8, 8X, 4HNC *, 4X, E16.8, 4X, 4HNC *,
-     +   1X, E9.3)
+     &   1X, E9.3)
       END

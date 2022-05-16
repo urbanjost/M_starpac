@@ -18,17 +18,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NDF,NDIFF
+     &   N,NDF,NDIFF
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   Y(*),YDIFF(*)
+      REAL(KIND=WP) ::
+     &   Y(*),YDIFF(*)
       INTEGER
-     +   IOD(*),ND(*)
+     &   IOD(*),ND(*)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,J,K,L,NTIMES
+     &   I,J,K,L,NTIMES
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

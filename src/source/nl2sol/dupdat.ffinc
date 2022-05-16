@@ -10,23 +10,23 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   n,nn,p
+     &   n,nn,p
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   d(p),j(nn,p),v(1)
+     &   d(p),j(nn,p),v(1)
       integer
-     +   iv(1)
+     &   iv(1)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   sii,t,vdfac,zero
+     &   sii,t,vdfac,zero
       integer
-     +   d0,dfac,dtype,i,jtol0,jtoli,niter,s,s1
+     &   d0,dfac,dtype,i,jtol0,jtoli,niter,s,s1
 !
 !  EXTERNAL FUNCTIONS
       real(kind=wp) ::
-     +   v2norm
+     &   v2norm
       external v2norm
 !
 !  INTRINSIC FUNCTIONS

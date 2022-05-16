@@ -18,17 +18,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   CODE,IPRT,IRDIM,MODE,NC
+     &   CODE,IPRT,IRDIM,MODE,NC
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   X(IRDIM,NC),Y(IRDIM,NC)
+      REAL(KIND=WP) ::
+     &   X(IRDIM,NC),Y(IRDIM,NC)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   TEMP
+      REAL(KIND=WP) ::
+     &   TEMP
       INTEGER
-     +   I,IWIDTH,J,K,KM,KN,L,NF
+     &   I,IWIDTH,J,K,KM,KN,L,NF
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MIN,SQRT
@@ -87,9 +87,9 @@
             TEMP = X(I,I)
             KM = KN
             IF ((MODE.EQ.0) .OR. (MODE.EQ.2))
-     +         KM = J + MIN(I-L, NF-1)
+     &         KM = J + MIN(I-L, NF-1)
             IF ((MODE.EQ.2) .AND. ((I.GE.J) .AND. (I.LE.KM)))
-     +         X(I,I) = SQRT(X(I,I))
+     &         X(I,I) = SQRT(X(I,I))
             WRITE(IPRT,1010) I, (X(I,K),K=J,KM)
             IF (CODE.EQ.2) WRITE(IPRT,1020) (Y(I,K),K=J,KM)
             IF (CODE.EQ.2) WRITE(IPRT,1030)

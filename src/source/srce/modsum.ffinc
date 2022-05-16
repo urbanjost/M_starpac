@@ -16,18 +16,18 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   NFAC
+     &   NFAC
 !
 !  ARRAY ARGUMENTS
       INTEGER
-     +   MSPECT(NFAC,4)
+     &   MSPECT(NFAC,4)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,IPRT,J
+     &   I,IPRT,J
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT
+!      EXTERNAL IPRINT
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -54,7 +54,7 @@
 !     FORMAT STATEMENTS
 !
  1002 FORMAT(//
-     +   '    MODEL SPECIFICATION'//
-     +   '       FACTOR          (P     D     Q)    S'//
-     +   (7X, I6, 6X, 4I6))
+     &   '    MODEL SPECIFICATION'//
+     &   '       FACTOR          (P     D     Q)    S'//
+     &   (7X, I6, 6X, 4I6))
       END

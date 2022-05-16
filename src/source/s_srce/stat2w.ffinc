@@ -1,6 +1,6 @@
 !STAT2W
       SUBROUTINE STAT2W(Y, WT, N, NNZW, STS, SUMDA, SUMDI, SUMWD2,
-     +   SUMD2, SUMD3, SUMD4, SUMW)
+     &   SUMD2, SUMD3, SUMD4, SUMW)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -23,28 +23,28 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   SUMD2,SUMD3,SUMD4,SUMDA,SUMDI,SUMW,SUMWD2
+      REAL(KIND=WP) ::
+     &   SUMD2,SUMD3,SUMD4,SUMDA,SUMDI,SUMW,SUMWD2
       INTEGER
-     +   N,NNZW
+     &   N,NNZW
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   STS(53),WT(N),Y(N)
+      REAL(KIND=WP) ::
+     &   STS(53),WT(N),Y(N)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   DIF,T,TA,TK1,TK2
+      REAL(KIND=WP) ::
+     &   DIF,T,TA,TK1,TK2
       INTEGER
-     +   I,IC,ICI,ICOUNT,IDRUNS,IMINUS,IPLUS,IRUN,J
+     &   I,IC,ICI,ICOUNT,IDRUNS,IMINUS,IPLUS,IRUN,J
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   CDFF,PPFCHS,PPFT
+      REAL(KIND=WP) ::
+     &   CDFF,PPFCHS,PPFT
       EXTERNAL CDFF,PPFCHS,PPFT
 !
 !  INTRINSIC FUNCTIONS
@@ -175,30 +175,30 @@
       STS(29) = IMINUS
       STS(31) = 1.0E0 + (2.0E0*STS(28)*STS(29)/STS(2))
       STS(32) =
-     +   SQRT((2.0E0*STS(28)*STS(29)*(2.0E0*STS(28)*STS(29)-
-     +                                     STS(28)-STS(29)))/
-     +        ((STS(28)+STS(29))**2*(STS(2)-1.0E0)))
+     &   SQRT((2.0E0*STS(28)*STS(29)*(2.0E0*STS(28)*STS(29)-
+     &                                     STS(28)-STS(29)))/
+     &        ((STS(28)+STS(29))**2*(STS(2)-1.0E0)))
       STS(30) = IDRUNS
       STS(33) = 0.0E0
       IF (STS(32).NE.0.0E0)
-     +   STS(33) = (STS(30)-STS(31))/STS(32)
+     &   STS(33) = (STS(30)-STS(31))/STS(32)
       STS(13) = SUMWD2/(STS(2)-1.0E0)
       STS(9) = SQRT(STS(13))
       STS(10) = STS(9)/(SQRT(SUMW))
       IF (STS(4).NE.0.0E0)
-     +   STS(14) = 100.0E0*ABS(STS(9)/STS(4))
+     &   STS(14) = 100.0E0*ABS(STS(9)/STS(4))
       IF (STS(4).EQ.0.0E0) STS(14) = 0.0E0
       STS(36) = 0.0E0
       IF (SUMD2.NE.0.0E0)
-     +   STS(36) = (SUMD3/STS(2))**2/((SUMD2/STS(2))**3)
+     &   STS(36) = (SUMD3/STS(2))**2/((SUMD2/STS(2))**3)
       STS(37) = 0.0E0
       IF (SUMD2.NE.0.0E0)
-     +   STS(37) = (SUMD4/STS(2))/((SUMD2/STS(2))**2)
+     &   STS(37) = (SUMD4/STS(2))/((SUMD2/STS(2))**2)
       STS(40) = SUMWD2
       STS(19) = (12.0E0*SUMDI)/(STS(2)*(STS(2)**2-1.0E0))
       STS(20) = (1.0E0/(STS(2)-2.0E0)*
-     +             (12.0E0*(SUMD2/(STS(2)*(STS(2)**2-1.0E0)))-
-     +              STS(19)**2))
+     &             (12.0E0*(SUMD2/(STS(2)*(STS(2)**2-1.0E0)))-
+     &              STS(19)**2))
       IF (STS(20).LE.0.0E0) STS(20) = 0.0E0
       STS(20) = SQRT(STS(20))
       IF (STS(20).EQ.0.0E0) STS(21) = 0.0E0
@@ -239,10 +239,10 @@
       STS(26) = DIF/(STS(2)-1.0E0)
       STS(27) = 0.0E0
       IF (STS(13).NE.0.0E0)
-     +   STS(27) = STS(26)/STS(13)
+     &   STS(27) = STS(26)/STS(13)
       STS(41) = 0.0E0
       IF (STS(9).NE.0.0E0)
-     +   STS(41) = (STS(4)*SQRT(SUMW))/STS(9)
+     &   STS(41) = (STS(4)*SQRT(SUMW))/STS(9)
       STS(12) = SUMDA/STS(2)
       T = PPFT(0.975E0, NNZW-1)
       TK1 = PPFCHS(0.975E0, NNZW-1)

@@ -17,17 +17,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IMAX,IMIN
+     &   IMAX,IMIN
       CHARACTER
-     +   ISYMBL*1
+     &   ISYMBL*1
 !
 !  ARRAY ARGUMENTS
       CHARACTER
-     +   LINE(103)*1
+     &   LINE(103)*1
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

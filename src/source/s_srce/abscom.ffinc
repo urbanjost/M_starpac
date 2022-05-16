@@ -16,18 +16,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   ABSTOL
+      REAL(KIND=WP) ::
+     &   ABSTOL
       INTEGER
-     +   N,NFAIL
+     &   N,NFAIL
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   V(*),W(*)
+      REAL(KIND=WP) ::
+     &   V(*),W(*)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS

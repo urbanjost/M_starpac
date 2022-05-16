@@ -1,6 +1,6 @@
 !MPPC
       SUBROUTINE MPPC(YM, X, N, M, IYM, ILOG, ISIZE, NOUT, YLB, YUB,
-     +  XLB, XUB)
+     &  XLB, XUB)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,35 +17,35 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   XLB,XUB,YLB,YUB
+      REAL(KIND=WP) ::
+     &   XLB,XUB,YLB,YUB
       INTEGER
-     +   ILOG,ISIZE,IYM,M,N,NOUT
+     &   ILOG,ISIZE,IYM,M,N,NOUT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   X(*),YM(*)
+      REAL(KIND=WP) ::
+     &   X(*),YM(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   XMISS
+      REAL(KIND=WP) ::
+     &   XMISS
       INTEGER
-     +   IPRT,ISCHCK,LISYM
+     &   IPRT,ISCHCK,LISYM
       LOGICAL
-     +   MISS,MULTI
+     &   MISS,MULTI
 !
 !  LOCAL ARRAYS
       INTEGER
-     +   ISYM(1)
+     &   ISYM(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,PPCNT
+!      EXTERNAL IPRINT,PPCNT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -119,8 +119,8 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     +    /  'M',       'P',       'P',       'C',       ' ',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     &    /  'M',       'P',       'P',       'C',       ' ',       ' '/
 !
 !     COMMENCE BODY OF ROUTINE
 !
@@ -133,8 +133,8 @@
       LISYM = 1
 !
       CALL PPCNT (YM, YM, X, XMISS, N, M, IYM, MULTI, ILOG,
-     +  YLB, YUB, XLB, XUB, NMSUB, ISCHCK, ISYM, ISIZE, NOUT, MISS,
-     +  LISYM)
+     &  YLB, YUB, XLB, XUB, NMSUB, ISCHCK, ISYM, ISIZE, NOUT, MISS,
+     &  LISYM)
 !
       IF (IERR.NE.0) THEN
         IERR = 1
@@ -147,6 +147,6 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +  '       CALL MPPC (YM, X, N, M, IYM, ILOG,'/
-     +  '      +           ISIZE, NOUT, YLB, YUB, XLB, XUB)')
+     &  '       CALL MPPC (YM, X, N, M, IYM, ILOG,'/
+     &  '      +           ISIZE, NOUT, YLB, YUB, XLB, XUB)')
       END

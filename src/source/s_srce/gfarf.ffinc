@@ -17,34 +17,34 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IAR
+     &   IAR
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PHI(*)
+      REAL(KIND=WP) ::
+     &   PHI(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   DELTA,FMAX,FMIN,YPLTMN,YPLTMX
+      REAL(KIND=WP) ::
+     &   DELTA,FMAX,FMIN,YPLTMN,YPLTMX
       INTEGER
-     +   IGFERR,IPRT,NF,NORD,NPRT
+     &   IGFERR,IPRT,NF,NORD,NPRT
       LOGICAL
-     +   ERR01,HEAD,SYM
+     &   ERR01,HEAD,SYM
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   FREQ(101),GAIN(101),PHAS(101),XORD(101),YORD(101)
+      REAL(KIND=WP) ::
+     &   FREQ(101),GAIN(101),PHAS(101),XORD(101),YORD(101)
       INTEGER
-     +   ISORT(101)
+     &   ISORT(101)
       CHARACTER
-     +   LIAR(8)*1,NMSUB(6)*1
+     &   LIAR(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,GFAEST,GFORD,GFOUT,IPRINT,SETFRQ
+!      EXTERNAL EISGE,GFAEST,GFORD,GFOUT,IPRINT,SETFRQ
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -114,12 +114,12 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'G',       'F',       'A',       'R',       'F',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'G',       'F',       'A',       'R',       'F',       ' '/
       DATA
-     +  LIAR(1), LIAR(2), LIAR(3), LIAR(4), LIAR(5), LIAR(6), LIAR(7),
-     +  LIAR(8)
-     + /  'I',   'A',   'R',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LIAR(1), LIAR(2), LIAR(3), LIAR(4), LIAR(5), LIAR(6), LIAR(7),
+     &  LIAR(8)
+     & /  'I',   'A',   'R',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -163,17 +163,17 @@
 !     SET THE COORDINATES FOR THE PLOT.
 !
       CALL GFORD (FREQ, GAIN, ISORT, NF, XORD, YORD, NORD,
-     +   YPLTMN, YPLTMX, NPRT, IGFERR)
+     &   YPLTMN, YPLTMX, NPRT, IGFERR)
 !
 !     PLOT THE RESULTS.
 !
       CALL GFOUT (XORD, YORD, NORD, FREQ, PHAS, NF, IAR, SYM, FMIN,
-     +   FMAX, YPLTMN, YPLTMX, NPRT, IGFERR, NMSUB)
+     &   FMAX, YPLTMN, YPLTMX, NPRT, IGFERR, NMSUB)
 !
       RETURN
 !
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   28H       CALL GFARF (PHI, IAR))
+     &   28H       CALL GFARF (PHI, IAR))
       END

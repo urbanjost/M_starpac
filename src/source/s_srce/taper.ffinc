@@ -18,33 +18,33 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   TAPERP
+      REAL(KIND=WP) ::
+     &   TAPERP
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   Y(*),YT(*)
+      REAL(KIND=WP) ::
+     &   Y(*),YT(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   PI,WEIGHT
+      REAL(KIND=WP) ::
+     &   PI,WEIGHT
       INTEGER
-     +   I,IPRT,J,M
+     &   I,IPRT,J,M
       LOGICAL
-     +   ERR01,HEAD
+     &   ERR01,HEAD
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LN(8)*1,NMSUB(6)*1
+     &   LN(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CENTER,EISGE,GETPI,IPRINT
+!      EXTERNAL CENTER,EISGE,GETPI,IPRINT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC COS,INT
@@ -95,11 +95,11 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'T',       'A',       'P',       'E',       'R',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'T',       'A',       'P',       'E',       'R',       ' '/
       DATA
-     + LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
-     + /'N',' ',' ',' ',' ',' ',' ',' '/
+     & LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     & /'N',' ',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -139,5 +139,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   36H       CALL TAPER (Y, N, TAPERP, YT))
+     &   36H       CALL TAPER (Y, N, TAPERP, YT))
       END

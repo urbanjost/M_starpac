@@ -1,7 +1,7 @@
 !NLCMP
       SUBROUTINE NLCMP (Y, WEIGHT, WT, LWT, N, NPAR, NPARE,
-     +   RES, D, RD, COND, VCVL, LVCVL, NNZW, IDF, RSSHLF, RSS, RSD,
-     +   YSS, EXACT, PVT, SDPVT, SDREST, ISKULL)
+     &   RES, D, RD, COND, VCVL, LVCVL, NNZW, IDF, RSSHLF, RSS, RSD,
+     &   YSS, EXACT, PVT, SDPVT, SDREST, ISKULL)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,32 +20,32 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   COND,RSD,RSS,RSSHLF,YSS
+     &   COND,RSD,RSS,RSSHLF,YSS
       INTEGER
-     +   IDF,LVCVL,LWT,N,NNZW,NPAR,NPARE
+     &   IDF,LVCVL,LWT,N,NNZW,NPAR,NPARE
       LOGICAL
-     +   EXACT,WEIGHT
+     &   EXACT,WEIGHT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   D(N,NPAR),PVT(N),RD(N),RES(N),SDPVT(N),SDREST(N),VCVL(LVCVL),
-     +   WT(LWT),Y(N)
+     &   D(N,NPAR),PVT(N),RD(N),RES(N),SDPVT(N),SDREST(N),VCVL(LVCVL),
+     &   WT(LWT),Y(N)
       INTEGER
-     +   ISKULL(10)
+     &   ISKULL(10)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   FAC,FPLM,RVAR,SM,TJ,WTI,WTSUM,YWTSM,YWTYSM
+     &   FAC,FPLM,RVAR,SM,TJ,WTI,WTSUM,YWTSM,YWTYSM
       INTEGER
-     +   I,J,JK,K
+     &   I,J,JK,K
 !
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
-     +   D1MACH
+     &   D1MACH
       EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
@@ -156,26 +156,26 @@
 !     COMPUTE VARIOUS STATISTICS
 !
       IDF = NNZW - NPARE
-      RSS = 2.0E0_WP*RSSHLF
-      RVAR = 0.0E0_WP
+      RSS = 2.0_WP*RSSHLF
+      RVAR = 0.0_WP
       IF (IDF.GE.1) RVAR = RSS/IDF
       RSD = SQRT(RVAR)
-      YWTSM = 0.0E0_WP
-      YWTYSM = 0.0E0_WP
-      WTSUM = 0.0E0_WP
+      YWTSM = 0.0_WP
+      YWTYSM = 0.0_WP
+      WTSUM = 0.0_WP
       DO 20 I=1,N
-         WTI = 1.0E0_WP
+         WTI = 1.0_WP
          IF (WEIGHT) WTI = WT(I)
          YWTSM = YWTSM + Y(I)*WTI
          YWTYSM = YWTYSM + Y(I)*WTI*Y(I)
          WTSUM = WTSUM + WTI
    20 CONTINUE
-      YSS = MAX(YWTYSM-(YWTSM*YWTSM)/WTSUM,0.0E0_WP)
+      YSS = MAX(YWTYSM-(YWTSM*YWTSM)/WTSUM,0.0_WP)
 !
       CALL FITEXT(RSS, YSS, EXACT)
 !
       COND = FPLM
-      IF (RD(NPARE).NE.0.0E0_WP) COND = ABS(RD(1)/RD(NPARE))
+      IF (RD(NPARE).NE.0.0_WP) COND = ABS(RD(1)/RD(NPARE))
 !
       IF (IERR.NE.0) RETURN
 !
@@ -204,9 +204,9 @@
 !     COMPUTE THE STANDARD DEVIATIONS OF THE PREDICTED VALUES (SDPVT)
 !
       DO 90 I=1,N
-         SM = 0.0E0_WP
+         SM = 0.0_WP
          DO 60 J=1,NPARE
-            TJ = 0.0E0_WP
+            TJ = 0.0_WP
             DO 50 K=1,NPARE
                IF (J.GE.K) THEN
                   JK = J*(J-1)/2 + K
@@ -217,15 +217,15 @@
    50       CONTINUE
                SM = SM + D(I,J)*TJ
    60    CONTINUE
-         IF (SM.LT.0.0E0_WP) SM = 0.0E0_WP
+         IF (SM.LT.0.0_WP) SM = 0.0_WP
          SDPVT(I) = SQRT(SM)
 !
          SDREST(I) = FPLM
-         WTI = 1.0E0_WP
+         WTI = 1.0_WP
          IF (WEIGHT) WTI = WT(I)
-         IF (WTI.EQ.0.0E0_WP) GO TO 90
+         IF (WTI.EQ.0.0_WP) GO TO 90
 !
-         IF (RVAR/WTI-SM.LE.0.0E0_WP) GO TO 70
+         IF (RVAR/WTI-SM.LE.0.0_WP) GO TO 70
          GO TO 80
 !
 !           THEN

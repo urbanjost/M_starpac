@@ -15,18 +15,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     +   VALUE
-      INTEGER
-     +   N
+      REAL(KIND=WP) :: VALUE
+      INTEGER :: N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   VECTOR(N)
+     &   VECTOR(N)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

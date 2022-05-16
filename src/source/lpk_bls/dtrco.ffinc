@@ -51,35 +51,35 @@
 
 !...SCALAR ARGUMENTS
       DOUBLE PRECISION
-     +   RCOND
+     &   RCOND
       INTEGER
-     +   JOB,LDT,N
+     &   JOB,LDT,N
 
 !...ARRAY ARGUMENTS
       DOUBLE PRECISION
-     +   T(LDT,*),Z(*)
+     &   T(LDT,*),Z(*)
 
 !...LOCAL SCALARS
       DOUBLE PRECISION
-     +   EK,S,SM,TNORM,W,WK,WKM,YNORM
+     &   EK,S,SM,TNORM,W,WK,WKM,YNORM
       INTEGER
-     +   I1,J,J1,J2,K,KK,L
+     &   I1,J,J1,J2,K,KK,L
       LOGICAL
-     +   LOWER
+     &   LOWER
 
 !...EXTERNAL FUNCTIONS
       DOUBLE PRECISION
-     +   DASUM
+     &   DASUM
       EXTERNAL
-     +   DASUM
+     &   DASUM
 
 !...EXTERNAL SUBROUTINES
       EXTERNAL
-     +   DAXPY,DSCAL
+     &   DAXPY,DSCAL
 
 !...INTRINSIC FUNCTIONS
       INTRINSIC
-     +   DABS,DMAX1,DSIGN
+     &   DABS,DMAX1,DSIGN
 
 
 !***FIRST EXECUTABLE STATEMENT  DTRCO

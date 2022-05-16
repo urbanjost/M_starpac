@@ -17,19 +17,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   SUMDI,XMEAN
+     &   SUMDI,XMEAN
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   X(N)
+     &   X(N)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   DIFF
+     &   DIFF
       INTEGER
-     +   I
+     &   I
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -47,7 +47,7 @@
 !     REAL(KIND=WP) :: XMEAN
 !        INPUT PARAMETER.  THE MEAN OF X.
 !
-      SUMDI = 0.0E0_WP
+      SUMDI = 0.0_WP
       DO 10 I=1,N
          DIFF = X(I) - XMEAN
          SUMDI = SUMDI + I*DIFF

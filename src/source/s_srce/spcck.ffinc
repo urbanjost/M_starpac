@@ -19,20 +19,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   SPCMN,SPCMX
+      REAL(KIND=WP) ::
+     &   SPCMN,SPCMX
       INTEGER
-     +   ISPCER,NF,NSPC
+     &   ISPCER,NF,NSPC
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   SPC(NF)
+      REAL(KIND=WP) ::
+     &   SPC(NF)
       INTEGER
-     +   ISORT(NF)
+     &   ISORT(NF)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,K1,K2,LOG1,LOG2
+     &   I,K1,K2,LOG1,LOG2
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL SRTIR,SRTRI

@@ -18,27 +18,27 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LDSTAK
+     &   LDSTAK
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   FI
+     &   FI
       INTEGER
-     +   I,IGSTAT,IPRT,LDSMIN,N,NG
+     &   I,IGSTAT,IPRT,LDSMIN,N,NG
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   GSTAT(10,4),TAG(20),Y(20),Z(10),ZTAG(10)
+     &   GSTAT(10,4),TAG(20),Y(20),Z(10),ZTAG(10)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AOV1,AOV1S,AOV1XP,IPRINT,LDSCMP,MSGX,SETRV
+!      EXTERNAL AOV1,AOV1S,AOV1XP,IPRINT,LDSCMP,MSGX,SETRV
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -79,22 +79,22 @@
 !        TEST TAG VECTOR
 !
       DATA   Y( 1),   Y( 2),   Y( 3),   Y( 4),   Y( 5)
-     +   /    61.0E0_WP,    61.0E0_WP,    67.0E0_WP,    67.0E0_WP,    64.0E0_WP/
+     &   /    61.0_WP,    61.0_WP,    67.0_WP,    67.0_WP,    64.0_WP/
       DATA   Y( 6),   Y( 7),   Y( 8),   Y( 9),   Y(10)
-     +   /    78.0E0_WP,    71.0E0_WP,    75.0E0_WP,    72.0E0_WP,    74.0E0_WP/
+     &   /    78.0_WP,    71.0_WP,    75.0_WP,    72.0_WP,    74.0_WP/
       DATA   Y(11),   Y(12),   Y(13),   Y(14),   Y(15)
-     +   /    83.0E0_WP,    81.0E0_WP,    76.0E0_WP,    78.0E0_WP,    79.0E0_WP/
+     &   /    83.0_WP,    81.0_WP,    76.0_WP,    78.0_WP,    79.0_WP/
       DATA   Y(16),   Y(17)
-     +   /    72.0E0_WP,   72.0E0_WP/
+     &   /    72.0_WP,   72.0_WP/
 !
       DATA TAG( 1), TAG( 2), TAG( 3), TAG( 4), TAG( 5)
-     +   /    11.5D0,    11.5D0,    11.5D0,    11.5D0,    11.5D0/
+     &   /    11.5_WP,    11.5_WP,    11.5_WP,    11.5_WP,    11.5_WP/
       DATA TAG( 6), TAG( 7), TAG( 8), TAG( 9), TAG(10)
-     +   /    12.0E0_WP,    12.0E0_WP,    12.0E0_WP,    12.0E0_WP,    12.0E0_WP/
+     &   /    12.0_WP,    12.0_WP,    12.0_WP,    12.0_WP,    12.0_WP/
       DATA TAG(11), TAG(12), TAG(13), TAG(14), TAG(15)
-     +   /    11.0E0_WP,    11.0E0_WP,    11.0E0_WP,    11.0E0_WP,    11.0E0_WP/
+     &   /    11.0_WP,    11.0_WP,    11.0_WP,    11.0_WP,    11.0_WP/
       DATA TAG(16), TAG(17)
-     +   /   -11.0E0_WP,   11.0E0_WP/
+     &   /   -11.0_WP,   11.0_WP/
 !
       CALL IPRINT(IPRT)
 !
@@ -151,11 +151,11 @@
 !
       WRITE (IPRT,1100)
       WRITE (IPRT,1000)
-      CALL SETRV(Z, 10, 0.0E0_WP)
+      CALL SETRV(Z, 10, 0.0_WP)
       CALL AOV1(Z, TAG, 10, LDSTAK)
       CALL MSGX(0, IPRT)
 !
-      CALL SETRV(Z, 10, 2.0E0_WP)
+      CALL SETRV(Z, 10, 2.0_WP)
       WRITE (IPRT,1100)
       WRITE (IPRT,1030)
       CALL AOV1S(Z, TAG, 10, LDSTAK, 1, GSTAT, IGSTAT, NG)
@@ -201,7 +201,7 @@
       DO 20 I=1,10
          FI = I
          ZTAG(I) = FI
-         Z(I) = 13.0E0_WP - FI
+         Z(I) = 13.0_WP - FI
    20 CONTINUE
       CALL AOV1(Z, ZTAG, 10, LDSTAK)
       CALL MSGX(1, IPRT)
@@ -211,7 +211,7 @@
 !**** LESS THAN 2 DIFFERENT TAG GROUPS ****
 !
       WRITE (IPRT,1130)
-      CALL SETRV(ZTAG, 10, 1.0E0_WP)
+      CALL SETRV(ZTAG, 10, 1.0_WP)
       CALL AOV1(Z, ZTAG, 10, LDSTAK)
       CALL MSGX(1, IPRT)
       CALL AOV1S(Z, ZTAG, 10, LDSTAK, 1, GSTAT, IGSTAT, NG)
@@ -219,7 +219,7 @@
 !
 !**** LESS THAN 2 TAGS ****
 !
-      CALL SETRV(ZTAG, 9, 0.0E0_WP)
+      CALL SETRV(ZTAG, 9, 0.0_WP)
       WRITE (IPRT,1140)
       CALL AOV1(Z, ZTAG, 10, LDSTAK)
       CALL MSGX(1, IPRT)
@@ -234,26 +234,26 @@
 !
 !**** ALL OBSERVATIONS WITHIN A GROUP SAME VALUE ****
 !
-      Z(1) = 53.0E0_WP
-      ZTAG(1) = 1.0E0_WP
-      Z(2) = 62.0E0_WP
-      ZTAG(2) = 3.0E0_WP
-      Z(3) = 53.0E0_WP
-      ZTAG(3) = 1.0E0_WP
-      Z(4) = 71.0E0_WP
-      ZTAG(4) = 4.0E0_WP
-      Z(5) = 89.0E0_WP
-      ZTAG(5) = 2.0E0_WP
-      Z(6) = 71.0E0_WP
-      ZTAG(6) = 4.0E0_WP
-      Z(7) = 89.0E0_WP
-      ZTAG(7) = 2.0E0_WP
-      Z(8) = 62.0E0_WP
-      ZTAG(8) = 3.0E0_WP
-      Z(9) = 71.0E0_WP
-      ZTAG(9) = 4.0E0_WP
-      Z(10) = 62.0E0_WP
-      ZTAG(10) = 3.0E0_WP
+      Z(1) = 53.0_WP
+      ZTAG(1) = 1.0_WP
+      Z(2) = 62.0_WP
+      ZTAG(2) = 3.0_WP
+      Z(3) = 53.0_WP
+      ZTAG(3) = 1.0_WP
+      Z(4) = 71.0_WP
+      ZTAG(4) = 4.0_WP
+      Z(5) = 89.0_WP
+      ZTAG(5) = 2.0_WP
+      Z(6) = 71.0_WP
+      ZTAG(6) = 4.0_WP
+      Z(7) = 89.0_WP
+      ZTAG(7) = 2.0_WP
+      Z(8) = 62.0_WP
+      ZTAG(8) = 3.0_WP
+      Z(9) = 71.0_WP
+      ZTAG(9) = 4.0_WP
+      Z(10) = 62.0_WP
+      ZTAG(10) = 3.0_WP
       WRITE (IPRT,1160)
       CALL AOV1(Z, ZTAG, 10, LDSTAK)
       CALL MSGX(0, IPRT)

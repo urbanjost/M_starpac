@@ -943,14 +943,15 @@ library callable from fpm(Fortran Package Manager). *
  each STARPAC subroutine used; STARPAC  itself has  no inherent upper  limit on
  problem size.
 
-      Within the STARPAC documentation for the subroutine declaration and  CALL
- statements,  lowercase  identifiers  in  the  dimension  statements  represent
- integer constants which must equal or exceed the  value  of  the  identically-
- spelled  uppercase argument.  For example,  if the documentation specifies the
- minimum dimension of a variable as  <real>  XM(n,m),  and  if  the  number  of
- observations N is 15, and the number of columns of data M is 3, then (assuming
- the  single precision version of STARPAC is being used) the minimum array size
- is given by the dimension statement REAL XM(15,3).
+   Within the STARPAC documentation for the subroutine declaration and CALL
+ statements, lowercase identifiers in the dimension statements
+ represent integer constants which must equal or exceed the value
+ of the identically-spelled uppercase argument. For example,
+ if the documentation specifies the minimum dimension of a variable
+ as <real> XM(n,m), and if the number of observations N is 15,
+ and the number of columns of data M is 3, then (assuming the single
+ precision version of STARPAC is being used) the minimum array size is
+ given by the dimension statement REAL XM(15,3).
 
       The  exact dimensions  assigned  to some  vectors and  matrices  must  be
  supplied in the CALL statements to some STARPAC subroutines.  For example, the
@@ -994,8 +995,8 @@ library callable from fpm(Fortran Package Manager). *
  ACM Algorithm 528:  Framework for a  Portable  Library  [Fox  et  al.  1978a].
  Although STARPAC and the Framework share the same COMMON for their work areas,
  there  are differences between the STARPAC management subroutines and those of
- the  Framework.   In  particular,   the  STARPAC  management  subroutines  re-
- initialize  DSTAK  each  time  the user invokes a STARPAC subroutine requiring
+ the  Framework.   In  particular,   the  STARPAC  management  subroutines 
+ reinitialize  DSTAK each  time the user invokes a STARPAC subroutine requiring
  work area, destroying all data previously stored in DSTAK;  the Framework only
  initializes  DSTAK  the  first  time  any  of  its  management subroutines are
  invoked,  preserving work area allocations still in use.  Thus,  users must be
@@ -4341,8 +4342,8 @@ library callable from fpm(Fortran Package Manager). *
 
  A.  Introduction
 
-      STARPAC contains two subroutines for correlation analysis of a multivari-
- ate random sample.   The analysis  provided by  these subroutines consists  of
+ STARPAC contains two subroutines for correlation analysis of a multivariate 
+ random sample.   The analysis  provided by  these subroutines consists  of
  seven tables,  which, when used  together, aid  the user in  using correlation
  techniques effectively for prediction and model building.  The analysis is the
  same as that provided by  the OMNITAB II  command  CORRELATION [Hogben  et al.
@@ -4500,7 +4501,7 @@ library callable from fpm(Fortran Package Manager). *
  E.2  Computed Results and Printed Output
 
       The argument controlling  the  printed  output,  NPRT,  is  discussed  in
- ection D.
+ section D.
 
       STARPAC correlation  analysis subroutines compute and print  a seven-part
  correlation  analysis.  The output  for each  part  is discussed  individually
@@ -5022,8 +5023,8 @@ library callable from fpm(Fortran Package Manager). *
 
  NPAR    is the number of parameters;
 
- x(i,j)  is  the jth element of the ith row of the design matrix (for the user-
-         specified model, x(i,j) = XM(i,j) for i = 1,  ...,  N and j = 1,  ...,
+ x(i,j)  is  the jth element of the ith row of the design matrix (for the 
+         user-specified model, x(i,j) = XM(i,j) for i = 1,  ...,  N and j = 1,  ...,
          NPAR,  while  for  the polynomial model,  x(i,j) = X(i)**(j-1) for i =
          1,..., N and j = 1, ..., NPAR);
 
@@ -5620,8 +5621,8 @@ library callable from fpm(Fortran Package Manager). *
 
        * an approximation to the condition number of the design matrix, D(i,j)=
          x(i,j) with x(i,j) defined in section A, under the assumption that the
-         absolute error in each  column of D is roughly equal.   The approxima-
-         tion will be meaningless if this assumption is not valid; otherwise it
+         absolute error in each column of D is roughly equal. The approximation 
+	 will be meaningless if this assumption is not valid; otherwise it
          will usually underestimate the  actual condition number by a factor of
          from 2 to 10  [see Dongarra et al., 1979, p. 1.8 to 1.12].  (Note that
          the condition number returned by the linear least squares  subroutines
@@ -6470,8 +6471,8 @@ library callable from fpm(Fortran Package Manager). *
  B.2  Derivative Step Size Selection Subroutines
 
       When the partial derivatives used in the nonlinear least squares solution
- are not available analytically,  STARPAC subroutines approximate them  numeri-
- cally.  In  this  case,  the  subroutines  can  select  optimum step sizes for
+ are not available analytically,  STARPAC subroutines approximate them  
+ numerically. In this case, the subroutines can  select  optimum step sizes for
  approximating the derivatives [see section  E.1.b].  The  user  also  has  the
  option  of  computing these step sizes independently of the estimation process
  by calling either of the two step size  selection  subroutines  directly.  For
@@ -6874,8 +6875,8 @@ library callable from fpm(Fortran Package Manager). *
              DELTA  <=  0.0  or when DELTA is not an argument of the subroutine
              CALL statement the default value  is  used.  A  smaller  value  of
              DELTA  may  be  appropriate  if,   at  the  first  iteration,  the
-             computation of the predicted values from the user's model  subrou-
-             tine  produces an arithmetric overflow or the parameters leave the
+             computation of the predicted values from the user's model subroutine
+	     produces an arithmetric overflow or the parameters leave the
              region of interest in parameter space.  A  reasonable  alternative
              to  the  default  value  of  DELTA is an upper bound to the scaled
              change that the estimated parameters should be allowed to make  on
@@ -6895,8 +6896,8 @@ library callable from fpm(Fortran Package Manager). *
              a = EXMPT*N, for which the forward difference  quotient derivative
              with  respect to a  given parameter  is exempted from  meeting the
              acceptance  criteria  for step size selection [see section E.1.b].
-             The default value for EXMPT is 0.1 (10 percent).  When  the  user-
-             supplied value is outside the range [0.0,  1.0],  or when EXMPT is
+             The default value for EXMPT is 0.1 (10 percent).  When  the  
+	     user-supplied value is outside the range [0.0, 1.0], or when EXMPT is
              not an argument of the  subroutine  CALL  statement,  the  default
              value is used.
 
@@ -7205,8 +7206,8 @@ library callable from fpm(Fortran Package Manager). *
                          full output are the same for this section.
 
                Section 5 is  the final  summary of  the  estimated  parameters.
-                         Brief  output  does not include printing the variance-
-                         covariance matrix while full output does.
+                         Brief  output  does not include printing the 
+			 variance-covariance matrix while full output does.
 
              For the step size selection and derivative checking subroutines:
 
@@ -7408,10 +7409,10 @@ library callable from fpm(Fortran Package Manager). *
              for k = 2, ..., NPAR will be interpreted as an input error.
 
  VCV     <-- The matrix of dimension at least NPARE by NPARE that  contains the
-             variance-covariance matrix of the estimated parameters, approxima-
-             ted  as designated by argument IVAPRX.   The parameters  which are
-             held fixed [see argument IFIXED] are not included in the variance-
-             covariance matrix.
+             variance-covariance matrix of the estimated parameters, 
+	     approximated as designated by argument IVAPRX. The parameters which are
+             held fixed [see argument IFIXED] are not included in the 
+	     variance-covariance matrix.
 
              The approximation of the variance-covariance matrix is based  on a
              linearization of the  model in  the neighborhood of  the solution;
@@ -7678,9 +7679,9 @@ library callable from fpm(Fortran Package Manager). *
 
       When the agreement  tolerance is  not satisfied  the  checking subroutine
  attempts  to determine  whether the disagreement  is due  to an  error  in the
- user's code or is due to the inaccuracy of the difference  quotient approxima-
- tion,  caused either by high curvature  in the user's model or  by significant
- roundoff error.
+ user's code or is due to the inaccuracy of the difference  quotient 
+ approximation,  caused either by high curvature  in the user's model or  by 
+ significant roundoff error.
 
       The  derivative  checking  subroutines  each  check  only  one row of the
  derivative matrix.  The user should examine the row at which  the  derivatives
@@ -7727,8 +7728,8 @@ library callable from fpm(Fortran Package Manager). *
 
        * Either the step sizes used to approximate the derivatives numerically,
          or, when user-supplied (analytic) derivatives are used, the results of
-         the checking procedure; and the control values used in  these computa-
-         tions as applicable [see section E.1.b and section E.1.c].
+         the checking procedure; and the control values used in  these 
+	 computations as applicable [see section E.1.b and section E.1.c].
 
        * The number of observations, N.
 
@@ -7968,9 +7969,9 @@ library callable from fpm(Fortran Package Manager). *
          should recheck the derivative at another row.
 
        * The user-supplied  derivative and  the approximated derivative  do not
-         agree to the required  number of digits but the  user-supplied deriva-
-         tive is identically  zero and  the approximated  derivative  is nearly
-         zero.  The user should recheck the derivative at another row.
+         agree to the required  number of digits but the  user-supplied 
+	 derivative is identically  zero and  the approximated  derivative
+	 is nearly zero.  The user should recheck the derivative at another row.
 
        * The user-supplied derivative and the approximated  derivative disagree
          but the user-supplied derivative is identically zero.  The user should
@@ -11845,8 +11846,8 @@ library callable from fpm(Fortran Package Manager). *
 
       * Suffix S indicates that the user is allowed to specify  various options
         which are  preset in the  simplest call  and that  certain  results are
-        returned to the user  via the subroutine CALL statement.   In the  sub-
-        sections  that  follow,  the  specific  details  of  this  feature  are
+        returned to the user  via the subroutine CALL statement.   In the  
+	subsections  that  follow,  the  specific  details  of this feature are
         discussed individually for each family of subroutines.
 
       * Suffix M indicates that the series  contains  missing data.   A missing
@@ -12003,10 +12004,10 @@ library callable from fpm(Fortran Package Manager). *
 
       Subroutine UAS is the simplest of the autoregressive  spectrum estimation
  subroutines.  It uses the modified Akaike information criterion [Akaike, 1974]
- to select the order of the autoregressive model to be used.   The autoregress-
- ive coefficients are then computed from the autocovariance function  using the
- Levinson-Durbin recursive  method  [Box and  Jenkins, 1976]  for  solving  the
- Yule-Walker equations.   The lag window truncation point used for  the Fourier
+ to select the order of the autoregressive model to be used. The 
+ autoregressive coefficients are then computed from the autocovariance function
+ using the Levinson-Durbin recursive method [Box and Jenkins, 1976] for solving
+ the Yule-Walker equations. The lag window truncation point used for the Fourier
  spectrum is half the maximum  truncation point which would have  been selected
  by  subroutine  UFS  [see  section D,  argument LAGS].  The output consists of
  several  autoregressive  order  selection  statistics  and  a  plot   of   the
@@ -12025,8 +12026,8 @@ library callable from fpm(Fortran Package Manager). *
 
       For the  autoregressive  spectrum family  of subroutines,  the  suffix  S
  feature allows the user to indicate:
-      1)  the order of the autoregressive model to be used for  the autoregres-
-          sive spectrum;
+      1)  the order of the autoregressive model to be used for  the 
+          autoregressive spectrum;
       2)  the lag window truncation point to be used for the Fourier spectrum;
       3)  the frequency range and  the number of frequencies within  this range
           at which the spectrum is to be computed; and
@@ -12085,11 +12086,11 @@ library callable from fpm(Fortran Package Manager). *
       Subroutine CENTER subtracts the  series mean from the series  and returns
  the centered series.  There is no printed output.
 
-      Subroutine TAPER centers the input series and applies  the  split-cosine-
- bell  taper  described  for  argument YT in section D.  The user specifies the
- total proportion of the series to be tapered.  The centered tapered series  is
- returned  to  the  user  and  can  be used as input to subroutine PGM or PGMS.
- There is no printed output.
+      Subroutine TAPER centers the input series and applies  the  
+ split-cosine-bell taper described for argument YT in section D. The user 
+ specifies the total proportion of the series to be tapered. The centered 
+ tapered series is returned to the user and can be used as input to subroutine
+ PGM or PGMS.  There is no printed output.
 
 
 
@@ -12311,8 +12312,8 @@ library callable from fpm(Fortran Package Manager). *
                                       ===
 
  CCFMS:   Compute  and  optionally print a two-part cross correlation  analysis
-          of  a  multivariate  series  with missing  observations  using  user-
-          supplied control values; return cross covariance function
+          of  a  multivariate  series  with missing  observations  using  
+	  user-supplied control values; return cross covariance function
 
           INTEGER NLPPC(lagmax+1,m,m)
           <real> YM(n,m), YMMISS(m), CCOV(lagmax+1,m,m)
@@ -12407,8 +12408,8 @@ library callable from fpm(Fortran Package Manager). *
                                       ===
 
  UFSFS:   Compute and optionally  print a univariate Fourier  spectrum analysis
-          of a series using user-supplied control values; use FFT  for computa-
-          tions; return Fourier spectrum and corresponding frequencies
+          of a series using user-supplied control values; use FFT  for 
+	  computations; return Fourier spectrum and corresponding frequencies
 
           INTEGER LAGS(nw)
           <real> YFFT(nfft), SPCF(nf,nw), FREQ(nf)
@@ -12466,8 +12467,8 @@ library callable from fpm(Fortran Package Manager). *
 
  UFSVS:   Compute and optionally  print a univariate Fourier  spectrum analysis
           of a  series using  user-supplied control  values;  input covariances
-          rather than original series; return Fourier spectrum  and correspond-
-          ing frequencies
+          rather than original series; return Fourier spectrum  and 
+	  corresponding frequencies
 
           INTEGER LAGS(nw)
           <real> ACOV(lagmax+1), SPCF(nf,nw), FREQ(nf)
@@ -12618,8 +12619,8 @@ library callable from fpm(Fortran Package Manager). *
                                       ===
 
  PGMS:    Compute and optionally print a periodogram analysis of a series;  use
-          FFT  for computations; return periodogram and  corresponding frequen-
-          cies
+          FFT  for computations; return periodogram and  corresponding 
+	  frequencies
 
           <real> YFFT(nfft), PER(nf), FREQ(nf)
           :
@@ -12673,8 +12674,8 @@ library callable from fpm(Fortran Package Manager). *
                                       ===
 
  IPGMPS:  Compute  and optionally print an integrated periodogram analysis of a
-          series; input  periodogram rather than original series;  return inte-
-          grated periodogram and corresponding frequencies
+          series; input  periodogram rather than original series;  return 
+	  integrated periodogram and corresponding frequencies
 
           <real> PER(nf), FREQ(nf), PERI(nf)
           DOUBLE PRECISION DSTAK(ldstak)
@@ -12877,8 +12878,8 @@ library callable from fpm(Fortran Package Manager). *
 1BFSVS:   Compute and optionally  print a bivariate  Fourier spectrum  analysis
           of a  pair  of  series  using  user-supplied  control  values;  input
           covariances rather than original series; return squared coherency and
-          phase components of the cross spectrum and the corresponding frequen-
-          cies
+          phase components of the cross spectrum and the corresponding 
+	  frequencies
 
           INTEGER LAGS(nw)
           <real> CCOV(lagmax+1,m,m), CSPC2(nf,nw), PHAS(nf,nw), FREQ(nf)
@@ -13153,8 +13154,8 @@ library callable from fpm(Fortran Package Manager). *
 
                If IAR>0, the user  must supply  the coefficients for  the order
                          IAR autoregressive  model in  the vector PHI.   (These
-                         coefficients are available, for example,  from subrou-
-                         tine ACFS  and  ACFFS or  perhaps from the ARIMA model
+                         coefficients are available, for example,  from 
+			 subroutine ACFS  and  ACFFS or  perhaps from the ARIMA model
                          fitting procedure discussed in chapter 13.)
 
                If IAR<0, the coefficients  for the  order  |IAR| autoregressive
@@ -13628,7 +13629,7 @@ library callable from fpm(Fortran Package Manager). *
 
                hP(j) = 1/KMD(p)      for j = 2, ..., KMD(p)-1;
 
-             PERF(p,.) is the periodgram smoothed using the first p filters
+             PERF(p,.) is the periodogram smoothed using the first p filters
                (PERF(0,.) is the input periodogram and PERF(NK,.) is the series
                actually returned to the user);
 
@@ -13722,8 +13723,8 @@ library callable from fpm(Fortran Package Manager). *
              depending on the value of IAR.
 
  SPCA    <-- The vector of dimension at least NF that contains the NF values of
-             the autoregressive  spectrum.   The autoregressive  spectrum esti-
-             mates are defined by
+             the autoregressive  spectrum.   The autoregressive  spectrum 
+	     estimates are defined by
 
                                   IAR
              SPCA(I) = SI2 * [1 - SUM PHI(P)*exp(i*2*pi*P*(FMIN+DELi))]**(-2)
@@ -13799,8 +13800,8 @@ library callable from fpm(Fortran Package Manager). *
              tapered  series is  identical  to  the  centered series,  YC.   If
              TAPERP >= 1.0, a 100-percent taper is applied to the series.
 
- Y       --> The vector of dimension at  least N  that contains the  N observa-
-             tions of a time series.
+ Y       --> The vector of dimension at  least N  that contains the  N 
+             observations of a time series.
 
  YC      <-- The vector of dimension at least N that contains the centered time
              series.  The centered series is
@@ -13878,11 +13879,11 @@ library callable from fpm(Fortran Package Manager). *
              to be tapered.  The importance of tapering is discussed in chapter
              5 of Bloomfield [1976].
 
- Y1      --> The vector of dimension at  least N  that contains the  N observa-
-             tions of the first series of a multivariate time series pair.
+ Y1      --> The vector of dimension at  least N  that contains the  N 
+             observations of the first series of a multivariate time series pair.
 
- Y2      --> The vector of dimension at  least N  that contains the  N observa-
-             tions of the second series of a multivariate time series pair.
+ Y2      --> The vector of dimension at  least N  that contains the  N 
+             observations of the second series of a multivariate time series pair.
 
 
  E.  Computational Methods
@@ -13907,11 +13908,11 @@ library callable from fpm(Fortran Package Manager). *
  function directly using the formulas given in section D for arguments ACOV and
  CCOV.
 
-      The autoregressive  model coefficients  given are  the  Yule-Walker esti-
- mates, computed as described in Appendix A3.2 of Box and Jenkins [1976].  This
+      The autoregressive  model coefficients  given are  the  Yule-Walker 
+ estimates, computed as described in Appendix A3.2 of Box and Jenkins [1976].  This
  is NOT  a recommended estimation  procedure but  rather a  means  of providing
- starting values for a  maximum likelihood  or least squares  estimation proce-
- dure.  Chapter 13 provides subroutines for estimating the least squares values
+ starting values for a  maximum likelihood  or least squares  estimation
+ procedure.  Chapter 13 provides subroutines for estimating the least squares values
  of the parameters of an autoregressive model using these starting values.
 
 
@@ -13969,8 +13970,8 @@ library callable from fpm(Fortran Package Manager). *
  analysis subroutines includes summary statistics describing the input  series;
  the  autocorrelation  function  estimates and their large lag standard errors;
  the chi-squared test statistic for white noise and its significance level; the
- partial autocorrelation function estimates;  autoregressive model order selec-
- tion statistics; and parameter estimates for the selected model.  In addition,
+ partial autocorrelation function estimates;  autoregressive model order 
+ selection statistics; and parameter estimates for the selected model.  In addition,
  plots are provided of the autocorrelation and partial autocorrelation function
  estimates.
 
@@ -14101,8 +14102,8 @@ library callable from fpm(Fortran Package Manager). *
  compared.   It does  not assume the two series  are white noise, although when
  both series  have been  prewhitened  the summed  portion of  the  equation  is
  approximately zero and the  results will  approximately equal N-1-2,  which is
- the  standard error assuming white noise.   However, the importance of prewhi-
- tening before performing cross  correlation analysis  is clear from  the above
+ the  standard error assuming white noise.   However, the importance of 
+ prewhitening before performing cross  correlation analysis  is clear from  the above
  equation.   The presence  of autocorrelation in either one  or both series can
  cause  a significant  increase  in  the  variance  of  the  cross  correlation
  estimates, and,  as shown  in the example  on page  338 of  Jenkins  and Watts
@@ -14111,8 +14112,8 @@ library callable from fpm(Fortran Package Manager). *
  estimates computed by the subroutine are not approximately N-1-2.   It is best
  to use ACF to routinely check  for autocorrelation in the input  series before
  performing cross  correlation  analyses  and  to  prewhiten  the  series  when
- necessary.  The digital filtering subroutines [chapter 10] or the autoregress-
- ive model  subroutines can be  used for  prewhitening the input  series before
+ necessary.  The digital filtering subroutines [chapter 10] or the 
+ autoregressive model  subroutines can be  used for  prewhitening the input  series before
  cross correlation analysis is performed.
 
 
@@ -16313,8 +16314,8 @@ library callable from fpm(Fortran Package Manager). *
 
  A.  Introduction
 
-      STARPAC contains five user-callable subroutines for  AutoRegressive Inte-
- grated Moving  Average (ARIMA) modeling.   Three are  for computing  the least
+      STARPAC contains five user-callable subroutines for  AutoRegressive 
+ Integrated Moving  Average (ARIMA) modeling.   Three are  for computing  the least
  squares  estimates of  the parameters  of  an  ARIMA  model and  two  are  for
  computing the minimum mean square error forecasts using these estimates.  Both
  the estimation and forecasting subroutines allow several levels of  control of
@@ -16592,8 +16593,8 @@ library callable from fpm(Fortran Package Manager). *
              DELTA <= 0.0 or when DELTA is not an argument  of  the  subroutine
              CALL  statement  the  default  value  is used.  A smaller value of
              DELTA  may  be  appropriate  if,  at  the  first  iteration,   the
-             computation  of the predicted values from the user's model subrou-
-             tine produces an arithmetric overflow or the parameters leave  the
+             computation  of the predicted values from the user's model 
+	     subroutine produces an arithmetric overflow or the parameters leave  the
              region  of  interest in parameter space.  A reasonable alternative
              to the default value of DELTA is an  upper  bound  to  the  scaled
              change  that the estimated parameters should be allowed to make on
@@ -16659,10 +16660,10 @@ library callable from fpm(Fortran Package Manager). *
                         solution.   The user should examine the model and  data
                         to identify and  remove the cause of the singularity.
 
-               IERR = 4 indicates that at least one of the standardized residu-
-                        als   could  not  be  computed  because   its  standard
-                        deviation was  zero.   The validity  of the   variance-
-                        covariance matrix is questionable.
+               IERR = 4 indicates that at least one of the standardized 
+	                residuals   could  not  be  computed  because   its  standard
+                        deviation was  zero.   The validity  of the   
+			variance-covariance matrix is questionable.
 
 
                                     <13-6>
@@ -16897,8 +16898,8 @@ library callable from fpm(Fortran Package Manager). *
                          full output are the same for this section.
 
                Section 5 is  the final  summary of  the  estimated  parameters.
-                         Brief  output  does not include printing the variance-
-                         covariance matrix while full output does.
+                         Brief  output  does not include printing the 
+			 variance-covariance matrix while full output does.
 
 
 
@@ -16932,8 +16933,8 @@ library callable from fpm(Fortran Package Manager). *
              first,  followed by mu,  followed by the parameter values from the
              moving  average  factors.  For all estimation subroutines PAR must
              contain initial values  for  the  parameters  on  input  and  will
-             contain  the  final values on return.  For the forecasting subrou-
-             tines  PAR  must  contain  the  parameter  values  for  which  the
+             contain  the  final values on return.  For the forecasting 
+	     subroutines  PAR  must  contain  the  parameter  values  for  which  the
              forecasts are to be computed.
 
  PV      <-- The  vector of dimension  at least  N that contains  the predicted
@@ -17093,8 +17094,8 @@ library callable from fpm(Fortran Package Manager). *
              be interpreted as an input error.
 
  VCV     <-- The matrix of dimension at least NPARE by NPARE that  contains the
-             variance-covariance matrix  of the estimated  parameters, approxi-
-             mated as designated by argument IVAPRX.   The parameters which are
+             variance-covariance matrix  of the estimated  parameters, 
+	     approximated as designated by argument IVAPRX.   The parameters which are
              held fixed (as specified  by argument IFIXED) are not  included in
              the variance-covariance matrix.
 
@@ -18534,8 +18535,8 @@ library callable from fpm(Fortran Package Manager). *
 
                                      <REF-1>
 1
- Dennis, J. E.  Jr.; Schnabel,  R. B.   (1983).   Numerical methods  for uncon-
- strained  optimization  and  nonlinear  equations.    Englewood  Cliffs,   NJ:
+ Dennis, J. E.  Jr.; Schnabel,  R. B.   (1983).   Numerical methods  for 
+ unconstrained  optimization  and  nonlinear  equations.    Englewood  Cliffs,   NJ:
  Prentice-Hall.
 
  Dixon,  W.  J.;  Massey,  F. J.  Jr.   (1957).   Introduction  to  statistical
@@ -18637,8 +18638,8 @@ library callable from fpm(Fortran Package Manager). *
  Natrella,  M. G. (1966).   Experimental statistics.   Nat. Bur.  Stand. (U.S.)
  Handb. 91.
 
- Owen, D. B. (1962).   Handbook of statistical tables.   Reading, MA:  Addison-
- Wesley Publishing Co.
+ Owen, D. B. (1962).   Handbook of statistical tables.   Reading, MA:  
+ Addison-Wesley Publishing Co.
 
  Ryan, T.  A.; Joiner, B.  L.; Ryan,  B. F. (1974).   Student handbook  for the
  MINITAB statistical computing system.  The Pennsylvania State University.
@@ -19798,8 +19799,7 @@ install.doc
 
  Fullerton, L.  W.  (1977).  Portable special function routines.  In
  Portability of Numerical Software:  Proceedings.  W.  Crowell, editor.
- (Lecture Notes in Computer Science:  Vol.  57).  Oak Brook, IL:  Springer-
- Verlag.
+ (Lecture Notes in Computer Science:  Vol.  57).  Oak Brook, IL:  Springer-Verlag.
 
  Hogben, D.; Peavy, S. T.; Varner, R. N. (1971).  OMNITAB II user's reference
  manual.  National Institute of Standards and Technology Technical Note NBSTN
@@ -20075,3 +20075,16 @@ toc.doc
 -->
  !1000 FORMAT (105X, 'STARPAC 2.08 (03/15/90)')
  !1010 FORMAT (54X, 'STARPAC 2.08 (03/15/90)')
+
+### MISMATCHES
+Calls to PPLMT or PPMN many times have fourth argument as an array when it is a scalar in code.
+For now, pass first element of arrays.
+```fortran
+      CALL PPLMT(YAXIS,YAXIS,XAXIS,XAXIS(1),2*NF,1,2*NF,-2*PI,2*PI,YMN,YMX,XPLTMN,XPLTMX,XMN,XMX,ERROR,NMSUB,.FALSE.)
+      CALL PPMN(YAXIS, YAXIS, XAXIS, XAXIS(1),
+```
+The call to PPMN:
+```text
+srce/ppmn.ffinc:
+!!SUBROUTINE PPMN (YM(IYM,M),YMMISS(M),X(N),xmiss,n,m,iym,ischck,ISYM(LISYM),lisym,isize,nout,ymn,ymx,xmn,xmx,_miss,ilog)
+```

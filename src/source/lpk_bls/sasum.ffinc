@@ -30,18 +30,18 @@
 
 !...SCALAR ARGUMENTS
       INTEGER
-     +   INCX,N
+     &   INCX,N
 
 !...ARRAY ARGUMENTS
       REAL SX(*)
 
 !...LOCAL SCALARS
       INTEGER
-     +   I,M,MP1,NS
+     &   I,M,MP1,NS
 
 !...INTRINSIC FUNCTIONS
       INTRINSIC
-     +   ABS,MOD
+     &   ABS,MOD
 
 
 !***FIRST EXECUTABLE STATEMENT  SASUM

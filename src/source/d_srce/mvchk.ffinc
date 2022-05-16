@@ -18,7 +18,7 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   X,XMISS
+     &   X,XMISS
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS
@@ -32,8 +32,8 @@
 !        NOT AN OBSERVATION IS MISSING.  IF X = XMISS,
 !        THE VALUE IS ASSUMED MISSING, OTHERWISE IT IS NOT.
 !
-      IF ((X .GT. 0.0E0_WP .AND. XMISS .LT. 0.0E0_WP) .OR.
-     +    (X .LT. 0.0E0_WP .AND. XMISS .GT. 0.0E0_WP)) GO TO 10
+      IF ((X .GT. 0.0_WP .AND. XMISS .LT. 0.0_WP) .OR.
+     &    (X .LT. 0.0_WP .AND. XMISS .GT. 0.0_WP)) GO TO 10
 !
       IF (ABS(X) .EQ. ABS(XMISS)) GO TO 20
 !

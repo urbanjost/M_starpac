@@ -16,42 +16,42 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   RSS
+      REAL(KIND=WP) ::
+     &   RSS
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   RES(*),SDREST(*)
+      REAL(KIND=WP) ::
+     &   RES(*),SDREST(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   AN,DOT,FAC1,FAC2,FPLM,GAMMA,PI,RATIO,ROWDIV,ROWMAX,ROWMID,
-     +   ROWMIN,XDIV,XMAX,XMIN,YLABEL,YMAX,YMIN
+      REAL(KIND=WP) ::
+     &   AN,DOT,FAC1,FAC2,FPLM,GAMMA,PI,RATIO,ROWDIV,ROWMAX,ROWMID,
+     &   ROWMIN,XDIV,XMAX,XMIN,YLABEL,YMAX,YMIN
       INTEGER
-     +   I,I1,I2,IMID,IPLOT,IPRB,IPRT,IROW,IX,K,L,NCOL,NCOLP1,
-     +   NCOLPL,NCOLT2,NDOT,NROW
+     &   I,I1,I2,IMID,IPLOT,IPRB,IPRT,IROW,IX,K,L,NCOL,NCOLP1,
+     &   NCOLPL,NCOLT2,NDOT,NROW
       CHARACTER
-     +   IBLANK*1,IMINUS*1,IPLUS*1,ISTAR*1
+     &   IBLANK*1,IMINUS*1,IPLUS*1,ISTAR*1
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LINE(113)*1
+     &   LINE(113)*1
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   R1MACH
-      LOGICAL
-     +   MVCHK
-      EXTERNAL R1MACH,MVCHK
+!      REAL(KIND=WP) ::
+!     +   R1MACH
+!      LOGICAL
+!     +   MVCHK
+!      EXTERNAL R1MACH,MVCHK
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL DOTC,GETPI,IPRINT
+!      EXTERNAL DOTC,GETPI,IPRINT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC INT,MAX,MIN,MOD
@@ -171,10 +171,10 @@
 !     INITIALIZE VALUES FOR PROBABILITY PLOT
 !
       CALL GETPI(PI)
-      GAMMA = PI/8.0E0
+      GAMMA = PI/8.0_WP
       AN = N
-      FAC1 = 1.0E0 / (AN - 2.0E0*GAMMA + 1.0E0)
-      FAC2 = 10.0E0
+      FAC1 = 1.0_WP / (AN - 2.0_WP*GAMMA + 1.0_WP)
+      FAC2 = 10.0_WP
 !
 !     INITIALIZE THE PLOT SIZE (IN PLOT UNITS)
 !
@@ -190,7 +190,7 @@
       ROWMIN = 1
       ROWMAX = N
 !
-      ROWMID = (ROWMAX+ROWMIN)/2.0E0
+      ROWMID = (ROWMAX+ROWMIN)/2.0_WP
       ROWDIV = (ROWMAX-ROWMIN)/(NCOL-1)
 !
 !     PRINT TITLES FOR FIRST PLOTS
@@ -206,8 +206,8 @@
 !     SET AXIS LIMITS FOR THE STANDARDIZED RESIDUALS VS
 !     STANDARDIZED RESIDUALS LAGGED BY ONE AND FOR PROBABILITY PLOT
 !
-      XMIN = -3.75E0
-      XMAX = 3.75E0
+      XMIN = -3.75_WP
+      XMAX = 3.75_WP
       XDIV = (XMAX-XMIN)/(NCOL-1)
 !
 !     PRINT TITLES FOR SECOND PLOTS
@@ -222,12 +222,12 @@
 !
       NCOLP1 = NCOL + 1
       NCOLT2 = 2*NCOL
-      YLABEL = 3.75E0
+      YLABEL = 3.75_WP
       YMAX = FPLM
-      YMIN = 4.05E0
+      YMIN = 4.05_WP
       DO 160 K=1,NROW
-         YMIN = YMIN - 0.3E0
-         IF (-3.70E0.GE.YMIN) YMIN = -FPLM
+         YMIN = YMIN - 0.3_WP
+         IF (-3.70_WP.GE.YMIN) YMIN = -FPLM
          DO 100 L=1,NCOL
             NCOLPL = L + NCOL
             LINE(L) = IBLANK
@@ -243,18 +243,18 @@
             IF (.NOT.MVCHK(SDREST(I),FPLM)) THEN
                IF ((SDREST(I).GT.YMIN) .AND. (SDREST(I).LE.YMAX)) THEN
                   IF (IPLOT.EQ.1) THEN
-                      IROW = INT(((I-ROWMIN)/ROWDIV)+1.5E0)
+                      IROW = INT(((I-ROWMIN)/ROWDIV)+1.5_WP)
                       LINE(IROW) = ISTAR
                    ELSE
                       RATIO = (AN-GAMMA) * FAC1
-                      IPRB = INT(4.91E0*(RATIO**0.14E0-
-     +                          (1.0E0-RATIO)**0.14E0)*FAC2) + 77
+                      IPRB = INT(4.91_WP*(RATIO**0.14_WP-
+     &                          (1.0_WP-RATIO)**0.14_WP)*FAC2) + 77
                       IF (IPRB.LE.NCOL) IPRB = NCOL+1
                       IF (IPRB.GE.103) IPRB = 102
                       LINE(IPRB) = ISTAR
-                      AN = AN - 1.0E0
-                      IF ((AN.LT.2.0E0) .AND. (N.LE.10)) THEN
-                         GAMMA = 1.0E0/3.0E0
+                      AN = AN - 1.0_WP
+                      IF ((AN.LT.2.0_WP) .AND. (N.LE.10)) THEN
+                         GAMMA = 1.0_WP/3.0_WP
                       END IF
                    END IF
                 END IF
@@ -266,9 +266,9 @@
          IF (IPLOT.EQ.2) THEN
             IMID = (NCOL-1)/2
             IF (K.LE.N-1) THEN
-               DOT = 0.0E0
-               CALL DOTC(RES, 0.0E0, N, RES(K+1), 0.0E0,
-     +                   N-K, DOT, NDOT)
+               DOT = 0.0_WP
+               CALL DOTC(RES, 0.0_WP, N, RES(K+1), 0.0_WP,
+     &                   N-K, DOT, NDOT)
                IX = INT(IMID*DOT/RSS) + IMID + 1
                I1 = MIN(IX,IMID+1)
                I2 = MAX(IX,IMID+1)
@@ -282,9 +282,9 @@
                WRITE (IPRT,2020) YLABEL, (LINE(L),L=1,NCOL)
             ELSE
                WRITE (IPRT,1020) K, (LINE(L),L=1,NCOL), YLABEL,
-     +                           (LINE(L),L=NCOLP1,NCOLT2)
+     &                           (LINE(L),L=NCOLP1,NCOLT2)
             END IF
-            YLABEL = YLABEL - 1.5E0
+            YLABEL = YLABEL - 1.5_WP
          ELSE
             IF (IPLOT.EQ.1) THEN
                WRITE (IPRT,2030) (LINE(L),L=1,111)
@@ -319,15 +319,15 @@
  1030 FORMAT (6X, '-', 51A1, '-', 7X, '-', 51A1, '-')
  1040 FORMAT (1X, F8.1, 47X, F8.1, 47X, F8.1)
  1050 FORMAT (/13X, 'AUTOCORRELATION FUNCTION OF RESIDUALS',
-     +   23X, 36H NORMAL PROBABILITY PLOT OF STD RES )
+     &   23X, 36H NORMAL PROBABILITY PLOT OF STD RES )
  1070 FORMAT (4X, 5H-1.00, 22X, 3H0.0, 21X, 4H1.00, 5X, 4H-2.5, 23X,
-     +   3H0.0, 22X, 3H2.5)
+     &   3H0.0, 22X, 3H2.5)
  1090 FORMAT (// 1X, 13(1H*)/ 1X, 13H*  WARNING  */ 1X, 13(1H*)//
-     +   54H THE STANDARDIZED RESIDUAL PLOTS HAVE BEEN SUPPRESSED.,
-     +   45H  NONE OF THE STANDARDIZED RESIDUALS COULD BE,
-     +   10H COMPUTED,/
-     +   50H BECAUSE FOR EACH OBSERVATION EITHER THE WEIGHT OR,
-     +   48H THE STANDARD DEVIATION OF THE RESIDUAL IS ZERO.)
+     &   54H THE STANDARDIZED RESIDUAL PLOTS HAVE BEEN SUPPRESSED.,
+     &   45H  NONE OF THE STANDARDIZED RESIDUALS COULD BE,
+     &   10H COMPUTED,/
+     &   50H BECAUSE FOR EACH OBSERVATION EITHER THE WEIGHT OR,
+     &   48H THE STANDARD DEVIATION OF THE RESIDUAL IS ZERO.)
  2020 FORMAT (1X, F5.2, '+', 111A1, '+')
  2030 FORMAT (6X, '-', 111A1, '-')
       END

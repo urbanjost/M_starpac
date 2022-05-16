@@ -28,11 +28,11 @@
 !  LOCAL SCALARS
       real(kind=wp) :: emax,gts,half,one,reldx1,rfac1,temp,two,xmax,zero
       integer
-     +   afctol,decfac,dst0,dstnrm,dstsav,f,f0,fdif,flstgd,gtslst,
-     +   gtstep,i,incfac,irc,lmax0,mlstgd,model,nfc,nfcall,nfgcal,
-     +   nreduc,plstgd,preduc,radfac,radinc,rdfcmn,rdfcmx,reldx,
-     +   restor,rfctol,stage,stglim,stppar,switch,toobig,tuner1,
-     +   tuner2,tuner3,xctol,xftol,xirc
+     &   afctol,decfac,dst0,dstnrm,dstsav,f,f0,fdif,flstgd,gtslst,
+     &   gtstep,i,incfac,irc,lmax0,mlstgd,model,nfc,nfcall,nfgcal,
+     &   nreduc,plstgd,preduc,radfac,radinc,rdfcmn,rdfcmx,reldx,
+     &   restor,rfctol,stage,stglim,stppar,switch,toobig,tuner1,
+     &   tuner2,tuner3,xctol,xftol,xirc
       logical goodx
 !
 !  EXTERNAL FUNCTIONS
@@ -283,15 +283,15 @@
       data half/0.5_wp/, one/1.0_wp/, two/2.0_wp/, zero/0.0_wp/
 !
       data irc/3/, mlstgd/4/, model/5/, nfcall/6/,
-     +     nfgcal/7/, radinc/8/, restor/9/, stage/10/,
-     +     stglim/11/, switch/12/, toobig/2/, xirc/13/
+     &     nfgcal/7/, radinc/8/, restor/9/, stage/10/,
+     &     stglim/11/, switch/12/, toobig/2/, xirc/13/
       data afctol/31/, decfac/22/, dstnrm/2/, dst0/3/,
-     +     dstsav/18/, f/10/, fdif/11/, flstgd/12/, f0/13/,
-     +     gtslst/14/, gtstep/4/, incfac/23/,
-     +     lmax0/35/, nreduc/6/, plstgd/15/, preduc/7/,
-     +     radfac/16/, rdfcmn/24/, rdfcmx/25/,
-     +     reldx/17/, rfctol/32/, stppar/5/, tuner1/26/,
-     +     tuner2/27/, tuner3/28/, xctol/33/, xftol/34/
+     &     dstsav/18/, f/10/, fdif/11/, flstgd/12/, f0/13/,
+     &     gtslst/14/, gtstep/4/, incfac/23/,
+     &     lmax0/35/, nreduc/6/, plstgd/15/, preduc/7/,
+     &     radfac/16/, rdfcmn/24/, rdfcmx/25/,
+     &     reldx/17/, rfctol/32/, stppar/5/, tuner1/26/,
+     &     tuner2/27/, tuner3/28/, xctol/33/, xftol/34/
 !
 !+++++++++++++++++++++++++++++++  BODY  ++++++++++++++++++++++++++++++++
 !
@@ -302,7 +302,7 @@
       goodx = .true.
       i = iv(irc)
       if (i .ge. 1 .and. i .le. 12)
-     +             go to (20,30,10,10,40,360,290,290,290,290,290,140), i
+     &             go to (20,30,10,10,40,360,290,290,290,290,290,140), i
          iv(irc) = 13
          go to 999
 !
@@ -440,7 +440,7 @@
       emax = v(gtstep) + v(fdif)
       v(radfac) = half * rfac1
       if (emax .lt. v(gtstep)) v(radfac) = rfac1 * max(v(rdfcmn),
-     +                                           half * v(gtstep)/emax)
+     &                                           half * v(gtstep)/emax)
 !
 !  ***  DO FALSE CONVERGENCE TEST  ***
 !
@@ -469,7 +469,7 @@
          v(radfac) = v(rdfcmx)
          gts = v(gtstep)
          if (v(fdif) .lt. (half/v(radfac) - one) * gts)
-     +            v(radfac) = max(v(incfac), half*gts/(gts + v(fdif)))
+     &            v(radfac) = max(v(incfac), half*gts/(gts + v(fdif)))
          iv(irc) = 4
          if (v(stppar) .eq. zero) go to 300
 !             ***  STEP WAS NOT A NEWTON STEP.  RECOMPUTE IT WITH
@@ -508,13 +508,13 @@
       if (half * v(fdif) .gt. v(preduc)) go to 999
       emax = 0.0
       if (abs(v(f0)).gt.mach(1)/v(rfctol))
-     +   emax = v(rfctol) * abs(v(f0))
+     &   emax = v(rfctol) * abs(v(f0))
       if (v(dstnrm) .gt. v(lmax0) .and. v(preduc) .le. emax)
-     +                       iv(irc) = 11
+     &                       iv(irc) = 11
       if (v(dst0) .lt. zero) go to 320
       i = 0
       if ((v(nreduc) .gt. zero .and. v(nreduc) .le. emax) .or.
-     +    (v(nreduc) .eq. zero. and. v(preduc) .eq. zero))  i = 2
+     &    (v(nreduc) .eq. zero. and. v(preduc) .eq. zero))  i = 2
       if (v(stppar) .eq. zero .and. v(reldx) .le. v(xctol)) i = i + 1
       if (i .gt. 0) iv(irc) = i + 6
 !

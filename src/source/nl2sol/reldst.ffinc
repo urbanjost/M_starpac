@@ -12,17 +12,17 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   p
+     &   p
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   d(p),x(p),x0(p)
+     &   d(p),x(p),x0(p)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   emax,t,xmax,zero
+     &   emax,t,xmax,zero
       integer
-     +   i
+     &   i
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs

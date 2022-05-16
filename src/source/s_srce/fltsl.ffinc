@@ -17,17 +17,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   K,N,NYF
+     &   K,N,NYF
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   H(K),Y(N),YF(N)
+      REAL(KIND=WP) ::
+     &   H(K),Y(N),YF(N)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   TEMP
+      REAL(KIND=WP) ::
+     &   TEMP
       INTEGER
-     +   I,I1,IHM,IHP,IKMID,IM,IP,J,KHALF,KMID
+     &   I,I1,IHM,IHP,IKMID,IM,IP,J,KHALF,KMID
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

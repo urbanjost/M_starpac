@@ -18,19 +18,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   DELTA
+     &   DELTA
       INTEGER
-     +   K,NF
+     &   K,NF
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   FREQ(NF),GAIN(NF),H(K)
+     &   FREQ(NF),GAIN(NF),H(K)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   C,PI,V0,V1,V2
+     &   C,PI,V0,V1,V2
       INTEGER
-     +   I,J,KHALF,KMID
+     &   I,J,KHALF,KMID
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL GETPI
@@ -74,15 +74,15 @@
       KHALF = KMID - 1
 !
       DO 30 I = 1, NF
-         C = COS(2.0E0_WP * PI * FREQ(I))
-         V0 = 0.0E0_WP
-         V1 = 0.0E0_WP
+         C = COS(2.0_WP * PI * FREQ(I))
+         V0 = 0.0_WP
+         V1 = 0.0_WP
          DO 20 J = 1, KHALF
-            V2 = 2.0E0_WP * C * V1 - V0 + H(J)
+            V2 = 2.0_WP * C * V1 - V0 + H(J)
             V0 = V1
             V1 = V2
    20    CONTINUE
-         GAIN(I) = ABS(DELTA * (H(KMID) + 2.0E0_WP * (V1 * C - V0)))
+         GAIN(I) = ABS(DELTA * (H(KMID) + 2.0_WP * (V1 * C - V0)))
    30 CONTINUE
       RETURN
       END

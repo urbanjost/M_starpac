@@ -1,6 +1,6 @@
 !MDLTS2
       SUBROUTINE MDLTS2 (PAR, RESTS, Y, NPAR, N, NFAC, MSPECT, PMU,
-     +  PARDF, NPARDF, T, TEMP, PARAR, PARMA, MBO, N1, N2, IFLAG)
+     &  PARDF, NPARDF, T, TEMP, PARAR, PARMA, MBO, N1, N2, IFLAG)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,29 +18,29 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   PMU
+     &   PMU
       INTEGER
-     +   IFLAG,MBO,N,N1,N2,NFAC,NPAR,NPARDF
+     &   IFLAG,MBO,N,N1,N2,NFAC,NPAR,NPARDF
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PAR(NPAR),PARAR(*),PARDF(*),PARMA(*),RESTS(N1:N2),T(*),
-     +   TEMP(*),Y(N)
+     &   PAR(NPAR),PARAR(*),PARDF(*),PARMA(*),RESTS(N1:N2),T(*),
+     &   TEMP(*),Y(N)
       INTEGER
-     +   MSPECT(NFAC,4)
+     &   MSPECT(NFAC,4)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   FPLPM,RESMAX,WTEST
+     &   FPLPM,RESMAX,WTEST
       INTEGER
-     +   I,IMOD,IMOD1,IPAR,IPQ,ISTART,J,K,L,MAXORD,MBO1,NP,NPARAR,
-     +   NPARMA
+     &   I,IMOD,IMOD1,IPAR,IPQ,ISTART,J,K,L,MAXORD,MBO1,NP,NPARAR,
+     &   NPARMA
       LOGICAL
-     +   PARLE1
+     &   PARLE1
 !
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
-     +   D1MACH
+     &   D1MACH
       EXTERNAL D1MACH
 !
 !  INTRINSIC FUNCTIONS
@@ -128,8 +128,8 @@
 !     ZERO THE PARAMETER ARRAYS PARAR AND PARMA
 !
       DO 10 I=1,MBO
-         T(I) = 0.0E0_WP
-         TEMP(I) = 0.0E0_WP
+         T(I) = 0.0_WP
+         TEMP(I) = 0.0_WP
    10 CONTINUE
 !
       NP = 0
@@ -162,8 +162,8 @@
             NPARAR = NP
             DO 105 K =1, NPARAR
                PARAR(K) = T(K)
-               T(K) = 0.0E0_WP
-               TEMP(K) = 0.0E0_WP
+               T(K) = 0.0_WP
+               TEMP(K) = 0.0_WP
   105       CONTINUE
             NP = 0
          END IF
@@ -172,7 +172,7 @@
       PARLE1 = .TRUE.
       DO 115 K =1, NPARMA
          PARMA(K) = T(K)
-         IF (ABS(PARMA(K)).GT.1.0E0_WP) PARLE1 = .FALSE.
+         IF (ABS(PARMA(K)).GT.1.0_WP) PARLE1 = .FALSE.
   115 CONTINUE
 !
 !     COMPUTE FITTED VALUES AND RESIDUALS FOR MODEL.
@@ -201,19 +201,19 @@
   150    CONTINUE
          DO 160 J = 1,NPARMA
             IF ((I+J.GT.NPARDF) .AND. (I+J.LE.N))
-     +         T(IMOD) = T(IMOD) + PARMA(J)*T(MOD(I+J+1-N1,MBO1)+1)
+     &         T(IMOD) = T(IMOD) + PARMA(J)*T(MOD(I+J+1-N1,MBO1)+1)
   160    CONTINUE
   170 CONTINUE
       DO 175 I = NPARDF,N1,-1
          IMOD = MOD(I+1-N1,MBO1) + 1
-         RESTS(I) = 0.0E0_WP
+         RESTS(I) = 0.0_WP
          DO 163 J = 1,NPARAR
             RESTS(I) = RESTS(I) + PARAR(J)*RESTS(I+J)
   163    CONTINUE
          DO 166 J = 1,NPARMA
             IF ((I+J.GT.NPARDF) .AND. (I+J.LE.N))
-     +         RESTS(I) = RESTS(I) -
-     +                    PARMA(J)*T(MOD(I+J+1-N1,MBO1)+1)
+     &         RESTS(I) = RESTS(I) -
+     &                    PARMA(J)*T(MOD(I+J+1-N1,MBO1)+1)
   166    CONTINUE
          ISTART = I
          IF ((ISTART.LE.1) .AND. (ABS(RESTS(I)).LE.WTEST)) GO TO 180
@@ -236,7 +236,7 @@
 !
             DO 200 J = 1,NPARMA
                IF (I-J.GE.ISTART)
-     +            T(IMOD) = T(IMOD) + PARMA(J)*T(MOD(I-J+1-N1,MBO1)+1)
+     &            T(IMOD) = T(IMOD) + PARMA(J)*T(MOD(I-J+1-N1,MBO1)+1)
   200       CONTINUE
          ELSE
 !
@@ -245,15 +245,15 @@
             DO 205 J = 1,NPARMA
                IF (I-J.GE.ISTART) THEN
                   IMOD1 = MOD(I-J+1-N1,MBO1)+1
-                  IF (PARMA(J).NE.0.0E0_WP .AND. T(IMOD1).NE.0.0E0_WP) THEN
+                  IF (PARMA(J).NE.0.0_WP .AND. T(IMOD1).NE.0.0_WP) THEN
                      IF (LOG(ABS(PARMA(J)))+LOG(ABS(T(IMOD1))).LT.
-     +                         LOG(FPLPM)
-     +                     .AND.
-     +                     (SIGN(1.0E0_WP,T(IMOD)).NE.
-     +                         SIGN(1.0E0_WP,PARMA(J)*T(IMOD1))
-     +                     .OR.
-     +                     LOG(ABS(PARMA(J)))+LOG(ABS(T(IMOD1))).LT.
-     +                         LOG(FPLPM-ABS(T(IMOD))))) THEN
+     &                         LOG(FPLPM)
+     &                     .AND.
+     &                     (SIGN(1.0_WP,T(IMOD)).NE.
+     &                         SIGN(1.0_WP,PARMA(J)*T(IMOD1))
+     &                     .OR.
+     &                     LOG(ABS(PARMA(J)))+LOG(ABS(T(IMOD1))).LT.
+     &                         LOG(FPLPM-ABS(T(IMOD))))) THEN
                         T(IMOD) = T(IMOD) + PARMA(J)*T(IMOD1)
                      ELSE
                         GO TO 300
@@ -271,7 +271,7 @@
   220 CONTINUE
 !
       DO 230 I = N1, ISTART-1
-         RESTS(I) = 0.0E0_WP
+         RESTS(I) = 0.0_WP
   230 CONTINUE
 !
       RETURN

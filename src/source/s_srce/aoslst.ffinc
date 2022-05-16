@@ -1,6 +1,6 @@
 !AOSLST
       SUBROUTINE AOSLST (PRHO, AIC, FTEST, LAGMAX, LAIC, IAR, PHI,
-     +   OSPVAR, IFPRHO, N)
+     &   OSPVAR, IFPRHO, N)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,25 +16,25 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   OSPVAR
+      REAL(KIND=WP) ::
+     &   OSPVAR
       INTEGER
-     +   IAR,LAGMAX,LAIC,N
+     &   IAR,LAGMAX,LAIC,N
       LOGICAL
-     +   IFPRHO
+     &   IFPRHO
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   AIC(*),FTEST(2,*),PHI(*),PRHO(*)
+      REAL(KIND=WP) ::
+     &   AIC(*),FTEST(2,*),PHI(*),PRHO(*)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,IMAX,IMIN,IPRT,LAG,M,NPERL
+     &   I,IMAX,IMIN,IPRT,LAG,M,NPERL
       CHARACTER
-     +   FMT*160
+     &   FMT*160
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT
+!      EXTERNAL IPRINT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MIN
@@ -100,19 +100,19 @@
                WRITE(FMT, 1003)
             END IF
             WRITE(IPRT, FMT) ' AIC               ',
-     +                       (AIC(LAG+1), LAG = IMIN, IMAX-1)
+     &                       (AIC(LAG+1), LAG = IMIN, IMAX-1)
             WRITE(IPRT, FMT) ' F RATIO           ',
-     +                       (FTEST(1, LAG), LAG = IMIN, IMAX-1)
+     &                       (FTEST(1, LAG), LAG = IMIN, IMAX-1)
             WRITE(IPRT, FMT) ' F PROBABILITY     ',
-     +                       (FTEST(2, LAG), LAG = IMIN, IMAX-1)
+     &                       (FTEST(2, LAG), LAG = IMIN, IMAX-1)
          ELSE
             WRITE(FMT, 1004) NPERL
             WRITE(IPRT, FMT) ' AIC               ',
-     +                       (AIC(LAG+1), LAG = IMIN, IMAX)
+     &                       (AIC(LAG+1), LAG = IMIN, IMAX)
             WRITE(IPRT, FMT) ' F RATIO           ',
-     +                       (FTEST(1, LAG), LAG = IMIN, IMAX)
+     &                       (FTEST(1, LAG), LAG = IMIN, IMAX)
             WRITE(IPRT, FMT) ' F PROBABILITY     ',
-     +                       (FTEST(2, LAG), LAG = IMIN, IMAX)
+     &                       (FTEST(2, LAG), LAG = IMIN, IMAX)
          END IF
    30 CONTINUE
 !
@@ -143,13 +143,13 @@
  1003 FORMAT('(A19, 7H ******)')
  1004 FORMAT('(A19,',I2,'(1X, F6.2))')
  1005 FORMAT (//
-     +   49H ORDER AUTOREGRESSIVE PROCESS SELECTED =         , I6/
-     +   51H ONE STEP PREDICTION VARIANCE OF PROCESS SELECTED =, G15.8/)
+     &   49H ORDER AUTOREGRESSIVE PROCESS SELECTED =         , I6/
+     &   51H ONE STEP PREDICTION VARIANCE OF PROCESS SELECTED =, G15.8/)
  1006 FORMAT (/19H COEFFICIENT NUMBER, 12(1X, I6))
  1007 FORMAT ( 19H COEFFICIENT VALUE , 12(1X, F6.4))
  1008 FORMAT (45H YULE-WALKER ESTIMATES OF THE COEFFICIENTS OF,
-     +   36H THE AUTOREGRESSIVE PROCESS SELECTED)
+     &   36H THE AUTOREGRESSIVE PROCESS SELECTED)
  1009 FORMAT (/'****** THIS VALUE CANNOT BE COMPUTED',
-     +         ' BECAUSE LAG = N-1'//)
+     &         ' BECAUSE LAG = N-1'//)
 !
       END

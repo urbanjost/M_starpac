@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   HMA
+      REAL(KIND=WP) ::
+     &   HMA
       INTEGER
-     +   K,N,NYF
+     &   K,N,NYF
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   Y(N),YF(N)
+      REAL(KIND=WP) ::
+     &   Y(N),YF(N)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   SUM
+      REAL(KIND=WP) ::
+     &   SUM
       INTEGER
-     +   I,I1,II,J
+     &   I,I1,II,J
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

@@ -18,15 +18,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NPAR,NRESTS
+     &   N,NPAR,NRESTS
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   D(NRESTS*NPAR)
+     &   D(NRESTS*NPAR)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,I1,I2,J
+     &   I,I1,I2,J
 !
 !
       I1 = -N

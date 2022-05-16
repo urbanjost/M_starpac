@@ -16,45 +16,45 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   RSS
+      REAL(KIND=WP) ::
+     &   RSS
       INTEGER
-     +   N,NNZW
+     &   N,NNZW
       LOGICAL
-     +   WEIGHT
+     &   WEIGHT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PV(N),RES(N),SDRES(N),WT(N)
+      REAL(KIND=WP) ::
+     &   PV(N),RES(N),SDRES(N),WT(N)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   ANNZW,DOT,FAC1,FAC2,FPLM,GAMMA,PI,PVDIV,PVMAX,PVMID,PVMIN,
-     +   RATIO,ROWDIV,ROWMAX,ROWMID,ROWMIN,W,XDIV,XMAX,XMIN,YLABEL,
-     +   YMAX,YMIN
+      REAL(KIND=WP) ::
+     &   ANNZW,DOT,FAC1,FAC2,FPLM,GAMMA,PI,PVDIV,PVMAX,PVMID,PVMIN,
+     &   RATIO,ROWDIV,ROWMAX,ROWMID,ROWMIN,W,XDIV,XMAX,XMIN,YLABEL,
+     &   YMAX,YMIN
       INTEGER
-     +   I,I1,I2,IDOT,IFIRST,IMID,IPLOT,IPRB,IPRT,IPV,IROW,IX,K,L,
-     +   NCOL,NCOLP1,NCOLPL,NCOLT2,NDOT,NROW
+     &   I,I1,I2,IDOT,IFIRST,IMID,IPLOT,IPRB,IPRT,IPV,IROW,IX,K,L,
+     &   NCOL,NCOLP1,NCOLPL,NCOLT2,NDOT,NROW
       CHARACTER
-     +   IBLANK*1,IMINUS*1,IPLUS*1,ISTAR*1
+     &   IBLANK*1,IMINUS*1,IPLUS*1,ISTAR*1
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LINE(102)*1
+     &   LINE(102)*1
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   R1MACH
-      LOGICAL
-     +   MVCHK
-      EXTERNAL R1MACH,MVCHK
+!      REAL(KIND=WP) ::
+!     +   R1MACH
+!      LOGICAL
+!     +   MVCHK
+!      EXTERNAL R1MACH,MVCHK
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL GETPI,IPRINT
+!      EXTERNAL GETPI,IPRINT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC INT,MAX,MIN,MOD
@@ -320,7 +320,7 @@
 !
                      RATIO = (ANNZW-GAMMA) * FAC1
                      IPRB = INT(4.91E0*(RATIO**0.14E0-
-     +                         (1.0E0-RATIO)**0.14E0)*FAC2) + 77
+     &                         (1.0E0-RATIO)**0.14E0)*FAC2) + 77
                      IF (IPRB.LE.NCOL) IPRB = NCOL+1
                      IF (IPRB.GE.103) IPRB = 102
                      LINE(IPRB) = ISTAR
@@ -342,7 +342,7 @@
                 NDOT = 0
                 DO 120 IDOT = 1, N-K
                   IF ((WT(IDOT).GT.0.0E0) .AND.
-     +                (WT(IDOT+K).GT.0.0E0)) THEN
+     &                (WT(IDOT+K).GT.0.0E0)) THEN
                     NDOT = NDOT + 1
                     DOT = DOT + RES(IDOT)*RES(IDOT+K)
                   END IF
@@ -366,10 +366,10 @@
          IF (MOD(K,5).EQ.1) THEN
             IF (IPLOT.EQ.1) THEN
                WRITE (IPRT,2020) YLABEL, (LINE(L),L=1,NCOL), YLABEL,
-     +         (LINE(L),L=NCOLP1,NCOLT2)
+     &         (LINE(L),L=NCOLP1,NCOLT2)
             ELSE
                WRITE (IPRT,1020) K, (LINE(L),L=1,NCOL), YLABEL,
-     +         (LINE(L),L=NCOLP1,NCOLT2)
+     &         (LINE(L),L=NCOLP1,NCOLT2)
             END IF
             YLABEL = YLABEL - 1.5
          ELSE
@@ -398,25 +398,25 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/20X, 23H STD RES VS ROW NUMBER , 35X,
-     +   29H STD RES VS PREDICTED VALUES )
+     &   29H STD RES VS PREDICTED VALUES )
 !1010 FORMAT (7X, 2('+', 9A1), '+', 4A1, 'X', 4A1, 2('+', 9A1), '+',
 !    *   10X, 2('+', 9A1), '+', 4A1, 'X', 4A1, 2('+', 9A1), '+')
  1020 FORMAT (1X, I5, '+', 51A1, '+', 3X, F5.2, '+', 51A1, '+')
  1030 FORMAT (6X, '-', 51A1, '-', 8X, '-', 51A1, '-')
  1040 FORMAT (1X, F8.1, 17X, F8.1, 17X, F8.1, 4X, G11.4, 14X, G11.4,
-     +   10X, G11.4)
+     &   10X, G11.4)
  1050 FORMAT (/13X, 'AUTOCORRELATION FUNCTION OF RESIDUALS',
-     +   23X, 36H NORMAL PROBABILITY PLOT OF STD RES )
+     &   23X, 36H NORMAL PROBABILITY PLOT OF STD RES )
 !1060 FORMAT ('+', F5.2, '+', 51A1, '+', 3X, F5.2, '+', 51A1, '+')
  1070 FORMAT (4X, 5H-1.00, 22X, 3H0.0, 21X, 4H1.00, 5X, 4H-2.5, 23X,
-     +   3H0.0, 22X, 3H2.5)
+     &   3H0.0, 22X, 3H2.5)
 !1080 FORMAT ('+', 6X, 2('+', 9A1), '+', 4A1, 'X', 4A1, 2('+', 9A1),
 !    *   '+', 10X, 2('+', 9A1), '+', 4A1, 'X', 4A1, 2('+', 9A1), '+')
  1090 FORMAT (// 1X, 13('*')/ 1X, 13H*  WARNING  */ 1X, 13('*')//
-     +   54H THE STANDARDIZED RESIDUAL PLOTS HAVE BEEN SUPPRESSED.,
-     +   45H  NONE OF THE STANDARDIZED RESIDUALS COULD BE,
-     +   10H COMPUTED,/
-     +   50H BECAUSE FOR EACH OBSERVATION EITHER THE WEIGHT OR,
-     +   48H THE STANDARD DEVIATION OF THE RESIDUAL IS ZERO.)
+     &   54H THE STANDARDIZED RESIDUAL PLOTS HAVE BEEN SUPPRESSED.,
+     &   45H  NONE OF THE STANDARDIZED RESIDUALS COULD BE,
+     &   10H COMPUTED,/
+     &   50H BECAUSE FOR EACH OBSERVATION EITHER THE WEIGHT OR,
+     &   48H THE STANDARD DEVIATION OF THE RESIDUAL IS ZERO.)
  2020 FORMAT (1X, F5.2, '+', 51A1, '+', 3X, F5.2, '+', 51A1, '+')
       END

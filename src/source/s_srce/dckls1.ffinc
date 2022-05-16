@@ -1,6 +1,6 @@
 !DCKLS1
       SUBROUTINE DCKLS1(N, M, IXM, PAR, NPAR, NETA, NTAU, NROW, SCALE,
-     +   NPRT)
+     &   NPRT)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,15 +18,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IXM,M,N,NETA,NPAR,NPRT,NROW,NTAU
+     &   IXM,M,N,NETA,NPAR,NPRT,NROW,NTAU
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PAR(10),SCALE(10)
+      REAL(KIND=WP) ::
+     &   PAR(10),SCALE(10)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

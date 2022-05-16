@@ -17,15 +17,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IINIT,ISTP,N
+     &   IINIT,ISTP,N
 !
 !  ARRAY ARGUMENTS
       INTEGER
-     +   IVECT(N)
+     &   IVECT(N)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,J
+     &   I,J
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

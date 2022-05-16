@@ -18,19 +18,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   ABSTOL,RELTOL
+     &   ABSTOL,RELTOL
       INTEGER
-     +   N,NFAIL
+     &   N,NFAIL
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   V(N),W(N)
+     &   V(N),W(N)
       INTEGER
-     +   IFAIL(N)
+     &   IFAIL(N)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,MAX
@@ -58,8 +58,8 @@
 !
       DO 30 I = 1, N
          IF ((ABS(V(I)-W(I)).LE.RELTOL*MAX(ABS(V(I)),ABS(W(I)))) .OR.
-     +       (((V(I).EQ.0.0E0_WP).OR.(W(I).EQ.0.0E0_WP)).AND.
-     +        (ABS(V(I)-W(I)).LE.ABSTOL))) THEN
+     &       (((V(I).EQ.0.0_WP).OR.(W(I).EQ.0.0_WP)).AND.
+     &        (ABS(V(I)-W(I)).LE.ABSTOL))) THEN
             IFAIL(I) = 0
          ELSE
             IFAIL(I) = 1

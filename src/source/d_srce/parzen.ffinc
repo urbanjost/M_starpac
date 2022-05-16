@@ -16,15 +16,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LAG,LW
+     &   LAG,LW
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   W(LW)
+     &   W(LW)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   K,L
+     &   K,L
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC DBLE
@@ -43,18 +43,18 @@
 !        THE VECTOR OF LAG WINDOWS.
 !
       L = LAG/2
-      W(1) = 1.0E0_WP
+      W(1) = 1.0_WP
       IF (L.LE.0) GO TO 15
       DO 10 K = 1, L
          W(K+1) = DBLE(K) / DBLE(LAG)
-         W(K+1) = 1.0E0_WP + 6.0E0_WP * W(K+1) * W(K+1) * (W(K+1) - 1.0E0_WP)
+         W(K+1) = 1.0_WP + 6.0_WP * W(K+1) * W(K+1) * (W(K+1) - 1.0_WP)
    10 CONTINUE
 !
    15 CONTINUE
       L = L + 1
       DO 20 K = L, LAG
-         W(K+1) = 1.0E0_WP - DBLE(K) / DBLE(LAG)
-         W(K+1) = 2.0E0_WP * W(K+1) * W(K+1) * W(K+1)
+         W(K+1) = 1.0_WP - DBLE(K) / DBLE(LAG)
+         W(K+1) = 2.0_WP * W(K+1) * W(K+1) * W(K+1)
    20 CONTINUE
 !
       RETURN

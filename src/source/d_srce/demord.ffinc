@@ -16,17 +16,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NDEM
+     &   N,NDEM
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PHAS1(N),PHAS2(N)
+     &   PHAS1(N),PHAS2(N)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   PI
+     &   PI
       INTEGER
-     +   I
+     &   I
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL GETPI
@@ -49,9 +49,9 @@
       CALL GETPI(PI)
 !
       DO 10 I = 1, NDEM
-         PHAS2(I) = 0.0E0_WP
-         IF (PHAS1(I) .GT. 0.0E0_WP) PHAS2(I) = PHAS1(I) - 2.0E0_WP*PI
-         IF (PHAS1(I) .LT. 0.0E0_WP) PHAS2(I) = PHAS1(I) + 2.0E0_WP*PI
+         PHAS2(I) = 0.0_WP
+         IF (PHAS1(I) .GT. 0.0_WP) PHAS2(I) = PHAS1(I) - 2.0_WP*PI
+         IF (PHAS1(I) .LT. 0.0_WP) PHAS2(I) = PHAS1(I) + 2.0_WP*PI
    10 CONTINUE
 !
       RETURN

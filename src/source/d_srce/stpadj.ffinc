@@ -1,7 +1,7 @@
 !STPADJ
       SUBROUTINE STPADJ(XM, N, M, IXM, MDL, PAR, NPAR,
-     +   NEXMPT, STP, NFAIL, IFAIL, J, RELTOL, ABSTOL, STPLOW, STPMID,
-     +   STPUP, ITEMP, FD, FDLAST, PV, PVNEW)
+     &   NEXMPT, STP, NFAIL, IFAIL, J, RELTOL, ABSTOL, STPLOW, STPMID,
+     &   STPUP, ITEMP, FD, FDLAST, PV, PVNEW)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,30 +19,30 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   ABSTOL,RELTOL,STP,STPLOW,STPMID,STPUP
+     &   ABSTOL,RELTOL,STP,STPLOW,STPMID,STPUP
       INTEGER
-     +   IXM,J,M,N,NEXMPT,NFAIL,NPAR
+     &   IXM,J,M,N,NEXMPT,NFAIL,NPAR
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   FD(N),FDLAST(N),PAR(NPAR),PV(N),PVNEW(N),XM(IXM,M)
+     &   FD(N),FDLAST(N),PAR(NPAR),PV(N),PVNEW(N),XM(IXM,M)
       INTEGER
-     +   IFAIL(N),ITEMP(N)
+     &   IFAIL(N),ITEMP(N)
 !
 !  SUBROUTINE ARGUMENTS
       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       REAL(KIND=WP) ::
-     +   Q
+     &   Q
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   FACTOR,STPNEW,TEMP
+     &   FACTOR,STPNEW,TEMP
       INTEGER
-     +   NCOUNT
+     &   NCOUNT
       LOGICAL
-     +   DONE,FIRST
+     &   DONE,FIRST
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL CMPFD,ICOPY,RELCOM,DCOPY
@@ -139,12 +139,12 @@
 !
       IF (ABS(STP).GT.STPMID) THEN
 !
-            STPNEW = STPUP * SIGN(1.0E0_WP, PAR(J))
-            FACTOR = 10.0E0_WP
+            STPNEW = STPUP * SIGN(1.0_WP, PAR(J))
+            FACTOR = 10.0_WP
       ELSE
 !
-            STPNEW = STPLOW * SIGN(1.0E0_WP, PAR(J))
-            FACTOR = 0.1D0
+            STPNEW = STPLOW * SIGN(1.0_WP, PAR(J))
+            FACTOR = 0.1_WP
 !
       END IF
 !
@@ -187,10 +187,10 @@
                Q = STPNEW + PAR(J)
                STPNEW = Q - PAR(J)
 !
-               IF ((FACTOR.GT.1.0E0_WP .AND. ABS(STPNEW).GT.ABS(STP))
-     +            .OR.
-     +            (FACTOR.LT.1.0E0_WP .AND. ABS(STPNEW).LT.ABS(STP)))
-     +            DONE = .TRUE.
+               IF ((FACTOR.GT.1.0_WP .AND. ABS(STPNEW).GT.ABS(STP))
+     &            .OR.
+     &            (FACTOR.LT.1.0_WP .AND. ABS(STPNEW).LT.ABS(STP)))
+     &            DONE = .TRUE.
           END IF
 !
       IF (DONE) THEN

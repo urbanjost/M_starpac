@@ -17,15 +17,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LACOV,LAGMAX
+     &   LACOV,LAGMAX
 !
 !  ARRAY ARGUMENTS
       INTEGER
-     +   NLPPA(LACOV)
+     &   NLPPA(LACOV)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   LAG
+     &   LAG
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

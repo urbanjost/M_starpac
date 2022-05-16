@@ -23,24 +23,24 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NDIV,NFFT
+     &   N,NDIV,NFFT
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT
+     &   IPRT
       LOGICAL
-     +   ERR01,ERR02,HEAD
+     &   ERR01,ERR02,HEAD
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LN(8)*1,LNDIV(8)*1,NMSUB(6)*1
+     &   LN(8)*1,LNDIV(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,IPRINT,SETESL
+!      EXTERNAL EISGE,IPRINT,SETESL
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -77,20 +77,20 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'F',       'F',       'T',       'L',       'E',       'N'/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'F',       'F',       'T',       'L',       'E',       'N'/
       DATA
-     +     LN(1),     LN(2),     LN(3),     LN(4),     LN(5),     LN(6)
-     + /     'N',       ' ',       ' ',       ' ',       ' ',       ' '/
+     &     LN(1),     LN(2),     LN(3),     LN(4),     LN(5),     LN(6)
+     & /     'N',       ' ',       ' ',       ' ',       ' ',       ' '/
       DATA
-     +     LN(7),     LN(8)
-     + /     ' ',       ' '/
+     &     LN(7),     LN(8)
+     & /     ' ',       ' '/
       DATA
-     +  LNDIV(1),  LNDIV(2),  LNDIV(3),  LNDIV(4),  LNDIV(5),  LNDIV(6)
-     + /     'N',       'D',       'I',       'V',       ' ',       ' '/
+     &  LNDIV(1),  LNDIV(2),  LNDIV(3),  LNDIV(4),  LNDIV(5),  LNDIV(6)
+     & /     'N',       'D',       'I',       'V',       ' ',       ' '/
       DATA
-     +  LNDIV(7),  LNDIV(8)
-     + /     ' ',       ' '/
+     &  LNDIV(7),  LNDIV(8)
+     & /     ' ',       ' '/
 !
 !     ERROR CHECKING
 !
@@ -121,6 +121,6 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   34H       CALL FFTLEN (N, NDIV, NFFT))
+     &   34H       CALL FFTLEN (N, NDIV, NFFT))
 !
       END

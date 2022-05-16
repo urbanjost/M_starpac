@@ -16,24 +16,24 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   SYM
+      REAL(KIND=WP) ::
+     &   SYM
       INTEGER
-     +   KMD,N
+     &   KMD,N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   X(N),Y(N)
+      REAL(KIND=WP) ::
+     &   X(N),Y(N)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   CON
+      REAL(KIND=WP) ::
+     &   CON
       INTEGER
-     +   I,J,KUSED,LIM
+     &   I,J,KUSED,LIM
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   EXTEND
+      REAL(KIND=WP) ::
+     &   EXTEND
       EXTERNAL EXTEND
 !
 !  INTRINSIC FUNCTIONS
@@ -81,10 +81,10 @@
          IF (LIM .EQ. 0) GO TO 30
          DO 20 J = 1, LIM
             X(I) = X(I) + EXTEND(Y, I-J, N, SYM)
-     +         + EXTEND(Y, I+J, N, SYM)
+     &         + EXTEND(Y, I+J, N, SYM)
    20    CONTINUE
    30    X(I) = (X(I) + (EXTEND(Y, I-KUSED, N, SYM)
-     +      + EXTEND(Y, I+KUSED, N, SYM)) * 0.5E0) * CON
+     &      + EXTEND(Y, I+KUSED, N, SYM)) * 0.5E0) * CON
    40 CONTINUE
 !
       RETURN

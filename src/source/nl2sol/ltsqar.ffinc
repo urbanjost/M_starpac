@@ -14,17 +14,17 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   n
+     &   n
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   a(*),l(*)
+     &   a(*),l(*)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   lii,lj
+     &   lii,lj
       integer
-     +   i,i1,ii,iim1,j,k,m
+     &   i,i1,ii,iim1,j,k,m
 !
 !     INTEGER N
 !     REAL(KIND=WP) :: A(1), L(1)

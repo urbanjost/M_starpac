@@ -18,34 +18,34 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   CODE,LENGTH,LMASK,MODE,NC
+     &   CODE,LENGTH,LMASK,MODE,NC
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   X(LENGTH),Y(LENGTH)
+     &   X(LENGTH),Y(LENGTH)
       INTEGER
-     +   MASK(LMASK)
+     &   MASK(LMASK)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   SQXII,SQYII
+     &   SQXII,SQYII
       INTEGER
-     +   I,I0,II,IK,IMASK,IPRT,J,JMASK,K,KI,KK,KM,KMAX,KN,L,NF,
-     +   NLINE
+     &   I,I0,II,IK,IMASK,IPRT,J,JMASK,K,KI,KK,KM,KMAX,KN,L,NF,
+     &   NLINE
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   XLINE(10),YLINE(10)
+     &   XLINE(10),YLINE(10)
       INTEGER
-     +   INDW(10)
+     &   INDW(10)
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   INPERL
-      EXTERNAL INPERL
+!      INTEGER
+!     +   INPERL
+!      EXTERNAL INPERL
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT
+!      EXTERNAL IPRINT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MIN,SQRT
@@ -169,7 +169,7 @@
             IF (CODE.EQ.2) THEN
                SQYII = SQRT(Y(II))
             ELSE
-               SQYII = 1.0E0_WP
+               SQYII = 1.0_WP
             END IF
             DO 60 K=J,KM
                NLINE = NLINE + 1
@@ -182,15 +182,15 @@
                XLINE(NLINE) = X(KI)
                IF (CODE.EQ.2) YLINE(NLINE) = Y(KI)
    40          IF (((MODE.NE.1) .AND. (MODE.NE.2)) .OR. (I.NE.K)) GO TO
-     +            50
+     &            50
                XLINE(NLINE) = SQXII
                IF (CODE.EQ.2) YLINE(NLINE) = SQXII
    50          IF (((MODE.NE.2) .AND. (MODE.NE.4)) .OR. (K.GE.I)) GO TO
-     +            60
+     &            60
                KK = K*(K-1)/2 + K
                XLINE(NLINE) = XLINE(NLINE)/(SQXII*SQRT(X(KK)))
                IF (CODE.EQ.2)
-     +            YLINE(NLINE) = YLINE(NLINE)/(SQYII*SQRT(Y(KK)))
+     &            YLINE(NLINE) = YLINE(NLINE)/(SQYII*SQRT(Y(KK)))
    60       CONTINUE
    70       IF (IMASK.GE.LMASK) GO TO 100
             IMASK = IMASK + 1
@@ -213,5 +213,5 @@
  1020 FORMAT (' ', 5X, 7(3X, G14.7))
  1030 FORMAT (' ')
  1040 FORMAT (/47H ERROR IN STARPAC.  MATPRF TRIES TO ACCESS MORE,
-     +   29H ELEMENTS THAN EXIST IN MASK.)
+     &   29H ELEMENTS THAN EXIST IN MASK.)
       END

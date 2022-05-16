@@ -17,15 +17,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   K
+     &   K
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   HHP(K),HLP(K)
+      REAL(KIND=WP) ::
+     &   HHP(K),HLP(K)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,KMID
+     &   I,KMID
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

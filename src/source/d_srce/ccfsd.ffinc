@@ -17,17 +17,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   ICCOV,LAGMAX,N,NCC
+     &   ICCOV,LAGMAX,N,NCC
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   CCOV11(ICCOV),CCOV22(ICCOV),SDRHOC(NCC)
+     &   CCOV11(ICCOV),CCOV22(ICCOV),SDRHOC(NCC)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   DIV,SUM
+     &   DIV,SUM
       INTEGER
-     +   I,ILAST,K,K0,KM,KP
+     &   I,ILAST,K,K0,KM,KP
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MIN,SQRT
@@ -66,22 +66,22 @@
 !
       DIV = CCOV11(1) * CCOV22(1)
 !
-      SUM = 0.0E0_WP
+      SUM = 0.0_WP
       DO 10 I = 1, LAGMAX
          SUM = SUM + CCOV11(I+1) * CCOV22(I+1)
    10 CONTINUE
       SUM = SUM / DIV
-      SDRHOC(K0) = SQRT(N + 2.0E0_WP * SUM) / N
+      SDRHOC(K0) = SQRT(N + 2.0_WP * SUM) / N
 !
       DO 30 K = 1, LAGMAX
-         SUM = 0.0E0_WP
+         SUM = 0.0_WP
          ILAST = MIN(LAGMAX, N-LAGMAX)
          DO 20 I = 1, ILAST
             SUM = SUM + (N-K-I)*CCOV11(I+1)*CCOV22(I+1)
    20    CONTINUE
          SUM = SUM / DIV
          KM = K0 - K
-         SDRHOC(KM) = SQRT((N - K) + 2.0E0_WP * SUM) / N
+         SDRHOC(KM) = SQRT((N - K) + 2.0_WP * SUM) / N
 !
          KP = K0 + K
          SDRHOC(KP) = SDRHOC(KM)

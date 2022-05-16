@@ -19,43 +19,43 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LDSTAK,N,NPRT
+     &   LDSTAK,N,NPRT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   STS(53),Y(*)
+     &   STS(53),Y(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   ALPHA,SUMD2,SUMD3,SUMD4,SUMDA,SUMDI,SUMT1
+     &   ALPHA,SUMD2,SUMD3,SUMD4,SUMDA,SUMDI,SUMT1
       INTEGER
-     +   IDP,IINT,IPRT,LSORT,MID,NALL0,NNZW
+     &   IDP,IINT,IPRT,LSORT,MID,NALL0,NNZW
       LOGICAL
-     +   STACK,WTS
+     &   STACK,WTS
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   WT(1)
+     &   WT(1)
       INTEGER
-     +   ISTAK(12)
+     &   ISTAK(12)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL STKGET,STKST
+!      INTEGER
+!     +   STKST
+!      EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL GENI,IPRINT,SRTIR,SRTRI,STAT1,STAT2,STATER,STKCLR,STKSET,
-     +   SUMBS,SUMDS,SUMID,SUMOT,SUMSS,SUMTS
+!      EXTERNAL GENI,IPRINT,SRTIR,SRTRI,STAT1,STAT2,STATER,STKCLR,STKSET,
+!     +   SUMBS,SUMDS,SUMID,SUMOT,SUMSS,SUMTS
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -136,9 +136,9 @@
 !     INITIALIZE NAME VECTORS
 !
       DATA  NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6)
-     +   /       'S',      'T',      'A',      'T',      'S',      ' '/
+     &   /       'S',      'T',      'A',      'T',      'S',      ' '/
 !
-      DATA ALPHA /0.25D0/
+      DATA ALPHA /0.25_WP/
       DATA IDP /4/
       DATA IINT /2/
       DATA WTS /.FALSE./
@@ -173,13 +173,13 @@
 !     COMPUTE THE STATISTICS WHICH USE A SORTED ARRAY.
 !
       CALL STAT1(Y, N, STS(5), STS(34), STS(35), STS(6),
-     +   STS(11), 10, 0.0E0_WP, 0.0E0_WP, STS(44))
+     &   STS(11), 10, 0.0_WP, 0.0_WP, STS(44))
 !
 !     CALCULATE SUMS OF THE SORTED ARRAY.
 !
       CALL SUMBS(Y, N, 1, MID, N)
       CALL SUMSS(Y, N, 1, MID, N, STS(38), STS(39), STS(42),
-     +   STS(3))
+     &   STS(3))
       STS(4) = STS(3)
       CALL SUMTS(Y, N, ALPHA, SUMT1, STS(7))
       STS(8) = STS(7)
@@ -203,5 +203,5 @@
 !     FORMAT STATEMENTS.
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL STATS (Y, N, LDSTAK, STS, NPRT)')
+     &   '       CALL STATS (Y, N, LDSTAK, STS, NPRT)')
       END

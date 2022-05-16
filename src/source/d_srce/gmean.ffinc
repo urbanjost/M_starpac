@@ -17,17 +17,17 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   YMEAN
+     &   YMEAN
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   Y(N)
+     &   Y(N)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC EXP,LOG
@@ -43,7 +43,7 @@
 !     REAL(KIND=WP) :: YMEAN
 !        THE GEOMETRIC MEAN OF THE OBSERVED SERIES
 !
-      YMEAN = 0.0E0_WP
+      YMEAN = 0.0_WP
       DO 10 I = 1, N
          YMEAN = YMEAN + LOG(Y(I))
    10 CONTINUE

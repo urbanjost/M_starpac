@@ -16,17 +16,17 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   VALUE
+     &   VALUE
       INTEGER
-     +   IM,M,N
+     &   IM,M,N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   ARRAY(IM,M)
+     &   ARRAY(IM,M)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,J
+     &   I,J
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

@@ -16,19 +16,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   YMEAN
+     &   YMEAN
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   Y(*)
+     &   Y(*)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   SUMY
+     &   SUMY
       INTEGER
-     +   I
+     &   I
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -43,7 +43,7 @@
 !     REAL(KIND=WP) :: YMEAN
 !        THE MEAN OF THE OBSERVED TIME SERIES
 !
-      SUMY = 0.0E0_WP
+      SUMY = 0.0_WP
       DO 10 I = 1, N
          SUMY = SUMY + Y(I)
    10 CONTINUE

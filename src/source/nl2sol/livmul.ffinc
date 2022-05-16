@@ -10,21 +10,21 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   n
+     &   n
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   l(1),x(n),y(n)
+     &   l(1),x(n),y(n)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   t,zero
+     &   t,zero
       integer
-     +   i,j,k
+     &   i,j,k
 !
 !  EXTERNAL FUNCTIONS
       real(kind=wp) ::
-     +   dotprd
+     &   dotprd
       external dotprd
 !
       data zero/0.0_wp/

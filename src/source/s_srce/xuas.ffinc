@@ -21,28 +21,27 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LDSTAK
+     &   LDSTAK
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       DOUBLE PRECISION DSTAK(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   FMAX,FMIN,YMISS
+      REAL(KIND=WP) :: FMAX,FMIN,YMISS
       INTEGER
-     +   I,IAR,IPRT,LACOV,LAG,LAGMAX,LDS,LYFFT,NF,NPRT,NY
+     &   I,IAR,IPRT,LACOV,LAG,LAGMAX,LDS,LYFFT,NF,NPRT,NY
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   ACOV(101),FREQ(300),PHI(101),SPCA(101),SPCF(101),Y(150),
-     +   YFFT(400)
+      REAL(KIND=WP) ::
+     &   ACOV(101),FREQ(300),PHI(101),SPCA(101),SPCF(101),Y(150),
+     &   YFFT(400)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ACFS,IPRINT,SCOPY,SETRV,UAS,UASF,UASFS,UASS,UASV,UASVS
+!      EXTERNAL ACFS,IPRINT,SETRV,UAS,UASF,UASFS,UASS,UASV,UASVS
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS
@@ -113,23 +112,23 @@
 !
 !
       DATA   Y(  1), Y(  2), Y(  3), Y(  4), Y(  5), Y(  6)
-     +    /-0.88E0, -0.12E0, -0.89E0, -1.38E0, -0.07E0,  1.03E0/
+     &    /-0.88_WP, -0.12_WP, -0.89_WP, -1.38_WP, -0.07_WP,  1.03_WP/
       DATA   Y(  7), Y(  8), Y(  9), Y( 10), Y( 11), Y( 12)
-     +    / 2.14E0,  0.35E0, -1.10E0, -1.78E0, -2.76E0, -1.77E0/
+     &    / 2.14_WP,  0.35_WP, -1.10_WP, -1.78_WP, -2.76_WP, -1.77_WP/
       DATA   Y( 13), Y( 14), Y( 15), Y( 16), Y( 17), Y( 18)
-     +    / 0.98E0,  1.00E0, -0.70E0, -1.01E0, -1.30E0, -0.85E0/
+     &    / 0.98_WP,  1.00_WP, -0.70_WP, -1.01_WP, -1.30_WP, -0.85_WP/
       DATA   Y( 19), Y( 20), Y( 21), Y( 22), Y( 23), Y( 24)
-     +    /-0.46E0,  1.63E0,  0.06E0, -0.17E0, -1.01E0, -1.04E0/
+     &    /-0.46_WP,  1.63_WP,  0.06_WP, -0.17_WP, -1.01_WP, -1.04_WP/
       DATA   Y( 25), Y( 26), Y( 27), Y( 28), Y( 29), Y( 30)
-     +    /-0.66E0, -1.12E0, -0.51E0, -0.71E0, -0.20E0, -0.13E0/
+     &    /-0.66_WP, -1.12_WP, -0.51_WP, -0.71_WP, -0.20_WP, -0.13_WP/
       DATA   Y( 31), Y( 32), Y( 33), Y( 34), Y( 35), Y( 36)
-     +    / 0.14E0,  1.59E0, -0.76E0, -1.08E0, -1.77E0, -1.20E0/
+     &    / 0.14_WP,  1.59_WP, -0.76_WP, -1.08_WP, -1.77_WP, -1.20_WP/
       DATA   Y( 37), Y( 38), Y( 39), Y( 40), Y( 41), Y( 42)
-     +    / 0.45E0, -0.07E0, -0.63E0, -0.35E0, -0.87E0, -0.62E0/
+     &    / 0.45_WP, -0.07_WP, -0.63_WP, -0.35_WP, -0.87_WP, -0.62_WP/
       DATA   Y( 43), Y( 44), Y( 45), Y( 46), Y( 47), Y( 48)
-     +    / 0.28E0,  1.90E0,  2.14E0,  1.05E0,  0.31E0,  1.07E0/
+     &    / 0.28_WP,  1.90_WP,  2.14_WP,  1.05_WP,  0.31_WP,  1.07_WP/
       DATA   Y( 49), Y( 50)
-     +    / 2.67E0,  2.44E0/
+     &    / 2.67_WP,  2.44_WP/
 !
 !
       CALL IPRINT(IPRT)
@@ -139,7 +138,7 @@
 !        TEST 1  -  MISCELANEOUS ERROR CHECKING
 !
       WRITE (IPRT, 2000)
-      YMISS = 1.16E0
+      YMISS = 1.16_WP
       LAGMAX = -1
       NY = -10
       LACOV = 101
@@ -147,8 +146,8 @@
       IAR = -2
       LYFFT = -11
       NF = -5
-      FMIN = 0.5E0
-      FMAX = 0.0E0
+      FMIN = 0.5_WP
+      FMAX = 0.0_WP
       NPRT = -1
       LDS = 0
       WRITE(IPRT, 1001)
@@ -156,105 +155,105 @@
       WRITE (IPRT, 1002) IERR
       WRITE(IPRT, 1003)
       CALL UASS(Y, NY, IAR, PHI, LAGMAX, LAG, NF,
-     +   FMIN, FMAX, NPRT,SPCA, SPCF, FREQ, LDS)
+     &   FMIN, FMAX, NPRT,SPCA, SPCF, FREQ, LDS)
       WRITE (IPRT, 1002) IERR
       WRITE(IPRT, 1019)
       CALL UASF (YFFT, NY, LYFFT, LDS)
       WRITE (IPRT, 1002) IERR
       WRITE(IPRT, 1020)
       CALL UASFS(YFFT, NY, LYFFT, LDS, IAR, PHI, LAGMAX, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ)
       WRITE (IPRT, 1002) IERR
       WRITE (IPRT, 1007)
       CALL UASV(ACOV, LAGMAX, NY)
       WRITE (IPRT, 1002) IERR
       WRITE (IPRT, 1008)
       CALL UASVS(ACOV, LAGMAX, Y, NY, IAR, PHI, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
       WRITE (IPRT, 1002) IERR
 !
 !        TEST 2  -  MISCELANEOUS ERROR CHECKING (CONTINUED)
 !
       WRITE (IPRT, 2010)
-      YMISS = 1.16E0
+      YMISS = 1.16_WP
       NY = 50
       LAGMAX = 50
       LAG = 101
       IAR = 101
-      CALL SETRV(PHI, IAR, 2.0E0)
-      CALL SETRV(ACOV, LAGMAX+1, 2.0E0)
-      ACOV(1) = 1.0E0
+      CALL SETRV(PHI, IAR, 2.0_WP)
+      CALL SETRV(ACOV, LAGMAX+1, 2.0_WP)
+      ACOV(1) = 1.0_WP
       LYFFT = -11
       NF = 51
-      FMIN = 0.0E0
-      FMAX = 0.5E0
+      FMIN = 0.0_WP
+      FMAX = 0.5_WP
       NPRT = 5
       LDS = 0
       WRITE(IPRT, 1003)
       CALL UASS(Y, NY, IAR, PHI, LAGMAX, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
       WRITE (IPRT, 1002) IERR
       WRITE(IPRT, 1019)
       CALL UASF (YFFT, NY, LYFFT, LDS)
       WRITE (IPRT, 1002) IERR
       WRITE(IPRT, 1020)
       CALL UASFS(YFFT, NY, LYFFT, LDS, IAR, PHI, LAGMAX, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ)
       WRITE (IPRT, 1002) IERR
       WRITE (IPRT, 1007)
       CALL UASV(ACOV, LAGMAX, NY)
       WRITE (IPRT, 1002) IERR
       WRITE (IPRT, 1008)
       CALL UASVS(ACOV, LAGMAX, Y, NY, IAR, PHI, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
       WRITE (IPRT, 1002) IERR
 !
 !        TEST 3  -  LDS TOO SMALL
 !
       WRITE (IPRT, 2030)
-      YMISS = 1.16E0
+      YMISS = 1.16_WP
       NY = 50
       LAGMAX = 49
       LYFFT = 400
       LAG = 16
       IAR = 2
-      PHI(1) = 1.0E0
-      PHI(2) = -0.5E0
+      PHI(1) = 1.0_WP
+      PHI(2) = -0.5_WP
       CALL ACFS (Y, NY, LAGMAX, LACOV, ACOV, IAR, PHI, 0, 700)
       NF = 51
-      FMIN = 0.0E0
-      FMAX = 0.5E0
+      FMIN = 0.0_WP
+      FMAX = 0.5_WP
       NPRT = 3
       LDS = 0
       WRITE(IPRT, 1003)
       CALL UASS(Y, NY, IAR, PHI, LAGMAX, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
       WRITE (IPRT, 1002) IERR
       WRITE(IPRT, 1019)
       CALL UASF (YFFT, NY, LYFFT, LDS)
       WRITE (IPRT, 1002) IERR
       WRITE(IPRT, 1020)
       CALL UASFS(YFFT, NY, LYFFT, LDS, IAR, PHI, LAGMAX, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ)
       WRITE (IPRT, 1002) IERR
       WRITE (IPRT, 1008)
       CALL UASVS(ACOV, LAGMAX, Y, NY, IAR, PHI, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
       WRITE (IPRT, 1002) IERR
 !
 !     CHECK RESULTS FROM VALID CALL
 !
-      YMISS = 1.16E0
+      YMISS = 1.16_WP
       NY = 50
       LAGMAX = 49
       LYFFT = 400
       LAG = 16
       IAR = 2
-      PHI(1) = 1.0E0
-      PHI(2) = -0.5E0
+      PHI(1) = 1.0_WP
+      PHI(2) = -0.5_WP
       NF = 51
-      FMIN = 0.0E0
-      FMAX = 0.5E0
+      FMIN = 0.0_WP
+      FMAX = 0.5_WP
       NPRT = 2
       LDS = 700
 !
@@ -270,7 +269,7 @@
       WRITE(IPRT, 2020)
       WRITE(IPRT, 1003)
       CALL UASS(Y, NY, IAR, PHI, LAGMAX, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
       WRITE (IPRT, 1002) IERR
 !
 !     PRINT RETURNED VALUES FROM UASS
@@ -293,7 +292,7 @@
       WRITE(IPRT, 1020)
       CALL SCOPY(NY, Y, 1, YFFT, 1)
       CALL UASFS(YFFT, NY, LYFFT, LDS, IAR, PHI, LAGMAX, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ)
       WRITE (IPRT, 1002) IERR
 !
 !     PRINT RETURNED VALUES FROM UASFS
@@ -314,7 +313,7 @@
       WRITE(IPRT, 2020)
       WRITE (IPRT, 1008)
       CALL UASVS(ACOV, LAGMAX, Y, NY, IAR, PHI, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
       WRITE (IPRT, 1002) IERR
 !
 !     PRINT RETURNED VALUES FROM UASVS
@@ -325,17 +324,17 @@
 !
 !     MINIMUM PROBLEM SIZE
 !
-      YMISS = 1.16E0
+      YMISS = 1.16_WP
       NY = 17
       LAGMAX = 1
       LYFFT = 400
       LAG = 1
       IAR = -1
-      PHI(1) = 1.0E0
-      PHI(2) = -0.5E0
+      PHI(1) = 1.0_WP
+      PHI(2) = -0.5_WP
       NF = 1
-      FMIN = 0.0E0
-      FMAX = 0.5E0
+      FMIN = 0.0_WP
+      FMAX = 0.5_WP
       NPRT = 2
       LDS = LDSTAK
 !
@@ -351,7 +350,7 @@
       WRITE(IPRT, 2060)
       WRITE(IPRT, 1003)
       CALL UASS(Y, NY, IAR, PHI, LAGMAX, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
       WRITE (IPRT, 1002) IERR
 !
 !     PRINT RETURNED VALUES FROM UASS
@@ -367,11 +366,11 @@
       LYFFT = 400
       LAG = 0
       IAR = 0
-      PHI(1) = 1.0E0
-      PHI(2) = -0.5E0
+      PHI(1) = 1.0_WP
+      PHI(2) = -0.5_WP
       NF = 51
-      FMIN = 0.45E0
-      FMAX = 0.5E0
+      FMIN = 0.45_WP
+      FMAX = 0.5_WP
       NPRT = 2
 !
 !     TEST OF UASS
@@ -379,7 +378,7 @@
       WRITE(IPRT, 2070)
       WRITE(IPRT, 1003)
       CALL UASS(Y, NY, IAR, PHI, LAGMAX, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
       WRITE (IPRT, 1002) IERR
 !
 !     PRINT RETURNED VALUES FROM UASS
@@ -390,18 +389,18 @@
 !
 !     WHITE NOISE SPECTRUM
 !
-      YMISS = 1.16E0
-      CALL SETRV(YFFT, NY, 0.0E0)
+      YMISS = 1.16_WP
+      CALL SETRV(YFFT, NY, 0.0_WP)
       NY = 50
       LAGMAX = 49
       LYFFT = 400
       LAG = 16
       IAR = 2
-      PHI(1) = 1.0E0
-      PHI(2) = -0.5E0
+      PHI(1) = 1.0_WP
+      PHI(2) = -0.5_WP
       NF = 51
-      FMIN = 0.0E0
-      FMAX = 0.5E0
+      FMIN = 0.0_WP
+      FMAX = 0.5_WP
       NPRT = 2
 !
 !     TEST OF UASS
@@ -409,7 +408,7 @@
       WRITE(IPRT, 2080)
       WRITE(IPRT, 1003)
       CALL UASS(YFFT, NY, IAR, PHI, LAGMAX, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
       WRITE (IPRT, 1002) IERR
 !
 !     PRINT RETURNED VALUES FROM UASS
@@ -426,11 +425,11 @@
       LYFFT = 400
       LAG = 0
       IAR = 0
-      PHI(1) = 1.0E0
-      PHI(2) = -0.5E0
+      PHI(1) = 1.0_WP
+      PHI(2) = -0.5_WP
       NF = 51
-      FMIN = 0.45E0
-      FMAX = 0.5E0
+      FMIN = 0.45_WP
+      FMAX = 0.5_WP
       NPRT = 0
 !
 !     TEST OF UASS
@@ -438,7 +437,7 @@
       WRITE(IPRT, 2090)
       WRITE(IPRT, 1003)
       CALL UASS(Y, NY, IAR, PHI, LAGMAX, LAG, NF,
-     +   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
+     &   FMIN, FMAX, NPRT, SPCA, SPCF, FREQ, LDS)
       WRITE (IPRT, 1002) IERR
 !
 !     PRINT RETURNED VALUES FROM UASS
@@ -467,7 +466,7 @@
  2030 FORMAT (14H1LDS TOO SMALL)
  2060 FORMAT (21H1MINIMUM PROBLEM SIZE)
  2070 FORMAT (
-     +   59H1CHECK HANDLING OF FMIN AND FMAX, LAG AND IAR EQUAL TO ZERO)
+     &   59H1CHECK HANDLING OF FMIN AND FMAX, LAG AND IAR EQUAL TO ZERO)
  2080 FORMAT (21H1WHITE NOISE SPECTRUM)
  2090 FORMAT (44H1SUPPRESS OUTPUT, LAG AND IAR LESS THAN ZERO)
       END

@@ -15,20 +15,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   FC
+      REAL(KIND=WP) ::
+     &   FC
       INTEGER
-     +   K
+     &   K
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   HLP(K)
+      REAL(KIND=WP) ::
+     &   HLP(K)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   ARG,CON,PI,SUM
+      REAL(KIND=WP) ::
+     &   ARG,CON,PI,SUM
       INTEGER
-     +   I,IHM,IHP,KHALF,KMID
+     &   I,IHM,IHP,KHALF,KMID
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL GETPI
@@ -80,7 +80,7 @@
          ARG = I * CON
          IHP = KMID + I
          HLP(IHP) = SIN(I * FC * 2.0E0 * PI) * SIN(ARG) /
-     +      (I * PI * ARG)
+     &      (I * PI * ARG)
          IHM = KMID - I
          HLP(IHM) = HLP(IHP)
          SUM = SUM + HLP(IHM) + HLP(IHP)

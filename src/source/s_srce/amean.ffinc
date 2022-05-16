@@ -15,20 +15,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   YMEAN
+      REAL(KIND=WP) ::
+     &   YMEAN
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   Y(*)
+      REAL(KIND=WP) ::
+     &   Y(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   SUMY
+      REAL(KIND=WP) ::
+     &   SUMY
       INTEGER
-     +   I
+     &   I
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

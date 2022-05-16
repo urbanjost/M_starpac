@@ -17,31 +17,31 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NDIGIT
+     &   N,NDIGIT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PVT(*),RES(*),SDPVT(*),SDREST(*),Y(*)
+      REAL(KIND=WP) ::
+     &   PVT(*),RES(*),SDPVT(*),SDREST(*),Y(*)
       INTEGER
-     +   IPTOUT(*)
+     &   IPTOUT(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   FPLM
+      REAL(KIND=WP) ::
+     &   FPLM
       INTEGER
-     +   I,IPRT,NMAX
+     &   I,IPRT,NMAX
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   R1MACH
-      EXTERNAL R1MACH
+!      REAL(KIND=WP) ::
+!     +   R1MACH
+!      EXTERNAL R1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,OBSSM2
+!      EXTERNAL IPRINT,OBSSM2
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MAX,MIN
@@ -91,7 +91,7 @@
 !
       NMAX = N
       IF ((MAX(IPTOUT(3),1).EQ.1) .AND. (N.GE.45))
-     +  NMAX = MIN(N,40)
+     &  NMAX = MIN(N,40)
 !
 !     PRINT OBSERVATION SUMMARY
 !
@@ -117,14 +117,14 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/ 5X, 16X, '  -----PREDICTED  ----STD DEV OF', 16X,
-     +   '  ---STD'/
-     +   2X, 3HROW, '  --------SERIES  ---------VALUE',
-     +   '  ----PRED VALUE  ------RESIDUAL  ---RES')
+     &   '  ---STD'/
+     &   2X, 3HROW, '  --------SERIES  ---------VALUE',
+     &   '  ----PRED VALUE  ------RESIDUAL  ---RES')
  1080 FORMAT (// 37H *  NC  -  VALUE NOT COMPUTED BECAUSE,
-     +   48H THE STANDARD DEVIATION OF THE RESIDUAL IS ZERO.)
+     &   48H THE STANDARD DEVIATION OF THE RESIDUAL IS ZERO.)
  1090 FORMAT (// 29H *  NC  -  VALUE NOT COMPUTED,
-     +   54H BECAUSE CONVERGENCE PROBLEMS PREVENTED THE COVARIANCE,
-     +   28H MATRIX FROM BEING COMPUTED.)
+     &   54H BECAUSE CONVERGENCE PROBLEMS PREVENTED THE COVARIANCE,
+     &   28H MATRIX FROM BEING COMPUTED.)
  1100 FORMAT (//' RESULTS FROM LEAST SQUARES FIT'/ 1X, 31('-'))
  1110 FORMAT (' ')
  1150 FORMAT (4X, '.', 4(15X, '.'), 7X, '.')

@@ -16,41 +16,41 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   YLB,YUB
+      REAL(KIND=WP) ::
+     &   YLB,YUB
       INTEGER
-     +   LDSTAK,N,NCELL
+     &   LDSTAK,N,NCELL
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   Y(*)
+      REAL(KIND=WP) ::
+     &   Y(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       DOUBLE PRECISION DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IDP,IFP,IINT,IPRT,LSORT,NALL0,NCELLS,YDIST
+     &   IDP,IFP,IINT,IPRT,LSORT,NALL0,NCELLS,YDIST
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   RSTAK(12)
+      REAL(KIND=WP) ::
+     &   RSTAK(12)
       INTEGER
-     +   ISTAK(12)
+     &   ISTAK(12)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL STKGET,STKST
+!      INTEGER
+!     +   STKST
+!      EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL HSTER,HSTMN,IPRINT,STKCLR,STKSET
+!      EXTERNAL HSTER,HSTMN,IPRINT,STKCLR,STKSET
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ANINT,LOG10,MIN,NINT,REAL
@@ -118,7 +118,7 @@
 !     INITIALIZE NAME VECTORS
 !
       DATA  NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6)
-     +   /       'H',      'I',      'S',      'T',      'C',      ' '/
+     &   /       'H',      'I',      'S',      'T',      'C',      ' '/
 !
       DATA IDP /4/
       DATA IINT /2/
@@ -166,5 +166,5 @@
 !     FORMAT STATEMENTS.
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL HISTC (Y, N, NCELL, YLB, YUB, LDSTAK)')
+     &   '       CALL HISTC (Y, N, NCELL, YLB, YUB, LDSTAK)')
       END

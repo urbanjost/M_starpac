@@ -1,6 +1,6 @@
 !PPMN
       SUBROUTINE PPMN (YM, YMMISS, X, XMISS, N, M, IYM, ISCHCK, ISYM,
-     +  LISYM, ISIZE, NOUT, YMN, YMX, XMN, XMX, MISS, ILOG)
+     &  LISYM, ISIZE, NOUT, YMN, YMX, XMN, XMX, MISS, ILOG)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -140,53 +140,47 @@
 !       YMX  THE MAXIMUM Y VALUE TO BE PLOTTED, COMPUTED FROM DATA OR
 !           ASSIGNED BY YUB
 !
-!
+!!SUBROUTINE PPMN (YM(IYM,M),YMMISS(M),X(N),xmiss,n,m,iym,ischck,ISYM(LISYM),lisym,isize,nout,ymn,ymx,xmn,xmx,_miss,ilog)
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     +   XMISS,XMN,XMX,YMN,YMX
-      INTEGER
-     +   ILOG,ISCHCK,ISIZE,IYM,LISYM,M,N,NOUT
-      LOGICAL
-     +   MISS
+      REAL(KIND=WP) :: XMISS,XMN,XMX,YMN,YMX
+      INTEGER :: ILOG,ISCHCK,ISIZE,IYM,LISYM,M,N,NOUT
+      LOGICAL :: MISS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     +   X(N),YM(IYM,M),YMMISS(M)
-      INTEGER
-     +   ISYM(LISYM)
+      REAL(KIND=WP) :: X(N),YM(IYM,M),YMMISS(M)
+      INTEGER ISYM(LISYM)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     +   IERR
+      INTEGER IERR
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   DELX,DELY,TN,TX,XDMN,XDMX,XWIDTH,XX,YDMN,YDMX,YL,YLOWER,
-     +   YUPPER,YWIDTH,YY
+     &   DELX,DELY,TN,TX,XDMN,XDMX,XWIDTH,XX,YDMN,YDMX,YL,YLOWER,
+     &   YUPPER,YWIDTH,YY
       INTEGER
-     +   I,IC,ICOL,IK,ILOGX,ILOGY,IOUT,IPRT,IROW,IT,ITEST,J,JCOL,K,
-     +   L,NLABLX,NLABLY,NLU,NN,NUMCOL,NUMCP2,NUMROW
+     &   I,IC,ICOL,IK,ILOGX,ILOGY,IOUT,IPRT,IROW,IT,ITEST,J,JCOL,K,
+     &   L,NLABLX,NLABLY,NLU,NN,NUMCOL,NUMCP2,NUMROW
       CHARACTER
-     +   ALPHAI*1,ALPHAX*1,AXISCH*1,BLANK*1,HYPHEN*1,FMT*4,
-     +   XLFMT*205,XLFMT2*205
+     &   ALPHAI*1,ALPHAX*1,AXISCH*1,BLANK*1,HYPHEN*1,FMT*4,
+     &   XLFMT*205,XLFMT2*205
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   TEMP(50,2),XLABEL(20),YLABEL(20)
+     &   TEMP(50,2),XLABEL(20),YLABEL(20)
       INTEGER
-     +   ALINE(105),ILOGXY(2),ISIZXY(2),ISPACE(20),KSS(101)
+     &   ALINE(105),ILOGXY(2),ISIZXY(2),ISPACE(20),KSS(101)
       CHARACTER
-     +   CLINE(105)*1,ITEMP(50)*1,SYM(30)*1,SYM1(9)*1
+     &   CLINE(105)*1,ITEMP(50)*1,SYM(30)*1,SYM1(9)*1
 !
 !  EXTERNAL FUNCTIONS
-      LOGICAL
-     +   MVCHK
-      EXTERNAL MVCHK
+!      LOGICAL
+!     +   MVCHK
+!      EXTERNAL MVCHK
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,LOGLMT,PRTCNT
+!      EXTERNAL IPRINT,LOGLMT,PRTCNT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,LOG10,MAX,MIN
@@ -274,16 +268,16 @@
 !
       DATA BLANK/' '/,HYPHEN/'-'/,ALPHAI/'I'/,ALPHAX/'X'/
       DATA SYM( 1)/'+'/,SYM( 2)/'.'/,SYM( 3)/'*'/,SYM( 4)/'-'/,
-     +     SYM( 5)/'A'/,SYM( 6)/'B'/,SYM( 7)/'C'/,SYM( 8)/'D'/,
-     +     SYM( 9)/'E'/,SYM(10)/'F'/,SYM(11)/'G'/,SYM(12)/'H'/,
-     +     SYM(13)/'I'/,SYM(14)/'J'/,SYM(15)/'K'/,SYM(16)/'L'/,
-     +     SYM(17)/'M'/,SYM(18)/'N'/,SYM(19)/'O'/,SYM(20)/'P'/,
-     +     SYM(21)/'Q'/,SYM(22)/'R'/,SYM(23)/'S'/,SYM(24)/'T'/,
-     +     SYM(25)/'U'/,SYM(26)/'V'/,SYM(27)/'W'/,SYM(28)/'Y'/,
-     +     SYM(29)/'Z'/,SYM(30)/'Z'/
+     &     SYM( 5)/'A'/,SYM( 6)/'B'/,SYM( 7)/'C'/,SYM( 8)/'D'/,
+     &     SYM( 9)/'E'/,SYM(10)/'F'/,SYM(11)/'G'/,SYM(12)/'H'/,
+     &     SYM(13)/'I'/,SYM(14)/'J'/,SYM(15)/'K'/,SYM(16)/'L'/,
+     &     SYM(17)/'M'/,SYM(18)/'N'/,SYM(19)/'O'/,SYM(20)/'P'/,
+     &     SYM(21)/'Q'/,SYM(22)/'R'/,SYM(23)/'S'/,SYM(24)/'T'/,
+     &     SYM(25)/'U'/,SYM(26)/'V'/,SYM(27)/'W'/,SYM(28)/'Y'/,
+     &     SYM(29)/'Z'/,SYM(30)/'Z'/
       DATA SYM1(1)/'1'/,SYM1(2)/'2'/,SYM1(3)/'3'/,SYM1(4)/'4'/,
-     +     SYM1(5)/'5'/,SYM1(6)/'6'/,SYM1(7)/'7'/,SYM1(8)/'8'/,
-     +     SYM1(9)/'9'/
+     &     SYM1(5)/'5'/,SYM1(6)/'6'/,SYM1(7)/'7'/,SYM1(8)/'8'/,
+     &     SYM1(9)/'9'/
 !
       CALL IPRINT(IPRT)
 !
@@ -310,9 +304,9 @@
       ILOGX = ILOGXY(1)
       ILOGY = ILOGXY(2)
       CALL LOGLMT (ILOGY, YMN, YMX, YLABEL, NUMROW, 5, DELY, YWIDTH,
-     +  NLABLY, YDMN, YDMX)
+     &  NLABLY, YDMN, YDMX)
       CALL LOGLMT (ILOGX, XMN, XMX, XLABEL, NUMCOL, 10, DELX, XWIDTH,
-     +  NLABLX, XDMN, XDMX)
+     &  NLABLX, XDMN, XDMX)
 !
 !     TEST FOR FORMAT FOR Y AXIS LABELS
 !
@@ -320,12 +314,12 @@
       TX=YMX
       TN=YMN
       IF (ILOGY.EQ.0) GO TO 190
-      TX=10.0E0_WP**TX
-      TN=10.0E0_WP**TN
-  190 IF ((TN .GE. 1.0D6 .OR. TN .LE. (-1.0D5)) .OR.
-     +   (ABS(TN).GT.0.0E0_WP.AND.ABS(TN).LT.0.001D0)) ITEST=1
-      IF ((TX .GE. 1.0D6 .OR. TX .LE. (-1.0D5)) .OR.
-     +   (ABS(TX).GT.0.0E0_WP.AND.ABS(TX).LT.0.001D0)) ITEST=1
+      TX=10.0_WP**TX
+      TN=10.0_WP**TN
+  190 IF ((TN .GE. 1.0E6_WP .OR. TN .LE. (-1.0E5_WP)) .OR.
+     &   (ABS(TN).GT.0.0_WP.AND.ABS(TN).LT.0.001_WP)) ITEST=1
+      IF ((TX .GE. 1.0E6_WP .OR. TX .LE. (-1.0E5_WP)) .OR.
+     &   (ABS(TX).GT.0.0_WP.AND.ABS(TX).LT.0.001_WP)) ITEST=1
 !
 !     BLANK OUT THE PLOT PRINT LINE CLINE
 !
@@ -345,7 +339,7 @@
   215   CONTINUE
       ELSE
         DO 216 IK = NLABLX, 1, -1
-          ICOL = ((LOG10(XLABEL(IK))-XMN)/XWIDTH)+1.5D0
+          ICOL = ((LOG10(XLABEL(IK))-XMN)/XWIDTH)+1.5_WP
           CLINE(ICOL) = ALPHAI
   216   CONTINUE
       END IF
@@ -367,8 +361,8 @@
             ALINE(ICOL)=0
             KSS(ICOL)=0
   235    CONTINUE
-         YUPPER=YMX+(1.5D0-IROW)*YWIDTH
-         YLOWER=YMX+(0.5D0-IROW)*YWIDTH
+         YUPPER=YMX+(1.5_WP-IROW)*YWIDTH
+         YLOWER=YMX+(0.5_WP-IROW)*YWIDTH
       DO 255 I = 1, N
 !
          IF (MISS .AND. MVCHK(X(I), XMISS)) GO TO 255
@@ -387,9 +381,9 @@
                  YY=LOG10(YM(I,J))
                END IF
                IF (((YLOWER.LE.YY).AND.(YY.LT.YUPPER)) .AND.
-     +             ((YY.GE.YDMN).AND.(YY.LE.YDMX))) THEN
+     &             ((YY.GE.YDMN).AND.(YY.LE.YDMX))) THEN
                   IF ((XX.GE.XDMN) .AND. (XX.LE.XDMX)) THEN
-                     ICOL=((XX-XMN)/XWIDTH)+1.5D0
+                     ICOL=((XX-XMN)/XWIDTH)+1.5_WP
                      ALINE(ICOL) = ALINE(ICOL) + 1
 !     SIMPLE PLOTTING (PLT)
                      KSS(ICOL)=1
@@ -438,10 +432,10 @@
 !
            IF (ITEST.EQ.0) THEN
              WRITE(IPRT,1006) YLABEL(IK),AXISCH,
-     +         (CLINE(ICOL),ICOL=1,NUMCP2)
+     &         (CLINE(ICOL),ICOL=1,NUMCP2)
            ELSE
              WRITE(IPRT,1007) YLABEL(IK),AXISCH,
-     +         (CLINE(ICOL),ICOL=1,NUMCP2)
+     &         (CLINE(ICOL),ICOL=1,NUMCP2)
            END IF
            IK=IK+1
          END IF
@@ -484,10 +478,12 @@
 !
       FMT = 'F9.4'
       DO 350 I=1,NLABLX
-        IF (((ABS(XLABEL(I)).GT.0.0E0_WP) .AND. (ABS(XLABEL(I)).LT.0.01D0))
-     +      .OR.
-     +      ((XLABEL(I).GE.1.0D4) .OR. (XLABEL(I).LE.(-1.0D3)))) THEN
-          FMT = 'D9.4'
+        IF (((ABS(XLABEL(I)).GT.0.0_WP) .AND.
+     &     (ABS(XLABEL(I)).LT.0.01_WP))
+     &     .OR.
+     &     ((XLABEL(I).GE.1.0E4_WP) .OR. (XLABEL(I).LE.(-1.0E3_WP))))
+     &     THEN
+          FMT = 'E9.4'
            GO TO 355
          END IF
   350 CONTINUE
@@ -521,7 +517,7 @@
               END IF
 !
               IF (((YDMN .LE. YY) .AND. (YY .LE. YDMX)) .AND.
-     +            ((XDMN .LE. XX) .AND. (XX .LE. XDMX))) GO TO 175
+     &            ((XDMN .LE. XX) .AND. (XX .LE. XDMX))) GO TO 175
 !
               IC=IC+1
               IF (IC.GT.IOUT) GO TO 175
@@ -556,18 +552,18 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT ('(''(14X'',', I2, '('', '', A4, '','', I2, ''X''),',
-     +  ''', '', A4, '')'')')
+     &  ''', '', A4, '')'')')
  1004 FORMAT (' ',16X, A1, 105A1)
  1006 FORMAT(4X,F11.4,1X,A1,1X,105A1)
  1007 FORMAT (' ', E14.7, 1X, A1, 1X, 105A1)
  1008 FORMAT (' ', 15X, A1, 1X, 105A1)
  1010 FORMAT(16X,6H**NOTE,I4,43H VALUES FELL OUTSIDE THE SPECIFIED LIMIT
-     +S**)
+     &S**)
  1011 FORMAT ('1', 15X, 10HTHE FIRST , I3,
-     +   35H VALUES OUTSIDE THE PLOT LIMITS ARE/ 22X,
-     + 33H X               Y            SYM)
+     &   35H VALUES OUTSIDE THE PLOT LIMITS ARE/ 22X,
+     & 33H X               Y            SYM)
  1012 FORMAT ('1', 15X, 38HTHE VALUES OUTSIDE THE PLOT LIMITS ARE/ 22X,
-     + 33H X               Y            SYM)
+     & 33H X               Y            SYM)
  1013 FORMAT (15X,2E15.8,9X,A1)
  1016 FORMAT (16X, 22HSEE NEXT PAGE FOR LIST)
 !

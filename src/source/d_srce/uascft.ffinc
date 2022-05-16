@@ -17,19 +17,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   VAR
+     &   VAR
       INTEGER
-     +   IAR,LACOV,LAGMAX,N
+     &   IAR,LACOV,LAGMAX,N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   ACOV(LACOV),PHI(IAR)
+     &   ACOV(LACOV),PHI(IAR)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   RSS
+     &   RSS
       INTEGER
-     +   L
+     &   L
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL ARCOEF
@@ -55,7 +55,7 @@
 !
 !
       PHI(1) = ACOV(2) / ACOV(1)
-      RSS = ACOV(1) * N * (1.0E0_WP - PHI(1)*PHI(1))
+      RSS = ACOV(1) * N * (1.0_WP - PHI(1)*PHI(1))
 !
       IF (IAR .LE. 1) GO TO 20
 !

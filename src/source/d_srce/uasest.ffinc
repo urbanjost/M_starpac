@@ -1,6 +1,6 @@
 !UASEST
       SUBROUTINE UASEST (IAR, VAR, PHI, NF, FREQ, DELTA, SPCA, LPHI,
-     +   ISPC)
+     &   ISPC)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,19 +18,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   DELTA,VAR
+     &   DELTA,VAR
       INTEGER
-     +   IAR,ISPC,LPHI,NF
+     &   IAR,ISPC,LPHI,NF
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   FREQ(NF),PHI(LPHI),SPCA(ISPC)
+     &   FREQ(NF),PHI(LPHI),SPCA(ISPC)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   ARG,EI,ER,EXI,EXR,EXRTMP,PI,TI,TR
+     &   ARG,EI,ER,EXI,EXR,EXRTMP,PI,TI,TR
       INTEGER
-     +   I,J
+     &   I,J
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL GETPI
@@ -80,30 +80,30 @@
       DO 20 J=1,NF
          SPCA(J) = DELTA * VAR
          IF (IAR.GE.1) THEN
-            IF (DELTA.EQ.1.0E0_WP) THEN
-               IF (FREQ(J).EQ.0.0E0_WP) THEN
-                  ER = 1.0E0_WP
-                  EI = 0.0E0_WP
-               ELSE IF (FREQ(J).EQ.0.25D0) THEN
-                  ER = 0.0E0_WP
-                  EI = 1.0E0_WP
-               ELSE IF (FREQ(J).EQ.0.5D0) THEN
-                  ER = -1.0E0_WP
-                  EI = 0.0E0_WP
+            IF (DELTA.EQ.1.0_WP) THEN
+               IF (FREQ(J).EQ.0.0_WP) THEN
+                  ER = 1.0_WP
+                  EI = 0.0_WP
+               ELSE IF (FREQ(J).EQ.0.25_WP) THEN
+                  ER = 0.0_WP
+                  EI = 1.0_WP
+               ELSE IF (FREQ(J).EQ.0.5_WP) THEN
+                  ER = -1.0_WP
+                  EI = 0.0_WP
                ELSE
-                  ARG = 2.0E0_WP * PI * DELTA * FREQ(J)
+                  ARG = 2.0_WP * PI * DELTA * FREQ(J)
                   ER = COS(ARG)
                   EI = SIN(ARG)
                END IF
             ELSE
-               ARG = 2.0E0_WP * PI * DELTA * FREQ(J)
+               ARG = 2.0_WP * PI * DELTA * FREQ(J)
                ER = COS(ARG)
                EI = SIN(ARG)
             END IF
-            EXR = 1.0E0_WP
-            EXI = 0.0E0_WP
-            TR = 1.0E0_WP
-            TI = 0.0E0_WP
+            EXR = 1.0_WP
+            EXI = 0.0_WP
+            TR = 1.0_WP
+            TI = 0.0_WP
             DO 10 I=1,IAR
                EXRTMP = EXR*ER - EXI*EI
                EXI = EXR*EI + EXI*ER

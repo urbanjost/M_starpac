@@ -20,25 +20,25 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LDSTAK
+     &   LDSTAK
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT,N
+     &   IPRT,N
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   Y(40)
+     &   Y(40)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,STAT
+!      EXTERNAL IPRINT,STAT
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -64,25 +64,25 @@
       DATA N /39/
 !
       DATA Y( 1), Y( 2), Y( 3), Y( 4)
-     +    / 0.4, 0.6, 1.0, 1.0/
+     &    / 0.4, 0.6, 1.0, 1.0/
       DATA Y( 5), Y( 6), Y( 7), Y( 8)
-     +    / 1.0, 0.5, 0.6, 0.7/
+     &    / 1.0, 0.5, 0.6, 0.7/
       DATA Y( 9), Y(10), Y(11), Y(12)
-     +    / 1.0, 0.6, 0.2, 1.9/
+     &    / 1.0, 0.6, 0.2, 1.9/
       DATA Y(13), Y(14), Y(15), Y(16)
-     +    / 0.2, 0.4, 0.0, -0.4/
+     &    / 0.2, 0.4, 0.0, -0.4/
       DATA Y(17), Y(18), Y(19), Y(20)
-     +    / -0.3, 0.0, -0.4, -0.3/
+     &    / -0.3, 0.0, -0.4, -0.3/
       DATA Y(21), Y(22), Y(23), Y(24)
-     +    / 0.1, -0.1, 0.2, -0.5/
+     &    / 0.1, -0.1, 0.2, -0.5/
       DATA Y(25), Y(26), Y(27), Y(28)
-     +    / 0.3, -0.1, 0.2, -0.2/
+     &    / 0.3, -0.1, 0.2, -0.2/
       DATA Y(29), Y(30), Y(31), Y(32)
-     +    / 0.8, 0.5, 0.6, 0.8/
+     &    / 0.8, 0.5, 0.6, 0.8/
       DATA Y(33), Y(34), Y(35), Y(36)
-     +    / 0.7, 0.7, 0.2, 0.5/
+     &    / 0.7, 0.7, 0.2, 0.5/
       DATA Y(37), Y(38), Y(39)
-     +    / 0.7, 0.8, 1.1/
+     &    / 0.7, 0.8, 1.1/
 !
 !     DEFINE IPRT, THE CURRENT OUTPUT UNIT.
 !

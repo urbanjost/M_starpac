@@ -17,42 +17,42 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LDSTAK,NF,NK
+     &   LDSTAK,NF,NK
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PER(*),PERF(*)
+     &   PER(*),PERF(*)
       INTEGER
-     +   KMD(*)
+     &   KMD(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   SYM
+     &   SYM
       INTEGER
-     +   I,IPRT,L,LDSMIN,NALL0,WORK
+     &   I,IPRT,L,LDSMIN,NALL0,WORK
       LOGICAL
-     +   ERR01,ERR02,ERR03,HEAD
+     &   ERR01,ERR02,ERR03,HEAD
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   RSTAK(12)
+     &   RSTAK(12)
       CHARACTER
-     +   LKMD(8)*1,LLDS(8)*1,LNF(8)*1,LNK(8)*1,NMSUB(6)*1
+     &   LKMD(8)*1,LLDS(8)*1,LNF(8)*1,LNK(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL STKGET,STKST
+!      INTEGER
+!     +   STKST
+!      EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,EIVEO,FLTMD,IPRINT,LDSCMP,STKCLR,STKSET
+!      EXTERNAL EISGE,EIVEO,FLTMD,IPRINT,LDSCMP,STKCLR,STKSET
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -99,27 +99,27 @@
 !        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
 !     REAL(KIND=WP) :: SYM
 !        AN INDICATOR VARIABLE USED TO DESIGNATE WHETHER THE SERIES
-!        IS SYMMETRIC (SYM = 1.0E0_WP) OR NOT (SYM = -1.0E0_WP).
+!        IS SYMMETRIC (SYM = 1.0_WP) OR NOT (SYM = -1.0_WP).
 !     INTEGER WORK
 !        THE STARTING LOCATION IN THE WORK AREA FOR THE WORK VECTOR.
 !
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'M',       'D',       'F',       'L',       'T',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'M',       'D',       'F',       'L',       'T',       ' '/
       DATA
-     + LKMD(1), LKMD(2), LKMD(3), LKMD(4), LKMD(5),
-     +  LKMD(6), LKMD(7), LKMD(8) /'K','M','D',' ',' ',' ',' ',' '/
+     & LKMD(1), LKMD(2), LKMD(3), LKMD(4), LKMD(5),
+     &  LKMD(6), LKMD(7), LKMD(8) /'K','M','D',' ',' ',' ',' ',' '/
       DATA
-     + LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
-     +  LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
+     & LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
+     &  LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
       DATA
-     + LNF(1), LNF(2), LNF(3), LNF(4), LNF(5),
-     +  LNF(6), LNF(7), LNF(8) /'N','F',' ',' ',' ',' ',' ',' '/
+     & LNF(1), LNF(2), LNF(3), LNF(4), LNF(5),
+     &  LNF(6), LNF(7), LNF(8) /'N','F',' ',' ',' ',' ',' ',' '/
       DATA
-     + LNK(1), LNK(2), LNK(3), LNK(4), LNK(5),
-     +  LNK(6), LNK(7), LNK(8) /'N','K',' ',' ',' ',' ',' ',' '/
+     & LNK(1), LNK(2), LNK(3), LNK(4), LNK(5),
+     &  LNK(6), LNK(7), LNK(8) /'N','K',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -161,7 +161,7 @@
 !
 !     DESIGNATE THE SERIES IS SYMMETRIC
 !
-      SYM = 1.0E0_WP
+      SYM = 1.0_WP
 !
       DO 30 I = 1, NF
          PERF(I) = PER(I)
@@ -178,5 +178,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +  '       CALL MDFLT (PER, NF, NK, KMD, PERF, LDSTAK)')
+     &  '       CALL MDFLT (PER, NF, NK, KMD, PERF, LDSTAK)')
       END

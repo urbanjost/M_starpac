@@ -17,11 +17,11 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   K,N
+     &   K,N
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,KK,NN
+     &   I,KK,NN
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MIN

@@ -15,17 +15,17 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   irc,n,n1
+     &   irc,n,n1
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   a(1),l(1)
+     &   a(1),l(1)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   t,td,zero
+     &   t,td,zero
       integer
-     +   i,i0,ij,ik,im1,j,j0,jk,jm1,k
+     &   i,i0,ij,ik,im1,j,j0,jk,jm1,k
 !
 !  INTRINSIC FUNCTIONS
       intrinsic sqrt

@@ -16,18 +16,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   YMEAN
+      REAL(KIND=WP) ::
+     &   YMEAN
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   Y(N)
+      REAL(KIND=WP) ::
+     &   Y(N)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC EXP,LOG

@@ -21,21 +21,21 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   AD(*),AX(*),X(*)
+     &   AD(*),AX(*),X(*)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   ADMAX,DIFF,FPLRS
+     &   ADMAX,DIFF,FPLRS
       INTEGER
-     +   I
+     &   I
 !
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
-     +   D1MACH
+     &   D1MACH
       EXTERNAL D1MACH
 !
 !  INTRINSIC FUNCTIONS
@@ -67,12 +67,12 @@
 !
       DO 20 I=1,N
          DIFF = AX(I) - X(I)
-         IF (DIFF.NE.0.0E0_WP) GO TO 10
+         IF (DIFF.NE.0.0_WP) GO TO 10
          AD(I) = ADMAX
          GO TO 20
-   10    AD(I) = 0.0E0_WP
-         IF (ABS(X(I)).GT.0.0E0_WP) AD(I) = LOG10(ABS(X(I)))
-         IF (ABS(DIFF).GT.0.0E0_WP) AD(I) = -LOG10(ABS(DIFF)) + AD(I)
+   10    AD(I) = 0.0_WP
+         IF (ABS(X(I)).GT.0.0_WP) AD(I) = LOG10(ABS(X(I)))
+         IF (ABS(DIFF).GT.0.0_WP) AD(I) = -LOG10(ABS(DIFF)) + AD(I)
          AD(I) = MIN(ADMAX,AD(I))
          AD(I) = MAX(-ADMAX,AD(I))
    20 CONTINUE

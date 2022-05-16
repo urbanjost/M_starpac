@@ -1,6 +1,6 @@
 !CCFSDM
       SUBROUTINE CCFSDM (CCOV11, CCOV22, SDRHOC, LAGMAX, NCC, LAGLST, N,
-     +   NLPP12, NLPP21, ICCOV, INLPPC)
+     &   NLPP12, NLPP21, ICCOV, INLPPC)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,23 +18,23 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   ICCOV,INLPPC,LAGLST,LAGMAX,N,NCC
+     &   ICCOV,INLPPC,LAGLST,LAGMAX,N,NCC
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   CCOV11(ICCOV),CCOV22(ICCOV),SDRHOC(NCC)
+     &   CCOV11(ICCOV),CCOV22(ICCOV),SDRHOC(NCC)
       INTEGER
-     +   NLPP12(INLPPC),NLPP21(INLPPC)
+     &   NLPP12(INLPPC),NLPP21(INLPPC)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   DIV,FPLM,SUM
+     &   DIV,FPLM,SUM
       INTEGER
-     +   I,ILAST,K,K0,KM,KP
+     &   I,ILAST,K,K0,KM,KP
 !
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
-     +   D1MACH
+     &   D1MACH
       EXTERNAL D1MACH
 !
 !  INTRINSIC FUNCTIONS
@@ -86,17 +86,17 @@
 !
       K0 = LAGMAX + 1
 !
-      SUM = 0.0E0_WP
+      SUM = 0.0_WP
       DO 10 I = 1, LAGLST
          SUM = SUM + CCOV11(I+1) * CCOV22(I+1)
    10 CONTINUE
       SUM = SUM / DIV
       SDRHOC(K0) = FPLM
       IF (NLPP12(1) .GE. 1) SDRHOC(K0) =
-     +   SQRT(N + 2.0E0_WP * SUM) / NLPP12(1)
+     &   SQRT(N + 2.0_WP * SUM) / NLPP12(1)
 !
       DO 30 K = 1, LAGMAX
-         SUM = 0.0E0_WP
+         SUM = 0.0_WP
          ILAST = MIN(LAGLST, N-LAGLST)
          DO 20 I = 1, ILAST
             SUM = SUM + (N-K-I) * CCOV11(I+1) * CCOV22(I+1)
@@ -105,12 +105,12 @@
          KM = K0 - K
          SDRHOC(KM) = FPLM
          IF (NLPP21(K+1) .GE. 1) SDRHOC(KM) =
-     +      SQRT((N - K) + 2.0E0_WP * SUM) * (N - K)/ (N * NLPP21(K+1))
+     &      SQRT((N - K) + 2.0_WP * SUM) * (N - K)/ (N * NLPP21(K+1))
 !
          KP = K0 + K
          SDRHOC(KP) = FPLM
          IF (NLPP12(K+1) .GE. 1) SDRHOC(KP) =
-     +      SQRT((N - K) + 2.0E0_WP * SUM) * (N - K) / (N * NLPP12(K+1))
+     &      SQRT((N - K) + 2.0_WP * SUM) * (N - K) / (N * NLPP12(K+1))
    30 CONTINUE
 !
       RETURN

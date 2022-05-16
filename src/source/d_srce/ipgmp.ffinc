@@ -17,40 +17,40 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LDSTAK,N,NF
+     &   LDSTAK,N,NF
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   FREQ(*),PER(*)
+     &   FREQ(*),PER(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT,ISYM,LDSMIN,LPCV,NALL0,NPRT,PERI,XAXIS,YAXIS
+     &   IPRT,ISYM,LDSMIN,LPCV,NALL0,NPRT,PERI,XAXIS,YAXIS
       LOGICAL
-     +   ERR01,ERR02,ERR03,HEAD
+     &   ERR01,ERR02,ERR03,HEAD
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   RSTAK(12)
+     &   RSTAK(12)
       INTEGER
-     +   ISTAK(12)
+     &   ISTAK(12)
       CHARACTER
-     +   LLDS(8)*1,LN(8)*1,LNF(8)*1,NMSUB(6)*1
+     &   LLDS(8)*1,LN(8)*1,LNF(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL STKGET,STKST
+!      INTEGER
+!     +   STKST
+!      EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,IPGDV,IPRINT,LDSCMP,STKCLR,STKSET
+!      EXTERNAL EISGE,IPGDV,IPRINT,LDSCMP,STKCLR,STKSET
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -125,17 +125,17 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'I',       'P',       'G',       'M',       'P',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'I',       'P',       'G',       'M',       'P',       ' '/
       DATA
-     + LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
-     +  LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
+     & LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
+     &  LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
       DATA
-     + LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
-     + /'N',' ',' ',' ',' ',' ',' ',' '/
+     & LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     & /'N',' ',' ',' ',' ',' ',' ',' '/
       DATA
-     + LNF(1), LNF(2), LNF(3), LNF(4), LNF(5), LNF(6), LNF(7), LNF(8)
-     + /'N','F',' ',' ',' ',' ',' ',' '/
+     & LNF(1), LNF(2), LNF(3), LNF(4), LNF(5), LNF(6), LNF(7), LNF(8)
+     & /'N','F',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -189,7 +189,7 @@
 !     PERIODOGRAM.
 !
       CALL IPGDV (PER, NF, N, RSTAK(PERI), FREQ, RSTAK(XAXIS),
-     +   RSTAK(YAXIS), ISTAK(ISYM), LPCV, NPRT)
+     &   RSTAK(YAXIS), ISTAK(ISYM), LPCV, NPRT)
 !
       CALL STKCLR(NALL0)
 !
@@ -198,5 +198,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +  '       CALL IPGMP (PER, FREQ, NF, N, LDSTAK)')
+     &  '       CALL IPGMP (PER, FREQ, NF, N, LDSTAK)')
       END

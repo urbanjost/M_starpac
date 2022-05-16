@@ -16,15 +16,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IXM,M,N,NPAR
+     &   IXM,M,N,NPAR
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   D(N,NPAR),PAR(NPAR),XM(IXM,M)
+     &   D(N,NPAR),PAR(NPAR),XM(IXM,M)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,J
+     &   I,J
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

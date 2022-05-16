@@ -62,22 +62,22 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   P
+      REAL(KIND=WP) ::
+     &   P
       INTEGER
-     +   IDF
+     &   IDF
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   ARG,B21,B31,B32,B33,B34,B41,B42,B43,B44,B45,
-     +   B51,B52,B53,B54,B55,B56,C,CON,D1,D3,D5,D7,D9,DF,PI,PPFN,
-     +   S,SQRT2,TERM1,TERM2,TERM3,TERM4,TERM5,Z
+      REAL(KIND=WP) ::
+     &   ARG,B21,B31,B32,B33,B34,B41,B42,B43,B44,B45,
+     &   B51,B52,B53,B54,B55,B56,C,CON,D1,D3,D5,D7,D9,DF,PI,PPFN,
+     &   S,SQRT2,TERM1,TERM2,TERM3,TERM4,TERM5,Z
       INTEGER
-     +   IPASS,MAXIT
+     &   IPASS,MAXIT
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   PPFNML
+      REAL(KIND=WP) ::
+     &   PPFNML
       EXTERNAL PPFNML
 !
 !  EXTERNAL SUBROUTINES
@@ -131,10 +131,10 @@
       DATA B21 /4.0E0/
       DATA B31, B32, B33, B34 /96.0E0, 5.0E0, 16.0E0, 3.0E0/
       DATA B41, B42, B43, B44, B45
-     +  /384.0E0, 3.0E0, 19.0E0, 17.0E0, -15.0E0/
+     &  /384.0E0, 3.0E0, 19.0E0, 17.0E0, -15.0E0/
       DATA B51, B52, B53, B54, B55, B56
-     +   /9216.0E0, 79.0E0, 776.0E0, 1482.0E0,
-     +   -1920.0E0, -945.0E0/
+     &   /9216.0E0, 79.0E0, 776.0E0, 1482.0E0,
+     &   -1920.0E0, -945.0E0/
 !
       CALL GETPI(PI)
 !
@@ -232,7 +232,7 @@
          S = SIN(Z)
          C = COS(Z)
          Z = Z - ((1.0E0+0.5E0*C*C+0.375E0*C**4)*S-CON)/
-     +           ((15.0E0/8.0E0)*C**5)
+     &           ((15.0E0/8.0E0)*C**5)
   130 CONTINUE
       PPFT = SQRT(DF)*S/C
       RETURN

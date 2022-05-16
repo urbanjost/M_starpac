@@ -1,6 +1,6 @@
 !AMFER
       SUBROUTINE AMFER(NMSUB, N, NPAR, LDSTAK, LDSMIN,
-     +  SAVE, MSPEC, NFAC, IFCST, NFCST)
+     &  SAVE, MSPEC, NFAC, IFCST, NFCST)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,32 +18,32 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IFCST,LDSMIN,LDSTAK,N,NFAC,NFCST,NPAR
+     &   IFCST,LDSMIN,LDSTAK,N,NFAC,NFCST,NPAR
       LOGICAL
-     +   SAVE
+     &   SAVE
 !
 !  ARRAY ARGUMENTS
       INTEGER
-     +   MSPEC(4,*)
+     &   MSPEC(4,*)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,NP,NV
+     &   I,NP,NV
       LOGICAL
-     +   HEAD
+     &   HEAD
 !
 !  LOCAL ARRAYS
       LOGICAL
-     +   ERROR(20)
+     &   ERROR(20)
       CHARACTER
-     +   LIFCST(8)*1,LLDS(8)*1,LMSPEC(8)*1,LN(8)*1,LNFAC(8)*1,
-     +   LNFCST(8)*1,LNPAR(8)*1,LONE(8)*1
+     &   LIFCST(8)*1,LLDS(8)*1,LMSPEC(8)*1,LN(8)*1,LNFAC(8)*1,
+     &   LNFCST(8)*1,LNPAR(8)*1,LONE(8)*1
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL EIAGE,EISEQ,EISGE
@@ -95,25 +95,25 @@
 !     SET UP NAME ARRAYS
 !
       DATA LIFCST(1), LIFCST(2), LIFCST(3), LIFCST(4), LIFCST(5),
-     +   LIFCST(6), LIFCST(7), LIFCST(8)
-     +  /'I','F','C','S','T',' ',' ',' '/
+     &   LIFCST(6), LIFCST(7), LIFCST(8)
+     &  /'I','F','C','S','T',' ',' ',' '/
       DATA LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
-     +   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
+     &   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
       DATA LMSPEC(1), LMSPEC(2), LMSPEC(3), LMSPEC(4), LMSPEC(5),
-     +   LMSPEC(6), LMSPEC(7), LMSPEC(8)
-     +  /'M','S','P','C',' ',' ',' ',' '/
+     &   LMSPEC(6), LMSPEC(7), LMSPEC(8)
+     &  /'M','S','P','C',' ',' ',' ',' '/
       DATA LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8) /'N',
-     +   ' ',' ',' ',' ',' ',' ',' '/
+     &   ' ',' ',' ',' ',' ',' ',' '/
       DATA LNFAC(1), LNFAC(2), LNFAC(3), LNFAC(4), LNFAC(5),
-     +   LNFAC(6), LNFAC(7), LNFAC(8) /'N','F','A','C',' ',' ',' ',' '/
+     &   LNFAC(6), LNFAC(7), LNFAC(8) /'N','F','A','C',' ',' ',' ',' '/
       DATA LNFCST(1), LNFCST(2), LNFCST(3), LNFCST(4), LNFCST(5),
-     +   LNFCST(6), LNFCST(7), LNFCST(8)
-     +  /'N','F','C','S','T',' ',' ',' '/
+     &   LNFCST(6), LNFCST(7), LNFCST(8)
+     &  /'N','F','C','S','T',' ',' ',' '/
       DATA LNPAR(1), LNPAR(2), LNPAR(3), LNPAR(4), LNPAR(5),
-     +   LNPAR(6), LNPAR(7), LNPAR(8) /'N','P','A','R',' ',' ',' ',
-     +   ' '/
+     &   LNPAR(6), LNPAR(7), LNPAR(8) /'N','P','A','R',' ',' ',' ',
+     &   ' '/
       DATA LONE(1), LONE(2), LONE(3), LONE(4), LONE(5),
-     +   LONE(6), LONE(7), LONE(8) /'1',' ',' ',' ',' ',' ',' ',' '/
+     &   LONE(6), LONE(7), LONE(8) /'1',' ',' ',' ',' ',' ',' ',' '/
 !
 !     ERROR CHECKING
 !
@@ -129,8 +129,8 @@
       CALL EISGE(NMSUB, LNFAC, NFAC, 1, 2, HEAD, ERROR(2), LONE)
 !
       IF (.NOT. ERROR(2))
-     +  CALL EIAGE(NMSUB, LMSPEC, MSPEC, 4, NFAC, 4, 0, 0, HEAD, 1, NV,
-     +  ERROR(3), LMSPEC)
+     &  CALL EIAGE(NMSUB, LMSPEC, MSPEC, 4, NFAC, 4, 0, 0, HEAD, 1, NV,
+     &  ERROR(3), LMSPEC)
 !
       IF ((.NOT. ERROR(2)) .AND. (.NOT. ERROR(3))) THEN
         NP = 1
@@ -141,13 +141,13 @@
       END IF
 !
       IF ((.NOT.ERROR(1)) .AND. (.NOT.ERROR(2)) .AND. (.NOT.ERROR(3))
-     +   .AND. (.NOT.ERROR(4)) .AND. (.NOT.ERROR(5)))
-     +   CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERROR(6),
-     +   LLDS)
+     &   .AND. (.NOT.ERROR(4)) .AND. (.NOT.ERROR(5)))
+     &   CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERROR(6),
+     &   LLDS)
 !
       IF (SAVE)
-     +   CALL EISGE(NMSUB, LIFCST, IFCST, NFCST, 3, HEAD, ERROR(15),
-     +   LNFCST)
+     &   CALL EISGE(NMSUB, LIFCST, IFCST, NFCST, 3, HEAD, ERROR(15),
+     &   LNFCST)
 !
       DO 20 I=1,20
          IF (ERROR(I)) GO TO 30

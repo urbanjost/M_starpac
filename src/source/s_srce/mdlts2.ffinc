@@ -1,6 +1,6 @@
 !MDLTS2
       SUBROUTINE MDLTS2 (PAR, RESTS, Y, NPAR, N, NFAC, MSPECT, PMU,
-     +  PARDF, NPARDF, T, TEMP, PARAR, PARMA, MBO, N1, N2, IFLAG)
+     &  PARDF, NPARDF, T, TEMP, PARAR, PARMA, MBO, N1, N2, IFLAG)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,30 +17,30 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   PMU
+      REAL(KIND=WP) ::
+     &   PMU
       INTEGER
-     +   IFLAG,MBO,N,N1,N2,NFAC,NPAR,NPARDF
+     &   IFLAG,MBO,N,N1,N2,NFAC,NPAR,NPARDF
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PAR(NPAR),PARAR(*),PARDF(*),PARMA(*),RESTS(N1:N2),T(*),
-     +   TEMP(*),Y(N)
+      REAL(KIND=WP) ::
+     &   PAR(NPAR),PARAR(*),PARDF(*),PARMA(*),RESTS(N1:N2),T(*),
+     &   TEMP(*),Y(N)
       INTEGER
-     +   MSPECT(NFAC,4)
+     &   MSPECT(NFAC,4)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   FPLPM,RESMAX,WTEST
+      REAL(KIND=WP) ::
+     &   FPLPM,RESMAX,WTEST
       INTEGER
-     +   I,IMOD,IMOD1,IPAR,IPQ,ISTART,J,K,L,MAXORD,MBO1,NP,NPARAR,
-     +   NPARMA
+     &   I,IMOD,IMOD1,IPAR,IPQ,ISTART,J,K,L,MAXORD,MBO1,NP,NPARAR,
+     &   NPARMA
       LOGICAL
-     +   PARLE1
+     &   PARLE1
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   R1MACH
+      REAL(KIND=WP) ::
+     &   R1MACH
       EXTERNAL R1MACH
 !
 !  INTRINSIC FUNCTIONS
@@ -201,7 +201,7 @@
   150    CONTINUE
          DO 160 J = 1,NPARMA
             IF ((I+J.GT.NPARDF) .AND. (I+J.LE.N))
-     +         T(IMOD) = T(IMOD) + PARMA(J)*T(MOD(I+J+1-N1,MBO1)+1)
+     &         T(IMOD) = T(IMOD) + PARMA(J)*T(MOD(I+J+1-N1,MBO1)+1)
   160    CONTINUE
   170 CONTINUE
       DO 175 I = NPARDF,N1,-1
@@ -212,8 +212,8 @@
   163    CONTINUE
          DO 166 J = 1,NPARMA
             IF ((I+J.GT.NPARDF) .AND. (I+J.LE.N))
-     +         RESTS(I) = RESTS(I) -
-     +                    PARMA(J)*T(MOD(I+J+1-N1,MBO1)+1)
+     &         RESTS(I) = RESTS(I) -
+     &                    PARMA(J)*T(MOD(I+J+1-N1,MBO1)+1)
   166    CONTINUE
          ISTART = I
          IF ((ISTART.LE.1) .AND. (ABS(RESTS(I)).LE.WTEST)) GO TO 180
@@ -236,7 +236,7 @@
 !
             DO 200 J = 1,NPARMA
                IF (I-J.GE.ISTART)
-     +            T(IMOD) = T(IMOD) + PARMA(J)*T(MOD(I-J+1-N1,MBO1)+1)
+     &            T(IMOD) = T(IMOD) + PARMA(J)*T(MOD(I-J+1-N1,MBO1)+1)
   200       CONTINUE
          ELSE
 !
@@ -247,13 +247,13 @@
                   IMOD1 = MOD(I-J+1-N1,MBO1)+1
                   IF (PARMA(J).NE.0.0E0 .AND. T(IMOD1).NE.0.0E0) THEN
                      IF (LOG(ABS(PARMA(J)))+LOG(ABS(T(IMOD1))).LT.
-     +                         LOG(FPLPM)
-     +                     .AND.
-     +                     (SIGN(1.0E0,T(IMOD)).NE.
-     +                         SIGN(1.0E0,PARMA(J)*T(IMOD1))
-     +                     .OR.
-     +                     LOG(ABS(PARMA(J)))+LOG(ABS(T(IMOD1))).LT.
-     +                         LOG(FPLPM-ABS(T(IMOD))))) THEN
+     &                         LOG(FPLPM)
+     &                     .AND.
+     &                     (SIGN(1.0E0,T(IMOD)).NE.
+     &                         SIGN(1.0E0,PARMA(J)*T(IMOD1))
+     &                     .OR.
+     &                     LOG(ABS(PARMA(J)))+LOG(ABS(T(IMOD1))).LT.
+     &                         LOG(FPLPM-ABS(T(IMOD))))) THEN
                         T(IMOD) = T(IMOD) + PARMA(J)*T(IMOD1)
                      ELSE
                         GO TO 300

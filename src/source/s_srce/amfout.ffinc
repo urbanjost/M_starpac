@@ -1,6 +1,6 @@
 !AMFOUT
       SUBROUTINE AMFOUT(F, FSD, N, NFCST, IFCSTO, IFO, NFCSTO, Y,
-     +  T975, PAGE)
+     &  T975, PAGE)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,33 +16,33 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   T975
+      REAL(KIND=WP) ::
+     &   T975
       INTEGER
-     +   IFO,N,NFCST,NFCSTO
+     &   IFO,N,NFCST,NFCSTO
       LOGICAL
-     +   PAGE
+     &   PAGE
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   F(*),FSD(*),Y(*)
+      REAL(KIND=WP) ::
+     &   F(*),FSD(*),Y(*)
       INTEGER
-     +   IFCSTO(*)
+     &   IFCSTO(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   FL,FU,SCALE,YMN,YMX
+      REAL(KIND=WP) ::
+     &   FL,FU,SCALE,YMN,YMX
       INTEGER
-     +   I,IEND,IF,ILIM,INTER,IPF,IPFL,IPFU,IPRT,IPY,IY,J
+     &   I,IEND,IF,ILIM,INTER,IPF,IPFL,IPFU,IPRT,IPY,IY,J
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   YLIM(4)
+      REAL(KIND=WP) ::
+     &   YLIM(4)
       CHARACTER
-     +   LINE(53)*1
+     &   LINE(53)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMFHDR,IPRINT
+!      EXTERNAL AMFHDR,IPRINT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC INT,MAX,MIN
@@ -151,7 +151,7 @@
       CALL AMFHDR(PAGE, .TRUE., 0)
       WRITE (IPRT, 1030) IFO
       WRITE (IPRT, 1000) YMN, YLIM(2), YLIM(4),
-     +  YLIM(1), YLIM(4), YMX
+     &  YLIM(1), YLIM(4), YMX
 !
 !     BEGIN PLOTTING
 !
@@ -190,7 +190,7 @@
                LINE(IPF) = '2'
              END IF
              WRITE (IPRT, 1010) I, (LINE(J),J=1,IEND), I,
-     +         F(IF), FL, FU, Y(I)
+     &         F(IF), FL, FU, Y(I)
            ELSE
              IPFL = INT(((FL-YMN) / SCALE) + 1.5E0)
              IPFU = INT(((FU-YMN) / SCALE) + 1.5E0)
@@ -202,7 +202,7 @@
              IPF = INT(((F(IF)-YMN) / SCALE) + 1.5E0)
              LINE(IPF) = 'X'
              WRITE (IPRT, 1010) I, (LINE(J),J=1,IEND), I,
-     +         F(IF), FL, FU
+     &         F(IF), FL, FU
            END IF
          END IF
    80 CONTINUE
@@ -212,16 +212,16 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (//
-     +  82X, ' --------------------95  PERCENT'/
-     +  1X, 3(G15.8, 5X), 21X,
-     +  ' --------------CONFIDENCE LIMITS',
-     +  ' ---------ACTUAL'/
-     +  11X, 2(G15.8, 5X), G15.8,
-     +  ' ------FORECASTS ----------LOWER',
-     +  ' ----------UPPER -------IF KNOWN'/
-     +  9X, 5('I---------'), 'I', 6X,
-     +  ' ------------[X] ------------[(]',
-     +  ' ------------[)] ------------[*]')
+     &  82X, ' --------------------95  PERCENT'/
+     &  1X, 3(G15.8, 5X), 21X,
+     &  ' --------------CONFIDENCE LIMITS',
+     &  ' ---------ACTUAL'/
+     &  11X, 2(G15.8, 5X), G15.8,
+     &  ' ------FORECASTS ----------LOWER',
+     &  ' ----------UPPER -------IF KNOWN'/
+     &  9X, 5('I---------'), 'I', 6X,
+     &  ' ------------[X] ------------[(]',
+     &  ' ------------[)] ------------[*]')
  1010 FORMAT (2X, I5, 1X, 'I', 51A1, 'I', I5, 4(1X, G15.8))
  1020 FORMAT (2X, I5, 1X, 'I', 51A1, 'I', I5, 49X, G15.8)
  1030 FORMAT (//' FORECASTS FOR ORIGIN ', I2)

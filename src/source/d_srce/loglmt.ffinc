@@ -1,6 +1,6 @@
 !LOGLMT
       SUBROUTINE LOGLMT (ILOGY, YMN, YMX, YLABEL, NUMROW, ISTEP, DELY,
-     +  YWIDTH, NLABLY, YDMN, YDMX)
+     &  YWIDTH, NLABLY, YDMN, YDMX)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,19 +17,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   DELY,YDMN,YDMX,YMN,YMX,YWIDTH
+     &   DELY,YDMN,YDMX,YMN,YMX,YWIDTH
       INTEGER
-     +   ILOGY,ISTEP,NLABLY,NUMROW
+     &   ILOGY,ISTEP,NLABLY,NUMROW
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   YLABEL(20)
+     &   YLABEL(20)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   YNLOG,YXLOG
+     &   YNLOG,YXLOG
       INTEGER
-     +   IYN,IYNLOG,IYX,IYXLOG,J,K
+     &   IYN,IYNLOG,IYX,IYXLOG,J,K
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC LOG10,MIN,MOD,NINT,DBLE
@@ -77,28 +77,28 @@
 !
         YXLOG=LOG10(YMX)
         IYXLOG=YXLOG
-        IF (YMX.LT.1.0E0_WP) IYXLOG=IYXLOG-1
+        IF (YMX.LT.1.0_WP) IYXLOG=IYXLOG-1
         YNLOG=LOG10(YMN)
-        IF ((YXLOG-YNLOG).LE.0.92082D0) THEN
+        IF ((YXLOG-YNLOG).LE.0.92082_WP) THEN
 !
 !         RANGE IS LESS THAN .9 DECADES
 !
           IYNLOG=YNLOG
-          IF (YMN.LT.1.0E0_WP) IYNLOG=IYNLOG-1
+          IF (YMN.LT.1.0_WP) IYNLOG=IYNLOG-1
           IF (IYXLOG.LE.IYNLOG) THEN
 !
 !           VALUES FALL IN THE SAME DECADE
 !
             YNLOG=IYNLOG
-            YXLOG=YNLOG+1.0E0_WP
+            YXLOG=YNLOG+1.0_WP
             IYXLOG=YXLOG
           ELSE
 !
 !           VALUES FALL INTO TWO DECADES
 !
-            IYN=NINT(YMN/(10.0E0_WP**IYNLOG))
-            YNLOG=MIN(LOG10(IYN*(10.0E0_WP**IYNLOG)),YNLOG)
-            YXLOG=YNLOG+1.0E0_WP
+            IYN=NINT(YMN/(10.0_WP**IYNLOG))
+            YNLOG=MIN(LOG10(IYN*(10.0_WP**IYNLOG)),YNLOG)
+            YXLOG=YNLOG+1.0_WP
             IYXLOG=YXLOG
           END IF
         END IF
@@ -112,15 +112,15 @@
 !
 !       COMPUTE AXIS LABELS
 !
-        YLABEL(1)=10.0E0_WP**YXLOG
-        IYX=YLABEL(1)/(10.0E0_WP**IYXLOG)
+        YLABEL(1)=10.0_WP**YXLOG
+        IYX=YLABEL(1)/(10.0_WP**IYXLOG)
         K=2
-        IF (YXLOG-YNLOG.GT.3.0E0_WP) K=5
-        IF (YXLOG-YNLOG.GT.6.0E0_WP) K=10
+        IF (YXLOG-YNLOG.GT.3.0_WP) K=5
+        IF (YXLOG-YNLOG.GT.6.0_WP) K=10
 !
         NLABLY = 1
 !
-        IF (YXLOG-YNLOG.LE.12.0E0_WP) THEN
+        IF (YXLOG-YNLOG.LE.12.0_WP) THEN
 !
 !       SET NICE LABELS
 !
@@ -130,9 +130,9 @@
             IYX=10
             IYXLOG=IYXLOG-1
           END IF
-          IF (YLABEL(1)-IYX*(10.0E0_WP**IYXLOG).GT.0.0E0_WP .AND.
-     +     YXLOG-(YXLOG-YNLOG)/(2.0E0_WP*(NUMROW-1)) .GT.
-     +     LOG10(DBLE(IYX))+IYXLOG) IYX=IYX+K
+          IF (YLABEL(1)-IYX*(10.0_WP**IYXLOG).GT.0.0_WP .AND.
+     &     YXLOG-(YXLOG-YNLOG)/(2.0_WP*(NUMROW-1)) .GT.
+     &     LOG10(DBLE(IYX))+IYXLOG) IYX=IYX+K
           IYX=IYX-K
           IF (IYX.LE.0) THEN
             IYX=10
@@ -140,21 +140,21 @@
           END IF
           DO 155 J=2,20
              NLABLY=NLABLY+1
-             YLABEL(NLABLY)=IYX*(10.0E0_WP**IYXLOG)
-             IF (YLABEL(NLABLY).LE.10.0E0_WP**YNLOG) GO TO 156
+             YLABEL(NLABLY)=IYX*(10.0_WP**IYXLOG)
+             IF (YLABEL(NLABLY).LE.10.0_WP**YNLOG) GO TO 156
              IYX=IYX-K
              IF (IYX.GT.0) GO TO 155
              IYX=10
              IYXLOG=IYXLOG-1
   155     CONTINUE
-  156     YLABEL(NLABLY)=10.0E0_WP**YNLOG
+  156     YLABEL(NLABLY)=10.0_WP**YNLOG
         ELSE
 !
 !         COMPUTE EVENLY SPACED LABELS
 !
           DO 160 J = ISTEP, NUMROW, ISTEP
             NLABLY = NLABLY + 1
-            YLABEL(NLABLY) = 10.0E0_WP**(YMX+(1.0E0_WP-J)*YWIDTH)
+            YLABEL(NLABLY) = 10.0_WP**(YMX+(1.0_WP-J)*YWIDTH)
   160     CONTINUE
         END IF
       END IF

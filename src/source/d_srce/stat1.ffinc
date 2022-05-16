@@ -1,6 +1,6 @@
 !STAT1
       SUBROUTINE STAT1(Y, N, YMED, YMIN, YMAX, YMIDRG, YRANGE, NCELLS,
-     +   YLB, YUB, YDISTR)
+     &   YLB, YUB, YDISTR)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -23,19 +23,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   YLB,YMAX,YMED,YMIDRG,YMIN,YRANGE,YUB
+     &   YLB,YMAX,YMED,YMIDRG,YMIN,YRANGE,YUB
       INTEGER
-     +   N,NCELLS
+     &   N,NCELLS
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   Y(N),YDISTR(NCELLS)
+     &   Y(N),YDISTR(NCELLS)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   DELY,YT
+     &   DELY,YT
       INTEGER
-     +   I,IC,IC1,L,M,M1
+     &   I,IC,IC1,L,M,M1
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MOD
@@ -95,8 +95,8 @@
       M = (N+1)/2
       M1 = M
       IF (MOD(N,2).EQ.0) M1 = M1 + 1
-      YMED = (Y(M)+Y(M1))/2.0E0_WP
-      YMIDRG = (Y(1)+Y(N))/2.0E0_WP
+      YMED = (Y(M)+Y(M1))/2.0_WP
+      YMIDRG = (Y(1)+Y(N))/2.0_WP
       YRANGE = Y(N) - Y(1)
       YMIN = Y(1)
       YMAX = Y(N)

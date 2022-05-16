@@ -17,11 +17,11 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IPRT,IVCV,M
+     &   IPRT,IVCV,M
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   VCV(*)
+      REAL(KIND=WP) ::
+     &   VCV(*)
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL MATPRT

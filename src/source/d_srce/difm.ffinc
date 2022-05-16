@@ -17,33 +17,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     +   YFMISS,YMISS
+      REAL(KIND=WP) :: YFMISS,YMISS
       INTEGER
-     +   N,NYF
+     &   N,NYF
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   Y(*),YF(*)
+     &   Y(*),YF(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IAR,IPRT
+     &   IAR,IPRT
       LOGICAL
-     +   ERR01,HEAD
+     &   ERR01,HEAD
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   PHI(1)
+     &   PHI(1)
       CHARACTER
-     +   LN(8)*1,NMSUB(6)*1
+     &   LN(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,FLTARM,IPRINT
+!      EXTERNAL EISGE,FLTARM,IPRINT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -90,11 +89,11 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'D',       'I',       'F',       'M',       ' ',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'D',       'I',       'F',       'M',       ' ',       ' '/
       DATA
-     +  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
-     + /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     & /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -117,7 +116,7 @@
 !     SET VARIOUS PROGRAM PARAMETERS
 !
       IAR = 1
-      PHI(1) = 1.0E0_WP
+      PHI(1) = 1.0_WP
 !
       CALL FLTARM (Y, YMISS, N, IAR, PHI, YF, YFMISS, NYF)
 !
@@ -126,5 +125,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   47H       CALL DIFM (Y, YMISS, N, YF, YFMISS, NYF))
+     &   47H       CALL DIFM (Y, YMISS, N, YF, YFMISS, NYF))
       END

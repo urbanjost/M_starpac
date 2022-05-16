@@ -17,19 +17,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   T
+     &   T
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   R(N),Y(N)
+     &   R(N),Y(N)
       INTEGER
-     +   H(N)
+     &   H(N)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,IJ,J,K,K2
+     &   I,IJ,J,K,K2
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL SRTIR,SRTRI
@@ -82,7 +82,7 @@
          ELSE
             DO 30 J=1,K
                IJ = I - J
-               R(IJ) = (I-1) - (K-1)/2.0E0_WP
+               R(IJ) = (I-1) - (K-1)/2.0_WP
    30       CONTINUE
             T = T + (K-1)*K*(K+1)
             K = 1
@@ -91,7 +91,7 @@
       T = T + (K-1)*K*(K+1)
       DO 50 I=1,K
          K2 = N + 1 - I
-         R(K2) = N - (K-1)/2.0E0_WP
+         R(K2) = N - (K-1)/2.0_WP
    50 CONTINUE
 !
 !     SORT H CARRY ALONG R TO OBTAIN RANKS IN R

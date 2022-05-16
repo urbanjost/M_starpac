@@ -17,19 +17,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   HMA
+     &   HMA
       INTEGER
-     +   K,N,NYF
+     &   K,N,NYF
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   Y(N),YF(N)
+     &   Y(N),YF(N)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   SUM
+     &   SUM
       INTEGER
-     +   I,I1,II,J
+     &   I,I1,II,J
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -59,7 +59,7 @@
 !
       DO 30 I = 1, NYF
          II = I - 1
-         SUM = 0.0E0_WP
+         SUM = 0.0_WP
          DO 20 J = 1, K
             II = II + 1
             SUM = SUM + HMA*YF(II)
@@ -70,7 +70,7 @@
       I1 = NYF + 1
 !
       DO 40 I = I1, N
-         YF(I) = 0.0E0_WP
+         YF(I) = 0.0_WP
    40 CONTINUE
 !
       RETURN

@@ -17,17 +17,17 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   RSS,YSS
+     &   RSS,YSS
       LOGICAL
-     +   EXACT
+     &   EXACT
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   FPLRS,RSSTST
+     &   FPLRS,RSSTST
 !
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
-     +   D1MACH
+     &   D1MACH
       EXTERNAL D1MACH
 !
 !  INTRINSIC FUNCTIONS
@@ -54,9 +54,9 @@
 !
       EXACT = .FALSE.
       RSSTST = RSS
-      IF (YSS.GT.0.0E0_WP) RSSTST = RSSTST / YSS
+      IF (YSS.GT.0.0_WP) RSSTST = RSSTST / YSS
       RSSTST = SQRT(RSSTST)
-      IF (RSSTST.LT.10.0E0_WP*FPLRS) EXACT = .TRUE.
+      IF (RSSTST.LT.10.0_WP*FPLRS) EXACT = .TRUE.
 !
       RETURN
 !

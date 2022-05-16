@@ -1,6 +1,6 @@
 !LLSPS
       SUBROUTINE LLSPS(Y, XM, N, NDEG, RES, LDSTAK,
-     +   NPRT, LPAR, PAR, NPAR, RSD, PV, SDPV, SDRES, VCV, IVCV)
+     &   NPRT, LPAR, PAR, NPAR, RSD, PV, SDPV, SDRES, VCV, IVCV)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,35 +20,35 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   RSD
+     &   RSD
       INTEGER
-     +   IVCV,LDSTAK,LPAR,N,NDEG,NPAR,NPRT
+     &   IVCV,LDSTAK,LPAR,N,NDEG,NPAR,NPRT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PAR(*),PV(*),RES(*),SDPV(*),SDRES(*),VCV(*),XM(*),Y(*)
+     &   PAR(*),PV(*),RES(*),SDPV(*),SDRES(*),VCV(*),XM(*),Y(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT,LPV,LSDPV,LSDRES,LWT
+     &   IPRT,LPV,LSDPV,LSDRES,LWT
       LOGICAL
-     +   SAVE,WEIGHT
+     &   SAVE,WEIGHT
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   WT(1)
+     &   WT(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,LLCNTP
+!      EXTERNAL IPRINT,LLCNTP
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -120,7 +120,7 @@
 !
 !
       DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
-     +   'L','L','S','P','S',' '/
+     &   'L','L','S','P','S',' '/
 !
 !     SET PARAMETERS NECESSARY FOR THE COMPUTATIONS
 !
@@ -132,8 +132,8 @@
       LWT = 1
 !
       CALL LLCNTP(Y, WT, LWT, XM, N, NDEG, NPAR, RES, LDSTAK, NPRT,
-     +   PAR, LPAR, RSD, PV, LPV, SDPV, LSDPV, SDRES, LSDRES, VCV, IVCV,
-     +   NMSUB, WEIGHT, SAVE)
+     &   PAR, LPAR, RSD, PV, LPV, SDPV, LSDPV, SDRES, LSDRES, VCV, IVCV,
+     &   NMSUB, WEIGHT, SAVE)
 !
       IF (IERR.NE.1) RETURN
 !
@@ -146,7 +146,7 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (//42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL LLSPS (Y, X, N, NDEG, RES, LSDTAK,'/
-     +   '      +            NPRT, LPAR, PAR, NPAR, RSD, PV, SDPV,'/
-     +   '      +            SDRES, VCV, IVCV)')
+     &   '       CALL LLSPS (Y, X, N, NDEG, RES, LSDTAK,'/
+     &   '      +            NPRT, LPAR, PAR, NPAR, RSD, PV, SDPV,'/
+     &   '      +            SDRES, VCV, IVCV)')
       END

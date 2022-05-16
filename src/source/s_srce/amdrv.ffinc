@@ -1,6 +1,6 @@
 !AMDRV
       SUBROUTINE AMDRV (MDLTS3, DRV, DONE, IFIXD, PAR, NPAR, XM, N, M,
-     +   IXM, NRESTS, RESTS, D, WEIGHT, WT, LWT, STPT, LSTPT, SCL, LSCL)
+     &   IXM, NRESTS, RESTS, D, WEIGHT, WT, LWT, STPT, LSTPT, SCL, LSCL)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,28 +18,28 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IXM,LSCL,LSTPT,LWT,M,N,NPAR,NRESTS
+     &   IXM,LSCL,LSTPT,LWT,M,N,NPAR,NRESTS
       LOGICAL
-     +   DONE,WEIGHT
+     &   DONE,WEIGHT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   D(NRESTS,*),PAR(*),RESTS(*),SCL(*),STPT(*),WT(*),XM(IXM,*)
+      REAL(KIND=WP) ::
+     &   D(NRESTS,*),PAR(*),RESTS(*),SCL(*),STPT(*),WT(*),XM(IXM,*)
       INTEGER
-     +   IFIXD(*)
+     &   IFIXD(*)
 !
 !  SUBROUTINE ARGUMENTS
       EXTERNAL DRV,MDLTS3
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   PJ,STPJ
+      REAL(KIND=WP) ::
+     &   PJ,STPJ
       INTEGER
-     +   I,J,JPK
+     &   I,J,JPK
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,MAX,SIGN
@@ -125,7 +125,7 @@
          PJ = PAR(J)
          IF (SCL(JPK).NE.0.0E0) THEN
             STPJ = STPT(J)*SIGN(1.0E0,PAR(J))*MAX(ABS(PAR(J)),1.0E0/
-     +             ABS(SCL(JPK)))
+     &             ABS(SCL(JPK)))
          ELSE
             IF (PAR(J).NE.0.0E0) THEN
                STPJ = STPT(J)*SIGN(1.0E0,PAR(J))*ABS(PAR(J))

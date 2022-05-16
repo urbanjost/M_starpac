@@ -17,34 +17,34 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   X(*),YM(*)
+     &   X(*),YM(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   XLB,XMISS,XUB,YLB,YUB
+     &   XLB,XMISS,XUB,YLB,YUB
       INTEGER
-     +   ILOG,IPRT,ISCHCK,ISIZE,IYM,LISYM,M,NOUT
+     &   ILOG,IPRT,ISCHCK,ISIZE,IYM,LISYM,M,NOUT
       LOGICAL
-     +   MISS,MULTI
+     &   MISS,MULTI
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   YMMISS(1)
+     &   YMMISS(1)
       INTEGER
-     +   ISYM(1)
+     &   ISYM(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,PPCNT
+!      EXTERNAL IPRINT,PPCNT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -121,23 +121,23 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     +    /  'P',       'P',       ' ',       ' ',       ' ',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     &    /  'P',       'P',       ' ',       ' ',       ' ',       ' '/
 !
 !     COMMENCE BODY OF ROUTINE
 !
 !     SET DEFAULT VALUES
 !
-      YMMISS(1) = 1.0E0_WP
-      XMISS = 1.0E0_WP
+      YMMISS(1) = 1.0_WP
+      XMISS = 1.0_WP
       M = 1
       IYM = N
       MULTI = .FALSE.
       ILOG = -1
-      YLB = 0.0E0_WP
-      YUB = 0.0E0_WP
-      XLB = 0.0E0_WP
-      XUB = 0.0E0_WP
+      YLB = 0.0_WP
+      YUB = 0.0_WP
+      XLB = 0.0_WP
+      XUB = 0.0_WP
       ISCHCK = 0
       ISIZE = -1
       NOUT = 0
@@ -145,8 +145,8 @@
       LISYM = 1
 !
       CALL PPCNT (YM, YMMISS, X, XMISS, N, M, IYM, MULTI, ILOG,
-     +  YLB, YUB, XLB, XUB, NMSUB, ISCHCK, ISYM, ISIZE, NOUT, MISS,
-     +  LISYM)
+     &  YLB, YUB, XLB, XUB, NMSUB, ISCHCK, ISYM, ISIZE, NOUT, MISS,
+     &  LISYM)
 !
       IF (IERR.NE.0) THEN
         IERR = 1
@@ -159,5 +159,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL PP (Y, X, N)')
+     &   '       CALL PP (Y, X, N)')
       END

@@ -1,6 +1,6 @@
 !STPLSC
       SUBROUTINE STPLSC(XM, N, M, IXM, MDL, PAR, NPAR, LDSTAK, STP,
-     +   NETA, EXMPT, SCALE, NPRT)
+     &   NETA, EXMPT, SCALE, NPRT)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,34 +20,34 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   EXMPT
+     &   EXMPT
       INTEGER
-     +   IXM,LDSTAK,M,N,NETA,NPAR,NPRT
+     &   IXM,LDSTAK,M,N,NETA,NPAR,NPRT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PAR(*),SCALE(*),STP(*),XM(*)
+     &   PAR(*),SCALE(*),STP(*),XM(*)
 !
 !  SUBROUTINE ARGUMENTS
       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT,LSCALE
+     &   IPRT,LSCALE
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,STPDRV
+!      EXTERNAL IPRINT,STPDRV
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -105,7 +105,7 @@
 !     SET UP NAME ARRAYS
 !
       DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
-     +   'S','T','P','L','S','C'/
+     &   'S','T','P','L','S','C'/
 !
 !     SET LENGTH OF VECTOR SCALE.
 !
@@ -114,7 +114,7 @@
 !     PASS CONTROL TO STEP SIZE SELECTION DRIVER
 !
       CALL STPDRV(NMSUB, XM, N, M, IXM, MDL, PAR, NPAR, LDSTAK, STP,
-     +   NETA, EXMPT, SCALE, LSCALE, NPRT)
+     &   NETA, EXMPT, SCALE, LSCALE, NPRT)
 !
       IF (IERR.NE.1) RETURN
 !
@@ -126,7 +126,7 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     + '       CALL STPLSC (XM, N, M, IXM, NLSMDL, PAR, NPAR, LDSTAK,',
-     + ' STP,'/
-     + '      +             NETA, EXMPT, SCALE, NPRT)')
+     & '       CALL STPLSC (XM, N, M, IXM, NLSMDL, PAR, NPAR, LDSTAK,',
+     & ' STP,'/
+     & '      +             NETA, EXMPT, SCALE, NPRT)')
       END

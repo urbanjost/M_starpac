@@ -1,4 +1,5 @@
       module M_starpac_d
+      use M_starpac_g
       implicit none
       private
       integer,parameter :: wp=kind(0.0d0)
@@ -189,7 +190,6 @@ $INCLUDE "./d_srce/sumds.ffinc"
 $INCLUDE "./d_srce/corrmn.ffinc"
 $INCLUDE "./d_srce/xxch13.ffinc"
 $INCLUDE "./d_srce/xdcklt.ffinc"
-$INCLUDE "./d_srce/ppmn.ffinc"
 $INCLUDE "./d_srce/setra.ffinc"
 $INCLUDE "./d_srce/mpp.ffinc"
 $INCLUDE "./d_srce/center.ffinc"
@@ -484,7 +484,6 @@ $INCLUDE "./d_srce/srtri.ffinc"
 $INCLUDE "./d_srce/dckls1.ffinc"
 $INCLUDE "./d_srce/llspw.ffinc"
 $INCLUDE "./d_srce/parzen.ffinc"
-$INCLUDE "./d_srce/sumbs.ffinc"
 $INCLUDE "./d_srce/fftct.ffinc"
 $INCLUDE "./d_srce/correr.ffinc"
 $INCLUDE "./d_srce/xcorr.ffinc"
@@ -539,6 +538,8 @@ $INCLUDE "./d_srce/dfbwm.ffinc"
 $INCLUDE "./d_srce/vpl.ffinc"
 $INCLUDE "./d_srce/bfslag.ffinc"
 $INCLUDE "./d_srce/eragtp.ffinc"
+$INCLUDE "./srce/sumbs.ffinc"
+$INCLUDE "./srce/ppmn.ffinc"
 
 $INCLUDE "./nl2sol/qapply.ffinc"
 $INCLUDE "./nl2sol/livmul.ffinc"

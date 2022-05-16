@@ -16,24 +16,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   YMEAN,YMISS
+      REAL(KIND=WP) :: YMEAN,YMISS
       INTEGER
-     +   N,NUSED
+     &   N,NUSED
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   Y(*)
+      REAL(KIND=WP) ::
+     &   Y(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   SUMY
+      REAL(KIND=WP) ::
+     &   SUMY
       INTEGER
-     +   I
+     &   I
 !
 !  EXTERNAL FUNCTIONS
       LOGICAL
-     +   MVCHK
+     &   MVCHK
       EXTERNAL MVCHK
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)

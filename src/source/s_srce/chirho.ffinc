@@ -16,22 +16,22 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   CHI,CHIP
+      REAL(KIND=WP) ::
+     &   CHI,CHIP
       INTEGER
-     +   N,NC
+     &   N,NC
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   RHO(*)
+      REAL(KIND=WP) ::
+     &   RHO(*)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   LAG
+     &   LAG
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   CDFCHI
+      REAL(KIND=WP) ::
+     &   CDFCHI
       EXTERNAL CDFCHI
 !
 !  INTRINSIC FUNCTIONS

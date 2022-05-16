@@ -21,21 +21,21 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   AD(*),AX(*),X(*)
+      REAL(KIND=WP) ::
+     &   AD(*),AX(*),X(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   ADMAX,DIFF,FPLRS
+      REAL(KIND=WP) ::
+     &   ADMAX,DIFF,FPLRS
       INTEGER
-     +   I
+     &   I
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   R1MACH
+      REAL(KIND=WP) ::
+     &   R1MACH
       EXTERNAL R1MACH
 !
 !  INTRINSIC FUNCTIONS
@@ -43,21 +43,21 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL AD(N)
+!     REAL(KIND=WP) :: AD(N)
 !        THE NUMBER OF ACCURATE DIGITS.
-!     REAL ADMAX
+!     REAL(KIND=WP) :: ADMAX
 !        THE NUMBER OF DIGITS CARRIED IN A FLOATING POINT COMPUTATION.
-!     REAL AX(N)
+!     REAL(KIND=WP) :: AX(N)
 !        THE APPROXIMATION TO THE SOLUTION.
-!     REAL DIFF
+!     REAL(KIND=WP) :: DIFF
 !        *
-!     REAL FPLRS
+!     REAL(KIND=WP) :: FPLRS
 !        THE FLOATING POINT LARGEST RELATIVE SPACING.
 !     INTEGER I
 !        AN INDEX.
 !     INTEGER N
 !        THE NUMBER OF ELEMENTS BEING COMPARED.
-!     REAL X(N)
+!     REAL(KIND=WP) :: X(N)
 !        THE SOLUTION.
 !
 !

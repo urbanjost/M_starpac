@@ -1,6 +1,6 @@
 !ACFMS
       SUBROUTINE ACFMS (Y, YMISS, N, LAGMAX, LACOV, ACOV, AMISS, NLPPA,
-     +   NPRT, LDSTAK)
+     &   NPRT, LDSTAK)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,50 +17,49 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   AMISS,YMISS
+      REAL(KIND=WP) :: AMISS,YMISS
       INTEGER
-     +   LACOV,LAGMAX,LDSTAK,N,NPRT
+     &   LACOV,LAGMAX,LDSTAK,N,NPRT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   ACOV(*),Y(*)
+      REAL(KIND=WP) ::
+     &   ACOV(*),Y(*)
       INTEGER
-     +   NLPPA(*)
+     &   NLPPA(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       DOUBLE PRECISION DSTAK(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   CHIA,CHIAP,FPLM,OSPVAR,YMEAN,YSD
+      REAL(KIND=WP) ::
+     &   CHIA,CHIAP,FPLM,OSPVAR,YMEAN,YSD
       INTEGER
-     +   AIC,FTEST,I,IAR,IFP,IPRT,LAGLST,LDSMIN,LYFFT,NALL0,NFAC,
-     +   NFFT,PHI,PRHO,SDRHO,WORK
+     &   AIC,FTEST,I,IAR,IFP,IPRT,LAGLST,LDSMIN,LYFFT,NALL0,NFAC,
+     &   NFFT,PHI,PRHO,SDRHO,WORK
       LOGICAL
-     +   DIFFER,ISFFT
+     &   DIFFER,ISFFT
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   RSTAK(12)
+      REAL(KIND=WP) ::
+     &   RSTAK(12)
       INTEGER
-     +   IOD(1),ND(1),NDUM(1)
+     &   IOD(1),ND(1),NDUM(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   R1MACH
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL R1MACH,STKGET,STKST
+!      REAL(KIND=WP) ::
+!     +   R1MACH
+!      INTEGER
+!     +   STKST
+!      EXTERNAL R1MACH,STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ACFER,ACFMNM,ACFOUT,IPRINT,LDSCMP,STKCLR,STKSET
+!      EXTERNAL ACFER,ACFMNM,ACFOUT,IPRINT,LDSCMP,STKCLR,STKSET
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SQRT
@@ -178,8 +177,8 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'A',       'C',       'F',       'M',       'S',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'A',       'C',       'F',       'M',       'S',       ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -199,7 +198,7 @@
       END IF
 !
       CALL ACFER(NMSUB, N, LAGMAX, LACOV, LDSTAK, LDSMIN,
-     +  DIFFER, NFAC, ND, IOD, ISFFT, LYFFT, NFFT)
+     &  DIFFER, NFAC, ND, IOD, ISFFT, LYFFT, NFFT)
 !
 !     CHECK WHETHER AN ERROR HAS BEEN DETECTED
 !
@@ -241,9 +240,9 @@
 !         CALL ROUTINE FOR MAIN AUTOCORRELATION COMPUTATIONS.
 !
           CALL ACFMNM (Y, YMISS, N, LAGMAX, ACOV(2), RSTAK(SDRHO),
-     +       NLPPA, YMEAN, RSTAK(PRHO), RSTAK(AIC), RSTAK(FTEST),
-     +       RSTAK(PHI), IAR, OSPVAR, ACOV, LACOV, LAGMAX+1, CHIA,
-     +       CHIAP, LAGLST, RSTAK(WORK), NPRT)
+     &       NLPPA, YMEAN, RSTAK(PRHO), RSTAK(AIC), RSTAK(FTEST),
+     &       RSTAK(PHI), IAR, OSPVAR, ACOV, LACOV, LAGMAX+1, CHIA,
+     &       CHIAP, LAGLST, RSTAK(WORK), NPRT)
 !
           IF (LAGLST .GE. 0) THEN
             YSD = SQRT (ACOV(1) * N / (N - 1))
@@ -254,11 +253,11 @@
 !           CALL ROUTINE TO PRINT OUT AUTOCORRELATIONS
 !
           IF ((NPRT.NE.0) .OR. (ACOV(1).EQ.0.0E0))
-     +      CALL ACFOUT (YMEAN, YSD, N, NLPPA(1), LAGMAX, ACOV(2),
-     +         RSTAK(SDRHO), RSTAK(PRHO), NLPPA, RSTAK(AIC), LAGMAX+1,
-     +         RSTAK(FTEST), IAR, RSTAK(PHI), OSPVAR, CHIA, CHIAP,
-     +         LAGLST, .TRUE., YMISS, .FALSE., .FALSE., 0, NDUM, NDUM,
-     +         0)
+     &      CALL ACFOUT (YMEAN, YSD, N, NLPPA(1), LAGMAX, ACOV(2),
+     &         RSTAK(SDRHO), RSTAK(PRHO), NLPPA, RSTAK(AIC), LAGMAX+1,
+     &         RSTAK(FTEST), IAR, RSTAK(PHI), OSPVAR, CHIA, CHIAP,
+     &         LAGLST, .TRUE., YMISS, .FALSE., .FALSE., 0, NDUM, NDUM,
+     &         0)
 !
           IF (NPRT.NE.0) THEN
             DO 50 I = 1, LAGMAX
@@ -284,7 +283,7 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT(/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +  '       CALL ACFMS (Y, YMISS, N,'/
-     +  '      +            LAGMAX, LACOV, ACOV, AMISS, NLPPA, NPRT,',
-     +  ' LDSTAK)')
+     &  '       CALL ACFMS (Y, YMISS, N,'/
+     &  '      +            LAGMAX, LACOV, ACOV, AMISS, NLPPA, NPRT,',
+     &  ' LDSTAK)')
       END

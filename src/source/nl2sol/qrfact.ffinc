@@ -10,25 +10,25 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   ierr,m,n,nm,nopivk
+     &   ierr,m,n,nm,nopivk
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   alpha(n),qr(nm,n),sum(n)
+     &   alpha(n),qr(nm,n),sum(n)
       integer
-     +   ipivot(n)
+     &   ipivot(n)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   alphak,beta,one,p01,p99,qrkk,qrkmax,rktol,rktol1,sigma,sumj,
-     +   temp,ufeta,zero
+     &   alphak,beta,one,p01,p99,qrkk,qrkmax,rktol,rktol1,sigma,sumj,
+     &   temp,ufeta,zero
       integer
-     +   i,j,jbar,k,k1,minum,mk1
+     &   i,j,jbar,k,k1,minum,mk1
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON
       real(kind=wp) ::
-     +   dotprd,v2norm
+     &   dotprd,v2norm
       external dotprd,v2norm
 !
 !  EXTERNAL SUBROUTINES

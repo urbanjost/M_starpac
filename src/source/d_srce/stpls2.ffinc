@@ -17,19 +17,19 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   NPAR
+     &   NPAR
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   STP(NPAR)
+     &   STP(NPAR)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -47,7 +47,7 @@
 !        THE STEP SIZE ARRAY.
 !
       DO 10 I=1,NPAR
-         STP(I) = -1.0E0_WP
+         STP(I) = -1.0_WP
    10 CONTINUE
 !
       IERR = -1

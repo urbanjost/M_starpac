@@ -1,6 +1,6 @@
 !UASS
       SUBROUTINE UASS (Y, N, IAR, PHI, LAGMAX, LAG, NF, FMIN, FMAX,
-     +   NPRT, SPCA, SPCF, FREQ, LDSTAK)
+     &   NPRT, SPCA, SPCF, FREQ, LDSTAK)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,46 +18,46 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   FMAX,FMIN
+     &   FMAX,FMIN
       INTEGER
-     +   IAR,LAG,LAGMAX,LDSTAK,N,NF,NPRT
+     &   IAR,LAG,LAGMAX,LDSTAK,N,NF,NPRT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   FREQ(*),PHI(*),SPCA(*),SPCF(*),Y(*)
+     &   FREQ(*),PHI(*),SPCA(*),SPCF(*),Y(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   ALPHA,DELTA,FMN,FMX,VAR,YMEAN
+     &   ALPHA,DELTA,FMN,FMX,VAR,YMEAN
       INTEGER
-     +   ACOV,AIC,FTEST,IA,IFP,IO,IPRT,ISORT,ISYM,LACOV,LAIC,
-     +   LDSMIN,LPCV,LPHI,LSPC,LWORK,NALL0,WORK,XAXIS,YAXIS
+     &   ACOV,AIC,FTEST,IA,IFP,IO,IPRT,ISORT,ISYM,LACOV,LAIC,
+     &   LDSMIN,LPCV,LPHI,LSPC,LWORK,NALL0,WORK,XAXIS,YAXIS
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   RSTAK(12)
+     &   RSTAK(12)
       INTEGER
-     +   ISTAK(12)
+     &   ISTAK(12)
       LOGICAL
-     +   OPTION(4)
+     &   OPTION(4)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL STKGET,STKST
+!      INTEGER
+!     +   STKST
+!      EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ACVF,IPRINT,LDSCMP,PARZEN,STKCLR,STKSET,UASDV,UASER,
-     +   UASVAR
+!      EXTERNAL ACVF,IPRINT,LDSCMP,PARZEN,STKCLR,STKSET,UASDV,UASER,
+!     +   UASVAR
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MAX,MIN
@@ -191,8 +191,8 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'U',       'A',       'S',       'S',       ' ',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'U',       'A',       'S',       'S',       ' ',       ' '/
 !
       IFP = 4
 !
@@ -209,12 +209,12 @@
       IF (IAR .NE. 0) IA = 0
 !
       CALL LDSCMP(7, 0, IO*(2*NF+5), 0, 0, 0, 'D',
-     +   2*LAGMAX+2+IA*(3*LAGMAX+1)+IO*(4*NF+10), LDSMIN)
+     &   2*LAGMAX+2+IA*(3*LAGMAX+1)+IO*(4*NF+10), LDSMIN)
 !
 !     CALL ERROR CHECKING ROUTINE
 !
       CALL UASER(NMSUB, N, Y, IAR, PHI, LAGMAX, LAG, LACOV,
-     +   NF, LDSTAK, LDSMIN, N, N, OPTION)
+     &   NF, LDSTAK, LDSMIN, N, N, OPTION)
 !
    10 IF (IERR.NE.0) THEN
          IERR = 1
@@ -239,15 +239,15 @@
       LACOV = LAGMAX + 1
       LWORK = LAGMAX+1
 !
-      FMN = MAX(FMIN, 0.0E0_WP)
-      FMX = MIN(FMAX, 0.5D0)
+      FMN = MAX(FMIN, 0.0_WP)
+      FMX = MIN(FMAX, 0.5_WP)
       IF (FMN.GE.FMX) THEN
-        FMN = 0.0E0_WP
-        FMX = 0.5D0
+        FMN = 0.0_WP
+        FMX = 0.5_WP
       END IF
 !
-      ALPHA = 0.95D0
-      DELTA = 1.0E0_WP
+      ALPHA = 0.95_WP
+      DELTA = 1.0_WP
 !
 !     COMPUTE AUTOCOVARIANCES
 !
@@ -293,10 +293,10 @@
 !     CALL THE MAIN DRIVER FOR AUTOREGRESSIVE SPECTRUM ROUTINES.
 !
       CALL UASDV(RSTAK(ACOV), SPCA, SPCF, LSPC, IAR, PHI, NF, FMN,
-     +   FMX, FREQ, N, LAGMAX, RSTAK(FTEST), RSTAK(AIC), RSTAK(WORK),
-     +   LACOV, LWORK, DELTA, ISTAK(ISORT), ISTAK(ISYM), RSTAK(XAXIS),
-     +   RSTAK(YAXIS), LPCV, ALPHA, LAG, LAIC, LPHI, NPRT, VAR, PARZEN,
-     +   NMSUB)
+     &   FMX, FREQ, N, LAGMAX, RSTAK(FTEST), RSTAK(AIC), RSTAK(WORK),
+     &   LACOV, LWORK, DELTA, ISTAK(ISORT), ISTAK(ISYM), RSTAK(XAXIS),
+     &   RSTAK(YAXIS), LPCV, ALPHA, LAG, LAIC, LPHI, NPRT, VAR, PARZEN,
+     &   NMSUB)
 !
       CALL STKCLR(NALL0)
 !
@@ -305,7 +305,7 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     + '       CALL UASS (Y, N,'/
-     + '      +           IAR, PHI, LAGMAX, LAG, NF, FMIN, FMAX, NPRT,'/
-     + '      +           SPCA, SPCF, FREQ, LDSTAK)')
+     & '       CALL UASS (Y, N,'/
+     & '      +           IAR, PHI, LAGMAX, LAG, NF, FMIN, FMAX, NPRT,'/
+     & '      +           SPCA, SPCF, FREQ, LDSTAK)')
       END

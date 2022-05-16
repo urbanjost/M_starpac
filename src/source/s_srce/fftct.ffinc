@@ -10,17 +10,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IX,N2
+     &   IX,N2
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   X(IX)
+      REAL(KIND=WP) ::
+     &   X(IX)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   A2,AA,AB,CD,CN,EX,PI,SAVE,SD,SN
+      REAL(KIND=WP) ::
+     &   A2,AA,AB,CD,CN,EX,PI,SAVE,SD,SN
       INTEGER
-     +   I,ISN,J,K,M,M1,N1,NK
+     &   I,ISN,J,K,M,M1,N1,NK
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL FFT,GETPI,REALTR

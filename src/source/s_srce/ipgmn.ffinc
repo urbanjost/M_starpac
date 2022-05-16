@@ -16,17 +16,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   ISPCER,NF
+     &   ISPCER,NF
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PER(NF),PERI(NF)
+      REAL(KIND=WP) ::
+     &   PER(NF),PERI(NF)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   SM
+      REAL(KIND=WP) ::
+     &   SM
       INTEGER
-     +   I
+     &   I
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

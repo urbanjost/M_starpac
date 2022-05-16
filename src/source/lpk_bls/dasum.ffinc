@@ -31,19 +31,19 @@
 
 !...SCALAR ARGUMENTS
       INTEGER
-     +   INCX,N
+     &   INCX,N
 
 !...ARRAY ARGUMENTS
       DOUBLE PRECISION
-     +   DX(*)
+     &   DX(*)
 
 !...LOCAL SCALARS
       INTEGER
-     +   I,M,MP1,NS
+     &   I,M,MP1,NS
 
 !...INTRINSIC FUNCTIONS
       INTRINSIC
-     +   DABS,MOD
+     &   DABS,MOD
 
 
 !***FIRST EXECUTABLE STATEMENT  DASUM

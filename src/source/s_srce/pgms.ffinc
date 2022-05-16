@@ -1,6 +1,6 @@
 !PGMS
       SUBROUTINE PGMS (YFFT, N, NFFT, LYFFT, IEXTND, NF, PER, LPER,
-     +   FREQ, LFREQ, NPRT)
+     &   FREQ, LFREQ, NPRT)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,28 +18,28 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IEXTND,LFREQ,LPER,LYFFT,N,NF,NFFT,NPRT
+     &   IEXTND,LFREQ,LPER,LYFFT,N,NF,NFFT,NPRT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   FREQ(*),PER(*),YFFT(*)
+      REAL(KIND=WP) ::
+     &   FREQ(*),PER(*),YFFT(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT,NFFT2
+     &   IPRT,NFFT2
       LOGICAL
-     +   ERR01,ERR02,ERR03,ERR04,ERR05,HEAD
+     &   ERR01,ERR02,ERR03,ERR04,ERR05,HEAD
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LLFREQ(8)*1,LLPER(8)*1,LLYFFT(8)*1,LN(8)*1,NMSUB(6)*1
+     &   LLFREQ(8)*1,LLPER(8)*1,LLYFFT(8)*1,LN(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,ENFFT,IPRINT,PGMMN
+!      EXTERNAL EISGE,ENFFT,IPRINT,PGMMN
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -105,22 +105,22 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'P',       'G',       'M',       'S',       ' ',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'P',       'G',       'M',       'S',       ' ',       ' '/
       DATA
-     + LLFREQ(1), LLFREQ(2), LLFREQ(3), LLFREQ(4), LLFREQ(5),
-     +  LLFREQ(6), LLFREQ(7), LLFREQ(8)
-     +  /'L','F','R','E','Q',' ',' ',' '/
+     & LLFREQ(1), LLFREQ(2), LLFREQ(3), LLFREQ(4), LLFREQ(5),
+     &  LLFREQ(6), LLFREQ(7), LLFREQ(8)
+     &  /'L','F','R','E','Q',' ',' ',' '/
       DATA
-     + LLPER(1), LLPER(2), LLPER(3), LLPER(4), LLPER(5),
-     +  LLPER(6), LLPER(7), LLPER(8) /'L','P','E','R',' ',' ',' ',' '/
+     & LLPER(1), LLPER(2), LLPER(3), LLPER(4), LLPER(5),
+     &  LLPER(6), LLPER(7), LLPER(8) /'L','P','E','R',' ',' ',' ',' '/
       DATA
-     + LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
-     +  LLYFFT(6), LLYFFT(7), LLYFFT(8)
-     +  /'L','Y','F','F','T',' ',' ',' '/
+     & LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
+     &  LLYFFT(6), LLYFFT(7), LLYFFT(8)
+     &  /'L','Y','F','F','T',' ',' ',' '/
       DATA
-     + LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
-     + /'N',' ',' ',' ',' ',' ',' ',' '/
+     & LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     & /'N',' ',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -153,13 +153,13 @@
    10 CONTINUE
 !
       CALL PGMMN (YFFT, N, NFFT2, IEXTND, NF, PER, LPER, YFFT, FREQ,
-     +   LFREQ, NPRT, NMSUB)
+     &   LFREQ, NPRT, NMSUB)
 !
       RETURN
 !
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +  '       CALL PGMS (YFFT, N, NFFT, LYFFT,'/
-     +  '      +           IEXTND, NF, PER, LPER, FREQ, LFREQ, NPRT)')
+     &  '       CALL PGMS (YFFT, N, NFFT, LYFFT,'/
+     &  '      +           IEXTND, NF, PER, LPER, FREQ, LFREQ, NPRT)')
       END

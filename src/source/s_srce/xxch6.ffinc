@@ -20,25 +20,25 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LDSTAK
+     &   LDSTAK
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       DOUBLE PRECISION DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT,N
+     &   IPRT,N
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   TAG(20),Y(20)
+      REAL(KIND=WP) ::
+     &   TAG(20),Y(20)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AOV1,IPRINT
+!      EXTERNAL AOV1,IPRINT
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -67,22 +67,22 @@
       DATA N /16/
 !
       DATA Y( 1), Y( 2), Y( 3), Y( 4)
-     +    / 83.0, 81.0, 76.0, 78.0/
+     &    / 83.0, 81.0, 76.0, 78.0/
       DATA Y( 5), Y( 6), Y( 7), Y( 8)
-     +    / 79.0, 72.0, 61.0, 61.0/
+     &    / 79.0, 72.0, 61.0, 61.0/
       DATA Y( 9), Y(10), Y(11), Y(12)
-     +    / 67.0, 67.0, 64.0, 78.0/
+     &    / 67.0, 67.0, 64.0, 78.0/
       DATA Y(13), Y(14), Y(15), Y(16)
-     +    / 71.0, 75.0, 72.0, 74.0/
+     &    / 71.0, 75.0, 72.0, 74.0/
 !
       DATA TAG( 1), TAG( 2), TAG( 3), TAG( 4)
-     +    / 1.0, 1.0, 1.0, 1.0/
+     &    / 1.0, 1.0, 1.0, 1.0/
       DATA TAG( 5), TAG( 6), TAG( 7), TAG( 8)
-     +    / 1.0, 1.0, 2.0, 2.0/
+     &    / 1.0, 1.0, 2.0, 2.0/
       DATA TAG( 9), TAG(10), TAG(11), TAG(12)
-     +    / 2.0, 2.0, 2.0, 3.0/
+     &    / 2.0, 2.0, 2.0, 3.0/
       DATA TAG(13), TAG(14), TAG(15), TAG(16)
-     +    / 3.0, 3.0, 3.0, 3.0/
+     &    / 3.0, 3.0, 3.0, 3.0/
 !
 !     DEFINE IPRT, THE CURRENT OUTPUT UNIT.
 !

@@ -17,15 +17,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   K
+     &   K
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   HHP(K),HLP(K)
+     &   HHP(K),HLP(K)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,KMID
+     &   I,KMID
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -48,7 +48,7 @@
 !
       KMID = (K + 1) / 2
 !
-      HHP(KMID) = HHP(KMID) + 1.0E0_WP
+      HHP(KMID) = HHP(KMID) + 1.0_WP
 !
       RETURN
       END

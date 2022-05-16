@@ -18,19 +18,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   DELTA
+     &   DELTA
       INTEGER
-     +   IAR,NF
+     &   IAR,NF
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   FREQ(NF),GAIN(NF),PHAS(NF),PHI(IAR)
+     &   FREQ(NF),GAIN(NF),PHAS(NF),PHI(IAR)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   ARG,C,PI,S,V0,V1,V2,Z0,Z1,Z2
+     &   ARG,C,PI,S,V0,V1,V2,Z0,Z1,Z2
       INTEGER
-     +   I,J,JJ
+     &   I,J,JJ
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL GETPI
@@ -78,27 +78,27 @@
 !     COMPUTE GAIN FUNCTION ESTIMATES AND THEIR CONFIDENCE LIMITS.
 !
       DO 30 I = 1, NF
-         IF (FREQ(I).EQ.0.0E0_WP) THEN
-            ARG = 0.0E0_WP
-            C = 1.0E0_WP
-            S = 0.0E0_WP
-         ELSE IF (FREQ(I).EQ.0.25D0_WP) THEN
-            ARG = PI/2.0E0_WP
-            C = 0.0E0_WP
-            S = 1.0E0_WP
-         ELSE IF (FREQ(I).EQ.0.5D0_WP) THEN
+         IF (FREQ(I).EQ.0.0_WP) THEN
+            ARG = 0.0_WP
+            C = 1.0_WP
+            S = 0.0_WP
+         ELSE IF (FREQ(I).EQ.0.25_WP) THEN
+            ARG = PI/2.0_WP
+            C = 0.0_WP
+            S = 1.0_WP
+         ELSE IF (FREQ(I).EQ.0.5_WP) THEN
             ARG = PI
-            C = -1.0E0_WP
-            S = 0.0E0_WP
+            C = -1.0_WP
+            S = 0.0_WP
          ELSE
-            ARG = 2.0E0_WP * PI * FREQ(I)
+            ARG = 2.0_WP * PI * FREQ(I)
             C = COS(ARG)
             S = SIN(ARG)
          END IF
-         V0 = 0.0E0_WP
-         V1 = 0.0E0_WP
-         Z0 = 0.0E0_WP
-         Z1 = 0.0E0_WP
+         V0 = 0.0_WP
+         V1 = 0.0_WP
+         Z0 = 0.0_WP
+         Z1 = 0.0_WP
 !
          JJ = IAR + 1
 !
@@ -114,14 +114,14 @@
             Z1 = Z2
    20    CONTINUE
 !
-         V2 = DELTA * (1.0E0_WP + (V1 * C - V0))
+         V2 = DELTA * (1.0_WP + (V1 * C - V0))
 !
          Z2 = DELTA * Z1 * S
 !
          GAIN(I) = SQRT(V2*V2 + Z2*Z2)
 !
-         PHAS(I) = -0.5D0_WP * PI
-         IF (Z2.NE.0.0E0_WP .AND. V2.NE.0.0E0_WP) PHAS(I) = ATAN2(Z2, V2)
+         PHAS(I) = -0.5_WP * PI
+         IF (Z2.NE.0.0_WP .AND. V2.NE.0.0_WP) PHAS(I) = ATAN2(Z2, V2)
 !
    30 CONTINUE
 !

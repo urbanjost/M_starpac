@@ -1,6 +1,6 @@
 !UASER
       SUBROUTINE UASER(NMSUB, N, ACOV, IAR, PHI, LAGMAX, LAG, LACOV,
-     +   NF, LDSTAK, LDSMIN, LYFFT, NFFT, OPTION)
+     &   NF, LDSTAK, LDSMIN, LYFFT, NFFT, OPTION)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,34 +18,34 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IAR,LACOV,LAG,LAGMAX,LDSMIN,LDSTAK,LYFFT,N,NF,NFFT
+     &   IAR,LACOV,LAG,LAGMAX,LDSMIN,LDSTAK,LYFFT,N,NF,NFFT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   ACOV(*),PHI(*)
+     &   ACOV(*),PHI(*)
       LOGICAL
-     +   OPTION(4)
+     &   OPTION(4)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,NV
+     &   I,NV
       LOGICAL
-     +   HEAD
+     &   HEAD
 !
 !  LOCAL ARRAYS
       LOGICAL
-     +   ERR(20)
+     &   ERR(20)
       CHARACTER
-     +   L1(8)*1,LACV(8)*1,LACV1M(8)*1,LACV1P(8)*1,LIAR(8)*1,
-     +   LLACOV(8)*1,LLAG(8)*1,LLDS(8)*1,LLGMX(8)*1,LLGMX1(8)*1,
-     +   LLGMXM(8)*1,LLGMXP(8)*1,LLYFFT(8)*1,LN(8)*1,LNF(8)*1,
-     +   LNM1(8)*1,LPHI(8)*1
+     &   L1(8)*1,LACV(8)*1,LACV1M(8)*1,LACV1P(8)*1,LIAR(8)*1,
+     &   LLACOV(8)*1,LLAG(8)*1,LLDS(8)*1,LLGMX(8)*1,LLGMX1(8)*1,
+     &   LLGMXM(8)*1,LLGMXP(8)*1,LLYFFT(8)*1,LN(8)*1,LNF(8)*1,
+     &   LNM1(8)*1,LPHI(8)*1
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL EISGE,EISII,ERVII
@@ -115,48 +115,48 @@
 !     SET UP NAME ARRAYS
 !
       DATA LACV(1), LACV(2), LACV(3), LACV(4), LACV(5), LACV(6),
-     +   LACV(7), LACV(8) /'A','C','O','V',' ',' ',' ',' '/
+     &   LACV(7), LACV(8) /'A','C','O','V',' ',' ',' ',' '/
       DATA LACV1M(1), LACV1M(2), LACV1M(3), LACV1M(4), LACV1M(5),
-     +   LACV1M(6), LACV1M(7), LACV1M(8) /'-','A','C','O','V','(','1',
-     +   ')'/
+     &   LACV1M(6), LACV1M(7), LACV1M(8) /'-','A','C','O','V','(','1',
+     &   ')'/
       DATA LACV1P(1), LACV1P(2), LACV1P(3), LACV1P(4), LACV1P(5),
-     +   LACV1P(6), LACV1P(7), LACV1P(8) /'+','A','C','O','V','(','1',
-     +   ')'/
+     &   LACV1P(6), LACV1P(7), LACV1P(8) /'+','A','C','O','V','(','1',
+     &   ')'/
       DATA LIAR(1), LIAR(2), LIAR(3), LIAR(4), LIAR(5),
-     +   LIAR(6), LIAR(7), LIAR(8) /'I','A','R',' ',' ',' ',' ',
-     +   ' '/
+     &   LIAR(6), LIAR(7), LIAR(8) /'I','A','R',' ',' ',' ',' ',
+     &   ' '/
       DATA LLACOV(1), LLACOV(2), LLACOV(3), LLACOV(4), LLACOV(5),
-     +   LLACOV(6), LLACOV(7), LLACOV(8) /'L','A','C','O','V',' ',' ',
-     +   ' '/
+     &   LLACOV(6), LLACOV(7), LLACOV(8) /'L','A','C','O','V',' ',' ',
+     &   ' '/
       DATA LLAG(1), LLAG(2), LLAG(3), LLAG(4), LLAG(5), LLAG(6),
-     +   LLAG(7), LLAG(8) /'L','A','G',' ',' ',' ',' ',' '/
+     &   LLAG(7), LLAG(8) /'L','A','G',' ',' ',' ',' ',' '/
       DATA LLGMX(1), LLGMX(2), LLGMX(3), LLGMX(4), LLGMX(5),
-     +   LLGMX(6), LLGMX(7), LLGMX(8) /'L','A','G','M','A','X',' ',
-     +   ' '/
+     &   LLGMX(6), LLGMX(7), LLGMX(8) /'L','A','G','M','A','X',' ',
+     &   ' '/
       DATA LLGMXM(1), LLGMXM(2), LLGMXM(3), LLGMXM(4), LLGMXM(5),
-     +   LLGMXM(6), LLGMXM(7), LLGMXM(8) /'-','L','A','G','M','A','X',
-     +   ' '/
+     &   LLGMXM(6), LLGMXM(7), LLGMXM(8) /'-','L','A','G','M','A','X',
+     &   ' '/
       DATA LLGMXP(1), LLGMXP(2), LLGMXP(3), LLGMXP(4), LLGMXP(5),
-     +   LLGMXP(6), LLGMXP(7), LLGMXP(8) /'+','L','A','G','M','A','X',
-     +   ' '/
+     &   LLGMXP(6), LLGMXP(7), LLGMXP(8) /'+','L','A','G','M','A','X',
+     &   ' '/
       DATA LLGMX1(1), LLGMX1(2), LLGMX1(3), LLGMX1(4), LLGMX1(5),
-     +   LLGMX1(6), LLGMX1(7), LLGMX1(8) /'L','A','G','M','A','X','+',
-     +   '1'/
+     &   LLGMX1(6), LLGMX1(7), LLGMX1(8) /'L','A','G','M','A','X','+',
+     &   '1'/
       DATA LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
-     +   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
+     &   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
       DATA LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8) /'N',
-     +   ' ',' ',' ',' ',' ',' ',' '/
+     &   ' ',' ',' ',' ',' ',' ',' '/
       DATA LNF(1), LNF(2), LNF(3), LNF(4), LNF(5), LNF(6), LNF(7),
-     +   LNF(8) /'N','F',' ',' ',' ',' ',' ',' '/
+     &   LNF(8) /'N','F',' ',' ',' ',' ',' ',' '/
       DATA LNM1(1), LNM1(2), LNM1(3), LNM1(4), LNM1(5), LNM1(6),
-     +   LNM1(7), LNM1(8) /'N','-','1',' ',' ',' ',' ',' '/
+     &   LNM1(7), LNM1(8) /'N','-','1',' ',' ',' ',' ',' '/
       DATA LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
-     +   LLYFFT(6), LLYFFT(7), LLYFFT(8) /'L','Y','F','F','T',' ',' ',
-     +   ' '/
+     &   LLYFFT(6), LLYFFT(7), LLYFFT(8) /'L','Y','F','F','T',' ',' ',
+     &   ' '/
       DATA LPHI(1), LPHI(2), LPHI(3), LPHI(4), LPHI(5), LPHI(6),
-     +   LPHI(7), LPHI(8) /'P','H','I',' ',' ',' ',' ',' '/
+     &   LPHI(7), LPHI(8) /'P','H','I',' ',' ',' ',' ',' '/
       DATA L1(1), L1(2), L1(3), L1(4), L1(5), L1(6), L1(7), L1(8) /'1',
-     +   ' ',' ',' ',' ',' ',' ',' '/
+     &   ' ',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -175,25 +175,25 @@
       IF ((.NOT.OPTION(3))) GO TO 15
 !
       CALL ERVII(NMSUB, LACV, ACOV, LAGMAX+1, -ABS(ACOV(1)),
-     +   ABS(ACOV(1)), 0, HEAD, 4, NV, ERR(15), LACV1M, LACV1P)
+     &   ABS(ACOV(1)), 0, HEAD, 4, NV, ERR(15), LACV1M, LACV1P)
 !
       CALL EISII(NMSUB, LLGMX, LAGMAX, 1, N-1, 1, HEAD, ERR(2),
-     +   L1, LNM1)
+     &   L1, LNM1)
 !
       IF (OPTION(2)) THEN
          CALL EISGE(NMSUB, LLACOV, LACOV, LAGMAX+1, 8, HEAD, ERR(3),
-     +   LLGMX1)
+     &   LLGMX1)
       ELSE
          CALL EISGE(NMSUB, LLACOV, LACOV, LAGMAX+1, 7, HEAD, ERR(3),
-     +   LLGMX1)
+     &   LLGMX1)
       END IF
 !
    15 IF (OPTION(1) .AND. (.NOT.ERR(1)))
-     +   CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 9, HEAD, ERR(4),
-     +   LLYFFT)
+     &   CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 9, HEAD, ERR(4),
+     &   LLYFFT)
 !
       IF (OPTION(1) .AND. (.NOT.OPTION(4)))
-     +   CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR(5), LLDS)
+     &   CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR(5), LLDS)
 !
       IF (OPTION(4)) GO TO 30
 !
@@ -206,17 +206,17 @@
    30 CONTINUE
 !
       CALL EISII(NMSUB, LIAR, IAR, -IABS(LAGMAX), IABS(LAGMAX), 1, HEAD,
-     +   ERR(6), LLGMXM, LLGMXP)
+     &   ERR(6), LLGMXM, LLGMXP)
 !
-      CALL ERVII(NMSUB, LPHI, PHI, IAR, -1.0E0_WP, 1.0E0_WP, 0, HEAD, 1, NV,
-     +   ERR(7), L1, L1)
+      CALL ERVII(NMSUB, LPHI, PHI, IAR, -1.0_WP, 1.0_WP, 0, HEAD, 1, NV,
+     &   ERR(7), L1, L1)
 !
       IF (.NOT.OPTION(3))
-     +   CALL EISII(NMSUB, LLGMX, LAGMAX, 1, N-1, 1, HEAD, ERR(2),
-     +   L1, LNM1)
+     &   CALL EISII(NMSUB, LLGMX, LAGMAX, 1, N-1, 1, HEAD, ERR(2),
+     &   L1, LNM1)
 !
       CALL EISII(NMSUB, LLAG, LAG, -IABS(LAGMAX), IABS(LAGMAX), 1, HEAD,
-     +   ERR(8), LLGMXM, LLGMXP)
+     &   ERR(8), LLGMXM, LLGMXP)
 !
       CALL EISGE(NMSUB, LNF, NF, 1, 1, HEAD, ERR(9), LNF)
 !

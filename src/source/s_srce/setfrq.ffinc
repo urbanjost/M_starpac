@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   FMAX,FMIN,H
+      REAL(KIND=WP) ::
+     &   FMAX,FMIN,H
       INTEGER
-     +   NF,NPRT
+     &   NF,NPRT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   FREQ(NF)
+      REAL(KIND=WP) ::
+     &   FREQ(NF)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   DELTAF
+      REAL(KIND=WP) ::
+     &   DELTAF
       INTEGER
-     +   I
+     &   I
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC LOG10

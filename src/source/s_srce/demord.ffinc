@@ -16,17 +16,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NDEM
+     &   N,NDEM
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PHAS1(N),PHAS2(N)
+      REAL(KIND=WP) ::
+     &   PHAS1(N),PHAS2(N)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   PI
+      REAL(KIND=WP) ::
+     &   PI
       INTEGER
-     +   I
+     &   I
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL GETPI

@@ -11,17 +11,17 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   p
+     &   p
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   x(*)
+     &   x(*)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   one,r,scale,sqteta,t,xi,zero
+     &   one,r,scale,sqteta,t,xi,zero
       integer
-     +   i,j
+     &   i,j
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON

@@ -1,7 +1,7 @@
 !AMLST
       SUBROUTINE AMLST (IAMHD, PAR, NPAR, NFAC, MSPECT, N, VCVL,
-     +   LVCVL, SCALE, LSCALE, STPT, LSTPT, IFIXD, RSS, RSD, NPARDF,
-     +   NPARE, IDF)
+     &   LVCVL, SCALE, LSCALE, STPT, LSTPT, IFIXD, RSS, RSD, NPARDF,
+     &   NPARE, IDF)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,29 +19,29 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   RSD,RSS
+     &   RSD,RSS
       INTEGER
-     +   IAMHD,IDF,LSCALE,LSTPT,LVCVL,N,NFAC,NPAR,NPARDF,NPARE
+     &   IAMHD,IDF,LSCALE,LSTPT,LVCVL,N,NFAC,NPAR,NPARDF,NPARE
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PAR(*),SCALE(*),STPT(*),VCVL(*)
+     &   PAR(*),SCALE(*),STPT(*),VCVL(*)
       INTEGER
-     +   IFIXD(*),MSPECT(NFAC,4)
+     &   IFIXD(*),MSPECT(NFAC,4)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   FPLM,T975
+     &   FPLM,T975
       INTEGER
-     +   IPARMN,IPARMX,IPRT,LBLTYP
+     &   IPARMN,IPARMX,IPRT,LBLTYP
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     +   PPFT,D1MACH
-      EXTERNAL PPFT,D1MACH
+!      REAL(KIND=WP) ::
+!     +   PPFT,D1MACH
+!      EXTERNAL PPFT,D1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMLST1,IPRINT
+!      EXTERNAL AMLST1,IPRINT
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -121,55 +121,55 @@
 !
       IPARMN = 1
       IPARMX = 0
-      T975 = PPFT(0.95D0_WP, N-NPAR)
+      T975 = PPFT(0.95_WP, N-NPAR)
 !
 !     PRINT AUTOREGRESSIVE TERMS
 !
       LBLTYP = 1
       CALL AMLST1 (IAMHD, PAR, NPAR, MSPECT, NFAC, VCVL, LVCVL,
-     +  SCALE, LSCALE, STPT, LSTPT, IPARMN, IPARMX, LBLTYP, T975, IFIXD)
+     &  SCALE, LSCALE, STPT, LSTPT, IPARMN, IPARMX, LBLTYP, T975, IFIXD)
 !
 !     PRINT MEAN OR TREND TERM
 !
       LBLTYP = 2
       CALL AMLST1 (IAMHD, PAR, NPAR, MSPECT, 1, VCVL, LVCVL,
-     +  SCALE, LSCALE, STPT, LSTPT, IPARMN, IPARMX, LBLTYP, T975, IFIXD)
+     &  SCALE, LSCALE, STPT, LSTPT, IPARMN, IPARMX, LBLTYP, T975, IFIXD)
 !
 !     PRINT MOVING AVERAGE TERMS
 !
       LBLTYP = 3
       CALL AMLST1 (IAMHD, PAR, NPAR, MSPECT, NFAC, VCVL, LVCVL,
-     +  SCALE, LSCALE, STPT, LSTPT, IPARMN, IPARMX, LBLTYP, T975, IFIXD)
+     &  SCALE, LSCALE, STPT, LSTPT, IPARMN, IPARMX, LBLTYP, T975, IFIXD)
 !
       WRITE (IPRT, 1160) N
       IF (IAMHD.GE.2)
-     +   WRITE (IPRT, 1040) RSS, RSD, N, NPARDF, NPARE, IDF
+     &   WRITE (IPRT, 1040) RSS, RSD, N, NPARDF, NPARE, IDF
       RETURN
 !
 !     FORMAT STATEMENTS
 !
  1001 FORMAT(1X)
  1004 FORMAT (//73X, '  --STEP SIZE FOR'/
-     +  39X, '  ------PARAMETER', 17X, '  --APPROXIMATING'/
-     +  ' -----------------PARAMETER DESCRIPTION  STARTING VALUES',
-     +  '  ----------SCALE  -----DERIVATIVE'/
-     +  ' INDEX  ---------TYPE  --ORDER  --FIXED  ----------(PAR)',
-     +  '  --------(SCALE)  ----------(STP)')
+     &  39X, '  ------PARAMETER', 17X, '  --APPROXIMATING'/
+     &  ' -----------------PARAMETER DESCRIPTION  STARTING VALUES',
+     &  '  ----------SCALE  -----DERIVATIVE'/
+     &  ' INDEX  ---------TYPE  --ORDER  --FIXED  ----------(PAR)',
+     &  '  --------(SCALE)  ----------(STP)')
  1005 FORMAT(30X, '  ------PARAMETER'/
-     +  ' --------PARAMETER DESCRIPTION  ------ESTIMATES'/
-     +  ' INDEX  ---------TYPE  --ORDER  ----------(PAR)')
+     &  ' --------PARAMETER DESCRIPTION  ------ESTIMATES'/
+     &  ' INDEX  ---------TYPE  --ORDER  ----------(PAR)')
  1006 FORMAT(
-     +  39X, '  ------PARAMETER  -----STD DEV OF', 17X,
-     +  '  ---------------------APPROXIMATE'/
-     +  ' -----------------PARAMETER DESCRIPTION  ------ESTIMATES',
-     +  '  ------PARAMETER  ----------RATIO',
-     +  '  ----95 PERCENT CONFIDENCE LIMITS'/
-     +  ' INDEX  ---------TYPE  --ORDER  --FIXED  ----------(PAR)',
-     +  '  ------ESTIMATES',
-     +  '  PAR/(SD OF PAR)  ----------LOWER  ----------UPPER')
+     &  39X, '  ------PARAMETER  -----STD DEV OF', 17X,
+     &  '  ---------------------APPROXIMATE'/
+     &  ' -----------------PARAMETER DESCRIPTION  ------ESTIMATES',
+     &  '  ------PARAMETER  ----------RATIO',
+     &  '  ----95 PERCENT CONFIDENCE LIMITS'/
+     &  ' INDEX  ---------TYPE  --ORDER  --FIXED  ----------(PAR)',
+     &  '  ------ESTIMATES',
+     &  '  PAR/(SD OF PAR)  ----------LOWER  ----------UPPER')
  1040 FORMAT (//' RESIDUAL SUM OF SQUARES       ', 8X, G15.7,
-     +  '  (BACKFORECASTS INCLUDED)'//6H RESID,
-     +   25HUAL STANDARD DEVIATION   , 8X, G15.7/19H BASED ON DEGREES O,
-     +   9HF FREEDOM, 1X, I4, 3H - , I3, 3H - , I3, 3H = , I4)
+     &  '  (BACKFORECASTS INCLUDED)'//6H RESID,
+     &   25HUAL STANDARD DEVIATION   , 8X, G15.7/19H BASED ON DEGREES O,
+     &   9HF FREEDOM, 1X, I4, 3H - , I3, 3H - , I3, 3H = , I4)
  1160 FORMAT (//23H NUMBER OF OBSERVATIONS, 48X, 3H(N), 1X, I5)
       END

@@ -15,20 +15,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   YMEAN
+      REAL(KIND=WP) ::
+     &   YMEAN
       INTEGER
-     +   LACOV,LAGMAX,N
+     &   LACOV,LAGMAX,N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   ACOV(*),Y(*)
+      REAL(KIND=WP) ::
+     &   ACOV(*),Y(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   DOTXY,DOTYY
+      REAL(KIND=WP) ::
+     &   DOTXY,DOTYY
       INTEGER
-     +   LAG,NDOTXY,NDOTYY
+     &   LAG,NDOTXY,NDOTYY
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL AMEAN,DOTC
@@ -70,7 +70,7 @@
 !
       DO 10 LAG = 1, LAGMAX
          CALL DOTC (Y, YMEAN, N, Y(LAG+1), YMEAN, N - LAG,
-     +       DOTXY, NDOTXY)
+     &       DOTXY, NDOTXY)
          ACOV(LAG + 1) = DOTXY / N
    10 CONTINUE
 !

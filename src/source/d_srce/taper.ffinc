@@ -19,32 +19,32 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   TAPERP
+     &   TAPERP
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   Y(*),YT(*)
+     &   Y(*),YT(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   PI,WEIGHT
+     &   PI,WEIGHT
       INTEGER
-     +   I,IPRT,J,M
+     &   I,IPRT,J,M
       LOGICAL
-     +   ERR01,HEAD
+     &   ERR01,HEAD
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LN(8)*1,NMSUB(6)*1
+     &   LN(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CENTER,EISGE,GETPI,IPRINT
+!      EXTERNAL CENTER,EISGE,GETPI,IPRINT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC COS,INT
@@ -95,11 +95,11 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'T',       'A',       'P',       'E',       'R',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'T',       'A',       'P',       'E',       'R',       ' '/
       DATA
-     + LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
-     + /'N',' ',' ',' ',' ',' ',' ',' '/
+     & LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     & /'N',' ',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -120,15 +120,15 @@
 !
       CALL CENTER (Y, N, YT)
 !
-      IF ((TAPERP .LE. 0.0E0_WP) .OR. (TAPERP .GT. 1.0E0_WP)) RETURN
+      IF ((TAPERP .LE. 0.0_WP) .OR. (TAPERP .GT. 1.0_WP)) RETURN
 !
       CALL GETPI(PI)
 !
-      M = INT(TAPERP * N + 0.5D0) / 2
+      M = INT(TAPERP * N + 0.5_WP) / 2
       IF (M .EQ. 0) RETURN
 !
       DO 20 I = 1, M
-         WEIGHT = 0.5D0 - 0.5D0 * COS(PI * (I-0.5D0) / M)
+         WEIGHT = 0.5_WP - 0.5_WP * COS(PI * (I-0.5_WP) / M)
          YT(I) = WEIGHT * YT(I)
          J = N + 1 - I
          YT(J) = WEIGHT * YT(J)
@@ -139,5 +139,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   36H       CALL TAPER (Y, N, TAPERP, YT))
+     &   36H       CALL TAPER (Y, N, TAPERP, YT))
       END

@@ -1,6 +1,6 @@
 !PPMC
       SUBROUTINE PPMC(YM, YMMISS, X, XMISS, N, ILOG, ISIZE, NOUT, YLB,
-     +   YUB, XLB, XUB)
+     &   YUB, XLB, XUB)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,33 +17,33 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   XLB,XMISS,XUB,YLB,YUB
+      REAL(KIND=WP) ::
+     &   XLB,XMISS,XUB,YLB,YUB
       INTEGER
-     +   ILOG,ISIZE,N,NOUT
+     &   ILOG,ISIZE,N,NOUT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   X(*),YM(*),YMMISS(1)
+      REAL(KIND=WP) ::
+     &   X(*),YM(*),YMMISS(1)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT,ISCHCK,IYM,LISYM,M
+     &   IPRT,ISCHCK,IYM,LISYM,M
       LOGICAL
-     +   MISS,MULTI
+     &   MISS,MULTI
 !
 !  LOCAL ARRAYS
       INTEGER
-     +   ISYM(1)
+     &   ISYM(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,PPCNT
+!      EXTERNAL IPRINT,PPCNT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -120,8 +120,8 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     +    /  'P',       'P',       'M',       'C',       ' ',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     &    /  'P',       'P',       'M',       'C',       ' ',       ' '/
 !
 !     COMMENCE BODY OF ROUTINE
 !
@@ -135,8 +135,8 @@
       LISYM = 1
 !
       CALL PPCNT (YM, YMMISS, X, XMISS, N, M, IYM, MULTI, ILOG,
-     +  YLB, YUB, XLB, XUB, NMSUB, ISCHCK, ISYM, ISIZE, NOUT, MISS,
-     +  LISYM)
+     &  YLB, YUB, XLB, XUB, NMSUB, ISCHCK, ISYM, ISIZE, NOUT, MISS,
+     &  LISYM)
 !
       IF (IERR.NE.0) THEN
         IERR = 1
@@ -149,6 +149,6 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL PPMC (Y, YMISS, X, XMISS, N, ILOG,'/
-     +   '      +           ISIZE, NOUT, YLB, YUB, XLB, XUB)')
+     &   '       CALL PPMC (Y, YMISS, X, XMISS, N, ILOG,'/
+     &   '      +           ISIZE, NOUT, YLB, YUB, XLB, XUB)')
       END

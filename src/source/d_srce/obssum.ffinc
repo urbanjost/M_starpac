@@ -1,6 +1,6 @@
 !OBSSUM
       SUBROUTINE OBSSUM(N, M, XM, Y, PV, SDPV, RES, SDRES, WT, IXM,
-     +   WEIGHT, K, IFIRST, ILAST, JCOL1, JCOLM)
+     &   WEIGHT, K, IFIRST, ILAST, JCOL1, JCOLM)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,35 +18,35 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IFIRST,ILAST,IXM,JCOL1,JCOLM,K,M,N
+     &   IFIRST,ILAST,IXM,JCOL1,JCOLM,K,M,N
       LOGICAL
-     +   WEIGHT
+     &   WEIGHT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PV(N),RES(N),SDPV(N),SDRES(N),WT(N),XM(IXM,M),Y(N)
+     &   PV(N),RES(N),SDPV(N),SDRES(N),WT(N),XM(IXM,M),Y(N)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   FPLM
+     &   FPLM
       INTEGER
-     +   I,IPRT,J
+     &   I,IPRT,J
       CHARACTER
-     +   STRING*20,FMT1*160,FMT2*160,FMT3*160
+     &   STRING*20,FMT1*160,FMT2*160,FMT3*160
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     +   D1MACH
-      LOGICAL
-     +   MVCHK
-      EXTERNAL D1MACH,MVCHK
+!      REAL(KIND=WP) ::
+!     +   D1MACH
+!      LOGICAL
+!     +   MVCHK
+!      EXTERNAL D1MACH,MVCHK
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT
+!      EXTERNAL IPRINT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -122,29 +122,29 @@
          IF (MVCHK(SDPV(I),FPLM)) THEN
             IF (WEIGHT) THEN
                WRITE (IPRT, FMT1) I, (XM(I,J),J=JCOL1,JCOLM),
-     +                            Y(I), PV(I), RES(I), WT(I)
+     &                            Y(I), PV(I), RES(I), WT(I)
             ELSE
                WRITE (IPRT, FMT1) I, (XM(I,J),J=JCOL1,JCOLM),
-     +                            Y(I), PV(I), RES(I)
+     &                            Y(I), PV(I), RES(I)
             END IF
          ELSE
             IF (MVCHK(SDRES(I),FPLM)) THEN
                IF (WEIGHT) THEN
                   WRITE (IPRT, FMT2) I, (XM(I,J),J=JCOL1,JCOLM),
-     +                               Y(I), PV(I), SDPV(I), RES(I), WT(I)
+     &                               Y(I), PV(I), SDPV(I), RES(I), WT(I)
                ELSE
                   WRITE (IPRT, FMT2) I, (XM(I,J),J=JCOL1,JCOLM),
-     +                               Y(I), PV(I), SDPV(I), RES(I)
+     &                               Y(I), PV(I), SDPV(I), RES(I)
                END IF
             ELSE
                IF (WEIGHT) THEN
                   WRITE (IPRT, FMT3) I, (XM(I,J),J=JCOL1,JCOLM),
-     +                               Y(I), PV(I), SDPV(I), RES(I),
-     +                               SDRES(I), WT(I)
+     &                               Y(I), PV(I), SDPV(I), RES(I),
+     &                               SDRES(I), WT(I)
                ELSE
                   WRITE (IPRT, FMT3) I, (XM(I,J),J=JCOL1,JCOLM),
-     +                               Y(I), PV(I), SDPV(I), RES(I),
-     +                               SDRES(I)
+     &                               Y(I), PV(I), SDPV(I), RES(I),
+     &                               SDRES(I)
                END IF
             END IF
          END IF

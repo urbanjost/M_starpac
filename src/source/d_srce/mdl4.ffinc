@@ -16,15 +16,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IXM,M,N,NPAR
+     &   IXM,M,N,NPAR
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PAR(NPAR),PV(N),XM(IXM,M)
+     &   PAR(NPAR),PV(N),XM(IXM,M)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC EXP

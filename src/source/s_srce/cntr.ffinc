@@ -17,17 +17,17 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   Y(*),YC(*)
+      REAL(KIND=WP) ::
+     &   Y(*),YC(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   YMEAN
+      REAL(KIND=WP) ::
+     &   YMEAN
       INTEGER
-     +   I
+     &   I
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL AMEAN

@@ -1,7 +1,7 @@
 !AIMES
       SUBROUTINE AIMES(Y, N, MSPEC, NFAC, PAR, NPAR, RES, LDSTAK,
-     +   IFIXED, STP, MIT, STOPSS, STOPP, SCALE, DELTA, IVAPRX, NPRT,
-     +   NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)
+     &   IFIXED, STP, MIT, STOPSS, STOPP, SCALE, DELTA, IVAPRX, NPRT,
+     &   NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,36 +19,36 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   DELTA,RSD,STOPP,STOPSS
+     &   DELTA,RSD,STOPP,STOPSS
       INTEGER
-     +   IVAPRX,IVCV,LDSTAK,MIT,N,NFAC,NPAR,NPARE,NPRT
+     &   IVAPRX,IVCV,LDSTAK,MIT,N,NFAC,NPAR,NPARE,NPRT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PAR(*),PV(*),RES(*),SCALE(*),SDPV(*),SDRES(*),STP(*),VCV(*),
-     +   Y(*)
+     &   PAR(*),PV(*),RES(*),SCALE(*),SDPV(*),SDRES(*),STP(*),VCV(*),
+     &   Y(*)
       INTEGER
-     +   IFIXED(1),MSPEC(4,*)
+     &   IFIXED(1),MSPEC(4,*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IPRT,LIFIXD,LPV,LSCALE,LSDPV,LSDRES,LSTP
+     &   IPRT,LIFIXD,LPV,LSCALE,LSDPV,LSDRES,LSTP
       LOGICAL
-     +   SAVE
+     &   SAVE
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMEDRV,IPRINT
+!      EXTERNAL AMEDRV,IPRINT
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -168,7 +168,7 @@
 !     SET UP NAME ARRAYS
 !
       DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
-     +   'A','I','M','E','S',' '/
+     &   'A','I','M','E','S',' '/
 !
 !     SET VARIOUS PROGRAM PARAMETERS
 !
@@ -177,14 +177,14 @@
       LIFIXD = NPAR
       IF (IFIXED(1).LE.-1) LIFIXD = 1
       LSCALE = NPAR
-      IF (SCALE(1).LE.0.0E0_WP) LSCALE = 1
+      IF (SCALE(1).LE.0.0_WP) LSCALE = 1
       LSTP = NPAR
-      IF (STP(1).LE.0.0E0_WP) LSTP = 1
+      IF (STP(1).LE.0.0_WP) LSTP = 1
 !
       CALL AMEDRV(Y, N, MSPEC, NFAC, PAR, NPAR, RES,
-     +   LDSTAK, IFIXED, LIFIXD, STP, LSTP, MIT, STOPSS, STOPP, SCALE,
-     +   LSCALE, DELTA, IVAPRX, NPRT, RSD, PV, LPV, SDPV, LSDPV, SDRES,
-     +   LSDRES, VCV, IVCV, NMSUB, SAVE, NPARE)
+     &   LDSTAK, IFIXED, LIFIXD, STP, LSTP, MIT, STOPSS, STOPP, SCALE,
+     &   LSCALE, DELTA, IVAPRX, NPRT, RSD, PV, LPV, SDPV, LSDPV, SDRES,
+     &   LSDRES, VCV, IVCV, NMSUB, SAVE, NPARE)
 !
       IF (IERR.NE.1) RETURN
 !
@@ -197,8 +197,8 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/' THE CORRECT FORM OF THE CALL STATEMENT IS'//
-     +  '       CALL AIMES (Y, N, MSPEC, NFAC, PAR, NPAR, RES, LDSTAK,'/
-     +  '      +            IFIXED, STP, MIT, STOPSS, STOPP, SCALE,'/
-     +  '      +            DELTA, IVAPRX, NPRT,'/
-     +  '      +            NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)')
+     &  '       CALL AIMES (Y, N, MSPEC, NFAC, PAR, NPAR, RES, LDSTAK,'/
+     &  '      +            IFIXED, STP, MIT, STOPSS, STOPP, SCALE,'/
+     &  '      +            DELTA, IVAPRX, NPRT,'/
+     &  '      +            NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)')
       END

@@ -1,6 +1,6 @@
 !DEMODS
       SUBROUTINE DEMODS (Y, N, FD, FC, K, AMPL, PHAS, NDEM, NPRT,
-     +  LDSTAK)
+     &  LDSTAK)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -26,44 +26,44 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   FC,FD
+     &   FC,FD
       INTEGER
-     +   K,LDSTAK,N,NDEM,NPRT
+     &   K,LDSTAK,N,NDEM,NPRT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   AMPL(*),PHAS(*),Y(*)
+     &   AMPL(*),PHAS(*),Y(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   TEMP
+     &   TEMP
       INTEGER
-     +   HLP,IO,IPRT,LDSMIN,NALL0,PHASE
+     &   HLP,IO,IPRT,LDSMIN,NALL0,PHASE
       LOGICAL
-     +   ERR01,ERR02,ERR03,ERR04,ERR05,ERR06,ERR07,HEAD
+     &   ERR01,ERR02,ERR03,ERR04,ERR05,ERR06,ERR07,HEAD
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   RSTAK(12)
+     &   RSTAK(12)
       CHARACTER
-     +   LFC(8)*1,LFD(8)*1,LK(8)*1,LKIN(8)*1,LLDS(8)*1,LN(8)*1,
-     +   LNM1(8)*1,LONE(8)*1,NMSUB(6)*1
+     &   LFC(8)*1,LFD(8)*1,LK(8)*1,LKIN(8)*1,LLDS(8)*1,LN(8)*1,
+     &   LNM1(8)*1,LONE(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL STKGET,STKST
+!      INTEGER
+!     +   STKST
+!      EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL DEMDRV,EISGE,EISII,ERIODD,ERSII,ERSLFS,IPRINT,LDSCMP,
-     +   DCOPY,STKCLR,STKSET
+!      EXTERNAL DEMDRV,EISGE,EISII,ERIODD,ERSII,ERSLFS,IPRINT,LDSCMP,
+!     +   DCOPY,STKCLR,STKSET
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -143,32 +143,32 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'D',       'E',       'M',       'O',       'D',       'S'/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'D',       'E',       'M',       'O',       'D',       'S'/
       DATA
-     +  LFC(1), LFC(2), LFC(3), LFC(4), LFC(5), LFC(6), LFC(7), LFC(8)
-     + /  'F',   'C',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LFC(1), LFC(2), LFC(3), LFC(4), LFC(5), LFC(6), LFC(7), LFC(8)
+     & /  'F',   'C',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LFD(1), LFD(2), LFD(3), LFD(4), LFD(5), LFD(6), LFD(7), LFD(8)
-     + /  'F',   'D',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LFD(1), LFD(2), LFD(3), LFD(4), LFD(5), LFD(6), LFD(7), LFD(8)
+     & /  'F',   'D',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
-     + /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
+     & /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LKIN(1), LKIN(2), LKIN(3), LKIN(4), LKIN(5), LKIN(6), LKIN(7),
-     +  LKIN(8) /  '(',   '1',   '/',   'K',   ')',   ' ',   ' ',   ' '/
+     &  LKIN(1), LKIN(2), LKIN(3), LKIN(4), LKIN(5), LKIN(6), LKIN(7),
+     &  LKIN(8) /  '(',   '1',   '/',   'K',   ')',   ' ',   ' ',   ' '/
       DATA
-     +  LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6), LLDS(7),
-     +  LLDS(8) /  'L',   'D',   'S',   'T',   'A',   'K',   ' ',   ' '/
+     &  LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6), LLDS(7),
+     &  LLDS(8) /  'L',   'D',   'S',   'T',   'A',   'K',   ' ',   ' '/
       DATA
-     +  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
-     + /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     & /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LNM1(1), LNM1(2), LNM1(3), LNM1(4), LNM1(5), LNM1(6), LNM1(7),
-     +  LNM1(8) /  '(',   'N',   '-',   '1',   ')',   ' ',   ' ',   ' '/
+     &  LNM1(1), LNM1(2), LNM1(3), LNM1(4), LNM1(5), LNM1(6), LNM1(7),
+     &  LNM1(8) /  '(',   'N',   '-',   '1',   ')',   ' ',   ' ',   ' '/
       DATA
-     +  LONE(1), LONE(2), LONE(3), LONE(4), LONE(5), LONE(6), LONE(7),
-     +  LONE(8) /  'O',   'N',   'E',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LONE(1), LONE(2), LONE(3), LONE(4), LONE(5), LONE(6), LONE(7),
+     &  LONE(8) /  'O',   'N',   'E',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     PERFORM ERROR CHECKING ON INPUT DATA.
 !
@@ -184,24 +184,24 @@
       CALL EISGE(NMSUB, LN, N, 17, 1, HEAD, ERR01, LN)
 !
       CALL ERSII(NMSUB, LFD, FD,
-     +           0.0E0_WP, 0.5D0_WP, 2, HEAD, ERR02, LFD, LFD)
+     &           0.0_WP, 0.5_WP, 2, HEAD, ERR02, LFD, LFD)
 !
       ERR03 = .TRUE.
       IF (.NOT. ERR01)
-     +  CALL EISII(NMSUB, LK, K, 1, N-1, 1, HEAD, ERR03, LONE, LNM1)
+     &  CALL EISII(NMSUB, LK, K, 1, N-1, 1, HEAD, ERR03, LONE, LNM1)
 !
       CALL ERIODD(NMSUB, LK, K, 1, HEAD, ERR04)
 !
       ERR05 = .TRUE.
       IF ((.NOT. ERR02) .AND. (.NOT. ERR03) .AND. (.NOT. ERR04)) THEN
          TEMP = K
-         CALL ERSII(NMSUB, LFC, FC, 1.0E0_WP/TEMP, FD, 1, HEAD, ERR05,
-     +              LKIN, LFD)
+         CALL ERSII(NMSUB, LFC, FC, 1.0_WP/TEMP, FD, 1, HEAD, ERR05,
+     &              LKIN, LFD)
       END IF
 !
       ERR06 = .TRUE.
       IF ((.NOT. ERR03) .AND. (.NOT. ERR04) .AND. (.NOT. ERR05))
-     +   CALL ERSLFS(NMSUB, FC, K, HEAD, ERR06)
+     &   CALL ERSLFS(NMSUB, FC, K, HEAD, ERR06)
 !
       IF (ERR01 .OR. ERR06) GO TO 10
 !
@@ -235,11 +235,11 @@
       IF (NPRT .NE. 0) THEN
 !
          CALL DEMDRV(Y, N, FD, FC, K, RSTAK(HLP), AMPL,
-     +      RSTAK(PHASE), N, NDEM, NPRT, NMSUB)
+     &      RSTAK(PHASE), N, NDEM, NPRT, NMSUB)
          CALL DCOPY(NDEM, RSTAK(PHASE), 1, PHAS, 1)
       ELSE
          CALL DEMDRV(Y, N, FD, FC, K, RSTAK(HLP), AMPL,
-     +      PHAS, N, NDEM, NPRT, NMSUB)
+     &      PHAS, N, NDEM, NPRT, NMSUB)
       END IF
 !
       CALL STKCLR(NALL0)
@@ -251,7 +251,7 @@
 !     FORMAT STATEMENT
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   '       CALL DEMODS (Y, N, FD, FC, K,'/
-     +   '      +             AMPL, PHAS, NDEM, NPRT, LDSTAK)')
+     &   '       CALL DEMODS (Y, N, FD, FC, K,'/
+     &   '      +             AMPL, PHAS, NDEM, NPRT, LDSTAK)')
 !
       END

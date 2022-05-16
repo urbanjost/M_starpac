@@ -1,6 +1,6 @@
 !ACVFM
       SUBROUTINE ACVFM (Y, YMISS, N, YMEAN, ACOV, LAGMAX,
-     +   LAGLST, NLPPA, LACOV)
+     &   LAGLST, NLPPA, LACOV)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,28 +17,27 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     +   YMEAN,YMISS
+      REAL(KIND=WP) :: YMEAN,YMISS
       INTEGER
-     +   LACOV,LAGLST,LAGMAX,N
+     &   LACOV,LAGLST,LAGMAX,N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   ACOV(*),Y(*)
+     &   ACOV(*),Y(*)
       INTEGER
-     +   NLPPA(*)
+     &   NLPPA(*)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   DOTXY,DOTYY,FPLM
+     &   DOTXY,DOTYY,FPLM
       INTEGER
-     +   LAG,NDOTXY,NDOTYY,NUSED
+     &   LAG,NDOTXY,NDOTYY,NUSED
 !
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
-     +   D1MACH
+     &   D1MACH
       INTEGER
-     +   LSTLAG
+     &   LSTLAG
       EXTERNAL D1MACH,LSTLAG
 !
 !  EXTERNAL SUBROUTINES
@@ -90,7 +89,7 @@
 !     COMPUTE THE VARIANCE OF THE SERIES Y
 !
       CALL DOTCM (Y, YMEAN, YMISS, N, Y, YMEAN, YMISS, N,
-     +   DOTYY, NDOTYY)
+     &   DOTYY, NDOTYY)
       NLPPA(1) = NDOTYY
       IF (NLPPA(1).EQ.0) THEN
          LAGLST = 0
@@ -101,7 +100,7 @@
 !
          DO 10 LAG = 1, LAGMAX
             CALL DOTCM (Y, YMEAN, YMISS, N, Y(LAG+1), YMEAN,
-     +         YMISS, N - LAG, DOTXY, NDOTXY)
+     &         YMISS, N - LAG, DOTXY, NDOTXY)
             NLPPA(LAG + 1) = NDOTXY
             ACOV(LAG + 1) = FPLM
             IF (NLPPA(LAG + 1) .LE. 0) GO TO 10

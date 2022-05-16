@@ -20,20 +20,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   SYM
+      REAL(KIND=WP) ::
+     &   SYM
       INTEGER
-     +   I,N
+     &   I,N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   X(N)
+      REAL(KIND=WP) ::
+     &   X(N)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   CON
+      REAL(KIND=WP) ::
+     &   CON
       INTEGER
-     +   J
+     &   J
 !
       J = I
       CON = 1.0E0

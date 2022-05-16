@@ -20,25 +20,25 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   YLB,YUB
+     &   YLB,YUB
       INTEGER
-     +   IERR,LDSTAK,N,NCELLS
+     &   IERR,LDSTAK,N,NCELLS
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   Y(*)
+     &   Y(*)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  LOCAL SCALARS
       INTEGER
-     +   LDSMIN,NV
+     &   LDSMIN,NV
       LOGICAL
-     +   HEAD,IER1,IER2,IER3,IER4
+     &   HEAD,IER1,IER2,IER3,IER4
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   LLDS(8)*1,LN(8)*1,LONE(8)*1,LY(8)*1
+     &   LLDS(8)*1,LN(8)*1,LONE(8)*1,LY(8)*1
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL EISGE,ERVII,LDSCMP
@@ -87,13 +87,13 @@
 !     INITIALIZE NAME VECTORS
 !
       DATA   LLDS(1),  LLDS(2),  LLDS(3),  LLDS(4),  LLDS(5),  LLDS(6),
-     +  LLDS(7), LLDS(8) /'L', 'D', 'S', 'T', 'A', 'K', ' ', ' '/
+     &  LLDS(7), LLDS(8) /'L', 'D', 'S', 'T', 'A', 'K', ' ', ' '/
       DATA     LN(1),    LN(2),    LN(3),    LN(4),    LN(5),    LN(6),
-     +    LN(7),   LN(8) /'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
+     &    LN(7),   LN(8) /'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
       DATA   LONE(1),  LONE(2),  LONE(3),  LONE(4),  LONE(5),  LONE(6),
-     +  LONE(7), LONE(8) /'O', 'N', 'E', ' ', ' ', ' ', ' ', ' '/
+     &  LONE(7), LONE(8) /'O', 'N', 'E', ' ', ' ', ' ', ' ', ' '/
       DATA     LY(1),    LY(2),    LY(3),    LY(4),    LY(5),    LY(6),
-     +    LY(7),   LY(8) /'Y', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
+     &    LY(7),   LY(8) /'Y', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
 !
 !     INITIALIZE ERROR FLAGS
 !
@@ -119,7 +119,7 @@
 !     CHECK WHETHER THERE IS ANY DATA BETWEEN USER SUPPLIED LIMITS
 !
       IF ((YLB.LT.YUB) .AND. (N.GE.1))
-     +  CALL ERVII (NMSUB, LY, Y, N, YLB, YUB, N-1, HEAD, 1, NV, IER4)
+     &  CALL ERVII (NMSUB, LY, Y, N, YLB, YUB, N-1, HEAD, 1, NV, IER4)
 !
 !     SEE IF ANY ERRORS WERE FOUND.
 !

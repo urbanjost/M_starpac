@@ -17,15 +17,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   N,NS,NYS
+     &   N,NS,NYS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   Y(N),YS(N)
+      REAL(KIND=WP) ::
+     &   Y(N),YS(N)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,I1
+     &   I,I1
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !

@@ -1,6 +1,6 @@
 !UFSEST
       SUBROUTINE UFSEST(ACOV, W, LAG, SPCF, ISPCF, LACOV, LW, NF, FREQ,
-     +   DELTA)
+     &   DELTA)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,19 +19,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   DELTA
+     &   DELTA
       INTEGER
-     +   ISPCF,LACOV,LAG,LW,NF
+     &   ISPCF,LACOV,LAG,LW,NF
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   ACOV(LACOV),FREQ(NF),SPCF(ISPCF),W(LW)
+     &   ACOV(LACOV),FREQ(NF),SPCF(ISPCF),W(LW)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   C,PI,V0,V1,V2
+     &   C,PI,V0,V1,V2
       INTEGER
-     +   I,K,KK
+     &   I,K,KK
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL GETPI
@@ -79,17 +79,17 @@
 !        COMPUTE THE SPECTRUM AND ITS CONFIDENCE LIMITS.
 !
       DO 20 I=1,NF
-         C = COS(2.0E0_WP*PI*FREQ(I))
-         V0 = 0.0E0_WP
-         V1 = 0.0E0_WP
+         C = COS(2.0_WP*PI*FREQ(I))
+         V0 = 0.0_WP
+         V1 = 0.0_WP
          DO 10 K=1,LAG
             KK = LAG + 1 - K
-            V2 = 2.0E0_WP*C*V1 - V0 + W(KK+1)*ACOV(KK+1)
+            V2 = 2.0_WP*C*V1 - V0 + W(KK+1)*ACOV(KK+1)
             V0 = V1
             V1 = V2
    10    CONTINUE
-         SPCF(I) = DELTA*(ACOV(1)*W(1)+2.0E0_WP*(V1*C-V0))
-         IF (SPCF(I).LT.0.0E0_WP) SPCF(I) = 0.0E0_WP
+         SPCF(I) = DELTA*(ACOV(1)*W(1)+2.0_WP*(V1*C-V0))
+         IF (SPCF(I).LT.0.0_WP) SPCF(I) = 0.0_WP
    20 CONTINUE
       RETURN
       END

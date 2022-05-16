@@ -20,7 +20,7 @@
 !
 !  LOCAL SCALARS
       DOUBLE PRECISION ALNEPS,ALNSML,C,EPS,FAC1,FAC2,FINSUM,P,PS,Q,SML,
-     +   TERM,XB,Y
+     &   TERM,XB,Y
       REAL P1
       INTEGER I,IB,N
 !
@@ -76,7 +76,7 @@
                   FAC1 = 0.0D0
                ELSE
                   IF (LOG(ABS(FAC1)) + LOG(ABS(I-PS)) + LOG(Y) -
-     +                LOG(DBLE(I)) .LT. ALNSML) THEN
+     &                LOG(DBLE(I)) .LT. ALNSML) THEN
                      FAC1 = 0.0D0
                   ELSE
                      FAC1 = FAC1 * (I-PS)*Y/I
@@ -107,7 +107,7 @@
           TERM = 0.0D0
         ELSE
           IF (LOG(ABS(Q-I+1.0D0)) + LOG(ABS(C)) + LOG(ABS(TERM)) -
-     +        LOG(ABS(P+Q-I)) .LT. ALNSML) THEN
+     &        LOG(ABS(P+Q-I)) .LT. ALNSML) THEN
             TERM = 0.0D0
           ELSE
             TERM = (Q-I+1.0D0)*C*TERM/(P+Q-I)

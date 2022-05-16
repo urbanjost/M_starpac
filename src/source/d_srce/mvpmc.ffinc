@@ -1,6 +1,6 @@
 !MVPMC
       SUBROUTINE MVPMC(YM, YMMISS, N, M, IYM, NS, ILOG, ISIZE,
-     +   YLB, YUB, XLB, XINC)
+     &   YLB, YUB, XLB, XINC)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,32 +18,32 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   XINC,XLB,YLB,YUB
+     &   XINC,XLB,YLB,YUB
       INTEGER
-     +   ILOG,ISIZE,IYM,M,N,NS
+     &   ILOG,ISIZE,IYM,M,N,NS
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   YM(*),YMMISS(*)
+     &   YM(*),YMMISS(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IBAR,IPRT,IRLIN,ISCHCK,LISYM
+     &   IBAR,IPRT,IRLIN,ISCHCK,LISYM
       LOGICAL
-     +   MISS,MULTI
+     &   MISS,MULTI
 !
 !  LOCAL ARRAYS
       INTEGER
-     +   ISYM(1)
+     &   ISYM(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,VPCNT
+!      EXTERNAL IPRINT,VPCNT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -122,8 +122,8 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     +    /  'M',       'V',       'P',       'M',       'C',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     &    /  'M',       'V',       'P',       'M',       'C',       ' '/
 !
 !     SET DEFAULT VALUES
 !
@@ -137,8 +137,8 @@
 !     COMMENCE BODY OF ROUTINE
 !
       CALL VPCNT (YM, YMMISS, N, M, IYM, MULTI, ILOG, YLB, YUB,
-     +  XLB, XINC, NS, IRLIN, IBAR, NMSUB, ISCHCK, ISYM, ISIZE,
-     +  MISS, LISYM)
+     &  XLB, XINC, NS, IRLIN, IBAR, NMSUB, ISCHCK, ISYM, ISIZE,
+     &  MISS, LISYM)
 !
       IF (IERR.NE.0) THEN
         IERR = 1
@@ -150,6 +150,6 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +  '       CALL MVPMC (YM, YMMISS, N, M, IYM, NS, ILOG,'/
-     +  '      +            ISIZE, YLB, YUB, XLB, XINC)')
+     &  '       CALL MVPMC (YM, YMMISS, N, M, IYM, NS, ILOG,'/
+     &  '      +            ISIZE, YLB, YUB, XLB, XINC)')
       END

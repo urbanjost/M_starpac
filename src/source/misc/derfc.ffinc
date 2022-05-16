@@ -217,10 +217,10 @@
  30   Y = Y*Y
       IF (Y.LE.4.0D0) THEN
          DERFC = EXP(-Y)/ABS(X) *
-     +           (0.5D0 + DCSEVL((8.0D0/Y-5.0D0)/3.0D0,ERC2CS,NTERC2))
+     &           (0.5D0 + DCSEVL((8.0D0/Y-5.0D0)/3.0D0,ERC2CS,NTERC2))
       ELSE
          DERFC = EXP(-Y)/ABS(X) *
-     +           (0.5D0 + DCSEVL(8.0D0/Y-1.0D0,ERFCCS,NTERFC))
+     &           (0.5D0 + DCSEVL(8.0D0/Y-1.0D0,ERFCCS,NTERFC))
       END IF
       IF (X.LT.0.D0) DERFC = 2.0D0 - DERFC
       RETURN

@@ -1,6 +1,6 @@
 !CCFMS
       SUBROUTINE CCFMS (YM, YMMISS, N, M, IYM, LAGMAX, CCOV,
-     +   CMISS, ICCOV, JCCOV, NLPPC, INLPPC, JNLPPC, NPRT, LDSTAK)
+     &   CMISS, ICCOV, JCCOV, NLPPC, INLPPC, JNLPPC, NPRT, LDSTAK)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,49 +18,49 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   CMISS
+     &   CMISS
       INTEGER
-     +   ICCOV,INLPPC,IYM,JCCOV,JNLPPC,LAGMAX,LDSTAK,M,N,NPRT
+     &   ICCOV,INLPPC,IYM,JCCOV,JNLPPC,LAGMAX,LDSTAK,M,N,NPRT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   CCOV(*),YM(*),YMMISS(*)
+     &   CCOV(*),YM(*),YMMISS(*)
       INTEGER
-     +   NLPPC(*)
+     &   NLPPC(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   FPLM
+     &   FPLM
       INTEGER
-     +   I,IFP,IO,IPRT,IYMFFT,J,K,LDSMIN,LGLST,LGLSTJ,LGLSTK,LYFFT,
-     +   NALL0,NFFT,RHOC,SDRHOC,YMEAN,YMEANJ,YMEANK,YSD,YSDJ,YSDK
+     &   I,IFP,IO,IPRT,IYMFFT,J,K,LDSMIN,LGLST,LGLSTJ,LGLSTK,LYFFT,
+     &   NALL0,NFFT,RHOC,SDRHOC,YMEAN,YMEANJ,YMEANK,YSD,YSDJ,YSDK
       LOGICAL
-     +   ISFFT,ISLONG,NEWPG
+     &   ISFFT,ISLONG,NEWPG
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   RSTAK(12)
+     &   RSTAK(12)
       INTEGER
-     +   ISTAK(12)
+     &   ISTAK(12)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     +   D1MACH
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL D1MACH,STKGET,STKST
+!      REAL(KIND=WP) ::
+!     +   D1MACH
+!      INTEGER
+!     +   STKST
+!      EXTERNAL D1MACH,STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ACVFM,CCFER,CCFMNM,CCFOUT,IPRINT,LDSCMP,STKCLR,STKSET
+!      EXTERNAL ACVFM,CCFER,CCFMNM,CCFOUT,IPRINT,LDSCMP,STKCLR,STKSET
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MIN,SQRT
@@ -71,7 +71,7 @@
 !
 !  STATEMENT FUNCTIONS
       INTEGER
-     +   I2,I3C,I3N
+     &   I2,I3C,I3N
 !
 !  EQUIVALENCES
       EQUIVALENCE (DSTAK(1),ISTAK(1))
@@ -196,8 +196,8 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'C',       'C',       'F',       'M',       'S',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'C',       'C',       'F',       'M',       'S',       ' '/
 !
       I2(I,J) = I + (J-1)*IYM
       I3C(I,J,K) = I + (J-1)*ICCOV + (K-1)*JCCOV*ICCOV
@@ -216,10 +216,10 @@
       IF (NPRT .EQ. 0) IO = 0
 !
       CALL LDSCMP(3+2*IO, 0, M, 0, 0, 0, 'D',
-     +            2*M+IO*(4*LAGMAX+2), LDSMIN)
+     &            2*M+IO*(4*LAGMAX+2), LDSMIN)
 !
       CALL CCFER(NMSUB, N, LAGMAX, LDSTAK, LDSMIN, ICCOV, JCCOV,
-     +  INLPPC, JNLPPC, M, LYFFT, NFFT, IYM, IYMFFT, ISFFT, ISLONG)
+     &  INLPPC, JNLPPC, M, LYFFT, NFFT, IYM, IYMFFT, ISFFT, ISLONG)
 !
 !     CHECK WHETHER AN ERROR HAS BEEN DETECTED
 !
@@ -258,8 +258,8 @@
              LGLSTK = LGLST + K - 1
 !
              CALL ACVFM (YM(I2(1,K)), YMMISS(K), N, RSTAK(YMEANK),
-     +                   CCOV(I3C(1,K,K)), LAGMAX, ISTAK(LGLSTK),
-     +                   NLPPC(I3N(1,K,K)), LAGMAX+1)
+     &                   CCOV(I3C(1,K,K)), LAGMAX, ISTAK(LGLSTK),
+     &                   NLPPC(I3N(1,K,K)), LAGMAX+1)
              RSTAK(YSDK) = SQRT(CCOV(I3C(1,K,K)) * N / (N - 1))
 !
              IF ((K-1).LE.0) GO TO 40
@@ -271,28 +271,28 @@
                 LGLSTJ = LGLST + J - 1
 !
                 CALL CCFMNM (YM(I2(1,J)), YMMISS(J),
-     +                       YM(I2(1,K)), YMMISS(K),
-     +                       N,  LAGMAX, 2*LAGMAX+1,
-     +                       CCOV(I3C(1,J,J)), CCOV(I3C(1,K,K)),
-     +                       CCOV(I3C(1,J,K)), CCOV(I3C(1,K,J)), ICCOV,
-     +                       NLPPC(I3N(1,J,J)), NLPPC(I3N(1,K,K)),
-     +                       NLPPC(I3N(1,J,K)), NLPPC(I3N(1,K,J)),
-     +                       INLPPC,
-     +                       RSTAK(YMEANJ), RSTAK(YMEANK), RSTAK(RHOC),
-     +                       RSTAK(SDRHOC),
-     +                       NPRT, MIN(ISTAK(LGLSTJ), ISTAK(LGLSTK)))
+     &                       YM(I2(1,K)), YMMISS(K),
+     &                       N,  LAGMAX, 2*LAGMAX+1,
+     &                       CCOV(I3C(1,J,J)), CCOV(I3C(1,K,K)),
+     &                       CCOV(I3C(1,J,K)), CCOV(I3C(1,K,J)), ICCOV,
+     &                       NLPPC(I3N(1,J,J)), NLPPC(I3N(1,K,K)),
+     &                       NLPPC(I3N(1,J,K)), NLPPC(I3N(1,K,J)),
+     &                       INLPPC,
+     &                       RSTAK(YMEANJ), RSTAK(YMEANK), RSTAK(RHOC),
+     &                       RSTAK(SDRHOC),
+     &                       NPRT, MIN(ISTAK(LGLSTJ), ISTAK(LGLSTK)))
 !
                 IF (NPRT .EQ. 0) GO TO 30
 !
 !         CALL ROUTINE TO PRINT OUT CORRELATIONS
 !
                 CALL CCFOUT (J, RSTAK(YMEANJ), RSTAK(YSDJ), N,
-     +                       NLPPC(I3N(1,J,J)), K, RSTAK(YMEANK),
-     +                       RSTAK(YSDK), N, NLPPC(I3N(1,K,K)), LAGMAX,
-     +                       2*LAGMAX+1, RSTAK(RHOC), RSTAK(SDRHOC),
-     +                       .TRUE., NLPPC(I3N(1,J,K)),
-     +                       NLPPC(I3N(1,K,J)),
-     +                       INLPPC, YMMISS(J), YMMISS(K), NEWPG)
+     &                       NLPPC(I3N(1,J,J)), K, RSTAK(YMEANK),
+     &                       RSTAK(YSDK), N, NLPPC(I3N(1,K,K)), LAGMAX,
+     &                       2*LAGMAX+1, RSTAK(RHOC), RSTAK(SDRHOC),
+     &                       .TRUE., NLPPC(I3N(1,J,K)),
+     &                       NLPPC(I3N(1,K,J)),
+     &                       INLPPC, YMMISS(J), YMMISS(K), NEWPG)
 !
                 NEWPG = .TRUE.
 !
@@ -319,7 +319,7 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT(/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +  '       CALL CCFMS (YM, YMMISS, N, M, IYM,'/
-     +  '      +            LAGMAX, CCOV, CMISS, ICCOV, JCCOV,'/
-     +  '      +            NLPPC, INLPPC, JNLPPC, NPRT, LDSTAK)')
+     &  '       CALL CCFMS (YM, YMMISS, N, M, IYM,'/
+     &  '      +            LAGMAX, CCOV, CMISS, ICCOV, JCCOV,'/
+     &  '      +            NLPPC, INLPPC, JNLPPC, NPRT, LDSTAK)')
       END

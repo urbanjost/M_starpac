@@ -20,27 +20,24 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LDSTAK
+     &   LDSTAK
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     +   XINC,XLB,YLB,YMISS,YUB
+      REAL(KIND=WP) :: XINC,XLB,YLB,YUB, YMISS
       INTEGER
-     +   IBAR,ILOG,IPRT,IRLIN,ISIZE,ITEST,IYM,M,NOUT,NS,NY,NYM
+     &   IBAR,ILOG,IPRT,IRLIN,ISIZE,ITEST,IYM,M,NOUT,NS,NY,NYM
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     +   AIR(144),Y(144),YM(12,12),YMMISS(144)
-      INTEGER
-     +   ISYM(144)
+      REAL(KIND=WP) :: AIR(144),Y(144),YM(12,12),YMMISS(144), YMMISS1(1)
+      INTEGER ISYM(144)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,MVP,MVPC,MVPL,MVPM,MVPMC,MVPML,DCOPY,SETRV,SVP,
-     +   SVPC,SVPL,SVPM,SVPMC,SVPML,VP,VPC,VPL,VPM,VPMC,VPML
+!      EXTERNAL IPRINT,MVP,MVPC,MVPL,MVPM,MVPMC,MVPML,DCOPY,SETRV,SVP,
+!     +   SVPC,SVPL,SVPM,SVPMC,SVPML,VP,VPC,VPL,VPM,VPMC,VPML
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -114,106 +111,107 @@
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
 !
 !
-      DATA YMISS/180.0E0_WP/
+      DATA YMISS/180.0_WP/
 !
       DATA ISYM(  1),ISYM(  2),ISYM(  3),ISYM(  4),ISYM(  5),ISYM(  6)
-     +    /    -5000,     6000,        7,        8,        9,       10/
+     &    /    -5000,     6000,        7,        8,        9,       10/
       DATA ISYM(  7),ISYM(  8),ISYM(  9),ISYM( 10),ISYM( 11),ISYM( 12)
-     +    /       11,       12,       13,       14,       15,       16/
+     &    /       11,       12,       13,       14,       15,       16/
       DATA ISYM( 13),ISYM( 14),ISYM( 15),ISYM( 16),ISYM( 17),ISYM( 18)
-     +    /        5,        6,        7,        8,        9,       10/
+     &    /        5,        6,        7,        8,        9,       10/
       DATA ISYM( 19),ISYM( 20),ISYM( 21),ISYM( 22),ISYM( 23),ISYM( 24)
-     +    /       11,       12,       13,       14,       15,       16/
+     &    /       11,       12,       13,       14,       15,       16/
       DATA ISYM( 25),ISYM( 26),ISYM( 27),ISYM( 28),ISYM( 29),ISYM( 30)
-     +    /        5,        6,        7,        8,        9,       10/
+     &    /        5,        6,        7,        8,        9,       10/
       DATA ISYM( 31),ISYM( 32),ISYM( 33),ISYM( 34),ISYM( 35),ISYM( 36)
-     +    /       11,       12,       13,       14,       15,       16/
+     &    /       11,       12,       13,       14,       15,       16/
       DATA ISYM( 37),ISYM( 38),ISYM( 39),ISYM( 40),ISYM( 41),ISYM( 42)
-     +    /        5,        6,        7,        8,        9,       10/
+     &    /        5,        6,        7,        8,        9,       10/
       DATA ISYM( 43),ISYM( 44),ISYM( 45),ISYM( 46),ISYM( 47),ISYM( 48)
-     +    /       11,       12,       13,       14,       15,       16/
+     &    /       11,       12,       13,       14,       15,       16/
       DATA ISYM( 49),ISYM( 50),ISYM( 51),ISYM( 52),ISYM( 53),ISYM( 54)
-     +    /        5,        6,        7,        8,        9,       10/
+     &    /        5,        6,        7,        8,        9,       10/
       DATA ISYM( 55),ISYM( 56),ISYM( 57),ISYM( 58),ISYM( 59),ISYM( 60)
-     +    /       11,       12,       13,       14,       15,       16/
+     &    /       11,       12,       13,       14,       15,       16/
       DATA ISYM( 61),ISYM( 62),ISYM( 63),ISYM( 64),ISYM( 65),ISYM( 66)
-     +    /        5,        6,        7,        8,        9,       10/
+     &    /        5,        6,        7,        8,        9,       10/
       DATA ISYM( 67),ISYM( 68),ISYM( 69),ISYM( 70),ISYM( 71),ISYM( 72)
-     +    /       11,       12,       13,       14,       15,       16/
+     &    /       11,       12,       13,       14,       15,       16/
       DATA ISYM( 73),ISYM( 74),ISYM( 75),ISYM( 76),ISYM( 77),ISYM( 78)
-     +    /        5,        6,        7,        8,        9,       10/
+     &    /        5,        6,        7,        8,        9,       10/
       DATA ISYM( 79),ISYM( 80),ISYM( 81),ISYM( 82),ISYM( 83),ISYM( 84)
-     +    /       11,       12,       13,       14,       15,       16/
+     &    /       11,       12,       13,       14,       15,       16/
       DATA ISYM( 85),ISYM( 86),ISYM( 87),ISYM( 88),ISYM( 89),ISYM( 90)
-     +    /        5,        6,        7,        8,        9,       10/
+     &    /        5,        6,        7,        8,        9,       10/
       DATA ISYM( 91),ISYM( 92),ISYM( 93),ISYM( 94),ISYM( 95),ISYM( 96)
-     +    /       11,       12,       13,       14,       15,       16/
+     &    /       11,       12,       13,       14,       15,       16/
       DATA ISYM( 97),ISYM( 98),ISYM( 99),ISYM(100),ISYM(101),ISYM(102)
-     +    /        5,        6,        7,        8,        9,       10/
+     &    /        5,        6,        7,        8,        9,       10/
       DATA ISYM(103),ISYM(104),ISYM(105),ISYM(106),ISYM(107),ISYM(108)
-     +    /       11,       12,       13,       14,       15,       16/
+     &    /       11,       12,       13,       14,       15,       16/
       DATA ISYM(109),ISYM(110),ISYM(111),ISYM(112),ISYM(113),ISYM(114)
-     +    /        5,        6,        7,        8,        9,       10/
+     &    /        5,        6,        7,        8,        9,       10/
       DATA ISYM(115),ISYM(116),ISYM(117),ISYM(118),ISYM(119),ISYM(120)
-     +    /       11,       12,       13,       14,       15,       16/
+     &    /       11,       12,       13,       14,       15,       16/
       DATA ISYM(121),ISYM(122),ISYM(123),ISYM(124),ISYM(125),ISYM(126)
-     +    /        5,        6,        7,        8,        9,       10/
+     &    /        5,        6,        7,        8,        9,       10/
       DATA ISYM(127),ISYM(128),ISYM(129),ISYM(130),ISYM(131),ISYM(132)
-     +    /       11,       12,       13,       14,       15,       16/
+     &    /       11,       12,       13,       14,       15,       16/
       DATA ISYM(133),ISYM(134),ISYM(135),ISYM(136),ISYM(137),ISYM(138)
-     +    /        5,        6,        7,        8,        9,       10/
+     &    /        5,        6,        7,        8,        9,       10/
       DATA ISYM(139),ISYM(140),ISYM(141),ISYM(142),ISYM(143),ISYM(144)
-     +    /       11,       12,       13,       14,       15,       16/
+     &    /       11,       12,       13,       14,       15,       16/
 !
       DATA  AIR(  1), AIR(  2), AIR(  3), AIR(  4), AIR(  5), AIR(  6)
-     +    / 112.0E0_WP, 118.0E0_WP, 132.0E0_WP, 129.0E0_WP, 121.0E0_WP, 135.0E0_WP/
+     &    / 112.0_WP, 118.0_WP, 132.0_WP, 129.0_WP, 121.0_WP, 135.0_WP/
       DATA  AIR(  7), AIR(  8), AIR(  9), AIR( 10), AIR( 11), AIR( 12)
-     +    / 148.0E0_WP, 148.0E0_WP, 136.0E0_WP, 119.0E0_WP, 104.0E0_WP, 118.0E0_WP/
+     &    / 148.0_WP, 148.0_WP, 136.0_WP, 119.0_WP, 104.0_WP, 118.0_WP/
       DATA  AIR( 13), AIR( 14), AIR( 15), AIR( 16), AIR( 17), AIR( 18)
-     +    / 115.0E0_WP, 126.0E0_WP, 141.0E0_WP, 135.0E0_WP, 125.0E0_WP, 149.0E0_WP/
+     &    / 115.0_WP, 126.0_WP, 141.0_WP, 135.0_WP, 125.0_WP, 149.0_WP/
       DATA  AIR( 19), AIR( 20), AIR( 21), AIR( 22), AIR( 23), AIR( 24)
-     +    / 170.0E0_WP, 170.0E0_WP, 158.0E0_WP, 133.0E0_WP, 114.0E0_WP, 140.0E0_WP/
+     &    / 170.0_WP, 170.0_WP, 158.0_WP, 133.0_WP, 114.0_WP, 140.0_WP/
       DATA  AIR( 25), AIR( 26), AIR( 27), AIR( 28), AIR( 29), AIR( 30)
-     +    / 145.0E0_WP, 150.0E0_WP, 178.0E0_WP, 163.0E0_WP, 172.0E0_WP, 178.0E0_WP/
+     &    / 145.0_WP, 150.0_WP, 178.0_WP, 163.0_WP, 172.0_WP, 178.0_WP/
       DATA  AIR( 31), AIR( 32), AIR( 33), AIR( 34), AIR( 35), AIR( 36)
-     +    / 199.0E0_WP, 199.0E0_WP, 184.0E0_WP, 162.0E0_WP, 146.0E0_WP, 166.0E0_WP/
+     &    / 199.0_WP, 199.0_WP, 184.0_WP, 162.0_WP, 146.0_WP, 166.0_WP/
       DATA  AIR( 37), AIR( 38), AIR( 39), AIR( 40), AIR( 41), AIR( 42)
-     +    / 171.0E0_WP, 180.0E0_WP, 193.0E0_WP, 181.0E0_WP, 183.0E0_WP, 218.0E0_WP/
+     &    / 171.0_WP, 180.0_WP, 193.0_WP, 181.0_WP, 183.0_WP, 218.0_WP/
       DATA  AIR( 43), AIR( 44), AIR( 45), AIR( 46), AIR( 47), AIR( 48)
-     +    / 230.0E0_WP, 242.0E0_WP, 209.0E0_WP, 191.0E0_WP, 172.0E0_WP, 194.0E0_WP/
+     &    / 230.0_WP, 242.0_WP, 209.0_WP, 191.0_WP, 172.0_WP, 194.0_WP/
       DATA  AIR( 49), AIR( 50), AIR( 51), AIR( 52), AIR( 53), AIR( 54)
-     +    / 196.0E0_WP, 196.0E0_WP, 236.0E0_WP, 235.0E0_WP, 229.0E0_WP, 243.0E0_WP/
+     &    / 196.0_WP, 196.0_WP, 236.0_WP, 235.0_WP, 229.0_WP, 243.0_WP/
       DATA  AIR( 55), AIR( 56), AIR( 57), AIR( 58), AIR( 59), AIR( 60)
-     +    / 264.0E0_WP, 272.0E0_WP, 237.0E0_WP, 211.0E0_WP, 180.0E0_WP, 201.0E0_WP/
+     &    / 264.0_WP, 272.0_WP, 237.0_WP, 211.0_WP, 180.0_WP, 201.0_WP/
       DATA  AIR( 61), AIR( 62), AIR( 63), AIR( 64), AIR( 65), AIR( 66)
-     +    / 204.0E0_WP, 188.0E0_WP, 235.0E0_WP, 227.0E0_WP, 234.0E0_WP, 264.0E0_WP/
+     &    / 204.0_WP, 188.0_WP, 235.0_WP, 227.0_WP, 234.0_WP, 264.0_WP/
       DATA  AIR( 67), AIR( 68), AIR( 69), AIR( 70), AIR( 71), AIR( 72)
-     +    / 302.0E0_WP, 293.0E0_WP, 259.0E0_WP, 229.0E0_WP, 203.0E0_WP, 229.0E0_WP/
+     &    / 302.0_WP, 293.0_WP, 259.0_WP, 229.0_WP, 203.0_WP, 229.0_WP/
       DATA  AIR( 73), AIR( 74), AIR( 75), AIR( 76), AIR( 77), AIR( 78)
-     +    / 242.0E0_WP, 233.0E0_WP, 267.0E0_WP, 269.0E0_WP, 270.0E0_WP, 315.0E0_WP/
+     &    / 242.0_WP, 233.0_WP, 267.0_WP, 269.0_WP, 270.0_WP, 315.0_WP/
       DATA  AIR( 79), AIR( 80), AIR( 81), AIR( 82), AIR( 83), AIR( 84)
-     +    / 364.0E0_WP, 347.0E0_WP, 312.0E0_WP, 274.0E0_WP, 237.0E0_WP, 278.0E0_WP/
+     &    / 364.0_WP, 347.0_WP, 312.0_WP, 274.0_WP, 237.0_WP, 278.0_WP/
       DATA  AIR( 85), AIR( 86), AIR( 87), AIR( 88), AIR( 89), AIR( 90)
-     +    / 284.0E0_WP, 277.0E0_WP, 317.0E0_WP, 313.0E0_WP, 318.0E0_WP, 374.0E0_WP/
+     &    / 284.0_WP, 277.0_WP, 317.0_WP, 313.0_WP, 318.0_WP, 374.0_WP/
       DATA  AIR( 91), AIR( 92), AIR( 93), AIR( 94), AIR( 95), AIR( 96)
-     +    / 413.0E0_WP, 405.0E0_WP, 355.0E0_WP, 306.0E0_WP, 271.0E0_WP, 306.0E0_WP/
+     &    / 413.0_WP, 405.0_WP, 355.0_WP, 306.0_WP, 271.0_WP, 306.0_WP/
       DATA  AIR( 97), AIR( 98), AIR( 99), AIR(100), AIR(101), AIR(102)
-     +    / 315.0E0_WP, 301.0E0_WP, 356.0E0_WP, 348.0E0_WP, 355.0E0_WP, 422.0E0_WP/
+     &    / 315.0_WP, 301.0_WP, 356.0_WP, 348.0_WP, 355.0_WP, 422.0_WP/
       DATA  AIR(103), AIR(104), AIR(105), AIR(106), AIR(107), AIR(108)
-     +    / 465.0E0_WP, 467.0E0_WP, 404.0E0_WP, 347.0E0_WP, 305.0E0_WP, 336.0E0_WP/
+     &    / 465.0_WP, 467.0_WP, 404.0_WP, 347.0_WP, 305.0_WP, 336.0_WP/
       DATA  AIR(109), AIR(110), AIR(111), AIR(112), AIR(113), AIR(114)
-     +    / 340.0E0_WP, 318.0E0_WP, 362.0E0_WP, 348.0E0_WP, 363.0E0_WP, 435.0E0_WP/
+     &    / 340.0_WP, 318.0_WP, 362.0_WP, 348.0_WP, 363.0_WP, 435.0_WP/
       DATA  AIR(115), AIR(116), AIR(117), AIR(118), AIR(119), AIR(120)
-     +    / 491.0E0_WP, 505.0E0_WP, 404.0E0_WP, 359.0E0_WP, 310.0E0_WP, 337.0E0_WP/
+     &    / 491.0_WP, 505.0_WP, 404.0_WP, 359.0_WP, 310.0_WP, 337.0_WP/
       DATA  AIR(121), AIR(122), AIR(123), AIR(124), AIR(125), AIR(126)
-     +    / 360.0E0_WP, 342.0E0_WP, 406.0E0_WP, 396.0E0_WP, 420.0E0_WP, 472.0E0_WP/
+     &    / 360.0_WP, 342.0_WP, 406.0_WP, 396.0_WP, 420.0_WP, 472.0_WP/
       DATA  AIR(127), AIR(128), AIR(129), AIR(130), AIR(131), AIR(132)
-     +    / 548.0E0_WP, 559.0E0_WP, 463.0E0_WP, 407.0E0_WP, 362.0E0_WP, 405.0E0_WP/
+     &    / 548.0_WP, 559.0_WP, 463.0_WP, 407.0_WP, 362.0_WP, 405.0_WP/
       DATA  AIR(133), AIR(134), AIR(135), AIR(136), AIR(137), AIR(138)
-     +    / 417.0E0_WP, 391.0E0_WP, 419.0E0_WP, 461.0E0_WP, 472.0E0_WP, 535.0E0_WP/
+     &    / 417.0_WP, 391.0_WP, 419.0_WP, 461.0_WP, 472.0_WP, 535.0_WP/
       DATA  AIR(139), AIR(140), AIR(141), AIR(142), AIR(143), AIR(144)
-     +    / 622.0E0_WP, 606.0E0_WP, 508.0E0_WP, 461.0E0_WP, 390.0E0_WP, 432.0E0_WP/
+     &    / 622.0_WP, 606.0_WP, 508.0_WP, 461.0_WP, 390.0_WP, 432.0_WP/
 !
+      YMMISS1=YMISS
       CALL SETRV(YMMISS, 144, YMISS)
       CALL DCOPY(144, AIR, 1, Y, 1)
 !
@@ -237,10 +235,10 @@
       ISIZE = -1
       IRLIN = -1
       IBAR = -1
-      YLB = 0.0E0_WP
-      YUB = 0.0E0_WP
-      XLB = 0.0E0_WP
-      XINC = 0.0E0_WP
+      YLB = 0.0_WP
+      YUB = 0.0_WP
+      XLB = 0.0_WP
+      XINC = 0.0_WP
 !
    10 CONTINUE
 !
@@ -259,7 +257,7 @@
       WRITE (IPRT, 3100) ITEST
       WRITE (IPRT, 3010) NY
       WRITE (IPRT, 3030) NS
-      CALL VPM (Y, YMISS, NY, NS)
+      CALL VPM (Y, YMMISS1, NY, NS)
       WRITE (IPRT, 3000) IERR
 !
 !     TEST OF SVP
@@ -341,7 +339,7 @@
       WRITE (IPRT, 3010) NY
       WRITE (IPRT, 3030) NS
       WRITE (IPRT, 3040) ILOG
-      CALL SVPML (Y, YMISS, NY, NS, ISYM, ILOG)
+      CALL SVPML (Y, YMMISS1, NY, NS, ISYM, ILOG)
       WRITE (IPRT, 3000) IERR
 !
 !     TEST OF MVPL
@@ -381,7 +379,7 @@
       WRITE (IPRT, 3070) YLB, YUB, XLB
       WRITE (IPRT, 3090) XINC
       CALL VPC (Y, NY, NS, ILOG, ISIZE, IRLIN, IBAR, YLB,
-     +   YUB, XLB, XINC)
+     &   YUB, XLB, XINC)
       WRITE (IPRT, 3000) IERR
 !
 !     TEST OF VPMC
@@ -395,7 +393,7 @@
       WRITE (IPRT, 3070) YLB, YUB, XLB
       WRITE (IPRT, 3090) XINC
       CALL VPMC (Y, YMISS, NY, NS, ILOG, ISIZE, IRLIN, IBAR, YLB,
-     +   YUB, XLB, XINC)
+     &   YUB, XLB, XINC)
       WRITE (IPRT, 3000) IERR
 !
 !     TEST OF SVPC
@@ -409,7 +407,7 @@
       WRITE (IPRT, 3070) YLB, YUB, XLB
       WRITE (IPRT, 3090) XINC
       CALL SVPC (Y, NY, NS, ISYM, ILOG, ISIZE, IRLIN, IBAR, YLB,
-     +   YUB, XLB, XINC)
+     &   YUB, XLB, XINC)
       WRITE (IPRT, 3000) IERR
 !
 !     TEST OF SVPMC
@@ -423,7 +421,7 @@
       WRITE (IPRT, 3070) YLB, YUB, XLB
       WRITE (IPRT, 3090) XINC
       CALL SVPMC(Y, YMISS, NY, NS, ISYM, ILOG, ISIZE, IRLIN, IBAR,
-     +   YLB, YUB, XLB, XINC)
+     &   YLB, YUB, XLB, XINC)
       WRITE (IPRT, 3000) IERR
 !
 !     TEST OF MVPC
@@ -438,7 +436,7 @@
       WRITE (IPRT, 3070) YLB, YUB, XLB
       WRITE (IPRT, 3090) XINC
       CALL MVPC(YM, NYM, M, IYM, NS, ILOG, ISIZE, YLB,
-     +   YUB, XLB, XINC)
+     &   YUB, XLB, XINC)
       WRITE (IPRT, 3000) IERR
 !
 !     TEST OF MVPMC
@@ -453,34 +451,34 @@
       WRITE (IPRT, 3070) YLB, YUB, XLB
       WRITE (IPRT, 3090) XINC
       CALL MVPMC(YM, YMMISS, NYM, M, IYM, NS, ILOG, ISIZE, YLB,
-     +   YUB, XLB, XINC)
+     &   YUB, XLB, XINC)
       WRITE (IPRT, 3000) IERR
 !
       ITEST = ITEST + 1
 !
       GO TO (110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 300),
-     +  ITEST
+     &  ITEST
 !
 !     TEST VALID OPTIONS
 !
   110 ILOG = 0
       ISIZE = 0
-      YLB = 100.0E0_WP
-      YUB = 700.0E0_WP
-      XLB = 4.0E0_WP
-      XINC = 16.0E0_WP
+      YLB = 100.0_WP
+      YUB = 700.0_WP
+      XLB = 4.0_WP
+      XINC = 16.0_WP
       GO TO 20
 !
   120 ILOG = 2
       ISIZE = 2
       NOUT = 5
-      XINC = -1.0E0_WP
+      XINC = -1.0_WP
       GO TO 20
 !
   130 ILOG = 20
       ISIZE = 20
       NOUT = 55
-      YUB = 300.0E0_WP
+      YUB = 300.0_WP
       GO TO 30
 !
   140 ILOG = 22
@@ -493,15 +491,15 @@
       IYM = 1
       GO TO 40
 !
-  160 CALL SETRV(Y, 144, 1.0E0_WP)
+  160 CALL SETRV(Y, 144, 1.0_WP)
       NYM = 6
       IYM = 12
       M = 6
       NY = 36
-      YLB = 0.0E0_WP
-      YUB = 0.0E0_WP
-      XLB = 0.0E0_WP
-      XINC = 0.0E0_WP
+      YLB = 0.0_WP
+      YUB = 0.0_WP
+      XLB = 0.0_WP
+      XINC = 0.0_WP
       GO TO 30
 !
 !     TEST ERROR RESPONSE
@@ -516,12 +514,12 @@
       NYM = 12
       M = 12
       IYM = -1
-      XLB = -1.0E0_WP
-      YLB = -1.0E0_WP
+      XLB = -1.0_WP
+      YLB = -1.0_WP
       GO TO 40
 !
   190 IYM = 12
-      Y(1) = 0.0E0_WP
+      Y(1) = 0.0_WP
       GO TO 50
 !
   200 CALL SETRV(Y, 144, YMISS)
@@ -559,9 +557,9 @@
  3030 FORMAT ('+', 50X, 10H / NS    =, I5)
  3040 FORMAT ('+', 65X, 10H / ILOG  =, I5)
  3060 FORMAT (' ',  5X, '   ISIZE=', I5, ' / IRLIN=', I5,
-     +   10H / IBAR  =, I5)
+     &   10H / IBAR  =, I5)
  3070 FORMAT ('+', 50X, 10H / YLB   =, F10.4, 10H / YUB   =, F10.4,
-     +   10H / XLB   =, F10.4)
+     &   10H / XLB   =, F10.4)
  3090 FORMAT ('+', 110X, 10H / XINC  =, F10.4)
  3100 FORMAT (' ', 13H TEST NUMBER , I5)
       END

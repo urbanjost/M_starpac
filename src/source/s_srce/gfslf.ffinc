@@ -17,34 +17,34 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   K
+     &   K
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   H(*)
+      REAL(KIND=WP) ::
+     &   H(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   DELTA,FMAX,FMIN,YPLTMN,YPLTMX
+      REAL(KIND=WP) ::
+     &   DELTA,FMAX,FMIN,YPLTMN,YPLTMX
       INTEGER
-     +   IGFERR,IPRT,NF,NORD,NPRT
+     &   IGFERR,IPRT,NF,NORD,NPRT
       LOGICAL
-     +   ERR01,ERR02,ERR03,HEAD,SYM
+     &   ERR01,ERR02,ERR03,HEAD,SYM
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   FREQ(101),GAIN(101),XORD(101),YORD(101)
+      REAL(KIND=WP) ::
+     &   FREQ(101),GAIN(101),XORD(101),YORD(101)
       INTEGER
-     +   ISORT(101)
+     &   ISORT(101)
       CHARACTER
-     +   LH(8)*1,LK(8)*1,NMSUB(6)*1
+     &   LH(8)*1,LK(8)*1,NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,ERIODD,ERSLF,GFORD,GFOUT,GFSEST,IPRINT,SETFRQ
+!      EXTERNAL EISGE,ERIODD,ERSLF,GFORD,GFOUT,GFSEST,IPRINT,SETFRQ
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -112,14 +112,14 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'G',       'F',       'S',       'L',       'F',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'G',       'F',       'S',       'L',       'F',       ' '/
       DATA
-     +  LH(1), LH(2), LH(3), LH(4), LH(5), LH(6), LH(7), LH(8)
-     + /  'H',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LH(1), LH(2), LH(3), LH(4), LH(5), LH(6), LH(7), LH(8)
+     & /  'H',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
       DATA
-     +  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
-     + /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
+     &  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
+     & /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -172,15 +172,15 @@
 !     PLOT THE RESULTS
 !
       CALL GFORD (FREQ, GAIN, ISORT, NF, XORD, YORD, NORD,
-     +   YPLTMN, YPLTMX, NPRT, IGFERR)
+     &   YPLTMN, YPLTMX, NPRT, IGFERR)
 !
       CALL GFOUT (XORD, YORD, NORD, FREQ, GAIN, NF, K,
-     +   SYM, FMIN, FMAX, YPLTMN, YPLTMX, NPRT, IGFERR, NMSUB)
+     &   SYM, FMIN, FMAX, YPLTMN, YPLTMX, NPRT, IGFERR, NMSUB)
 !
       RETURN
 !
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +   24H       CALL GFSLF (H, K))
+     &   24H       CALL GFSLF (H, K))
       END

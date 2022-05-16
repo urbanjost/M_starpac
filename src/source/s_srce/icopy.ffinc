@@ -22,15 +22,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   INCX,INCY,N
+     &   INCX,INCY,N
 !
 !  ARRAY ARGUMENTS
       INTEGER
-     +   ISX(N),ISY(N)
+     &   ISX(N),ISY(N)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,IX,IY,M,MP1,NS
+     &   I,IX,IY,M,MP1,NS
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MOD

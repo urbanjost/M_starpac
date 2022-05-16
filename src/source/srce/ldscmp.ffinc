@@ -1,6 +1,6 @@
 !LDSCMP
       SUBROUTINE LDSCMP (NARR, NLOG, NINT, NREAL, NDBL, NCMP,
-     +   FLAG, NFP, LDSMIN)
+     &   FLAG, NFP, LDSMIN)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -28,13 +28,13 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LDSMIN,NARR,NCMP,NDBL,NFP,NINT,NLOG,NREAL
+     &   LDSMIN,NARR,NCMP,NDBL,NFP,NINT,NLOG,NREAL
       CHARACTER
-     +   FLAG*1
+     &   FLAG*1
 !
 !  LOCAL SCALARS
       INTEGER
-     +   NOVER
+     &   NOVER
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -78,7 +78,7 @@
 !     COMMENCE BODY OF ROUTINE
 !
       LDSMIN = (NLOG + NINT + NREAL + 3*NARR + NOVER + 1)/2
-     +       + NDBL + NCMP
+     &       + NDBL + NCMP
       IF (FLAG.EQ.'S') THEN
          LDSMIN = LDSMIN + (NFP+1)/2
       ELSE

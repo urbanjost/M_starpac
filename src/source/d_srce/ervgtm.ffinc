@@ -1,6 +1,6 @@
 !ERVGTM
       SUBROUTINE ERVGTM (NMSUB, NMVAR, VEC, VCMISS, N, VECLB, NVMX,
-     +   HEAD, MSGTYP, NV, ERROR, NMMIN)
+     &   HEAD, MSGTYP, NV, ERROR, NMMIN)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -24,25 +24,25 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   VCMISS,VECLB
+     &   VCMISS,VECLB
       INTEGER
-     +   MSGTYP,N,NV,NVMX
+     &   MSGTYP,N,NV,NVMX
       LOGICAL
-     +   ERROR,HEAD
+     &   ERROR,HEAD
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   VEC(*)
+     &   VEC(*)
       CHARACTER
-     +   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     &   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,NVMN
+     &   I,NVMN
 !
 !  EXTERNAL FUNCTIONS
       LOGICAL
-     +   MVCHK
+     &   MVCHK
       EXTERNAL MVCHK
 !
 !  EXTERNAL SUBROUTINES
@@ -114,7 +114,7 @@
       ERROR = .TRUE.
       NVMN = N - NVMX
       CALL ERVGTP (NMSUB, NMVAR, VECLB, NVMN, NVMX, HEAD, MSGTYP, NV,
-     +   NMMIN)
+     &   NMMIN)
 !
       RETURN
 !

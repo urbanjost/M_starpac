@@ -17,20 +17,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   DELTA
+      REAL(KIND=WP) ::
+     &   DELTA
       INTEGER
-     +   K,NF
+     &   K,NF
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   FREQ(NF),GAIN(NF),H(K)
+      REAL(KIND=WP) ::
+     &   FREQ(NF),GAIN(NF),H(K)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   C,PI,V0,V1,V2
+      REAL(KIND=WP) ::
+     &   C,PI,V0,V1,V2
       INTEGER
-     +   I,J,KHALF,KMID
+     &   I,J,KHALF,KMID
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL GETPI

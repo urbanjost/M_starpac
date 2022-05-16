@@ -1,6 +1,6 @@
 !IPGORD
       SUBROUTINE IPGORD (PERI, NF, N, FREQ, XAXIS, YAXIS, ISYM, NPTS,
-     +   LPCV)
+     &   LPCV)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,23 +17,23 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LPCV,N,NF,NPTS
+     &   LPCV,N,NF,NPTS
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   FREQ(NF),PERI(NF),XAXIS(LPCV),YAXIS(LPCV)
+     &   FREQ(NF),PERI(NF),XAXIS(LPCV),YAXIS(LPCV)
       INTEGER
-     +   ISYM(LPCV)
+     &   ISYM(LPCV)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   CI,CIMID
+     &   CI,CIMID
       INTEGER
-     +   I,II,NLIM
+     &   I,II,NLIM
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   S(40)
+     &   S(40)
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MOD,DBLE,SQRT
@@ -71,29 +71,29 @@
 !     REAL(KIND=WP) :: XAXIS(LPCV), YAXIS(LPCV)
 !        THE X, Y CO-ORDINATES FOR THE SPECTRAL PLOTS.
 !
-      DATA S(1)/0.975D0_WP/, S(2)/0.842D0_WP/, S(3)/0.708D0_WP/
-      DATA S(4)/0.624D0_WP/, S(5)/0.563D0_WP/
-      DATA S(6)/0.519D0_WP/, S(7)/0.483D0_WP/, S(8)/0.454D0_WP/
-      DATA S(9)/0.430E0_WP/, S(10)/0.409D0_WP/
-      DATA S(11)/0.391D0_WP/, S(12)/0.375D0_WP/, S(13)/0.361D0_WP/
-      DATA S(14)/0.349D0_WP/, S(15)/0.338D0_WP/
-      DATA S(16)/0.327D0_WP/, S(17)/0.318D0_WP/, S(18)/0.309D0_WP/
-      DATA S(19)/0.301D0_WP/, S(20)/0.294D0_WP/
-      DATA S(21)/0.287D0_WP/, S(22)/0.281D0_WP/, S(23)/0.275D0_WP/
-      DATA S(24)/0.269D0_WP/, S(25)/0.264D0_WP/
-      DATA S(26)/0.259D0_WP/, S(27)/0.254D0_WP/, S(28)/0.250E0_WP/
-      DATA S(29)/0.246D0_WP/, S(30)/0.242D0_WP/
-      DATA S(31)/0.238D0_WP/, S(32)/0.234D0_WP/, S(33)/0.231D0_WP/
-      DATA S(34)/0.227D0_WP/, S(35)/0.224D0_WP/
-      DATA S(36)/0.221D0_WP/, S(37)/0.218D0_WP/, S(38)/0.215D0_WP/
-      DATA S(39)/0.213D0_WP/, S(40)/0.210E0_WP/
+      DATA S(1)/0.975_WP/, S(2)/0.842_WP/, S(3)/0.708_WP/
+      DATA S(4)/0.624_WP/, S(5)/0.563_WP/
+      DATA S(6)/0.519_WP/, S(7)/0.483_WP/, S(8)/0.454_WP/
+      DATA S(9)/0.430_WP/, S(10)/0.409_WP/
+      DATA S(11)/0.391_WP/, S(12)/0.375_WP/, S(13)/0.361_WP/
+      DATA S(14)/0.349_WP/, S(15)/0.338_WP/
+      DATA S(16)/0.327_WP/, S(17)/0.318_WP/, S(18)/0.309_WP/
+      DATA S(19)/0.301_WP/, S(20)/0.294_WP/
+      DATA S(21)/0.287_WP/, S(22)/0.281_WP/, S(23)/0.275_WP/
+      DATA S(24)/0.269_WP/, S(25)/0.264_WP/
+      DATA S(26)/0.259_WP/, S(27)/0.254_WP/, S(28)/0.250_WP/
+      DATA S(29)/0.246_WP/, S(30)/0.242_WP/
+      DATA S(31)/0.238_WP/, S(32)/0.234_WP/, S(33)/0.231_WP/
+      DATA S(34)/0.227_WP/, S(35)/0.224_WP/
+      DATA S(36)/0.221_WP/, S(37)/0.218_WP/, S(38)/0.215_WP/
+      DATA S(39)/0.213_WP/, S(40)/0.210_WP/
 !
       I = N + MOD(N,2) - 1
 !
       IF (I .LE. 40) THEN
          CI = S(I)
       ELSE
-         CI = 1.36D0_WP/ SQRT(DBLE(I))
+         CI = 1.36_WP/ SQRT(DBLE(I))
       END IF
 !
       DO 10 I = 1, NF
@@ -108,14 +108,14 @@
 !
       DO 30 I = 1, NLIM, 2
          CIMID = DBLE(I-1) / DBLE(NLIM-1)
-         IF (CIMID - CI .LT. 0.0E0_WP) GO TO 20
+         IF (CIMID - CI .LT. 0.0_WP) GO TO 20
          II = II + 1
-         XAXIS(II) = CIMID / 2.0E0_WP
+         XAXIS(II) = CIMID / 2.0_WP
          YAXIS(II) = CIMID - CI
          ISYM(II) = 2
-   20    IF (CIMID + CI .GT. 1.0E0_WP) GO TO 30
+   20    IF (CIMID + CI .GT. 1.0_WP) GO TO 30
          II = II + 1
-         XAXIS(II) = CIMID / 2.0E0_WP
+         XAXIS(II) = CIMID / 2.0_WP
          YAXIS(II) = CIMID + CI
          ISYM(II) = 2
    30 CONTINUE

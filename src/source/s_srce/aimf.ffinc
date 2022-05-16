@@ -17,37 +17,37 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LDSTAK,N,NFAC,NPAR
+     &   LDSTAK,N,NFAC,NPAR
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PAR(*),Y(*)
+      REAL(KIND=WP) ::
+     &   PAR(*),Y(*)
       INTEGER
-     +   MSPEC(4,*)
+     &   MSPEC(4,*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       DOUBLE PRECISION DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IFCST,IPRT,NFCST,NFCSTO,NPRT
+     &   IFCST,IPRT,NFCST,NFCSTO,NPRT
       LOGICAL
-     +   SAVE
+     &   SAVE
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   FCST(1,1),FCSTSD(1)
+      REAL(KIND=WP) ::
+     &   FCST(1,1),FCSTSD(1)
       INTEGER
-     +   IFCSTO(1)
+     &   IFCSTO(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMFCNT,IPRINT
+!      EXTERNAL AMFCNT,IPRINT
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -103,7 +103,7 @@
 !     SET UP NAME ARRAYS
 !
       DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
-     +   'A','I','M','F',' ',' '/
+     &   'A','I','M','F',' ',' '/
 !
 !     SET VARIOUS PROGRAM PARAMETERS
 !
@@ -116,7 +116,7 @@
       IFCST = 1
 !
       CALL AMFCNT(Y, N, MSPEC, NFAC, PAR, NPAR, LDSTAK, NFCST, NFCSTO,
-     +   IFCSTO, NPRT, FCST, IFCST, FCSTSD, NMSUB, SAVE)
+     &   IFCSTO, NPRT, FCST, IFCST, FCSTSD, NMSUB, SAVE)
 !
       IF (IERR.NE.1) RETURN
 !
@@ -129,5 +129,5 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/' THE CORRECT FORM OF THE CALL STATEMENT IS'//
-     +     '       CALL AIMF (Y, N, MSPEC, NFAC, PAR, NPAR, LDSTAK)')
+     &     '       CALL AIMF (Y, N, MSPEC, NFAC, PAR, NPAR, LDSTAK)')
       END

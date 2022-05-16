@@ -16,18 +16,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   RSS,YSS
+      REAL(KIND=WP) ::
+     &   RSS,YSS
       LOGICAL
-     +   EXACT
+     &   EXACT
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   FPLRS,RSSTST
+      REAL(KIND=WP) ::
+     &   FPLRS,RSSTST
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP)
-     +   R1MACH
+      REAL(KIND=WP) ::
+     &   R1MACH
       EXTERNAL R1MACH
 !
 !  INTRINSIC FUNCTIONS

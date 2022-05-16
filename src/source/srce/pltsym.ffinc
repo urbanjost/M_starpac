@@ -17,21 +17,21 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   I,IPOINT,IPTSYM,J,N
+     &   I,IPOINT,IPTSYM,J,N
 !
 !  ARRAY ARGUMENTS
       INTEGER
-     +   ICOUNT(103),ISYM(N)
+     &   ICOUNT(103),ISYM(N)
       CHARACTER
-     +   LINE(103)*1
+     &   LINE(103)*1
 !
 !  LOCAL SCALARS
       INTEGER
-     +   ISYMBL
+     &   ISYMBL
 !
 !  LOCAL ARRAYS
       CHARACTER
-     +   SYM(30)*1,SYM1(10)*1
+     &   SYM(30)*1,SYM1(10)*1
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MAX,MIN
@@ -63,16 +63,16 @@
 !        THE PLOT SYMBOLS.
 !
       DATA SYM( 1)/'+'/,SYM( 2)/'.'/,SYM( 3)/'*'/,SYM( 4)/'-'/,
-     +     SYM( 5)/'A'/,SYM( 6)/'B'/,SYM( 7)/'C'/,SYM( 8)/'D'/,
-     +     SYM( 9)/'E'/,SYM(10)/'F'/,SYM(11)/'G'/,SYM(12)/'H'/,
-     +     SYM(13)/'I'/,SYM(14)/'J'/,SYM(15)/'K'/,SYM(16)/'L'/,
-     +     SYM(17)/'M'/,SYM(18)/'N'/,SYM(19)/'O'/,SYM(20)/'P'/,
-     +     SYM(21)/'Q'/,SYM(22)/'R'/,SYM(23)/'S'/,SYM(24)/'T'/,
-     +     SYM(25)/'U'/,SYM(26)/'V'/,SYM(27)/'W'/,SYM(28)/'Y'/,
-     +     SYM(29)/'Z'/,SYM(30)/'Z'/
+     &     SYM( 5)/'A'/,SYM( 6)/'B'/,SYM( 7)/'C'/,SYM( 8)/'D'/,
+     &     SYM( 9)/'E'/,SYM(10)/'F'/,SYM(11)/'G'/,SYM(12)/'H'/,
+     &     SYM(13)/'I'/,SYM(14)/'J'/,SYM(15)/'K'/,SYM(16)/'L'/,
+     &     SYM(17)/'M'/,SYM(18)/'N'/,SYM(19)/'O'/,SYM(20)/'P'/,
+     &     SYM(21)/'Q'/,SYM(22)/'R'/,SYM(23)/'S'/,SYM(24)/'T'/,
+     &     SYM(25)/'U'/,SYM(26)/'V'/,SYM(27)/'W'/,SYM(28)/'Y'/,
+     &     SYM(29)/'Z'/,SYM(30)/'Z'/
       DATA SYM1(1)/'1'/,SYM1(2)/'2'/,SYM1(3)/'3'/,SYM1(4)/'4'/,
-     +     SYM1(5)/'5'/,SYM1(6)/'6'/,SYM1(7)/'7'/,SYM1(8)/'8'/,
-     +     SYM1(9)/'9'/,SYM1(10)/'X'/
+     &     SYM1(5)/'5'/,SYM1(6)/'6'/,SYM1(7)/'7'/,SYM1(8)/'8'/,
+     &     SYM1(9)/'9'/,SYM1(10)/'X'/
 !
       ICOUNT(IPOINT) = ICOUNT(IPOINT) + 1
       IF (ICOUNT(IPOINT) .EQ. 1) GO TO 5

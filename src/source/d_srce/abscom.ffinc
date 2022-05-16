@@ -17,17 +17,17 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   ABSTOL
+     &   ABSTOL
       INTEGER
-     +   N,NFAIL
+     &   N,NFAIL
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   V(*),W(*)
+     &   V(*),W(*)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS

@@ -19,25 +19,25 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LDSTAK
+     &   LDSTAK
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,IPRT,IVCV,IYM,J,LDSMIN,M,N
+     &   I,IPRT,IVCV,IYM,J,LDSMIN,M,N
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   VCV(4,4),YM(10,4),Z(10,4)
+     &   VCV(4,4),YM(10,4),Z(10,4)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CORR,CORRS,CORRXP,GENR,IPRINT,LDSCMP,MSGX,SETRA
+!      EXTERNAL CORR,CORRS,CORRXP,GENR,IPRINT,LDSCMP,MSGX,SETRA
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MAX
@@ -84,23 +84,23 @@
 !        PAGE 216
 !
       DATA     YM(1,1),   YM(1,2),   YM(1,3),   YM(1,4)
-     +    /      42.2D0,  11.2D0,  31.9D0, 167.1D0/
+     &    /      42.2_WP,  11.2_WP,  31.9_WP, 167.1_WP/
       DATA     YM(2,1),   YM(2,2),   YM(2,3),   YM(2,4)
-     +    /      48.6D0,  10.6D0,  13.2D0, 174.4D0/
+     &    /      48.6_WP,  10.6_WP,  13.2_WP, 174.4_WP/
       DATA     YM(3,1),   YM(3,2),   YM(3,3),   YM(3,4)
-     +    /      42.6D0,  10.6D0,  28.7D0, 160.8D0/
+     &    /      42.6_WP,  10.6_WP,  28.7_WP, 160.8_WP/
       DATA     YM(4,1),   YM(4,2),   YM(4,3),   YM(4,4)
-     +    /      39.0E0_WP,  10.4D0,  26.1D0, 162.0E0_WP/
+     &    /      39.0_WP,  10.4_WP,  26.1_WP, 162.0_WP/
       DATA     YM(5,1),   YM(5,2),   YM(5,3),   YM(5,4)
-     +    /      34.7D0,   9.3D0,  30.1D0, 140.8D0/
+     &    /      34.7_WP,   9.3_WP,  30.1_WP, 140.8_WP/
       DATA     YM(6,1),   YM(6,2),   YM(6,3),   YM(6,4)
-     +    /      44.5D0,  10.8D0,   8.5D0, 174.6D0/
+     &    /      44.5_WP,  10.8_WP,   8.5_WP, 174.6_WP/
       DATA     YM(7,1),   YM(7,2),   YM(7,3),   YM(7,4)
-     +    /      39.1D0,  10.7D0,  24.3D0, 163.7D0/
+     &    /      39.1_WP,  10.7_WP,  24.3_WP, 163.7_WP/
       DATA     YM(8,1),   YM(8,2),   YM(8,3),   YM(8,4)
-     +    /      40.1D0,  10.0E0_WP,  18.6D0, 174.5D0/
+     &    /      40.1_WP,  10.0_WP,  18.6_WP, 174.5_WP/
       DATA     YM(9,1),   YM(9,2),   YM(9,3),   YM(9,4)
-     +    /      45.9D0,  12.0E0_WP,  20.4D0, 185.7D0/
+     &    /      45.9_WP,  12.0_WP,  20.4_WP, 185.7_WP/
 !
 !     DETERMINE OUTPUT UNIT
 !
@@ -161,7 +161,7 @@
 !     TEST CORR
 !
       CALL LDSCMP(12, 0, MAX(N,M), 0, 0, 0, 'D',
-     +   M*M + (MAX(N,M)+M+N*(M+3)+6*M*M), LDSMIN)
+     &   M*M + (MAX(N,M)+M+N*(M+3)+6*M*M), LDSMIN)
       WRITE (IPRT,1090)
       CALL CORR(YM, N, M, IYM, LDSMIN-1)
       CALL MSGX(1, IPRT)
@@ -172,7 +172,7 @@
 !     TEST CORRS WITH PRINTOUT
 !
       CALL LDSCMP(12, 0, MAX(N,M), 0, 0, 0, 'D',
-     +   MAX(N,M)+M+N*(M+3)+6*M*M, LDSMIN)
+     &   MAX(N,M)+M+N*(M+3)+6*M*M, LDSMIN)
       WRITE (IPRT,1090)
       CALL CORRS(YM, N, M, IYM, LDSMIN-1, 1, VCV, IVCV)
       CALL MSGX(1, IPRT)
@@ -243,7 +243,7 @@
 !**** ALL OBSERVATIONS ON A SINGLE VARIABLE EQUAL TO ZERO ****
 !
       WRITE (IPRT,1140)
-      CALL SETRA(Z, 10, 4, 10, 0.0E0_WP)
+      CALL SETRA(Z, 10, 4, 10, 0.0_WP)
       CALL CORR(Z, 9, 4, 10, LDSTAK)
       CALL MSGX(1, IPRT)
       CALL CORRS(Z, 9, 4, 10, LDSTAK, 1, VCV, IVCV)
@@ -252,7 +252,7 @@
 !
       DO 10 I=1,10
          Z(I,1) = I
-         Z(I,2) = 0.0E0_WP
+         Z(I,2) = 0.0_WP
    10 CONTINUE
       CALL CORR(Z, 10, 4, 10, LDSTAK)
       CALL MSGX(1, IPRT)
@@ -260,14 +260,14 @@
 !**** ARRAY FILLED WITH A SINGLE VALUE ****
 !
       WRITE (IPRT,1160)
-      CALL SETRA(Z, 10, 4, 10, 4.0E0_WP)
+      CALL SETRA(Z, 10, 4, 10, 4.0_WP)
       CALL CORR(Z, 4, 10, 4, LDSTAK)
       CALL MSGX(1, IPRT)
 !
 !**** 2 COLUMNS THE SAME ****
 !
       DO 20 I=1,3
-         CALL GENR(Z(1,I), 5, 5.0E0_WP*I, 5.0E0_WP*I)
+         CALL GENR(Z(1,I), 5, 5.0_WP*I, 5.0_WP*I)
    20 CONTINUE
       DO 30 I=1,5
          Z(I,4) = Z(I,3)
@@ -306,7 +306,7 @@
  1130 FORMAT(' ****INADEQUATE SPACE IN STORAGE ARRAYS****')
  1140 FORMAT('1****ALL OBSERVATIONS ON A VARIABLE EQUAL TO ZERO****')
  1150 FORMAT(' ****OBSERVATION MATRIX DIMENSIONED LESS THAN NUMBER',
-     +       ' OF OBSERVATIONS DESIGNATED****')
+     &       ' OF OBSERVATIONS DESIGNATED****')
  1160 FORMAT('1****ARRAY CONTAINING A SINGLE VALUE****')
  1170 FORMAT('1****2 COLUMNS RELATED****')
       END

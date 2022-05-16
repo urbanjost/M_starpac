@@ -1,6 +1,6 @@
 !ACFFS
       SUBROUTINE ACFFS (YFFT, N, LYFFT, LDSTAK, LAGMAX, LACOV, ACOV,
-     +   IAR, PHI, NPRT)
+     &   IAR, PHI, NPRT)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,43 +20,43 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IAR,LACOV,LAGMAX,LDSTAK,LYFFT,N,NPRT
+     &   IAR,LACOV,LAGMAX,LDSTAK,LYFFT,N,NPRT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   ACOV(*),PHI(*),YFFT(*)
+      REAL(KIND=WP) ::
+     &   ACOV(*),PHI(*),YFFT(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       DOUBLE PRECISION DSTAK(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   CHIA,CHIAP,OSPVAR,YMEAN,YSD
+      REAL(KIND=WP) ::
+     &   CHIA,CHIAP,OSPVAR,YMEAN,YSD
       INTEGER
-     +   AIC,FTEST,I,IFP,IPRT,LDSMIN,NALL0,NFAC,NFFT,PRHO,SDRHO,
-     +   WORK
+     &   AIC,FTEST,I,IFP,IPRT,LDSMIN,NALL0,NFAC,NFFT,PRHO,SDRHO,
+     &   WORK
       LOGICAL
-     +   DIFFER,ISFFT
+     &   DIFFER,ISFFT
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   RSTAK(12)
+      REAL(KIND=WP) ::
+     &   RSTAK(12)
       INTEGER
-     +   IOD(1),ND(1),NDUM(1)
+     &   IOD(1),ND(1),NDUM(1)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL STKGET,STKST
+!      INTEGER
+!     +   STKST
+!      EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ACFER,ACFMNF,ACFOUT,FFTLEN,IPRINT,LDSCMP,STKCLR,STKSET
+!      EXTERNAL ACFER,ACFMNF,ACFOUT,FFTLEN,IPRINT,LDSCMP,STKCLR,STKSET
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SQRT
@@ -157,8 +157,8 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'A',       'C',       'F',       'F',       'S',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'A',       'C',       'F',       'F',       'S',       ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -177,7 +177,7 @@
       CALL LDSCMP(4, 0, 0, 0, 0, 0, 'S', (4*LAGMAX+1) + NFFT, LDSMIN)
 !
       CALL ACFER(NMSUB, N, LAGMAX, LACOV, LDSTAK, LDSMIN,
-     +  DIFFER, NFAC, ND, IOD, ISFFT, LYFFT, NFFT)
+     &  DIFFER, NFAC, ND, IOD, ISFFT, LYFFT, NFFT)
 !
 !     CHECK WHETHER AN ERROR HAS BEEN DETECTED
 !
@@ -201,20 +201,20 @@
 !         CALL ROUTINE FOR MAIN AUTOCORRELATION COMPUTATIONS.
 !
           CALL ACFMNF (YFFT, N, NFFT, LAGMAX, ACOV(2), RSTAK(SDRHO),
-     +       YMEAN, RSTAK(PRHO), RSTAK(AIC), RSTAK(FTEST), PHI,
-     +       IAR, OSPVAR, ACOV, LACOV, LAGMAX+1, CHIA, CHIAP,
-     +       LYFFT, RSTAK(WORK), NFFT, NPRT)
+     &       YMEAN, RSTAK(PRHO), RSTAK(AIC), RSTAK(FTEST), PHI,
+     &       IAR, OSPVAR, ACOV, LACOV, LAGMAX+1, CHIA, CHIAP,
+     &       LYFFT, RSTAK(WORK), NFFT, NPRT)
 !
           YSD = SQRT (ACOV(1) * N / (N - 1))
 !
 !         CALL ROUTINE TO PRINT OUT AUTOCORRELATIONS
 !
           IF ((NPRT.NE.0) .OR. (ACOV(1).EQ.0.0E0))
-     +       CALL ACFOUT (YMEAN, YSD, N, N, LAGMAX, ACOV(2),
-     +       RSTAK(SDRHO),
-     +       RSTAK(PRHO), NDUM, RSTAK(AIC), LAGMAX+1, RSTAK(FTEST), IAR,
-     +       PHI, OSPVAR, CHIA, CHIAP, LAGMAX, .FALSE., 0.0E0, .FALSE.,
-     +       .FALSE., 0, NDUM, NDUM, 0)
+     &       CALL ACFOUT (YMEAN, YSD, N, N, LAGMAX, ACOV(2),
+     &       RSTAK(SDRHO),
+     &       RSTAK(PRHO), NDUM, RSTAK(AIC), LAGMAX+1, RSTAK(FTEST), IAR,
+     &       PHI, OSPVAR, CHIA, CHIAP, LAGMAX, .FALSE., 0.0E0, .FALSE.,
+     &       .FALSE., 0, NDUM, NDUM, 0)
 !
           IF (NPRT.NE.0) THEN
             DO 50 I = 1, LAGMAX
@@ -241,6 +241,6 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT(/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +  '       CALL ACFFS (YFFT, N, LYFFT, LDSTAK,'/
-     +  '      +            LAGMAX, LACOV, ACOV, IAR, PHI, NPRT)')
+     &  '       CALL ACFFS (YFFT, N, LYFFT, LDSTAK,'/
+     &  '      +            LAGMAX, LACOV, ACOV, IAR, PHI, NPRT)')
       END

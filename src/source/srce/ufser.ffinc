@@ -1,6 +1,6 @@
 !UFSER
       SUBROUTINE UFSER(NMSUB, N, LAGMAX, LACOV, NF, ISPCF, NW,
-     +    LAGS, LDSTAK, LDSMIN, LYFFT, NFFT, OPTION)
+     &    LAGS, LDSTAK, LDSMIN, LYFFT, NFFT, OPTION)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,33 +18,33 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   ISPCF,LACOV,LAGMAX,LDSMIN,LDSTAK,LYFFT,N,NF,NFFT,NW
+     &   ISPCF,LACOV,LAGMAX,LDSMIN,LDSTAK,LYFFT,N,NF,NFFT,NW
 !
 !  ARRAY ARGUMENTS
       INTEGER
-     +   LAGS(*)
+     &   LAGS(*)
       LOGICAL
-     +   OPTION(4)
+     &   OPTION(4)
       CHARACTER
-     +   NMSUB(6)*1
+     &   NMSUB(6)*1
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I,NV
+     &   I,NV
       LOGICAL
-     +   HEAD
+     &   HEAD
 !
 !  LOCAL ARRAYS
       LOGICAL
-     +   ERR(15)
+     &   ERR(15)
       CHARACTER
-     +   L1(8)*1,LISPCF(8)*1,LLACOV(8)*1,LLAGMX(8)*1,LLAGS(8)*1,
-     +   LLDS(8)*1,LLGMX1(8)*1,LLYFFT(8)*1,LN(8)*1,LNF(8)*1,
-     +   LNM1(8)*1,LNW(8)*1
+     &   L1(8)*1,LISPCF(8)*1,LLACOV(8)*1,LLAGMX(8)*1,LLAGS(8)*1,
+     &   LLDS(8)*1,LLGMX1(8)*1,LLYFFT(8)*1,LN(8)*1,LNF(8)*1,
+     &   LNM1(8)*1,LNW(8)*1
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL EISGE,EISII,EIVII
@@ -108,34 +108,34 @@
 !     SET UP NAME ARRAYS
 !
       DATA LISPCF(1), LISPCF(2), LISPCF(3), LISPCF(4), LISPCF(5),
-     +   LISPCF(6), LISPCF(7), LISPCF(8) /'I','S','P','C','F',' ',' ',
-     +   ' '/
+     &   LISPCF(6), LISPCF(7), LISPCF(8) /'I','S','P','C','F',' ',' ',
+     &   ' '/
       DATA LLACOV(1), LLACOV(2), LLACOV(3), LLACOV(4), LLACOV(5),
-     +   LLACOV(6), LLACOV(7), LLACOV(8) /'L','A','C','O','V',' ',' ',
-     +   ' '/
+     &   LLACOV(6), LLACOV(7), LLACOV(8) /'L','A','C','O','V',' ',' ',
+     &   ' '/
       DATA LLAGMX(1), LLAGMX(2), LLAGMX(3), LLAGMX(4), LLAGMX(5),
-     +   LLAGMX(6), LLAGMX(7), LLAGMX(8) /'L','A','G','M','A','X',' ',
-     +   ' '/
+     &   LLAGMX(6), LLAGMX(7), LLAGMX(8) /'L','A','G','M','A','X',' ',
+     &   ' '/
       DATA LLAGS(1), LLAGS(2), LLAGS(3), LLAGS(4), LLAGS(5), LLAGS(6),
-     +   LLAGS(7), LLAGS(8) /'L','A','G','S',' ',' ',' ',' '/
+     &   LLAGS(7), LLAGS(8) /'L','A','G','S',' ',' ',' ',' '/
       DATA LLGMX1(1), LLGMX1(2), LLGMX1(3), LLGMX1(4), LLGMX1(5),
-     +   LLGMX1(6), LLGMX1(7), LLGMX1(8) /'L','A','G','M','A','X','+',
-     +   '1'/
+     &   LLGMX1(6), LLGMX1(7), LLGMX1(8) /'L','A','G','M','A','X','+',
+     &   '1'/
       DATA LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
-     +   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
+     &   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
       DATA LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8) /'N',
-     +   ' ',' ',' ',' ',' ',' ',' '/
+     &   ' ',' ',' ',' ',' ',' ',' '/
       DATA LNF(1), LNF(2), LNF(3), LNF(4), LNF(5), LNF(6), LNF(7),
-     +   LNF(8) /'N','F',' ',' ',' ',' ',' ',' '/
+     &   LNF(8) /'N','F',' ',' ',' ',' ',' ',' '/
       DATA LNM1(1), LNM1(2), LNM1(3), LNM1(4), LNM1(5), LNM1(6),
-     +   LNM1(7), LNM1(8) /'N','-','1',' ',' ',' ',' ',' '/
+     &   LNM1(7), LNM1(8) /'N','-','1',' ',' ',' ',' ',' '/
       DATA LNW(1), LNW(2), LNW(3), LNW(4), LNW(5), LNW(6), LNW(7),
-     +   LNW(8) /'N','W',' ',' ',' ',' ',' ',' '/
+     &   LNW(8) /'N','W',' ',' ',' ',' ',' ',' '/
       DATA LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
-     +   LLYFFT(6), LLYFFT(7), LLYFFT(8) /'L','Y','F','F','T',' ',' ',
-     +   ' '/
+     &   LLYFFT(6), LLYFFT(7), LLYFFT(8) /'L','Y','F','F','T',' ',' ',
+     &   ' '/
       DATA L1(1), L1(2), L1(3), L1(4), L1(5), L1(6), L1(7), L1(8) /'1',
-     +   ' ',' ',' ',' ',' ',' ',' '/
+     &   ' ',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -153,43 +153,43 @@
       IF (OPTION(4)) THEN
         CALL EISGE(NMSUB, LNF, NF, 1, 1, HEAD, ERR(6), LNF)
         IF (.NOT.ERR(6))
-     +     CALL EISGE(NMSUB, LISPCF, ISPCF, NF, 3, HEAD, ERR(7), LNF)
+     &     CALL EISGE(NMSUB, LISPCF, ISPCF, NF, 3, HEAD, ERR(7), LNF)
         CALL EISGE(NMSUB, LNW, NW, 1, 1, HEAD, ERR(8), LNW)
       END IF
 !
       IF (.NOT.ERR(1)) THEN
         IF (OPTION(3)) THEN
           CALL EISII(NMSUB, LLAGMX, LAGMAX, 1, N-1, 1, HEAD, ERR(2),
-     +       L1, LNM1)
+     &       L1, LNM1)
           IF (.NOT.ERR(2)) THEN
             IF (OPTION(2)) THEN
               CALL EISGE(NMSUB, LLACOV, LACOV, LAGMAX+1, 8, HEAD,
-     +          ERR(3), LLGMX1)
+     &          ERR(3), LLGMX1)
             ELSE
               CALL EISGE(NMSUB, LLACOV, LACOV, LAGMAX+1, 7, HEAD,
-     +          ERR(3), LLGMX1)
+     &          ERR(3), LLGMX1)
             END IF
           END IF
         END IF
         IF (.NOT.ERR(2)) THEN
           IF (OPTION(1))
-     +      CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 9, HEAD, ERR(4),
-     +        LLYFFT)
+     &      CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 9, HEAD, ERR(4),
+     &        LLYFFT)
 !
           IF (.NOT.ERR(8)) THEN
            IF (OPTION(4)) THEN
             IF (OPTION(3)) THEN
              CALL EIVII(NMSUB, LLAGS, LAGS, NW, 1, LAGMAX, 0, HEAD, 3,
-     +         NV, ERR(9), L1, LLAGMX)
+     &         NV, ERR(9), L1, LLAGMX)
             ELSE
              CALL EIVII(NMSUB, LLAGS, LAGS, NW, 1, N-1, 0, HEAD, 3, NV,
-     +         ERR(9), L1, LNM1)
+     &         ERR(9), L1, LNM1)
             END IF
            END IF
 !
             IF ((.NOT.ERR(6)) .AND. (.NOT.ERR(9)))
-     +         CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR(14),
-     +            LLDS)
+     &         CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR(14),
+     &            LLDS)
           END IF
         END IF
       END IF

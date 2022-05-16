@@ -16,15 +16,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IXM,M,N,NPAR
+     &   IXM,M,N,NPAR
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PAR(NPAR),PV(N),XM(IXM,M)
+     &   PAR(NPAR),PV(N),XM(IXM,M)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -47,7 +47,7 @@
 !
       DO 10 I=1,N
          PV(I) = PAR(1)*XM(I,1) + PAR(2)*XM(I,2) + PAR(3)*XM(I,3) +
-     +      PAR(4)*XM(I,4) + PAR(5)*XM(I,5)
+     &      PAR(4)*XM(I,4) + PAR(5)*XM(I,5)
    10 CONTINUE
       RETURN
       END

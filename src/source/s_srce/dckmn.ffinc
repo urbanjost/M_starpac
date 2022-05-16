@@ -1,6 +1,6 @@
 !DCKMN
       SUBROUTINE DCKMN(J, D, PAR, SCALE, NPAR, ETA, TAU, MDL, XM,
-     +   N, NROW, M, IXM, PV, PVTEMP, MSG, LMSG)
+     &   N, NROW, M, IXM, PV, PVTEMP, MSG, LMSG)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,23 +17,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP)
-     +   D,ETA,PV,SCALE,TAU
+      REAL(KIND=WP) ::
+     &   D,ETA,PV,SCALE,TAU
       INTEGER
-     +   IXM,J,LMSG,M,N,NPAR,NROW
+     &   IXM,J,LMSG,M,N,NPAR,NROW
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   PAR(NPAR),PVTEMP(N),XM(IXM,M)
+      REAL(KIND=WP) ::
+     &   PAR(NPAR),PVTEMP(N),XM(IXM,M)
       INTEGER
-     +   MSG(LMSG)
+     &   MSG(LMSG)
 !
 !  SUBROUTINE ARGUMENTS
       EXTERNAL MDL
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   FD,PARMX,PVPSTP,STP,TEMP
+      REAL(KIND=WP) ::
+     &   FD,PARMX,PVPSTP,STP,TEMP
 !
 !  EXTERNAL SUBROUTINES
       EXTERNAL DCKCRV,DCKZRO
@@ -150,12 +150,12 @@
 !
       IF (D.EQ.0.0E0) THEN
          CALL DCKZRO(J, PAR, NPAR, MDL, XM, N,
-     +      NROW, M, IXM, PV, PVTEMP, MSG, LMSG, FD, PARMX, PVPSTP,
-     +      STP)
+     &      NROW, M, IXM, PV, PVTEMP, MSG, LMSG, FD, PARMX, PVPSTP,
+     &      STP)
       ELSE
          CALL DCKCRV(J, D, PAR, NPAR, ETA, TAU, MDL, XM,
-     +      N, NROW, M, IXM, PV, PVTEMP, MSG, LMSG, FD, PARMX,
-     +      PVPSTP, STP)
+     &      N, NROW, M, IXM, PV, PVTEMP, MSG, LMSG, FD, PARMX,
+     &      PVPSTP, STP)
       END IF
 !
       RETURN

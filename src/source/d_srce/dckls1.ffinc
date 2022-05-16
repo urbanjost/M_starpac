@@ -1,6 +1,6 @@
 !DCKLS1
       SUBROUTINE DCKLS1(N, M, IXM, PAR, NPAR, NETA, NTAU, NROW, SCALE,
-     +   NPRT)
+     &   NPRT)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,15 +18,15 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   IXM,M,N,NETA,NPAR,NPRT,NROW,NTAU
+     &   IXM,M,N,NETA,NPAR,NPRT,NROW,NTAU
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   PAR(10),SCALE(10)
+     &   PAR(10),SCALE(10)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   I
+     &   I
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -57,19 +57,19 @@
 !        THE TYPICAL SIZE OF THE UNKNOWN PARAMETERS.
 !
 !
-      PAR(1) = 1.0E0_WP
-      PAR(2) = 3.125D0_WP
-      PAR(3) = 1.0E0_WP
-      PAR(4) = 2.0E0_WP
+      PAR(1) = 1.0_WP
+      PAR(2) = 3.125_WP
+      PAR(3) = 1.0_WP
+      PAR(4) = 2.0_WP
 !
       N = 101
       M = 1
       IXM = 200
       NPAR = 4
       DO 10 I=1,10
-         SCALE(I) = 1.0E0_WP
+         SCALE(I) = 1.0_WP
    10 CONTINUE
-      SCALE(2) = 0.01D0_WP
+      SCALE(2) = 0.01_WP
       NETA = 0
       NTAU = 0
       NROW = 1

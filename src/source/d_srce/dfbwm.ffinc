@@ -18,19 +18,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   BW,DF
+     &   BW,DF
       INTEGER
-     +   LAG,LNLPPA,LW,N
+     &   LAG,LNLPPA,LW,N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   W(LW)
+     &   W(LW)
       INTEGER
-     +   NLPPA1(LNLPPA),NLPPA2(LNLPPA)
+     &   NLPPA1(LNLPPA),NLPPA2(LNLPPA)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   K
+     &   K
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -57,11 +57,11 @@
       BW = (W(1)*N)**2/NLPPA1(1)
       DO 10 K = 1, LAG
          BW = BW + (W(K+1)*(N-K))**2 *
-     +      (1.0E0_WP/NLPPA1(K+1) + 1.0E0_WP/NLPPA2(K+1))
+     &      (1.0_WP/NLPPA1(K+1) + 1.0_WP/NLPPA2(K+1))
    10 CONTINUE
 !
 !
       BW = N / BW
-      DF = 2.0E0_WP * BW * N
+      DF = 2.0_WP * BW * N
       RETURN
       END

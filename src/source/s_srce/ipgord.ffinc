@@ -1,6 +1,6 @@
 !IPGORD
       SUBROUTINE IPGORD (PERI, NF, N, FREQ, XAXIS, YAXIS, ISYM, NPTS,
-     +   LPCV)
+     &   LPCV)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,23 +17,23 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LPCV,N,NF,NPTS
+     &   LPCV,N,NF,NPTS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP)
-     +   FREQ(NF),PERI(NF),XAXIS(LPCV),YAXIS(LPCV)
+      REAL(KIND=WP) ::
+     &   FREQ(NF),PERI(NF),XAXIS(LPCV),YAXIS(LPCV)
       INTEGER
-     +   ISYM(LPCV)
+     &   ISYM(LPCV)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP)
-     +   CI,CIMID
+      REAL(KIND=WP) ::
+     &   CI,CIMID
       INTEGER
-     +   I,II,NLIM
+     &   I,II,NLIM
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP)
-     +   S(40)
+      REAL(KIND=WP) ::
+     &   S(40)
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MOD,REAL,SQRT

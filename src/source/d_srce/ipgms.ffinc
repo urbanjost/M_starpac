@@ -1,6 +1,6 @@
 !IPGMS
       SUBROUTINE IPGMS (YFFT, N, LYFFT, LDSTAK, NF, PERI, LPERI, FREQ,
-     +   LFREQ, NPRT)
+     &   LFREQ, NPRT)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,41 +18,41 @@
 !
 !  SCALAR ARGUMENTS
       INTEGER
-     +   LDSTAK,LFREQ,LPERI,LYFFT,N,NF,NPRT
+     &   LDSTAK,LFREQ,LPERI,LYFFT,N,NF,NPRT
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   FREQ(*),PERI(*),YFFT(*)
+     &   FREQ(*),PERI(*),YFFT(*)
 !
 !  SCALARS IN COMMON
       INTEGER
-     +   IERR
+     &   IERR
 !
 !  ARRAYS IN COMMON
       REAL(KIND=WP) :: DSTAK(12)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   IEXTND,IPRT,ISYM,LDSMIN,LPCV,NALL0,NFFT,XAXIS,YAXIS
+     &   IEXTND,IPRT,ISYM,LDSMIN,LPCV,NALL0,NFFT,XAXIS,YAXIS
       LOGICAL
-     +   ERR01,ERR02,ERR03,ERR04,ERR05,HEAD
+     &   ERR01,ERR02,ERR03,ERR04,ERR05,HEAD
 !
 !  LOCAL ARRAYS
       REAL(KIND=WP) ::
-     +   RSTAK(12)
+     &   RSTAK(12)
       INTEGER
-     +   ISTAK(12)
+     &   ISTAK(12)
       CHARACTER
-     +   LLDS(8)*1,LLFREQ(8)*1,LLPERI(8)*1,LLYFFT(8)*1,LN(8)*1,
-     +   NMSUB(6)*1
+     &   LLDS(8)*1,LLFREQ(8)*1,LLPERI(8)*1,LLYFFT(8)*1,LN(8)*1,
+     &   NMSUB(6)*1
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     +   STKGET,STKST
-      EXTERNAL STKGET,STKST
+!      INTEGER
+!     +   STKST
+!      EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CNTR,EISGE,IPGDV,IPRINT,LDSCMP,PGMMN,SETESL,STKCLR,STKSET
+!      EXTERNAL CNTR,EISGE,IPGDV,IPRINT,LDSCMP,PGMMN,SETESL,STKCLR,STKSET
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -135,26 +135,26 @@
 !     SET UP NAME ARRAYS
 !
       DATA
-     +  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
-     + /     'I',       'P',       'G',       'M',       'S',       ' '/
+     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     & /     'I',       'P',       'G',       'M',       'S',       ' '/
       DATA
-     + LLFREQ(1), LLFREQ(2), LLFREQ(3), LLFREQ(4), LLFREQ(5),
-     +  LLFREQ(6), LLFREQ(7), LLFREQ(8)
-     +  /'L','F','R','E','Q',' ',' ',' '/
+     & LLFREQ(1), LLFREQ(2), LLFREQ(3), LLFREQ(4), LLFREQ(5),
+     &  LLFREQ(6), LLFREQ(7), LLFREQ(8)
+     &  /'L','F','R','E','Q',' ',' ',' '/
       DATA
-     + LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
-     +  LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
+     & LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
+     &  LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
       DATA
-     + LLPERI(1), LLPERI(2), LLPERI(3), LLPERI(4), LLPERI(5),
-     +  LLPERI(6), LLPERI(7), LLPERI(8)
-     +  /'L','P','E','R','I',' ',' ',' '/
+     & LLPERI(1), LLPERI(2), LLPERI(3), LLPERI(4), LLPERI(5),
+     &  LLPERI(6), LLPERI(7), LLPERI(8)
+     &  /'L','P','E','R','I',' ',' ',' '/
       DATA
-     + LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
-     +  LLYFFT(6), LLYFFT(7), LLYFFT(8)
-     +  /'L','Y','F','F','T',' ',' ',' '/
+     & LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
+     &  LLYFFT(6), LLYFFT(7), LLYFFT(8)
+     &  /'L','Y','F','F','T',' ',' ',' '/
       DATA
-     + LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
-     + /'N',' ',' ',' ',' ',' ',' ',' '/
+     & LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     & /'N',' ',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
@@ -228,13 +228,13 @@
 !     COMPUTE THE RAW PERIODOGRAM.
 !
       CALL PGMMN (YFFT, N, NFFT, IEXTND, NF, PERI, LPERI, RSTAK(YAXIS),
-     +   FREQ, LFREQ, 0, NMSUB)
+     &   FREQ, LFREQ, 0, NMSUB)
 !
 !     CALL THE MAIN DRIVER FOR COMPUTING (AND PLOTTING) THE INTEGRATED
 !     PERIODOGRAM.
 !
       CALL IPGDV (PERI, NF, N, PERI, FREQ, RSTAK(XAXIS),
-     +   RSTAK(YAXIS), ISTAK(ISYM), LPCV, NPRT)
+     &   RSTAK(YAXIS), ISTAK(ISYM), LPCV, NPRT)
 !
       CALL STKCLR(NALL0)
 !
@@ -243,6 +243,6 @@
 !     FORMAT STATEMENTS
 !
  1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     +  '       CALL IPGMS (YFFT, N, LYFFT, LDSTAK,'/
-     +  '      +            NF, PERI, LPERI, FREQ, LFREQ, NPRT)')
+     &  '       CALL IPGMS (YFFT, N, LYFFT, LDSTAK,'/
+     &  '      +            NF, PERI, LPERI, FREQ, LFREQ, NPRT)')
       END

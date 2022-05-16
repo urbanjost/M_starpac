@@ -17,21 +17,21 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   CHI,CHIP
+     &   CHI,CHIP
       INTEGER
-     +   N,NC
+     &   N,NC
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   RHO(*)
+     &   RHO(*)
 !
 !  LOCAL SCALARS
       INTEGER
-     +   LAG
+     &   LAG
 !
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
-     +   CDFCHI
+     &   CDFCHI
       EXTERNAL CDFCHI
 !
 !  INTRINSIC FUNCTIONS
@@ -52,11 +52,11 @@
 !     REAL(KIND=WP) :: RHO(NC)
 !        THE ARRAY IN WHICH THE AUTOCORRELATIONS ARE STORED
 !
-      CHI = 0.0E0_WP
+      CHI = 0.0_WP
       DO 10 LAG = 1, NC
          CHI = CHI + RHO(LAG) * RHO(LAG)
    10 CONTINUE
       CHI = CHI * N
-      CHIP = 1.0E0_WP - CDFCHI(CHI, DBLE(NC))
+      CHIP = 1.0_WP - CDFCHI(CHI, DBLE(NC))
       RETURN
       END

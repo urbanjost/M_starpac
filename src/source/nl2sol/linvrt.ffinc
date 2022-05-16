@@ -9,17 +9,17 @@
 !
 !  SCALAR ARGUMENTS
       integer
-     +   n
+     &   n
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) ::
-     +   l(*),lin(*)
+     &   l(*),lin(*)
 !
 !  LOCAL SCALARS
       real(kind=wp) ::
-     +   one,t,zero
+     &   one,t,zero
       integer
-     +   i,ii,im1,j0,j1,jj,k,k0,np1
+     &   i,ii,im1,j0,j1,jj,k,k0,np1
 !
 !  ***  PARAMETERS  ***
 !

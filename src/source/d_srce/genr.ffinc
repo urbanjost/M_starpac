@@ -17,19 +17,19 @@
 !
 !  SCALAR ARGUMENTS
       REAL(KIND=WP) ::
-     +   RINIT,RSTP
+     &   RINIT,RSTP
       INTEGER
-     +   N
+     &   N
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     +   RVECT(N)
+     &   RVECT(N)
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
-     +   R
+     &   R
       INTEGER
-     +   J
+     &   J
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
