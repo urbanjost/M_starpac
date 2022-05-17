@@ -36,11 +36,11 @@
       logical goodx
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp),external :: reldst
+!      real(kind=wp),external :: reldst
 !     real(kind=wp) :: mach  
 !
 !  EXTERNAL SUBROUTINES
-      external vcopy
+!      external vcopy
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,max

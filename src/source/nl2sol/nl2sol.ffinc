@@ -11,8 +11,8 @@
       integer n,p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) :: urparm(*),v(*),x(p)
-      integer iv(*),uiparm(*)
+      real(kind=wp) :: urparm(:),v(:),x(p)
+      integer iv(:),uiparm(:)
 !
 !  SUBROUTINE ARGUMENTS
       external calcj,calcr,ufparm
@@ -22,14 +22,12 @@
       logical strted
 !
 !  EXTERNAL SUBROUTINES
-      external itsmry,nl2itr
+!      external itsmry,nl2itr
 !
 !
-!     INTEGER N, P, IV(1), UIPARM(1)
+!     INTEGER N, P, IV(:), UIPARM(:)
 !     REAL(KIND=WP) :: X(P), V(1), URPARM(1)
 !     DIMENSION IV(60+P),  V(93 + N*P + 3*N + P*(3*P+33)/2)
-!     DIMENSION UIPARM(*), URPARM(*)
-!     EXTERNAL CALCR, CALCJ, UFPARM
 !
 !  ***  PURPOSE  ***
 !

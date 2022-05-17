@@ -30,8 +30,7 @@
      &   YLB,YUB
       INTEGER
      &   MSGTYP,N,NV,NVMX
-      LOGICAL
-     &   ERROR,HEAD
+      LOGICAL ERROR,HEAD
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::

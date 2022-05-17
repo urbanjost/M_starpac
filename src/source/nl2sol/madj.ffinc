@@ -4,14 +4,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
-     &   n,nf,p
+      integer n,nf,p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
-     &   j(n,p),urparm(*),x(p)
-      integer
-     &   uiparm(*)
+      real(kind=wp) :: j(n,p),urparm(:),x(p)
+      integer uiparm(:)
 !
 !  SUBROUTINE ARGUMENTS
       external ufparm

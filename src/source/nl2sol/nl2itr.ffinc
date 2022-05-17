@@ -1,4 +1,5 @@
 !NL2ITR
+!     subroutine nl2itr (d(p), iv(*), j(nn,p), n, nn, p, r(n), v(*), x(p))
       subroutine nl2itr (d, iv, j, n, nn, p, r, v, x)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -32,13 +33,13 @@
      &   toobig,tuner4,tuner5,vsave1,w,w1,wscale,x0,x01,xirc
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) :: dotprd,v2norm
-      logical stopx
-      external dotprd,v2norm,stopx
+!      real(kind=wp) :: dotprd,v2norm
+!      logical stopx
+!      external dotprd,v2norm,stopx
 !
 !  EXTERNAL SUBROUTINES
-      external assess,covclc,dupdat,gqtstp,itsmry,lmstep,parchk,qapply,
-     &   qrfact,rptmul,slupdt,slvmul,vaxpy,vcopy,vscopy
+!      external assess,covclc,dupdat,gqtstp,itsmry,lmstep,parchk,qapply,
+!     &   qrfact,rptmul,slupdt,slvmul,vaxpy,vcopy,vscopy
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,sqrt

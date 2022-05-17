@@ -23,9 +23,9 @@
      &   i,ii,ix,j,j0,ji,jj,jjj,jm1,pplus1
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   v2norm
-      external v2norm
+!      real(kind=wp) ::
+!     &   v2norm
+!      external v2norm
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,mod

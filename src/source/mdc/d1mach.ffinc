@@ -39,7 +39,7 @@
 !  EXTERNAL FUNCTIONS
 !
 !  EXTERNAL SUBROUTINES
-      external seterr
+!      external seterr
 !
 !  EQUIVALENCES
       equivalence (dmach(1),small(1))

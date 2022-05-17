@@ -37,7 +37,7 @@
 !     REAL(KIND=WP) :: RMDCON
 !
 !  EXTERNAL SUBROUTINES
-      external dfault,vcopy
+!      external dfault,vcopy
 !
 !     INTEGER IV(21), N, NN, P
 !     REAL(KIND=WP) :: V(33)

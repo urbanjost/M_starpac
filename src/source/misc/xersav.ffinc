@@ -36,35 +36,35 @@
       CHARACTER F(17)*1,MESTAB(10)*4
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER I1MACH
-      EXTERNAL I1MACH
+!      INTEGER I1MACH
+!       EXTERNAL I1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL S88FMT,XGETUA
+!       EXTERNAL S88FMT,XGETUA
 !
 !     NEXT THREE DATA STATEMENTS ARE NEEDED MERELY TO SATISFY
 !     CERTAIN CONVENTIONS FOR COMPILERS WHICH DYNAMICALLY
 !     ALLOCATE STORAGE.
       DATA MESTAB(1),MESTAB(2),MESTAB(3),MESTAB(4),MESTAB(5),
-     1     MESTAB(6),MESTAB(7),MESTAB(8),MESTAB(9),MESTAB(10)
-     2     /'0','0','0','0','0','0','0','0','0','0'/
+     &     MESTAB(6),MESTAB(7),MESTAB(8),MESTAB(9),MESTAB(10)
+     &     /'0','0','0','0','0','0','0','0','0','0'/
       DATA NERTAB(1),NERTAB(2),NERTAB(3),NERTAB(4),NERTAB(5),
-     1     NERTAB(6),NERTAB(7),NERTAB(8),NERTAB(9),NERTAB(10)
-     2     /0,0,0,0,0,0,0,0,0,0/
+     &     NERTAB(6),NERTAB(7),NERTAB(8),NERTAB(9),NERTAB(10)
+     &     /0,0,0,0,0,0,0,0,0,0/
       DATA LEVTAB(1),LEVTAB(2),LEVTAB(3),LEVTAB(4),LEVTAB(5),
-     1     LEVTAB(6),LEVTAB(7),LEVTAB(8),LEVTAB(9),LEVTAB(10)
-     2     /0,0,0,0,0,0,0,0,0,0/
+     &     LEVTAB(6),LEVTAB(7),LEVTAB(8),LEVTAB(9),LEVTAB(10)
+     &     /0,0,0,0,0,0,0,0,0,0/
 !     NEXT TWO DATA STATEMENTS ARE NECESSARY TO PROVIDE A BLANK
 !     ERROR TABLE INITIALLY
       DATA KOUNT(1),KOUNT(2),KOUNT(3),KOUNT(4),KOUNT(5),
-     1     KOUNT(6),KOUNT(7),KOUNT(8),KOUNT(9),KOUNT(10)
-     2     /0,0,0,0,0,0,0,0,0,0/
+     &     KOUNT(6),KOUNT(7),KOUNT(8),KOUNT(9),KOUNT(10)
+     &     /0,0,0,0,0,0,0,0,0,0/
       DATA KOUNTX/0/
 !     NEXT DATA STATEMENT SETS UP OUTPUT FORMAT
       DATA F(1),F(2),F(3),F(4),F(5),F(6),F(7),F(8),F(9),F(10),
-     1     F(11),F(12),F(13),F(14),F(15),F(16),F(17)
-     2     /'(' ,'1' ,'X' ,',' ,'A' ,' ' ,' ' ,',' ,'I' ,' ' ,
-     3      ' ' ,',' ,'2' ,'I' ,'1' ,'0' ,')' /
+     &     F(11),F(12),F(13),F(14),F(15),F(16),F(17)
+     &     /'(' ,'1' ,'X' ,',' ,'A' ,' ' ,' ' ,',' ,'I' ,' ' ,
+     &      ' ' ,',' ,'2' ,'I' ,'1' ,'0' ,')' /
       IF (NMESSG.GT.0) GO TO 80
 !     DUMP THE TABLE
          IF (KOUNT(1).EQ.0) RETURN
@@ -81,7 +81,7 @@
 !           PRINT TABLE HEADER
             WRITE (IUNIT,10)
    10       FORMAT ('0          ERROR MESSAGE SUMMARY'/
-     1              ' FIRST WORD      NERR     LEVEL     COUNT')
+     &              ' FIRST WORD      NERR     LEVEL     COUNT')
 !           PRINT BODY OF TABLE
             DO 20 I=1,10
                IF (KOUNT(I).EQ.0) GO TO 30

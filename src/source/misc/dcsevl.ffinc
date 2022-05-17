@@ -27,14 +27,14 @@
       INTEGER I,NI1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL XERROR
+!       EXTERNAL XERROR
 !
 !
       IF (N.LT.1) CALL XERROR ('DCSEVL  NUMBER OF TERMS LE 0', 28, 2,2)
       IF (N.GT.1000) CALL XERROR ('DCSEVL  NUMBER OF TERMS GT 1000',
-     1  31, 3, 2)
+     &  31, 3, 2)
       IF (X.LT.(-1.D0) .OR. X.GT.1.D0) CALL XERROR (
-     1  'DCSEVL  X OUTSIDE (-1,+1)', 25, 1, 1)
+     &  'DCSEVL  X OUTSIDE (-1,+1)', 25, 1, 1)
 !
       TWOX = 2.0D0*X
       B0 = 0.0D0

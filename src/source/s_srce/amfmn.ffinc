@@ -27,7 +27,7 @@
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
-     &   F(*),FCST(IFCST,*),FCSTSD(*),FSD(*),PAR(*),PARAR(*),PARDF(*),
+     &   F(*),FCST(IFCST,*),FCSTSD(*),FSD(*),PAR(:),PARAR(*),PARDF(*),
      &   PARMA(*),PV(N1:N2),T(*),TEMP(*),Y(*)
       INTEGER
      &   IFCSTO(*),MSPECT(NFAC,4)
@@ -180,7 +180,7 @@
 ! This call uses PAR over and over, messed up. Added int() function to can even build for now 
       write(*,*)'BAD CALL OF AMLST'
       CALL AMLST(2, PAR, NPAR, NFAC, MSPECT, N, PAR, NPAR, PAR,
-     &  NPAR, PAR, NPAR, PAR, RSS, RSD, NPARDF, NPAR, IDF)
+     &  NPAR, PAR, NPAR, int(PAR), RSS, RSD, NPARDF, NPAR, IDF)
       PAGE = .TRUE.
 !
    10 CONTINUE

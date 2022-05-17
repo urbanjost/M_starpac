@@ -28,12 +28,12 @@
      &   i,j,k
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   dotprd,v2norm
-      external dotprd,v2norm
+!      real(kind=wp) ::
+!     &   dotprd,v2norm
+!      external dotprd,v2norm
 !
 !  EXTERNAL SUBROUTINES
-      external slvmul
+!      external slvmul
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,min

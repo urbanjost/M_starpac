@@ -25,9 +25,9 @@
      &   d0,dfac,dtype,i,jtol0,jtoli,niter,s,s1
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   v2norm
-      external v2norm
+!      real(kind=wp) ::
+!     &   v2norm
+!      external v2norm
 !
 !  INTRINSIC FUNCTIONS
       intrinsic max,sqrt

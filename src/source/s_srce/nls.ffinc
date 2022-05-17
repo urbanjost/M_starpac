@@ -25,7 +25,7 @@
      &   PAR(*),RES(*),XM(*),Y(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       INTEGER

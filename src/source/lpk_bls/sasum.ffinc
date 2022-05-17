@@ -73,7 +73,7 @@
    40 MP1 = M + 1
       DO 50 I = MP1,N,6
         SASUM = SASUM + ABS(SX(I)) + ABS(SX(I + 1)) + ABS(SX(I + 2))
-     1  + ABS(SX(I + 3)) + ABS(SX(I + 4)) + ABS(SX(I + 5))
+     &  + ABS(SX(I + 3)) + ABS(SX(I + 4)) + ABS(SX(I + 5))
    50 CONTINUE
       RETURN
       END

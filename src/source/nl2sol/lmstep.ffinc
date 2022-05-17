@@ -31,12 +31,12 @@
      &   radius,res,res0,rmat,rmat0,stppar,uk0
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   dotprd,v2norm
-      external dotprd,v2norm
+!      real(kind=wp) ::
+!     &   dotprd,v2norm
+!      external dotprd,v2norm
 !
 !  EXTERNAL SUBROUTINES
-      external litvmu,livmul,vcopy
+!      external litvmu,livmul,vcopy
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,max,min,sqrt

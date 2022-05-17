@@ -1,104 +1,480 @@
       module M_starpac_d
       use M_starpac_g
       implicit none
-      private
-      integer,parameter :: wp=kind(0.0d0)
+      public
+      integer,parameter,private :: wp=kind(0.0d0)
 
       private ::  mach
       private ::  randu
       private ::  correr
 
-      public  ::  nl2itr,  qapply,  livmul,  lsqrt,   linvrt
-      public  ::  vscopy,  lmstep,  qrfact,  nl2sno
-      public  ::  madr,    v2norm,  itsmry,  dotprd,  vcopy
-      public  ::  parchk,  assess,  nl2x,    covclc
-      public  ::  rmdcon,  lsvmin,  madj,    vaxpy,   rptmul,  slvmul
-      public  ::  ltsqar,  litvmu,  gqtstp,  dupdat
-      public  ::  dfault,  reldst,  slupdt,  nl2sol
-
-      public  ::  amecnt,  gfsest,  vpm,     mdl1,    stpamo,  nlinit
-      public  ::  amfmn,   acffs,   uasdv,   pgms,    llcntp
-      public  ::  ufsout,  setrv,   nlout,   matprf
-      public  ::  sumwts,  cdff,    lpcoef,  stpsel,  aoslst,  xxch9
-      public  ::  arcoef,  llsps,   gfout,   vpcnt,   acfm
-      public  ::  mppml,   xlls,    vpmc,    demord,  polar,   xvp
-      public  ::  cdfnml,  aov1mn,  dckout,  stpcnt
-      public  ::  gfarf,   uaser,   drv3,    bfsv,    mvpm,    nlsupk
-      public  ::  fltar,   nlsc,    chirho,  xaimt,   ufsmv,   nrand
-      public  ::  ersgt,   amean,   xstplt,  bfsdrv,  vpc,     lstvcf
-      public  ::  ccf,     xpp,     nlswdc,  spcck,   ipgms,   acvff
-      public  ::  uasfs,   acvf,    nlism,   nlsw,    pp
-      public  ::  fftr,    bfsmvs,  xxch10,  dckdrv,  drv4a,   drv4b
-      public  ::  ccvf,    pplmt,   sumts,   stat,    dotcm
-      public  ::  mvpc,    acflst,  pgm,     histc,   xxch3,   dcoef
-      public  ::  ppm,     sumds,   corrmn,  xxch13
-      public  ::  xdcklt,  ppmn,    setra,   mpp,     center
-      public  ::  ppl,     gfarfs,  svpl,    cpymss,  fitext
-      public  ::  nlfin,   dckfpa,  uasest,  dif,     demods
-      public  ::  pgmmn,   sppm,    pltchk,  bfsvs,   amestp,  nlswd
-      public  ::  demout,  amdrv,   ranko,   ufsmvs,  bfs,     mppl
-      public  ::  taper,   amlst1,  erslf,   acfmnf,  aimf,    realtr
-      public  ::  amedrv,  getpi,   fitxsp,  sumwss,  ervgt
-      public  ::  aov1xp,  ccfxp,   gfaest,  xuas,    mvpl
-      public  ::  ersge,   xaov1,   mdl4,    slflt
-      public  ::  cdft,    acvfm,   xccf,    statws,  nlsd,    fltma
-      public  ::  ccfmnf,  lpflt,   dcklsc,  hstmn,   ufsms
-      public  ::  ppfchs,  oanova,  ppff,    aimx1,   stat2w,  xdflt
-      public  ::  amfcnt,  mppm,    ervgtm,  ppfnml,  ameism,  arflt
-      public  ::  multbp,  vcvotf,  ppmc,    bfsfs,   lopass
-      public  ::  stpdrv,  xacf,    ccfout,  amefin
-      public  ::  gfslf,   sppltd,  mvpml,   setfrq,  ccfmn
-      public  ::  ipgdv,   dckmn,   acfms,   amept2
-      public  ::  amlst,   xstat
-      public  ::  spp,     nlitrp,  adjlmt,  xxch7,   ller,    mvp
-      public  ::  stat2,   ipgm,    repck,   mdflt,   llsp
-      public  ::  xxch8,   sumid,   ufsest,  erslfs,  uas,     uasout
-      public  ::  mgs,     ufsdrv,  acf,     xdemod,  ufs,     xnlsd
-      public  ::  bfsf,    loglmt,  uascft,  amemn
-      public  ::  drv2,    llspws,  lls,     llsws
-      public  ::  ipgmp,   xstpld,  extend,  uass,    uasvar
-      public  ::  sppml,   ccfs,    aime,    uasvs,   acfmn,   ervii
-      public  ::  fltarm,  relcom,  ccffs,   ccvff,   xbfs
-      public  ::  obssm2,  amfout,  cmpfd,   xxch2,   xxch1
-      public  ::  ipgmps,  nrandc,  acfsdm,  stpout
-      public  ::  bfss,    fft,     dcker,   obssum,  ufsf,    xstple
-      public  ::  srtrri,  nlcmp,   stater,  ccvfm,   mppmc
-      public  ::  nlmn,    vpml,    ppcnt,   fltsl,   sumwds,  bfsmn
-      public  ::  bfsms,   srtirr,  xnrand,  uasf,    eragt
-      public  ::  llss,    svpc,    stats,   ppml,    xufs,    nlcnt
-      public  ::  amept1,  fitpt1,  difm,    stper,   nlsdc
-      public  ::  xnlst,   ameanm,  etamdl,  nls,     nlcntn,  mdlts3
-      public  ::  bfsm,    ufss,    ccfsdm,  xpgm
-      public  ::  difmc,   gmean,   matprt,  accdig,  svpm
-      public  ::  ccfsd,   aimec,   llsw,    stpls2
-      public  ::  nlss,    corrs,   randn,   hist,    pgmest,  ccflst
-      public  ::  mdlts2,  corrxp,  mppc,    acfmnm,  xxch11,  demdrv
-      public  ::  difc,    nlspk,   acff,    ersii,   stat1
-      public  ::  mdlts1,  acfd,    dckcnt,  aov1s,   ccff
-      public  ::  pgord,   pgout,   xdckle,  drv,     aos
-      public  ::  ppc,     svp,     dckls,   acfs,    nlsds,   difser
-      public  ::  dckcrv,  hipass,  ipgord,  mvpmc,   sppltl
-      public  ::  vcvout,  xnlse,   lstvec,  acfout,  sppmc,   xaimd
-      public  ::  ufsv,    nlswds,  ccfmnm,  svpmc,   nldrvn,  vpmn
-      public  ::  mdl2,    xxch12,  aimes,   stat1w,  statw,   dckzro
-      public  ::  axpby,   uasv,    vphead,  stplsc,  sppc,    sumidw
-      public  ::  ufsmn,   drv1a,   sumss,   nlswc,   llcnt
-      public  ::  dotc,    xxch5,   ameout,  mdl3,    hster,   fltmd
-      public  ::  genr,    srtir,   nlsws,   ufspcv,  ppft,    ccfms
-      public  ::  hpflt,   cdfchi,  ufsm,    ipgmn,   drv1b
-      public  ::  abscom,  aov1er,  sumot,   demod,   aov1,    nlsx1
-      public  ::  ervwt,   dfbw,    cpyasf,  srtri,   dckls1,  llspw
-      public  ::  parzen,  sumbs,   fftct
-      public  ::  xcorr,   demodu,  aimfs,   maflt,   nler
-      public  ::  gfslfs,  stpadj,  xhist,   ccfm,    vplmt,   ameer
-      public  ::  nldrva,  smply,   llcntg,  sppltc,  pltplx
-      public  ::  corr,    vp,      fitsxp,  ufslag,  llsmn
-      public  ::  hpcoef,  xxch4,   eragtm,  sppl,    acfsd
-      public  ::  ufsvs,   cntr,    gford,   fitpt2,  svpml,   mvchk
-      public  ::  stpls1,  stpmn,   sample,  ervgtp,  stpls,   ipgout
-      public  ::  ersei,   xdckld,  setrow,  bfsmv,   nlsx2,   nlcnta
-      public  ::  xxch6,   ufsfs,   uasord,  ersie
-      public  ::  dfbwm,   vpl,     bfslag,  eragtp
+      interface  abscom;  module  procedure  abscom;  end  interface
+      interface  accdig;  module  procedure  accdig;  end  interface
+      interface  acfd;    module  procedure  acfd;    end  interface
+      interface  acff;    module  procedure  acff;    end  interface
+      interface  acffs;   module  procedure  acffs;   end  interface
+      interface  acflst;  module  procedure  acflst;  end  interface
+      interface  acfm;    module  procedure  acfm;    end  interface
+      interface  acfmnf;  module  procedure  acfmnf;  end  interface
+      interface  acfmnm;  module  procedure  acfmnm;  end  interface
+      interface  acfmn;   module  procedure  acfmn;   end  interface
+      interface  acf;     module  procedure  acf;     end  interface
+      interface  acfms;   module  procedure  acfms;   end  interface
+      interface  acfout;  module  procedure  acfout;  end  interface
+      interface  acfsdm;  module  procedure  acfsdm;  end  interface
+      interface  acfsd;   module  procedure  acfsd;   end  interface
+      interface  acfs;    module  procedure  acfs;    end  interface
+      interface  acvff;   module  procedure  acvff;   end  interface
+      interface  acvfm;   module  procedure  acvfm;   end  interface
+      interface  acvf;    module  procedure  acvf;    end  interface
+      interface  adjlmt;  module  procedure  adjlmt;  end  interface
+      interface  aimec;   module  procedure  aimec;   end  interface
+      interface  aime;    module  procedure  aime;    end  interface
+      interface  aimes;   module  procedure  aimes;   end  interface
+      interface  aimf;    module  procedure  aimf;    end  interface
+      interface  aimfs;   module  procedure  aimfs;   end  interface
+      interface  aimx1;   module  procedure  aimx1;   end  interface
+      interface  amdrv;   module  procedure  amdrv;   end  interface
+      interface  ameanm;  module  procedure  ameanm;  end  interface
+      interface  amean;   module  procedure  amean;   end  interface
+      interface  amecnt;  module  procedure  amecnt;  end  interface
+      interface  amedrv;  module  procedure  amedrv;  end  interface
+      interface  ameer;   module  procedure  ameer;   end  interface
+      interface  amefin;  module  procedure  amefin;  end  interface
+      interface  ameism;  module  procedure  ameism;  end  interface
+      interface  amemn;   module  procedure  amemn;   end  interface
+      interface  ameout;  module  procedure  ameout;  end  interface
+      interface  amept1;  module  procedure  amept1;  end  interface
+      interface  amept2;  module  procedure  amept2;  end  interface
+      interface  amestp;  module  procedure  amestp;  end  interface
+      interface  amfcnt;  module  procedure  amfcnt;  end  interface
+      interface  amfmn;   module  procedure  amfmn;   end  interface
+      interface  amfout;  module  procedure  amfout;  end  interface
+      interface  amlst1;  module  procedure  amlst1;  end  interface
+      interface  amlst;   module  procedure  amlst;   end  interface
+      interface  aoslst;  module  procedure  aoslst;  end  interface
+      interface  aos;     module  procedure  aos;     end  interface
+      interface  aov1er;  module  procedure  aov1er;  end  interface
+      interface  aov1mn;  module  procedure  aov1mn;  end  interface
+      interface  aov1;    module  procedure  aov1;    end  interface
+      interface  aov1s;   module  procedure  aov1s;   end  interface
+      interface  aov1xp;  module  procedure  aov1xp;  end  interface
+      interface  arcoef;  module  procedure  arcoef;  end  interface
+      interface  arflt;   module  procedure  arflt;   end  interface
+      interface  assess;  module  procedure  assess;  end  interface
+      interface  axpby;   module  procedure  axpby;   end  interface
+      interface  bfsdrv;  module  procedure  bfsdrv;  end  interface
+      interface  bfsf;    module  procedure  bfsf;    end  interface
+      interface  bfsfs;   module  procedure  bfsfs;   end  interface
+      interface  bfslag;  module  procedure  bfslag;  end  interface
+      interface  bfsm;    module  procedure  bfsm;    end  interface
+      interface  bfsmn;   module  procedure  bfsmn;   end  interface
+      interface  bfs;     module  procedure  bfs;     end  interface
+      interface  bfsms;   module  procedure  bfsms;   end  interface
+      interface  bfsmv;   module  procedure  bfsmv;   end  interface
+      interface  bfsmvs;  module  procedure  bfsmvs;  end  interface
+      interface  bfss;    module  procedure  bfss;    end  interface
+      interface  bfsv;    module  procedure  bfsv;    end  interface
+      interface  bfsvs;   module  procedure  bfsvs;   end  interface
+      interface  ccff;    module  procedure  ccff;    end  interface
+      interface  ccffs;   module  procedure  ccffs;   end  interface
+      interface  ccflst;  module  procedure  ccflst;  end  interface
+      interface  ccfm;    module  procedure  ccfm;    end  interface
+      interface  ccfmnf;  module  procedure  ccfmnf;  end  interface
+      interface  ccfmnm;  module  procedure  ccfmnm;  end  interface
+      interface  ccfmn;   module  procedure  ccfmn;   end  interface
+      interface  ccf;     module  procedure  ccf;     end  interface
+      interface  ccfms;   module  procedure  ccfms;   end  interface
+      interface  ccfout;  module  procedure  ccfout;  end  interface
+      interface  ccfsdm;  module  procedure  ccfsdm;  end  interface
+      interface  ccfsd;   module  procedure  ccfsd;   end  interface
+      interface  ccfs;    module  procedure  ccfs;    end  interface
+      interface  ccfxp;   module  procedure  ccfxp;   end  interface
+      interface  ccvff;   module  procedure  ccvff;   end  interface
+      interface  ccvfm;   module  procedure  ccvfm;   end  interface
+      interface  ccvf;    module  procedure  ccvf;    end  interface
+      interface  cdfchi;  module  procedure  cdfchi;  end  interface
+      interface  cdff;    module  procedure  cdff;    end  interface
+      interface  cdfnml;  module  procedure  cdfnml;  end  interface
+      interface  cdft;    module  procedure  cdft;    end  interface
+      interface  center;  module  procedure  center;  end  interface
+      interface  chirho;  module  procedure  chirho;  end  interface
+      interface  cmpfd;   module  procedure  cmpfd;   end  interface
+      interface  cntr;    module  procedure  cntr;    end  interface
+      interface  corrmn;  module  procedure  corrmn;  end  interface
+      interface  corr;    module  procedure  corr;    end  interface
+      interface  corrs;   module  procedure  corrs;   end  interface
+      interface  corrxp;  module  procedure  corrxp;  end  interface
+      interface  covclc;  module  procedure  covclc;  end  interface
+      interface  cpyasf;  module  procedure  cpyasf;  end  interface
+      interface  cpymss;  module  procedure  cpymss;  end  interface
+      interface  dckcnt;  module  procedure  dckcnt;  end  interface
+      interface  dckcrv;  module  procedure  dckcrv;  end  interface
+      interface  dckdrv;  module  procedure  dckdrv;  end  interface
+      interface  dcker;   module  procedure  dcker;   end  interface
+      interface  dckfpa;  module  procedure  dckfpa;  end  interface
+      interface  dckls1;  module  procedure  dckls1;  end  interface
+      interface  dcklsc;  module  procedure  dcklsc;  end  interface
+      interface  dckls;   module  procedure  dckls;   end  interface
+      interface  dckmn;   module  procedure  dckmn;   end  interface
+      interface  dckout;  module  procedure  dckout;  end  interface
+      interface  dckzro;  module  procedure  dckzro;  end  interface
+      interface  dcoef;   module  procedure  dcoef;   end  interface
+      interface  demdrv;  module  procedure  demdrv;  end  interface
+      interface  demod;   module  procedure  demod;   end  interface
+      interface  demods;  module  procedure  demods;  end  interface
+      interface  demodu;  module  procedure  demodu;  end  interface
+      interface  demord;  module  procedure  demord;  end  interface
+      interface  demout;  module  procedure  demout;  end  interface
+      interface  dfault;  module  procedure  dfault;  end  interface
+      interface  dfbwm;   module  procedure  dfbwm;   end  interface
+      interface  dfbw;    module  procedure  dfbw;    end  interface
+      interface  difc;    module  procedure  difc;    end  interface
+      interface  difmc;   module  procedure  difmc;   end  interface
+      interface  difm;    module  procedure  difm;    end  interface
+      interface  dif;     module  procedure  dif;     end  interface
+      interface  difser;  module  procedure  difser;  end  interface
+      interface  dotcm;   module  procedure  dotcm;   end  interface
+      interface  dotc;    module  procedure  dotc;    end  interface
+      interface  dotprd;  module  procedure  dotprd;  end  interface
+      interface  drv1a;   module  procedure  drv1a;   end  interface
+      interface  drv1b;   module  procedure  drv1b;   end  interface
+      interface  drv2;    module  procedure  drv2;    end  interface
+      interface  drv3;    module  procedure  drv3;    end  interface
+      interface  drv4a;   module  procedure  drv4a;   end  interface
+      interface  drv4b;   module  procedure  drv4b;   end  interface
+      interface  drv;     module  procedure  drv;     end  interface
+      interface  dupdat;  module  procedure  dupdat;  end  interface
+      interface  eragtm;  module  procedure  eragtm;  end  interface
+      interface  eragt;   module  procedure  eragt;   end  interface
+      interface  eragtp;  module  procedure  eragtp;  end  interface
+      interface  ersei;   module  procedure  ersei;   end  interface
+      interface  ersge;   module  procedure  ersge;   end  interface
+      interface  ersgt;   module  procedure  ersgt;   end  interface
+      interface  ersie;   module  procedure  ersie;   end  interface
+      interface  ersii;   module  procedure  ersii;   end  interface
+      interface  erslf;   module  procedure  erslf;   end  interface
+      interface  erslfs;  module  procedure  erslfs;  end  interface
+      interface  ervgtm;  module  procedure  ervgtm;  end  interface
+      interface  ervgt;   module  procedure  ervgt;   end  interface
+      interface  ervgtp;  module  procedure  ervgtp;  end  interface
+      interface  ervii;   module  procedure  ervii;   end  interface
+      interface  ervwt;   module  procedure  ervwt;   end  interface
+      interface  etamdl;  module  procedure  etamdl;  end  interface
+      interface  extend;  module  procedure  extend;  end  interface
+      interface  fftct;   module  procedure  fftct;   end  interface
+      interface  fft;     module  procedure  fft;     end  interface
+      interface  fftr;    module  procedure  fftr;    end  interface
+      interface  fitext;  module  procedure  fitext;  end  interface
+      interface  fitpt1;  module  procedure  fitpt1;  end  interface
+      interface  fitpt2;  module  procedure  fitpt2;  end  interface
+      interface  fitsxp;  module  procedure  fitsxp;  end  interface
+      interface  fitxsp;  module  procedure  fitxsp;  end  interface
+      interface  fltarm;  module  procedure  fltarm;  end  interface
+      interface  fltar;   module  procedure  fltar;   end  interface
+      interface  fltma;   module  procedure  fltma;   end  interface
+      interface  fltmd;   module  procedure  fltmd;   end  interface
+      interface  fltsl;   module  procedure  fltsl;   end  interface
+      interface  genr;    module  procedure  genr;    end  interface
+      interface  getpi;   module  procedure  getpi;   end  interface
+      interface  gfaest;  module  procedure  gfaest;  end  interface
+      interface  gfarf;   module  procedure  gfarf;   end  interface
+      interface  gfarfs;  module  procedure  gfarfs;  end  interface
+      interface  gford;   module  procedure  gford;   end  interface
+      interface  gfout;   module  procedure  gfout;   end  interface
+      interface  gfsest;  module  procedure  gfsest;  end  interface
+      interface  gfslf;   module  procedure  gfslf;   end  interface
+      interface  gfslfs;  module  procedure  gfslfs;  end  interface
+      interface  gmean;   module  procedure  gmean;   end  interface
+      interface  gqtstp;  module  procedure  gqtstp;  end  interface
+      interface  hipass;  module  procedure  hipass;  end  interface
+      interface  histc;   module  procedure  histc;   end  interface
+      interface  hist;    module  procedure  hist;    end  interface
+      interface  hpcoef;  module  procedure  hpcoef;  end  interface
+      interface  hpflt;   module  procedure  hpflt;   end  interface
+      interface  hster;   module  procedure  hster;   end  interface
+      interface  hstmn;   module  procedure  hstmn;   end  interface
+      interface  ipgdv;   module  procedure  ipgdv;   end  interface
+      interface  ipgm;    module  procedure  ipgm;    end  interface
+      interface  ipgmn;   module  procedure  ipgmn;   end  interface
+      interface  ipgmp;   module  procedure  ipgmp;   end  interface
+      interface  ipgmps;  module  procedure  ipgmps;  end  interface
+      interface  ipgms;   module  procedure  ipgms;   end  interface
+      interface  ipgord;  module  procedure  ipgord;  end  interface
+      interface  ipgout;  module  procedure  ipgout;  end  interface
+      interface  itsmry;  module  procedure  itsmry;  end  interface
+      interface  linvrt;  module  procedure  linvrt;  end  interface
+      interface  litvmu;  module  procedure  litvmu;  end  interface
+      interface  livmul;  module  procedure  livmul;  end  interface
+      interface  llcntg;  module  procedure  llcntg;  end  interface
+      interface  llcnt;   module  procedure  llcnt;   end  interface
+      interface  llcntp;  module  procedure  llcntp;  end  interface
+      interface  ller;    module  procedure  ller;    end  interface
+      interface  llsmn;   module  procedure  llsmn;   end  interface
+      interface  lls;     module  procedure  lls;     end  interface
+      interface  llsp;    module  procedure  llsp;    end  interface
+      interface  llsps;   module  procedure  llsps;   end  interface
+      interface  llspw;   module  procedure  llspw;   end  interface
+      interface  llspws;  module  procedure  llspws;  end  interface
+      interface  llss;    module  procedure  llss;    end  interface
+      interface  llsw;    module  procedure  llsw;    end  interface
+      interface  llsws;   module  procedure  llsws;   end  interface
+      interface  lmstep;  module  procedure  lmstep;  end  interface
+      interface  loglmt;  module  procedure  loglmt;  end  interface
+      interface  lopass;  module  procedure  lopass;  end  interface
+      interface  lpcoef;  module  procedure  lpcoef;  end  interface
+      interface  lpflt;   module  procedure  lpflt;   end  interface
+      interface  lsqrt;   module  procedure  lsqrt;   end  interface
+      interface  lstvcf;  module  procedure  lstvcf;  end  interface
+      interface  lstvec;  module  procedure  lstvec;  end  interface
+      interface  lsvmin;  module  procedure  lsvmin;  end  interface
+      interface  ltsqar;  module  procedure  ltsqar;  end  interface
+      interface  madj;    module  procedure  madj;    end  interface
+      interface  madr;    module  procedure  madr;    end  interface
+      interface  maflt;   module  procedure  maflt;   end  interface
+      interface  matprf;  module  procedure  matprf;  end  interface
+      interface  matprt;  module  procedure  matprt;  end  interface
+      interface  mdflt;   module  procedure  mdflt;   end  interface
+      interface  mdl1;    module  procedure  mdl1;    end  interface
+      interface  mdl2;    module  procedure  mdl2;    end  interface
+      interface  mdl3;    module  procedure  mdl3;    end  interface
+      interface  mdl4;    module  procedure  mdl4;    end  interface
+      interface  mdlts1;  module  procedure  mdlts1;  end  interface
+      interface  mdlts2;  module  procedure  mdlts2;  end  interface
+      interface  mdlts3;  module  procedure  mdlts3;  end  interface
+      interface  mgs;     module  procedure  mgs;     end  interface
+      interface  mppc;    module  procedure  mppc;    end  interface
+      interface  mppl;    module  procedure  mppl;    end  interface
+      interface  mppmc;   module  procedure  mppmc;   end  interface
+      interface  mppml;   module  procedure  mppml;   end  interface
+      interface  mppm;    module  procedure  mppm;    end  interface
+      interface  mpp;     module  procedure  mpp;     end  interface
+      interface  multbp;  module  procedure  multbp;  end  interface
+      interface  mvchk;   module  procedure  mvchk;   end  interface
+      interface  mvpc;    module  procedure  mvpc;    end  interface
+      interface  mvpl;    module  procedure  mvpl;    end  interface
+      interface  mvpmc;   module  procedure  mvpmc;   end  interface
+      interface  mvpml;   module  procedure  mvpml;   end  interface
+      interface  mvpm;    module  procedure  mvpm;    end  interface
+      interface  mvp;     module  procedure  mvp;     end  interface
+      interface  nl2itr;  module  procedure  nl2itr;  end  interface
+      interface  nl2sno;  module  procedure  nl2sno;  end  interface
+      interface  nl2sol;  module  procedure  nl2sol;  end  interface
+      interface  nl2x;    module  procedure  nl2x;    end  interface
+      interface  nlcmp;   module  procedure  nlcmp;   end  interface
+      interface  nlcnta;  module  procedure  nlcnta;  end  interface
+      interface  nlcnt;   module  procedure  nlcnt;   end  interface
+      interface  nlcntn;  module  procedure  nlcntn;  end  interface
+      interface  nldrva;  module  procedure  nldrva;  end  interface
+      interface  nldrvn;  module  procedure  nldrvn;  end  interface
+      interface  nler;    module  procedure  nler;    end  interface
+      interface  nlfin;   module  procedure  nlfin;   end  interface
+      interface  nlinit;  module  procedure  nlinit;  end  interface
+      interface  nlism;   module  procedure  nlism;   end  interface
+      interface  nlitrp;  module  procedure  nlitrp;  end  interface
+      interface  nlmn;    module  procedure  nlmn;    end  interface
+      interface  nlout;   module  procedure  nlout;   end  interface
+      interface  nlsc;    module  procedure  nlsc;    end  interface
+      interface  nlsdc;   module  procedure  nlsdc;   end  interface
+      interface  nlsd;    module  procedure  nlsd;    end  interface
+      interface  nlsds;   module  procedure  nlsds;   end  interface
+      interface  nls;     module  procedure  nls;     end  interface
+      interface  nlspk;   module  procedure  nlspk;   end  interface
+      interface  nlss;    module  procedure  nlss;    end  interface
+      interface  nlsupk;  module  procedure  nlsupk;  end  interface
+      interface  nlswc;   module  procedure  nlswc;   end  interface
+      interface  nlswdc;  module  procedure  nlswdc;  end  interface
+      interface  nlswd;   module  procedure  nlswd;   end  interface
+      interface  nlswds;  module  procedure  nlswds;  end  interface
+      interface  nlsw;    module  procedure  nlsw;    end  interface
+      interface  nlsws;   module  procedure  nlsws;   end  interface
+      interface  nlsx1;   module  procedure  nlsx1;   end  interface
+      interface  nlsx2;   module  procedure  nlsx2;   end  interface
+      interface  nrandc;  module  procedure  nrandc;  end  interface
+      interface  nrand;   module  procedure  nrand;   end  interface
+      interface  oanova;  module  procedure  oanova;  end  interface
+      interface  obssm2;  module  procedure  obssm2;  end  interface
+      interface  obssum;  module  procedure  obssum;  end  interface
+      interface  parchk;  module  procedure  parchk;  end  interface
+      interface  parzen;  module  procedure  parzen;  end  interface
+      interface  pgmest;  module  procedure  pgmest;  end  interface
+      interface  pgmmn;   module  procedure  pgmmn;   end  interface
+      interface  pgm;     module  procedure  pgm;     end  interface
+      interface  pgms;    module  procedure  pgms;    end  interface
+      interface  pgord;   module  procedure  pgord;   end  interface
+      interface  pgout;   module  procedure  pgout;   end  interface
+      interface  pltchk;  module  procedure  pltchk;  end  interface
+      interface  pltplx;  module  procedure  pltplx;  end  interface
+      interface  polar;   module  procedure  polar;   end  interface
+      interface  ppc;     module  procedure  ppc;     end  interface
+      interface  ppcnt;   module  procedure  ppcnt;   end  interface
+      interface  ppfchs;  module  procedure  ppfchs;  end  interface
+      interface  ppff;    module  procedure  ppff;    end  interface
+      interface  ppfnml;  module  procedure  ppfnml;  end  interface
+      interface  ppft;    module  procedure  ppft;    end  interface
+      interface  ppl;     module  procedure  ppl;     end  interface
+      interface  pplmt;   module  procedure  pplmt;   end  interface
+      interface  ppmc;    module  procedure  ppmc;    end  interface
+      interface  ppml;    module  procedure  ppml;    end  interface
+      interface  ppm;     module  procedure  ppm;     end  interface
+      interface  ppmn;    module  procedure  ppmn;    end  interface
+      interface  pp;      module  procedure  pp;      end  interface
+      interface  qapply;  module  procedure  qapply;  end  interface
+      interface  qrfact;  module  procedure  qrfact;  end  interface
+      interface  randn;   module  procedure  randn;   end  interface
+      interface  ranko;   module  procedure  ranko;   end  interface
+      interface  realtr;  module  procedure  realtr;  end  interface
+      interface  relcom;  module  procedure  relcom;  end  interface
+      interface  reldst;  module  procedure  reldst;  end  interface
+      interface  repck;   module  procedure  repck;   end  interface
+      interface  rmdcon;  module  procedure  rmdcon;  end  interface
+      interface  rptmul;  module  procedure  rptmul;  end  interface
+      interface  sample;  module  procedure  sample;  end  interface
+      interface  setfrq;  module  procedure  setfrq;  end  interface
+      interface  setra;   module  procedure  setra;   end  interface
+      interface  setrow;  module  procedure  setrow;  end  interface
+      interface  setrv;   module  procedure  setrv;   end  interface
+      interface  slflt;   module  procedure  slflt;   end  interface
+      interface  slupdt;  module  procedure  slupdt;  end  interface
+      interface  slvmul;  module  procedure  slvmul;  end  interface
+      interface  smply;   module  procedure  smply;   end  interface
+      interface  spcck;   module  procedure  spcck;   end  interface
+      interface  sppc;    module  procedure  sppc;    end  interface
+      interface  sppl;    module  procedure  sppl;    end  interface
+      interface  sppltc;  module  procedure  sppltc;  end  interface
+      interface  sppltd;  module  procedure  sppltd;  end  interface
+      interface  sppltl;  module  procedure  sppltl;  end  interface
+      interface  sppmc;   module  procedure  sppmc;   end  interface
+      interface  sppml;   module  procedure  sppml;   end  interface
+      interface  sppm;    module  procedure  sppm;    end  interface
+      interface  spp;     module  procedure  spp;     end  interface
+      interface  srtir;   module  procedure  srtir;   end  interface
+      interface  srtirr;  module  procedure  srtirr;  end  interface
+      interface  srtri;   module  procedure  srtri;   end  interface
+      interface  srtrri;  module  procedure  srtrri;  end  interface
+      interface  stat1;   module  procedure  stat1;   end  interface
+      interface  stat1w;  module  procedure  stat1w;  end  interface
+      interface  stat2;   module  procedure  stat2;   end  interface
+      interface  stat2w;  module  procedure  stat2w;  end  interface
+      interface  stater;  module  procedure  stater;  end  interface
+      interface  stat;    module  procedure  stat;    end  interface
+      interface  stats;   module  procedure  stats;   end  interface
+      interface  statw;   module  procedure  statw;   end  interface
+      interface  statws;  module  procedure  statws;  end  interface
+      interface  stpadj;  module  procedure  stpadj;  end  interface
+      interface  stpamo;  module  procedure  stpamo;  end  interface
+      interface  stpcnt;  module  procedure  stpcnt;  end  interface
+      interface  stpdrv;  module  procedure  stpdrv;  end  interface
+      interface  stper;   module  procedure  stper;   end  interface
+      interface  stpls1;  module  procedure  stpls1;  end  interface
+      interface  stpls2;  module  procedure  stpls2;  end  interface
+      interface  stplsc;  module  procedure  stplsc;  end  interface
+      interface  stpls;   module  procedure  stpls;   end  interface
+      interface  stpmn;   module  procedure  stpmn;   end  interface
+      interface  stpout;  module  procedure  stpout;  end  interface
+      interface  stpsel;  module  procedure  stpsel;  end  interface
+      interface  sumbs;   module  procedure  sumbs;   end  interface
+      interface  sumds;   module  procedure  sumds;   end  interface
+      interface  sumid;   module  procedure  sumid;   end  interface
+      interface  sumidw;  module  procedure  sumidw;  end  interface
+      interface  sumot;   module  procedure  sumot;   end  interface
+      interface  sumss;   module  procedure  sumss;   end  interface
+      interface  sumts;   module  procedure  sumts;   end  interface
+      interface  sumwds;  module  procedure  sumwds;  end  interface
+      interface  sumwss;  module  procedure  sumwss;  end  interface
+      interface  sumwts;  module  procedure  sumwts;  end  interface
+      interface  svpc;    module  procedure  svpc;    end  interface
+      interface  svpl;    module  procedure  svpl;    end  interface
+      interface  svpmc;   module  procedure  svpmc;   end  interface
+      interface  svpml;   module  procedure  svpml;   end  interface
+      interface  svpm;    module  procedure  svpm;    end  interface
+      interface  svp;     module  procedure  svp;     end  interface
+      interface  taper;   module  procedure  taper;   end  interface
+      interface  uascft;  module  procedure  uascft;  end  interface
+      interface  uasdv;   module  procedure  uasdv;   end  interface
+      interface  uaser;   module  procedure  uaser;   end  interface
+      interface  uasest;  module  procedure  uasest;  end  interface
+      interface  uasf;    module  procedure  uasf;    end  interface
+      interface  uasfs;   module  procedure  uasfs;   end  interface
+      interface  uas;     module  procedure  uas;     end  interface
+      interface  uasord;  module  procedure  uasord;  end  interface
+      interface  uasout;  module  procedure  uasout;  end  interface
+      interface  uass;    module  procedure  uass;    end  interface
+      interface  uasvar;  module  procedure  uasvar;  end  interface
+      interface  uasv;    module  procedure  uasv;    end  interface
+      interface  uasvs;   module  procedure  uasvs;   end  interface
+      interface  ufsdrv;  module  procedure  ufsdrv;  end  interface
+      interface  ufsest;  module  procedure  ufsest;  end  interface
+      interface  ufsf;    module  procedure  ufsf;    end  interface
+      interface  ufsfs;   module  procedure  ufsfs;   end  interface
+      interface  ufslag;  module  procedure  ufslag;  end  interface
+      interface  ufsm;    module  procedure  ufsm;    end  interface
+      interface  ufsmn;   module  procedure  ufsmn;   end  interface
+      interface  ufs;     module  procedure  ufs;     end  interface
+      interface  ufsms;   module  procedure  ufsms;   end  interface
+      interface  ufsmv;   module  procedure  ufsmv;   end  interface
+      interface  ufsmvs;  module  procedure  ufsmvs;  end  interface
+      interface  ufsout;  module  procedure  ufsout;  end  interface
+      interface  ufspcv;  module  procedure  ufspcv;  end  interface
+      interface  ufss;    module  procedure  ufss;    end  interface
+      interface  ufsv;    module  procedure  ufsv;    end  interface
+      interface  ufsvs;   module  procedure  ufsvs;   end  interface
+      interface  v2norm;  module  procedure  v2norm;  end  interface
+      interface  vaxpy;   module  procedure  vaxpy;   end  interface
+      interface  vcopy;   module  procedure  vcopy;   end  interface
+      interface  vcvotf;  module  procedure  vcvotf;  end  interface
+      interface  vcvout;  module  procedure  vcvout;  end  interface
+      interface  vpc;     module  procedure  vpc;     end  interface
+      interface  vpcnt;   module  procedure  vpcnt;   end  interface
+      interface  vphead;  module  procedure  vphead;  end  interface
+      interface  vpl;     module  procedure  vpl;     end  interface
+      interface  vplmt;   module  procedure  vplmt;   end  interface
+      interface  vpmc;    module  procedure  vpmc;    end  interface
+      interface  vpml;    module  procedure  vpml;    end  interface
+      interface  vpm;     module  procedure  vpm;     end  interface
+      interface  vpmn;    module  procedure  vpmn;    end  interface
+      interface  vp;      module  procedure  vp;      end  interface
+      interface  vscopy;  module  procedure  vscopy;  end  interface
+      interface  xacf;    module  procedure  xacf;    end  interface
+      interface  xaimd;   module  procedure  xaimd;   end  interface
+      interface  xaimt;   module  procedure  xaimt;   end  interface
+      interface  xaov1;   module  procedure  xaov1;   end  interface
+      interface  xbfs;    module  procedure  xbfs;    end  interface
+      interface  xccf;    module  procedure  xccf;    end  interface
+      interface  xcorr;   module  procedure  xcorr;   end  interface
+      interface  xdckld;  module  procedure  xdckld;  end  interface
+      interface  xdckle;  module  procedure  xdckle;  end  interface
+      interface  xdcklt;  module  procedure  xdcklt;  end  interface
+      interface  xdemod;  module  procedure  xdemod;  end  interface
+      interface  xdflt;   module  procedure  xdflt;   end  interface
+      interface  xhist;   module  procedure  xhist;   end  interface
+      interface  xlls;    module  procedure  xlls;    end  interface
+      interface  xnlsd;   module  procedure  xnlsd;   end  interface
+      interface  xnlse;   module  procedure  xnlse;   end  interface
+      interface  xnlst;   module  procedure  xnlst;   end  interface
+      interface  xnrand;  module  procedure  xnrand;  end  interface
+      interface  xpgm;    module  procedure  xpgm;    end  interface
+      interface  xpp;     module  procedure  xpp;     end  interface
+      interface  xstat;   module  procedure  xstat;   end  interface
+      interface  xstpld;  module  procedure  xstpld;  end  interface
+      interface  xstple;  module  procedure  xstple;  end  interface
+      interface  xstplt;  module  procedure  xstplt;  end  interface
+      interface  xuas;    module  procedure  xuas;    end  interface
+      interface  xufs;    module  procedure  xufs;    end  interface
+      interface  xvp;     module  procedure  xvp;     end  interface
+      interface  xxch10;  module  procedure  xxch10;  end  interface
+      interface  xxch11;  module  procedure  xxch11;  end  interface
+      interface  xxch12;  module  procedure  xxch12;  end  interface
+      interface  xxch13;  module  procedure  xxch13;  end  interface
+      interface  xxch1;   module  procedure  xxch1;   end  interface
+      interface  xxch2;   module  procedure  xxch2;   end  interface
+      interface  xxch3;   module  procedure  xxch3;   end  interface
+      interface  xxch4;   module  procedure  xxch4;   end  interface
+      interface  xxch5;   module  procedure  xxch5;   end  interface
+      interface  xxch6;   module  procedure  xxch6;   end  interface
+      interface  xxch7;   module  procedure  xxch7;   end  interface
+      interface  xxch8;   module  procedure  xxch8;   end  interface
+      interface  xxch9;   module  procedure  xxch9;   end  interface
 
       contains
       function mach(i)
@@ -228,7 +604,7 @@
       INTEGER :: IFIXED(*),IPTOUT(5)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL,NLDRV,NLHDR
+       EXTERNAL DRV,MDL,NLDRV,NLHDR
 !
 !  SCALARS IN COMMON
       INTEGER :: IERR
@@ -249,7 +625,7 @@
       INTEGER,EXTERNAL :: STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMEMN,CPYASF,CPYVII,DCOPY,SETIV,STKCLR
+!       EXTERNAL AMEMN,CPYASF,CPYVII,DCOPY,SETIV,STKCLR
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -543,7 +919,7 @@
      &   I,J,KHALF,KMID
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL GETPI
+!       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,COS
@@ -597,7 +973,7 @@
       RETURN
       END
 !VPM
-      SUBROUTINE VPM(YM, YMMISS, N, NS)
+      SUBROUTINE VPM(YM, YMISS, N, NS)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -614,12 +990,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
+      REAL(KIND=WP) :: YMISS
       INTEGER
      &   N,NS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YM(*),YMMISS(1)
+      REAL(KIND=WP) :: YM(*)
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -634,6 +1010,7 @@
      &   MISS,MULTI
 !
 !  LOCAL ARRAYS
+      REAL(KIND=WP) :: YMMISS(1)
       INTEGER
      &   ISYM(1)
       CHARACTER
@@ -710,6 +1087,8 @@
 !        LOWER BOUND FOR Y-AXIS.
 !     REAL(KIND=WP) :: YM(N,1)
 !        MULTIVARIATE OBSERVATIONS FOR THE Y COORDINATES
+!     REAL(KIND=WP) :: YMISS
+!        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: YMMISS(1)
 !        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: YUB
@@ -723,6 +1102,7 @@
 !
 !     SET DEFAULT VALUES
 !
+      YMMISS=YMISS
       M = 1
       IYM = N
       MULTI = .FALSE.
@@ -841,7 +1221,7 @@
      &   IFAIL(N),IFIXD(NPAR),NFAIL(NPAR)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL HDR
+       EXTERNAL HDR
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -959,7 +1339,7 @@
 !     REAL(KIND=WP) :: RMDCON
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL DFAULT,NLSPK
+!       EXTERNAL DFAULT,NLSPK
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,IABS,MAX
@@ -1816,7 +2196,7 @@
      &   NMSUB(6)*1
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL WINDOW
+       EXTERNAL WINDOW
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
@@ -1832,7 +2212,7 @@
      &   LAGS(1),NLPPA(1)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AOS,SETFRQ,SPCCK,UASCFT,UASEST,UASORD,UASOUT,UFSLAG,UFSMN
+!       EXTERNAL AOS,SETFRQ,SPCCK,UASCFT,UASEST,UASORD,UASOUT,UFSLAG,UFSMN
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC IABS,INT
@@ -2221,7 +2601,7 @@
      &   IFIT,IXM,M
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL LLCNT,LLHDRP
+!       EXTERNAL LLCNT,LLHDRP
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -2598,7 +2978,7 @@
      &   IFIXD(NPAR),IPTOUT(NDIGIT),ISKULL(10)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL NLHDR
+       EXTERNAL NLHDR
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -3149,7 +3529,7 @@
      &   CURHI,CURLO,I,IREV,ITHI,ITLO,MID,NALPHA,NUM
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL SUMBS
+!       EXTERNAL SUMBS
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,MAX,MIN
@@ -3328,7 +3708,7 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   DBETAI,CDFCHI,CDFNML
-      EXTERNAL DBETAI,CDFCHI,CDFNML
+!       EXTERNAL DBETAI,CDFCHI,CDFNML
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SQRT
@@ -3570,7 +3950,7 @@
      &   IFAIL(N),ITEMP(N)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       REAL(KIND=WP) ::
@@ -3585,7 +3965,7 @@
      &   FAIL,FIRST,FORWRD,HICURV,SUCCES
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ABSCOM,CMPFD,ICOPY,RELCOM,DCOPY,STPADJ
+!       EXTERNAL ABSCOM,CMPFD,ICOPY,RELCOM,DCOPY,STPADJ
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS
@@ -4568,7 +4948,7 @@
      &   ERROR,XCHECK
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL PLTCHK,VERSP,VPLMT,VPMN
+!       EXTERNAL PLTCHK,VERSP,VPLMT,VPMN
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MAX,MOD
@@ -4656,7 +5036,7 @@
 !     COMMENCE BODY OF ROUTINE
 !
       XCHECK = .FALSE.
-      CALL PLTCHK (YM, YMMISS, YM, YMMISS, N, M, IYM, MULTI,
+      CALL PLTCHK (YM, YMMISS, YM, YMMISS(1), N, M, IYM, MULTI,
      &   ILOG, YLB, YUB, XLB, XINC, NMSUB, MISS, XCHECK)
 !
       IF (IERR.EQ.0) THEN
@@ -5749,7 +6129,7 @@
 !
       END
 !VPMC
-      SUBROUTINE VPMC(YM, YMMISS, N, NS, ILOG, ISIZE,
+      SUBROUTINE VPMC(YM, YMISS, N, NS, ILOG, ISIZE,
      &   IRLIN, IBAR, YLB, YUB, XLB, XINC)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -5767,14 +6147,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XINC,XLB,YLB,YUB
+      REAL(KIND=WP) :: YMISS,XINC,XLB,YLB,YUB
       INTEGER
      &   IBAR,ILOG,IRLIN,ISIZE,N,NS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YM(*),YMMISS(1)
+      REAL(KIND=WP) :: YM(*)
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -5787,6 +6165,7 @@
      &   MISS,MULTI
 !
 !  LOCAL ARRAYS
+      REAL(KIND=WP) :: YMMISS(1)
       INTEGER
      &   ISYM(1)
       CHARACTER
@@ -5863,6 +6242,8 @@
 !        LOWER BOUND FOR Y-AXIS.
 !     REAL(KIND=WP) :: YM(N,1)
 !        MULTIVARIATE OBSERVATIONS FOR THE Y COORDINATES
+!     REAL(KIND=WP) :: YMISS
+!        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: YMMISS(1)
 !        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: YUB
@@ -5876,6 +6257,7 @@
 !
 !     SET DEFAULT VALUES
 !
+      YMMISS=YMISS
       M = 1
       IYM = N
       MULTI = .FALSE.
@@ -5933,7 +6315,7 @@
      &   I
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL GETPI
+!       EXTERNAL GETPI
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -6060,7 +6442,7 @@
      &   IBAR,ILOG,IPRT,IRLIN,ISIZE,ITEST,IYM,M,NOUT,NS,NY,NYM
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) :: AIR(144),Y(144),YM(12,12),YMMISS(144), YMMISS1(1)
+      REAL(KIND=WP) :: AIR(144),Y(144),YM(12,12),YMMISS(144)
       INTEGER ISYM(144)
 !
 !  EXTERNAL SUBROUTINES
@@ -6239,7 +6621,6 @@
       DATA  AIR(139), AIR(140), AIR(141), AIR(142), AIR(143), AIR(144)
      &    / 622.0_WP, 606.0_WP, 508.0_WP, 461.0_WP, 390.0_WP, 432.0_WP/
 !
-      YMMISS1=YMISS
       CALL SETRV(YMMISS, 144, YMISS)
       CALL DCOPY(144, AIR, 1, Y, 1)
 !
@@ -6285,7 +6666,7 @@
       WRITE (IPRT, 3100) ITEST
       WRITE (IPRT, 3010) NY
       WRITE (IPRT, 3030) NS
-      CALL VPM (Y, YMMISS1, NY, NS)
+      CALL VPM (Y, YMISS, NY, NS)
       WRITE (IPRT, 3000) IERR
 !
 !     TEST OF SVP
@@ -6367,7 +6748,7 @@
       WRITE (IPRT, 3010) NY
       WRITE (IPRT, 3030) NS
       WRITE (IPRT, 3040) ILOG
-      CALL SVPML (Y, YMMISS1, NY, NS, ISYM, ILOG)
+      CALL SVPML (Y, YMISS, NY, NS, ISYM, ILOG)
       WRITE (IPRT, 3000) IERR
 !
 !     TEST OF MVPL
@@ -6618,7 +6999,7 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   DERF
-      EXTERNAL DERF
+!       EXTERNAL DERF
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SQRT
@@ -7498,7 +7879,7 @@
      &   IFIXD(NPAR),MSG(LMSG)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL HDR
+       EXTERNAL HDR
 !
 !  LOCAL SCALARS
       INTEGER
@@ -7766,7 +8147,7 @@
      &   IFIXED(LIFIXD)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL HDR,MDL
+       EXTERNAL HDR,MDL
 !
 !  SCALARS IN COMMON
       REAL(KIND=WP) ::
@@ -7798,10 +8179,10 @@
      &   D1MACH
       INTEGER
      &   STKST
-      EXTERNAL D1MACH,STKST
+!       EXTERNAL D1MACH,STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CPYVII,ETAMDL,SETIV,STKCLR,STPMN,STPOUT
+!       EXTERNAL CPYVII,ETAMDL,SETIV,STKCLR,STPMN,STPOUT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,INT,LOG10,MAX,MIN
@@ -8327,7 +8708,7 @@
      &   LNM1(8)*1,LPHI(8)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,EISII,ERVII
+!       EXTERNAL EISGE,EISII,ERVII
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,IABS
@@ -8454,7 +8835,7 @@
       IF ((.NOT.OPTION(3))) GO TO 15
 !
       CALL ERVII(NMSUB, LACV, ACOV, LAGMAX+1, -ABS(ACOV(1)),
-     &   ABS(ACOV(1)), 0, HEAD, 4, NV, ERR(15), LACV1M, LACV1P)
+     &   ABS(ACOV(1)), 0, HEAD, 4, NV, ERR(15)) !, LACV1M, LACV1P)
 !
       CALL EISII(NMSUB, LLGMX, LAGMAX, 1, N-1, 1, HEAD, ERR(2),
      &   L1, LNM1)
@@ -8488,7 +8869,7 @@
      &   ERR(6), LLGMXM, LLGMXP)
 !
       CALL ERVII(NMSUB, LPHI, PHI, IAR, -1.0_WP, 1.0_WP, 0, HEAD, 1, NV,
-     &   ERR(7), L1, L1)
+     &   ERR(7)) !, L1, L1)
 !
       IF (.NOT.OPTION(3))
      &   CALL EISII(NMSUB, LLGMX, LAGMAX, 1, N-1, 1, HEAD, ERR(2),
@@ -9120,7 +9501,7 @@
      &   IFIXED(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -9360,7 +9741,7 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   CDFCHI
-      EXTERNAL CDFCHI
+!       EXTERNAL CDFCHI
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC DBLE
@@ -9433,7 +9814,7 @@
      &   IFIXED(50),MSPEC(4,50)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AIME,AIMEC,AIMES,AIMF,AIMFS,IPRINT
+!       EXTERNAL AIME,AIMEC,AIMES,AIMF,AIMFS,IPRINT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC LOG
@@ -9652,7 +10033,7 @@
       PAR(2) = 0.395_WP
       PAR(3) = 0.615_WP
       CALL AIMFS (YLOG, NY, MSPEC, NFAC,
-     &   PAR, NPAR, LDSTAK, NY/10+1, 1, NY, NPRT, FCST, 50, FCSTSD)
+     &   PAR, NPAR, LDSTAK, NY/10+1, 1, [NY], NPRT, FCST, 50, FCSTSD)
 !
       SCALE(1) = 1.0E-7_WP
       SCALE(2) = 1.0E-7_WP
@@ -9784,7 +10165,7 @@
      &   IVCV)
       CALL AIMF (Y, NY, MSPEC, NFAC, PAR, NPAR, LDSTAK)
       CALL AIMFS (Y, NY, MSPEC, NFAC,
-     &   PAR, NPAR, LDSTAK, NY/10+1, 1, NY, NPRT, FCST, 50, FCSTSD)
+     &   PAR, NPAR, LDSTAK, NY/10+1, 1, [NY], NPRT, FCST, 50, FCSTSD)
 !
       NY = 144
       NFAC = 2
@@ -9800,7 +10181,7 @@
      &   IVCV)
       CALL AIMF (Y, NY, MSPEC, NFAC, PAR, NPAR, LDSTAK)
       CALL AIMFS (Y, NY, MSPEC, NFAC,
-     &   PAR, NPAR, LDSTAK, NY/10+1, 1, NY, NPRT, FCST, 50, FCSTSD)
+     &   PAR, NPAR, LDSTAK, NY/10+1, 1, [NY], NPRT, FCST, 50, FCSTSD)
       NY = 144
       NFAC = 2
       MSPEC(1,1) = 0
@@ -9816,7 +10197,7 @@
      &   IVCV)
       CALL AIMF (Y, NY, MSPEC, NFAC, PAR, NPAR, LDSTAK)
       CALL AIMFS (Y, NY, MSPEC, NFAC,
-     &   PAR, NPAR, LDSTAK, NY/10+1, 1, NY, NPRT, FCST, 50, FCSTSD)
+     &   PAR, NPAR, LDSTAK, NY/10+1, 1, [NY], NPRT, FCST, 50, FCSTSD)
       NY = 144
       NFAC = 2
       MSPEC(1,1) = 0
@@ -9834,7 +10215,7 @@
      &   SCALE, DELTA, IVAPRX, NPRT, NPARE, RSD, PV, SDPV, SDRES, VCV,
      &   IVCV)
       CALL AIMFS (Y, NY, MSPEC, NFAC,
-     &   PAR, NPAR, LDSTAK, NY/10+1, 1, NY, NPRT, FCST, IFCST, FCSTSD)
+     &   PAR, NPAR, LDSTAK, NY/10+1, 1, [NY], NPRT, FCST, IFCST, FCSTSD)
       DO 30 I = 1, NPAR
         IFIXED(I) = 1
    30 CONTINUE
@@ -10622,7 +11003,7 @@
      &   NMSUB(6)*1
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL WINDOW
+       EXTERNAL WINDOW
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -10639,10 +11020,10 @@
 !  EXTERNAL FUNCTIONS
       INTEGER
      &   LSTLAG
-      EXTERNAL LSTLAG
+!       EXTERNAL LSTLAG
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ACVF,ACVFF,ACVFM,BFSER,BFSLAG,BFSMN,CCVF,CCVFF,CCVFM,
+!       EXTERNAL ACVF,ACVFF,ACVFM,BFSER,BFSLAG,BFSMN,CCVF,CCVFF,CCVFM,
      &   DFBW,DFBWM,SETFRQ,UFSEST,UFSOUT
 !
 !  INTRINSIC FUNCTIONS
@@ -12067,7 +12448,7 @@
      &   IFIXED(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL
+       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -12308,7 +12689,7 @@
      &   I,K1,K2,LOG1,LOG2
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL SRTIR,SRTRI
+!       EXTERNAL SRTIR,SRTRI
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC LOG10
@@ -12655,7 +13036,7 @@
      &   I,ISN,N1,NF,NFFT2
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMEAN,FFT,FFTCT,REALTR
+!      EXTERNAL AMEAN,FFT,FFTCT,REALTR
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -13088,7 +13469,7 @@
      &   LAG,NDOTXY,NDOTYY
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMEAN,DOTC
+!      EXTERNAL AMEAN,DOTC
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -13166,7 +13547,7 @@
      &   IFIXD(NPAR),IWORK(IIWORK)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL NLHDR
+       EXTERNAL NLHDR
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
@@ -13395,7 +13776,7 @@
      &   PAR(*),RES(*),WT(*),XM(*),Y(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -14459,7 +14840,7 @@
      &   NMSUB(6)*1
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL
+       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -14479,7 +14860,7 @@
      &   IFIXED(1)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL DCKCNT,DCKER,DCKHDR,STKSET
+!       EXTERNAL DCKCNT,DCKER,DCKHDR,STKSET
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -14751,7 +15132,7 @@
      &   LAG,NDOTXY
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL DOTC
+!       EXTERNAL DOTC
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -15060,7 +15441,7 @@
      &   CURHI,CURLO,I,IREV,ITHI,ITLO,MID,NALPHA
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL SUMBS
+!       EXTERNAL SUMBS
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,MAX,MIN
@@ -15382,7 +15763,7 @@
 !  EXTERNAL FUNCTIONS
       LOGICAL
      &   MVCHK
-      EXTERNAL MVCHK
+!       EXTERNAL MVCHK
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MIN
@@ -16220,10 +16601,10 @@
 !  EXTERNAL FUNCTIONS
       INTEGER
      &   NCHOSE
-      EXTERNAL NCHOSE
+!       EXTERNAL NCHOSE
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL MULTBP
+!       EXTERNAL MULTBP
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -18580,7 +18961,7 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   D1MACH
-      EXTERNAL D1MACH
+!       EXTERNAL D1MACH
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SQRT
@@ -18654,7 +19035,7 @@
      &   IFIXD(NPAR),IPTOUT(NDIGIT),ISKULL(10)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL NLHDR
+       EXTERNAL NLHDR
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -18669,7 +19050,7 @@
      &   EXACT,PRTFSM
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL NLCMP,NLOUT
+!       EXTERNAL NLCMP,NLOUT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -18826,7 +19207,7 @@
      &   MSG(LMSG)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
@@ -19007,7 +19388,7 @@
      &   I,J
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL GETPI
+!       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC COS,SIN
@@ -19503,7 +19884,7 @@
      &   I,N1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMEAN,PGMEST,PGORD,PGOUT,SETFRQ
+!       EXTERNAL AMEAN,PGMEST,PGORD,PGOUT,SETFRQ
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -19583,7 +19964,7 @@
 !
       END
 !SPPM
-      SUBROUTINE SPPM(YM, YMMISS, X, XMISS, N, ISYM)
+      SUBROUTINE SPPM(YM, YMISS, X, XMISS, N, ISYM)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19601,14 +19982,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XMISS
+      REAL(KIND=WP) :: YMISS, XMISS
       INTEGER
      &   N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(*),YM(*),YMMISS(1)
+      REAL(KIND=WP) :: X(*),YM(*)
       INTEGER
      &   ISYM(*)
 !
@@ -19625,6 +20004,7 @@
      &   MISS,MULTI
 !
 !  LOCAL ARRAYS
+      REAL(KIND=WP) :: YMMISS(1)
       CHARACTER
      &   NMSUB(6)*1
 !
@@ -19686,6 +20066,8 @@
 !     REAL(KIND=WP) :: XLB
 !        THE LOWER BOUND FOR THE X-AXIS.  (XLB=XUB INDICATES LIMITS ARE
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
+!     REAL(KIND=WP) :: YMISS
+!        THE MISSING VALUE CODE FOR THE X-AXIS.
 !     REAL(KIND=WP) :: XMISS
 !        THE MISSING VALUE CODE FOR THE X-AXIS.
 !     REAL(KIND=WP) :: XUB
@@ -19713,6 +20095,7 @@
 !
 !     SET DEFAULT VALUES
 !
+      YMMISS=YMISS
       M = 1
       IYM = N
       MULTI = .FALSE.
@@ -19794,7 +20177,7 @@
      &   LXUB(8)*1,LY(8)*1,LYLB(8)*1,LYM(8)*1,LYUB(8)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,ERAGT,ERAGTM,ERSGT,ERVGT,ERVGTM,PRTCNT
+!       EXTERNAL EISGE,ERAGT,ERAGTM,ERSGT,ERVGT,ERVGTM,PRTCNT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MAX
@@ -20358,7 +20741,7 @@
      &   IFIXED(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL HDR,MDL,STPOUT
+       EXTERNAL HDR,MDL,STPOUT
 !
 !  SCALARS IN COMMON
       REAL(KIND=WP) ::
@@ -20390,10 +20773,10 @@
      &   D1MACH
       INTEGER
      &   STKST
-      EXTERNAL D1MACH,STKST
+!       EXTERNAL D1MACH,STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CPYVII,ETAMDL,SETIV,STKCLR,STPMN
+!       EXTERNAL CPYVII,ETAMDL,SETIV,STKCLR,STPMN
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,INT,LOG10,MAX,MIN
@@ -20717,7 +21100,7 @@
      &   PAR(*),RES(*),WT(*),XM(*),Y(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL
+       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -21083,7 +21466,7 @@
      &   IFIXD(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDLTS3
+       EXTERNAL DRV,MDLTS3
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -21239,7 +21622,7 @@
      &   I,IJ,J,K,K2
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL SRTIR,SRTRI
+!       EXTERNAL SRTIR,SRTRI
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -22419,7 +22802,7 @@
      &   I
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ACFSD,ACVFF,AOS,CHIRHO
+!      EXTERNAL ACFSD,ACVFF,AOS,CHIRHO
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -22789,10 +23172,10 @@
 !  EXTERNAL FUNCTIONS
       INTEGER
      &   ICNTI,STKST
-      EXTERNAL ICNTI,STKST
+!       EXTERNAL ICNTI,STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMECNT,AMEER,AMEHDR,AMESTP,BACKOP,CPYVII,
+!       EXTERNAL AMECNT,AMEER,AMEHDR,AMESTP,BACKOP,CPYVII,
      &   DCOEF,DRV,LDSCMP,MDLTS1,MDLTS3,NLDRVN,PRTCNT,DCOPY,
      &   STKCLR,STKSET,STPAMO
 !
@@ -23441,7 +23824,7 @@
      &   I,NVMN
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ERVGTP
+!       EXTERNAL ERVGTP
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MOD
@@ -23797,7 +24180,7 @@
      &   I,J,JJ
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL GETPI
+!       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ATAN2,COS,SIN,SQRT
@@ -25409,10 +25792,10 @@
      &   D1MACH
       INTEGER
      &   LSTLAG
-      EXTERNAL D1MACH,LSTLAG
+!      EXTERNAL D1MACH,LSTLAG
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMEANM,DOTCM
+!      EXTERNAL AMEANM,DOTCM
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -26179,7 +26562,7 @@
      &   PAR(*),RES(*),XM(*),Y(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL
+       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -26507,7 +26890,7 @@
      &   I,I0,IM,IP
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CCFSD,CCVFF
+!       EXTERNAL CCFSD,CCVFF
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SQRT
@@ -26617,7 +27000,7 @@
      &   I,IHM,IHP,KHALF,KMID
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL GETPI
+!       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SIN
@@ -26704,7 +27087,7 @@
      &   PAR(*),SCALE(*),XM(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL
+       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -27734,7 +28117,7 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   CDFF,D1MACH
-      EXTERNAL CDFF,D1MACH
+!       EXTERNAL CDFF,D1MACH
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -28157,7 +28540,7 @@
 !     REAL(KIND=WP) :: RMDCON
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL SETRV
+!      EXTERNAL SETRV
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SQRT
@@ -28399,7 +28782,7 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   CDFF,PPFCHS,PPFT
-      EXTERNAL CDFF,PPFCHS,PPFT
+!       EXTERNAL CDFF,PPFCHS,PPFT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,SQRT
@@ -29180,10 +29563,10 @@
 !  EXTERNAL FUNCTIONS
       INTEGER
      &   STKST
-      EXTERNAL STKST
+!       EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMFER,AMFMN,BACKOP,CPYVII,LDSCMP,STKCLR,STKSET
+!       EXTERNAL AMFER,AMFMN,BACKOP,CPYVII,LDSCMP,STKCLR,STKSET
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -29572,10 +29955,10 @@
 !  EXTERNAL FUNCTIONS
       LOGICAL
      &   MVCHK
-      EXTERNAL MVCHK
+!       EXTERNAL MVCHK
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ERVGTP
+!       EXTERNAL ERVGTP
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MOD
@@ -29812,7 +30195,7 @@
      &   IFIXD(*),IWORK(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL AMEHDR
+       EXTERNAL AMEHDR
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -30410,7 +30793,7 @@
      &   18H MIGHT BE VIOLATED)
       END
 !PPMC
-      SUBROUTINE PPMC(YM, YMMISS, X, XMISS, N, ILOG, ISIZE, NOUT, YLB,
+      SUBROUTINE PPMC(YM, YMISS, X, XMISS, N, ILOG, ISIZE, NOUT, YLB,
      &   YUB, XLB, XUB)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -30428,14 +30811,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XLB,XMISS,XUB,YLB,YUB
+      REAL(KIND=WP) :: XLB,YMISS,XMISS,XUB,YLB,YUB
       INTEGER
      &   ILOG,ISIZE,N,NOUT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(*),YM(*),YMMISS(1)
+      REAL(KIND=WP) :: X(*),YM(*)
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -30448,6 +30829,7 @@
      &   MISS,MULTI
 !
 !  LOCAL ARRAYS
+      REAL(KIND=WP) :: YMMISS(1)
       INTEGER
      &   ISYM(1)
       CHARACTER
@@ -30511,6 +30893,8 @@
 !     REAL(KIND=WP) :: XLB
 !        THE LOWER BOUND FOR THE X-AXIS.  (XLB=XUB INDICATES LIMITS ARE
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
+!     REAL(KIND=WP) :: YMISS
+!        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: XMISS
 !        THE MISSING VALUE CODE FOR THE X-AXIS.
 !     REAL(KIND=WP) :: XUB
@@ -30538,6 +30922,7 @@
 !
 !     SET DEFAULT VALUES
 !
+      YMMISS=YMISS
       M = 1
       IYM = N
       MULTI = .FALSE.
@@ -31074,7 +31459,7 @@
      &   NMSUB(6)*1
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -31094,7 +31479,7 @@
      &   IFIXED(1)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL STKSET,STPCNT,STPER,STPHDR
+!       EXTERNAL STKSET,STPCNT,STPER,STPHDR
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -31805,12 +32190,12 @@
      &   M(17)
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     &   I1MACH
-      EXTERNAL I1MACH
+!      INTEGER
+!     &   I1MACH
+!       EXTERNAL I1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL XERROR
+!       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,MIN,MOD,REAL
@@ -31906,7 +32291,7 @@
      &   IFIXD(*),IPTOUT(*),ISKULL(10)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL AMEHDR
+       EXTERNAL AMEHDR
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -31921,7 +32306,7 @@
      &   EXACT,PRTFSM
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMEOUT,NLCMP
+!       EXTERNAL AMEOUT,NLCMP
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -32586,7 +32971,7 @@
      &   I,I0,IM,IP
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CCFSD,CCVF
+!       EXTERNAL CCFSD,CCVF
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SQRT
@@ -32689,7 +33074,7 @@
      &   ISPCER,NPTS
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPGMN,IPGORD,IPGOUT
+!       EXTERNAL IPGMN,IPGORD,IPGOUT
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -32771,14 +33156,14 @@
      &   MSG(LMSG)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
      &   FD,PARMX,PVPSTP,STP,TEMP
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL DCKCRV,DCKZRO
+!       EXTERNAL DCKCRV,DCKZRO
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,MAX,SIGN,SQRT
@@ -34436,32 +34821,25 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IIWORK,IPTOUT,IRWORK,NNZW,NPAR,NPARE
-      LOGICAL
-     &   HEAD,PAGE,WIDE
+      INTEGER IIWORK,IPTOUT,IRWORK,NNZW,NPAR,NPARE
+      LOGICAL HEAD,PAGE,WIDE
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PARE(NPAR),RWORK(IRWORK)
-      INTEGER
-     &   IFIXD(NPAR),IWORK(IIWORK)
+      REAL(KIND=WP) :: PARE(NPAR),RWORK(IRWORK)
+      INTEGER IFIXD(NPAR),IWORK(IIWORK)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL NLHDR
+       EXTERNAL NLHDR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   RSD,RSS,RSSC,RSSPC
+      REAL(KIND=WP) :: RSD,RSS,RSSC,RSSPC
       INTEGER
      &   DST0,F,F0,FDIF,ICASE,IPRT,ISUBHD,MXITER,NFCALL,NITER,
      &   NREDUC,PREDUC,RELDX,STPPAR
-      CHARACTER
-     &   LETTRN*1,LETTRY*1
+      CHARACTER LETTRN*1,LETTRY*1
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   ISCHKD(2)*1
+      CHARACTER ISCHKD(2)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,LSTVCF
@@ -34916,7 +35294,7 @@
      &   LONE(8)*1,LWT(8)*1,LZERO(8)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,EISII,ERVWT,LDSCMP
+!       EXTERNAL EISGE,EISII,ERVWT,LDSCMP
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -35273,7 +35651,7 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   CDFF,PPFCHS,PPFT
-      EXTERNAL CDFF,PPFCHS,PPFT
+!       EXTERNAL CDFF,PPFCHS,PPFT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,SQRT
@@ -36335,7 +36713,7 @@
      &   I,K,KK
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL GETPI
+!       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC COS
@@ -37042,7 +37420,7 @@
      &   NMSUB(6)*1
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL WINDOW
+       EXTERNAL WINDOW
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -37060,10 +37438,10 @@
 !  EXTERNAL FUNCTIONS
       INTEGER
      &   LSTLAG
-      EXTERNAL LSTLAG
+!       EXTERNAL LSTLAG
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ACVF,ACVFF,ACVFM,SETFRQ,SPCCK,UFSER,UFSLAG,UFSMN,UFSOUT,
+!       EXTERNAL ACVF,ACVFF,ACVFM,SETFRQ,SPCCK,UFSER,UFSLAG,UFSMN,UFSOUT,
      &   UFSPCV
 !
 !  INTRINSIC FUNCTIONS
@@ -38856,7 +39234,7 @@
      &   L
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ARCOEF
+!       EXTERNAL ARCOEF
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -38937,7 +39315,7 @@
      &   IFIXD(*),IPTOUT(*),IWORK(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL NLHDR
+       EXTERNAL NLHDR
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -38955,8 +39333,7 @@
      &   ISKULL(10)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMDRV,AMEFIN,AMEISM,DRV,MDLTS3,NL2ITR,NLERR,NLINIT,
-     &   NLITRP,NLSUPK,REPCK,DCOPY
+!       EXTERNAL AMDRV,AMEFIN,AMEISM,DRV,MDLTS3,NL2ITR,NLERR,NLINIT,NLITRP,NLSUPK,REPCK,DCOPY
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -40610,7 +40987,7 @@
 !
       END
 !SPPML
-      SUBROUTINE SPPML(YM, YMMISS, X, XMISS, N, ISYM, ILOG)
+      SUBROUTINE SPPML(YM, YMISS, X, XMISS, N, ISYM, ILOG)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -40628,14 +41005,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XMISS
+      REAL(KIND=WP) :: YMISS, XMISS
       INTEGER
      &   ILOG,N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(*),YM(*),YMMISS(1)
+      REAL(KIND=WP) :: X(*),YM(*)
       INTEGER
      &   ISYM(*)
 !
@@ -40652,6 +41027,7 @@
      &   MISS,MULTI
 !
 !  LOCAL ARRAYS
+      REAL(KIND=WP) :: YMMISS(1)
       CHARACTER
      &   NMSUB(6)*1
 !
@@ -40713,6 +41089,8 @@
 !     REAL(KIND=WP) :: XLB
 !        THE LOWER BOUND FOR THE X-AXIS.  (XLB=XUB INDICATES LIMITS ARE
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
+!     REAL(KIND=WP) :: YMISS
+!        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: XMISS
 !        THE MISSING VALUE CODE FOR THE X-AXIS.
 !     REAL(KIND=WP) :: XUB
@@ -40740,6 +41118,7 @@
 !
 !     SET DEFAULT VALUES
 !
+      YMMISS=YMISS
       M = 1
       IYM = N
       MULTI = .FALSE.
@@ -41609,7 +41988,7 @@
      &   I
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ACFSD,ACVF,AOS,CHIRHO
+!      EXTERNAL ACFSD,ACVF,AOS,CHIRHO
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -41721,8 +42100,7 @@
      &   YLB,YUB
       INTEGER
      &   MSGTYP,N,NV,NVMX
-      LOGICAL
-     &   ERROR,HEAD
+      LOGICAL ERROR,HEAD
 !
 !  ARRAY ARGUMENTS
       REAL(KIND=WP) ::
@@ -41872,7 +42250,7 @@
      &   D1MACH
       LOGICAL
      &   MVCHK
-      EXTERNAL D1MACH,MVCHK
+!       EXTERNAL D1MACH,MVCHK
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -42341,7 +42719,7 @@
      &   I,ISN,J,LAG,NF,NF2,NFFT2
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL FFT,REALTR
+!       EXTERNAL FFT,REALTR
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -43505,7 +43883,7 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   D1MACH
-      EXTERNAL D1MACH
+!       EXTERNAL D1MACH
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,MIN
@@ -44280,7 +44658,7 @@
      &   IFAIL(N),IFIXD(NPAR),NFAIL(NPAR)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL HDR
+       EXTERNAL HDR
 !
 !  LOCAL SCALARS
       INTEGER
@@ -45551,7 +45929,7 @@
      &   LSCL(8)*1,LZERO(8)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,EISLE,ERVGT,LDSCMP
+!       EXTERNAL EISGE,EISLE,ERVGT,LDSCMP
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -46477,10 +46855,10 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   D1MACH
-      EXTERNAL D1MACH
+!       EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL FITEXT
+!       EXTERNAL FITEXT
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,MAX,SQRT
@@ -46721,7 +47099,7 @@
      &   LLDS(8)*1,LN(8)*1,LTHREE(8)*1,LWT(8)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,ERVWT,LDSCMP
+!       EXTERNAL EISGE,ERVWT,LDSCMP
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -46855,10 +47233,10 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   D1MACH
-      EXTERNAL D1MACH
+!       EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL DOTCM
+!       EXTERNAL DOTCM
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -47123,7 +47501,7 @@
      &   IFIXD(NPAR),IPTOUT(NDIGIT),IWORK(IIWORK)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL,NLDRV,NLHDR
+       EXTERNAL DRV,MDL,NLDRV,NLHDR
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -47143,7 +47521,7 @@
      &   ISKULL(10)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL NL2ITR,NLERR,NLFIN,NLINIT,NLISM,NLITRP,NLSUPK
+!       EXTERNAL NL2ITR,NLERR,NLFIN,NLINIT,NLISM,NLITRP,NLSUPK
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SQRT
@@ -47473,7 +47851,7 @@
 !
       END
 !VPML
-      SUBROUTINE VPML(YM, YMMISS, N, NS, ILOG)
+      SUBROUTINE VPML(YM, YMISS, N, NS, ILOG)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -47490,30 +47868,24 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ILOG,N,NS
+      REAL(KIND=WP) :: YMISS
+      INTEGER :: ILOG,N,NS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YM(*),YMMISS(1)
+      REAL(KIND=WP) :: YM(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+      INTEGER IERR
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   XINC,XLB,YLB,YUB
-      INTEGER
-     &   IBAR,IPRT,IRLIN,ISCHCK,ISIZE,IYM,LISYM,M
-      LOGICAL
-     &   MISS,MULTI
+      REAL(KIND=WP) :: XINC,XLB,YLB,YUB
+      INTEGER IBAR,IPRT,IRLIN,ISCHCK,ISIZE,IYM,LISYM,M
+      LOGICAL MISS,MULTI
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISYM(1)
-      CHARACTER
-     &   NMSUB(6)*1
+      REAL(KIND=WP) :: YMMISS(1)
+      INTEGER ISYM(1)
+      CHARACTER NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VPCNT
@@ -47586,6 +47958,8 @@
 !        LOWER BOUND FOR Y-AXIS.
 !     REAL(KIND=WP) :: YM(N,1)
 !        MULTIVARIATE OBSERVATIONS FOR THE Y COORDINATES
+!     REAL(KIND=WP) :: YMISS
+!        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: YMMISS(1)
 !        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: YUB
@@ -47599,6 +47973,7 @@
 !
 !     SET DEFAULT VALUES
 !
+      YMMISS=YMISS
       M = 1
       IYM = N
       MULTI = .FALSE.
@@ -47676,7 +48051,7 @@
      &   ERROR,XCHECK
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL PLTCHK,PPLMT,PPMN,VERSP
+!       EXTERNAL PLTCHK,PPLMT,PPMN,VERSP
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -48074,10 +48449,10 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   PPFNML,D1MACH
-      EXTERNAL PPFNML,D1MACH
+!       EXTERNAL PPFNML,D1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL GETPI
+!       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ATAN2,COS,LOG,SIGN,SIN,SQRT,TANH
@@ -49263,7 +49638,7 @@
      &   I,J
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ERAGTP
+!       EXTERNAL ERAGTP
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -49381,7 +49756,7 @@
      &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL IPRINT,LLCNTG
+!       EXTERNAL IPRINT,LLCNTG
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -49841,7 +50216,7 @@
      &   '       CALL STATS (Y, N, LDSTAK, STS, NPRT)')
       END
 !PPML
-      SUBROUTINE PPML(YM, YMMISS, X, XMISS, N, ILOG)
+      SUBROUTINE PPML(YM, YMISS, X, XMISS, N, ILOG)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -49858,14 +50233,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XMISS
+      REAL(KIND=WP) :: YMISS, XMISS
       INTEGER
      &   ILOG,N
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(*),YM(*),YMMISS(1)
+      REAL(KIND=WP) :: X(*),YM(*)
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -49880,6 +50253,7 @@
      &   MISS,MULTI
 !
 !  LOCAL ARRAYS
+      REAL(KIND=WP) :: YMMISS(1)
       INTEGER
      &   ISYM(1)
       CHARACTER
@@ -49943,6 +50317,8 @@
 !     REAL(KIND=WP) :: XLB
 !        THE LOWER BOUND FOR THE X-AXIS.  (XLB=XUB INDICATES LIMITS ARE
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
+!     REAL(KIND=WP) :: YMISS
+!        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: XMISS
 !        THE MISSING VALUE CODE FOR THE X-AXIS.
 !     REAL(KIND=WP) :: XUB
@@ -49970,6 +50346,7 @@
 !
 !     SET DEFAULT VALUES
 !
+      YMMISS=YMISS
       M = 1
       IYM = N
       MULTI = .FALSE.
@@ -50620,7 +50997,7 @@
      &   IFIXED(*),IPTOUT(5)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL,NLDRV,NLHDR
+       EXTERNAL DRV,MDL,NLDRV,NLHDR
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -50643,10 +51020,10 @@
 !  EXTERNAL FUNCTIONS
       INTEGER
      &   STKST
-      EXTERNAL STKST
+!       EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CPYASF,CPYVII,NLMN,DCOPY,SETIV,STKCLR
+!       EXTERNAL CPYASF,CPYVII,NLMN,DCOPY,SETIV,STKCLR
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -51405,7 +51782,7 @@
      &   LONE(8)*1,LSCL(8)*1,LZERO(8)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,ERVGT,LDSCMP
+!       EXTERNAL EISGE,ERVGT,LDSCMP
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MAX
@@ -51546,7 +51923,7 @@
      &   IFIXED(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL
+       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -52607,7 +52984,7 @@
 !  EXTERNAL FUNCTIONS
       LOGICAL
      &   MVCHK
-      EXTERNAL MVCHK
+!       EXTERNAL MVCHK
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -52671,7 +53048,7 @@
      &   PAR(NPAR),PARTMP(NPAR),PV(N),XM(IXM,M)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
@@ -52686,10 +53063,10 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   D1MACH
-      EXTERNAL D1MACH
+!       EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL SETROW
+!       EXTERNAL SETROW
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,LOG10,MAX,SQRT
@@ -52807,7 +53184,7 @@
      &   PAR(*),RES(*),XM(*),Y(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -53061,7 +53438,7 @@
      &   NMSUB(6)*1
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -53087,10 +53464,10 @@
 !  EXTERNAL FUNCTIONS
       INTEGER
      &   ICNTI,STKST
-      EXTERNAL ICNTI,STKST
+!       EXTERNAL ICNTI,STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL DRV,LDSCMP,NLCNT,NLDRVN,NLER,NLHDRN,PRTCNT,DCOPY,STKCLR,
+!       EXTERNAL DRV,LDSCMP,NLCNT,NLDRVN,NLER,NLHDRN,PRTCNT,DCOPY,STKCLR,
      &   STKSET,STPCNT
 !
 !  INTRINSIC FUNCTIONS
@@ -53410,7 +53787,7 @@
      &   ISTAK(12)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL MDLTS2
+!       EXTERNAL MDLTS2
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -54013,7 +54390,7 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   D1MACH
-      EXTERNAL D1MACH
+!       EXTERNAL D1MACH
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MIN,SQRT
@@ -55049,9 +55426,7 @@
      &   I
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   D1MACH
-      EXTERNAL D1MACH
+!      REAL(KIND=WP),external :: D1MACH
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,LOG10,MAX,MIN
@@ -55094,7 +55469,7 @@
       RETURN
       END
 !SVPM
-      SUBROUTINE SVPM(YM, YMMISS, N, NS, ISYM)
+      SUBROUTINE SVPM(YM, YMISS, N, NS, ISYM)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -55112,12 +55487,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
+      REAL(KIND=WP) :: YMISS
       INTEGER
      &   N,NS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YM(*),YMMISS(*)
+      REAL(KIND=WP) :: YM(*)
       INTEGER
      &   ISYM(*)
 !
@@ -55126,6 +55501,7 @@
      &   IERR
 !
 !  LOCAL SCALARS
+      REAL(KIND=WP) :: YMMISS(1)
       REAL(KIND=WP) ::
      &   XINC,XLB,YLB,YUB
       INTEGER
@@ -55208,6 +55584,8 @@
 !        LOWER BOUND FOR Y-AXIS.
 !     REAL(KIND=WP) :: YM(N,1)
 !        MULTIVARIATE OBSERVATIONS FOR THE Y COORDINATES
+!     REAL(KIND=WP) :: YMISS
+!        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: YMMISS(1)
 !        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: YUB
@@ -55239,6 +55617,7 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
+      YMMISS=YMISS
       CALL VPCNT (YM, YMMISS, N, M, IYM, MULTI, ILOG, YLB, YUB,
      &  XLB, XINC, NS, IRLIN, IBAR, NMSUB, ISCHCK, ISYM, ISIZE,
      &  MISS, LISYM)
@@ -55806,7 +56185,7 @@
      &   IFIXED(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -56362,14 +56741,14 @@
      &   m(17)
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   randu
-      integer
-     &   i1mach
-      external randu,i1mach
+!      real(kind=wp) ::
+!     &   randu
+!      integer
+!     &   i1mach
+!      external randu,i1mach
 !
 !  EXTERNAL SUBROUTINES
-      external xerror
+!      external xerror
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,exp,log,min,mod,real,sign
@@ -56724,7 +57103,7 @@
      &   I,ISN,NFFT2
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL FFT,REALTR
+!       EXTERNAL FFT,REALTR
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -56982,7 +57361,7 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   D1MACH
-      EXTERNAL D1MACH
+!       EXTERNAL D1MACH
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,LOG,MOD,SIGN,SQRT
@@ -57253,7 +57632,7 @@
      &   VCV(*)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL MATPRT
+!       EXTERNAL MATPRT
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -57468,12 +57847,12 @@
      &   I,NUSED
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   D1MACH
-      EXTERNAL D1MACH
+!      REAL(KIND=WP) ::
+!     &   D1MACH
+!      EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ACFSDM,ACVFM,AOS,CHIRHO
+!      EXTERNAL ACFSDM,ACVFM,AOS,CHIRHO
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -57807,7 +58186,7 @@
      &   NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL DEMODU,DEMORD,DEMOUT,FLTSL,LPFLT,POLAR
+!       EXTERNAL DEMODU,DEMORD,DEMOUT,FLTSL,LPFLT,POLAR
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -58663,7 +59042,7 @@
      &   ISTAK(12)
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL MDLTS2
+!       EXTERNAL MDLTS2
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -59084,7 +59463,7 @@
      &   IFIXED(LIFIXD)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,HDR,MDL
+       EXTERNAL DRV,HDR,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -59111,10 +59490,10 @@
      &   D1MACH
       INTEGER
      &   STKST
-      EXTERNAL D1MACH,STKST
+!       EXTERNAL D1MACH,STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CPYVII,DCKMN,DCKOUT,ETAMDL,SETIV,SETROW,STKCLR
+!       EXTERNAL CPYVII,DCKMN,DCKOUT,ETAMDL,SETIV,SETROW,STKCLR
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC LOG10
@@ -59814,7 +60193,7 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   D1MACH
-      EXTERNAL D1MACH
+!       EXTERNAL D1MACH
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC IABS,LOG10
@@ -60275,10 +60654,10 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   CDFF,D1MACH
-      EXTERNAL CDFF,D1MACH
+!       EXTERNAL CDFF,D1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ARCOEF
+!       EXTERNAL ARCOEF
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC LOG,DBLE
@@ -60755,7 +61134,7 @@
      &   PAR(*),XM(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL
+       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -61143,7 +61522,7 @@
      &   IFIXED(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL
+       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -61449,7 +61828,7 @@
      &   MSG(LMSG)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
@@ -61458,10 +61837,10 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   D1MACH
-      EXTERNAL D1MACH
+!       EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL DCKFPA
+!       EXTERNAL DCKFPA
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,SIGN
@@ -63095,7 +63474,7 @@
      &    9H IS ZERO.)
       END
 !SPPMC
-      SUBROUTINE SPPMC(YM, YMMISS, X, XMISS, N, ISYM, ILOG, ISIZE, NOUT,
+      SUBROUTINE SPPMC(YM, YMISS, X, XMISS, N, ISYM, ILOG, ISIZE, NOUT,
      &   YLB, YUB, XLB, XUB)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -63114,14 +63493,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XLB,XMISS,XUB,YLB,YUB
+      REAL(KIND=WP) :: XLB,YMISS,XMISS,XUB,YLB,YUB
       INTEGER
      &   ILOG,ISIZE,N,NOUT
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(*),YM(*),YMMISS(1)
+      REAL(KIND=WP) :: X(*),YM(*)
       INTEGER
      &   ISYM(*)
 !
@@ -63136,6 +63513,7 @@
      &   MISS,MULTI
 !
 !  LOCAL ARRAYS
+      REAL(KIND=WP) :: YMMISS(1)
       CHARACTER
      &   NMSUB(6)*1
 !
@@ -63197,6 +63575,8 @@
 !     REAL(KIND=WP) :: XLB
 !        THE LOWER BOUND FOR THE X-AXIS.  (XLB=XUB INDICATES LIMITS ARE
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
+!     REAL(KIND=WP) :: YMISS
+!        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: XMISS
 !        THE MISSING VALUE CODE FOR THE X-AXIS.
 !     REAL(KIND=WP) :: XUB
@@ -63224,6 +63604,7 @@
 !
 !     SET DEFAULT VALUES
 !
+      YMMISS=YMISS
       M = 1
       IYM = N
       MULTI = .FALSE.
@@ -63810,7 +64191,7 @@
      &   IFIXED(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL
+       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -64051,10 +64432,10 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   D1MACH
-      EXTERNAL D1MACH
+!       EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CCFSDM,CCVFM
+!       EXTERNAL CCFSDM,CCVFM
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SQRT
@@ -64141,7 +64522,7 @@
       RETURN
       END
 !SVPMC
-      SUBROUTINE SVPMC(YM, YMMISS, N, NS, ISYM, ILOG, ISIZE,
+      SUBROUTINE SVPMC(YM, YMISS, N, NS, ISYM, ILOG, ISIZE,
      &   IRLIN, IBAR, YLB, YUB, XLB, XINC)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -64160,14 +64541,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XINC,XLB,YLB,YUB
+      REAL(KIND=WP) :: XINC,XLB,YLB,YUB, YMISS
       INTEGER
      &   IBAR,ILOG,IRLIN,ISIZE,N,NS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YM(*),YMMISS(*)
+      REAL(KIND=WP) :: YM(*)
       INTEGER
      &   ISYM(*)
 !
@@ -64182,8 +64561,8 @@
      &   MISS,MULTI
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   NMSUB(6)*1
+      REAL(KIND=WP) :: YMMISS(1)
+      CHARACTER :: NMSUB(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VPCNT
@@ -64256,6 +64635,8 @@
 !        LOWER BOUND FOR Y-AXIS.
 !     REAL(KIND=WP) :: YM(N,1)
 !        MULTIVARIATE OBSERVATIONS FOR THE Y COORDINATES
+!     REAL(KIND=WP) :: YMISS
+!        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: YMMISS(1)
 !        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: YUB
@@ -64279,6 +64660,7 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
+      YMMISS=YMISS
       CALL VPCNT (YM, YMMISS, N, M, IYM, MULTI, ILOG, YLB, YUB,
      &  XLB, XINC, NS, IRLIN, IBAR, NMSUB, ISCHCK, ISYM, ISIZE,
      &  MISS, LISYM)
@@ -64328,7 +64710,7 @@
      &   IFIXD(NPAR)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL
+       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -65855,7 +66237,7 @@
      &   MSG(LMSG)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::
@@ -65864,7 +66246,7 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   D1MACH
-      EXTERNAL D1MACH
+!       EXTERNAL D1MACH
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,MIN
@@ -66510,7 +66892,7 @@
      &   PAR(*),SCALE(*),STP(*),XM(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -66870,15 +67252,15 @@
      &   NLPPA(LNLPPA)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL WINDOW
+       EXTERNAL WINDOW
 !
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   PPFCHS
-      EXTERNAL PPFCHS
+!       EXTERNAL PPFCHS
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL DFBW,DFBWM,UFSEST
+!       EXTERNAL DFBW,DFBWM,UFSEST
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC NINT
@@ -67156,7 +67538,7 @@
      &   IFIXED(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -67397,7 +67779,7 @@
      &   NMSUB(6)*1
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL LLHDR
+       EXTERNAL LLHDR
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -67422,10 +67804,10 @@
 !  EXTERNAL FUNCTIONS
       INTEGER
      &   STKST
-      EXTERNAL STKST
+!       EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CPYMSS,LLER,LLSMN,PRTCNT,DCOPY,SETRV,STKCLR,STKSET
+!       EXTERNAL CPYMSS,LLER,LLSMN,PRTCNT,DCOPY,SETRV,STKCLR,STKSET
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -67856,7 +68238,7 @@
      &   IFIXD(*),IPTOUT(*),ISKULL(10)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL AMEHDR
+       EXTERNAL AMEHDR
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -68242,7 +68624,7 @@
      &   LLDS(8)*1,LN(8)*1,LONE(8)*1,LY(8)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,ERVII,LDSCMP
+!       EXTERNAL EISGE,ERVII,LDSCMP
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -68363,7 +68745,7 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   EXTEND
-      EXTERNAL EXTEND
+!       EXTERNAL EXTEND
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC MOD
@@ -68651,7 +69033,7 @@
      &   IFIXED(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -68884,7 +69266,7 @@
      &   I,ISPCFW
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL SPPLTC,SPPLTD,SPPLTL
+!       EXTERNAL SPPLTC,SPPLTD,SPPLTL
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC LOG10
@@ -69070,10 +69452,10 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   PPFNML
-      EXTERNAL PPFNML
+!       EXTERNAL PPFNML
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL GETPI
+!       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ATAN,COS,SIN,SQRT
@@ -69643,7 +70025,7 @@
      &   DGAMI,DGAMMA,D1MACH
       LOGICAL
      &   MVCHK
-      EXTERNAL DGAMI,DGAMMA,D1MACH,MVCHK
+!       EXTERNAL DGAMI,DGAMMA,D1MACH,MVCHK
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -70936,7 +71318,7 @@
      &   I,J
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL SETRV
+!       EXTERNAL SETRV
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -71759,7 +72141,7 @@
      &   I,ISN,J,K,M,M1,N1,NK
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL FFT,GETPI,REALTR
+!       EXTERNAL FFT,GETPI,REALTR
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC SIN
@@ -72355,7 +72737,7 @@
      &   I
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL GETPI
+!       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC COS,SIN
@@ -72721,7 +73103,7 @@
      &   LSTEP(8)*1,LWGT(8)*1,LZERO(8)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EISGE,EIVEQ,ERVGT,ERVWT
+!       EXTERNAL EISGE,EIVEQ,ERVGT,ERVWT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -73183,7 +73565,7 @@
      &   IFAIL(N),ITEMP(N)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       REAL(KIND=WP) ::
@@ -73198,7 +73580,7 @@
      &   DONE,FIRST
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CMPFD,ICOPY,RELCOM,DCOPY
+!       EXTERNAL CMPFD,ICOPY,RELCOM,DCOPY
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,SIGN
@@ -74082,7 +74464,7 @@
      &   LZERO(8)*1
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL EIAGE,EISEQ,EISGE,ERVGT
+!       EXTERNAL EIAGE,EISEQ,EISGE,ERVGT
 !
 !  COMMON BLOCKS
       COMMON /ERRCHK/IERR
@@ -74255,7 +74637,7 @@
      &   IFIXD(NPAR)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL
+       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -74458,7 +74840,7 @@
      &   IFIT,M
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL LLCNT,LLHDRG
+!       EXTERNAL LLCNT,LLHDRG
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -75339,7 +75721,7 @@
      &   IPTOUT(4)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL LLHDR
+       EXTERNAL LLHDR
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -76226,10 +76608,10 @@
 !  EXTERNAL FUNCTIONS
       LOGICAL
      &   MVCHK
-      EXTERNAL MVCHK
+!       EXTERNAL MVCHK
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL ERAGTP
+!       EXTERNAL ERAGTP
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -76809,7 +77191,7 @@
      &   I
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL AMEAN
+!       EXTERNAL AMEAN
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -76869,7 +77251,7 @@
      &   I,J
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL SPCCK
+!       EXTERNAL SPCCK
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC LOG10
@@ -77376,7 +77758,7 @@
  2020 FORMAT (1X, F5.2, '+', 51A1, '+', 3X, F5.2, '+', 51A1, '+')
       END
 !SVPML
-      SUBROUTINE SVPML(YM, YMMISS, N, NS, ISYM, ILOG)
+      SUBROUTINE SVPML(YM, YMISS, N, NS, ISYM, ILOG)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -77394,12 +77776,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
+      REAL(KIND=WP) :: YMISS
       INTEGER
      &   ILOG,N,NS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YM(*),YMMISS(*)
+      REAL(KIND=WP) :: YM(*)
       INTEGER
      &   ISYM(*)
 !
@@ -77416,6 +77798,7 @@
      &   MISS,MULTI
 !
 !  LOCAL ARRAYS
+      REAL(KIND=WP) :: YMMISS(1)
       CHARACTER
      &   NMSUB(6)*1
 !
@@ -77490,6 +77873,8 @@
 !        LOWER BOUND FOR Y-AXIS.
 !     REAL(KIND=WP) :: YM(N,1)
 !        MULTIVARIATE OBSERVATIONS FOR THE Y COORDINATES
+!     REAL(KIND=WP) :: YMISS
+!        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: YMMISS(1)
 !        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL(KIND=WP) :: YUB
@@ -77504,6 +77889,7 @@
 !
 !     SET DEFAULT VALUES
 !
+      YMMISS=YMISS
       M = 1
       IYM = N
       MULTI = .FALSE.
@@ -77691,7 +78077,7 @@
      &   IFAIL(N),ITEMP(N)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       REAL(KIND=WP) ::
@@ -77707,10 +78093,10 @@
 !  EXTERNAL FUNCTIONS
       REAL(KIND=WP) ::
      &   D1MACH
-      EXTERNAL D1MACH
+!       EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL CMPFD,GMEAN,RELCOM,STPADJ,STPSEL
+!       EXTERNAL CMPFD,GMEAN,RELCOM,STPADJ,STPSEL
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC ABS,MAX,SIGN,SQRT
@@ -78274,7 +78660,7 @@
      &   PAR(*),STP(*),XM(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -79217,7 +79603,7 @@
      &   NMSUB(6)*1
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL DRV,MDL
+       EXTERNAL DRV,MDL
 !
 !  SCALARS IN COMMON
       INTEGER
@@ -79241,10 +79627,10 @@
 !  EXTERNAL FUNCTIONS
       INTEGER
      &   ICNTI
-      EXTERNAL ICNTI
+!       EXTERNAL ICNTI
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL DCKCNT,LDSCMP,NLCNT,NLDRVA,NLER,NLHDRA,PRTCNT,STKSET
+!       EXTERNAL DCKCNT,LDSCMP,NLCNT,NLDRVA,NLER,NLHDRA,PRTCNT,STKSET
 !
 !  COMMON BLOCKS
       COMMON /CSTAK/DSTAK
@@ -79907,7 +80293,7 @@
      &   I,ISPCA,ISPCF
 !
 !  EXTERNAL SUBROUTINES
-      EXTERNAL SPPLTC,SPPLTD,SPPLTL
+!       EXTERNAL SPPLTC,SPPLTD,SPPLTL
 !
 !  INTRINSIC FUNCTIONS
       INTRINSIC LOG10,MAX,MIN
@@ -81305,9 +81691,9 @@
      &   i,k,l,nl1
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   dotprd
-      external dotprd
+!      real(kind=wp) ::
+!     &   dotprd
+!      external dotprd
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs
@@ -81423,9 +81809,9 @@
      &   i,j,k
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   dotprd
-      external dotprd
+!      real(kind=wp) ::
+!     &   dotprd
+!      external dotprd
 !
       data zero/0.0_wp/
 !
@@ -81594,14 +81980,10 @@
 !
 !  ***  SET P-VECTOR Y TO SCALAR S  ***
 !
-!  VARIABLE DECLARATIONS
-!
 !  SCALAR ARGUMENTS
-      real(kind=wp) :: s
       integer p
-!
-!  ARRAY ARGUMENTS
       real(kind=wp) :: y(*)
+      real(kind=wp) :: s
 !
 !  LOCAL SCALARS
       integer i
@@ -81644,12 +82026,12 @@
      &   radius,res,res0,rmat,rmat0,stppar,uk0
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   dotprd,v2norm
-      external dotprd,v2norm
+!      real(kind=wp) ::
+!     &   dotprd,v2norm
+!      external dotprd,v2norm
 !
 !  EXTERNAL SUBROUTINES
-      external litvmu,livmul,vcopy
+!      external litvmu,livmul,vcopy
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,max,min,sqrt
@@ -82149,12 +82531,12 @@
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON
-      real(kind=wp) ::
-     &   dotprd,v2norm
-      external dotprd,v2norm
+!      real(kind=wp) ::
+!     &   dotprd,v2norm
+!      external dotprd,v2norm
 !
 !  EXTERNAL SUBROUTINES
-      external vaxpy,vscopy
+!      external vaxpy,vscopy
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,min,sqrt
@@ -82398,36 +82780,30 @@
      &   n,p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
-     &   urparm(1),v(1),x(p)
-      integer
-     &   iv(1),uiparm(1)
+      real(kind=wp) :: urparm(:),v(:),x(p)
+      integer iv(:),uiparm(:)
 !
 !  SUBROUTINE ARGUMENTS
       external calcr,ufparm
 !
 !  LOCAL SCALARS
-      real(kind=wp) ::
-     &   h,hfac,hlim,negpt5,one,xk,zero
-      integer
-     &   covprt,covreq,d,d1,dk,dltfdj,dtype,i,j,j1,j1k,k,nf,nfcall,
+      real(kind=wp) :: h,hfac,hlim,negpt5,one,xk,zero
+      integer covprt,covreq,d,d1,dk,dltfdj,dtype,i,j,j1,j1k,k,nf,nfcall,
      &   nfgcal,r,r1,rn,toobig
-      logical
-     &   strted
+      logical strted
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON
 !
 !  EXTERNAL SUBROUTINES
-      external dfault,itsmry,nl2itr,vscopy
+!      external dfault,itsmry,nl2itr,vscopy
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,max
 !
-!     INTEGER N, P, IV(1), UIPARM(1)
+!     INTEGER N, P, IV(:), UIPARM(:)
 !     REAL(KIND=WP) :: X(P), V(1), URPARM(1)
 !     DIMENSION IV(60+P),  V(93 + N*P + 3*N + P*(3*P+33)/2)
-!     EXTERNAL CALCR, UFPARM
 !
 !-----------------------------  DISCUSSION  ----------------------------
 !
@@ -82576,14 +82952,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
-     &   n,nf,p
+      integer n,nf,p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
-     &   r(n),urparm(*),x(p)
-      integer
-     &   uiparm(*)
+      real(kind=wp) :: r(n),urparm(:),x(p)
+      integer uiparm(:)
 !
 !  SUBROUTINE ARGUMENTS
       external ufparm
@@ -83015,7 +83388,7 @@
 !     REAL(KIND=WP) :: RMDCON
 !
 !  EXTERNAL SUBROUTINES
-      external dfault,vcopy
+!      external dfault,vcopy
 !
 !     INTEGER IV(21), N, NN, P
 !     REAL(KIND=WP) :: V(33)
@@ -83318,11 +83691,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  LOCAL ARRAYS
-      real(kind=wp) :: urparm(1),v(147),x(2)
-      integer :: iv(62),uiparm(1)
+      real(kind=wp) :: urparm(1), v(147), x(2)
+      integer       :: iv(62), uiparm(1)
 !
 !  EXTERNAL SUBROUTINES
-      external madj,madr,nl2sno,nl2sol,ufparm
+      external madj, madr, nl2sno, nl2sol, ufparm
 !
       x(1) = 3.0_wp
       x(2) = 1.0_wp
@@ -83376,7 +83749,7 @@
      &   havej
 !
 !  EXTERNAL SUBROUTINES
-      external linvrt,litvmu,livmul,lsqrt,ltsqar,qrfact,vcopy,vscopy
+!      external linvrt,litvmu,livmul,lsqrt,ltsqar,qrfact,vcopy,vscopy
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,max
@@ -83799,9 +84172,9 @@
      &   i,ii,ix,j,j0,ji,jj,jjj,jm1,pplus1
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   v2norm
-      external v2norm
+!      real(kind=wp) ::
+!     &   v2norm
+!      external v2norm
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,mod
@@ -84041,14 +84414,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
-     &   n,nf,p
+      integer n,nf,p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
-     &   j(n,p),urparm(*),x(p)
-      integer
-     &   uiparm(*)
+      real(kind=wp) :: j(n,p),urparm(:),x(p)
+      integer uiparm(:)
 !
 !  SUBROUTINE ARGUMENTS
       external ufparm
@@ -84122,9 +84492,9 @@
      &   i,im1,k,km1
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   dotprd
-      external dotprd
+!      real(kind=wp) ::
+!     &   dotprd
+!      external dotprd
 !
 !
 !-----------------------------------------------------------------------
@@ -84199,9 +84569,9 @@
      &   i,im1,j,k
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   dotprd
-      external dotprd
+!      real(kind=wp) ::
+!     &   dotprd
+!      external dotprd
 !
 !  ***  PARAMETER DECLARATIONS  ***
 !
@@ -84376,12 +84746,12 @@
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON
-      real(kind=wp) ::
-     &   dotprd,lsvmin,v2norm
-      external dotprd,lsvmin,v2norm
+!      real(kind=wp) ::
+!     &   dotprd,lsvmin,v2norm
+!      external dotprd,lsvmin,v2norm
 !
 !  EXTERNAL SUBROUTINES
-      external litvmu,livmul,lsqrt
+!      external litvmu,livmul,lsqrt
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,max,min,sqrt
@@ -85016,9 +85386,9 @@
      &   d0,dfac,dtype,i,jtol0,jtoli,niter,s,s1
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   v2norm
-      external v2norm
+!      real(kind=wp) ::
+!     &   v2norm
+!      external v2norm
 !
 !  INTRINSIC FUNCTIONS
       intrinsic max,sqrt
@@ -85099,9 +85469,9 @@
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON
-      integer
-     &   imdcon
-      external imdcon
+!      integer
+!     &   imdcon
+!      external imdcon
 !
 !  INTRINSIC FUNCTIONS
       intrinsic max
@@ -85269,12 +85639,12 @@
      &   i,j,k
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   dotprd,v2norm
-      external dotprd,v2norm
+!      real(kind=wp) ::
+!     &   dotprd,v2norm
+!      external dotprd,v2norm
 !
 !  EXTERNAL SUBROUTINES
-      external slvmul
+!      external slvmul
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,min
@@ -85369,11 +85739,11 @@
       logical goodx
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp),external :: reldst
+!      real(kind=wp),external :: reldst
 !     real(kind=wp) :: mach
 !
 !  EXTERNAL SUBROUTINES
-      external vcopy
+!      external vcopy
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,max
@@ -85924,13 +86294,13 @@
      &   toobig,tuner4,tuner5,vsave1,w,w1,wscale,x0,x01,xirc
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) :: dotprd,v2norm
-      logical stopx
-      external dotprd,v2norm,stopx
+!      real(kind=wp) :: dotprd,v2norm
+!      logical stopx
+!      external dotprd,v2norm,stopx
 !
 !  EXTERNAL SUBROUTINES
-      external assess,covclc,dupdat,gqtstp,itsmry,lmstep,parchk,qapply,
-     &   qrfact,rptmul,slupdt,slvmul,vaxpy,vcopy,vscopy
+!      external assess,covclc,dupdat,gqtstp,itsmry,lmstep,parchk,qapply,
+!     &   qrfact,rptmul,slupdt,slvmul,vaxpy,vcopy,vscopy
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,sqrt
@@ -86628,8 +86998,8 @@
       integer n,p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) :: urparm(*),v(*),x(p)
-      integer iv(*),uiparm(*)
+      real(kind=wp) :: urparm(:),v(:),x(p)
+      integer iv(:),uiparm(:)
 !
 !  SUBROUTINE ARGUMENTS
       external calcj,calcr,ufparm
@@ -86639,14 +87009,12 @@
       logical strted
 !
 !  EXTERNAL SUBROUTINES
-      external itsmry,nl2itr
+!      external itsmry,nl2itr
 !
 !
-!     INTEGER N, P, IV(1), UIPARM(1)
+!     INTEGER N, P, IV(:), UIPARM(:)
 !     REAL(KIND=WP) :: X(P), V(1), URPARM(1)
 !     DIMENSION IV(60+P),  V(93 + N*P + 3*N + P*(3*P+33)/2)
-!     DIMENSION UIPARM(*), URPARM(*)
-!     EXTERNAL CALCR, CALCJ, UFPARM
 !
 !  ***  PURPOSE  ***
 !

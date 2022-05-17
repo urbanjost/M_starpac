@@ -3,14 +3,10 @@
 !
 !  ***  SET P-VECTOR Y TO SCALAR S  ***
 !
-!  VARIABLE DECLARATIONS
-!
 !  SCALAR ARGUMENTS
-      real(kind=wp) :: s
       integer p
-!
-!  ARRAY ARGUMENTS
       real(kind=wp) :: y(*)
+      real(kind=wp) :: s
 !
 !  LOCAL SCALARS
       integer i

@@ -40,7 +40,7 @@
      &   havej
 !
 !  EXTERNAL SUBROUTINES
-      external linvrt,litvmu,livmul,lsqrt,ltsqar,qrfact,vcopy,vscopy
+!      external linvrt,litvmu,livmul,lsqrt,ltsqar,qrfact,vcopy,vscopy
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,max

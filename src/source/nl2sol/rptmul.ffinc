@@ -32,9 +32,9 @@
      &   i,im1,k,km1
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   dotprd
-      external dotprd
+!      real(kind=wp) ::
+!     &   dotprd
+!      external dotprd
 !
 !
 !-----------------------------------------------------------------------

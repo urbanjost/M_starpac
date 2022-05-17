@@ -15,36 +15,30 @@
      &   n,p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
-     &   urparm(1),v(1),x(p)
-      integer
-     &   iv(1),uiparm(1)
+      real(kind=wp) :: urparm(:),v(:),x(p)
+      integer iv(:),uiparm(:)
 !
 !  SUBROUTINE ARGUMENTS
       external calcr,ufparm
 !
 !  LOCAL SCALARS
-      real(kind=wp) ::
-     &   h,hfac,hlim,negpt5,one,xk,zero
-      integer
-     &   covprt,covreq,d,d1,dk,dltfdj,dtype,i,j,j1,j1k,k,nf,nfcall,
+      real(kind=wp) :: h,hfac,hlim,negpt5,one,xk,zero
+      integer covprt,covreq,d,d1,dk,dltfdj,dtype,i,j,j1,j1k,k,nf,nfcall,
      &   nfgcal,r,r1,rn,toobig
-      logical
-     &   strted
+      logical strted
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON
 !
 !  EXTERNAL SUBROUTINES
-      external dfault,itsmry,nl2itr,vscopy
+!      external dfault,itsmry,nl2itr,vscopy
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,max
 !
-!     INTEGER N, P, IV(1), UIPARM(1)
+!     INTEGER N, P, IV(:), UIPARM(:)
 !     REAL(KIND=WP) :: X(P), V(1), URPARM(1)
 !     DIMENSION IV(60+P),  V(93 + N*P + 3*N + P*(3*P+33)/2)
-!     EXTERNAL CALCR, UFPARM
 !
 !-----------------------------  DISCUSSION  ----------------------------
 !

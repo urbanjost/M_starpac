@@ -30,7 +30,7 @@
      &   MSG(LMSG)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  LOCAL SCALARS
       REAL(KIND=WP) ::

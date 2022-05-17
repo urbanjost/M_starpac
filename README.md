@@ -2357,7 +2357,7 @@ library callable from fpm(Fortran Package Manager). *
                                      <3-2>
 1and Tsang [1984].   The same pseudo-random numbers (to within final  round-off
  error) will  be generated  on all  computers with  at least  32 binary  digits
- available for  representing integers.   The code  was writen  by Boisvert  and
+ available for  representing integers.   The code was written  by Boisvert  and
 
 
 
@@ -20088,3 +20088,6 @@ The call to PPMN:
 srce/ppmn.ffinc:
 !!SUBROUTINE PPMN (YM(IYM,M),YMMISS(M),X(N),xmiss,n,m,iym,ischck,ISYM(LISYM),lisym,isize,nout,ymn,ymx,xmn,xmx,_miss,ilog)
 ```
+
+No clarity or code consistency and not clearly documented if YMISS is an array or a single value in a lot of the plotting
+procedures, and in which routines the Y data is a vector or a matrix. Might need to make some generics.

@@ -23,9 +23,9 @@
      &   i,j,k
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   dotprd
-      external dotprd
+!      real(kind=wp) ::
+!     &   dotprd
+!      external dotprd
 !
       data zero/0.0_wp/
 !

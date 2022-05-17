@@ -113,10 +113,10 @@
 !
 !       PLOT VERTICAL PLOTS
 !
-        CALL VPLMT(YAXIS, [YMISS], NPTS, 1, NPTS, 0.0E0, 0.0E0, YMN, YMX,
+        CALL VPLMT(YAXIS,[YMISS],NPTS,1,NPTS,0.0E0,0.0E0,YMN,YMX,
      &    ERROR, NMSUB, .TRUE., 1)
         IF (.NOT.ERROR)
-     &    CALL VPMN(YAXIS(2), [YMISS], NPTS-1, 1, NPTS, 1, 0, ISYM, 1, 0,
+     &    CALL VPMN(YAXIS(2),[YMISS],NPTS-1,1,NPTS,1,0,ISYM,1,0,
      &    YMN, YMX, 0.5E0/(NPTS-1), 0.5E0/(NPTS-1),
      &   .TRUE., ILOG, -1, 0)
       ELSE

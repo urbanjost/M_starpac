@@ -19,8 +19,8 @@
       integer mdcon(3)
 !
 !  EXTERNAL FUNCTIONS
-      integer i1mach
-      external i1mach
+!      integer i1mach
+!      external i1mach
 !
       mdcon(1) = i1mach(2)
       mdcon(2) = i1mach(3)

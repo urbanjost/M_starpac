@@ -35,7 +35,8 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER KONTRL,LEVEL,MESSG1,NERR,NMESSG
+      INTEGER KONTRL,LEVEL,NERR,NMESSG
+      character(len=4),intent(in) :: messg1
 !
       RETURN
       END

@@ -21,9 +21,9 @@
      &   i,k,l,nl1
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   dotprd
-      external dotprd
+!      real(kind=wp) ::
+!     &   dotprd
+!      external dotprd
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs

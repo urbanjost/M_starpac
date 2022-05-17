@@ -29,7 +29,7 @@
      &   PAR(*),SCALE(*),STP(*),XM(*)
 !
 !  SUBROUTINE ARGUMENTS
-      EXTERNAL MDL
+       EXTERNAL MDL
 !
 !  SCALARS IN COMMON
       INTEGER

@@ -2,103 +2,479 @@
       use M_starpac_g
       implicit none
       private
-      integer,parameter :: wp=kind(0.0)
+      integer,parameter,private :: wp=kind(0.0)
 
       private ::  mach
       private ::  correr
       private ::  randu
 
-      public  ::  nl2itr,  qapply,  livmul,  lsqrt,   linvrt
-      public  ::  vscopy,  lmstep,  qrfact,  nl2sno
-      public  ::  madr,    v2norm,  itsmry,  dotprd,  vcopy
-      public  ::  parchk,  assess,  nl2x,    covclc
-      public  ::  rmdcon,  lsvmin,  madj,    vaxpy,   rptmul,  slvmul
-      public  ::  ltsqar,  litvmu,  gqtstp,  dupdat
-      public  ::  dfault,  reldst,  slupdt,  nl2sol
-
-      public  ::  amecnt,  gfsest,  vpm,     mdl1,    stpamo,  nlinit
-      public  ::  amfmn,   acffs,   uasdv,   pgms,    llcntp
-      public  ::  ufsout,  setrv,   nlout,   matprf
-      public  ::  sumwts,  cdff,    lpcoef,  stpsel,  aoslst,  xxch9
-      public  ::  arcoef,  llsps,   gfout,   vpcnt,   acfm
-      public  ::  mppml,   xlls,    vpmc,    demord,  polar,   xvp
-      public  ::  cdfnml,  aov1mn,  dckout,  stpcnt
-      public  ::  gfarf,   uaser,   drv3,    bfsv,    mvpm,    nlsupk
-      public  ::  fltar,   nlsc,    chirho,  xaimt,   ufsmv,   nrand
-      public  ::  ersgt,   amean,   xstplt,  bfsdrv,  vpc,     lstvcf
-      public  ::  ccf,     xpp,     nlswdc,  spcck,   ipgms,   acvff
-      public  ::  uasfs,   acvf,    nlism,   nlsw,    pp
-      public  ::  fftr,    bfsmvs,  xxch10,  dckdrv,  drv4a,   drv4b
-      public  ::  ccvf,    pplmt,   sumts,   stat,    dotcm
-      public  ::  mvpc,    acflst,  pgm,     histc,   xxch3,   dcoef
-      public  ::  ppm,     sumds,   corrmn,  xxch13  
-      public  ::  xdcklt,  ppmn,    setra,   mpp,     center
-      public  ::  ppl,     gfarfs,  svpl,    cpymss,  fitext
-      public  ::  nlfin,   dckfpa,  uasest,  dif,     demods
-      public  ::  pgmmn,   sppm,    pltchk,  bfsvs,   amestp,  nlswd
-      public  ::  demout,  amdrv,   ranko,   ufsmvs,  bfs,     mppl
-      public  ::  taper,   amlst1,  erslf,   acfmnf,  aimf,    realtr
-      public  ::  amedrv,  getpi,   fitxsp,  sumwss,  ervgt
-      public  ::  aov1xp,  ccfxp,   gfaest,  xuas,    mvpl
-      public  ::  ersge,   xaov1,   mdl4,    slflt
-      public  ::  cdft,    acvfm,   xccf,    statws,  nlsd,    fltma
-      public  ::  ccfmnf,  lpflt,   dcklsc,  hstmn,   ufsms
-      public  ::  ppfchs,  oanova,  ppff,    aimx1,   stat2w,  xdflt
-      public  ::  amfcnt,  mppm,    ervgtm,  ppfnml,  ameism,  arflt
-      public  ::  multbp,  vcvotf,  ppmc,    bfsfs,   lopass
-      public  ::  stpdrv,  xacf,    ccfout,  amefin
-      public  ::  gfslf,   sppltd,  mvpml,   setfrq,  ccfmn
-      public  ::  ipgdv,   dckmn,   acfms,   amept2
-      public  ::  amlst,   xstat
-      public  ::  spp,     nlitrp,  adjlmt,  xxch7,   ller,    mvp
-      public  ::  stat2,   ipgm,    repck,   mdflt,   llsp
-      public  ::  xxch8,   sumid,   ufsest,  erslfs,  uas,     uasout
-      public  ::  mgs,     ufsdrv,  acf,     xdemod,  ufs,     xnlsd
-      public  ::  bfsf,    loglmt,  uascft,  amemn
-      public  ::  drv2,    llspws,  lls,     llsws
-      public  ::  ipgmp,   xstpld,  extend,  uass,    uasvar
-      public  ::  sppml,   ccfs,    aime,    uasvs,   acfmn,   ervii
-      public  ::  fltarm,  relcom,  ccffs,   ccvff,   xbfs
-      public  ::  obssm2,  amfout,  cmpfd,   xxch2,   xxch1
-      public  ::  ipgmps,  nrandc,  acfsdm,  stpout
-      public  ::  bfss,    fft,     dcker,   obssum,  ufsf,    xstple
-      public  ::  srtrri,  nlcmp,   stater,  ccvfm,   mppmc
-      public  ::  nlmn,    vpml,    ppcnt,   fltsl,   sumwds,  bfsmn
-      public  ::  bfsms,   srtirr,  xnrand,  uasf,    eragt
-      public  ::  llss,    svpc,    stats,   ppml,    xufs,    nlcnt
-      public  ::  amept1,  fitpt1,  difm,    stper,   nlsdc
-      public  ::  xnlst,   ameanm,  etamdl,  nls,     nlcntn,  mdlts3
-      public  ::  bfsm,    ufss,    ccfsdm,  xpgm
-      public  ::  difmc,   gmean,   matprt,  accdig,  svpm
-      public  ::  ccfsd,   aimec,   llsw,    stpls2
-      public  ::  nlss,    corrs,   randn,   hist,    pgmest,  ccflst
-      public  ::  mdlts2,  corrxp,  mppc,    acfmnm,  xxch11,  demdrv
-      public  ::  difc,    nlspk,   acff,    ersii,   stat1
-      public  ::  mdlts1,  acfd,    dckcnt,  aov1s,   ccff
-      public  ::  pgord,   pgout,   xdckle,  drv,     aos
-      public  ::  ppc,     svp,     dckls,   acfs,    nlsds,   difser
-      public  ::  dckcrv,  hipass,  ipgord,  mvpmc,   sppltl
-      public  ::  vcvout,  xnlse,   lstvec,  acfout,  sppmc,   xaimd
-      public  ::  ufsv,    nlswds,  ccfmnm,  svpmc,   nldrvn,  vpmn
-      public  ::  mdl2,    xxch12,  aimes,   stat1w,  statw,   dckzro
-      public  ::  axpby,   uasv,    vphead,  stplsc,  sppc,    sumidw
-      public  ::  ufsmn,   drv1a,   sumss,   nlswc,   llcnt
-      public  ::  dotc,    xxch5,   ameout,  mdl3,    hster,   fltmd
-      public  ::  genr,    srtir,   nlsws,   ufspcv,  ppft,    ccfms
-      public  ::  hpflt,   cdfchi,  ufsm,    ipgmn,   drv1b
-      public  ::  abscom,  aov1er,  sumot,   demod,   aov1,    nlsx1
-      public  ::  ervwt,   dfbw,    cpyasf,  srtri,   dckls1,  llspw
-      public  ::  parzen,  sumbs,   fftct
-      public  ::  xcorr,   demodu,  aimfs,   maflt,   nler
-      public  ::  gfslfs,  stpadj,  xhist,   ccfm,    vplmt,   ameer
-      public  ::  nldrva,  smply,   llcntg,  sppltc,  pltplx
-      public  ::  corr,    vp,      fitsxp,  ufslag,  llsmn
-      public  ::  hpcoef,  xxch4,   eragtm,  sppl,    acfsd
-      public  ::  ufsvs,   cntr,    gford,   fitpt2,  svpml,   mvchk
-      public  ::  stpls1,  stpmn,   sample,  ervgtp,  stpls,   ipgout
-      public  ::  ersei,   xdckld,  setrow,  bfsmv,   nlsx2,   nlcnta
-      public  ::  xxch6,   ufsfs,   uasord,  ersie
-      public  ::  dfbwm,   vpl,     bfslag,  eragtp
+      interface  abscom;  module  procedure  abscom;  end  interface
+      interface  accdig;  module  procedure  accdig;  end  interface
+      interface  acfd;    module  procedure  acfd;    end  interface
+      interface  acff;    module  procedure  acff;    end  interface
+      interface  acffs;   module  procedure  acffs;   end  interface
+      interface  acflst;  module  procedure  acflst;  end  interface
+      interface  acfm;    module  procedure  acfm;    end  interface
+      interface  acfmnf;  module  procedure  acfmnf;  end  interface
+      interface  acfmnm;  module  procedure  acfmnm;  end  interface
+      interface  acfmn;   module  procedure  acfmn;   end  interface
+      interface  acf;     module  procedure  acf;     end  interface
+      interface  acfms;   module  procedure  acfms;   end  interface
+      interface  acfout;  module  procedure  acfout;  end  interface
+      interface  acfsdm;  module  procedure  acfsdm;  end  interface
+      interface  acfsd;   module  procedure  acfsd;   end  interface
+      interface  acfs;    module  procedure  acfs;    end  interface
+      interface  acvff;   module  procedure  acvff;   end  interface
+      interface  acvfm;   module  procedure  acvfm;   end  interface
+      interface  acvf;    module  procedure  acvf;    end  interface
+      interface  adjlmt;  module  procedure  adjlmt;  end  interface
+      interface  aimec;   module  procedure  aimec;   end  interface
+      interface  aime;    module  procedure  aime;    end  interface
+      interface  aimes;   module  procedure  aimes;   end  interface
+      interface  aimf;    module  procedure  aimf;    end  interface
+      interface  aimfs;   module  procedure  aimfs;   end  interface
+      interface  aimx1;   module  procedure  aimx1;   end  interface
+      interface  amdrv;   module  procedure  amdrv;   end  interface
+      interface  ameanm;  module  procedure  ameanm;  end  interface
+      interface  amean;   module  procedure  amean;   end  interface
+      interface  amecnt;  module  procedure  amecnt;  end  interface
+      interface  amedrv;  module  procedure  amedrv;  end  interface
+      interface  ameer;   module  procedure  ameer;   end  interface
+      interface  amefin;  module  procedure  amefin;  end  interface
+      interface  ameism;  module  procedure  ameism;  end  interface
+      interface  amemn;   module  procedure  amemn;   end  interface
+      interface  ameout;  module  procedure  ameout;  end  interface
+      interface  amept1;  module  procedure  amept1;  end  interface
+      interface  amept2;  module  procedure  amept2;  end  interface
+      interface  amestp;  module  procedure  amestp;  end  interface
+      interface  amfcnt;  module  procedure  amfcnt;  end  interface
+      interface  amfmn;   module  procedure  amfmn;   end  interface
+      interface  amfout;  module  procedure  amfout;  end  interface
+      interface  amlst1;  module  procedure  amlst1;  end  interface
+      interface  amlst;   module  procedure  amlst;   end  interface
+      interface  aoslst;  module  procedure  aoslst;  end  interface
+      interface  aos;     module  procedure  aos;     end  interface
+      interface  aov1er;  module  procedure  aov1er;  end  interface
+      interface  aov1mn;  module  procedure  aov1mn;  end  interface
+      interface  aov1;    module  procedure  aov1;    end  interface
+      interface  aov1s;   module  procedure  aov1s;   end  interface
+      interface  aov1xp;  module  procedure  aov1xp;  end  interface
+      interface  arcoef;  module  procedure  arcoef;  end  interface
+      interface  arflt;   module  procedure  arflt;   end  interface
+      interface  assess;  module  procedure  assess;  end  interface
+      interface  axpby;   module  procedure  axpby;   end  interface
+      interface  bfsdrv;  module  procedure  bfsdrv;  end  interface
+      interface  bfsf;    module  procedure  bfsf;    end  interface
+      interface  bfsfs;   module  procedure  bfsfs;   end  interface
+      interface  bfslag;  module  procedure  bfslag;  end  interface
+      interface  bfsm;    module  procedure  bfsm;    end  interface
+      interface  bfsmn;   module  procedure  bfsmn;   end  interface
+      interface  bfs;     module  procedure  bfs;     end  interface
+      interface  bfsms;   module  procedure  bfsms;   end  interface
+      interface  bfsmv;   module  procedure  bfsmv;   end  interface
+      interface  bfsmvs;  module  procedure  bfsmvs;  end  interface
+      interface  bfss;    module  procedure  bfss;    end  interface
+      interface  bfsv;    module  procedure  bfsv;    end  interface
+      interface  bfsvs;   module  procedure  bfsvs;   end  interface
+      interface  ccff;    module  procedure  ccff;    end  interface
+      interface  ccffs;   module  procedure  ccffs;   end  interface
+      interface  ccflst;  module  procedure  ccflst;  end  interface
+      interface  ccfm;    module  procedure  ccfm;    end  interface
+      interface  ccfmnf;  module  procedure  ccfmnf;  end  interface
+      interface  ccfmnm;  module  procedure  ccfmnm;  end  interface
+      interface  ccfmn;   module  procedure  ccfmn;   end  interface
+      interface  ccf;     module  procedure  ccf;     end  interface
+      interface  ccfms;   module  procedure  ccfms;   end  interface
+      interface  ccfout;  module  procedure  ccfout;  end  interface
+      interface  ccfsdm;  module  procedure  ccfsdm;  end  interface
+      interface  ccfsd;   module  procedure  ccfsd;   end  interface
+      interface  ccfs;    module  procedure  ccfs;    end  interface
+      interface  ccfxp;   module  procedure  ccfxp;   end  interface
+      interface  ccvff;   module  procedure  ccvff;   end  interface
+      interface  ccvfm;   module  procedure  ccvfm;   end  interface
+      interface  ccvf;    module  procedure  ccvf;    end  interface
+      interface  cdfchi;  module  procedure  cdfchi;  end  interface
+      interface  cdff;    module  procedure  cdff;    end  interface
+      interface  cdfnml;  module  procedure  cdfnml;  end  interface
+      interface  cdft;    module  procedure  cdft;    end  interface
+      interface  center;  module  procedure  center;  end  interface
+      interface  chirho;  module  procedure  chirho;  end  interface
+      interface  cmpfd;   module  procedure  cmpfd;   end  interface
+      interface  cntr;    module  procedure  cntr;    end  interface
+      interface  corrmn;  module  procedure  corrmn;  end  interface
+      interface  corr;    module  procedure  corr;    end  interface
+      interface  corrs;   module  procedure  corrs;   end  interface
+      interface  corrxp;  module  procedure  corrxp;  end  interface
+      interface  covclc;  module  procedure  covclc;  end  interface
+      interface  cpyasf;  module  procedure  cpyasf;  end  interface
+      interface  cpymss;  module  procedure  cpymss;  end  interface
+      interface  dckcnt;  module  procedure  dckcnt;  end  interface
+      interface  dckcrv;  module  procedure  dckcrv;  end  interface
+      interface  dckdrv;  module  procedure  dckdrv;  end  interface
+      interface  dcker;   module  procedure  dcker;   end  interface
+      interface  dckfpa;  module  procedure  dckfpa;  end  interface
+      interface  dckls1;  module  procedure  dckls1;  end  interface
+      interface  dcklsc;  module  procedure  dcklsc;  end  interface
+      interface  dckls;   module  procedure  dckls;   end  interface
+      interface  dckmn;   module  procedure  dckmn;   end  interface
+      interface  dckout;  module  procedure  dckout;  end  interface
+      interface  dckzro;  module  procedure  dckzro;  end  interface
+      interface  dcoef;   module  procedure  dcoef;   end  interface
+      interface  demdrv;  module  procedure  demdrv;  end  interface
+      interface  demod;   module  procedure  demod;   end  interface
+      interface  demods;  module  procedure  demods;  end  interface
+      interface  demodu;  module  procedure  demodu;  end  interface
+      interface  demord;  module  procedure  demord;  end  interface
+      interface  demout;  module  procedure  demout;  end  interface
+      interface  dfault;  module  procedure  dfault;  end  interface
+      interface  dfbwm;   module  procedure  dfbwm;   end  interface
+      interface  dfbw;    module  procedure  dfbw;    end  interface
+      interface  difc;    module  procedure  difc;    end  interface
+      interface  difmc;   module  procedure  difmc;   end  interface
+      interface  difm;    module  procedure  difm;    end  interface
+      interface  dif;     module  procedure  dif;     end  interface
+      interface  difser;  module  procedure  difser;  end  interface
+      interface  dotcm;   module  procedure  dotcm;   end  interface
+      interface  dotc;    module  procedure  dotc;    end  interface
+      interface  dotprd;  module  procedure  dotprd;  end  interface
+      interface  drv1a;   module  procedure  drv1a;   end  interface
+      interface  drv1b;   module  procedure  drv1b;   end  interface
+      interface  drv2;    module  procedure  drv2;    end  interface
+      interface  drv3;    module  procedure  drv3;    end  interface
+      interface  drv4a;   module  procedure  drv4a;   end  interface
+      interface  drv4b;   module  procedure  drv4b;   end  interface
+      interface  drv;     module  procedure  drv;     end  interface
+      interface  dupdat;  module  procedure  dupdat;  end  interface
+      interface  eragtm;  module  procedure  eragtm;  end  interface
+      interface  eragt;   module  procedure  eragt;   end  interface
+      interface  eragtp;  module  procedure  eragtp;  end  interface
+      interface  ersei;   module  procedure  ersei;   end  interface
+      interface  ersge;   module  procedure  ersge;   end  interface
+      interface  ersgt;   module  procedure  ersgt;   end  interface
+      interface  ersie;   module  procedure  ersie;   end  interface
+      interface  ersii;   module  procedure  ersii;   end  interface
+      interface  erslf;   module  procedure  erslf;   end  interface
+      interface  erslfs;  module  procedure  erslfs;  end  interface
+      interface  ervgtm;  module  procedure  ervgtm;  end  interface
+      interface  ervgt;   module  procedure  ervgt;   end  interface
+      interface  ervgtp;  module  procedure  ervgtp;  end  interface
+      interface  ervii;   module  procedure  ervii;   end  interface
+      interface  ervwt;   module  procedure  ervwt;   end  interface
+      interface  etamdl;  module  procedure  etamdl;  end  interface
+      interface  extend;  module  procedure  extend;  end  interface
+      interface  fftct;   module  procedure  fftct;   end  interface
+      interface  fft;     module  procedure  fft;     end  interface
+      interface  fftr;    module  procedure  fftr;    end  interface
+      interface  fitext;  module  procedure  fitext;  end  interface
+      interface  fitpt1;  module  procedure  fitpt1;  end  interface
+      interface  fitpt2;  module  procedure  fitpt2;  end  interface
+      interface  fitsxp;  module  procedure  fitsxp;  end  interface
+      interface  fitxsp;  module  procedure  fitxsp;  end  interface
+      interface  fltarm;  module  procedure  fltarm;  end  interface
+      interface  fltar;   module  procedure  fltar;   end  interface
+      interface  fltma;   module  procedure  fltma;   end  interface
+      interface  fltmd;   module  procedure  fltmd;   end  interface
+      interface  fltsl;   module  procedure  fltsl;   end  interface
+      interface  genr;    module  procedure  genr;    end  interface
+      interface  getpi;   module  procedure  getpi;   end  interface
+      interface  gfaest;  module  procedure  gfaest;  end  interface
+      interface  gfarf;   module  procedure  gfarf;   end  interface
+      interface  gfarfs;  module  procedure  gfarfs;  end  interface
+      interface  gford;   module  procedure  gford;   end  interface
+      interface  gfout;   module  procedure  gfout;   end  interface
+      interface  gfsest;  module  procedure  gfsest;  end  interface
+      interface  gfslf;   module  procedure  gfslf;   end  interface
+      interface  gfslfs;  module  procedure  gfslfs;  end  interface
+      interface  gmean;   module  procedure  gmean;   end  interface
+      interface  gqtstp;  module  procedure  gqtstp;  end  interface
+      interface  hipass;  module  procedure  hipass;  end  interface
+      interface  histc;   module  procedure  histc;   end  interface
+      interface  hist;    module  procedure  hist;    end  interface
+      interface  hpcoef;  module  procedure  hpcoef;  end  interface
+      interface  hpflt;   module  procedure  hpflt;   end  interface
+      interface  hster;   module  procedure  hster;   end  interface
+      interface  hstmn;   module  procedure  hstmn;   end  interface
+      interface  ipgdv;   module  procedure  ipgdv;   end  interface
+      interface  ipgm;    module  procedure  ipgm;    end  interface
+      interface  ipgmn;   module  procedure  ipgmn;   end  interface
+      interface  ipgmp;   module  procedure  ipgmp;   end  interface
+      interface  ipgmps;  module  procedure  ipgmps;  end  interface
+      interface  ipgms;   module  procedure  ipgms;   end  interface
+      interface  ipgord;  module  procedure  ipgord;  end  interface
+      interface  ipgout;  module  procedure  ipgout;  end  interface
+      interface  itsmry;  module  procedure  itsmry;  end  interface
+      interface  linvrt;  module  procedure  linvrt;  end  interface
+      interface  litvmu;  module  procedure  litvmu;  end  interface
+      interface  livmul;  module  procedure  livmul;  end  interface
+      interface  llcntg;  module  procedure  llcntg;  end  interface
+      interface  llcnt;   module  procedure  llcnt;   end  interface
+      interface  llcntp;  module  procedure  llcntp;  end  interface
+      interface  ller;    module  procedure  ller;    end  interface
+      interface  llsmn;   module  procedure  llsmn;   end  interface
+      interface  lls;     module  procedure  lls;     end  interface
+      interface  llsp;    module  procedure  llsp;    end  interface
+      interface  llsps;   module  procedure  llsps;   end  interface
+      interface  llspw;   module  procedure  llspw;   end  interface
+      interface  llspws;  module  procedure  llspws;  end  interface
+      interface  llss;    module  procedure  llss;    end  interface
+      interface  llsw;    module  procedure  llsw;    end  interface
+      interface  llsws;   module  procedure  llsws;   end  interface
+      interface  lmstep;  module  procedure  lmstep;  end  interface
+      interface  loglmt;  module  procedure  loglmt;  end  interface
+      interface  lopass;  module  procedure  lopass;  end  interface
+      interface  lpcoef;  module  procedure  lpcoef;  end  interface
+      interface  lpflt;   module  procedure  lpflt;   end  interface
+      interface  lsqrt;   module  procedure  lsqrt;   end  interface
+      interface  lstvcf;  module  procedure  lstvcf;  end  interface
+      interface  lstvec;  module  procedure  lstvec;  end  interface
+      interface  lsvmin;  module  procedure  lsvmin;  end  interface
+      interface  ltsqar;  module  procedure  ltsqar;  end  interface
+      interface  madj;    module  procedure  madj;    end  interface
+      interface  madr;    module  procedure  madr;    end  interface
+      interface  maflt;   module  procedure  maflt;   end  interface
+      interface  matprf;  module  procedure  matprf;  end  interface
+      interface  matprt;  module  procedure  matprt;  end  interface
+      interface  mdflt;   module  procedure  mdflt;   end  interface
+      interface  mdl1;    module  procedure  mdl1;    end  interface
+      interface  mdl2;    module  procedure  mdl2;    end  interface
+      interface  mdl3;    module  procedure  mdl3;    end  interface
+      interface  mdl4;    module  procedure  mdl4;    end  interface
+      interface  mdlts1;  module  procedure  mdlts1;  end  interface
+      interface  mdlts2;  module  procedure  mdlts2;  end  interface
+      interface  mdlts3;  module  procedure  mdlts3;  end  interface
+      interface  mgs;     module  procedure  mgs;     end  interface
+      interface  mppc;    module  procedure  mppc;    end  interface
+      interface  mppl;    module  procedure  mppl;    end  interface
+      interface  mppmc;   module  procedure  mppmc;   end  interface
+      interface  mppml;   module  procedure  mppml;   end  interface
+      interface  mppm;    module  procedure  mppm;    end  interface
+      interface  mpp;     module  procedure  mpp;     end  interface
+      interface  multbp;  module  procedure  multbp;  end  interface
+      interface  mvchk;   module  procedure  mvchk;   end  interface
+      interface  mvpc;    module  procedure  mvpc;    end  interface
+      interface  mvpl;    module  procedure  mvpl;    end  interface
+      interface  mvpmc;   module  procedure  mvpmc;   end  interface
+      interface  mvpml;   module  procedure  mvpml;   end  interface
+      interface  mvpm;    module  procedure  mvpm;    end  interface
+      interface  mvp;     module  procedure  mvp;     end  interface
+      interface  nl2itr;  module  procedure  nl2itr;  end  interface
+      interface  nl2sno;  module  procedure  nl2sno;  end  interface
+      interface  nl2sol;  module  procedure  nl2sol;  end  interface
+      interface  nl2x;    module  procedure  nl2x;    end  interface
+      interface  nlcmp;   module  procedure  nlcmp;   end  interface
+      interface  nlcnta;  module  procedure  nlcnta;  end  interface
+      interface  nlcnt;   module  procedure  nlcnt;   end  interface
+      interface  nlcntn;  module  procedure  nlcntn;  end  interface
+      interface  nldrva;  module  procedure  nldrva;  end  interface
+      interface  nldrvn;  module  procedure  nldrvn;  end  interface
+      interface  nler;    module  procedure  nler;    end  interface
+      interface  nlfin;   module  procedure  nlfin;   end  interface
+      interface  nlinit;  module  procedure  nlinit;  end  interface
+      interface  nlism;   module  procedure  nlism;   end  interface
+      interface  nlitrp;  module  procedure  nlitrp;  end  interface
+      interface  nlmn;    module  procedure  nlmn;    end  interface
+      interface  nlout;   module  procedure  nlout;   end  interface
+      interface  nlsc;    module  procedure  nlsc;    end  interface
+      interface  nlsdc;   module  procedure  nlsdc;   end  interface
+      interface  nlsd;    module  procedure  nlsd;    end  interface
+      interface  nlsds;   module  procedure  nlsds;   end  interface
+      interface  nls;     module  procedure  nls;     end  interface
+      interface  nlspk;   module  procedure  nlspk;   end  interface
+      interface  nlss;    module  procedure  nlss;    end  interface
+      interface  nlsupk;  module  procedure  nlsupk;  end  interface
+      interface  nlswc;   module  procedure  nlswc;   end  interface
+      interface  nlswdc;  module  procedure  nlswdc;  end  interface
+      interface  nlswd;   module  procedure  nlswd;   end  interface
+      interface  nlswds;  module  procedure  nlswds;  end  interface
+      interface  nlsw;    module  procedure  nlsw;    end  interface
+      interface  nlsws;   module  procedure  nlsws;   end  interface
+      interface  nlsx1;   module  procedure  nlsx1;   end  interface
+      interface  nlsx2;   module  procedure  nlsx2;   end  interface
+      interface  nrandc;  module  procedure  nrandc;  end  interface
+      interface  nrand;   module  procedure  nrand;   end  interface
+      interface  oanova;  module  procedure  oanova;  end  interface
+      interface  obssm2;  module  procedure  obssm2;  end  interface
+      interface  obssum;  module  procedure  obssum;  end  interface
+      interface  parchk;  module  procedure  parchk;  end  interface
+      interface  parzen;  module  procedure  parzen;  end  interface
+      interface  pgmest;  module  procedure  pgmest;  end  interface
+      interface  pgmmn;   module  procedure  pgmmn;   end  interface
+      interface  pgm;     module  procedure  pgm;     end  interface
+      interface  pgms;    module  procedure  pgms;    end  interface
+      interface  pgord;   module  procedure  pgord;   end  interface
+      interface  pgout;   module  procedure  pgout;   end  interface
+      interface  pltchk;  module  procedure  pltchk;  end  interface
+      interface  pltplx;  module  procedure  pltplx;  end  interface
+      interface  polar;   module  procedure  polar;   end  interface
+      interface  ppc;     module  procedure  ppc;     end  interface
+      interface  ppcnt;   module  procedure  ppcnt;   end  interface
+      interface  ppfchs;  module  procedure  ppfchs;  end  interface
+      interface  ppff;    module  procedure  ppff;    end  interface
+      interface  ppfnml;  module  procedure  ppfnml;  end  interface
+      interface  ppft;    module  procedure  ppft;    end  interface
+      interface  ppl;     module  procedure  ppl;     end  interface
+      interface  pplmt;   module  procedure  pplmt;   end  interface
+      interface  ppmc;    module  procedure  ppmc;    end  interface
+      interface  ppml;    module  procedure  ppml;    end  interface
+      interface  ppm;     module  procedure  ppm;     end  interface
+      interface  ppmn;    module  procedure  ppmn;    end  interface
+      interface  pp;      module  procedure  pp;      end  interface
+      interface  qapply;  module  procedure  qapply;  end  interface
+      interface  qrfact;  module  procedure  qrfact;  end  interface
+      interface  randn;   module  procedure  randn;   end  interface
+      interface  ranko;   module  procedure  ranko;   end  interface
+      interface  realtr;  module  procedure  realtr;  end  interface
+      interface  relcom;  module  procedure  relcom;  end  interface
+      interface  reldst;  module  procedure  reldst;  end  interface
+      interface  repck;   module  procedure  repck;   end  interface
+      interface  rmdcon;  module  procedure  rmdcon;  end  interface
+      interface  rptmul;  module  procedure  rptmul;  end  interface
+      interface  sample;  module  procedure  sample;  end  interface
+      interface  setfrq;  module  procedure  setfrq;  end  interface
+      interface  setra;   module  procedure  setra;   end  interface
+      interface  setrow;  module  procedure  setrow;  end  interface
+      interface  setrv;   module  procedure  setrv;   end  interface
+      interface  slflt;   module  procedure  slflt;   end  interface
+      interface  slupdt;  module  procedure  slupdt;  end  interface
+      interface  slvmul;  module  procedure  slvmul;  end  interface
+      interface  smply;   module  procedure  smply;   end  interface
+      interface  spcck;   module  procedure  spcck;   end  interface
+      interface  sppc;    module  procedure  sppc;    end  interface
+      interface  sppl;    module  procedure  sppl;    end  interface
+      interface  sppltc;  module  procedure  sppltc;  end  interface
+      interface  sppltd;  module  procedure  sppltd;  end  interface
+      interface  sppltl;  module  procedure  sppltl;  end  interface
+      interface  sppmc;   module  procedure  sppmc;   end  interface
+      interface  sppml;   module  procedure  sppml;   end  interface
+      interface  sppm;    module  procedure  sppm;    end  interface
+      interface  spp;     module  procedure  spp;     end  interface
+      interface  srtir;   module  procedure  srtir;   end  interface
+      interface  srtirr;  module  procedure  srtirr;  end  interface
+      interface  srtri;   module  procedure  srtri;   end  interface
+      interface  srtrri;  module  procedure  srtrri;  end  interface
+      interface  stat1;   module  procedure  stat1;   end  interface
+      interface  stat1w;  module  procedure  stat1w;  end  interface
+      interface  stat2;   module  procedure  stat2;   end  interface
+      interface  stat2w;  module  procedure  stat2w;  end  interface
+      interface  stater;  module  procedure  stater;  end  interface
+      interface  stat;    module  procedure  stat;    end  interface
+      interface  stats;   module  procedure  stats;   end  interface
+      interface  statw;   module  procedure  statw;   end  interface
+      interface  statws;  module  procedure  statws;  end  interface
+      interface  stpadj;  module  procedure  stpadj;  end  interface
+      interface  stpamo;  module  procedure  stpamo;  end  interface
+      interface  stpcnt;  module  procedure  stpcnt;  end  interface
+      interface  stpdrv;  module  procedure  stpdrv;  end  interface
+      interface  stper;   module  procedure  stper;   end  interface
+      interface  stpls1;  module  procedure  stpls1;  end  interface
+      interface  stpls2;  module  procedure  stpls2;  end  interface
+      interface  stplsc;  module  procedure  stplsc;  end  interface
+      interface  stpls;   module  procedure  stpls;   end  interface
+      interface  stpmn;   module  procedure  stpmn;   end  interface
+      interface  stpout;  module  procedure  stpout;  end  interface
+      interface  stpsel;  module  procedure  stpsel;  end  interface
+      interface  sumbs;   module  procedure  sumbs;   end  interface
+      interface  sumds;   module  procedure  sumds;   end  interface
+      interface  sumid;   module  procedure  sumid;   end  interface
+      interface  sumidw;  module  procedure  sumidw;  end  interface
+      interface  sumot;   module  procedure  sumot;   end  interface
+      interface  sumss;   module  procedure  sumss;   end  interface
+      interface  sumts;   module  procedure  sumts;   end  interface
+      interface  sumwds;  module  procedure  sumwds;  end  interface
+      interface  sumwss;  module  procedure  sumwss;  end  interface
+      interface  sumwts;  module  procedure  sumwts;  end  interface
+      interface  svpc;    module  procedure  svpc;    end  interface
+      interface  svpl;    module  procedure  svpl;    end  interface
+      interface  svpmc;   module  procedure  svpmc;   end  interface
+      interface  svpml;   module  procedure  svpml;   end  interface
+      interface  svpm;    module  procedure  svpm;    end  interface
+      interface  svp;     module  procedure  svp;     end  interface
+      interface  taper;   module  procedure  taper;   end  interface
+      interface  uascft;  module  procedure  uascft;  end  interface
+      interface  uasdv;   module  procedure  uasdv;   end  interface
+      interface  uaser;   module  procedure  uaser;   end  interface
+      interface  uasest;  module  procedure  uasest;  end  interface
+      interface  uasf;    module  procedure  uasf;    end  interface
+      interface  uasfs;   module  procedure  uasfs;   end  interface
+      interface  uas;     module  procedure  uas;     end  interface
+      interface  uasord;  module  procedure  uasord;  end  interface
+      interface  uasout;  module  procedure  uasout;  end  interface
+      interface  uass;    module  procedure  uass;    end  interface
+      interface  uasvar;  module  procedure  uasvar;  end  interface
+      interface  uasv;    module  procedure  uasv;    end  interface
+      interface  uasvs;   module  procedure  uasvs;   end  interface
+      interface  ufsdrv;  module  procedure  ufsdrv;  end  interface
+      interface  ufsest;  module  procedure  ufsest;  end  interface
+      interface  ufsf;    module  procedure  ufsf;    end  interface
+      interface  ufsfs;   module  procedure  ufsfs;   end  interface
+      interface  ufslag;  module  procedure  ufslag;  end  interface
+      interface  ufsm;    module  procedure  ufsm;    end  interface
+      interface  ufsmn;   module  procedure  ufsmn;   end  interface
+      interface  ufs;     module  procedure  ufs;     end  interface
+      interface  ufsms;   module  procedure  ufsms;   end  interface
+      interface  ufsmv;   module  procedure  ufsmv;   end  interface
+      interface  ufsmvs;  module  procedure  ufsmvs;  end  interface
+      interface  ufsout;  module  procedure  ufsout;  end  interface
+      interface  ufspcv;  module  procedure  ufspcv;  end  interface
+      interface  ufss;    module  procedure  ufss;    end  interface
+      interface  ufsv;    module  procedure  ufsv;    end  interface
+      interface  ufsvs;   module  procedure  ufsvs;   end  interface
+      interface  v2norm;  module  procedure  v2norm;  end  interface
+      interface  vaxpy;   module  procedure  vaxpy;   end  interface
+      interface  vcopy;   module  procedure  vcopy;   end  interface
+      interface  vcvotf;  module  procedure  vcvotf;  end  interface
+      interface  vcvout;  module  procedure  vcvout;  end  interface
+      interface  vpc;     module  procedure  vpc;     end  interface
+      interface  vpcnt;   module  procedure  vpcnt;   end  interface
+      interface  vphead;  module  procedure  vphead;  end  interface
+      interface  vpl;     module  procedure  vpl;     end  interface
+      interface  vplmt;   module  procedure  vplmt;   end  interface
+      interface  vpmc;    module  procedure  vpmc;    end  interface
+      interface  vpml;    module  procedure  vpml;    end  interface
+      interface  vpm;     module  procedure  vpm;     end  interface
+      interface  vpmn;    module  procedure  vpmn;    end  interface
+      interface  vp;      module  procedure  vp;      end  interface
+      interface  vscopy;  module  procedure  vscopy;  end  interface
+      interface  xacf;    module  procedure  xacf;    end  interface
+      interface  xaimd;   module  procedure  xaimd;   end  interface
+      interface  xaimt;   module  procedure  xaimt;   end  interface
+      interface  xaov1;   module  procedure  xaov1;   end  interface
+      interface  xbfs;    module  procedure  xbfs;    end  interface
+      interface  xccf;    module  procedure  xccf;    end  interface
+      interface  xcorr;   module  procedure  xcorr;   end  interface
+      interface  xdckld;  module  procedure  xdckld;  end  interface
+      interface  xdckle;  module  procedure  xdckle;  end  interface
+      interface  xdcklt;  module  procedure  xdcklt;  end  interface
+      interface  xdemod;  module  procedure  xdemod;  end  interface
+      interface  xdflt;   module  procedure  xdflt;   end  interface
+      interface  xhist;   module  procedure  xhist;   end  interface
+      interface  xlls;    module  procedure  xlls;    end  interface
+      interface  xnlsd;   module  procedure  xnlsd;   end  interface
+      interface  xnlse;   module  procedure  xnlse;   end  interface
+      interface  xnlst;   module  procedure  xnlst;   end  interface
+      interface  xnrand;  module  procedure  xnrand;  end  interface
+      interface  xpgm;    module  procedure  xpgm;    end  interface
+      interface  xpp;     module  procedure  xpp;     end  interface
+      interface  xstat;   module  procedure  xstat;   end  interface
+      interface  xstpld;  module  procedure  xstpld;  end  interface
+      interface  xstple;  module  procedure  xstple;  end  interface
+      interface  xstplt;  module  procedure  xstplt;  end  interface
+      interface  xuas;    module  procedure  xuas;    end  interface
+      interface  xufs;    module  procedure  xufs;    end  interface
+      interface  xvp;     module  procedure  xvp;     end  interface
+      interface  xxch10;  module  procedure  xxch10;  end  interface
+      interface  xxch11;  module  procedure  xxch11;  end  interface
+      interface  xxch12;  module  procedure  xxch12;  end  interface
+      interface  xxch13;  module  procedure  xxch13;  end  interface
+      interface  xxch1;   module  procedure  xxch1;   end  interface
+      interface  xxch2;   module  procedure  xxch2;   end  interface
+      interface  xxch3;   module  procedure  xxch3;   end  interface
+      interface  xxch4;   module  procedure  xxch4;   end  interface
+      interface  xxch5;   module  procedure  xxch5;   end  interface
+      interface  xxch6;   module  procedure  xxch6;   end  interface
+      interface  xxch7;   module  procedure  xxch7;   end  interface
+      interface  xxch8;   module  procedure  xxch8;   end  interface
+      interface  xxch9;   module  procedure  xxch9;   end  interface
 
       contains
 $INCLUDE "./mdc/mach.ffinc"

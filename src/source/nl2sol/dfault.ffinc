@@ -25,9 +25,9 @@
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON
-      integer
-     &   imdcon
-      external imdcon
+!      integer
+!     &   imdcon
+!      external imdcon
 !
 !  INTRINSIC FUNCTIONS
       intrinsic max

@@ -27,12 +27,12 @@
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON
-      real(kind=wp) ::
-     &   dotprd,v2norm
-      external dotprd,v2norm
+!      real(kind=wp) ::
+!     &   dotprd,v2norm
+!      external dotprd,v2norm
 !
 !  EXTERNAL SUBROUTINES
-      external vaxpy,vscopy
+!      external vaxpy,vscopy
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,min,sqrt

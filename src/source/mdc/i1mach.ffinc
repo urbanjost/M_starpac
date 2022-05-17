@@ -108,7 +108,7 @@
       integer imach(16)
 !
 !  EXTERNAL SUBROUTINES
-      external fdump
+!      external fdump
 !
 !  EQUIVALENCES
       equivalence (imach(4),output)

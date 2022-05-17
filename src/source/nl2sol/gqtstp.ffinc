@@ -32,12 +32,12 @@
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON
-      real(kind=wp) ::
-     &   dotprd,lsvmin,v2norm
-      external dotprd,lsvmin,v2norm
+!      real(kind=wp) ::
+!     &   dotprd,lsvmin,v2norm
+!      external dotprd,lsvmin,v2norm
 !
 !  EXTERNAL SUBROUTINES
-      external litvmu,livmul,lsqrt
+!      external litvmu,livmul,lsqrt
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,max,min,sqrt

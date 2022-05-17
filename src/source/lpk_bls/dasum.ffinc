@@ -30,24 +30,18 @@
 !***END PROLOGUE  DASUM
 
 !...SCALAR ARGUMENTS
-      INTEGER
-     &   INCX,N
+      INTEGER INCX,N
 
 !...ARRAY ARGUMENTS
-      DOUBLE PRECISION
-     &   DX(*)
+      DOUBLE PRECISION DX(*)
 
 !...LOCAL SCALARS
-      INTEGER
-     &   I,M,MP1,NS
+      INTEGER I,M,MP1,NS
 
 !...INTRINSIC FUNCTIONS
-      INTRINSIC
-     &   DABS,MOD
-
+      INTRINSIC DABS,MOD
 
 !***FIRST EXECUTABLE STATEMENT  DASUM
-
 
       DASUM = 0.D0
       IF(N.LE.0)RETURN
@@ -74,7 +68,7 @@
    40 MP1 = M + 1
       DO 50 I = MP1,N,6
          DASUM = DASUM + DABS(DX(I)) + DABS(DX(I+1)) + DABS(DX(I+2))
-     1   + DABS(DX(I+3)) + DABS(DX(I+4)) + DABS(DX(I+5))
+     &   + DABS(DX(I+3)) + DABS(DX(I+4)) + DABS(DX(I+5))
    50 CONTINUE
       RETURN
       END

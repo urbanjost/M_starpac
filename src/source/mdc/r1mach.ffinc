@@ -37,11 +37,11 @@
       integer diver(2),large(2),log10(2),right(2),small(2)
 !
 !  EXTERNAL FUNCTIONS
-      integer i1mach
-      external i1mach
+!      integer i1mach
+!      external i1mach
 !
 !  EXTERNAL SUBROUTINES
-      external seterr
+!      external seterr
 !
 !  EQUIVALENCES
       equivalence (rmach(1),small(1))

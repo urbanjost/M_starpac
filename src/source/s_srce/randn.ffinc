@@ -96,14 +96,14 @@
      &   m(17)
 !
 !  EXTERNAL FUNCTIONS
-      real(kind=wp) ::
-     &   randu
-      integer
-     &   i1mach
-      external randu,i1mach
+!      real(kind=wp) ::
+!     &   randu
+!      integer
+!     &   i1mach
+!      external randu,i1mach
 !
 !  EXTERNAL SUBROUTINES
-      external xerror
+!      external xerror
 !
 !  INTRINSIC FUNCTIONS
       intrinsic abs,exp,log,min,mod,real,sign

@@ -1,5 +1,5 @@
 !SVPML
-      SUBROUTINE SVPML(YM, YMMISS, N, NS, ISYM, ILOG)
+      SUBROUTINE SVPML(YM, YMISS, N, NS, ISYM, ILOG)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,12 +17,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
+      REAL(KIND=WP) :: YMISS
       INTEGER
      &   ILOG,N,NS
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YM(*),YMMISS(*)
+      REAL(KIND=WP) :: YM(*)
       INTEGER
      &   ISYM(*)
 !
@@ -39,6 +39,7 @@
      &   MISS,MULTI
 !
 !  LOCAL ARRAYS
+      REAL(KIND=WP) :: YMMISS(1)
       CHARACTER
      &   NMSUB(6)*1
 !
@@ -113,6 +114,8 @@
 !        LOWER BOUND FOR Y-AXIS.
 !     REAL YM(N,1)
 !        MULTIVARIATE OBSERVATIONS FOR THE Y COORDINATES
+!     REAL YMISS
+!        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL YMMISS(1)
 !        THE MISSING VALUE CODE FOR THE Y-AXIS.
 !     REAL YUB
@@ -127,6 +130,7 @@
 !
 !     SET DEFAULT VALUES
 !
+      YMMISS=YMISS
       M = 1
       IYM = N
       MULTI = .FALSE.
