@@ -1,5 +1,5 @@
 !ACVF
-      SUBROUTINE ACVF (Y, N, YMEAN, ACOV, LAGMAX, LACOV)
+      subroutine acvf (y, n, ymean, acov, lagmax, lacov)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,20 +15,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YMEAN
-      INTEGER
-     &   LACOV,LAGMAX,N
+     real(kind=wp) ::&
+     &   ymean
+     integer&
+     &   lacov,lagmax,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV(*),Y(*)
+     real(kind=wp) ::&
+     &   acov(*),y(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DOTXY,DOTYY
-      INTEGER
-     &   LAG,NDOTXY,NDOTYY
+     real(kind=wp) ::&
+     &   dotxy,dotyy
+     integer&
+     &   lag,ndotxy,ndotyy
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL AMEAN,DOTC
@@ -59,20 +59,20 @@
 !
 !     COMPUTE ARITHMETIC MEAN
 !
-      CALL AMEAN(Y, N, YMEAN)
+      call amean(y, n, ymean)
 !
 !     COMPUTE THE VARIANCE OF THE SERIES Y
 !
-      CALL DOTC (Y, YMEAN, N, Y, YMEAN, N, DOTYY, NDOTYY)
-      ACOV(1) = DOTYY / NDOTYY
+      call dotc (y, ymean, n, y, ymean, n, dotyy, ndotyy)
+      acov(1) = dotyy / ndotyy
 !
 !     COMPUTE AUTOCOVARIANCES.
 !
-      DO 10 LAG = 1, LAGMAX
-         CALL DOTC (Y, YMEAN, N, Y(LAG+1), YMEAN, N - LAG,
-     &       DOTXY, NDOTXY)
-         ACOV(LAG + 1) = DOTXY / N
-   10 CONTINUE
+      do 10 lag = 1, lagmax
+        call dotc (y, ymean, n, y(lag+1), ymean, n - lag,&
+     &       dotxy, ndotxy)
+         acov(lag + 1) = dotxy / n
+   10 continue
 !
-      RETURN
-      END
+      return
+      end

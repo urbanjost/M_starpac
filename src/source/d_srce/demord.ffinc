@@ -1,5 +1,5 @@
 !DEMORD
-      SUBROUTINE DEMORD (PHAS1, PHAS2, NDEM, N)
+      subroutine demord (phas1, phas2, ndem, n)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,18 +15,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,NDEM
+     integer&
+     &   n,ndem
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PHAS1(N),PHAS2(N)
+     real(kind=wp) ::&
+     &   phas1(n),phas2(n)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   PI
-      INTEGER
-     &   I
+     real(kind=wp) ::&
+     &   pi
+     integer&
+     &   i
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL GETPI
@@ -46,13 +46,13 @@
 !     REAL(KIND=WP) :: PI
 !        THE VALUE OF PI.
 !
-      CALL GETPI(PI)
+      call getpi(pi)
 !
-      DO 10 I = 1, NDEM
-         PHAS2(I) = 0.0_WP
-         IF (PHAS1(I) .GT. 0.0_WP) PHAS2(I) = PHAS1(I) - 2.0_WP*PI
-         IF (PHAS1(I) .LT. 0.0_WP) PHAS2(I) = PHAS1(I) + 2.0_WP*PI
-   10 CONTINUE
+      do 10 i = 1, ndem
+         phas2(i) = 0.0_wp
+         if (phas1(i) .gt. 0.0_wp) phas2(i) = phas1(i) - 2.0_wp*pi
+         if (phas1(i) .lt. 0.0_wp) phas2(i) = phas1(i) + 2.0_wp*pi
+   10 continue
 !
-      RETURN
-      END
+      return
+      end

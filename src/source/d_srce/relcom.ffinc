@@ -1,5 +1,5 @@
 !RELCOM
-      SUBROUTINE RELCOM(N, V, W, RELTOL, ABSTOL, NFAIL, IFAIL)
+      subroutine relcom(n, v, w, reltol, abstol, nfail, ifail)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,23 +17,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ABSTOL,RELTOL
-      INTEGER
-     &   N,NFAIL
+     real(kind=wp) ::&
+     &   abstol,reltol
+     integer&
+     &   n,nfail
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   V(N),W(N)
-      INTEGER
-     &   IFAIL(N)
+     real(kind=wp) ::&
+     &   v(n),w(n)
+     integer&
+     &   ifail(n)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,MAX
+      intrinsic abs,max
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -54,19 +54,19 @@
 !     REAL(KIND=WP) :: V(N), W(N)
 !        THE VALUES BEING COMPARED.
 !
-      NFAIL = 0
+      nfail = 0
 !
-      DO 30 I = 1, N
-         IF ((ABS(V(I)-W(I)).LE.RELTOL*MAX(ABS(V(I)),ABS(W(I)))) .OR.
-     &       (((V(I).EQ.0.0_WP).OR.(W(I).EQ.0.0_WP)).AND.
-     &        (ABS(V(I)-W(I)).LE.ABSTOL))) THEN
-            IFAIL(I) = 0
-         ELSE
-            IFAIL(I) = 1
-            NFAIL = NFAIL + 1
-         END IF
-   30 CONTINUE
+      do 30 i = 1, n
+        if ((abs(v(i)-w(i)).le.reltol*max(abs(v(i)),abs(w(i)))) .or.&
+    &       (((v(i).eq.0.0_wp).or.(w(i).eq.0.0_wp)).and.&
+     &        (abs(v(i)-w(i)).le.abstol))) then
+            ifail(i) = 0
+         else
+            ifail(i) = 1
+            nfail = nfail + 1
+         end if
+   30 continue
 !
-      RETURN
+      return
 !
-      END
+      end

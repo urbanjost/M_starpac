@@ -1,5 +1,5 @@
 !GETPI
-      SUBROUTINE GETPI(PI)
+subroutine getpi(pi)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,14 +15,13 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PI
+     real(kind=wp) :: pi
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL PI
+!     REAL(KIND=WP) :: PI
 !        THE VALUE OF PI.
 !
-      PI = 3.141592653589793238462643383279E0
-      RETURN
-      END
+      pi = 3.141592653589793238462643383279_wp
+
+end subroutine getpi

@@ -1,5 +1,5 @@
 !NLERR
-      SUBROUTINE NLERR (ICNVCD, ISKULL)
+      subroutine nlerr (icnvcd, iskull)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,23 +16,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ICNVCD
+     integer&
+     &   icnvcd
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   ISKULL(10)
+     integer&
+     &   iskull(10)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -50,47 +50,47 @@
 !
 !     INITIALIZE MESSAGE INDICATOR VARIABLE
 !
-      DO 5 I = 1, 10
-         ISKULL(I) = 0
-    5 CONTINUE
+      do 5 i = 1, 10
+         iskull(i) = 0
+    5 continue
 !
 !     SET ERROR FLAG
 !
-      GO TO (10, 10, 20, 20, 20, 20, 40, 50, 60, 60, 10, 30, 10, 10,
-     &   10), ICNVCD
+     go to (10, 10, 20, 20, 20, 20, 40, 50, 60, 60, 10, 30, 10, 10,&
+     &   10), icnvcd
 !
 !     BAD VALUE
 !
-   10 IERR = 1
-      RETURN
+   10 ierr = 1
+      return
 !
 !     ACCEPTABLE STOPPING CONDITION
 !
-   20 IERR = 0
-      RETURN
+   20 ierr = 0
+      return
 !
 !     INITIAL VARIANCE COMPUTATION OVERFLOWS
 !
-   30 IERR = 2
-      ISKULL(2) = 1
-      RETURN
+   30 ierr = 2
+      iskull(2) = 1
+      return
 !
 !     SINGULAR CONVERGENCE
 !
-   40 IERR = 3
-      ISKULL(3) = 1
-      RETURN
+   40 ierr = 3
+      iskull(3) = 1
+      return
 !
 !     FALSE CONVERGENCE
 !
-   50 IERR = 5
-      ISKULL(5) = 1
-      RETURN
+   50 ierr = 5
+      iskull(5) = 1
+      return
 !
 !     ITERATION OR FUNCTION EVALUATION LIMIT
 !
-   60 IERR = 6
-      ISKULL(6) = 1
-      RETURN
+   60 ierr = 6
+      iskull(6) = 1
+      return
 !
-      END
+      end

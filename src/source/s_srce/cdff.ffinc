@@ -1,5 +1,5 @@
 !CDFF
-      REAL(KIND=WP) FUNCTION CDFF(F, DF1, DF2)
+      real(kind=wp) function cdff(f, df1, df2)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -33,20 +33,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   DF1,DF2,F
+     real(kind=wp) ::&
+     &   df1,df2,f
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FTRANS
+     real(kind=wp) ::&
+     &   ftrans
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &    BETAI,CDFCHI,CDFNML
+     real(kind=wp) ::&
+     &    betai,cdfchi,cdfnml
 !       EXTERNAL  BETAI,CDFCHI,CDFNML
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -62,60 +62,60 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      IF (F.GT.0.0E0) GO TO 5
-      CDFF = 0.0E0
-      RETURN
+      if (f.gt.0.0e0) go to 5
+      cdff = 0.0e0
+      return
 !
-    5 CONTINUE
+    5 continue
 !
-      IF ((DF1.GT.4000.0E0) .OR. (DF2.GT.4000.0E0)) GO TO 10
+      if ((df1.gt.4000.0e0) .or. (df2.gt.4000.0e0)) go to 10
 !
 !     BOTH DEGREES OF FREEDOM ARE LESS THAN OR EQUAL TO 4000.  USE
 !     THE INCOMPLETE BETA FUNCTION TO COMPUTE THE F CDF.
 !
-      FTRANS = DF2 / (DF2 + DF1 * F)
+      ftrans = df2 / (df2 + df1 * f)
 !
-      CDFF = 1.0E0 -  BETAI(FTRANS, 0.5E0*DF2, 0.5E0*DF1)
-      RETURN
+      cdff = 1.0e0 -  betai(ftrans, 0.5e0*df2, 0.5e0*df1)
+      return
 !
-   10 IF ((DF1.LE.100.0E0) .OR. (DF2.LE.100.0E0)) GO TO 20
+   10 if ((df1.le.100.0e0) .or. (df2.le.100.0e0)) go to 20
 !
 !     BOTH DEGREES OF FREEDOM EXCEED 4000.  USE THE NORMAL APPROXIMATION
 !     TO COMPUTE THE F CDF.
 !
-      FTRANS =
-     &   (((1.0E0-(2.0E0/(9.0E0*DF2)))*
-     &     (F**(1.0E0/3.0E0)))-(1.0E0-(2.0E0/(9.0E0*DF1)))) /
-     &   SQRT(((F**(2.0E0/3.0E0))/(4.5E0*DF2))+(2.0E0/(9.0E0*DF1)))
+     ftrans =&
+    &   (((1.0e0-(2.0e0/(9.0e0*df2)))*&
+    &     (f**(1.0e0/3.0e0)))-(1.0e0-(2.0e0/(9.0e0*df1)))) /&
+     &   sqrt(((f**(2.0e0/3.0e0))/(4.5e0*df2))+(2.0e0/(9.0e0*df1)))
 !
-      CDFF = CDFNML(FTRANS)
-      RETURN
+      cdff = cdfnml(ftrans)
+      return
 !
-   20 IF (DF1.GT.100.0E0) GO TO 30
+   20 if (df1.gt.100.0e0) go to 30
 !
 !     THE DEGREES OF FREEDOM IN THE DENOMINATOR EXCEEDS 4000 AND THE
 !     DEGREES OF FREEDOM IN NUMERATOR IS LESS THAN OR EQUAL TO 100.
 !     USE THE CHI SQUARE APPROXIMATION TO COMPUTE THE F CDF.
 !
-      FTRANS =
-     &   (DF1 + (DF1/DF2)*(0.5E0*DF1-1.0E0))/
-     &   ((1.0E0/F)+(DF1/DF2)*0.5E0)
+     ftrans =&
+    &   (df1 + (df1/df2)*(0.5e0*df1-1.0e0))/&
+     &   ((1.0e0/f)+(df1/df2)*0.5e0)
 !
-      CDFF = CDFCHI(FTRANS, DF1)
+      cdff = cdfchi(ftrans, df1)
 !
-      RETURN
+      return
 !
-   30 CONTINUE
+   30 continue
 !
 !     THE DEGREES OF FREEDOM IN THE NUMERATOR EXCEEDS 4000 AND THE
 !     DEGREES OF FREEDOM IN DENOMINATOR IS LESS THAN OR EQUAL TO 100.
 !     USE THE CHI SQUARE APPROXIMATION TO COMPUTE THE F CDF.
 !
-      FTRANS =
-     &   (DF2+(DF2/DF1)*(0.5E0*DF2-1.0E0))/(F+(DF2/DF1)*0.5E0)
+     ftrans =&
+     &   (df2+(df2/df1)*(0.5e0*df2-1.0e0))/(f+(df2/df1)*0.5e0)
 !
-      CDFF = 1.0E0 - CDFCHI(FTRANS, DF2)
+      cdff = 1.0e0 - cdfchi(ftrans, df2)
 !
-      RETURN
+      return
 !
-      END
+      end

@@ -1,5 +1,5 @@
 !CMPFD
-      SUBROUTINE CMPFD(N,STP,PVSTP,PV,FD)
+      subroutine cmpfd(n,stp,pvstp,pv,fd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,28 +17,28 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   STP
-      INTEGER
-     &   N
+     real(kind=wp) ::&
+     &   stp
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FD(*),PV(*),PVSTP(*)
+     real(kind=wp) ::&
+     &   fd(*),pv(*),pvstp(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLRS
-      INTEGER
-     &   I
+     real(kind=wp) ::&
+     &   fplrs
+     integer&
+     &   i
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   D1MACH
+     real(kind=wp) ::&
+     &   d1mach
 !       EXTERNAL D1MACH
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,MIN
+      intrinsic abs,min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -55,15 +55,15 @@
 !     REAL(KIND=WP) :: STP
 !        THE STEP.
 !
-      FPLRS = D1MACH(4)
+      fplrs = d1mach(4)
 !
-      DO 10 I=1,N
-         FD(I) = PVSTP(I) - PV(I)
-         IF (ABS(FD(I)).GE.5*FPLRS*MIN(ABS(PVSTP(I)),ABS(PV(I)))) THEN
-            FD(I) = FD(I) / STP
-         ELSE
-            FD(I) = 0.0_WP
-         END IF
-   10 CONTINUE
-      RETURN
-      END
+      do 10 i=1,n
+         fd(i) = pvstp(i) - pv(i)
+         if (abs(fd(i)).ge.5*fplrs*min(abs(pvstp(i)),abs(pv(i)))) then
+            fd(i) = fd(i) / stp
+         else
+            fd(i) = 0.0_wp
+         end if
+   10 continue
+      return
+      end

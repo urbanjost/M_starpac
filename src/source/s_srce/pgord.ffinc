@@ -1,5 +1,5 @@
 !PGORD
-      SUBROUTINE PGORD (PER, NPTS, YAXIS, NPRT)
+      subroutine pgord (per, npts, yaxis, nprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,26 +15,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   NPRT,NPTS
+     integer&
+     &   nprt,npts
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PER(NPTS),YAXIS(NPTS)
+     real(kind=wp) ::&
+     &   per(npts),yaxis(npts)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM
-      INTEGER
-     &   I
+     real(kind=wp) ::&
+     &   fplm
+     integer&
+     &   i
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   R1MACH
+     real(kind=wp) ::&
+     &   r1mach
 !       EXTERNAL R1MACH
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC IABS,LOG10
+      intrinsic iabs,log10
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -61,19 +61,19 @@
 !     REAL YAXIS(NPTS)
 !        THE Y CO-ORDINATES FOR THE PERIODOGRAM PLOTS.
 !
-      FPLM = R1MACH(2)
+      fplm = r1mach(2)
 !
 !     THE FIRST VALUE SHOULD BE ZERO, SO NO ATTEMPT IS MADE TO PLOT IT.
 !
-      YAXIS(1) = FPLM
+      yaxis(1) = fplm
 !
-      DO 10 I = 2, NPTS
-         YAXIS(I) = FPLM
-         IF (PER(I) .LE. 0.0E0) GO TO 10
-            YAXIS(I) = PER(I)
-            IF (IABS(NPRT) .EQ. 1) YAXIS(I) = 10.0E0*LOG10(YAXIS(I))
-   10 CONTINUE
+      do 10 i = 2, npts
+         yaxis(i) = fplm
+         if (per(i) .le. 0.0e0) go to 10
+            yaxis(i) = per(i)
+            if (iabs(nprt) .eq. 1) yaxis(i) = 10.0e0*log10(yaxis(i))
+   10 continue
 !
-      RETURN
+      return
 !
-      END
+      end

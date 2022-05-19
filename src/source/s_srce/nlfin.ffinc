@@ -1,7 +1,7 @@
 !NLFIN
-      SUBROUTINE NLFIN(Y, WEIGHT, NNZW, WT, LWT, XM, N, M, IXM, IFIXD,
-     &   PAR, NPAR, NPARE, RES, PAGE, WIDE, IPTOUT, NDIGIT, RSSHLF, RSD,
-     &   PV, SDPV, SDRES, RD, VCVL, LVCVL, D, NLHDR, IVCVPT, ISKULL)
+     subroutine nlfin(y, weight, nnzw, wt, lwt, xm, n, m, ixm, ifixd,&
+    &   par, npar, npare, res, page, wide, iptout, ndigit, rsshlf, rsd,&
+     &   pv, sdpv, sdres, rd, vcvl, lvcvl, d, nlhdr, ivcvpt, iskull)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -24,40 +24,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RSD,RSSHLF
-      INTEGER
-     &   IVCVPT,IXM,LVCVL,LWT,M,N,NDIGIT,NNZW,NPAR,NPARE
-      LOGICAL
-     &   PAGE,WEIGHT,WIDE
+     real(kind=wp) ::&
+     &   rsd,rsshlf
+     integer&
+     &   ivcvpt,ixm,lvcvl,lwt,m,n,ndigit,nnzw,npar,npare
+     logical&
+     &   page,weight,wide
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   D(N,NPAR),PAR(NPAR),PV(N),RD(NPARE),RES(N),SDPV(N),SDRES(N),
-     &   VCVL(LVCVL),WT(LWT),XM(IXM,M),Y(N)
-      INTEGER
-     &   IFIXD(NPAR),IPTOUT(NDIGIT),ISKULL(10)
+     real(kind=wp) ::&
+    &   d(n,npar),par(npar),pv(n),rd(npare),res(n),sdpv(n),sdres(n),&
+     &   vcvl(lvcvl),wt(lwt),xm(ixm,m),y(n)
+     integer&
+     &   ifixd(npar),iptout(ndigit),iskull(10)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL NLHDR
+       external nlhdr
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   COND,RSS,YSS
-      INTEGER
-     &   IDF
-      LOGICAL
-     &   EXACT,PRTFSM
+     real(kind=wp) ::&
+     &   cond,rss,yss
+     integer&
+     &   idf
+     logical&
+     &   exact,prtfsm
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL NLCMP,NLOUT
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -162,20 +162,20 @@
 !
 !     COMPUTE RETURNED AND/OR PRINTED VALUES.
 !
-      CALL NLCMP (Y, WEIGHT, WT, LWT, N, NPAR, NPARE, RES,
-     &   D, RD, COND, VCVL, LVCVL, NNZW, IDF, RSSHLF, RSS, RSD, YSS,
-     &   EXACT, PV, SDPV, SDRES, ISKULL)
+     call nlcmp (y, weight, wt, lwt, n, npar, npare, res,&
+    &   d, rd, cond, vcvl, lvcvl, nnzw, idf, rsshlf, rss, rsd, yss,&
+     &   exact, pv, sdpv, sdres, iskull)
 !
-      PRTFSM = ((IPTOUT(3).NE.0) .OR. (IPTOUT(4).NE.0) .OR.
-     &   (IPTOUT(5).NE.0) .OR. (IERR.NE.0))
+     prtfsm = ((iptout(3).ne.0) .or. (iptout(4).ne.0) .or.&
+     &   (iptout(5).ne.0) .or. (ierr.ne.0))
 !
 !     PRINT SUMMARY INFORMATION IF DESIRED OR IF AN ERROR FLAG
 !     HAS BEEN SET.
 !
-      IF (PRTFSM) CALL NLOUT(Y, WEIGHT, NNZW, WT, LWT, XM, N, M, IXM,
-     &   IFIXD, PAR, NPAR, NPARE, RES, IPTOUT, NDIGIT, PAGE, IDF, COND,
-     &   RSS, RSD, YSS, EXACT, PV, SDPV, SDRES, VCVL, LVCVL, IVCVPT,
-     &   ISKULL, NLHDR, WIDE)
-      RETURN
+     if (prtfsm) call nlout(y, weight, nnzw, wt, lwt, xm, n, m, ixm,&
+    &   ifixd, par, npar, npare, res, iptout, ndigit, page, idf, cond,&
+    &   rss, rsd, yss, exact, pv, sdpv, sdres, vcvl, lvcvl, ivcvpt,&
+     &   iskull, nlhdr, wide)
+      return
 !
-      END
+      end

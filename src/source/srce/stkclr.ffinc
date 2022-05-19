@@ -1,5 +1,5 @@
 !STKCLR
-      SUBROUTINE STKCLR (NALL0)
+      subroutine stkclr (nall0)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,16 +20,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   NALL0
+     integer&
+     &   nall0
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   NALLN
+     integer&
+     &   nalln
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     &   STKST
+     integer&
+     &   stkst
 !       EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
@@ -46,7 +46,7 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      NALLN = STKST(1)
-      CALL STKREL (NALLN - NALL0)
-      RETURN
-      END
+      nalln = stkst(1)
+      call stkrel (nalln - nall0)
+      return
+      end

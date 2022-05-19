@@ -1,5 +1,5 @@
 !AOV1HD
-      SUBROUTINE AOV1HD(IPRT)
+      subroutine aov1hd(iprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,8 +17,8 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL VERSP
@@ -28,8 +28,8 @@
 !     INTEGER IPRT
 !        THE OUTPUT LOGICAL UNIT NUMBER
 !
-      CALL VERSP(.TRUE.)
-      WRITE (IPRT,1000)
-      RETURN
- 1000 FORMAT(///48X, 20HANALYSIS OF VARIANCE//)
-      END
+      call versp(.true.)
+      write (iprt,1000)
+      return
+ 1000 format(///48x, 20hanalysis of variance//)
+      end

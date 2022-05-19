@@ -1,5 +1,5 @@
 !R9LGMC
-      REAL FUNCTION R9LGMC (X)
+      real function r9lgmc (x)
 ! AUGUST 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! COMPUTE THE LOG GAMMA CORRECTION FACTOR FOR X .GE. 10.0 SO THAT
@@ -9,14 +9,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL X
+      real x
 !
 !  LOCAL SCALARS
-      REAL XBIG,XMAX
-      INTEGER NALGM
+      real xbig,xmax
+      integer nalgm
 !
 !  LOCAL ARRAYS
-      REAL ALGMCS(6)
+      real algmcs(6)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL CSEVL,R1MACH
@@ -27,7 +27,7 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC EXP,LOG,MIN,SQRT
+      intrinsic exp,log,min,sqrt
 !
 !
 ! SERIES FOR ALGM       ON THE INTERVAL  0.          TO  1.00000D-02
@@ -36,29 +36,29 @@
 !                               SIGNIFICANT FIGURES REQUIRED  14.39
 !                                    DECIMAL PLACES REQUIRED  15.86
 !
-      DATA ALGMCS( 1) /    .1666389480 45186E0 /
-      DATA ALGMCS( 2) /   -.0000138494 817606E0 /
-      DATA ALGMCS( 3) /    .0000000098 108256E0 /
-      DATA ALGMCS( 4) /   -.0000000000 180912E0 /
-      DATA ALGMCS( 5) /    .0000000000 000622E0 /
-      DATA ALGMCS( 6) /   -.0000000000 000003E0 /
+      data algmcs( 1) /    .166638948045186e0 /
+      data algmcs( 2) /   -.0000138494817606e0 /
+      data algmcs( 3) /    .0000000098108256e0 /
+      data algmcs( 4) /   -.0000000000180912e0 /
+      data algmcs( 5) /    .0000000000000622e0 /
+      data algmcs( 6) /   -.0000000000000003e0 /
 !
-      DATA NALGM, XBIG, XMAX / 0, 2*0.0 /
+      data nalgm, xbig, xmax / 0, 2*0.0 /
 !
-      IF (NALGM.NE.0) GO TO 10
-      NALGM = INITS (ALGMCS, 6, R1MACH(3))
-      XBIG = 1.0/SQRT(R1MACH(3))
-      XMAX = EXP (MIN(LOG(R1MACH(2)/12.0), -LOG(12.0*R1MACH(1))) )
+      if (nalgm.ne.0) go to 10
+      nalgm = inits (algmcs, 6, r1mach(3))
+      xbig = 1.0/sqrt(r1mach(3))
+      xmax = exp (min(log(r1mach(2)/12.0), -log(12.0*r1mach(1))) )
 !
- 10   IF (X.LT.10.0) CALL XERROR ('R9LGMC  X MUST BE GE 10', 23, 1, 2)
-      IF (X.GE.XMAX) GO TO 20
+ 10   if (x.lt.10.0) call xerror ('R9LGMC  X MUST BE GE 10', 23, 1, 2)
+      if (x.ge.xmax) go to 20
 !
-      R9LGMC = 1.0/(12.0*X)
-      IF (X.LT.XBIG) R9LGMC = CSEVL (2.0*(10./X)**2-1., ALGMCS, NALGM)/X
-      RETURN
+      r9lgmc = 1.0/(12.0*x)
+      if (x.lt.xbig) r9lgmc = csevl (2.0*(10./x)**2-1., algmcs, nalgm)/x
+      return
 !
- 20   R9LGMC = 0.0
-      CALL XERROR ('R9LGMC  X SO BIG R9LGMC UNDERFLOWS', 34, 2, 1)
-      RETURN
+ 20   r9lgmc = 0.0
+      call xerror ('R9LGMC  X SO BIG R9LGMC UNDERFLOWS', 34, 2, 1)
+      return
 !
-      END
+      end

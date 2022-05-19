@@ -1,6 +1,6 @@
 !DCKCRV
-      SUBROUTINE DCKCRV(J, D, PAR, NPAR, ETA, TAU, MDL, XM, N,
-     &   NROW, M, IXM, PV, PVTEMP, MSG, LMSG, FD, PARMX, PVPSTP, STP)
+     subroutine dckcrv(j, d, par, npar, eta, tau, mdl, xm, n,&
+     &   nrow, m, ixm, pv, pvtemp, msg, lmsg, fd, parmx, pvpstp, stp)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,34 +17,34 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   D,ETA,FD,PARMX,PV,PVPSTP,STP,TAU
-      INTEGER
-     &   IXM,J,LMSG,M,N,NPAR,NROW
+     real(kind=wp) ::&
+     &   d,eta,fd,parmx,pv,pvpstp,stp,tau
+     integer&
+     &   ixm,j,lmsg,m,n,npar,nrow
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),PVTEMP(N),XM(IXM,M)
-      INTEGER
-     &   MSG(LMSG)
+     real(kind=wp) ::&
+     &   par(npar),pvtemp(n),xm(ixm,m)
+     integer&
+     &   msg(lmsg)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL MDL
+       external mdl
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   CURVE,FPLRS,PVMCRV,PVPCRV,STPCRV,TEMP,THIRD
+     real(kind=wp) ::&
+     &   curve,fplrs,pvmcrv,pvpcrv,stpcrv,temp,third
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   R1MACH
+     real(kind=wp) ::&
+     &   r1mach
 !       EXTERNAL R1MACH
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL DCKFPA
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,SIGN
+      intrinsic abs,sign
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -119,73 +119,73 @@
 !        THE ARRAY IN WHICH ONE ROW OF THE INDEPENDENT VARIABLE ARRAY
 !        IS STORED.
 !
-      FPLRS = R1MACH(4)
+      fplrs = r1mach(4)
 !
-      THIRD = 1.0E0/3.0E0
+      third = 1.0e0/3.0e0
 !
-      STPCRV = (ETA**THIRD*PARMX*SIGN(1.0E0,PAR(J))+PAR(J)) - PAR(J)
+      stpcrv = (eta**third*parmx*sign(1.0e0,par(j))+par(j)) - par(j)
 !
-      TEMP = PAR(J)
-      PAR(J) = TEMP + STPCRV
-      CALL MDL(PAR, NPAR, XM, N, M, IXM, PVTEMP)
+      temp = par(j)
+      par(j) = temp + stpcrv
+      call mdl(par, npar, xm, n, m, ixm, pvtemp)
 !
-      PVPCRV = PVTEMP(NROW)
+      pvpcrv = pvtemp(nrow)
 !
-      PAR(J) = TEMP - STPCRV
-      CALL MDL(PAR, NPAR, XM, N, M, IXM, PVTEMP)
-      PAR(J) = TEMP
+      par(j) = temp - stpcrv
+      call mdl(par, npar, xm, n, m, ixm, pvtemp)
+      par(j) = temp
 !
-      PVMCRV = PVTEMP(NROW)
+      pvmcrv = pvtemp(nrow)
 !
 !     ESTIMATE CURVATURE BY SECOND DERIVATIVE OF MODEL WITH RESPECT TO
 !     PAR(J)
 !
-      CURVE = ((PVPCRV+PVMCRV)-2*PV) / (STPCRV*STPCRV)
-      CURVE = CURVE + (ETA ** THIRD) * (ABS(PVPCRV) +
-     &   ABS(PVMCRV) + 2.0E0 * ABS(PV)) / (PARMX * PARMX)
+      curve = ((pvpcrv+pvmcrv)-2*pv) / (stpcrv*stpcrv)
+     curve = curve + (eta ** third) * (abs(pvpcrv) +&
+     &   abs(pvmcrv) + 2.0e0 * abs(pv)) / (parmx * parmx)
 !
 !     COMPARE NUMERICAL AND ANALYTICAL DERIVATIVES USING A FUDGE
 !     FACTOR OF 10.0E0.
 !
-      IF (ABS(CURVE*STP)*5.0E0.LT.ABS(FD-D)) THEN
+      if (abs(curve*stp)*5.0e0.lt.abs(fd-d)) then
 !
 !     CURVATURE CANNOT ACCOUNT FOR DISCREPANCY.
 !     CHECK IF FINITE PRECISION ARITHMETIC COULD BE THE CULPRIT.
 !
-         CALL DCKFPA(J,D,PAR,NPAR,ETA,TAU,MDL,XM,N,NROW,
-     &      M,IXM,PV,PVTEMP,MSG,LMSG,FD,PARMX,STP,PVPSTP,CURVE)
+        call dckfpa(j,d,par,npar,eta,tau,mdl,xm,n,nrow,&
+     &      m,ixm,pv,pvtemp,msg,lmsg,fd,parmx,stp,pvpstp,curve)
 !
-      ELSE
+      else
 !
 !     HIGH CURVATURE COULD BE THE PROBLEM.  TRY A SMALLER STEP SIZE.
 !     COMPUTE SMALLER STEPSIZE
 !
-         STP = (2.0E0*TAU*ABS(D)*SIGN(1.0E0,PAR(J))/ABS(CURVE)+PAR(J))
-     &          - PAR(J)
+        stp = (2.0e0*tau*abs(d)*sign(1.0e0,par(j))/abs(curve)+par(j))&
+     &          - par(j)
 !
-         IF (ABS(STP).LE.FPLRS*ABS(PAR(J))) THEN
+         if (abs(stp).le.fplrs*abs(par(j))) then
 !
 !     NEW STEP SIZE IS TOO SMALL TO USE.
 !
-            IF (MSG(1).EQ.0) MSG(1) = 1
-            MSG(J+1) = 1
-         ELSE
+            if (msg(1).eq.0) msg(1) = 1
+            msg(j+1) = 1
+         else
 !
 !     TRY NEW STEP SIZE
 !
-            TEMP = PAR(J)
-            PAR(J) = TEMP + STP
-            CALL MDL(PAR, NPAR, XM, N, M, IXM, PVTEMP)
-            PAR(J) = TEMP
-            PVPSTP = PVTEMP(NROW)
+            temp = par(j)
+            par(j) = temp + stp
+            call mdl(par, npar, xm, n, m, ixm, pvtemp)
+            par(j) = temp
+            pvpstp = pvtemp(nrow)
 !
 !     COMPUTE THE NEW NUMERICAL DERIVATIVE
 !
-            FD = (PVPSTP-PV)/STP
+            fd = (pvpstp-pv)/stp
 !
 !     CHECK WHETHER THE NEW NUMERICAL DERIVATIVE IS NOT OK
 !
-            IF (ABS(FD-D).GT.2.0E0*TAU*ABS(D)) THEN
+            if (abs(fd-d).gt.2.0e0*tau*abs(d)) then
 !
 !     NUMERICAL DERIVATIVE COMPUTED USING NEW STEP SIZE DOES
 !     NOT AGREE WITH ANALYTIC DERIVATIVE.
@@ -194,22 +194,22 @@
 !     DERIVATIVE.
 !     (FUDGE FACTOR IS 2)
 !
-               IF (ABS(STP*(FD-D)).GE.2.0E0*ETA*ABS(PV+PVPSTP)) THEN
+               if (abs(stp*(fd-d)).ge.2.0e0*eta*abs(pv+pvpstp)) then
 !
 !     FINITE PRECISION COULD NOT BE THE CULPRIT
 !
-                  MSG(1) = 2
-                  MSG(J+1) = 2
-               ELSE
+                  msg(1) = 2
+                  msg(j+1) = 2
+               else
 !
 !     FINITE PRECISION MAY BE THE CULPRIT
 !
-                  IF (MSG(1).EQ.0) MSG(1) = 1
-                  MSG(J+1) = 1
-               END IF
-            END IF
-         END IF
-      END IF
-      RETURN
+                  if (msg(1).eq.0) msg(1) = 1
+                  msg(j+1) = 1
+               end if
+            end if
+         end if
+      end if
+      return
 !
-      END
+      end

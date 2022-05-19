@@ -1,5 +1,5 @@
 !ERSLFS
-      SUBROUTINE ERSLFS(NMSUB, FC, K, HEAD, ERROR)
+      subroutine erslfs(nmsub, fc, k, head, error)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,22 +17,22 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FC
-      INTEGER
-     &   K
-      LOGICAL
-     &   ERROR,HEAD
+     real(kind=wp) ::&
+     &   fc
+     integer&
+     &   k
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   TEMP
-      INTEGER
-     &   IPRT
+     real(kind=wp) ::&
+     &   temp
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -57,38 +57,38 @@
 !     REAL(KIND=WP) :: TEMP
 !        A TEMPORARY VARIABLE USED FOR TYPE CONVERSION.
 !
-      ERROR = .FALSE.
-      TEMP = K
+      error = .false.
+      temp = k
 !
-      IF (FC - 1.0_WP/TEMP .GE. 0.0_WP) GO TO 10
+      if (fc - 1.0_wp/temp .ge. 0.0_wp) go to 10
 !
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
-      WRITE (IPRT, 1010) FC, K
-      ERROR = .TRUE.
-      RETURN
+      call iprint(iprt)
+      call ehdr(nmsub, head)
+      write (iprt, 1010) fc, k
+      error = .true.
+      return
 !
-   10 CONTINUE
+   10 continue
 !
-      IF (FC + 1.0_WP/K .LT. 0.5_WP) RETURN
+      if (fc + 1.0_wp/k .lt. 0.5_wp) return
 !
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
-      WRITE (IPRT, 1020) FC, K
-      ERROR = .TRUE.
-      RETURN
+      call iprint(iprt)
+      call ehdr(nmsub, head)
+      write (iprt, 1020) fc, k
+      error = .true.
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT (/36H THE CUTOFF FREQUENCY, FC, MINUS ONE,
-     &   41H OVER THE NUMBER OF FILTER TERMS, K, THAT/
-     &   53H IS, FC - 1/K, MUST BE GREATER THAN OR EQUAL TO ZERO.,
-     &   29H THE INPUT VALUES OF FC AND K/
-     &   4H ARE, F8.5, 4H AND, I5, 15H, RESPECTIVELY.)
- 1020 FORMAT (/35H THE CUTOFF FREQUENCY, FC, PLUS ONE,
-     &   45H OVER THE NUMBER OF FILTER TERMS, K, THAT IS,/
-     &   49H FC + 1/K, MUST BE GREATER THAN OR EQUAL TO ZERO.,
-     &   29H THE INPUT VALUES OF FC AND K/
-     &   4H ARE, F7.5, 4H AND, I5, 15H, RESPECTIVELY.)
+1010 format (/36h the cutoff frequency, fc, minus one,&
+    &   41h over the number of filter terms, k, that/&
+    &   53h is, fc - 1/k, must be greater than or equal to zero.,&
+    &   29h the input values of fc and k/&
+     &   4h are, f8.5, 4h and, i5, 15h, respectively.)
+1020 format (/35h the cutoff frequency, fc, plus one,&
+    &   45h over the number of filter terms, k, that is,/&
+    &   49h fc + 1/k, must be greater than or equal to zero.,&
+    &   29h the input values of fc and k/&
+     &   4h are, f7.5, 4h and, i5, 15h, respectively.)
 !
-      END
+      end

@@ -1,5 +1,5 @@
 !SETROW
-      SUBROUTINE SETROW (NROW, XM, N, M, IXM, NROWU)
+      subroutine setrow (nrow, xm, n, m, ixm, nrowu)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,16 +16,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,M,N,NROW,NROWU
+     integer&
+     &   ixm,m,n,nrow,nrowu
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XM(IXM,M)
+     real(kind=wp) ::&
+     &   xm(ixm,m)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,J
+     integer&
+     &   i,j
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -46,22 +46,22 @@
 !     REAL(KIND=WP) :: XM(IXM,M)
 !        THE INDEPENDENT VARIABLE MATRIX.
 !
-      NROWU = NROW
+      nrowu = nrow
 !
-      IF ((NROWU.GE.1) .AND. (NROWU.LE.N)) RETURN
+      if ((nrowu.ge.1) .and. (nrowu.le.n)) return
 !
 !     SELECT FIRST ROW OF INDEPENDENT VARIABLES WHICH CONTAINS NO ZEROS
 !     IF THERE IS ONE, OTHERWISE FIRST ROW IS USED.
 !
-      DO 20 I = 1, N
-         DO 10 J = 1, M
-            IF (XM(I,J) .EQ. 0.0_WP) GO TO 20
-   10    CONTINUE
-         NROWU = I
-         RETURN
-   20 CONTINUE
+      do 20 i = 1, n
+         do 10 j = 1, m
+            if (xm(i,j) .eq. 0.0_wp) go to 20
+   10    continue
+         nrowu = i
+         return
+   20 continue
 !
-      NROWU = 1
+      nrowu = 1
 !
-      RETURN
-      END
+      return
+      end

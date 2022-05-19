@@ -1,5 +1,5 @@
 !POLAR
-      SUBROUTINE POLAR (AMPL, PHAS, N)
+      subroutine polar (ampl, phas, n)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -24,21 +24,21 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   AMPL(N),PHAS(N)
+     real(kind=wp) ::&
+     &   ampl(n),phas(n)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   PHASE,R
-      INTEGER
-     &   I
+     real(kind=wp) ::&
+     &   phase,r
+     integer&
+     &   i
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ATAN2,SQRT
+      intrinsic atan2,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -55,12 +55,12 @@
 !     REAL(KIND=WP) :: R
 !        THE AMPLITUDE COMPONENT OF THE DEMODULATED SERIES.
 !
-      DO 10 I = 1, N
-         R = SQRT(AMPL(I)*AMPL(I) + PHAS(I)*PHAS(I))
-         PHASE = 0.0_WP
-         IF (R .NE. 0.0_WP) PHASE = ATAN2(PHAS(I), AMPL(I))
-         AMPL(I) = R
-         PHAS(I) = PHASE
-   10 CONTINUE
-      RETURN
-      END
+      do 10 i = 1, n
+         r = sqrt(ampl(i)*ampl(i) + phas(i)*phas(i))
+         phase = 0.0_wp
+         if (r .ne. 0.0_wp) phase = atan2(phas(i), ampl(i))
+         ampl(i) = r
+         phas(i) = phase
+   10 continue
+      return
+      end

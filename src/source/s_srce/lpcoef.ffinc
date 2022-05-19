@@ -1,5 +1,5 @@
 !LPCOEF
-      SUBROUTINE LPCOEF (FC, K, HLP)
+      subroutine lpcoef (fc, k, hlp)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -25,34 +25,34 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FC
-      INTEGER
-     &   K
+     real(kind=wp) ::&
+     &   fc
+     integer&
+     &   k
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   HLP(*)
+     real(kind=wp) ::&
+     &   hlp(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
-      LOGICAL
-     &   ERR01,ERR02,ERR03,ERR04,HEAD
+     integer&
+     &   iprt
+     logical&
+     &   err01,err02,err03,err04,head
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   LFC(8)*1,LK(8)*1,NMSUB(6)*1
+     character&
+     &   lfc(8)*1,lk(8)*1,nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EISII,ERIODD,ERSII,ERSLFS,IPRINT,LPFLT
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -84,49 +84,49 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'L',       'P',       'C',       'O',       'E',       'F'/
-      DATA
-     &  LFC(1), LFC(2), LFC(3), LFC(4), LFC(5), LFC(6), LFC(7), LFC(8)
+     data&
+    &  lfc(1), lfc(2), lfc(3), lfc(4), lfc(5), lfc(6), lfc(7), lfc(8)&
      & /  'F',   'C',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
-      DATA
-     &  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
+     data&
+    &  lk(1), lk(2), lk(3), lk(4), lk(5), lk(6), lk(7), lk(8)&
      & /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL ERSII(NMSUB, LFC, FC, 0.0E0, 0.5E0, 2, HEAD, ERR01, LFC, LFC)
+      call ersii(nmsub, lfc, fc, 0.0e0, 0.5e0, 2, head, err01, lfc, lfc)
 !
-      CALL EISII(NMSUB, LK, K, 1, K, 2, HEAD, ERR02, LK, LK)
+      call eisii(nmsub, lk, k, 1, k, 2, head, err02, lk, lk)
 !
-      CALL ERIODD(NMSUB, LK, K, 1, HEAD, ERR03)
+      call eriodd(nmsub, lk, k, 1, head, err03)
 !
-      IF (ERR01 .OR. ERR02 .OR. ERR03) GO TO 10
+      if (err01 .or. err02 .or. err03) go to 10
 !
-      CALL ERSLFS(NMSUB, FC, K, HEAD, ERR04)
+      call erslfs(nmsub, fc, k, head, err04)
 !
-      IF (.NOT. ERR04) GO TO 20
+      if (.not. err04) go to 20
 !
-   10 CONTINUE
-      IERR = 1
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+   10 continue
+      ierr = 1
+      call iprint (iprt)
+      write (iprt, 1000)
+      return
 !
-   20 CONTINUE
+   20 continue
 !
-      CALL LPFLT (FC, K, HLP)
+      call lpflt (fc, k, hlp)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   31H       CALL LPCOEF (FC, K, HLP))
-      END
+1000 format (/42h the correct form of the call statement is//&
+     &   31h       call lpcoef (fc, k, hlp))
+      end

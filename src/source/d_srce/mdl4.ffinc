@@ -1,5 +1,5 @@
 !MDL4
-      SUBROUTINE MDL4 (PAR, NPAR, XM, N, M, IXM, PV)
+      subroutine mdl4 (par, npar, xm, n, m, ixm, pv)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,19 +15,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,M,N,NPAR
+     integer&
+     &   ixm,m,n,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),PV(N),XM(IXM,M)
+     real(kind=wp) ::&
+     &   par(npar),pv(n),xm(ixm,m)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC EXP
+      intrinsic exp
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -50,10 +50,10 @@
 !        THE ARRAY IN WHICH ONE ROW OF THE INDEPENDENT VARIABLE ARRAY
 !        IS STORED.
 !
-      DO 10 I = 1, N
-         PV(I) = PAR(1) + PAR(3)*EXP(-((XM(I,1)-PAR(2))**2)/PAR(4))
-   10 CONTINUE
+      do 10 i = 1, n
+         pv(i) = par(1) + par(3)*exp(-((xm(i,1)-par(2))**2)/par(4))
+   10 continue
 !
-      RETURN
+      return
 !
-      END
+      end

@@ -1,7 +1,7 @@
 !FDUMP
-      SUBROUTINE FDUMP
+      subroutine fdump
 !  THIS IS A DUMMY ROUTINE TO BE SENT OUT ON
 !  THE PORT SEDIT TAPE
 !
-      RETURN
-      END
+      return
+      end

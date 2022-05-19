@@ -1,5 +1,5 @@
 !CDFT
-      REAL(KIND=WP) FUNCTION CDFT(X, IDF)
+      real(kind=wp) function cdft(x, idf)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -55,18 +55,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X
-      INTEGER
-     &   IDF
+     real(kind=wp) ::&
+     &   x
+     integer&
+     &   idf
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   B11,B21,B22,B23,B24,B25,B31,B32,B33,B34,B35,B36,B37,C,CSQ,D1,
-     &   D11,D3,D5,D7,D9,DCONST,DF,FPSPM,PI,SD,SUM,TERM,TERM1,TERM2,
-     &   TERM3,Z
-      INTEGER
-     &   I,IDFCUT,IEVODD,IMAX,IMIN,IPRT
+     real(kind=wp) ::&
+    &   b11,b21,b22,b23,b24,b25,b31,b32,b33,b34,b35,b36,b37,c,csq,d1,&
+    &   d11,d3,d5,d7,d9,dconst,df,fpspm,pi,sd,sum,term,term1,term2,&
+     &   term3,z
+     integer&
+     &   i,idfcut,ievodd,imax,imin,iprt
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -77,7 +77,7 @@
 !      EXTERNAL GETPI,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,ATAN,EXP,LOG,SQRT
+      intrinsic abs,atan,exp,log,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -124,34 +124,34 @@
 !     REAL Z
 !        ...
 !
-      DATA IDFCUT /1000/
-      DATA DCONST /0.3989422804E0/
-      DATA B11 /0.25E0/
-      DATA B21 /96.0E0/
+      data idfcut /1000/
+      data dconst /0.3989422804e0/
+      data b11 /0.25e0/
+      data b21 /96.0e0/
 !     DATA B21 /0.01041666666667E0/
-      DATA B22, B23, B24, B25 /3.0E0,-7.0E0,-5.0E0,-3.0E0/
-      DATA B31 /0.00260416666667E0/
-      DATA B32, B33, B34, B35, B36, B37
-     &    /1.0E0,-11.0E0,14.0E0,6.0E0,-3.0E0,-15.0E0/
+      data b22, b23, b24, b25 /3.0e0,-7.0e0,-5.0e0,-3.0e0/
+      data b31 /0.00260416666667e0/
+     data b32, b33, b34, b35, b36, b37&
+     &    /1.0e0,-11.0e0,14.0e0,6.0e0,-3.0e0,-15.0e0/
 !
 !
-      CALL GETPI(PI)
-      CALL IPRINT(IPRT)
-      FPSPM = R1MACH(1)
+      call getpi(pi)
+      call iprint(iprt)
+      fpspm = r1mach(1)
 !
 !     CHECK THE INPUT ARGUMENTS FOR ERRORS
 !
-      IF (IDF.LE.0) GO TO 10
-      GO TO 20
-   10 WRITE (IPRT, 1000)
-      WRITE (IPRT, 1010) IDF
-      CDFT = 0.0E0
-      RETURN
-   20 CONTINUE
+      if (idf.le.0) go to 10
+      go to 20
+   10 write (iprt, 1000)
+      write (iprt, 1010) idf
+      cdft = 0.0e0
+      return
+   20 continue
 !
 !-----START POINT-----------------------------------------------------
 !
-      DF = IDF
+      df = idf
 !
 !     IF IDF IS 3 THROUGH 9 AND X IS MORE THAN 3000
 !     STANDARD DEVIATIONS BELOW THE MEAN,
@@ -166,98 +166,98 @@
 !     STANDARD DEVIATIONS ABOVE THE MEAN,
 !     SET CDFT = 1.0E0 AND RETURN.
 !
-      IF (IDF.LE.2) GO TO 50
-      SD = SQRT(DF/(DF-2.0E0))
-      Z = X/SD
-      IF (IDF.LT.10 .AND. Z.LT.(-3000.0E0)) GO TO 30
-      IF (IDF.GE.10 .AND. Z.LT.(-150.0E0)) GO TO 30
-      IF (IDF.LT.10 .AND. Z.GT.3000.0E0) GO TO 40
-      IF (IDF.GE.10 .AND. Z.GT.150.0E0) GO TO 40
-      GO TO 50
-   30 CDFT = 0.0E0
-      RETURN
-   40 CDFT = 1.0E0
-      RETURN
-   50 CONTINUE
+      if (idf.le.2) go to 50
+      sd = sqrt(df/(df-2.0e0))
+      z = x/sd
+      if (idf.lt.10 .and. z.lt.(-3000.0e0)) go to 30
+      if (idf.ge.10 .and. z.lt.(-150.0e0)) go to 30
+      if (idf.lt.10 .and. z.gt.3000.0e0) go to 40
+      if (idf.ge.10 .and. z.gt.150.0e0) go to 40
+      go to 50
+   30 cdft = 0.0e0
+      return
+   40 cdft = 1.0e0
+      return
+   50 continue
 !
 !     DISTINGUISH BETWEEN THE SMALL AND MODERATE
 !     DEGREES OF FREEDOM CASE VERSUS THE
 !     LARGE DEGREES OF FREEDOM CASE
 !
-      IF (IDF.LT.IDFCUT) GO TO 60
-      GO TO 120
+      if (idf.lt.idfcut) go to 60
+      go to 120
 !
 !     TREAT THE SMALL AND MODERATE DEGREES OF FREEDOM CASE
 !     METHOD UTILIZED--EXACT FINITE SUM
 !     (SEE AMS 55, PAGE 948, FORMULAE 26.7.3 AND 26.7.4).
 !
-   60 CONTINUE
-      CSQ = DF/(X*X+DF)
-      C = SQRT(CSQ)
-      IMAX = IDF - 2
-      IEVODD = IDF - 2*(IDF/2)
-      IF (IEVODD.NE.0) THEN
-         IF (IDF.EQ.1) THEN
-            SUM = 0.0E0
-         ELSE
-            SUM = C
-         END IF
-         TERM = C
-         IMIN = 3
-      ELSE
-         SUM = 1.0E0
-         TERM = 1.0E0
-         IMIN = 2
-      END IF
+   60 continue
+      csq = df/(x*x+df)
+      c = sqrt(csq)
+      imax = idf - 2
+      ievodd = idf - 2*(idf/2)
+      if (ievodd.ne.0) then
+         if (idf.eq.1) then
+            sum = 0.0e0
+         else
+            sum = c
+         end if
+         term = c
+         imin = 3
+      else
+         sum = 1.0e0
+         term = 1.0e0
+         imin = 2
+      end if
 !
-      DO 90 I=IMIN,IMAX,2
-         IF (TERM.NE.0.0E0) THEN
-            IF (LOG(TERM)+LOG((I-1.0E0)/I)+LOG(CSQ).GE.LOG(FPSPM)) THEN
-               TERM = TERM*((I-1.0E0)/I)*CSQ
-               SUM = SUM + TERM
-            ELSE
-               TERM = 0.0E0
-            END IF
-         END IF
-   90 CONTINUE
+      do 90 i=imin,imax,2
+         if (term.ne.0.0e0) then
+            if (log(term)+log((i-1.0e0)/i)+log(csq).ge.log(fpspm)) then
+               term = term*((i-1.0e0)/i)*csq
+               sum = sum + term
+            else
+               term = 0.0e0
+            end if
+         end if
+   90 continue
 !
-      IF (SUM.EQ.0.0E0 .OR. X.EQ.0.0E0) THEN
-         SUM = 0.0E0
-      ELSE
-         IF (LOG(SUM)+LOG(ABS(X))-0.5*LOG(X*X+DF) .LT. LOG(FPSPM)) THEN
-            SUM = 0.0E0
-         ELSE
-            SUM = SUM*X/SQRT(X*X+DF)
-         END IF
-      END IF
-      IF (IEVODD.EQ.0) GO TO 110
-      SUM = (2.0E0/PI)*(ATAN(X/SQRT(DF))+SUM)
-  110 CDFT = 0.5E0 + SUM/2.0E0
-      RETURN
+      if (sum.eq.0.0e0 .or. x.eq.0.0e0) then
+         sum = 0.0e0
+      else
+         if (log(sum)+log(abs(x))-0.5*log(x*x+df) .lt. log(fpspm)) then
+            sum = 0.0e0
+         else
+            sum = sum*x/sqrt(x*x+df)
+         end if
+      end if
+      if (ievodd.eq.0) go to 110
+      sum = (2.0e0/pi)*(atan(x/sqrt(df))+sum)
+  110 cdft = 0.5e0 + sum/2.0e0
+      return
 !
 !     TREAT THE LARGE DEGREES OF FREEDOM CASE.
 !     METHOD UTILIZED--TRUNCATED ASYMPTOTIC EXPANSION
 !     (SEE JOHNSON AND KOTZ, VOLUME 2, PAGE 102, FORMULA 10?
 !     SEE FEDERIGHI, PAGE 687).
 !
-  120 CONTINUE
-      D1 = X
-      D3 = X**3
-      D5 = X**5
-      D7 = X**7
-      D9 = X**9
-      D11 = X**11
-      TERM1 = B11*(D3+D1)/DF
+  120 continue
+      d1 = x
+      d3 = x**3
+      d5 = x**5
+      d7 = x**7
+      d9 = x**9
+      d11 = x**11
+      term1 = b11*(d3+d1)/df
 !     TERM2 = B21*(B22*D7+B23*D5+B24*D3+B25*D1)/(DF**2)
-      TERM2 = (B22*D7+B23*D5+B24*D3+B25*D1)/(DF**2) / B21
-      TERM3 = B31*(B32*D11+B33*D9+B34*D7+B35*D5+B36*D3+B37*D1)/(DF**3)
-      CDFT = TERM1 + TERM2 + TERM3
-      CDFT = CDFNML(X) - (DCONST*(EXP(-X*X/2.0E0)))*CDFT
-      RETURN
+      term2 = (b22*d7+b23*d5+b24*d3+b25*d1)/(df**2) / b21
+      term3 = b31*(b32*d11+b33*d9+b34*d7+b35*d5+b36*d3+b37*d1)/(df**3)
+      cdft = term1 + term2 + term3
+      cdft = cdfnml(x) - (dconst*(exp(-x*x/2.0e0)))*cdft
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (' ', 49H***** FATAL ERROR--THE SECOND INPUT ARGUMENT TO T,
-     &   42HHE CDFT   SUBROUTINE IS NON-POSITIVE *****)
- 1010 FORMAT (' ', 35H***** THE VALUE OF THE ARGUMENT IS , I8, 6H *****)
-      END
+1000 format (' ', 49h***** fatal error--the second input argument to t,&
+     &   42hhe cdft   subroutine is non-positive *****)
+ 1010 format (' ', 35h***** the value of the argument is , i8, 6h *****)
+      end

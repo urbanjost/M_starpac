@@ -1,5 +1,5 @@
 !XXCH9
-      SUBROUTINE XXCH9(LDSTAK,typ)
+      subroutine xxch9(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -19,26 +19,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER LDSTAK
+      integer ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER IERR
+      integer ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER IPRT,IXM,M,N,NPAR
+      integer iprt,ixm,m,n,npar
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) :: PAR(5),RES(10),STP(5),XM(10,2),Y(10)
+      real(kind=wp) :: par(5),res(10),stp(5),xm(10,2),y(10)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL DCKLS,DRV1A,DRV1B,IPRINT,MDL1,NLS,NLSD,STPLS
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -79,65 +79,65 @@
 !        THE DEPENDENT VARIABLE.
 !
 !
-      DATA Y(1), Y(2), Y(3), Y(4), Y(5), Y(6)
-     &   /2.138E0, 3.421E0, 3.597E0, 4.340E0, 4.882E0, 5.660E0/
+     data y(1), y(2), y(3), y(4), y(5), y(6)&
+     &   /2.138e0, 3.421e0, 3.597e0, 4.340e0, 4.882e0, 5.660e0/
 !
-      DATA XM(1,1), XM(2,1), XM(3,1), XM(4,1), XM(5,1), XM(6,1)
-     &   /1.309E0, 1.471E0, 1.490E0, 1.565E0, 1.611E0, 1.680E0/
+     data xm(1,1), xm(2,1), xm(3,1), xm(4,1), xm(5,1), xm(6,1)&
+     &   /1.309e0, 1.471e0, 1.490e0, 1.565e0, 1.611e0, 1.680e0/
 !
 !     SET PARAMETERS NECESSARY FOR THE COMPUTATIONS
 !
-      CALL IPRINT(IPRT)
-      IXM = 10
-      N = 6
-      M = 1
-      NPAR = 2
+      call iprint(iprt)
+      ixm = 10
+      n = 6
+      m = 1
+      npar = 2
 !
 !     PRINT HEADER
 !
-      WRITE (IPRT,1000)
+      write (iprt,1000)
 !
 !     RUN SIMPLE EXAMPLE OF NLS
 !
-      WRITE (IPRT,1100)
-      PAR(1) = 0.725
-      PAR(2) = 4.000
-      CALL NLS(Y, XM, N, M, IXM, MDL1, PAR, NPAR, RES, LDSTAK)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1100)
+      par(1) = 0.725
+      par(2) = 4.000
+      call nls(y, xm, n, m, ixm, mdl1, par, npar, res, ldstak)
+      write (iprt,2000) ierr
 !
 !     RUN SIMPLE EXAMPLE OF NLSD
 !
-      WRITE (IPRT,1200)
-      PAR(1) = 0.725
-      PAR(2) = 4.000
-      CALL NLSD(Y, XM, N, M, IXM, MDL1, DRV1A, PAR, NPAR, RES, LDSTAK)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1200)
+      par(1) = 0.725
+      par(2) = 4.000
+      call nlsd(y, xm, n, m, ixm, mdl1, drv1a, par, npar, res, ldstak)
+      write (iprt,2000) ierr
 !
 !     RUN SIMPLE EXAMPLE OF STPLS
 !
-      WRITE (IPRT,1300)
-      PAR(1) = 0.725
-      PAR(2) = 4.000
-      CALL STPLS(XM, N, M, IXM, MDL1, PAR, NPAR, LDSTAK, STP)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1300)
+      par(1) = 0.725
+      par(2) = 4.000
+      call stpls(xm, n, m, ixm, mdl1, par, npar, ldstak, stp)
+      write (iprt,2000) ierr
 !
 !     RUN SIMPLE EXAMPLE OF DCKLS
 !
-      WRITE (IPRT,1400)
-      PAR(1) = 0.000
-      PAR(2) = 4.000
-      CALL DCKLS(XM, N, M, IXM, MDL1, DRV1B, PAR, NPAR, LDSTAK)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1400)
+      par(1) = 0.000
+      par(2) = 4.000
+      call dckls(xm, n, m, ixm, mdl1, drv1b, par, npar, ldstak)
+      write (iprt,2000) ierr
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT ('1*CH9')
- 1100 FORMAT (' SIMPLE TEST OF NLS')
- 1200 FORMAT ('1SIMPLE TEST OF NLSD')
- 1300 FORMAT ('1SIMPLE TEST OF STPLS')
- 1400 FORMAT ('1SIMPLE TEST OF DCKLS')
- 2000 FORMAT (/' THE VALUE OF IERR IS ', I4)
+ 1000 format ('1*CH9')
+ 1100 format (' SIMPLE TEST OF NLS')
+ 1200 format ('1SIMPLE TEST OF NLSD')
+ 1300 format ('1SIMPLE TEST OF STPLS')
+ 1400 format ('1SIMPLE TEST OF DCKLS')
+ 2000 format (/' THE VALUE OF IERR IS ', i4)
 !
-      END
+      end

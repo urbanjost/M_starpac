@@ -1,5 +1,5 @@
 !XXCH8
-      SUBROUTINE XXCH8(LDSTAK,typ)
+      subroutine xxch8(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -21,30 +21,30 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,IXM,N1,N2,NDEG,NPAR
+     integer&
+     &   iprt,ixm,n1,n2,ndeg,npar
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RES(25),X(25),XM(25,5),Y1(25),Y2(25)
+     real(kind=wp) ::&
+     &   res(25),x(25),xm(25,5),y1(25),y2(25)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,LLS,LLSP
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -77,110 +77,110 @@
 !        THE DEPENDENT VARIABLE.
 !
 !
-      DATA      XM(1,1),  XM(1,2),  XM(1,3),  XM(1,4)
-     &    /      1.0E0, 80.0E0, 27.0E0, 89.0E0/
-      DATA      XM(2,1),  XM(2,2),  XM(2,3),  XM(2,4)
-     &    /      1.0E0, 80.0E0, 27.0E0, 88.0E0/
-      DATA      XM(3,1),  XM(3,2),  XM(3,3),  XM(3,4)
-     &    /      1.0E0, 75.0E0, 25.0E0, 90.0E0/
-      DATA      XM(4,1),  XM(4,2),  XM(4,3),  XM(4,4)
-     &    /      1.0E0, 62.0E0, 24.0E0, 87.0E0/
-      DATA      XM(5,1),  XM(5,2),  XM(5,3),  XM(5,4)
-     &    /      1.0E0, 62.0E0, 22.0E0, 87.0E0/
-      DATA      XM(6,1),  XM(6,2),  XM(6,3),  XM(6,4)
-     &    /      1.0E0, 62.0E0, 23.0E0, 87.0E0/
-      DATA      XM(7,1),  XM(7,2),  XM(7,3),  XM(7,4)
-     &    /      1.0E0, 62.0E0, 24.0E0, 93.0E0/
-      DATA      XM(8,1),  XM(8,2),  XM(8,3),  XM(8,4)
-     &    /      1.0E0, 62.0E0, 24.0E0, 93.0E0/
-      DATA      XM(9,1),  XM(9,2),  XM(9,3),  XM(9,4)
-     &    /      1.0E0, 58.0E0, 23.0E0, 87.0E0/
-      DATA     XM(10,1), XM(10,2), XM(10,3), XM(10,4)
-     &    /      1.0E0, 58.0E0, 18.0E0, 80.0E0/
-      DATA     XM(11,1), XM(11,2), XM(11,3), XM(11,4)
-     &    /      1.0E0, 58.0E0, 18.0E0, 89.0E0/
-      DATA     XM(12,1), XM(12,2), XM(12,3), XM(12,4)
-     &    /      1.0E0, 58.0E0, 17.0E0, 88.0E0/
-      DATA     XM(13,1), XM(13,2), XM(13,3), XM(13,4)
-     &    /      1.0E0, 58.0E0, 18.0E0, 82.0E0/
-      DATA     XM(14,1), XM(14,2), XM(14,3), XM(14,4)
-     &    /      1.0E0, 58.0E0, 19.0E0, 93.0E0/
-      DATA     XM(15,1), XM(15,2), XM(15,3), XM(15,4)
-     &    /      1.0E0, 50.0E0, 18.0E0, 89.0E0/
-      DATA     XM(16,1), XM(16,2), XM(16,3), XM(16,4)
-     &    /      1.0E0, 50.0E0, 18.0E0, 86.0E0/
-      DATA     XM(17,1), XM(17,2), XM(17,3), XM(17,4)
-     &    /      1.0E0, 50.0E0, 19.0E0, 72.0E0/
-      DATA     XM(18,1), XM(18,2), XM(18,3), XM(18,4)
-     &    /      1.0E0, 50.0E0, 19.0E0, 79.0E0/
-      DATA     XM(19,1), XM(19,2), XM(19,3), XM(19,4)
-     &    /      1.0E0, 50.0E0, 20.0E0, 80.0E0/
-      DATA     XM(20,1), XM(20,2), XM(20,3), XM(20,4)
-     &    /      1.0E0, 56.0E0, 20.0E0, 82.0E0/
-      DATA     XM(21,1), XM(21,2), XM(21,3), XM(21,4)
-     &    /      1.0E0, 70.0E0, 20.0E0, 91.0E0/
+     data      xm(1,1),  xm(1,2),  xm(1,3),  xm(1,4)&
+     &    /      1.0e0, 80.0e0, 27.0e0, 89.0e0/
+     data      xm(2,1),  xm(2,2),  xm(2,3),  xm(2,4)&
+     &    /      1.0e0, 80.0e0, 27.0e0, 88.0e0/
+     data      xm(3,1),  xm(3,2),  xm(3,3),  xm(3,4)&
+     &    /      1.0e0, 75.0e0, 25.0e0, 90.0e0/
+     data      xm(4,1),  xm(4,2),  xm(4,3),  xm(4,4)&
+     &    /      1.0e0, 62.0e0, 24.0e0, 87.0e0/
+     data      xm(5,1),  xm(5,2),  xm(5,3),  xm(5,4)&
+     &    /      1.0e0, 62.0e0, 22.0e0, 87.0e0/
+     data      xm(6,1),  xm(6,2),  xm(6,3),  xm(6,4)&
+     &    /      1.0e0, 62.0e0, 23.0e0, 87.0e0/
+     data      xm(7,1),  xm(7,2),  xm(7,3),  xm(7,4)&
+     &    /      1.0e0, 62.0e0, 24.0e0, 93.0e0/
+     data      xm(8,1),  xm(8,2),  xm(8,3),  xm(8,4)&
+     &    /      1.0e0, 62.0e0, 24.0e0, 93.0e0/
+     data      xm(9,1),  xm(9,2),  xm(9,3),  xm(9,4)&
+     &    /      1.0e0, 58.0e0, 23.0e0, 87.0e0/
+     data     xm(10,1), xm(10,2), xm(10,3), xm(10,4)&
+     &    /      1.0e0, 58.0e0, 18.0e0, 80.0e0/
+     data     xm(11,1), xm(11,2), xm(11,3), xm(11,4)&
+     &    /      1.0e0, 58.0e0, 18.0e0, 89.0e0/
+     data     xm(12,1), xm(12,2), xm(12,3), xm(12,4)&
+     &    /      1.0e0, 58.0e0, 17.0e0, 88.0e0/
+     data     xm(13,1), xm(13,2), xm(13,3), xm(13,4)&
+     &    /      1.0e0, 58.0e0, 18.0e0, 82.0e0/
+     data     xm(14,1), xm(14,2), xm(14,3), xm(14,4)&
+     &    /      1.0e0, 58.0e0, 19.0e0, 93.0e0/
+     data     xm(15,1), xm(15,2), xm(15,3), xm(15,4)&
+     &    /      1.0e0, 50.0e0, 18.0e0, 89.0e0/
+     data     xm(16,1), xm(16,2), xm(16,3), xm(16,4)&
+     &    /      1.0e0, 50.0e0, 18.0e0, 86.0e0/
+     data     xm(17,1), xm(17,2), xm(17,3), xm(17,4)&
+     &    /      1.0e0, 50.0e0, 19.0e0, 72.0e0/
+     data     xm(18,1), xm(18,2), xm(18,3), xm(18,4)&
+     &    /      1.0e0, 50.0e0, 19.0e0, 79.0e0/
+     data     xm(19,1), xm(19,2), xm(19,3), xm(19,4)&
+     &    /      1.0e0, 50.0e0, 20.0e0, 80.0e0/
+     data     xm(20,1), xm(20,2), xm(20,3), xm(20,4)&
+     &    /      1.0e0, 56.0e0, 20.0e0, 82.0e0/
+     data     xm(21,1), xm(21,2), xm(21,3), xm(21,4)&
+     &    /      1.0e0, 70.0e0, 20.0e0, 91.0e0/
 !
-      DATA        Y1(1),    Y1(2),    Y1(3)
-     &    /     42.0E0, 37.0E0, 37.0E0/
-      DATA        Y1(4),    Y1(5),    Y1(6)
-     &    /     28.0E0, 18.0E0, 18.0E0/
-      DATA        Y1(7),    Y1(8),    Y1(9)
-     &    /     19.0E0, 20.0E0, 15.0E0/
-      DATA       Y1(10),   Y1(11),   Y1(12)
-     &    /     14.0E0, 14.0E0, 13.0E0/
-      DATA       Y1(13),   Y1(14),   Y1(15)
-     &    /     11.0E0, 12.0E0,  8.0E0/
-      DATA       Y1(16),   Y1(17),   Y1(18)
-     &    /      7.0E0,  8.0E0,  8.0E0/
-      DATA       Y1(19),   Y1(20),   Y1(21)
-     &    /      9.0E0, 15.0E0, 15.0E0/
+     data        y1(1),    y1(2),    y1(3)&
+     &    /     42.0e0, 37.0e0, 37.0e0/
+     data        y1(4),    y1(5),    y1(6)&
+     &    /     28.0e0, 18.0e0, 18.0e0/
+     data        y1(7),    y1(8),    y1(9)&
+     &    /     19.0e0, 20.0e0, 15.0e0/
+     data       y1(10),   y1(11),   y1(12)&
+     &    /     14.0e0, 14.0e0, 13.0e0/
+     data       y1(13),   y1(14),   y1(15)&
+     &    /     11.0e0, 12.0e0,  8.0e0/
+     data       y1(16),   y1(17),   y1(18)&
+     &    /      7.0e0,  8.0e0,  8.0e0/
+     data       y1(19),   y1(20),   y1(21)&
+     &    /      9.0e0, 15.0e0, 15.0e0/
 !
-      DATA         X(1),     X(2),     X(3)
-     &    /      0.0E0,  1.0E0,  2.0E0/
-      DATA         X(4),     X(5),     X(6)
-     &    /      3.0E0,  4.0E0,  5.0E0/
-      DATA         X(7),     X(8),     X(9)
-     &    /      6.0E0,  7.0E0,  8.0E0/
+     data         x(1),     x(2),     x(3)&
+     &    /      0.0e0,  1.0e0,  2.0e0/
+     data         x(4),     x(5),     x(6)&
+     &    /      3.0e0,  4.0e0,  5.0e0/
+     data         x(7),     x(8),     x(9)&
+     &    /      6.0e0,  7.0e0,  8.0e0/
 !
-      DATA        Y2(1),    Y2(2),    Y2(3)
-     &    /     12.0E0, 10.5E0, 10.0E0/
-      DATA        Y2(4),    Y2(5),    Y2(6)
-     &    /      8.0E0,  7.0E0,  8.0E0/
-      DATA        Y2(7),    Y2(8),    Y2(9)
-     &    /      7.5E0,  8.5E0,  9.0E0/
+     data        y2(1),    y2(2),    y2(3)&
+     &    /     12.0e0, 10.5e0, 10.0e0/
+     data        y2(4),    y2(5),    y2(6)&
+     &    /      8.0e0,  7.0e0,  8.0e0/
+     data        y2(7),    y2(8),    y2(9)&
+     &    /      7.5e0,  8.5e0,  9.0e0/
 !
 !     SET PARAMETERS NECESSARY FOR THE COMPUTATIONS
 !
-      CALL IPRINT(IPRT)
-      IXM = 25
-      N1 = 21
-      N2 = 9
-      NPAR = 4
-      NDEG = 2
+      call iprint(iprt)
+      ixm = 25
+      n1 = 21
+      n2 = 9
+      npar = 4
+      ndeg = 2
 !
 !     PRINT HEADER
 !
-      WRITE (IPRT,1000)
+      write (iprt,1000)
 !
 !     RUN SIMPLE EXAMPLE OF LLS
 !
-      WRITE (IPRT,1100)
-      CALL LLS(Y1, XM, N1, IXM, NPAR, RES, LDSTAK)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1100)
+      call lls(y1, xm, n1, ixm, npar, res, ldstak)
+      write (iprt,2000) ierr
 !
 !     RUN SIMPLE EXAMPLE OF LLSP
 !
-      WRITE (IPRT,1200)
-      CALL LLSP(Y2, X, N2, NDEG, RES, LDSTAK)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1200)
+      call llsp(y2, x, n2, ndeg, res, ldstak)
+      write (iprt,2000) ierr
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT ('1*CH8')
- 1100 FORMAT (' SIMPLE TEST OF LLS')
- 1200 FORMAT ('1SIMPLE TEST OF LLSP')
- 2000 FORMAT (/' THE VALUE OF IERR IS ', I4)
+ 1000 format ('1*CH8')
+ 1100 format (' SIMPLE TEST OF LLS')
+ 1200 format ('1SIMPLE TEST OF LLSP')
+ 2000 format (/' THE VALUE OF IERR IS ', i4)
 !
-      END
+      end

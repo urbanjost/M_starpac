@@ -1,5 +1,5 @@
 !UASCFT
-      SUBROUTINE UASCFT (ACOV, LAGMAX, LACOV, IAR, PHI, N, VAR)
+      subroutine uascft (acov, lagmax, lacov, iar, phi, n, var)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   VAR
-      INTEGER
-     &   IAR,LACOV,LAGMAX,N
+     real(kind=wp) ::&
+     &   var
+     integer&
+     &   iar,lacov,lagmax,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV(LACOV),PHI(IAR)
+     real(kind=wp) ::&
+     &   acov(lacov),phi(iar)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   RSS
-      INTEGER
-     &   L
+     real(kind=wp) ::&
+     &   rss
+     integer&
+     &   l
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL ARCOEF
@@ -54,17 +54,17 @@
 !     REAL RSS, VAR
 !
 !
-      PHI(1) = ACOV(2) / ACOV(1)
-      RSS = ACOV(1) * N * (1.0E0 - PHI(1)*PHI(1))
+      phi(1) = acov(2) / acov(1)
+      rss = acov(1) * n * (1.0e0 - phi(1)*phi(1))
 !
-      IF (IAR .LE. 1) GO TO 20
+      if (iar .le. 1) go to 20
 !
-      DO 10 L = 2, IAR
-         CALL ARCOEF(ACOV(2), PHI, RSS, L, LAGMAX, ACOV(1))
-   10 CONTINUE
+      do 10 l = 2, iar
+         call arcoef(acov(2), phi, rss, l, lagmax, acov(1))
+   10 continue
 !
-   20 VAR = RSS / (N-IAR-1)
+   20 var = rss / (n-iar-1)
 !
-      RETURN
+      return
 !
-      END
+      end

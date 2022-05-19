@@ -1,5 +1,5 @@
 !OBSSM2
-      SUBROUTINE OBSSM2(N, Y, PVT, SDPVT, RES, SDREST, IFIRST, ILAST)
+      subroutine obssm2(n, y, pvt, sdpvt, res, sdrest, ifirst, ilast)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,22 +16,22 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IFIRST,ILAST,N
+     integer&
+     &   ifirst,ilast,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PVT(N),RES(N),SDPVT(N),SDREST(N),Y(N)
+     real(kind=wp) ::&
+     &   pvt(n),res(n),sdpvt(n),sdrest(n),y(n)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM
-      INTEGER
-     &   I,IPRT
+     real(kind=wp) ::&
+     &   fplm
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -42,7 +42,7 @@
 !      EXTERNAL IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -72,30 +72,30 @@
 !     REAL Y(N)
 !        THE DEPENDENT VARIABLE.
 !
-      FPLM = R1MACH(2)
+      fplm = r1mach(2)
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      DO 140 I=IFIRST,ILAST
+      do 140 i=ifirst,ilast
 !
 !     PRINT DATA SUMMARY.
 !
-         IF ((SDPVT(I).NE.FPLM) .AND. (SDREST(I).NE.FPLM))
-     &      WRITE (IPRT, 1060) I, Y(I), PVT(I), SDPVT(I), RES(I),
-     &      SDREST(I)
-         IF ((SDPVT(I).NE.FPLM) .AND. (SDREST(I).EQ.FPLM))
-     &      WRITE (IPRT, 1050) I, Y(I), PVT(I), SDPVT(I), RES(I)
-         IF ((SDPVT(I).EQ.FPLM) .AND. (SDREST(I).EQ.FPLM))
-     &      WRITE (IPRT, 1080) I, Y(I), PVT(I), RES(I)
+        if ((sdpvt(i).ne.fplm) .and. (sdrest(i).ne.fplm))&
+    &      write (iprt, 1060) i, y(i), pvt(i), sdpvt(i), res(i),&
+     &      sdrest(i)
+        if ((sdpvt(i).ne.fplm) .and. (sdrest(i).eq.fplm))&
+     &      write (iprt, 1050) i, y(i), pvt(i), sdpvt(i), res(i)
+        if ((sdpvt(i).eq.fplm) .and. (sdrest(i).eq.fplm))&
+     &      write (iprt, 1080) i, y(i), pvt(i), res(i)
 !
-  140 CONTINUE
+  140 continue
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1050 FORMAT (1X, I4, 4E16.8, 4X, 4HNC *, 1X, E9.3)
- 1060 FORMAT (1X, I4, 4E16.8, 1X, F7.2, 1X, E9.3)
- 1080 FORMAT (1X, I4, 2E16.8, 8X, 4HNC *, 4X, E16.8, 4X, 4HNC *,
-     &   1X, E9.3)
-      END
+ 1050 format (1x, i4, 4e16.8, 4x, 4hnc *, 1x, e9.3)
+ 1060 format (1x, i4, 4e16.8, 1x, f7.2, 1x, e9.3)
+1080 format (1x, i4, 2e16.8, 8x, 4hnc *, 4x, e16.8, 4x, 4hnc *,&
+     &   1x, e9.3)
+      end

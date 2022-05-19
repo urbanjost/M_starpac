@@ -1,6 +1,6 @@
 !AMDRV
-      SUBROUTINE AMDRV (MDLTS3, DRV, DONE, IFIXD, PAR, NPAR, XM, N, M,
-     &   IXM, NRESTS, RESTS, D, WEIGHT, WT, LWT, STPT, LSTPT, SCL, LSCL)
+     subroutine amdrv (mdlts3, drv, done, ifixd, par, npar, xm, n, m,&
+     &   ixm, nrests, rests, d, weight, wt, lwt, stpt, lstpt, scl, lscl)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,35 +17,35 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,LSCL,LSTPT,LWT,M,N,NPAR,NRESTS
-      LOGICAL
-     &   DONE,WEIGHT
+     integer&
+     &   ixm,lscl,lstpt,lwt,m,n,npar,nrests
+     logical&
+     &   done,weight
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   D(NRESTS,*),PAR(*),RESTS(*),SCL(*),STPT(*),WT(*),XM(IXM,*)
-      INTEGER
-     &   IFIXD(*)
+     real(kind=wp) ::&
+     &   d(nrests,*),par(*),rests(*),scl(*),stpt(*),wt(*),xm(ixm,*)
+     integer&
+     &   ifixd(*)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL DRV,MDLTS3
+       external drv,mdlts3
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   PJ,STPJ
-      INTEGER
-     &   I,J,JPK
+     real(kind=wp) ::&
+     &   pj,stpj
+     integer&
+     &   i,j,jpk
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,MAX,SIGN
+      intrinsic abs,max,sign
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -114,40 +114,40 @@
 !
 !     COMPUTE FINITE-DIFFERENCE JACOBIAN OF THE OPTIMIZED PARAMETERS
 !
-      JPK = 0
+      jpk = 0
 !
-      DO 20 J=1,NPAR
+      do 20 j=1,npar
 !
-         IF (IFIXD(J).NE.0) GO TO 20
+         if (ifixd(j).ne.0) go to 20
 !
-         JPK = JPK + 1
+         jpk = jpk + 1
 !
-         PJ = PAR(J)
-         IF (SCL(JPK).NE.0.0_WP) THEN
-            STPJ = STPT(J)*SIGN(1.0_WP,PAR(J))*MAX(ABS(PAR(J)),1.0_WP/
-     &             ABS(SCL(JPK)))
-         ELSE
-            IF (PAR(J).NE.0.0_WP) THEN
-               STPJ = STPT(J)*SIGN(1.0_WP,PAR(J))*ABS(PAR(J))
-            ELSE
-               STPJ = STPT(J)
-            END IF
-         END IF
+         pj = par(j)
+         if (scl(jpk).ne.0.0_wp) then
+           stpj = stpt(j)*sign(1.0_wp,par(j))*max(abs(par(j)),1.0_wp/&
+     &             abs(scl(jpk)))
+         else
+            if (par(j).ne.0.0_wp) then
+               stpj = stpt(j)*sign(1.0_wp,par(j))*abs(par(j))
+            else
+               stpj = stpt(j)
+            end if
+         end if
 !
-         STPJ = STPJ + PAR(J)
-         STPJ = STPJ - PAR(J)
+         stpj = stpj + par(j)
+         stpj = stpj - par(j)
 !
-         PAR(J) = PJ + STPJ
-         CALL MDLTS3(PAR, NPAR, XM, N, M, IXM, D(1,J))
+         par(j) = pj + stpj
+         call mdlts3(par, npar, xm, n, m, ixm, d(1,j))
 !
-         DO 10 I=1,NRESTS
-            D(I,JPK) = (-RESTS(I)+D(I,J))/STPJ
-   10    CONTINUE
+         do 10 i=1,nrests
+            d(i,jpk) = (-rests(i)+d(i,j))/stpj
+   10    continue
 !
-         PAR(J) = PJ
+         par(j) = pj
 !
-   20 CONTINUE
+   20 continue
 !
-      RETURN
+      return
 !
-      END
+      end

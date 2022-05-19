@@ -1,6 +1,6 @@
 !ERVGTM
-      SUBROUTINE ERVGTM (NMSUB, NMVAR, VEC, VCMISS, N, VECLB, NVMX,
-     &   HEAD, MSGTYP, NV, ERROR, NMMIN)
+     subroutine ervgtm (nmsub, nmvar, vec, vcmiss, n, veclb, nvmx,&
+     &   head, msgtyp, nv, error, nmmin)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -23,33 +23,33 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   VCMISS,VECLB
-      INTEGER
-     &   MSGTYP,N,NV,NVMX
-      LOGICAL
-     &   ERROR,HEAD
+     real(kind=wp) ::&
+     &   vcmiss,veclb
+     integer&
+     &   msgtyp,n,nv,nvmx
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   VEC(*)
-      CHARACTER
-     &   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     real(kind=wp) ::&
+     &   vec(*)
+     character&
+     &   nmmin(8)*1,nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,NVMN
+     integer&
+     &   i,nvmn
 !
 !  EXTERNAL FUNCTIONS
-      LOGICAL
-     &   MVCHK
+     logical&
+     &   mvchk
 !       EXTERNAL MVCHK
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL ERVGTP
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -91,31 +91,31 @@
 !     REAL VECLB
 !        THE VALUE THAT THE VECTOR IS BEING TESTED AGAINST.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (N .LE. 0) RETURN
+      if (n .le. 0) return
 !
 !     TEST WHETHER TESTING IS NECESSRY
 !
-      IF ((MOD(MSGTYP,3) .EQ. 0) .AND. (VEC(1) .LE. VECLB)) RETURN
+      if ((mod(msgtyp,3) .eq. 0) .and. (vec(1) .le. veclb)) return
 !
 !     CHECK FOR VIOLATIONS
 !
-      NV = 0
-      DO 5 I = 1, N
-         IF (MVCHK(VEC(I), VCMISS)) GO TO 5
-         IF ((VEC(I).LE.VECLB)) NV = NV + 1
-    5 CONTINUE
+      nv = 0
+      do 5 i = 1, n
+         if (mvchk(vec(i), vcmiss)) go to 5
+         if ((vec(i).le.veclb)) nv = nv + 1
+    5 continue
 !
-      IF (NV .LE. NVMX) RETURN
+      if (nv .le. nvmx) return
 !
 !     VIOLATIONS FOUND
 !
-      ERROR = .TRUE.
-      NVMN = N - NVMX
-      CALL ERVGTP (NMSUB, NMVAR, VECLB, NVMN, NVMX, HEAD, MSGTYP, NV,
-     &   NMMIN)
+      error = .true.
+      nvmn = n - nvmx
+     call ervgtp (nmsub, nmvar, veclb, nvmn, nvmx, head, msgtyp, nv,&
+     &   nmmin)
 !
-      RETURN
+      return
 !
-      END
+      end

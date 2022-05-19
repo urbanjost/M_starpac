@@ -1,5 +1,5 @@
 !INITDS
-      INTEGER FUNCTION INITDS (DOS, NOS, ETA)
+      integer function initds (dos, nos, eta)
 !
 ! INITIALIZE THE DOUBLE PRECISION ORTHOGONAL SERIES DOS SO THAT INITDS
 ! IS THE NUMBER OF TERMS NEEDED TO INSURE THE ERROR IS NO LARGER THAN
@@ -14,36 +14,36 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL ETA
-      INTEGER NOS
+      real eta
+      integer nos
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION DOS(NOS)
+      double precision dos(nos)
 !
 !  LOCAL SCALARS
-      REAL ERR
-      INTEGER I,II
+      real err
+      integer i,ii
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,SNGL
+      intrinsic abs,sngl
 !
 !
-      IF (NOS.LT.1) CALL XERROR (
+     if (nos.lt.1) call xerror (&
      &  'INITDS  NUMBER OF COEFFICIENTS LT 1', 35, 2, 2)
 !
-      ERR = 0.0
-      DO 10 II=1,NOS
-        I = NOS + 1 - II
-        ERR = ERR + ABS(SNGL(DOS(I)))
-        IF (ERR.GT.ETA) GO TO 20
- 10   CONTINUE
+      err = 0.0
+      do 10 ii=1,nos
+        i = nos + 1 - ii
+        err = err + abs(sngl(dos(i)))
+        if (err.gt.eta) go to 20
+ 10   continue
 !
- 20   IF (I.EQ.NOS) CALL XERROR ('INITDS  ETA MAY BE TOO SMALL', 28,
+20   if (i.eq.nos) call xerror ('INITDS  ETA MAY BE TOO SMALL', 28,&
      &  1, 2)
-      INITDS = I
+      initds = i
 !
-      RETURN
-      END
+      return
+      end

@@ -1,5 +1,5 @@
 !UFSV
-      SUBROUTINE UFSV(ACOV, LAGMAX, N)
+      subroutine ufsv(acov, lagmax, n)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,38 +16,38 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LAGMAX,N
+     integer&
+     &   lagmax,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV(*)
+     real(kind=wp) ::&
+     &   acov(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) :: ALPHA,DELTA,FMAX,FMIN,YMISS
-      INTEGER
-     &   IPRT,ISPCF,LACOV,LDSMIN,LDSTAK,LNLPPA,LPCV,LWORK,LY,NF,
-     &   NPRT,NW
+      real(kind=wp) :: alpha,delta,fmax,fmin,ymiss
+     integer&
+    &   iprt,ispcf,lacov,ldsmin,ldstak,lnlppa,lpcv,lwork,ly,nf,&
+     &   nprt,nw
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   FREQ(101),SPCF(101,4),WORK(101),XAXIS(106),Y(1),YAXIS(106)
-      INTEGER
-     &   ISORT(101),ISYM(106),LAGS(4),NLPPA(1)
-      LOGICAL
-     &   OPTION(4)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   freq(101),spcf(101,4),work(101),xaxis(106),y(1),yaxis(106)
+     integer&
+     &   isort(101),isym(106),lags(4),nlppa(1)
+     logical&
+     &   option(4)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,PARZEN,UFSDRV
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -133,50 +133,50 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
+     data nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6) /&
      &   'U','F','S','V',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      OPTION(4) = .FALSE.
-      OPTION(3) = .TRUE.
-      OPTION(2) = .FALSE.
-      OPTION(1) = .FALSE.
+      option(4) = .false.
+      option(3) = .true.
+      option(2) = .false.
+      option(1) = .false.
 !
-      LDSTAK = 0
-      LDSMIN = 0
+      ldstak = 0
+      ldsmin = 0
 !
-      YMISS = 1.0E0
-      LACOV = LAGMAX+1
+      ymiss = 1.0e0
+      lacov = lagmax+1
 !
-      ISPCF = 101
-      LY = 1
-      LNLPPA = 1
-      LPCV = 106
-      LWORK = 101
-      NF = 101
+      ispcf = 101
+      ly = 1
+      lnlppa = 1
+      lpcv = 106
+      lwork = 101
+      nf = 101
 !
 !     SET NUMBER OF LAG WINDOW TRUNCATION POINTS
 !
-      NW = 4
+      nw = 4
 !
 !     CALL THE CONTROLLING ROUTINE FOR FOURIER SPECTRUM ROUTINES
 !
-      CALL UFSDRV(Y, LY, YMISS, ACOV, NLPPA, SPCF, ISPCF, NF, FMIN,
-     &   FMAX, FREQ, N, NW, LAGMAX, LAGS, WORK, LACOV, LWORK, DELTA,
-     &   ISORT, ISYM, XAXIS, YAXIS, LPCV, ALPHA, NPRT, PARZEN, NMSUB,
-     &   LDSMIN, LDSTAK, OPTION, LNLPPA, LY)
+     call ufsdrv(y, ly, ymiss, acov, nlppa, spcf, ispcf, nf, fmin,&
+    &   fmax, freq, n, nw, lagmax, lags, work, lacov, lwork, delta,&
+    &   isort, isym, xaxis, yaxis, lpcv, alpha, nprt, parzen, nmsub,&
+     &   ldsmin, ldstak, option, lnlppa, ly)
 !
 !     CHECK FOR ERRORS
 !
-      IF (IERR.EQ.0) RETURN
+      if (ierr.eq.0) return
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
-      RETURN
+      call iprint(iprt)
+      write (iprt,1000)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &  '       CALL UFSV (ACOV, LAGMAX, N)')
-      END
+      end

@@ -1,6 +1,6 @@
 !PLTCHK
-      SUBROUTINE PLTCHK (YM, YMMISS, X, XMISS, N, M, IYM, MULTI,
-     &   ILOG, YLB, YUB, XLB, XUB, NMSUB, MISS, XCHECK)
+     subroutine pltchk (ym, ymmiss, x, xmiss, n, m, iym, multi,&
+     &   ilog, ylb, yub, xlb, xub, nmsub, miss, xcheck)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,44 +17,44 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XLB,XMISS,XUB,YLB,YUB
-      INTEGER
-     &   ILOG,IYM,M,N
-      LOGICAL
-     &   MISS,MULTI,XCHECK
+     real(kind=wp) ::&
+     &   xlb,xmiss,xub,ylb,yub
+     integer&
+     &   ilog,iym,m,n
+     logical&
+     &   miss,multi,xcheck
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(*),YM(*),YMMISS(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   x(*),ym(*),ymmiss(*)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   NV
-      LOGICAL
-     &   ERR01,ERR02,ERR03,ERR04,ERR05,ERR06,ERR07,ERR08,ERR09,HEAD
+     integer&
+     &   nv
+     logical&
+     &   err01,err02,err03,err04,err05,err06,err07,err08,err09,head
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ILOGXY(2)
-      CHARACTER
-     &   LIYM(8)*1,LM(8)*1,LN(8)*1,LONE(8)*1,LX(8)*1,LXLB(8)*1,
-     &   LXUB(8)*1,LY(8)*1,LYLB(8)*1,LYM(8)*1,LYUB(8)*1
+     integer&
+     &   ilogxy(2)
+     character&
+    &   liym(8)*1,lm(8)*1,ln(8)*1,lone(8)*1,lx(8)*1,lxlb(8)*1,&
+     &   lxub(8)*1,ly(8)*1,lylb(8)*1,lym(8)*1,lyub(8)*1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL EISGE,ERAGT,ERAGTM,ERSGT,ERVGT,ERVGTM,PRTCNT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -123,150 +123,150 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &   LIYM(1),   LIYM(2),   LIYM(3),   LIYM(4),   LIYM(5),   LIYM(6)
+     data&
+    &   liym(1),   liym(2),   liym(3),   liym(4),   liym(5),   liym(6)&
      & /     'I',       'Y',       'M',       ' ',       ' ',       ' '/
-      DATA LIYM(7), LIYM(8)
+     data liym(7), liym(8)&
      &   /     ' ',     ' '/
-      DATA
-     &     LM(1),     LM(2),     LM(3),     LM(4),     LM(5),     LM(6)
+     data&
+    &     lm(1),     lm(2),     lm(3),     lm(4),     lm(5),     lm(6)&
      & /     'M',       ' ',       ' ',       ' ',       ' ',       ' '/
-      DATA   LM(7),   LM(8)
+     data   lm(7),   lm(8)&
      &   /     ' ',     ' '/
-      DATA
-     &     LN(1),     LN(2),     LN(3),     LN(4),     LN(5),     LN(6)
+     data&
+    &     ln(1),     ln(2),     ln(3),     ln(4),     ln(5),     ln(6)&
      & /     'N',       ' ',       ' ',       ' ',       ' ',       ' '/
-      DATA   LN(7),   LN(8)
+     data   ln(7),   ln(8)&
      &   /     ' ',     ' '/
-      DATA   LONE(1),  LONE(2),  LONE(3),  LONE(4),  LONE(5),  LONE(6),
-     &       LONE(7),  LONE(8)/'O', 'N', 'E', ' ', ' ', ' ', ' ', ' '/
-      DATA
-     &     LX(1),     LX(2),     LX(3),     LX(4),     LX(5),     LX(6)
+     data   lone(1),  lone(2),  lone(3),  lone(4),  lone(5),  lone(6),&
+     &       lone(7),  lone(8)/'O', 'N', 'E', ' ', ' ', ' ', ' ', ' '/
+     data&
+    &     lx(1),     lx(2),     lx(3),     lx(4),     lx(5),     lx(6)&
      & /     'X',       ' ',       ' ',       ' ',       ' ',       ' '/
-      DATA   LX(7),   LX(8)
+     data   lx(7),   lx(8)&
      &   /     ' ',     ' '/
-      DATA
-     &   LXLB(1),   LXLB(2),   LXLB(3),   LXLB(4),   LXLB(5),   LXLB(6)
+     data&
+    &   lxlb(1),   lxlb(2),   lxlb(3),   lxlb(4),   lxlb(5),   lxlb(6)&
      & /     'X',       'L',       'B',       ' ',       ' ',       ' '/
-      DATA LXLB(7), LXLB(8)
+     data lxlb(7), lxlb(8)&
      &   /     ' ',     ' '/
-      DATA
-     &   LXUB(1),   LXUB(2),   LXUB(3),   LXUB(4),   LXUB(5),   LXUB(6)
+     data&
+    &   lxub(1),   lxub(2),   lxub(3),   lxub(4),   lxub(5),   lxub(6)&
      & /     'X',       'U',       'B',       ' ',       ' ',       ' '/
-      DATA LXUB(7), LXUB(8)
+     data lxub(7), lxub(8)&
      &   /     ' ',     ' '/
-      DATA
-     &     LY(1),     LY(2),     LY(3),     LY(4),     LY(5),     LY(6)
+     data&
+    &     ly(1),     ly(2),     ly(3),     ly(4),     ly(5),     ly(6)&
      & /     'Y',       ' ',       ' ',       ' ',       ' ',       ' '/
-      DATA   LY(7),   LY(8)
+     data   ly(7),   ly(8)&
      &   /     ' ',     ' '/
-      DATA
-     &   LYLB(1),   LYLB(2),   LYLB(3),   LYLB(4),   LYLB(5),   LYLB(6)
+     data&
+    &   lylb(1),   lylb(2),   lylb(3),   lylb(4),   lylb(5),   lylb(6)&
      & /     'Y',       'L',       'B',       ' ',       ' ',       ' '/
-      DATA LYLB(7), LYLB(8)
+     data lylb(7), lylb(8)&
      &   /     ' ',     ' '/
-      DATA
-     &    LYM(1),    LYM(2),    LYM(3),    LYM(4),    LYM(5),    LYM(6)
+     data&
+    &    lym(1),    lym(2),    lym(3),    lym(4),    lym(5),    lym(6)&
      & /     'Y',       'M',       ' ',       ' ',       ' ',       ' '/
-      DATA  LYM(7),  LYM(8)
+     data  lym(7),  lym(8)&
      &   /     ' ',     ' '/
-      DATA
-     &   LYUB(1),   LYUB(2),   LYUB(3),   LYUB(4),   LYUB(5),   LYUB(6)
+     data&
+    &   lyub(1),   lyub(2),   lyub(3),   lyub(4),   lyub(5),   lyub(6)&
      & /     'Y',       'U',       'B',       ' ',       ' ',       ' '/
-      DATA LYUB(7), LYUB(8)
+     data lyub(7), lyub(8)&
      &   /     ' ',     ' '/
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     NUMBER OF POINTS MUST BE AT LEAST 1
 !
-      CALL EISGE(NMSUB, LN, N, 1, 2, HEAD, ERR01, LONE)
+      call eisge(nmsub, ln, n, 1, 2, head, err01, lone)
 !
 !     THERE MUST BE AT LEAST 1 COLUMN OF VECTORS
 !
-      CALL EISGE(NMSUB, LM, M, 1, 2, HEAD, ERR02, LONE)
+      call eisge(nmsub, lm, m, 1, 2, head, err02, lone)
 !
 !     THE ACTUAL LENGTH OF YM MUST EQUAL OR EXCEED THE NUMBER OF
 !     OBSERVATIONS
 !
-      ERR03 = .TRUE.
-      IF (.NOT.ERR01)
-     &   CALL EISGE(NMSUB, LIYM, IYM, N, 3, HEAD, ERR03, LN)
+      err03 = .true.
+     if (.not.err01)&
+     &   call eisge(nmsub, liym, iym, n, 3, head, err03, ln)
 !
 !     IF THIS IS A LOG PLOT CHECK FOR NON-POSITIVE VALUES IN DATA
 !
-      IF (ERR01 .OR. ERR02 .OR. ERR03) IERR = 1
-      IF (ILOG .LE. 0) RETURN
+      if (err01 .or. err02 .or. err03) ierr = 1
+      if (ilog .le. 0) return
 !
-      ERR04 = .FALSE.
-      ERR05 = .FALSE.
-      ERR06 = .FALSE.
-      ERR07 = .FALSE.
-      ERR08 = .FALSE.
-      ERR09 = .FALSE.
+      err04 = .false.
+      err05 = .false.
+      err06 = .false.
+      err07 = .false.
+      err08 = .false.
+      err09 = .false.
 !
-      CALL PRTCNT (MAX(0,ILOG),2,ILOGXY)
-      IF ((ILOGXY(1).NE.0) .AND. XCHECK) THEN
-        IF (.NOT.ERR01) THEN
+      call prtcnt (max(0,ilog),2,ilogxy)
+      if ((ilogxy(1).ne.0) .and. xcheck) then
+        if (.not.err01) then
 !
 !         IF X AXIS IS LOG SCALE, CHECK FOR NEGATIVE X AXIS VALUES
 !
-          IF (MISS) THEN
-            CALL ERVGTM(NMSUB, LX, X, XMISS, N, 0.0_WP, 0, HEAD, 1,
-     &        NV, ERR04, LX)
-          ELSE
-            CALL ERVGT(NMSUB, LX, X, N, 0.0_WP, 0, HEAD, 1, NV, ERR04,
-     &        LX)
-          END IF
-        END IF
+          if (miss) then
+           call ervgtm(nmsub, lx, x, xmiss, n, 0.0_wp, 0, head, 1,&
+     &        nv, err04, lx)
+          else
+           call ervgt(nmsub, lx, x, n, 0.0_wp, 0, head, 1, nv, err04,&
+     &        lx)
+          end if
+        end if
 !
-        IF (XLB.LT.XUB) THEN
+        if (xlb.lt.xub) then
 !
 !         CHECK FOR NEGATIVE PLOT BOUNDS
 !
-          CALL ERSGT(NMSUB, LXLB, XLB, 0.0_WP, 1, HEAD, ERR05, LXLB)
-          CALL ERSGT(NMSUB, LXUB, XUB, 0.0_WP, 1, HEAD, ERR06, LXUB)
-        END IF
-      END IF
-      IF (ILOGXY(2).NE.0) THEN
-        IF ((.NOT.ERR01) .AND. (.NOT.ERR02) .AND. (.NOT.ERR03)) THEN
+          call ersgt(nmsub, lxlb, xlb, 0.0_wp, 1, head, err05, lxlb)
+          call ersgt(nmsub, lxub, xub, 0.0_wp, 1, head, err06, lxub)
+        end if
+      end if
+      if (ilogxy(2).ne.0) then
+        if ((.not.err01) .and. (.not.err02) .and. (.not.err03)) then
 !
 !         IF Y AYIS IS LOG SCALE, CHECK FOR NEGATIVE Y AYIS VALUES
 !
-          IF (MISS) THEN
-            IF (MULTI) THEN
-              CALL ERAGTM(NMSUB, LYM, YM, YMMISS, N, M, IYM, 0.0_WP, 0,
-     &           HEAD, 1, NV, ERR04, LYM)
-            ELSE
-              CALL ERVGTM(NMSUB, LY, YM, YMMISS(1), N, 0.0_WP, 0, HEAD,
-     &           1, NV, ERR04, LY)
-            END IF
-          ELSE
-            IF (MULTI) THEN
-              CALL ERAGT(NMSUB, LYM, YM, N, M, IYM, 0.0_WP, 0, HEAD,
-     &           1, NV, ERR04, LYM)
-            ELSE
-              CALL ERVGT(NMSUB, LY, YM, N, 0.0_WP, 0, HEAD, 1,
-     &           NV, ERR04, LY)
-            END IF
-          END IF
-        END IF
+          if (miss) then
+            if (multi) then
+             call eragtm(nmsub, lym, ym, ymmiss, n, m, iym, 0.0_wp, 0,&
+     &           head, 1, nv, err04, lym)
+            else
+             call ervgtm(nmsub, ly, ym, ymmiss(1), n, 0.0_wp, 0, head,&
+     &           1, nv, err04, ly)
+            end if
+          else
+            if (multi) then
+             call eragt(nmsub, lym, ym, n, m, iym, 0.0_wp, 0, head,&
+     &           1, nv, err04, lym)
+            else
+             call ervgt(nmsub, ly, ym, n, 0.0_wp, 0, head, 1,&
+     &           nv, err04, ly)
+            end if
+          end if
+        end if
 !
-        IF (YLB.LT.YUB) THEN
+        if (ylb.lt.yub) then
 !
 !         CHECK FOR NEGATIVE PLOT BOUNDS
 !
-          CALL ERSGT(NMSUB, LYLB, YLB, 0.0_WP, 1, HEAD, ERR05, LYLB)
-          CALL ERSGT(NMSUB, LYUB, YUB, 0.0_WP, 1, HEAD, ERR06, LYUB)
-        END IF
-      END IF
+          call ersgt(nmsub, lylb, ylb, 0.0_wp, 1, head, err05, lylb)
+          call ersgt(nmsub, lyub, yub, 0.0_wp, 1, head, err06, lyub)
+        end if
+      end if
 !
-      IF (ERR04 .OR. ERR05 .OR. ERR06 .OR. ERR07 .OR. ERR08 .OR. ERR09)
-     &   IERR = 1
+     if (err04 .or. err05 .or. err06 .or. err07 .or. err08 .or. err09)&
+     &   ierr = 1
 !
-      RETURN
+      return
 !
-      END
+      end

@@ -1,8 +1,8 @@
 !CCFMNM
-      SUBROUTINE CCFMNM (Y1, Y1MISS, Y2, Y2MISS, N, LAGMAX, NCC,
-     &   CCOV11, CCOV22, CCOV12, CCOV21, ICCOV, NLPP11, NLPP22,
-     &   NLPP12, NLPP21, INLPPC, Y1MEAN, Y2MEAN, RHOC, SDRHOC, NPRT,
-     &   LAGLST)
+     subroutine ccfmnm (y1, y1miss, y2, y2miss, n, lagmax, ncc,&
+    &   ccov11, ccov22, ccov12, ccov21, iccov, nlpp11, nlpp22,&
+    &   nlpp12, nlpp21, inlppc, y1mean, y2mean, rhoc, sdrhoc, nprt,&
+     &   laglst)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,35 +19,35 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y1MEAN,Y1MISS,Y2MEAN,Y2MISS
-      INTEGER
-     &   ICCOV,INLPPC,LAGLST,LAGMAX,N,NCC,NPRT
+     real(kind=wp) ::&
+     &   y1mean,y1miss,y2mean,y2miss
+     integer&
+     &   iccov,inlppc,laglst,lagmax,n,ncc,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CCOV11(ICCOV),CCOV12(ICCOV),CCOV21(ICCOV),CCOV22(ICCOV),
-     &   RHOC(NCC),SDRHOC(NCC),Y1(N),Y2(N)
-      INTEGER
-     &   NLPP11(INLPPC),NLPP12(INLPPC),NLPP21(INLPPC),
-     &   NLPP22(INLPPC)
+     real(kind=wp) ::&
+    &   ccov11(iccov),ccov12(iccov),ccov21(iccov),ccov22(iccov),&
+     &   rhoc(ncc),sdrhoc(ncc),y1(n),y2(n)
+     integer&
+    &   nlpp11(inlppc),nlpp12(inlppc),nlpp21(inlppc),&
+     &   nlpp22(inlppc)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FAC,FPLM
-      INTEGER
-     &   I,I0,IM,IP
+     real(kind=wp) ::&
+     &   fac,fplm
+     integer&
+     &   i,i0,im,ip
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   D1MACH
+     real(kind=wp) ::&
+     &   d1mach
 !       EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL CCFSDM,CCVFM
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -97,36 +97,36 @@
 !     REAL(KIND=WP) :: Y2(N), Y2MEAN, Y2MISS
 !        THE SECOND SERIES, AND ITS MEAN, AND MISSING VALUE CODE.
 !
-      FPLM = D1MACH(2)
+      fplm = d1mach(2)
 !
 !     COMPUTE AUTOCORRELATIONS AND STANDARD DEVIATION OF THE SERIES.
 !
-      CALL CCVFM(Y1, Y1MISS, Y2, Y2MISS, N, LAGMAX, Y1MEAN, Y2MEAN,
-     &   CCOV12, CCOV21, ICCOV, NLPP12, NLPP21)
+     call ccvfm(y1, y1miss, y2, y2miss, n, lagmax, y1mean, y2mean,&
+     &   ccov12, ccov21, iccov, nlpp12, nlpp21)
 !
-      IF (NPRT .EQ. 0 .OR. NLPP11(1) .EQ. 0) RETURN
-      IF (CCOV11(1) *CCOV22(1) .EQ. 0.0_WP) RETURN
+      if (nprt .eq. 0 .or. nlpp11(1) .eq. 0) return
+      if (ccov11(1) *ccov22(1) .eq. 0.0_wp) return
 !
-      FAC = 1.0_WP / SQRT(CCOV11(1) * CCOV22(1))
+      fac = 1.0_wp / sqrt(ccov11(1) * ccov22(1))
 !
-      I0 = LAGMAX + 1
-      RHOC(I0) = FPLM
-      IF (NLPP12(1).GE.1) RHOC(I0) = CCOV12(1) * FAC
+      i0 = lagmax + 1
+      rhoc(i0) = fplm
+      if (nlpp12(1).ge.1) rhoc(i0) = ccov12(1) * fac
 !
-      DO 10 I = 1, LAGMAX
-         IP = I0 + I
-         RHOC(IP) = FPLM
-         IF (NLPP12(I+1).GE.1) RHOC(IP) = CCOV12(I+1) * FAC
+      do 10 i = 1, lagmax
+         ip = i0 + i
+         rhoc(ip) = fplm
+         if (nlpp12(i+1).ge.1) rhoc(ip) = ccov12(i+1) * fac
 !
-         IM = I0 - I
-         RHOC(IM) = FPLM
-         IF (NLPP21(I+1).GE.1) RHOC(IM) = CCOV21(I+1) * FAC
-   10 CONTINUE
+         im = i0 - i
+         rhoc(im) = fplm
+         if (nlpp21(i+1).ge.1) rhoc(im) = ccov21(i+1) * fac
+   10 continue
 !
 !     COMPUTE STANDARD ERROR OF AUTOCORRELATIONS.
 !
-      CALL CCFSDM (CCOV11, CCOV22, SDRHOC, LAGMAX, NCC, LAGLST, N,
-     &   NLPP12, NLPP21, ICCOV, INLPPC)
+     call ccfsdm (ccov11, ccov22, sdrhoc, lagmax, ncc, laglst, n,&
+     &   nlpp12, nlpp21, iccov, inlppc)
 !
-      RETURN
-      END
+      return
+      end

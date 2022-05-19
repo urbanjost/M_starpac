@@ -1,5 +1,5 @@
 !DRV1A
-      SUBROUTINE DRV1A(COEF, NCOEF, XM, N, M, IXM, D)
+      subroutine drv1a(coef, ncoef, xm, n, m, ixm, d)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,19 +16,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,M,N,NCOEF
+     integer&
+     &   ixm,m,n,ncoef
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   COEF(NCOEF),D(N,NCOEF),XM(IXM,M)
+     real(kind=wp) ::&
+     &   coef(ncoef),d(n,ncoef),xm(ixm,m)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC LOG
+      intrinsic log
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -50,11 +50,11 @@
 !        INDEPENDENT VARIABLES
 !
 !
-      DO 10 I=1,N
-         D(I,1) = XM(I,1)**COEF(2)
-         D(I,2) = COEF(1)*(XM(I,1)**COEF(2))*LOG(XM(I,1))
-   10 CONTINUE
+      do 10 i=1,n
+         d(i,1) = xm(i,1)**coef(2)
+         d(i,2) = coef(1)*(xm(i,1)**coef(2))*log(xm(i,1))
+   10 continue
 !
-      RETURN
+      return
 !
-      END
+      end

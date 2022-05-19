@@ -1,5 +1,5 @@
 !PPFT
-      REAL(KIND=WP) FUNCTION PPFT(P, IDF)
+      real(kind=wp) function ppft(p, idf)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -62,29 +62,29 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   P
-      INTEGER
-     &   IDF
+     real(kind=wp) ::&
+     &   p
+     integer&
+     &   idf
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ARG,B21,B31,B32,B33,B34,B41,B42,B43,B44,B45,
-     &   B51,B52,B53,B54,B55,B56,C,CON,D1,D3,D5,D7,D9,DF,PI,PPFN,
-     &   S,SQRT2,TERM1,TERM2,TERM3,TERM4,TERM5,Z
-      INTEGER
-     &   IPASS,MAXIT
+     real(kind=wp) ::&
+    &   arg,b21,b31,b32,b33,b34,b41,b42,b43,b44,b45,&
+    &   b51,b52,b53,b54,b55,b56,c,con,d1,d3,d5,d7,d9,df,pi,ppfn,&
+     &   s,sqrt2,term1,term2,term3,term4,term5,z
+     integer&
+     &   ipass,maxit
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   PPFNML
+     real(kind=wp) ::&
+     &   ppfnml
 !       EXTERNAL PPFNML
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ATAN,COS,SIN,SQRT
+      intrinsic atan,cos,sin,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -128,113 +128,113 @@
 !
 !     DEFINE CONSTANTS USED IN THE APPROXIMATIONS
 !
-      DATA B21 /4.0E0/
-      DATA B31, B32, B33, B34 /96.0E0, 5.0E0, 16.0E0, 3.0E0/
-      DATA B41, B42, B43, B44, B45
-     &  /384.0E0, 3.0E0, 19.0E0, 17.0E0, -15.0E0/
-      DATA B51, B52, B53, B54, B55, B56
-     &   /9216.0E0, 79.0E0, 776.0E0, 1482.0E0,
-     &   -1920.0E0, -945.0E0/
+      data b21 /4.0e0/
+      data b31, b32, b33, b34 /96.0e0, 5.0e0, 16.0e0, 3.0e0/
+     data b41, b42, b43, b44, b45&
+     &  /384.0e0, 3.0e0, 19.0e0, 17.0e0, -15.0e0/
+     data b51, b52, b53, b54, b55, b56&
+    &   /9216.0e0, 79.0e0, 776.0e0, 1482.0e0,&
+     &   -1920.0e0, -945.0e0/
 !
-      CALL GETPI(PI)
+      call getpi(pi)
 !
-      SQRT2 = SQRT(2.0E0)
+      sqrt2 = sqrt(2.0e0)
 !
-      DF = IDF
-      MAXIT = 5
+      df = idf
+      maxit = 5
 !
-      IF (IDF.GE.3) GO TO 50
-      IF (IDF.EQ.1) GO TO 30
-      IF (IDF.EQ.2) GO TO 40
-      PPFT = 0.0E0
-      RETURN
+      if (idf.ge.3) go to 50
+      if (idf.eq.1) go to 30
+      if (idf.eq.2) go to 40
+      ppft = 0.0e0
+      return
 !
 !     TREAT THE IDF = 1 (CAUCHY) CASE
 !
-   30 ARG = PI*P
-      PPFT = -COS(ARG)/SIN(ARG)
-      RETURN
+   30 arg = pi*p
+      ppft = -cos(arg)/sin(arg)
+      return
 !
 !     TREAT THE IDF = 2 CASE
 !
-   40 TERM1 = SQRT2/2.0E0
-      TERM2 = 2.0E0*P - 1.0E0
-      TERM3 = SQRT(P*(1.0E0-P))
-      PPFT = TERM1*TERM2/TERM3
-      RETURN
+   40 term1 = sqrt2/2.0e0
+      term2 = 2.0e0*p - 1.0e0
+      term3 = sqrt(p*(1.0e0-p))
+      ppft = term1*term2/term3
+      return
 !
 !     TREAT THE IDF GREATER THAN OR EQUAL TO 3 CASE
 !
-   50 PPFN = PPFNML(P)
-      D1 = PPFN
-      D3 = PPFN**3
-      D5 = PPFN**5
-      D7 = PPFN**7
-      D9 = PPFN**9
-      TERM1 = D1
-      TERM2 = (1.0E0/B21)*(D3+D1)/DF
-      TERM3 = (1.0E0/B31)*(B32*D5+B33*D3+B34*D1)/(DF**2)
-      TERM4 = (1.0E0/B41)*(B42*D7+B43*D5+B44*D3+B45*D1)/(DF**3)
-      TERM5 = (1.0E0/B51)*(B52*D9+B53*D7+B54*D5+B55*D3+B56*D1)/(DF**4)
-      PPFT = TERM1 + TERM2 + TERM3 + TERM4 + TERM5
-      IF (IDF.GE.7) RETURN
-      IF (IDF.EQ.3) GO TO 60
-      IF (IDF.EQ.4) GO TO 80
-      IF (IDF.EQ.5) GO TO 100
-      IF (IDF.EQ.6) GO TO 120
-      RETURN
+   50 ppfn = ppfnml(p)
+      d1 = ppfn
+      d3 = ppfn**3
+      d5 = ppfn**5
+      d7 = ppfn**7
+      d9 = ppfn**9
+      term1 = d1
+      term2 = (1.0e0/b21)*(d3+d1)/df
+      term3 = (1.0e0/b31)*(b32*d5+b33*d3+b34*d1)/(df**2)
+      term4 = (1.0e0/b41)*(b42*d7+b43*d5+b44*d3+b45*d1)/(df**3)
+      term5 = (1.0e0/b51)*(b52*d9+b53*d7+b54*d5+b55*d3+b56*d1)/(df**4)
+      ppft = term1 + term2 + term3 + term4 + term5
+      if (idf.ge.7) return
+      if (idf.eq.3) go to 60
+      if (idf.eq.4) go to 80
+      if (idf.eq.5) go to 100
+      if (idf.eq.6) go to 120
+      return
 !
 !     AUGMENT THE RESULTS FOR THE IDF = 3 CASE
 !
-   60 CON = PI*(P-0.5E0)
-      ARG = PPFT/SQRT(DF)
-      Z = ATAN(ARG)
-      DO 70 IPASS=1,MAXIT
-         S = SIN(Z)
-         C = COS(Z)
-         Z = Z - (Z+S*C-CON)/(2.0E0*C*C)
-   70 CONTINUE
-      PPFT = SQRT(DF)*S/C
-      RETURN
+   60 con = pi*(p-0.5e0)
+      arg = ppft/sqrt(df)
+      z = atan(arg)
+      do 70 ipass=1,maxit
+         s = sin(z)
+         c = cos(z)
+         z = z - (z+s*c-con)/(2.0e0*c*c)
+   70 continue
+      ppft = sqrt(df)*s/c
+      return
 !
 !     AUGMENT THE RESULTS FOR THE IDF = 4 CASE
 !
-   80 CON = 2.0E0*(P-0.5E0)
-      ARG = PPFT/SQRT(DF)
-      Z = ATAN(ARG)
-      DO 90 IPASS=1,MAXIT
-         S = SIN(Z)
-         C = COS(Z)
-         Z = Z - ((1.0E0+0.5E0*C*C)*S-CON)/(1.5E0*C*C*C)
-   90 CONTINUE
-      PPFT = SQRT(DF)*S/C
-      RETURN
+   80 con = 2.0e0*(p-0.5e0)
+      arg = ppft/sqrt(df)
+      z = atan(arg)
+      do 90 ipass=1,maxit
+         s = sin(z)
+         c = cos(z)
+         z = z - ((1.0e0+0.5e0*c*c)*s-con)/(1.5e0*c*c*c)
+   90 continue
+      ppft = sqrt(df)*s/c
+      return
 !
 !     AUGMENT THE RESULTS FOR THE IDF = 5 CASE
 !
-  100 CON = PI*(P-0.5E0)
-      ARG = PPFT/SQRT(DF)
-      Z = ATAN(ARG)
-      DO 110 IPASS=1,MAXIT
-         S = SIN(Z)
-         C = COS(Z)
-         Z = Z - (Z+(C+(2.0E0/3.0E0)*C*C*C)*S-CON)/((8.0E0/3.0E0)*C**4)
-  110 CONTINUE
-      PPFT = SQRT(DF)*S/C
-      RETURN
+  100 con = pi*(p-0.5e0)
+      arg = ppft/sqrt(df)
+      z = atan(arg)
+      do 110 ipass=1,maxit
+         s = sin(z)
+         c = cos(z)
+         z = z - (z+(c+(2.0e0/3.0e0)*c*c*c)*s-con)/((8.0e0/3.0e0)*c**4)
+  110 continue
+      ppft = sqrt(df)*s/c
+      return
 !
 !     AUGMENT THE RESULTS FOR THE IDF = 6 CASE
 !
-  120 CON = 2.0E0*(P-0.5E0)
-      ARG = PPFT/SQRT(DF)
-      Z = ATAN(ARG)
-      DO 130 IPASS=1,MAXIT
-         S = SIN(Z)
-         C = COS(Z)
-         Z = Z - ((1.0E0+0.5E0*C*C+0.375E0*C**4)*S-CON)/
-     &           ((15.0E0/8.0E0)*C**5)
-  130 CONTINUE
-      PPFT = SQRT(DF)*S/C
-      RETURN
+  120 con = 2.0e0*(p-0.5e0)
+      arg = ppft/sqrt(df)
+      z = atan(arg)
+      do 130 ipass=1,maxit
+         s = sin(z)
+         c = cos(z)
+        z = z - ((1.0e0+0.5e0*c*c+0.375e0*c**4)*s-con)/&
+     &           ((15.0e0/8.0e0)*c**5)
+  130 continue
+      ppft = sqrt(df)*s/c
+      return
 !
-      END
+      end

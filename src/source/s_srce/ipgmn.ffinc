@@ -1,5 +1,5 @@
 !IPGMN
-      SUBROUTINE IPGMN (PER, NF, PERI, ISPCER)
+      subroutine ipgmn (per, nf, peri, ispcer)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,18 +15,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISPCER,NF
+     integer&
+     &   ispcer,nf
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PER(NF),PERI(NF)
+     real(kind=wp) ::&
+     &   per(nf),peri(nf)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   SM
-      INTEGER
-     &   I
+     real(kind=wp) ::&
+     &   sm
+     integer&
+     &   i
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -45,21 +45,21 @@
 !        A VALUE USED TO COMPUTE THE INTEGRATED PERIODOGRAM ESTIMATES.
 !
 !
-      SM = 0.0E0
+      sm = 0.0e0
 !
-      DO 30 I = 1, NF
-         SM = SM + PER(I)
-         PERI(I) = SM
-   30 CONTINUE
+      do 30 i = 1, nf
+         sm = sm + per(i)
+         peri(i) = sm
+   30 continue
 !
-      ISPCER = 1
-      IF (SM .EQ. 0.0E0) RETURN
+      ispcer = 1
+      if (sm .eq. 0.0e0) return
 !
-      ISPCER = 0
+      ispcer = 0
 !
-      DO 40 I = 1, NF
-         PERI(I) = PERI(I)/SM
-   40 CONTINUE
+      do 40 i = 1, nf
+         peri(i) = peri(i)/sm
+   40 continue
 !
-      RETURN
-      END
+      return
+      end

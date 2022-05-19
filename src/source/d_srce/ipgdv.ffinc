@@ -1,6 +1,6 @@
 !IPGDV
-      SUBROUTINE IPGDV (PER, NF, N, PERI, FREQ, XAXIS, YAXIS, ISYM,
-     &   LPCV, NPRT)
+     subroutine ipgdv (per, nf, n, peri, freq, xaxis, yaxis, isym,&
+     &   lpcv, nprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,18 +16,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LPCV,N,NF,NPRT
+     integer&
+     &   lpcv,n,nf,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FREQ(NF),PER(NF),PERI(NF),XAXIS(LPCV),YAXIS(LPCV)
-      INTEGER
-     &   ISYM(LPCV)
+     real(kind=wp) ::&
+     &   freq(nf),per(nf),peri(nf),xaxis(lpcv),yaxis(lpcv)
+     integer&
+     &   isym(lpcv)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   ISPCER,NPTS
+     integer&
+     &   ispcer,npts
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL IPGMN,IPGORD,IPGOUT
@@ -64,20 +64,20 @@
 !
 !     COMPUTE THE INTEGRATED PERIODOGRAM
 !
-      CALL IPGMN(PER, NF, PERI, ISPCER)
+      call ipgmn(per, nf, peri, ispcer)
 !
-      IF (ISPCER .NE. 0) GO TO 10
+      if (ispcer .ne. 0) go to 10
 !
-      IF (NPRT .EQ. 0) RETURN
+      if (nprt .eq. 0) return
 !
 !     SET CO-ORDINATES FOR THE INTEGRATED PERIODOGRAM
 !
-      CALL IPGORD(PERI, NF, N, FREQ, XAXIS, YAXIS, ISYM, NPTS, LPCV)
+      call ipgord(peri, nf, n, freq, xaxis, yaxis, isym, npts, lpcv)
 !
 !     PLOT THE INTEGRATED PERIODOGRAM
 !
-   10 CALL IPGOUT (XAXIS, YAXIS, ISYM, NPTS, LPCV, ISPCER)
+   10 call ipgout (xaxis, yaxis, isym, npts, lpcv, ispcer)
 !
-      RETURN
+      return
 !
-      END
+      end

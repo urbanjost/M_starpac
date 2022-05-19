@@ -1,5 +1,5 @@
 !FLTMA
-      SUBROUTINE FLTMA (Y, N, K, HMA, YF, NYF)
+      subroutine fltma (y, n, k, hma, yf, nyf)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   HMA
-      INTEGER
-     &   K,N,NYF
+     real(kind=wp) ::&
+     &   hma
+     integer&
+     &   k,n,nyf
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(N),YF(N)
+     real(kind=wp) ::&
+     &   y(n),yf(n)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   SUM
-      INTEGER
-     &   I,I1,II,J
+     real(kind=wp) ::&
+     &   sum
+     integer&
+     &   i,i1,ii,j
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -51,27 +51,27 @@
 !     REAL YF(N)
 !        THE VECTOR IN WHICH THE FILTERED SERIES IS RETURNED.
 !
-      DO 10 I = 1, N
-         YF(I) = Y(I)
-   10 CONTINUE
+      do 10 i = 1, n
+         yf(i) = y(i)
+   10 continue
 !
-      NYF = N - (K - 1)
+      nyf = n - (k - 1)
 !
-      DO 30 I = 1, NYF
-         II = I - 1
-         SUM = 0.0E0
-         DO 20 J = 1, K
-            II = II + 1
-            SUM = SUM + HMA*YF(II)
-   20    CONTINUE
-         YF(I) = SUM
-   30 CONTINUE
+      do 30 i = 1, nyf
+         ii = i - 1
+         sum = 0.0e0
+         do 20 j = 1, k
+            ii = ii + 1
+            sum = sum + hma*yf(ii)
+   20    continue
+         yf(i) = sum
+   30 continue
 !
-      I1 = NYF + 1
+      i1 = nyf + 1
 !
-      DO 40 I = I1, N
-         YF(I) = 0.0E0
-   40 CONTINUE
+      do 40 i = i1, n
+         yf(i) = 0.0e0
+   40 continue
 !
-      RETURN
-      END
+      return
+      end

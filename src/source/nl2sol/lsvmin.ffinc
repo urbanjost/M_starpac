@@ -9,17 +9,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
+     integer&
      &   p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   l(1),x(p),y(p)
 !
 !  LOCAL SCALARS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   b,half,one,psj,r9973,sminus,splus,t,xminus,xplus,zero
-      integer
+     integer&
      &   i,ii,ix,j,j0,ji,jj,jjj,jm1,pplus1
 !
 !  EXTERNAL FUNCTIONS

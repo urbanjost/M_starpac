@@ -1,6 +1,6 @@
 !CCFLST
-      SUBROUTINE CCFLST (RHOC, SDRHOC, NLPP12, NLPP21, LAGMAX, LCCOV,
-     &   NCC, IFMISS)
+     subroutine ccflst (rhoc, sdrhoc, nlpp12, nlpp21, lagmax, lccov,&
+     &   ncc, ifmiss)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,28 +17,28 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LAGMAX,LCCOV,NCC
-      LOGICAL
-     &   IFMISS
+     integer&
+     &   lagmax,lccov,ncc
+     logical&
+     &   ifmiss
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RHOC(*),SDRHOC(*)
-      INTEGER
-     &   NLPP12(*),NLPP21(*)
+     real(kind=wp) ::&
+     &   rhoc(*),sdrhoc(*)
+     integer&
+     &   nlpp12(*),nlpp21(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM
-      INTEGER
-     &   I,I1,IMAX,IMIN,IPRT,K,K0,K1,LAGN,NPERL
+     real(kind=wp) ::&
+     &   fplm
+     integer&
+     &   i,i1,imax,imin,iprt,k,k0,k1,lagn,nperl
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RLST(12),SDRLST(12)
-      INTEGER
-     &   LAG(12),NLPLST(12)
+     real(kind=wp) ::&
+     &   rlst(12),sdrlst(12)
+     integer&
+     &   lag(12),nlplst(12)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -49,7 +49,7 @@
 !      EXTERNAL IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN,MOD
+      intrinsic min,mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -102,67 +102,67 @@
 !        ON EACH LINE, ORDERED PROPERLY.
 !
 !
-      CALL IPRINT(IPRT)
-      NPERL = 12
+      call iprint(iprt)
+      nperl = 12
 !
-      K0 = LAGMAX + 1
+      k0 = lagmax + 1
 !
-      LAGN = MOD(LAGMAX, NPERL)
-      IF (LAGN .EQ. 0) LAGN = NPERL
-      I1 = LAGN + 1
+      lagn = mod(lagmax, nperl)
+      if (lagn .eq. 0) lagn = nperl
+      i1 = lagn + 1
 !
-      DO 20 I = I1, K0, NPERL
-         DO 10 K = 1, LAGN
-            LAG(K) = I - K0 - K
-            K1 = I - K
-            RLST(K) = RHOC(K1)
-            SDRLST(K) = SDRHOC(K1)
-            IF (.NOT. IFMISS) GO TO 10
-            K1 = K0 - K1
-            NLPLST(K) = NLPP21(K1+1)
-   10    CONTINUE
-         WRITE(IPRT, 1000) (LAG(K), K = 1, LAGN)
-         WRITE(IPRT, 1001) (RLST(K), K = 1, LAGN)
-         WRITE(IPRT, 1002) (SDRLST(K), K = 1, LAGN)
-         IF (IFMISS) WRITE(IPRT, 1003) (NLPLST(K), K = 1, LAGN)
-         LAGN = NPERL
-   20 CONTINUE
+      do 20 i = i1, k0, nperl
+         do 10 k = 1, lagn
+            lag(k) = i - k0 - k
+            k1 = i - k
+            rlst(k) = rhoc(k1)
+            sdrlst(k) = sdrhoc(k1)
+            if (.not. ifmiss) go to 10
+            k1 = k0 - k1
+            nlplst(k) = nlpp21(k1+1)
+   10    continue
+         write(iprt, 1000) (lag(k), k = 1, lagn)
+         write(iprt, 1001) (rlst(k), k = 1, lagn)
+         write(iprt, 1002) (sdrlst(k), k = 1, lagn)
+         if (ifmiss) write(iprt, 1003) (nlplst(k), k = 1, lagn)
+         lagn = nperl
+   20 continue
 !
-      LAG(1) = 0
-      WRITE(IPRT, 1000) LAG(1)
-      WRITE(IPRT, 1001) RHOC(K0)
-      WRITE(IPRT, 1002) SDRHOC(K0)
-      IF (IFMISS) WRITE(IPRT, 1003) NLPP12(1)
+      lag(1) = 0
+      write(iprt, 1000) lag(1)
+      write(iprt, 1001) rhoc(k0)
+      write(iprt, 1002) sdrhoc(k0)
+      if (ifmiss) write(iprt, 1003) nlpp12(1)
 !
-      DO 40 I = 1, LAGMAX, NPERL
-         IMIN = I + K0
-         IMAX = MIN(IMIN + NPERL - 1, 2*LAGMAX+1)
-         LAGN = IMAX - IMIN + 1
-         DO 30 K = 1, LAGN
-            LAG(K) = I - 1 + K
-   30    CONTINUE
-         WRITE(IPRT, 1000) (LAG(K), K = 1, LAGN)
-         WRITE(IPRT, 1001) (RHOC(K), K = IMIN, IMAX)
-         WRITE(IPRT, 1002) (SDRHOC(K), K = IMIN, IMAX)
-         IF (.NOT. IFMISS) GO TO 40
-         IMIN = I
-         IMAX = MIN(I + NPERL - 1, LAGMAX)
-         WRITE (IPRT,1003) (NLPP12(K+1), K=IMIN,IMAX)
-   40 CONTINUE
+      do 40 i = 1, lagmax, nperl
+         imin = i + k0
+         imax = min(imin + nperl - 1, 2*lagmax+1)
+         lagn = imax - imin + 1
+         do 30 k = 1, lagn
+            lag(k) = i - 1 + k
+   30    continue
+         write(iprt, 1000) (lag(k), k = 1, lagn)
+         write(iprt, 1001) (rhoc(k), k = imin, imax)
+         write(iprt, 1002) (sdrhoc(k), k = imin, imax)
+         if (.not. ifmiss) go to 40
+         imin = i
+         imax = min(i + nperl - 1, lagmax)
+         write (iprt,1003) (nlpp12(k+1), k=imin,imax)
+   40 continue
 !
-      FPLM = R1MACH(2)
+      fplm = r1mach(2)
 !
-      IF (SDRHOC(1).EQ.FPLM .OR. SDRHOC(2*LAGMAX+1).EQ.FPLM)
-     &   WRITE(IPRT, 1004) FPLM
+     if (sdrhoc(1).eq.fplm .or. sdrhoc(2*lagmax+1).eq.fplm)&
+     &   write(iprt, 1004) fplm
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(/19H LAG               , 12(1X, I6))
- 1001 FORMAT( 19H CCF               , 12(2X, F5.2))
- 1002 FORMAT( 19H STANDARD ERROR    , 12(2X, F5.2))
- 1003 FORMAT( 19H NO. OF OBS. USED  , 12(1X, I6))
- 1004 FORMAT(///5X, F5.2, 38H INDICATES VALUE COULD NOT BE COMPUTED,
-     &   21H DUE TO MISSING DATA.)
-      END
+ 1000 format(/19h lag               , 12(1x, i6))
+ 1001 format( 19h ccf               , 12(2x, f5.2))
+ 1002 format( 19h standard error    , 12(2x, f5.2))
+ 1003 format( 19h no. of obs. used  , 12(1x, i6))
+1004 format(///5x, f5.2, 38h indicates value could not be computed,&
+     &   21h due to missing data.)
+      end

@@ -1,5 +1,5 @@
 !I8SAVE
-      INTEGER FUNCTION I8SAVE(ISW,IVALUE,SET)
+      integer function i8save(isw,ivalue,set)
 !
 !  IF (ISW = 1) I8SAVE RETURNS THE CURRENT ERROR NUMBER AND
 !               SETS IT TO IVALUE IF SET = .TRUE. .
@@ -11,26 +11,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER ISW,IVALUE
-      LOGICAL SET
+      integer isw,ivalue
+      logical set
 !
 !  LOCAL SCALARS
-      INTEGER LERROR,LRECOV
+      integer lerror,lrecov
 !
 !  LOCAL ARRAYS
-      INTEGER IPARAM(2)
+      integer iparam(2)
 !
 !  EQUIVALENCES
-      EQUIVALENCE (IPARAM(1),LERROR), (IPARAM(2),LRECOV)
+      equivalence (iparam(1),lerror), (iparam(2),lrecov)
 !
 !
 !  START EXECUTION ERROR FREE AND WITH RECOVERY TURNED OFF.
 !
-      DATA LERROR/0/ , LRECOV/2/
+      data lerror/0/ , lrecov/2/
 !
-      I8SAVE=IPARAM(ISW)
-      IF (SET) IPARAM(ISW)=IVALUE
+      i8save=iparam(isw)
+      if (set) iparam(isw)=ivalue
 !
-      RETURN
+      return
 !
-      END
+      end

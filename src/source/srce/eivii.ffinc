@@ -1,6 +1,6 @@
 !EIVII
-      SUBROUTINE EIVII (NMSUB, NMVAR, IVEC, N, IVECLB, IVECUB, NVMX,
-     &   HEAD, MSGTYP, NV, ERROR, NMMIN, NMMAX)
+     subroutine eivii (nmsub, nmvar, ivec, n, iveclb, ivecub, nvmx,&
+     &   head, msgtyp, nv, error, nmmin, nmmax)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,26 +20,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IVECLB,IVECUB,MSGTYP,N,NV,NVMX
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   iveclb,ivecub,msgtyp,n,nv,nvmx
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IVEC(*)
-      CHARACTER
-     &   NMMAX(8)*1,NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     integer&
+     &   ivec(*)
+     character&
+     &   nmmax(8)*1,nmmin(8)*1,nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -82,68 +82,68 @@
 !     INTEGER NVMX
 !        THE LARGEST NUMBER OF VIOLATIONS ALLOWED.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (N.LE.0) RETURN
-      IF (IVECUB.LT.IVECLB) RETURN
+      if (n.le.0) return
+      if (ivecub.lt.iveclb) return
 !
 !     TEST WHETHER TESTING IS NECESSRY
 !
-      IF ((MOD(MSGTYP,3) .EQ. 0) .AND.
-     &    ((IVEC(1) .LT. IVECLB) .OR. (IVEC(1) .GT. IVECUB))) RETURN
+     if ((mod(msgtyp,3) .eq. 0) .and.&
+     &    ((ivec(1) .lt. iveclb) .or. (ivec(1) .gt. ivecub))) return
 !
 !     CHECK FOR VIOLATIONS
 !
-      NV = 0
-      DO 5 I = 1, N
-         IF ((IVEC(I).LT.IVECLB) .OR. (IVEC(I).GT.IVECUB)) NV = NV + 1
-    5 CONTINUE
+      nv = 0
+      do 5 i = 1, n
+         if ((ivec(i).lt.iveclb) .or. (ivec(i).gt.ivecub)) nv = nv + 1
+    5 continue
 !
-      IF (NV .LE. NVMX) RETURN
+      if (nv .le. nvmx) return
 !
 !     VIOLATIONS FOUND
 !
-      ERROR = .TRUE.
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
+      error = .true.
+      call iprint(iprt)
+      call ehdr(nmsub, head)
 !
-      IF (MSGTYP.LE.3)
-     &   WRITE (IPRT, 1000) (NMVAR(I),I=1,6), IVECLB, IVECUB, NV
-      IF (MSGTYP.GE.4)
-     &   WRITE (IPRT, 1005) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8),
-     &   (NMMAX(I),I=1,8), NV
+     if (msgtyp.le.3)&
+     &   write (iprt, 1000) (nmvar(i),i=1,6), iveclb, ivecub, nv
+     if (msgtyp.ge.4)&
+    &   write (iprt, 1005) (nmvar(i),i=1,6), (nmmin(i),i=1,8),&
+     &   (nmmax(i),i=1,8), nv
 !
-      GO TO (10, 20, 30, 10, 20, 30), MSGTYP
+      go to (10, 20, 30, 10, 20, 30), msgtyp
 !
-   10 WRITE(IPRT, 1010) (NMVAR(I),I=1,6)
-      RETURN
+   10 write(iprt, 1010) (nmvar(i),i=1,6)
+      return
 !
-   20 WRITE(IPRT, 1020) (NMVAR(I),I=1,6), NVMX
-      RETURN
+   20 write(iprt, 1020) (nmvar(i),i=1,6), nvmx
+      return
 !
-   30 WRITE(IPRT, 1030) (NMVAR(I),I=1,6)
-      RETURN
+   30 write(iprt, 1030) (nmvar(i),i=1,6)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/
-     &   32H THE NUMBER OF VALUES IN VECTOR , 6A1,
-     &   19H OUTSIDE THE RANGE , I6, 3H TO/
-     &   1X, I6, 16H, INCLUSIVE, IS , I6, '.')
- 1005 FORMAT (/
-     &   32H THE NUMBER OF VALUES IN VECTOR , 6A1,
-     &   19H OUTSIDE THE RANGE , 8A1, 3H TO/
-     &   1X, 8A1, 16H, INCLUSIVE, IS , I6, '.')
- 1010 FORMAT(
-     &   26H THE VALUES IN THE VECTOR , 6A1,
-     &   31H MUST ALL BE WITHIN THIS RANGE.)
- 1020 FORMAT(
-     &   36H THE NUMBER OF VALUES IN THE VECTOR , 6A1,
-     &   19H OUTSIDE THIS RANGE/
-     &   19H MUST BE LESS THAN , I5, '.')
- 1030 FORMAT(
-     &   34H IF THE FIRST VALUE OF THE VECTOR , 6A1,
-     &   21H IS WITHIN THIS RANGE/
-     &   45H ALL OF THE VALUES MUST BE WITHIN THIS RANGE.)
+1000 format (/&
+    &   32h the number of values in vector , 6a1,&
+    &   19h outside the range , i6, 3h to/&
+     &   1x, i6, 16h, inclusive, is , i6, '.')
+1005 format (/&
+    &   32h the number of values in vector , 6a1,&
+    &   19h outside the range , 8a1, 3h to/&
+     &   1x, 8a1, 16h, inclusive, is , i6, '.')
+1010 format(&
+    &   26h the values in the vector , 6a1,&
+     &   31h must all be within this range.)
+1020 format(&
+    &   36h the number of values in the vector , 6a1,&
+    &   19h outside this range/&
+     &   19h must be less than , i5, '.')
+1030 format(&
+    &   34h if the first value of the vector , 6a1,&
+    &   21h is within this range/&
+     &   45h all of the values must be within this range.)
 !
-      END
+      end

@@ -1,6 +1,6 @@
 !ACFER
-      SUBROUTINE ACFER(NMSUB, N, LAGMAX, LACOV, LDSTAK, LDSMIN,
-     &  DIFFER, NFAC, ND, IOD, ISFFT, LYFFT, NFFT)
+     subroutine acfer(nmsub, n, lagmax, lacov, ldstak, ldsmin,&
+     &  differ, nfac, nd, iod, isfft, lyfft, nfft)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,40 +16,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LACOV,LAGMAX,LDSMIN,LDSTAK,LYFFT,N,NFAC,NFFT
-      LOGICAL
-     &   DIFFER,ISFFT
+     integer&
+     &   lacov,lagmax,ldsmin,ldstak,lyfft,n,nfac,nfft
+     logical&
+     &   differ,isfft
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IOD(*),ND(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     integer&
+     &   iod(*),nd(*)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
-      LOGICAL
-     &   HEAD
+     integer&
+     &   i
+     logical&
+     &   head
 !
 !  LOCAL ARRAYS
-      LOGICAL
-     &   ERR(15)
-      CHARACTER
-     &   LLACOV(8)*1,LLAGMX(8)*1,LLDS(8)*1,LLGMX1(8)*1,
-     &   LLYFFT(8)*1,LN(8)*1,LNFFT(8)*1,LNM1(8)*1,LONE(8)*1,
-     &   LTHREE(8)*1
+     logical&
+     &   err(15)
+     character&
+    &   llacov(8)*1,llagmx(8)*1,llds(8)*1,llgmx1(8)*1,&
+    &   llyfft(8)*1,ln(8)*1,lnfft(8)*1,lnm1(8)*1,lone(8)*1,&
+     &   lthree(8)*1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL EISGE,EISII,ERDF
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -104,73 +104,73 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     & LLACOV(1), LLACOV(2), LLACOV(3), LLACOV(4), LLACOV(5),
-     & LLACOV(6), LLACOV(7), LLACOV(8) /'L','A','C','O','V',' ',' ',' '/
-      DATA
-     & LLAGMX(1), LLAGMX(2), LLAGMX(3), LLAGMX(4), LLAGMX(5),
-     & LLAGMX(6), LLAGMX(7), LLAGMX(8) /'L','A','G','M','A','X',' ',' '/
-      DATA
-     & LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
-     & LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
-      DATA
-     & LLGMX1(1), LLGMX1(2), LLGMX1(3), LLGMX1(4), LLGMX1(5),
-     & LLGMX1(6), LLGMX1(7), LLGMX1(8) /'L','A','G','M','A','X','+','1'/
-      DATA
-     & LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
-     & LLYFFT(6), LLYFFT(7), LLYFFT(8) /'L','Y','F','F','T',' ',' ',' '/
-      DATA
-     & LN(1), LN(2), LN(3), LN(4), LN(5),
-     & LN(6), LN(7), LN(8) /'N',' ',' ',' ',' ',' ',' ',' '/
-      DATA
-     & LNM1(1), LNM1(2), LNM1(3), LNM1(4), LNM1(5),
-     & LNM1(6), LNM1(7), LNM1(8) /'(','N','-','1',')',' ',' ',' '/
-      DATA
-     & LNFFT(1), LNFFT(2), LNFFT(3), LNFFT(4), LNFFT(5),
-     & LNFFT(6), LNFFT(7), LNFFT(8) /'N','F','F','T',' ',' ',' ',' '/
-      DATA
-     & LONE(1), LONE(2), LONE(3), LONE(4), LONE(5),
-     & LONE(6), LONE(7), LONE(8) /'O','N','E',' ',' ',' ',' ',' '/
-      DATA
-     & LTHREE(1), LTHREE(2), LTHREE(3), LTHREE(4), LTHREE(5),
-     & LTHREE(6), LTHREE(7), LTHREE(8) /'T','H','R','E','E',' ',' ',' '/
+     data&
+    & llacov(1), llacov(2), llacov(3), llacov(4), llacov(5),&
+     & llacov(6), llacov(7), llacov(8) /'L','A','C','O','V',' ',' ',' '/
+     data&
+    & llagmx(1), llagmx(2), llagmx(3), llagmx(4), llagmx(5),&
+     & llagmx(6), llagmx(7), llagmx(8) /'L','A','G','M','A','X',' ',' '/
+     data&
+    & llds(1), llds(2), llds(3), llds(4), llds(5),&
+     & llds(6), llds(7), llds(8) /'L','D','S','T','A','K',' ',' '/
+     data&
+    & llgmx1(1), llgmx1(2), llgmx1(3), llgmx1(4), llgmx1(5),&
+     & llgmx1(6), llgmx1(7), llgmx1(8) /'L','A','G','M','A','X','+','1'/
+     data&
+    & llyfft(1), llyfft(2), llyfft(3), llyfft(4), llyfft(5),&
+     & llyfft(6), llyfft(7), llyfft(8) /'L','Y','F','F','T',' ',' ',' '/
+     data&
+    & ln(1), ln(2), ln(3), ln(4), ln(5),&
+     & ln(6), ln(7), ln(8) /'N',' ',' ',' ',' ',' ',' ',' '/
+     data&
+    & lnm1(1), lnm1(2), lnm1(3), lnm1(4), lnm1(5),&
+     & lnm1(6), lnm1(7), lnm1(8) /'(','N','-','1',')',' ',' ',' '/
+     data&
+    & lnfft(1), lnfft(2), lnfft(3), lnfft(4), lnfft(5),&
+     & lnfft(6), lnfft(7), lnfft(8) /'N','F','F','T',' ',' ',' ',' '/
+     data&
+    & lone(1), lone(2), lone(3), lone(4), lone(5),&
+     & lone(6), lone(7), lone(8) /'O','N','E',' ',' ',' ',' ',' '/
+     data&
+    & lthree(1), lthree(2), lthree(3), lthree(4), lthree(5),&
+     & lthree(6), lthree(7), lthree(8) /'T','H','R','E','E',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
-      DO 10 I = 1, 15
-        ERR(I) = .FALSE.
-   10 CONTINUE
+      ierr = 0
+      head = .true.
+      do 10 i = 1, 15
+        err(i) = .false.
+   10 continue
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 3, 2, HEAD, ERR(1), LTHREE)
+      call eisge(nmsub, ln, n, 3, 2, head, err(1), lthree)
 !
-      IF (.NOT.ERR(1)) THEN
+      if (.not.err(1)) then
 !
-        CALL EISII(NMSUB, LLAGMX, LAGMAX, 1, N-1, 1, HEAD, ERR(2), LONE,
-     &    LNM1)
+       call eisii(nmsub, llagmx, lagmax, 1, n-1, 1, head, err(2), lone,&
+     &    lnm1)
 !
-        IF (DIFFER) CALL ERDF(NMSUB, NFAC, ND, IOD, N, HEAD, ERR(3))
+        if (differ) call erdf(nmsub, nfac, nd, iod, n, head, err(3))
 !
-        IF (.NOT.ERR(2)) THEN
+        if (.not.err(2)) then
 !
-          CALL EISGE(NMSUB, LLACOV, LACOV, LAGMAX+1, 2, HEAD, ERR(4),
-     &      LLGMX1)
+         call eisge(nmsub, llacov, lacov, lagmax+1, 2, head, err(4),&
+     &      llgmx1)
 !
-          CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR(5), LLDS)
+          call eisge(nmsub, llds, ldstak, ldsmin, 9, head, err(5), llds)
 !
-          IF (ISFFT)
-     &      CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 2, HEAD, ERR(6),
-     &      LNFFT)
-        END IF
-      END IF
+         if (isfft)&
+    &      call eisge(nmsub, llyfft, lyfft, nfft, 2, head, err(6),&
+     &      lnfft)
+        end if
+      end if
 !
-      DO 20 I = 1, 15
-        IF (ERR(I)) IERR = 1
-   20 CONTINUE
+      do 20 i = 1, 15
+        if (err(i)) ierr = 1
+   20 continue
 !
-      RETURN
+      return
 !
-      END
+      end

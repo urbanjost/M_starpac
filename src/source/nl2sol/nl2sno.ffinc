@@ -11,8 +11,7 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
-     &   n,p
+     integer  n,p
 !
 !  ARRAY ARGUMENTS
       real(kind=wp) :: urparm(:),v(:),x(p)
@@ -23,9 +22,8 @@
 !
 !  LOCAL SCALARS
       real(kind=wp) :: h,hfac,hlim,negpt5,one,xk,zero
-      integer covprt,covreq,d,d1,dk,dltfdj,dtype,i,j,j1,j1k,k,nf,nfcall,
-     &   nfgcal,r,r1,rn,toobig
-      logical strted
+     integer covprt,covreq,d,d1,dk,dltfdj,dtype,i,j,j1,j1k,k,nf,nfcall,nfgcal,r,r1,rn,toobig
+     logical strted
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON
@@ -37,7 +35,7 @@
       intrinsic abs,max
 !
 !     INTEGER N, P, IV(:), UIPARM(:)
-!     REAL(KIND=WP) :: X(P), V(1), URPARM(1)
+!     REAL(KIND=WP) :: X(P), V(*), URPARM(*)
 !     DIMENSION IV(60+P),  V(93 + N*P + 3*N + P*(3*P+33)/2)
 !
 !-----------------------------  DISCUSSION  ----------------------------
@@ -89,8 +87,7 @@
 !
 ! DFAULT... SUPPLIES DEFAULT PARAMETER VALUES.
 ! ITSMRY... PRINTS ITERATION SUMMARY AND INFO ABOUT INITIAL AND FINAL X.
-! NL2ITR... REVERSE-COMMUNICATION ROUTINE THAT CARRIES OUT NL2SOL ALGO-
-!             RITHM.
+! NL2ITR... REVERSE-COMMUNICATION ROUTINE THAT CARRIES OUT NL2SOL ALGORITHM.
 ! RMDCON... RETURNS MACHINE-DEPENDENT CONSTANTS.
 ! VSCOPY... SETS ALL ELEMENTS OF A VECTOR TO A SCALAR.
 !
@@ -100,16 +97,13 @@
 !
 !  ***  SUBSCRIPTS FOR IV AND V  ***
 !
-!     INTEGER COVPRT, COVREQ, D, DLTFDJ, DTYPE, J, NFCALL, NFGCAL, R,
-!    1        TOOBIG
+!     INTEGER COVPRT, COVREQ, D, DLTFDJ, DTYPE, J, NFCALL, NFGCAL, R, TOOBIG
 !
-      data hfac/1.0e3_wp/, hlim/0.0_wp/, negpt5/-0.5_wp/,
-     &     one/1.0_wp/, zero/0.0_wp/
+     data hfac/1.0e3_wp/, hlim/0.0_wp/, negpt5/-0.5_wp/,& one/1.0_wp/, zero/0.0_wp/
 !
 !  ***  IV SUBSCRIPT VALUES  ***
 !
-      data covprt/14/, covreq/15/, d/27/, dtype/16/, j/33/,
-     &     nfcall/6/, nfgcal/7/, r/50/, toobig/2/
+     data covprt/14/, covreq/15/, d/27/, dtype/16/, j/33/,nfcall/6/, nfgcal/7/, r/50/, toobig/2/
 !
 !  ***  V SUBSCRIPT VALUES  ***
 !
@@ -136,25 +130,29 @@
 !        ***  INITIAL JACOBIAN.
          if (iv(dtype) .gt. 0) call vscopy(p, v(d1), one)
 !
- 10   nf = iv(nfcall)
+ 10   continue
+      nf = iv(nfcall)
       call calcr(n, p, x, nf, v(r1), uiparm, urparm, ufparm)
       if (strted) go to 20
          if (nf .gt. 0) go to 30
               iv(1) = 13
               go to 90
 !
- 20   if (nf .le. 0) iv(toobig) = 1
+ 20   continue
+      if (nf .le. 0) iv(toobig) = 1
       go to 80
 !
 !  ***  COMPUTE FINITE-DIFFERENCE JACOBIAN  ***
 !
- 30   j1k = j1
+ 30   continue
+      j1k = j1
       dk = d1
       do 70 k = 1, p
          xk = x(k)
          h = v(dltfdj) * max(abs(xk), one/v(dk))
          dk = dk + 1
- 40      x(k) = xk + h
+ 40      continue
+         x(k) = xk + h
          nf = iv(nfgcal)
          call calcr (n, p, x, nf, v(j1k), uiparm, urparm, ufparm)
          if (nf .gt. 0) go to 50
@@ -164,20 +162,22 @@
               if (abs(h) .ge. hlim) go to 40
                    iv(1) = 15
                    go to 90
- 50      x(k) = xk
-         do 60 i = r1, rn
+ 50      continue
+         x(k) = xk
+         do i = r1, rn
               v(j1k) = (v(j1k) - v(i)) / h
               j1k = j1k + 1
- 60           continue
+         enddo         
  70      continue
 !
       strted = .true.
 !
- 80   call nl2itr(v(d1), iv, v(j1), n, n, p, v(r1), v, x)
+ 80   continue
+!          nl2itr(d(p),  iv(*), j(nn,p), n, nn, p, r(n),  v(*), x(p))
+      call nl2itr(v(d1), iv,    v(j1),   n, n,  p, v(r1), v,    x)
       if (iv(1) - 2) 10, 30, 999
 !
- 90   call itsmry(v(d1), iv, p, v, x)
+ 90   continue
+      call itsmry(v(d1), iv, p, v, x)
 !
- 999  return
-
-      end subroutine nl2sno
+end subroutine nl2sno

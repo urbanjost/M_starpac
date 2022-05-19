@@ -1,5 +1,5 @@
 !LSTLAG
-      INTEGER FUNCTION LSTLAG (NLPPA, LAGMAX, LACOV)
+      integer function lstlag (nlppa, lagmax, lacov)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,16 +16,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LACOV,LAGMAX
+     integer&
+     &   lacov,lagmax
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   NLPPA(LACOV)
+     integer&
+     &   nlppa(lacov)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   LAG
+     integer&
+     &   lag
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -41,13 +41,13 @@
 !     FIND THE LAST AUTOCORRELATION TO BE COMPUTED BEFORE
 !     ONE COULD NOT BE COMPUTED DUE TO MISSING DATA
 !
-      LSTLAG = -1
-      IF (NLPPA(1) .LE. 0) RETURN
-      DO 20 LAG = 1, LAGMAX
-         IF (NLPPA(LAG + 1) .GE. 1) GO TO 20
-         LSTLAG = LAG - 1
-         RETURN
-   20 CONTINUE
-      LSTLAG = LAGMAX
-      RETURN
-      END
+      lstlag = -1
+      if (nlppa(1) .le. 0) return
+      do 20 lag = 1, lagmax
+         if (nlppa(lag + 1) .ge. 1) go to 20
+         lstlag = lag - 1
+         return
+   20 continue
+      lstlag = lagmax
+      return
+      end

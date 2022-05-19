@@ -1,18 +1,18 @@
 !ERF
-      REAL FUNCTION ERF (X)
+      real function erf (x)
 ! APRIL 1977 VERSION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL X
+      real x
 !
 !  LOCAL SCALARS
-      REAL SQEPS,SQRTPI,XBIG,Y
-      INTEGER NTERF
+      real sqeps,sqrtpi,xbig,y
+      integer nterf
 !
 !  LOCAL ARRAYS
-      REAL ERFCS(13)
+      real erfcs(13)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL CSEVL,ERFC,R1MACH
@@ -20,7 +20,7 @@
 !       EXTERNAL CSEVL,ERFC,R1MACH,INITS
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG,SIGN,SQRT
+      intrinsic abs,log,sign,sqrt
 !
 !
 ! SERIES FOR ERF        ON THE INTERVAL  0.          TO  1.00000D+00
@@ -29,48 +29,48 @@
 !                               SIGNIFICANT FIGURES REQUIRED  16.31
 !                                    DECIMAL PLACES REQUIRED  17.71
 !
-      DATA ERF CS( 1) /   -.0490461212 34691808E0 /
-      DATA ERF CS( 2) /   -.1422612051 0371364E0 /
-      DATA ERF CS( 3) /    .0100355821 87599796E0 /
-      DATA ERF CS( 4) /   -.0005768764 69976748E0 /
-      DATA ERF CS( 5) /    .0000274199 31252196E0 /
-      DATA ERF CS( 6) /   -.0000011043 17550734E0 /
-      DATA ERF CS( 7) /    .0000000384 88755420E0 /
-      DATA ERF CS( 8) /   -.0000000011 80858253E0 /
-      DATA ERF CS( 9) /    .0000000000 32334215E0 /
-      DATA ERF CS(10) /   -.0000000000 00799101E0 /
-      DATA ERF CS(11) /    .0000000000 00017990E0 /
-      DATA ERF CS(12) /   -.0000000000 00000371E0 /
-      DATA ERF CS(13) /    .0000000000 00000007E0 /
+      data erfcs( 1) /   -.049046121234691808e0 /
+      data erfcs( 2) /   -.14226120510371364e0 /
+      data erfcs( 3) /    .010035582187599796e0 /
+      data erfcs( 4) /   -.000576876469976748e0 /
+      data erfcs( 5) /    .000027419931252196e0 /
+      data erfcs( 6) /   -.000001104317550734e0 /
+      data erfcs( 7) /    .000000038488755420e0 /
+      data erfcs( 8) /   -.000000001180858253e0 /
+      data erfcs( 9) /    .000000000032334215e0 /
+      data erfcs(10) /   -.000000000000799101e0 /
+      data erfcs(11) /    .000000000000017990e0 /
+      data erfcs(12) /   -.000000000000000371e0 /
+      data erfcs(13) /    .000000000000000007e0 /
 !
-      DATA SQRTPI /1.772453850 9055160E0/
-      DATA NTERF, XBIG, SQEPS / 0, 0., 0./
+      data sqrtpi /1.7724538509055160e0/
+      data nterf, xbig, sqeps / 0, 0., 0./
 !
-      IF (NTERF.NE.0) GO TO 10
-      NTERF = INITS (ERFCS, 13, 0.1*R1MACH(3))
-      XBIG = SQRT(-LOG(SQRTPI*R1MACH(3)))
-      SQEPS = SQRT(2.0*R1MACH(3))
+      if (nterf.ne.0) go to 10
+      nterf = inits (erfcs, 13, 0.1*r1mach(3))
+      xbig = sqrt(-log(sqrtpi*r1mach(3)))
+      sqeps = sqrt(2.0*r1mach(3))
 !
- 10   Y = ABS(X)
-      IF (Y.GT.1.) GO TO 20
+ 10   y = abs(x)
+      if (y.gt.1.) go to 20
 !
 ! ERF(X) = 1. - ERFC(X) FOR -1. .LE. X .LE. 1.
 !
-      IF (Y.LE.SQEPS) THEN
-         ERF = 2.0*X/SQRTPI
-      ELSE
-         ERF = X*(1.0 + CSEVL(2.*X**2-1., ERFCS, NTERF))
-      END IF
+      if (y.le.sqeps) then
+         erf = 2.0*x/sqrtpi
+      else
+         erf = x*(1.0 + csevl(2.*x**2-1., erfcs, nterf))
+      end if
 !
-      RETURN
+      return
 !
 ! ERF(X) = 1. - ERFC(X) FOR  ABS(X) .GT. 1.
 !
- 20   IF (Y.LE.XBIG) THEN
-         ERF = SIGN (1.0-ERFC(Y), X)
-      ELSE
-         ERF = SIGN (1.0, X)
-      END IF
+ 20   if (y.le.xbig) then
+         erf = sign (1.0-erfc(y), x)
+      else
+         erf = sign (1.0, x)
+      end if
 !
-      RETURN
-      END
+      return
+      end

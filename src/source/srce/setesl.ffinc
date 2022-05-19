@@ -1,5 +1,5 @@
 !SETESL
-      SUBROUTINE SETESL(N, NDIV, NFFT)
+      subroutine setesl(n, ndiv, nfft)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -26,22 +26,22 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,NDIV,NFFT
+     integer&
+     &   n,ndiv,nfft
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,NPF,NSFP
+     integer&
+     &   i,npf,nsfp
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   IPF(50),IPFEXP(50)
+     integer&
+     &   ipf(50),ipfexp(50)
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL FACTOR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -63,22 +63,22 @@
 !     INTEGER NSFP
 !        THE PRODUCT OF THE NON SQUARE FACTORS.
 !
-      NFFT = N
-      IF (NFFT.LE.0) RETURN
-      IF (MOD(NFFT, NDIV) .NE. 0) NFFT = NFFT + NDIV - MOD(NFFT, NDIV)
-      NFFT = NFFT - NDIV
-   20 NFFT = NFFT + NDIV
-      CALL FACTOR(NFFT/NDIV, NPF, IPF, IPFEXP)
-      IF ((NPF.GE.11) .OR. (IPF(NPF).GT.23)) GO TO 20
-      NSFP = 1
-      IF (NDIV.EQ.4) NSFP = 2
-      DO 30 I = 1, NPF
-         IF (MOD(IPFEXP(I), 2).EQ.1) NSFP = NSFP * IPF(I)
-   30 CONTINUE
-      IF (NSFP .GE. 210) GO TO 20
+      nfft = n
+      if (nfft.le.0) return
+      if (mod(nfft, ndiv) .ne. 0) nfft = nfft + ndiv - mod(nfft, ndiv)
+      nfft = nfft - ndiv
+   20 nfft = nfft + ndiv
+      call factor(nfft/ndiv, npf, ipf, ipfexp)
+      if ((npf.ge.11) .or. (ipf(npf).gt.23)) go to 20
+      nsfp = 1
+      if (ndiv.eq.4) nsfp = 2
+      do 30 i = 1, npf
+         if (mod(ipfexp(i), 2).eq.1) nsfp = nsfp * ipf(i)
+   30 continue
+      if (nsfp .ge. 210) go to 20
 !
-      NFFT = NFFT + 2
+      nfft = nfft + 2
 !
-      RETURN
+      return
 !
-      END
+      end

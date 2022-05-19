@@ -1,6 +1,6 @@
 !CCVF
-      SUBROUTINE CCVF(Y1, Y2, N, LAGMAX, Y1MEAN, Y2MEAN, CCOV12, CCOV21,
-     &   ICCOV)
+     subroutine ccvf(y1, y2, n, lagmax, y1mean, y2mean, ccov12, ccov21,&
+     &   iccov)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,20 +17,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y1MEAN,Y2MEAN
-      INTEGER
-     &   ICCOV,LAGMAX,N
+     real(kind=wp) ::&
+     &   y1mean,y2mean
+     integer&
+     &   iccov,lagmax,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CCOV12(ICCOV),CCOV21(ICCOV),Y1(N),Y2(N)
+     real(kind=wp) ::&
+     &   ccov12(iccov),ccov21(iccov),y1(n),y2(n)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DOTXY
-      INTEGER
-     &   LAG,NDOTXY
+     real(kind=wp) ::&
+     &   dotxy
+     integer&
+     &   lag,ndotxy
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL DOTC
@@ -61,21 +61,21 @@
 !
 !     COMPUTE THE CROSS COVARIANCES
 !
-      CALL DOTC ( Y1, Y1MEAN, N, Y2, Y2MEAN, N, DOTXY, NDOTXY)
-      CCOV12(1) = DOTXY / N
-      CCOV21(1) = CCOV12(1)
+      call dotc ( y1, y1mean, n, y2, y2mean, n, dotxy, ndotxy)
+      ccov12(1) = dotxy / n
+      ccov21(1) = ccov12(1)
 !
-      DO 10 LAG = 1, LAGMAX
+      do 10 lag = 1, lagmax
 !
-         CALL DOTC (Y1, Y1MEAN, N, Y2(LAG + 1), Y2MEAN, N - LAG,
-     &       DOTXY, NDOTXY)
-         CCOV12(LAG+1) = DOTXY / N
+        call dotc (y1, y1mean, n, y2(lag + 1), y2mean, n - lag,&
+     &       dotxy, ndotxy)
+         ccov12(lag+1) = dotxy / n
 !
-         CALL DOTC (Y2, Y2MEAN, N, Y1(LAG + 1), Y1MEAN, N - LAG,
-     &       DOTXY, NDOTXY)
-         CCOV21(LAG+1) = DOTXY / N
+        call dotc (y2, y2mean, n, y1(lag + 1), y1mean, n - lag,&
+     &       dotxy, ndotxy)
+         ccov21(lag+1) = dotxy / n
 !
-   10 CONTINUE
+   10 continue
 !
-      RETURN
-      END
+      return
+      end

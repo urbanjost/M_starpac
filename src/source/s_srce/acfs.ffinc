@@ -1,5 +1,5 @@
 !ACFS
-      SUBROUTINE ACFS(Y, N, LAGMAX, LACOV, ACOV, IAR, PHI, NPRT, LDSTAK)
+      subroutine acfs(y, n, lagmax, lacov, acov, iar, phi, nprt, ldstak)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,36 +18,36 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IAR,LACOV,LAGMAX,LDSTAK,N,NPRT
+     integer&
+     &   iar,lacov,lagmax,ldstak,n,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV(*),PHI(*),Y(*)
+     real(kind=wp) ::&
+     &   acov(*),phi(*),y(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   CHIA,CHIAP,OSPVAR,YMEAN,YSD
-      INTEGER
-     &   AIC,FTEST,I,IFP,IPRT,LDSMIN,LYFFT,NALL0,NFAC,NFFT,PRHO,
-     &   SDRHO,WORK
-      LOGICAL
-     &   DIFFER,ISFFT
+     real(kind=wp) ::&
+     &   chia,chiap,ospvar,ymean,ysd
+     integer&
+    &   aic,ftest,i,ifp,iprt,ldsmin,lyfft,nall0,nfac,nfft,prho,&
+     &   sdrho,work
+     logical&
+     &   differ,isfft
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSTAK(12)
-      INTEGER
-     &   IOD(1),ND(1),NDUM(1)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   rstak(12)
+     integer&
+     &   iod(1),nd(1),ndum(1)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -58,14 +58,14 @@
 !      EXTERNAL ACFER,ACFMN,ACFOUT,IPRINT,LDSCMP,STKCLR,STKSET
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
+      equivalence (dstak(1),rstak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -155,89 +155,89 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'A',       'C',       'F',       'S',       ' ',       ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      DIFFER = .FALSE.
-      NFAC = 1
-      ND(1) = 0
-      IOD(1) = 0
-      ISFFT = .FALSE.
-      LYFFT = N
-      NFFT = N
+      ierr = 0
+      differ = .false.
+      nfac = 1
+      nd(1) = 0
+      iod(1) = 0
+      isfft = .false.
+      lyfft = n
+      nfft = n
 !
 !
-      CALL LDSCMP(4, 0, 0, 0, 0, 0, 'S', 5*LAGMAX+1, LDSMIN)
+      call ldscmp(4, 0, 0, 0, 0, 0, 'S', 5*lagmax+1, ldsmin)
 !
-      CALL ACFER(NMSUB, N, LAGMAX, LACOV, LDSTAK, LDSMIN,
-     &  DIFFER, NFAC, ND, IOD, ISFFT, LYFFT, NFFT)
+     call acfer(nmsub, n, lagmax, lacov, ldstak, ldsmin,&
+     &  differ, nfac, nd, iod, isfft, lyfft, nfft)
 !
 !     CHECK WHETHER AN ERROR HAS BEEN DETECTED
 !
-      IF (IERR.EQ.0) THEN
+      if (ierr.eq.0) then
 !
 !       SET UP THE WORK AREA.
 !
-        CALL STKSET(LDSTAK, 4)
-        NALL0 = STKST(1)
+        call stkset(ldstak, 4)
+        nall0 = stkst(1)
 !
-        IFP = 3
+        ifp = 3
 !
-        PRHO = STKGET(LAGMAX, IFP)
-        AIC = STKGET(LAGMAX+1, IFP)
-        FTEST = STKGET(2*LAGMAX, IFP)
-        WORK = STKGET(LAGMAX, IFP)
-        SDRHO = WORK
+        prho = stkget(lagmax, ifp)
+        aic = stkget(lagmax+1, ifp)
+        ftest = stkget(2*lagmax, ifp)
+        work = stkget(lagmax, ifp)
+        sdrho = work
 !
-        IF (IERR.EQ.0) THEN
+        if (ierr.eq.0) then
 !
 !         CALL ROUTINE FOR MAIN AUTOCORRELATION COMPUTATIONS.
 !
-          CALL ACFMN (Y, N, LAGMAX, ACOV(2), RSTAK(SDRHO),
-     &       YMEAN, RSTAK(PRHO), RSTAK(AIC), RSTAK(FTEST), PHI,
-     &       IAR, OSPVAR, ACOV, LACOV, LAGMAX+1, CHIA, CHIAP,
-     &       RSTAK(WORK), NPRT)
+         call acfmn (y, n, lagmax, acov(2), rstak(sdrho),&
+    &       ymean, rstak(prho), rstak(aic), rstak(ftest), phi,&
+    &       iar, ospvar, acov, lacov, lagmax+1, chia, chiap,&
+     &       rstak(work), nprt)
 !
-          YSD = SQRT (ACOV(1) * N / (N - 1))
+          ysd = sqrt (acov(1) * n / (n - 1))
 !
 !         CALL ROUTINE TO PRINT OUT AUTOCORRELATIONS
 !
-          IF ((NPRT.NE.0) .OR.  (ACOV(1).EQ.0.0E0)) CALL ACFOUT
-     &       (YMEAN, YSD, N, N, LAGMAX, ACOV(2), RSTAK(SDRHO),
-     &       RSTAK(PRHO), NDUM, RSTAK(AIC), LAGMAX+1, RSTAK(FTEST),
-     &       IAR, PHI, OSPVAR, CHIA, CHIAP, LAGMAX, .FALSE., 0.0E0,
-     &       .FALSE., .FALSE., 0, NDUM, NDUM, 0)
+         if ((nprt.ne.0) .or.  (acov(1).eq.0.0e0)) call acfout&
+    &       (ymean, ysd, n, n, lagmax, acov(2), rstak(sdrho),&
+    &       rstak(prho), ndum, rstak(aic), lagmax+1, rstak(ftest),&
+    &       iar, phi, ospvar, chia, chiap, lagmax, .false., 0.0e0,&
+     &       .false., .false., 0, ndum, ndum, 0)
 !
-          IF (NPRT.NE.0) THEN
-            DO 50 I = 1, LAGMAX
-               ACOV(I+1) = ACOV(I+1) * ACOV(1)
-   50       CONTINUE
-          END IF
+          if (nprt.ne.0) then
+            do 50 i = 1, lagmax
+               acov(i+1) = acov(i+1) * acov(1)
+   50       continue
+          end if
 !
-        END IF
+        end if
 !
-        CALL STKCLR(NALL0)
+        call stkclr(nall0)
 !
-      END IF
+      end if
 !
-      IF (IERR.NE.0) THEN
+      if (ierr.ne.0) then
 !
 !     PRINT PROPER CALL SEQUENCE AND RETURN
 !
-        IERR = 1
-        CALL IPRINT (IPRT)
-        WRITE (IPRT, 1000)
-      END IF
+        ierr = 1
+        call iprint (iprt)
+        write (iprt, 1000)
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     & '       CALL ACFS (Y, N,'/
+1000 format(/42h the correct form of the call statement is//&
+    & '       CALL ACFS (Y, N,'/&
      & '      +           LAGMAX, LACOV, ACOV, IAR, PHI, NPRT, LDSTAK)')
-      END
+      end

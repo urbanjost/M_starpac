@@ -1,7 +1,7 @@
 !PPCNT
-      SUBROUTINE PPCNT (YM, YMMISS, X, XMISS, N, M, IYM, MULTI, ILOG,
-     &  YLB, YUB, XLB, XUB, NMSUB, ISCHCK, ISYM, ISIZE, NOUT, MISS,
-     &  LISYM)
+     subroutine ppcnt (ym, ymmiss, x, xmiss, n, m, iym, multi, ilog,&
+    &  ylb, yub, xlb, xub, nmsub, ischck, isym, isize, nout, miss,&
+     &  lisym)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,36 +17,36 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XLB,XMISS,XUB,YLB,YUB
-      INTEGER
-     &   ILOG,ISCHCK,ISIZE,IYM,LISYM,M,N,NOUT
-      LOGICAL
-     &   MISS,MULTI
+     real(kind=wp) ::&
+     &   xlb,xmiss,xub,ylb,yub
+     integer&
+     &   ilog,ischck,isize,iym,lisym,m,n,nout
+     logical&
+     &   miss,multi
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(*),YM(*),YMMISS(*)
-      INTEGER
-     &   ISYM(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   x(*),ym(*),ymmiss(*)
+     integer&
+     &   isym(*)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   XMN,XMX,YMN,YMX
-      LOGICAL
-     &   ERROR,XCHECK
+     real(kind=wp) ::&
+     &   xmn,xmx,ymn,ymx
+     logical&
+     &   error,xcheck
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL PLTCHK,PPLMT,PPMN,VERSP
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -127,35 +127,35 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      XCHECK = .TRUE.
-      CALL PLTCHK (YM, YMMISS, X, XMISS, N, M, IYM, MULTI, ILOG,
-     &   YLB, YUB, XLB, XUB, NMSUB, MISS, XCHECK)
+      xcheck = .true.
+     call pltchk (ym, ymmiss, x, xmiss, n, m, iym, multi, ilog,&
+     &   ylb, yub, xlb, xub, nmsub, miss, xcheck)
 !
-      IF (IERR.EQ.0) THEN
+      if (ierr.eq.0) then
 !
 !       DETERMINE THE BOUNDS FOR THE X AND Y AXIS AND COMPLETE ERROR
 !       CHECKING
 !
-        CALL PPLMT (YM, YMMISS, X, XMISS, N, M, IYM, YLB, YUB, YMN, YMX,
-     &    XLB, XUB, XMN, XMX, ERROR, NMSUB, MISS)
+       call pplmt (ym, ymmiss, x, xmiss, n, m, iym, ylb, yub, ymn, ymx,&
+     &    xlb, xub, xmn, xmx, error, nmsub, miss)
 !
-        IF (ERROR) THEN
-          IERR = 1
-        ELSE
+        if (error) then
+          ierr = 1
+        else
 !
 !       PRINT PLOT
 !
-        IF (ISIZE.LE.9) THEN
-          CALL VERSP(.TRUE.)
-        ELSE
-          CALL VERSP(.FALSE.)
-        END IF
-        CALL PPMN (YM, YMMISS, X, XMISS, N, M, IYM, ISCHCK, ISYM,
-     &    LISYM, ISIZE, NOUT, YMN, YMX, XMN, XMX, MISS, ILOG)
+        if (isize.le.9) then
+          call versp(.true.)
+        else
+          call versp(.false.)
+        end if
+       call ppmn (ym, ymmiss, x, xmiss, n, m, iym, ischck, isym,&
+     &    lisym, isize, nout, ymn, ymx, xmn, xmx, miss, ilog)
 !
-        END IF
-      END IF
+        end if
+      end if
 !
-      RETURN
+      return
 !
-      END
+      end

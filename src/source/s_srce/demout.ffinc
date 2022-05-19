@@ -1,5 +1,5 @@
 !DEMOUT
-      SUBROUTINE DEMOUT(FD, FC, K, AMPL, PHASE, IPHASE, NDEM, NMSUB)
+      subroutine demout(fd, fc, k, ampl, phase, iphase, ndem, nmsub)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,38 +16,38 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FC,FD
-      INTEGER
-     &   IPHASE,K,NDEM
+     real(kind=wp) ::&
+     &   fc,fd
+     integer&
+     &   iphase,k,ndem
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   AMPL(NDEM),PHASE(IPHASE,2)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   ampl(ndem),phase(iphase,2)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   PI,YMN,YMX
-      INTEGER
-     &   IPRT
-      LOGICAL
-     &   ERROR
+     real(kind=wp) ::&
+     &   pi,ymn,ymx
+     integer&
+     &   iprt
+     logical&
+     &   error
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISYM(1)
+     integer&
+     &   isym(1)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL GETPI,IPRINT,VERSP,VPLMT,VPMN
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -80,41 +80,41 @@
 !     REAL YMN, YMX
 !
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      CALL VERSP(.TRUE.)
+      call versp(.true.)
 !
-      CALL GETPI(PI)
+      call getpi(pi)
 !
-      WRITE (IPRT, 1000) FD, FC, K
+      write (iprt, 1000) fd, fc, k
 !
-      WRITE (IPRT, 1001)
-      CALL VPLMT(AMPL, AMPL, NDEM, 1, NDEM, 0.0E0, 0.0E0,
-     &  YMN, YMX, ERROR, NMSUB, .FALSE., 1)
+      write (iprt, 1001)
+     call vplmt(ampl, ampl, ndem, 1, ndem, 0.0e0, 0.0e0,&
+     &  ymn, ymx, error, nmsub, .false., 1)
 !
-      IF (ERROR) THEN
-        IERR = 1
-        RETURN
-      ELSE
-        CALL VPMN(AMPL, AMPL, NDEM, 1, NDEM, 1, 0, ISYM, 1, 0,
-     &   YMN, YMX, 1.0E0, 1.0E0, .FALSE., 0, 1, 0)
-      END IF
+      if (error) then
+        ierr = 1
+        return
+      else
+       call vpmn(ampl, ampl, ndem, 1, ndem, 1, 0, isym, 1, 0,&
+     &   ymn, ymx, 1.0e0, 1.0e0, .false., 0, 1, 0)
+      end if
 !
-      WRITE (IPRT, 1002)
-      CALL VERSP(.TRUE.)
-      WRITE (IPRT, 1003)
-      CALL VPMN(PHASE, PHASE, NDEM, 2, IPHASE, 1, 2, ISYM, 1, 0,
-     &   -2.0E0*PI, 2.0E0*PI, 1.0E0, 1.0E0, .FALSE., 0, 0, 0)
+      write (iprt, 1002)
+      call versp(.true.)
+      write (iprt, 1003)
+     call vpmn(phase, phase, ndem, 2, iphase, 1, 2, isym, 1, 0,&
+     &   -2.0e0*pi, 2.0e0*pi, 1.0e0, 1.0e0, .false., 0, 0, 0)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/25H TIME SERIES DEMODULATION//
-     &   26H DEMODULATION FREQUENCY IS, F10.8/
-     &   26H CUTOFF FREQUENCY IS      , F10.8/
-     &   38H THE NUMBER OF TERMS IN THE FILTER IS , I5///)
- 1001 FORMAT (49H PLOT OF AMPLITUDE OF SMOOTHED DEMODULATED SERIES)
- 1002 FORMAT ('1')
- 1003 FORMAT (45H PLOT OF PHASE OF SMOOTHED DEMODULATED SERIES)
-      END
+1000 format (/25h time series demodulation//&
+    &   26h demodulation frequency is, f10.8/&
+    &   26h cutoff frequency is      , f10.8/&
+     &   38h the number of terms in the filter is , i5///)
+ 1001 format (49h plot of amplitude of smoothed demodulated series)
+ 1002 format ('1')
+ 1003 format (45h plot of phase of smoothed demodulated series)
+      end

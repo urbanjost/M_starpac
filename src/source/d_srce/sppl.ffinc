@@ -1,5 +1,5 @@
 !SPPL
-      SUBROUTINE SPPL(YM, X, N, ISYM, ILOG)
+      subroutine sppl(ym, x, n, isym, ilog)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,38 +16,38 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ILOG,N
+     integer&
+     &   ilog,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(*),YM(*)
-      INTEGER
-     &   ISYM(*)
+     real(kind=wp) ::&
+     &   x(*),ym(*)
+     integer&
+     &   isym(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   XLB,XMISS,XUB,YLB,YUB
-      INTEGER
-     &   IPRT,ISCHCK,ISIZE,IYM,LISYM,M,NOUT
-      LOGICAL
-     &   MISS,MULTI
+     real(kind=wp) ::&
+     &   xlb,xmiss,xub,ylb,yub
+     integer&
+     &   iprt,ischck,isize,iym,lisym,m,nout
+     logical&
+     &   miss,multi
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   YMMISS(1)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   ymmiss(1)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,PPCNT
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -120,43 +120,43 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      &    /  'S',       'P',       'P',       'L',       ' ',       ' '/
 !
 !     COMMENCE BODY OF ROUTINE
 !
 !     SET DEFAULT VALUES
 !
-      YMMISS(1) = 1.0_WP
-      XMISS = 1.0_WP
-      M = 1
-      IYM = N
-      MULTI = .FALSE.
-      YLB = 0.0_WP
-      YUB = 0.0_WP
-      XLB = 0.0_WP
-      XUB = 0.0_WP
-      ISCHCK = 1
-      ISIZE = -1
-      NOUT = 0
-      MISS = .FALSE.
-      LISYM = N
+      ymmiss(1) = 1.0_wp
+      xmiss = 1.0_wp
+      m = 1
+      iym = n
+      multi = .false.
+      ylb = 0.0_wp
+      yub = 0.0_wp
+      xlb = 0.0_wp
+      xub = 0.0_wp
+      ischck = 1
+      isize = -1
+      nout = 0
+      miss = .false.
+      lisym = n
 !
-      CALL PPCNT (YM, YMMISS, X, XMISS, N, M, IYM, MULTI, ILOG,
-     &  YLB, YUB, XLB, XUB, NMSUB, ISCHCK, ISYM, ISIZE, NOUT, MISS,
-     &  LISYM)
+     call ppcnt (ym, ymmiss, x, xmiss, n, m, iym, multi, ilog,&
+    &  ylb, yub, xlb, xub, nmsub, ischck, isym, isize, nout, miss,&
+     &  lisym)
 !
-      IF (IERR.NE.0) THEN
-        IERR = 1
-        CALL IPRINT(IPRT)
-        WRITE (IPRT,1000)
-      END IF
+      if (ierr.ne.0) then
+        ierr = 1
+        call iprint(iprt)
+        write (iprt,1000)
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &   '       CALL SPPL (Y, X, N, ISYM, ILOG)')
-      END
+      end

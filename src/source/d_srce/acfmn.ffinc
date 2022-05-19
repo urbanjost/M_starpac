@@ -1,7 +1,7 @@
 !ACFMN
-      SUBROUTINE ACFMN(Y, N, LAGMAX, RHO, SDRHO, YMEAN, PRHO, AIC,
-     &   FTEST, PHI, IAR, OSPVAR, ACOV, LACOV, LAIC, CHIA, CHIAP, WORK,
-     &   NPRT)
+     subroutine acfmn(y, n, lagmax, rho, sdrho, ymean, prho, aic,&
+    &   ftest, phi, iar, ospvar, acov, lacov, laic, chia, chiap, work,&
+     &   nprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,19 +18,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CHIA,CHIAP,OSPVAR,YMEAN
-      INTEGER
-     &   IAR,LACOV,LAGMAX,LAIC,N,NPRT
+     real(kind=wp) ::&
+     &   chia,chiap,ospvar,ymean
+     integer&
+     &   iar,lacov,lagmax,laic,n,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV(*),AIC(*),FTEST(2,*),PHI(*),PRHO(*),RHO(*),SDRHO(*),
-     &   WORK(*),Y(*)
+     real(kind=wp) ::&
+    &   acov(*),aic(*),ftest(2,*),phi(*),prho(*),rho(*),sdrho(*),&
+     &   work(*),y(*)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL ACFSD,ACVF,AOS,CHIRHO
@@ -85,31 +85,31 @@
 !
 !     COMPUTE AUTOCOVARIANCESS AND STANDARD DEVIATION OF THE SERIES.
 !
-      CALL ACVF(Y, N, YMEAN, ACOV, LAGMAX, LACOV)
+      call acvf(y, n, ymean, acov, lagmax, lacov)
 !
-      IF (ACOV(1) .EQ. 0.0_WP) RETURN
+      if (acov(1) .eq. 0.0_wp) return
 !
 !     COMPUTE PARTIAL AUTOCORRELATIONS AND THE AUTOREGRESSIVE MODEL
 !     ORDER SELECTION STATISTICS.
 !
-      CALL AOS (N, LAGMAX, ACOV, PRHO, IAR, OSPVAR, PHI, WORK,
-     &   AIC, FTEST, LACOV, LAIC)
+     call aos (n, lagmax, acov, prho, iar, ospvar, phi, work,&
+     &   aic, ftest, lacov, laic)
 !
-      IF (NPRT .EQ. 0) RETURN
+      if (nprt .eq. 0) return
 !
 !     COMPUTE AUTOCORRELATIONS
 !
-      DO 10 I = 1, LAGMAX
-         RHO(I) = ACOV(I+1) / ACOV(1)
-   10 CONTINUE
+      do 10 i = 1, lagmax
+         rho(i) = acov(i+1) / acov(1)
+   10 continue
 !
 !     COMPUTE STANDARD ERROR OF AUTOCORRELATIONS.
 !
-      CALL ACFSD (RHO, SDRHO, LAGMAX, N)
+      call acfsd (rho, sdrho, lagmax, n)
 !
 !     COMPUTE CHI STATISTIC BASED ON AUTOCORRELATION VALUES
 !
-      CALL CHIRHO (RHO, N, LAGMAX, CHIA, CHIAP)
+      call chirho (rho, n, lagmax, chia, chiap)
 !
-      RETURN
-      END
+      return
+      end

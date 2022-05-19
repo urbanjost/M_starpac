@@ -1,7 +1,7 @@
 !CORRMN
-      SUBROUTINE CORRMN(YM, N, M, IYM, AVG, SD, T, RANK, SC, PC, SCINV,
-     &   IWRK, WRK, SLSC, SLPC, SRCC, QUAD, CIUP, CILO, QF, NPRT,
-     &   VCV, IVCV, LIWRK, LWRK)
+     subroutine corrmn(ym, n, m, iym, avg, sd, t, rank, sc, pc, scinv,&
+    &   iwrk, wrk, slsc, slpc, srcc, quad, ciup, cilo, qf, nprt,&
+     &   vcv, ivcv, liwrk, lwrk)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -29,32 +29,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IVCV,IYM,LIWRK,LWRK,M,N,NPRT
+     integer&
+     &   ivcv,iym,liwrk,lwrk,m,n,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   AVG(M),CILO(M,M),CIUP(M,M),PC(M,M),QF(M,M),QUAD(N,3),
-     &   RANK(N,M),SC(M,M),SCINV(M,M),SD(M),SLPC(M,M),SLSC(M,M),
-     &   SRCC(M,M),T(M),VCV(IVCV,M),WRK(LWRK),YM(IYM,M)
-      INTEGER
-     &   IWRK(LIWRK)
+     real(kind=wp) ::&
+    &   avg(m),cilo(m,m),ciup(m,m),pc(m,m),qf(m,m),quad(n,3),&
+    &   rank(n,m),sc(m,m),scinv(m,m),sd(m),slpc(m,m),slsc(m,m),&
+     &   srcc(m,m),t(m),vcv(ivcv,m),wrk(lwrk),ym(iym,m)
+     integer&
+     &   iwrk(liwrk)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   B,F,FN3,FPLM,HL1,HL2,SQSUM,SUM,Z,ZZ
-      INTEGER
-     &   I,IER,IPRT,J,K,K1,K2,NSUM
+     real(kind=wp) ::&
+     &   b,f,fn3,fplm,hl1,hl2,sqsum,sum,z,zz
+     integer&
+     &   i,ier,iprt,j,k,k1,k2,nsum
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   C(3),D(3),RR(3,3),XX(3)
-      INTEGER
-     &   INERT(3)
+     real(kind=wp) ::&
+     &   c(3),d(3),rr(3,3),xx(3)
+     integer&
+     &   inert(3)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -66,10 +66,10 @@
 !     +   VCVOUT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,INT,LOG,MAX,MIN,REAL,SIGN,SQRT,TANH
+      intrinsic abs,int,log,max,min,real,sign,sqrt,tanh
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
@@ -180,173 +180,173 @@
 !     REAL ZZ
 !                  USED IN DETERMINING CORRELATION COEFFICIENTS
 !
-      IERR = 0
+      ierr = 0
 !
-      FPLM = R1MACH(2)
-      CALL IPRINT(IPRT)
+      fplm = r1mach(2)
+      call iprint(iprt)
 !
-      DO 10 J=1,M
-         CALL AMEAN(YM(1,J), N, AVG(J))
-   10 CONTINUE
+      do 10 j=1,m
+         call amean(ym(1,j), n, avg(j))
+   10 continue
 !
 !     COMPUTE VARIANCE-COVARIANCE MATRIX
 !
-      DO 30 J=1,M
-         DO 20 I=J,M
-            CALL DOTC(YM(1,J), AVG(J), N, YM(1,I), AVG(I), N, SUM, NSUM)
-            VCV(J,I) = SUM/(NSUM-1)
-            VCV(I,J) = VCV(J,I)
-   20    CONTINUE
-   30 CONTINUE
+      do 30 j=1,m
+         do 20 i=j,m
+            call dotc(ym(1,j), avg(j), n, ym(1,i), avg(i), n, sum, nsum)
+            vcv(j,i) = sum/(nsum-1)
+            vcv(i,j) = vcv(j,i)
+   20    continue
+   30 continue
 !
-      IF (NPRT.EQ.0) RETURN
+      if (nprt.eq.0) return
 !
 !     PRINT VARIANCE-COVARIANCE MATRIX AND SIMPLE CORRELATION
 !     COEFFICIENTS
 !
-      CALL CORRHD(IPRT, M, N)
-      CALL VCVOUT(M, VCV, IVCV, .FALSE.)
+      call corrhd(iprt, m, n)
+      call vcvout(m, vcv, ivcv, .false.)
 !
 !     COMPUTE STANDARD DEVIATIONS
 !
-      DO 40 I=1,M
-         IF (VCV(I,I).LE.0.0E0) GO TO 90
-         SD(I) = SQRT(VCV(I,I))
-   40 CONTINUE
+      do 40 i=1,m
+         if (vcv(i,i).le.0.0e0) go to 90
+         sd(i) = sqrt(vcv(i,i))
+   40 continue
 !
 !     COMPUTE SIMPLE CORRELATION COEFFICIENTS
 !
-      DO 60 J=1,M
-         DO 50 I=J,M
-            SC(I,J) = 1.0E0
-            SCINV(J,I) = 1.0E0
-            IF (I.EQ.J) GO TO 50
-            SC(I,J) = VCV(I,J)/SD(I)/SD(J)
-            SC(J,I) = SC(I,J)
-            SCINV(J,I) = SC(I,J)
-   50    CONTINUE
-   60 CONTINUE
+      do 60 j=1,m
+         do 50 i=j,m
+            sc(i,j) = 1.0e0
+            scinv(j,i) = 1.0e0
+            if (i.eq.j) go to 50
+            sc(i,j) = vcv(i,j)/sd(i)/sd(j)
+            sc(j,i) = sc(i,j)
+            scinv(j,i) = sc(i,j)
+   50    continue
+   60 continue
 !
-      IF ((M.LE.2) .OR. (N.LE.M)) GO TO 190
+      if ((m.le.2) .or. (n.le.m)) go to 190
 !
 !     CALCULATE PARTIAL CORRELATION COEFFICIENTS.
 !
-      CALL SSIFA(SCINV, M, M, IWRK, IER)
-      IF (IER.EQ.0) GO TO 100
-   90 WRITE (IPRT,1000)
-      IERR = 1
-      RETURN
-  100 CONTINUE
-      CALL SSIDI(SCINV, M, M, IWRK, D, INERT, WRK, 1)
-      DO 130 J=1,M
-         DO 120 I=J,M
-            PC(I,J) = 1.0E0
-            IF (I.EQ.J) GO TO 120
-            ZZ = SCINV(I,I)*SCINV(J,J)
-            PC(I,J) = FPLM
-            IF (ZZ.LE.0.0E0) GO TO 110
-            PC(I,J) = -SCINV(J,I)/SQRT(ZZ)
-            IF (ABS(PC(I,J)).GT.1.0E0) PC(I,J) = SIGN(1.0E0,PC(I,J))
-  110       PC(J,I) = PC(I,J)
-  120    CONTINUE
+      call ssifa(scinv, m, m, iwrk, ier)
+      if (ier.eq.0) go to 100
+   90 write (iprt,1000)
+      ierr = 1
+      return
+  100 continue
+      call ssidi(scinv, m, m, iwrk, d, inert, wrk, 1)
+      do 130 j=1,m
+         do 120 i=j,m
+            pc(i,j) = 1.0e0
+            if (i.eq.j) go to 120
+            zz = scinv(i,i)*scinv(j,j)
+            pc(i,j) = fplm
+            if (zz.le.0.0e0) go to 110
+            pc(i,j) = -scinv(j,i)/sqrt(zz)
+            if (abs(pc(i,j)).gt.1.0e0) pc(i,j) = sign(1.0e0,pc(i,j))
+  110       pc(j,i) = pc(i,j)
+  120    continue
 !
-  130 CONTINUE
+  130 continue
 !
 !     COMPUTE SIGNIFICANCE LEVELS OF PARTIAL CORRELATION COEFFICIENTS.
 !     NOTE, LOWER TRIANGULAR MATRIX STORED IN SQUARE MATRIX.
 !
-      DO 180 I=1,M
-         DO 170 J=1,I
-            IF (PC(I,J).NE.0.0E0) GO TO 140
-            SLPC(I,J) = 1.0E0
-            GO TO 170
-  140       IF (ABS(PC(I,J)).LT.1.0E0) GO TO 150
-            SLPC(I,J) = 0.0E0
-            GO TO 170
-  150       F = PC(I,J)*PC(I,J)
-            IF (1.0E0-F.NE.0.0E0) GO TO 160
-            SLPC(I,J) = FPLM
-            GO TO 170
-  160       F = (N-M)*F/(1.0E0-F)
-            SLPC(I,J) = 1.0E0 - CDFF(F,1.0E0,REAL(N-M))
-  170    CONTINUE
-  180 CONTINUE
+      do 180 i=1,m
+         do 170 j=1,i
+            if (pc(i,j).ne.0.0e0) go to 140
+            slpc(i,j) = 1.0e0
+            go to 170
+  140       if (abs(pc(i,j)).lt.1.0e0) go to 150
+            slpc(i,j) = 0.0e0
+            go to 170
+  150       f = pc(i,j)*pc(i,j)
+            if (1.0e0-f.ne.0.0e0) go to 160
+            slpc(i,j) = fplm
+            go to 170
+  160       f = (n-m)*f/(1.0e0-f)
+            slpc(i,j) = 1.0e0 - cdff(f,1.0e0,real(n-m))
+  170    continue
+  180 continue
 !
 !     COMPUTE SIGNIFICANCE LEVELS OF SIMPLE CORRELATION COEFFICIENTS
 !     NOTE, ONLY LOWER TRIANGULAR STORED IN SQUARE MATRIX.
 !
-  190 DO 250 I=1,M
-         DO 240 J=1,I
-            IF (I.NE.J) GO TO 200
-            SLSC(I,J) = 0.0E0
-            GO TO 240
-  200       IF (SC(I,J).NE.0.0E0) GO TO 210
-            SLSC(I,J) = 1.0E0
-            GO TO 240
-  210       IF (ABS(SC(I,J)).LT.1.0E0) GO TO 220
-            SLSC(I,J) = 0.0E0
-            GO TO 240
-  220       F = SC(I,J)*SC(I,J)
-            IF (F.NE.1.0E0) GO TO 230
-            SLSC(I,J) = FPLM
-            GO TO 240
-  230       F = (N-2)*F/(1.0E0-F)
-            SLSC(I,J) = 1.0E0 - CDFF(F,1.0E0,REAL(N-2))
-  240    CONTINUE
-  250 CONTINUE
+  190 do 250 i=1,m
+         do 240 j=1,i
+            if (i.ne.j) go to 200
+            slsc(i,j) = 0.0e0
+            go to 240
+  200       if (sc(i,j).ne.0.0e0) go to 210
+            slsc(i,j) = 1.0e0
+            go to 240
+  210       if (abs(sc(i,j)).lt.1.0e0) go to 220
+            slsc(i,j) = 0.0e0
+            go to 240
+  220       f = sc(i,j)*sc(i,j)
+            if (f.ne.1.0e0) go to 230
+            slsc(i,j) = fplm
+            go to 240
+  230       f = (n-2)*f/(1.0e0-f)
+            slsc(i,j) = 1.0e0 - cdff(f,1.0e0,real(n-2))
+  240    continue
+  250 continue
 !
 !     PRINT SIGNIFICANCE LEVELS OF SIMPLE CORRELATION COEFFICIENTS,
 !     PARTIAL CORRELATION COEFFICIENTS AND SIGNIFICANCE LEVELS
 !
-      WRITE (IPRT,1020)
-      CALL MATPRT(SLSC, SLSC, M, IPRT, 0, 1, M)
-      IF ((M.GT.2) .AND. (N.GT.M)) GO TO 260
-      WRITE (IPRT,1010)
-      GO TO 270
-  260 I = M - 2
-      WRITE (IPRT,1030) I
-      CALL MATPRT(PC, PC, M, IPRT, 0, 1, M)
-      WRITE (IPRT,1040)
-      CALL MATPRT(SLPC, SLPC, M, IPRT, 0, 1, M)
-  270 CONTINUE
+      write (iprt,1020)
+      call matprt(slsc, slsc, m, iprt, 0, 1, m)
+      if ((m.gt.2) .and. (n.gt.m)) go to 260
+      write (iprt,1010)
+      go to 270
+  260 i = m - 2
+      write (iprt,1030) i
+      call matprt(pc, pc, m, iprt, 0, 1, m)
+      write (iprt,1040)
+      call matprt(slpc, slpc, m, iprt, 0, 1, m)
+  270 continue
 !
 !     DETERMINE THE RANKS OF THE OBSERVATIONS.
 !
-      DO 280 I=1,M
-         CALL RANKO(N, YM(1,I), IWRK, RANK(1,I), T(I))
-         T(I) = T(I) / 12.0E0
-  280 CONTINUE
+      do 280 i=1,m
+         call ranko(n, ym(1,i), iwrk, rank(1,i), t(i))
+         t(i) = t(i) / 12.0e0
+  280 continue
 !
 !     COMPUTE SPEARMAN RANK CORRELATION COEFFICIENTS.
 !     NOTE, LOWER TRIANGULAR MATRIX, STORED IN SQUARE MATRIX.
 !
-      B = (N-1)*N*(N+1)/6
-      DO 330 I=1,M
-         DO 320 J=1,I
-            SRCC(I,J) = 1.0E0
-            IF (I.EQ.J) GO TO 320
-            K1 = 2.0E0*T(I) + 0.4E0
-            K2 = 2.0E0*T(J) + 0.4E0
-            SRCC(I,J) = FPLM
-            IF ((INT(B)-K1.LE.0) .OR. (INT(B)-K2.LE.0)) GO TO 320
-            SUM = 0.0E0
-            DO 310 K=1,N
-               ZZ = RANK(K,I) - RANK(K,J)
-               SUM = SUM + ZZ*ZZ
-  310       CONTINUE
-            ZZ = (B - 2.0E0*T(I))*(B - 2.0E0*T(J))
-            IF (ZZ.GT.0.0E0) SRCC(I,J) = (B-SUM-T(I)-T(J))/SQRT(ZZ)
-  320    CONTINUE
-  330 CONTINUE
+      b = (n-1)*n*(n+1)/6
+      do 330 i=1,m
+         do 320 j=1,i
+            srcc(i,j) = 1.0e0
+            if (i.eq.j) go to 320
+            k1 = 2.0e0*t(i) + 0.4e0
+            k2 = 2.0e0*t(j) + 0.4e0
+            srcc(i,j) = fplm
+            if ((int(b)-k1.le.0) .or. (int(b)-k2.le.0)) go to 320
+            sum = 0.0e0
+            do 310 k=1,n
+               zz = rank(k,i) - rank(k,j)
+               sum = sum + zz*zz
+  310       continue
+            zz = (b - 2.0e0*t(i))*(b - 2.0e0*t(j))
+            if (zz.gt.0.0e0) srcc(i,j) = (b-sum-t(i)-t(j))/sqrt(zz)
+  320    continue
+  330 continue
 !
 !     PRINT SPEARMAN RANK CORRELATIONS COEFFICIENTS
 !
-      WRITE (IPRT,1050)
-      CALL MATPRT(SRCC, SRCC, M, IPRT, 0, 1, M)
+      write (iprt,1050)
+      call matprt(srcc, srcc, m, iprt, 0, 1, m)
 !
-      IF (N.GT.3) GO TO 340
-      WRITE (IPRT,1060)
-      RETURN
+      if (n.gt.3) go to 340
+      write (iprt,1060)
+      return
 !
 !     COMPUTE THE SIGNIFICANCE LEVELS OF THE QUADRATIC FIT OVER THE
 !     LINEAR FIT.
@@ -359,120 +359,120 @@
 !     PRODUCES ZERO) AND 1.0E0 (FIRST F = LINE PRODUCES APPROX.
 !     ZERO, AND NUMERATOR IN SECOND F = LINE IS NONZERO).
 !
-  340 FN3 = N-3
-      DO 410 J=1,M
-         DO 400 I=1,M
-            IF (I.NE.J) GO TO 350
-            QF(I,J) = 1.0E0
-            GO TO 400
-  350       SQSUM = 0.0E0
-            DO 360 K=1,N
-              QUAD(K,1) = 1.0E0
-               QUAD(K,2) = YM(K,J)
-               QUAD(K,3) = YM(K,J)*YM(K,J)
-               SQSUM = SQSUM + YM(K,I)*YM(K,I)
-               WRK(K) = YM(K,I)
-  360       CONTINUE
-            CALL MGS(QUAD, WRK, N, 3, XX, C, D, RR, 3, N, IER)
-            IF (IER.EQ.0) GO TO 370
-            WRITE (IPRT,1090)
-            GO TO 420
-  370       DO 380 K=1,3
-               C(K) = C(K)*SQRT(D(K))
-  380       CONTINUE
-            F = (SQSUM-C(1)*C(1)-C(2)*C(2)-C(3)*C(3))
-            QF(I,J) = 0.0E0
-            IF (F.EQ.0.0E0) GO TO 400
-            F = (C(3)*C(3)*FN3)/F
-            QF(I,J) = 1.0E0
-            IF (F.GT.0.0E0) QF(I,J) = 1.0E0 - CDFF(F,1.0E0,FN3)
-  400    CONTINUE
-  410 CONTINUE
+  340 fn3 = n-3
+      do 410 j=1,m
+         do 400 i=1,m
+            if (i.ne.j) go to 350
+            qf(i,j) = 1.0e0
+            go to 400
+  350       sqsum = 0.0e0
+            do 360 k=1,n
+              quad(k,1) = 1.0e0
+               quad(k,2) = ym(k,j)
+               quad(k,3) = ym(k,j)*ym(k,j)
+               sqsum = sqsum + ym(k,i)*ym(k,i)
+               wrk(k) = ym(k,i)
+  360       continue
+            call mgs(quad, wrk, n, 3, xx, c, d, rr, 3, n, ier)
+            if (ier.eq.0) go to 370
+            write (iprt,1090)
+            go to 420
+  370       do 380 k=1,3
+               c(k) = c(k)*sqrt(d(k))
+  380       continue
+            f = (sqsum-c(1)*c(1)-c(2)*c(2)-c(3)*c(3))
+            qf(i,j) = 0.0e0
+            if (f.eq.0.0e0) go to 400
+            f = (c(3)*c(3)*fn3)/f
+            qf(i,j) = 1.0e0
+            if (f.gt.0.0e0) qf(i,j) = 1.0e0 - cdff(f,1.0e0,fn3)
+  400    continue
+  410 continue
 !
 !     PRINT THE QUADRATIC FIT MATRIX
 !
-      J = 2
-      K = 1
-      I = N - 3
-      WRITE (IPRT,1070) I, QF(J,K), J, K
-      CALL MATPRT(QF, QF, M, IPRT, 1, 1, M)
+      j = 2
+      k = 1
+      i = n - 3
+      write (iprt,1070) i, qf(j,k), j, k
+      call matprt(qf, qf, m, iprt, 1, 1, m)
 !
 !     COMPUTE CONFIDENCE LIMITS FOR SIMPLE CORRELATION COEFFICIENTS
 !
-  420 F = SQRT(FN3)
-      HL1 = 2.5758293E0/F
-      HL2 = 1.9599640E0/F
-      DO 520 J=1,M
-         DO 510 I=1,M
-            IF (I.NE.J) GO TO 430
-            CIUP(I,J) = 99.0E0
-            CILO(I,J) = 95.0E0
-            GO TO 510
-  430       IF (I.LT.J) GO TO 470
+  420 f = sqrt(fn3)
+      hl1 = 2.5758293e0/f
+      hl2 = 1.9599640e0/f
+      do 520 j=1,m
+         do 510 i=1,m
+            if (i.ne.j) go to 430
+            ciup(i,j) = 99.0e0
+            cilo(i,j) = 95.0e0
+            go to 510
+  430       if (i.lt.j) go to 470
 !
 !           COMPUTE 95 PERCENT INTERVALS.
 !
-            IF (SC(I,J).GE.1.0E0) GO TO 440
-            IF (SC(I,J).GT.-1.0E0) GO TO 450
-            Z = -1.0E0
-            GO TO 460
-  440       Z = 1.0E0
-            GO TO 460
-  450       Z = 0.5E0*LOG((1.0E0+SC(I,J))/(1.0E0-SC(I,J)))
-  460       CIUP(I,J) = MIN(TANH(Z+HL2),1.0E0)
-            CILO(I,J) = MAX(TANH(Z-HL2),-1.0E0)
-            GO TO 510
+            if (sc(i,j).ge.1.0e0) go to 440
+            if (sc(i,j).gt.-1.0e0) go to 450
+            z = -1.0e0
+            go to 460
+  440       z = 1.0e0
+            go to 460
+  450       z = 0.5e0*log((1.0e0+sc(i,j))/(1.0e0-sc(i,j)))
+  460       ciup(i,j) = min(tanh(z+hl2),1.0e0)
+            cilo(i,j) = max(tanh(z-hl2),-1.0e0)
+            go to 510
 !
 !           COMPUTE 99 PERCENT INTERVALS.
 !
-  470       IF (SC(J,I).GE.1.0E0) GO TO 480
-            IF (SC(J,I).GT.-1.0E0) GO TO 490
-            Z = -1.0E0
-            GO TO 500
-  480       Z = 1.0E0
-            GO TO 500
-  490       Z = 0.5E0*LOG((1.0E0+SC(J,I))/(1.0E0-SC(J,I)))
-  500       CIUP(I,J) = MIN(TANH(Z+HL1),1.0E0)
-            CILO(I,J) = MAX(TANH(Z-HL1),-1.0E0)
-  510    CONTINUE
-  520 CONTINUE
+  470       if (sc(j,i).ge.1.0e0) go to 480
+            if (sc(j,i).gt.-1.0e0) go to 490
+            z = -1.0e0
+            go to 500
+  480       z = 1.0e0
+            go to 500
+  490       z = 0.5e0*log((1.0e0+sc(j,i))/(1.0e0-sc(j,i)))
+  500       ciup(i,j) = min(tanh(z+hl1),1.0e0)
+            cilo(i,j) = max(tanh(z-hl1),-1.0e0)
+  510    continue
+  520 continue
 !
 !     PRINT CONFIDENCE LIMITS
 !
-      WRITE (IPRT,1080)
-      CALL MATPRT(CIUP, CILO, M, IPRT, 1, 2, M)
+      write (iprt,1080)
+      call matprt(ciup, cilo, m, iprt, 1, 2, m)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/ 46H COMPUTATION STOPPED DUE TO SINGULAR OR ILL-CO,
-     &   28HNDITIONED COVARIANCE MATRIX.)
- 1010 FORMAT (//42H THE PARTIAL CORRELATION COEFFICIENTS (AND, 6H SIGNI,
-     &   50HFICANCE LEVELS) ARE NOT PRINTED OR DEFINED BECAUSE/6H EITHE,
-     &   52HR THE NUMBER OF VECTORS BEING COMPARED IS TWO OR THE,
-     &   59H NUMBER OF MEASUREMENTS IS LESS THAN OR EQUAL TO THE NUMBER/
-     &   27H OF VECTORS BEING COMPARED.)
- 1020 FORMAT (// 44H SIGNIFICANCE LEVELS OF SIMPLE CORRELATION C,
-     &   32HOEFFICIENTS (ASSUMING NORMALITY))
- 1030 FORMAT (// 38H PARTIAL CORRELATION COEFFICIENTS WITH, I3,
-     &   26H REMAINING VARIABLES FIXED)
- 1040 FORMAT (// 44H SIGNIFICANCE LEVELS OF PARTIAL CORRELATION ,
-     &   33HCOEFFICIENTS (ASSUMING NORMALITY))
- 1050 FORMAT (// 44H SPEARMAN RANK CORRELATION COEFFICIENTS (ADJ,
-     &   15HUSTED FOR TIES))
- 1060 FORMAT (// 44H NONLINEARITY TEST AND APPROXIMATION OF CONF,
-     &   39HIDENCE INTERVALS NOT DEFINED FOR N = 3.)
- 1070 FORMAT (// 45H SIGNIFICANCE LEVEL OF QUADRATIC FIT OVER LIN,
-     &   35HEAR FIT BASED ON F RATIO WITH 1 AND, I5, 15H DEGREES OF FRE,
-     &   4HEDOM/14H (FOR EXAMPLE,, F7.4, 19H IS THE SIGNIFICANC,
-     &   41HE LEVEL OF THE QUADRATIC TERM WHEN COLUMN, I3, 9H IS FITTE,
-     &   11HD TO COLUMN, I3, ')')
- 1080 FORMAT (// 44H CONFIDENCE INTERVALS FOR SIMPLE CORRELATION,
-     &   43H COEFFICIENTS (USING FISHER TRANSFORMATION)/' 95 PER C',
-     &   59HENT LIMITS BELOW DIAGONAL, 99 PER CENT LIMITS ABOVE DIAGONA,
+1000 format (/ 46h computation stopped due to singular or ill-co,&
+     &   28hnditioned covariance matrix.)
+1010 format (//42h the partial correlation coefficients (and, 6h signi,&
+    &   50hficance levels) are not printed or defined because/6h eithe,&
+    &   52hr the number of vectors being compared is two or the,&
+    &   59h number of measurements is less than or equal to the number/&
+     &   27h of vectors being compared.)
+1020 format (// 44h significance levels of simple correlation c,&
+     &   32hoefficients (assuming normality))
+1030 format (// 38h partial correlation coefficients with, i3,&
+     &   26h remaining variables fixed)
+1040 format (// 44h significance levels of partial correlation ,&
+     &   33hcoefficients (assuming normality))
+1050 format (// 44h spearman rank correlation coefficients (adj,&
+     &   15husted for ties))
+1060 format (// 44h nonlinearity test and approximation of conf,&
+     &   39hidence intervals not defined for n = 3.)
+1070 format (// 45h significance level of quadratic fit over lin,&
+    &   35hear fit based on f ratio with 1 and, i5, 15h degrees of fre,&
+    &   4hedom/14h (for example,, f7.4, 19h is the significanc,&
+    &   41he level of the quadratic term when column, i3, 9h is fitte,&
+     &   11hd to column, i3, ')')
+1080 format (// 44h confidence intervals for simple correlation,&
+    &   43h coefficients (using fisher transformation)/' 95 PER C',&
+    &   59hent limits below diagonal, 99 per cent limits above diagona,&
      &   'L')
- 1090 FORMAT (/ 46H SIGNIFICANCE LEVELS OF QUADRATIC FIT OVER LIN,
-     &   30HEAR FIT HAVE NOT BEEN COMPUTED/' DUE TO SINGULARITY IN',
-     &   32H DESIGN MATRIX. CHECK YOUR DATA.)
-      END
+1090 format (/ 46h significance levels of quadratic fit over lin,&
+    &   30hear fit have not been computed/' DUE TO SINGULARITY IN',&
+     &   32h design matrix. check your data.)
+      end

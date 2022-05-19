@@ -1,6 +1,6 @@
 !AMFOUT
-      SUBROUTINE AMFOUT(F, FSD, N, NFCST, IFCSTO, IFO, NFCSTO, Y,
-     &  T975, PAGE)
+     subroutine amfout(f, fsd, n, nfcst, ifcsto, ifo, nfcsto, y,&
+     &  t975, page)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,36 +16,36 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   T975
-      INTEGER
-     &   IFO,N,NFCST,NFCSTO
-      LOGICAL
-     &   PAGE
+     real(kind=wp) ::&
+     &   t975
+     integer&
+     &   ifo,n,nfcst,nfcsto
+     logical&
+     &   page
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   F(*),FSD(*),Y(*)
-      INTEGER
-     &   IFCSTO(*)
+     real(kind=wp) ::&
+     &   f(*),fsd(*),y(*)
+     integer&
+     &   ifcsto(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FL,FU,SCALE,YMN,YMX
-      INTEGER
-     &   I,IEND,IF,ILIM,INTER,IPF,IPFL,IPFU,IPRT,IPY,IY,J
+     real(kind=wp) ::&
+     &   fl,fu,scale,ymn,ymx
+     integer&
+     &   i,iend,if,ilim,inter,ipf,ipfl,ipfu,iprt,ipy,iy,j
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   YLIM(4)
-      CHARACTER
-     &   LINE(53)*1
+     real(kind=wp) ::&
+     &   ylim(4)
+     character&
+     &   line(53)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL AMFHDR,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC INT,MAX,MIN
+      intrinsic int,max,min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -114,116 +114,116 @@
 !
 !     SET VARIABLES FOR PLOTS
 !
-      CALL IPRINT(IPRT)
-      INTER = 50
-      IEND = INTER + 1
-      ILIM = 4
+      call iprint(iprt)
+      inter = 50
+      iend = inter + 1
+      ilim = 4
 !
 !     COMPUTE SCALE FOR PLOT
 !
-      YMN = F(NFCST)-T975*FSD(NFCST)
-      YMX = F(NFCST)+T975*FSD(NFCST)
-      IY = IFCSTO(IFO)
-      DO 10 I = 1, NFCST
-        YMN = MIN(YMN, F(I)-T975*FSD(I))
-        YMX = MAX(YMX, F(I)+T975*FSD(I))
-        IF ((IY.GE.1) .AND. (IY.LE.N)) THEN
-          YMN = MIN(YMN, Y(IY))
-          YMX = MAX(YMX, Y(IY))
-          IY = IY + 1
-        END IF
-   10 CONTINUE
-      IF (IFCSTO(IFO).GE.2) THEN
-        DO 20 IY = MAX(IFCSTO(IFO)-4, 1), IFCSTO(IFO)-1
-          YMN = MIN(YMN, Y(IY))
-          YMX = MAX(YMX, Y(IY))
-   20   CONTINUE
-      END IF
+      ymn = f(nfcst)-t975*fsd(nfcst)
+      ymx = f(nfcst)+t975*fsd(nfcst)
+      iy = ifcsto(ifo)
+      do 10 i = 1, nfcst
+        ymn = min(ymn, f(i)-t975*fsd(i))
+        ymx = max(ymx, f(i)+t975*fsd(i))
+        if ((iy.ge.1) .and. (iy.le.n)) then
+          ymn = min(ymn, y(iy))
+          ymx = max(ymx, y(iy))
+          iy = iy + 1
+        end if
+   10 continue
+      if (ifcsto(ifo).ge.2) then
+        do 20 iy = max(ifcsto(ifo)-4, 1), ifcsto(ifo)-1
+          ymn = min(ymn, y(iy))
+          ymx = max(ymx, y(iy))
+   20   continue
+      end if
 !
-      SCALE = (YMX-YMN) / INTER
+      scale = (ymx-ymn) / inter
 !
 !     PRINT PLOT HEADINGS
 !
-      DO 30 I = 1, ILIM
-        YLIM(I) = YMN + SCALE*I*10.0E0
-   30 CONTINUE
+      do 30 i = 1, ilim
+        ylim(i) = ymn + scale*i*10.0e0
+   30 continue
 !
-      CALL AMFHDR(PAGE, .TRUE., 0)
-      WRITE (IPRT, 1030) IFO
-      WRITE (IPRT, 1000) YMN, YLIM(2), YLIM(4),
-     &  YLIM(1), YLIM(4), YMX
+      call amfhdr(page, .true., 0)
+      write (iprt, 1030) ifo
+     write (iprt, 1000) ymn, ylim(2), ylim(4),&
+     &  ylim(1), ylim(4), ymx
 !
 !     BEGIN PLOTTING
 !
-      DO 80 I=MAX(IFCSTO(IFO)-4,1), IFCSTO(IFO)+NFCST
-         IF (I.NE.IFCSTO(IFO)) THEN
-           DO 40 J = 1, IEND
-             LINE(J) = ' '
-   40      CONTINUE
-         ELSE
-           DO 50 J = 1, IEND
-             LINE(J) = '.'
-   50      CONTINUE
-         END IF
-         IF (I.LE.IFCSTO(IFO)) THEN
-           IPY = INT(((Y(I)-YMN) / SCALE) + 1.5E0)
-           LINE(IPY) = '*'
-           WRITE (IPRT, 1020) I, (LINE(J),J=1,IEND), I, Y(I)
-         ELSE
-           IF = I-IFCSTO(IFO)
-           FL = F(IF) - T975*FSD(IF)
-           FU = F(IF) + T975*FSD(IF)
-           IF (I.LE.N) THEN
-             IPFL = INT(((FL-YMN) / SCALE) + 1.5E0)
-             IPFU = INT(((FU-YMN) / SCALE) + 1.5E0)
-             DO 60 J = IPFL, IPFU
-               LINE(J) = '-'
-   60        CONTINUE
-             LINE(IPFL) = '('
-             LINE(IPFU) = ')'
-             IPY = INT(((Y(I)-YMN) / SCALE) + 1.5E0)
-             LINE(IPY) = '*'
-             IPF = INT(((F(IF)-YMN) / SCALE) + 1.5E0)
-             IF (IPF.NE.IPY) THEN
-               LINE(IPF) = 'X'
-             ELSE
-               LINE(IPF) = '2'
-             END IF
-             WRITE (IPRT, 1010) I, (LINE(J),J=1,IEND), I,
-     &         F(IF), FL, FU, Y(I)
-           ELSE
-             IPFL = INT(((FL-YMN) / SCALE) + 1.5E0)
-             IPFU = INT(((FU-YMN) / SCALE) + 1.5E0)
-             DO 70 J = IPFL, IPFU
-               LINE(J) = '-'
-   70        CONTINUE
-             LINE(IPFL) = '('
-             LINE(IPFU) = ')'
-             IPF = INT(((F(IF)-YMN) / SCALE) + 1.5E0)
-             LINE(IPF) = 'X'
-             WRITE (IPRT, 1010) I, (LINE(J),J=1,IEND), I,
-     &         F(IF), FL, FU
-           END IF
-         END IF
-   80 CONTINUE
+      do 80 i=max(ifcsto(ifo)-4,1), ifcsto(ifo)+nfcst
+         if (i.ne.ifcsto(ifo)) then
+           do 40 j = 1, iend
+             line(j) = ' '
+   40      continue
+         else
+           do 50 j = 1, iend
+             line(j) = '.'
+   50      continue
+         end if
+         if (i.le.ifcsto(ifo)) then
+           ipy = int(((y(i)-ymn) / scale) + 1.5e0)
+           line(ipy) = '*'
+           write (iprt, 1020) i, (line(j),j=1,iend), i, y(i)
+         else
+           if = i-ifcsto(ifo)
+           fl = f(if) - t975*fsd(if)
+           fu = f(if) + t975*fsd(if)
+           if (i.le.n) then
+             ipfl = int(((fl-ymn) / scale) + 1.5e0)
+             ipfu = int(((fu-ymn) / scale) + 1.5e0)
+             do 60 j = ipfl, ipfu
+               line(j) = '-'
+   60        continue
+             line(ipfl) = '('
+             line(ipfu) = ')'
+             ipy = int(((y(i)-ymn) / scale) + 1.5e0)
+             line(ipy) = '*'
+             ipf = int(((f(if)-ymn) / scale) + 1.5e0)
+             if (ipf.ne.ipy) then
+               line(ipf) = 'X'
+             else
+               line(ipf) = '2'
+             end if
+            write (iprt, 1010) i, (line(j),j=1,iend), i,&
+     &         f(if), fl, fu, y(i)
+           else
+             ipfl = int(((fl-ymn) / scale) + 1.5e0)
+             ipfu = int(((fu-ymn) / scale) + 1.5e0)
+             do 70 j = ipfl, ipfu
+               line(j) = '-'
+   70        continue
+             line(ipfl) = '('
+             line(ipfu) = ')'
+             ipf = int(((f(if)-ymn) / scale) + 1.5e0)
+             line(ipf) = 'X'
+            write (iprt, 1010) i, (line(j),j=1,iend), i,&
+     &         f(if), fl, fu
+           end if
+         end if
+   80 continue
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (//
-     &  82X, ' --------------------95  PERCENT'/
-     &  1X, 3(G15.8, 5X), 21X,
-     &  ' --------------CONFIDENCE LIMITS',
-     &  ' ---------ACTUAL'/
-     &  11X, 2(G15.8, 5X), G15.8,
-     &  ' ------FORECASTS ----------LOWER',
-     &  ' ----------UPPER -------IF KNOWN'/
-     &  9X, 5('I---------'), 'I', 6X,
-     &  ' ------------[X] ------------[(]',
+1000 format (//&
+    &  82x, ' --------------------95  PERCENT'/&
+    &  1x, 3(g15.8, 5x), 21x,&
+    &  ' --------------CONFIDENCE LIMITS',&
+    &  ' ---------ACTUAL'/&
+    &  11x, 2(g15.8, 5x), g15.8,&
+    &  ' ------FORECASTS ----------LOWER',&
+    &  ' ----------UPPER -------IF KNOWN'/&
+    &  9x, 5('I---------'), 'I', 6x,&
+    &  ' ------------[X] ------------[(]',&
      &  ' ------------[)] ------------[*]')
- 1010 FORMAT (2X, I5, 1X, 'I', 51A1, 'I', I5, 4(1X, G15.8))
- 1020 FORMAT (2X, I5, 1X, 'I', 51A1, 'I', I5, 49X, G15.8)
- 1030 FORMAT (//' FORECASTS FOR ORIGIN ', I2)
+ 1010 format (2x, i5, 1x, 'I', 51a1, 'I', i5, 4(1x, g15.8))
+ 1020 format (2x, i5, 1x, 'I', 51a1, 'I', i5, 49x, g15.8)
+ 1030 format (//' FORECASTS FOR ORIGIN ', i2)
 !
-      END
+      end

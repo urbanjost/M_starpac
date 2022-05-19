@@ -1,7 +1,7 @@
 !LLSMN
-      SUBROUTINE LLSMN(Y, X, WT, N, M, NPAR, IX, RES, PAR, NNZW,
-     &   RSD, PV, SDPV, SDRES, IPTOUT, WY, XW, VCV, FC, RED,
-     &   T, PAR1, ACC, IFIT, WEIGHT, C, LLHDR, PAGE, WIDE)
+     subroutine llsmn(y, x, wt, n, m, npar, ix, res, par, nnzw,&
+    &   rsd, pv, sdpv, sdres, iptout, wy, xw, vcv, fc, red,&
+     &   t, par1, acc, ifit, weight, c, llhdr, page, wide)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,40 +18,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RSD
-      INTEGER
-     &   IFIT,IX,M,N,NNZW,NPAR
-      LOGICAL
-     &   PAGE,WEIGHT,WIDE
+     real(kind=wp) ::&
+     &   rsd
+     integer&
+     &   ifit,ix,m,n,nnzw,npar
+     logical&
+     &   page,weight,wide
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACC(NPAR),C(NPAR),FC(N,NPAR),PAR(NPAR),PAR1(NPAR),PV(N),
-     &   RED(NPAR),RES(N),SDPV(N),SDRES(N),T(NPAR,NPAR),
-     &   VCV(NPAR,NPAR),WT(N),WY(N),X(IX,M),XW(N,NPAR),Y(N)
-      INTEGER
-     &   IPTOUT(4)
+     real(kind=wp) ::&
+    &   acc(npar),c(npar),fc(n,npar),par(npar),par1(npar),pv(n),&
+    &   red(npar),res(n),sdpv(n),sdres(n),t(npar,npar),&
+     &   vcv(npar,npar),wt(n),wy(n),x(ix,m),xw(n,npar),y(n)
+     integer&
+     &   iptout(4)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL LLHDR
+       external llhdr
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   COND,DF,FPLM,FPLRS,FPSPM,PROBT,PROBT1,PX,R2,RATIO,RATIO1,
-     &   RSD1,RSS,RSS1,RVAR,RVAR1,SDC,SDC1,SM,TD,WTSQRT,WTSUM,WTYM,YSUM
-      INTEGER
-     &   I,IDF,IDF1,IER,IPRT,IREFIT,ISUBHD,J,K,NC
-      LOGICAL
-     &   CONST
+     real(kind=wp) ::&
+    &   cond,df,fplm,fplrs,fpspm,probt,probt1,px,r2,ratio,ratio1,&
+     &   rsd1,rss,rss1,rvar,rvar1,sdc,sdc1,sm,td,wtsqrt,wtsum,wtym,ysum
+     integer&
+     &   i,idf,idf1,ier,iprt,irefit,isubhd,j,k,nc
+     logical&
+     &   const
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   DET(2)
+     real(kind=wp) ::&
+     &   det(2)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -63,10 +63,10 @@
 !      EXTERNAL DTRCO,DTRDI
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,MAX,SQRT
+      intrinsic abs,max,sqrt
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -220,77 +220,77 @@
 !     REAL(KIND=WP) :: YSUM
 !        THE SUM OF THE WEIGHTED DEPENDENT VARIABLES SQUARED.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     INITIALIZE VARIABLES
 !
-      FPLM = D1MACH(2)
-      FPLRS = D1MACH(4)
-      FPSPM = D1MACH(1)
-      NC = NPAR
-      IDF = NNZW - NC
-      DF = IDF
+      fplm = d1mach(2)
+      fplrs = d1mach(4)
+      fpspm = d1mach(1)
+      nc = npar
+      idf = nnzw - nc
+      df = idf
 !
-      R2 = 0.0
-      RVAR1 = 0.0
-      RSD1 = 0.0
-      J = 0
-      IDF1 = 0
-      CONST = .FALSE.
+      r2 = 0.0
+      rvar1 = 0.0
+      rsd1 = 0.0
+      j = 0
+      idf1 = 0
+      const = .false.
 !
-      YSUM = 0.0_WP
-      WTSUM = 0.0_WP
-      DO 10 I=1,N
-         IF (WT(I).LE.0.0_WP) GO TO 10
-         YSUM = YSUM + WT(I)*Y(I)*Y(I)
-         WTSUM = WTSUM + WT(I)
-   10 CONTINUE
+      ysum = 0.0_wp
+      wtsum = 0.0_wp
+      do 10 i=1,n
+         if (wt(i).le.0.0_wp) go to 10
+         ysum = ysum + wt(i)*y(i)*y(i)
+         wtsum = wtsum + wt(i)
+   10 continue
 !
 !     BEGIN FIT
 !
-      IREFIT = -1
+      irefit = -1
 !
 !     IF IREFIT IS EQUAL TO 1 FIT IS OMITTING THE LAST VARIABLE
 !
-   50 IREFIT = IREFIT + 1
+   50 irefit = irefit + 1
 !
 !     COMPUTE WORKING VECTORS
 !
-      WTYM = 0.0_WP
-      I = 0
-      DO 70 K=1,N
-         IF (WT(K).LE.0.0_WP) GO TO 70
-         WTSQRT = SQRT(WT(K))
-         I = I + 1
-         PX = WTSQRT
-         DO 60 J=1,NC
-            IF (IFIT.EQ.1 .AND. J.GE.2) PX = PX*X(K,1)
-            IF (IFIT.EQ.3) PX = X(K,J)*WTSQRT
-            XW(I,J) = PX
-   60    CONTINUE
+      wtym = 0.0_wp
+      i = 0
+      do 70 k=1,n
+         if (wt(k).le.0.0_wp) go to 70
+         wtsqrt = sqrt(wt(k))
+         i = i + 1
+         px = wtsqrt
+         do 60 j=1,nc
+            if (ifit.eq.1 .and. j.ge.2) px = px*x(k,1)
+            if (ifit.eq.3) px = x(k,j)*wtsqrt
+            xw(i,j) = px
+   60    continue
 !
 !     COMPUTE WY ( WEIGHTS * Y VECTOR )
 !
-         WY(I) = Y(K)*WTSQRT
-         WTYM = WTYM + WT(K)*Y(K)
-   70 CONTINUE
-      WTYM = WTYM/WTSUM
+         wy(i) = y(k)*wtsqrt
+         wtym = wtym + wt(k)*y(k)
+   70 continue
+      wtym = wtym/wtsum
 !
 !     COMPUTE ESTIMATED VALUES OF PARAMETERS
 !
-      IF (IREFIT.EQ.1) GO TO 80
-      IER = 0
-      CALL MGS(XW, WY, NNZW, NC, PAR, C, T(1,1), T, NPAR, N, IER)
-      IF (IER.EQ.0) GO TO 90
-      IERR = 3
-      ISUBHD = 0
-      CALL LLHDR(PAGE, WIDE, ISUBHD)
-      WRITE (IPRT,1160)
-      WRITE (IPRT,1150)
-      RETURN
-   80 CONTINUE
-      IER = 0
-      CALL MGS(XW, WY, NNZW, NC, PAR1, C, T(1,1), T, NPAR, N, IER)
+      if (irefit.eq.1) go to 80
+      ier = 0
+      call mgs(xw, wy, nnzw, nc, par, c, t(1,1), t, npar, n, ier)
+      if (ier.eq.0) go to 90
+      ierr = 3
+      isubhd = 0
+      call llhdr(page, wide, isubhd)
+      write (iprt,1160)
+      write (iprt,1150)
+      return
+   80 continue
+      ier = 0
+      call mgs(xw, wy, nnzw, nc, par1, c, t(1,1), t, npar, n, ier)
 !
 !     COMPUTE PREDICTED VALUES (PV) AND RESIDUALS (RES)
 !             RESIDUAL SUM OF SQUARES (RSS) AND
@@ -298,352 +298,352 @@
 !             SUM OF WEIGHTS (WTSUM) AND
 !             RESIDUAL VARAINCE (RVAR)
 !
-   90 RSS = 0.0_WP
-      RSS1 = 0.0_WP
-      DO 120 I=1,N
-         SM = 0.0_WP
-         PX = 1.0_WP
-         DO 100 J=1,NC
-            IF (IFIT.EQ.1 .AND. J.GE.2) PX = PX*X(I,1)
-            IF (IFIT.EQ.3) PX = X(I,J)
-            IF (IREFIT.EQ.0) SM = SM + PAR(J)*PX
-            IF (IREFIT.EQ.1) SM = SM + PAR1(J)*PX
-  100    CONTINUE
-         IF (IREFIT.EQ.0) THEN
-            PV(I) = SM
-            RES(I) = Y(I) - PV(I)
-            RSS = RSS + RES(I)*WT(I)*RES(I)
-         ELSE
-            RSS1 = RSS1 + (Y(I)-SM)*WT(I)*(Y(I)-SM)
-         END IF
-  120 CONTINUE
+   90 rss = 0.0_wp
+      rss1 = 0.0_wp
+      do 120 i=1,n
+         sm = 0.0_wp
+         px = 1.0_wp
+         do 100 j=1,nc
+            if (ifit.eq.1 .and. j.ge.2) px = px*x(i,1)
+            if (ifit.eq.3) px = x(i,j)
+            if (irefit.eq.0) sm = sm + par(j)*px
+            if (irefit.eq.1) sm = sm + par1(j)*px
+  100    continue
+         if (irefit.eq.0) then
+            pv(i) = sm
+            res(i) = y(i) - pv(i)
+            rss = rss + res(i)*wt(i)*res(i)
+         else
+            rss1 = rss1 + (y(i)-sm)*wt(i)*(y(i)-sm)
+         end if
+  120 continue
 !
-      IF (IREFIT.EQ.0) GO TO 130
-      RVAR1 = RSS1/(DF+1.0_WP)
-      RSD1 = SQRT(RVAR1)
-      GO TO 380
-  130 RVAR = 0.0_WP
-      IF (DF.GT.0.0_WP) RVAR = RSS/DF
-      RSD = SQRT(RVAR)
+      if (irefit.eq.0) go to 130
+      rvar1 = rss1/(df+1.0_wp)
+      rsd1 = sqrt(rvar1)
+      go to 380
+  130 rvar = 0.0_wp
+      if (df.gt.0.0_wp) rvar = rss/df
+      rsd = sqrt(rvar)
 !
 !     COMPUTE MULTIPLE CORRELATION PARAMETER SQUARED (R2)
 !
-      SM = 0.0_WP
-      CONST = .TRUE.
-      DO 140 I=1,N
-         IF ((X(I,1).NE.1.0_WP) .AND. (IFIT.EQ.3)) CONST = .FALSE.
-         SM = SM + (Y(I)-WTYM)*WT(I)*(Y(I)-WTYM)
-  140 CONTINUE
-      R2 = 1.0_WP
-      IF (SM.GT.0.0_WP) R2 = 1.0_WP-RSS/SM
+      sm = 0.0_wp
+      const = .true.
+      do 140 i=1,n
+         if ((x(i,1).ne.1.0_wp) .and. (ifit.eq.3)) const = .false.
+         sm = sm + (y(i)-wtym)*wt(i)*(y(i)-wtym)
+  140 continue
+      r2 = 1.0_wp
+      if (sm.gt.0.0_wp) r2 = 1.0_wp-rss/sm
 !
 !     CHECK FOR -EXACT- FIT
 !
-      TD = 0.0_WP
-      IF (DF.GT.0.0_WP) TD = SQRT(RSS)
-      IF (YSUM.GT.0.0_WP) TD = TD/SQRT(YSUM)
-      IF (TD.GT.10.0_WP*FPLRS) GO TO 180
+      td = 0.0_wp
+      if (df.gt.0.0_wp) td = sqrt(rss)
+      if (ysum.gt.0.0_wp) td = td/sqrt(ysum)
+      if (td.gt.10.0_wp*fplrs) go to 180
 !
-      IERR = 0
-      IF ((IPTOUT(1).EQ.0) .AND. (IPTOUT(2).EQ.0) .AND. (IPTOUT(3).EQ.0)
-     &   .AND. (IPTOUT(4).EQ.0)) GO TO 145
-      ISUBHD = 0
-      CALL LLHDR(PAGE, WIDE, ISUBHD)
-      WRITE (IPRT,1180)
-      WRITE (IPRT,1020) (I,PAR(I),I=1,NPAR)
+      ierr = 0
+     if ((iptout(1).eq.0) .and. (iptout(2).eq.0) .and. (iptout(3).eq.0)&
+     &   .and. (iptout(4).eq.0)) go to 145
+      isubhd = 0
+      call llhdr(page, wide, isubhd)
+      write (iprt,1180)
+      write (iprt,1020) (i,par(i),i=1,npar)
 !
 !     ZERO OUT VCV MATRIX AND SDRES AND SDPV VECTORS
 !
-  145 CONTINUE
-      DO 150 I=1,N
-         SDPV(I) = 0.0_WP
-         SDRES(I) = 0.0_WP
-  150 CONTINUE
-      DO 170 I=1,NPAR
-         DO 160 J=1,NPAR
-            VCV(I,J) = 0.0_WP
-  160    CONTINUE
-  170 CONTINUE
-      RETURN
+  145 continue
+      do 150 i=1,n
+         sdpv(i) = 0.0_wp
+         sdres(i) = 0.0_wp
+  150 continue
+      do 170 i=1,npar
+         do 160 j=1,npar
+            vcv(i,j) = 0.0_wp
+  160    continue
+  170 continue
+      return
 !
-  180 CONTINUE
+  180 continue
 !
 !     COMPUTE ORTHO NORMALIZATION
 !
-      DO 200 I=1,NC
-         T(I,I) = SQRT(T(I,1))
-         DO 190 J=I,NC
-            IF (I.EQ.J) GO TO 190
-            T(I,J) = T(I,J)*T(I,I)
-  190    CONTINUE
-  200 CONTINUE
+      do 200 i=1,nc
+         t(i,i) = sqrt(t(i,1))
+         do 190 j=i,nc
+            if (i.eq.j) go to 190
+            t(i,j) = t(i,j)*t(i,i)
+  190    continue
+  200 continue
 !
-      CALL DTRCO(T, NPAR, NC, COND, C, 1)
-      IF (COND.NE.0.0_WP) THEN
-         COND = 1.0_WP/COND
-      ELSE
-         COND = FPLM
-      END IF
-      CALL DTRDI(T, NPAR, NC, DET, 011, IER)
+      call dtrco(t, npar, nc, cond, c, 1)
+      if (cond.ne.0.0_wp) then
+         cond = 1.0_wp/cond
+      else
+         cond = fplm
+      end if
+      call dtrdi(t, npar, nc, det, 011, ier)
 !
-      IF (IER.EQ.0) GO TO 210
-      IERR = 3
-      ISUBHD = 0
-      CALL LLHDR(PAGE, WIDE, ISUBHD)
-      WRITE (IPRT,1160)
-      WRITE (IPRT,1120)
-      RETURN
-  210 CONTINUE
-      DO 240 I=1,N
-         DO 230 J=1,NC
-            SM = 0.0_WP
-            PX = 1.0_WP
-            DO 220 K=1,J
-               IF (IFIT.EQ.1 .AND. K.GE.2) PX = PX*X(I,1)
-               IF (IFIT.EQ.3) PX = X(I,K)
-               SM = SM + PX*T(K,J)
-  220       CONTINUE
-            FC(I,J) = SM
-  230    CONTINUE
-  240 CONTINUE
+      if (ier.eq.0) go to 210
+      ierr = 3
+      isubhd = 0
+      call llhdr(page, wide, isubhd)
+      write (iprt,1160)
+      write (iprt,1120)
+      return
+  210 continue
+      do 240 i=1,n
+         do 230 j=1,nc
+            sm = 0.0_wp
+            px = 1.0_wp
+            do 220 k=1,j
+               if (ifit.eq.1 .and. k.ge.2) px = px*x(i,1)
+               if (ifit.eq.3) px = x(i,k)
+               sm = sm + px*t(k,j)
+  220       continue
+            fc(i,j) = sm
+  230    continue
+  240 continue
 !
 !     COMPUTE REDUCTION TO RSS DUE TO FITTING
 !
-      DO 260 J=1,NC
-         SM = 0.0_WP
-         DO 250 I=1,N
-            SM = SM + (FC(I,J))*WT(I)*Y(I)
-  250    CONTINUE
-         RED(J) = (SM*SM)
-  260 CONTINUE
+      do 260 j=1,nc
+         sm = 0.0_wp
+         do 250 i=1,n
+            sm = sm + (fc(i,j))*wt(i)*y(i)
+  250    continue
+         red(j) = (sm*sm)
+  260 continue
 !
 !     COMPUTE ESTIMATED VARIANCE COVARIANCE MATRIX
 !
-      DO 290 I=1,NC
-         DO 280 J=I,NC
-            SM = 0.0_WP
-            DO 270 K=J,NC
-               SM = SM + T(I,K)*T(J,K)
-  270       CONTINUE
-            IF (SQRT(ABS(SM))*SQRT(RVAR).GE.SQRT(FPSPM)) THEN
-               VCV(I,J) = SM*RVAR
-            ELSE
-               VCV(I,J) = 0.0_WP
-            END IF
-            VCV(J,I) = VCV(I,J)
-  280    CONTINUE
-  290 CONTINUE
+      do 290 i=1,nc
+         do 280 j=i,nc
+            sm = 0.0_wp
+            do 270 k=j,nc
+               sm = sm + t(i,k)*t(j,k)
+  270       continue
+            if (sqrt(abs(sm))*sqrt(rvar).ge.sqrt(fpspm)) then
+               vcv(i,j) = sm*rvar
+            else
+               vcv(i,j) = 0.0_wp
+            end if
+            vcv(j,i) = vcv(i,j)
+  280    continue
+  290 continue
 !
 !     REFIT TO PREDICTED VALUES
 !
-      I = 0
-      DO 310 K=1,N
-         IF (WT(K).LE.0.0_WP) GO TO 310
-         WTSQRT = SQRT(WT(K))
-         I = I + 1
-         PX = WTSQRT
-         DO 300 J=1,NC
-            IF (IFIT.EQ.1 .AND. J.GE.2) PX = PX*X(K,1)
-            IF (IFIT.EQ.3) PX = X(K,J)*WTSQRT
-            XW(I,J) = PX
-  300    CONTINUE
-         WY(I) = PV(K)*WTSQRT
-  310 CONTINUE
+      i = 0
+      do 310 k=1,n
+         if (wt(k).le.0.0_wp) go to 310
+         wtsqrt = sqrt(wt(k))
+         i = i + 1
+         px = wtsqrt
+         do 300 j=1,nc
+            if (ifit.eq.1 .and. j.ge.2) px = px*x(k,1)
+            if (ifit.eq.3) px = x(k,j)*wtsqrt
+            xw(i,j) = px
+  300    continue
+         wy(i) = pv(k)*wtsqrt
+  310 continue
 !
-      IER = 0
-      CALL MGS(XW, WY, NNZW, NC, PAR1, C, T(1,1), T, NPAR, N, IER)
+      ier = 0
+      call mgs(xw, wy, nnzw, nc, par1, c, t(1,1), t, npar, n, ier)
 !
-      CALL ACCDIG(PAR, PAR1, ACC, NC)
+      call accdig(par, par1, acc, nc)
 !
 !     COMPUTE STANDARD DEVIATION OF PREDICTED VALUES (SDPV)
 !     AND STANDARDIZED RESIDUALS (SDRES)
 !
-      DO 360 I=1,N
-         SM = 0.0_WP
-         DO 330 J=1,NC
-            SM = 0.0_WP
-            PX = 1.0_WP
-            DO 320 K=1,NC
-               IF (IFIT.EQ.1 .AND. K.GE.2) PX = PX*X(I,1)
-               IF (IFIT.EQ.3) PX = X(I,K)
-               SM = SM + PX*VCV(J,K)
-  320       CONTINUE
-            XW(I,J) = SM
-  330    CONTINUE
-         SM = 0.0_WP
-         PX = 1.0_WP
-         DO 340 K=1,NC
-            IF (IFIT.EQ.1 .AND. K.GE.2) PX = PX*X(I,1)
-            IF (IFIT.EQ.3) PX = X(I,K)
-            SM = SM + XW(I,K)*PX
-  340    CONTINUE
-         SM = MAX(0.0_WP, SM)
-         SDPV(I) = SQRT(SM)
-         SDRES(I) = FPLM
-         IF (WT(I).LE.0.0_WP) GO TO 360
-         IF ((RVAR/WT(I)-SM).LE.0.0_WP) IERR = 4
-         IF (RVAR/WT(I)-SM.GT.0.0_WP)
-     &      SDRES(I) = (RES(I)/SQRT(RVAR/WT(I)-SM))
-  360 CONTINUE
+      do 360 i=1,n
+         sm = 0.0_wp
+         do 330 j=1,nc
+            sm = 0.0_wp
+            px = 1.0_wp
+            do 320 k=1,nc
+               if (ifit.eq.1 .and. k.ge.2) px = px*x(i,1)
+               if (ifit.eq.3) px = x(i,k)
+               sm = sm + px*vcv(j,k)
+  320       continue
+            xw(i,j) = sm
+  330    continue
+         sm = 0.0_wp
+         px = 1.0_wp
+         do 340 k=1,nc
+            if (ifit.eq.1 .and. k.ge.2) px = px*x(i,1)
+            if (ifit.eq.3) px = x(i,k)
+            sm = sm + xw(i,k)*px
+  340    continue
+         sm = max(0.0_wp, sm)
+         sdpv(i) = sqrt(sm)
+         sdres(i) = fplm
+         if (wt(i).le.0.0_wp) go to 360
+         if ((rvar/wt(i)-sm).le.0.0_wp) ierr = 4
+        if (rvar/wt(i)-sm.gt.0.0_wp)&
+     &      sdres(i) = (res(i)/sqrt(rvar/wt(i)-sm))
+  360 continue
 !
 !     CHECK FOR PRINTED OUTPUT
 !
-      IF ((IPTOUT(1).EQ.0) .AND. (IPTOUT(2).EQ.0) .AND.
-     &   (IPTOUT(3).EQ.0) .AND. (IPTOUT(4).EQ.0)) RETURN
+     if ((iptout(1).eq.0) .and. (iptout(2).eq.0) .and.&
+     &   (iptout(3).eq.0) .and. (iptout(4).eq.0)) return
 !
 !     BEGIN PRINTED OUTPUT
 !
-      IF (IPTOUT(1).EQ.0) GO TO 370
+      if (iptout(1).eq.0) go to 370
 !
 !     PRINT FIRST PAGE OF OUTPUT
 !
-      ISUBHD = 0
-      CALL LLHDR(PAGE, WIDE, ISUBHD)
-      CALL FITPT1(N, M, X, Y, PV, SDPV, RES, SDRES, WT, IX, NNZW,
-     &   WEIGHT, IPTOUT(1))
+      isubhd = 0
+      call llhdr(page, wide, isubhd)
+     call fitpt1(n, m, x, y, pv, sdpv, res, sdres, wt, ix, nnzw,&
+     &   weight, iptout(1))
 !
 !     PRINT PLOTS
 !
-  370 CONTINUE
-      IF (IPTOUT(2).EQ.0) GO TO 375
-      ISUBHD = 0
-      CALL LLHDR(PAGE, WIDE, ISUBHD)
-      CALL FITPT2 (SDRES, PV, WT, N, NNZW, WEIGHT, RES, RSS)
+  370 continue
+      if (iptout(2).eq.0) go to 375
+      isubhd = 0
+      call llhdr(page, wide, isubhd)
+      call fitpt2 (sdres, pv, wt, n, nnzw, weight, res, rss)
 !
-  375 CONTINUE
-      IF (IPTOUT(3).EQ.0) GO TO 376
+  375 continue
+      if (iptout(3).eq.0) go to 376
 !
 !     PRINT ANALYSIS OF VARIANCE
 !
-      ISUBHD = 0
-      CALL LLHDR(PAGE, WIDE, ISUBHD)
-      CALL OANOVA(YSUM, RED, NPAR, RVAR, NNZW, PAR1, IPRT)
+      isubhd = 0
+      call llhdr(page, wide, isubhd)
+      call oanova(ysum, red, npar, rvar, nnzw, par1, iprt)
 !
-  376 CONTINUE
-      IF (IPTOUT(4).EQ.0) RETURN
+  376 continue
+      if (iptout(4).eq.0) return
 !
-      IF (NPAR.EQ.1) GO TO 450
-      NC = NC - 1
-      IDF1 = NNZW - NC
-      GO TO 50
-  380 CONTINUE
-      DO 400 I=1,NC
-         T(I,I) = SQRT(T(I,1))
-         DO 390 J=I,NC
-            IF (I.EQ.J) GO TO 390
-            T(I,J) = T(I,J)*T(I,I)
-  390    CONTINUE
-  400 CONTINUE
+      if (npar.eq.1) go to 450
+      nc = nc - 1
+      idf1 = nnzw - nc
+      go to 50
+  380 continue
+      do 400 i=1,nc
+         t(i,i) = sqrt(t(i,1))
+         do 390 j=i,nc
+            if (i.eq.j) go to 390
+            t(i,j) = t(i,j)*t(i,i)
+  390    continue
+  400 continue
 !
-      CALL DTRDI(T, NPAR, NC, DET, 011, IER)
+      call dtrdi(t, npar, nc, det, 011, ier)
 !
-      IF (IER.EQ.0) GO TO 420
-      WRITE (IPRT,1140)
-      DO 410 I=1,NC
-         PAR1(I) = 0.0_WP
-         T(I,I) = 0.0_WP
-  410 CONTINUE
-      GO TO 450
-  420 CONTINUE
-      DO 440 I=1,NC
-         SM = 0.0_WP
-         DO 430 K=I,NC
-            SM = SM + T(I,K)*T(I,K)
-  430    CONTINUE
-         T(I,I) = SM
-  440 CONTINUE
+      if (ier.eq.0) go to 420
+      write (iprt,1140)
+      do 410 i=1,nc
+         par1(i) = 0.0_wp
+         t(i,i) = 0.0_wp
+  410 continue
+      go to 450
+  420 continue
+      do 440 i=1,nc
+         sm = 0.0_wp
+         do 430 k=i,nc
+            sm = sm + t(i,k)*t(i,k)
+  430    continue
+         t(i,i) = sm
+  440 continue
 !
 !     PRINT PAGE HEADINGS
 !
-  450 CONTINUE
-      ISUBHD = 0
-      CALL LLHDR(PAGE, WIDE, ISUBHD)
+  450 continue
+      isubhd = 0
+      call llhdr(page, wide, isubhd)
 !
 !     PRINT VARIANCE COVARIANCE MATRIX
 !
-      CALL VCVOUT(NPAR, VCV, NPAR, .TRUE.)
+      call vcvout(npar, vcv, npar, .true.)
 !
-      WRITE (IPRT,1030)
-      IF (NPAR.GT.1) WRITE (IPRT,1040)
-      WRITE (IPRT,1050)
-      IF (NPAR.GT.1) WRITE (IPRT,1060)
-      WRITE (IPRT, 1170)
-      IF (NPAR.GE.2) THEN
-         DO 460 I=1,NC
-            SDC = SQRT(VCV(I,I))
-            RATIO = FPLM
-            PROBT = 0.0_WP
-            IF (SDC.GT.0.0_WP) RATIO = PAR(I)/SDC
-            IF (SDC.GT.0.0_WP)
-     &         PROBT = (1.0_WP-CDFT(ABS(RATIO), NNZW-NPAR)) * 2.0_WP
-            SDC1 = SQRT(T(I,I))*SQRT(RVAR1)
-            RATIO1 = FPLM
-            PROBT1 = 0.0_WP
-            IF (SDC1.GT.0.0_WP) RATIO1 = PAR1(I)/SDC1
-            IF (SDC1.GT.0.0_WP)
-     &      PROBT1 = (1.0_WP - CDFT(ABS(RATIO1), NNZW-NPAR+1)) * 2.0_WP
-            WRITE (IPRT,1070) I, PAR(I), SDC, RATIO, PROBT, ACC(I),
-     &         PAR1(I), SDC1, RATIO1, PROBT1
-  460    CONTINUE
-      END IF
-      SDC = SQRT(VCV(NPAR,NPAR))
-      RATIO = FPLM
-      PROBT = 0.0_WP
-      IF (SDC.GT.0.0_WP) RATIO = PAR(NPAR)/SDC
-      IF (SDC.GT.0.0_WP)
-     &   PROBT = (1.0_WP - CDFT(ABS(RATIO), NNZW-NPAR)) * 2.0_WP
-      WRITE (IPRT,1070) NPAR, PAR(NPAR), SDC, RATIO, PROBT, ACC(NPAR)
-      IF (NPAR.EQ.1) WRITE (IPRT,1080) RSD
-      IF (NPAR.GT.1) WRITE (IPRT,1080) RSD, RSD1
-      WRITE (IPRT,1090) NNZW, NPAR, IDF
-      IF (NPAR.GT.1) WRITE (IPRT,1100) NNZW, NC, IDF1
-      IF (CONST) WRITE (IPRT,1010) R2
-      WRITE (IPRT,1000) COND
-      WRITE (IPRT,1110)
-      RETURN
+      write (iprt,1030)
+      if (npar.gt.1) write (iprt,1040)
+      write (iprt,1050)
+      if (npar.gt.1) write (iprt,1060)
+      write (iprt, 1170)
+      if (npar.ge.2) then
+         do 460 i=1,nc
+            sdc = sqrt(vcv(i,i))
+            ratio = fplm
+            probt = 0.0_wp
+            if (sdc.gt.0.0_wp) ratio = par(i)/sdc
+           if (sdc.gt.0.0_wp)&
+     &         probt = (1.0_wp-cdft(abs(ratio), nnzw-npar)) * 2.0_wp
+            sdc1 = sqrt(t(i,i))*sqrt(rvar1)
+            ratio1 = fplm
+            probt1 = 0.0_wp
+            if (sdc1.gt.0.0_wp) ratio1 = par1(i)/sdc1
+           if (sdc1.gt.0.0_wp)&
+     &      probt1 = (1.0_wp - cdft(abs(ratio1), nnzw-npar+1)) * 2.0_wp
+           write (iprt,1070) i, par(i), sdc, ratio, probt, acc(i),&
+     &         par1(i), sdc1, ratio1, probt1
+  460    continue
+      end if
+      sdc = sqrt(vcv(npar,npar))
+      ratio = fplm
+      probt = 0.0_wp
+      if (sdc.gt.0.0_wp) ratio = par(npar)/sdc
+     if (sdc.gt.0.0_wp)&
+     &   probt = (1.0_wp - cdft(abs(ratio), nnzw-npar)) * 2.0_wp
+      write (iprt,1070) npar, par(npar), sdc, ratio, probt, acc(npar)
+      if (npar.eq.1) write (iprt,1080) rsd
+      if (npar.gt.1) write (iprt,1080) rsd, rsd1
+      write (iprt,1090) nnzw, npar, idf
+      if (npar.gt.1) write (iprt,1100) nnzw, nc, idf1
+      if (const) write (iprt,1010) r2
+      write (iprt,1000) cond
+      write (iprt,1110)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/29H APPROXIMATE CONDITION NUMBER, 10X, G15.7)
- 1010 FORMAT (/44H MULTIPLE CORRELATION COEFFICIENT SQUARED   , F7.4)
- 1020 FORMAT (//46H THE VALUES COMPUTED FOR THE PARAMETERS ARE - /(5X,
-     &   4HPAR(, I3, 4H) = , G15.7))
- 1030 FORMAT (////1X, 25('-'), 1X, 18HESTIMATES FROM FIT, 1X, 24('-'))
- 1040 FORMAT ('+', 72X, 4('-'), 1X,
-     &   48HESTIMATES FROM FIT OMITTING LAST PREDICTOR VALUE, 1X,
+ 1000 format (/29h approximate condition number, 10x, g15.7)
+ 1010 format (/44h multiple correlation coefficient squared   , f7.4)
+1020 format (//46h the values computed for the parameters are - /(5x,&
+     &   4hpar(, i3, 4h) = , g15.7))
+ 1030 format (////1x, 25('-'), 1x, 18hestimates from fit, 1x, 24('-'))
+1040 format ('+', 72x, 4('-'), 1x,&
+    &   48hestimates from fit omitting last predictor value, 1x,&
      &   4('-'))
- 1050 FORMAT (/2X, 19HESTIMATED PARAMETER, 7X, 9HSD OF PAR, 5X,
-     &   8HT(PAR=0), 3X, 7HPROB(T), 2X, 8HACC DIG*)
- 1060 FORMAT ('+', 72X, 19HESTIMATED PARAMETER, 7X, 9HSD OF PAR, 5X,
-     &   8HT(PAR=0), 3X, 7HPROB(T))
- 1070 FORMAT (1X, I3, 2X, G16.9, 3X, G16.9, 2X, G10.4, 1X, F5.3, 2X,
-     &   F7.1, 9X, G16.9, 3X, G16.9, 2X, G10.4, 1X, F5.3)
- 1080 FORMAT (//1X, 30HRESIDUAL STANDARD DEVIATION   , 9X, G15.7, 56X,
-     &   G15.7)
- 1090 FORMAT (1X, 27HBASED ON DEGREES OF FREEDOM, 7X, I4, 3H - , I2,
-     &   3H = , I4)
- 1100 FORMAT ('+', 105X, I4, 3H - , I2, 3H = , I4)
- 1110 FORMAT (//52H * THE NUMBER OF CORRECTLY COMPUTED DIGITS IN EACH P,
-     &   56HARAMETER USUALLY DIFFERS BY LESS THAN 1 FROM THE VALUE G,
-     &   10HIVEN HERE.)
- 1120 FORMAT (/47H THE PROGRAM WAS UNABLE TO COMPUTE THE VARIANCE,
-     &   19H-COVARIANCE MATRIX./
-     &   52H THE DESIGN MATRIX IS EITHER NEARLY SINGULAR OR VERY,
-     &   17H ILL CONDITIONED./
-     &   29H CHECK YOUR INPUT FOR ERRORS.)
- 1140 FORMAT (54H0ESTIMATES FOR THE STANDARD DEVIATION OF THE ESTIMATED,
-     &   55HPARAMETERS OMITTING THE LAST INDEPENDENT VARIABLE COULD/
-     &   59H NOT BE COMPUTED.  THE ZEROS PRINTED FOR THE ESTIMATES OF T,
-     &   50HHE PARAMETERS, THEIR STANDARD DEVIATIONS AND THEIR/
-     &   59H RATIOS FOR THE FIT OMITTING THE LAST VARIABLE ARE MEANINGL,
-     &   4HESS.)
- 1150 FORMAT (/30H THE DESIGN MATRIX IS SINGULAR,
-     &   29H TO WITHIN MACHINE PRECISION./
-     &   50H CHECK THE DESIGN MATRIX FOR A LINEAR RELATIONSHIP,
-     &   29H BETWEEN SOME OF THE COLUMNS.)
- 1160 FORMAT (//1X, 11('*')/ 1X, 11H*  ERROR  */ 1X, 11('*'))
- 1170 FORMAT (' ')
- 1180 FORMAT (/50H THE LEAST SQUARES FIT OF THE DATA TO THE MODEL IS,
-     &   35H EXACT TO WITHIN MACHINE PRECISION./
-     &   38H STATISTICAL ANALYSIS IS NOT POSSIBLE.)
-      END
+1050 format (/2x, 19hestimated parameter, 7x, 9hsd of par, 5x,&
+     &   8ht(par=0), 3x, 7hprob(t), 2x, 8hacc dig*)
+1060 format ('+', 72x, 19hestimated parameter, 7x, 9hsd of par, 5x,&
+     &   8ht(par=0), 3x, 7hprob(t))
+1070 format (1x, i3, 2x, g16.9, 3x, g16.9, 2x, g10.4, 1x, f5.3, 2x,&
+     &   f7.1, 9x, g16.9, 3x, g16.9, 2x, g10.4, 1x, f5.3)
+1080 format (//1x, 30hresidual standard deviation   , 9x, g15.7, 56x,&
+     &   g15.7)
+1090 format (1x, 27hbased on degrees of freedom, 7x, i4, 3h - , i2,&
+     &   3h = , i4)
+ 1100 format ('+', 105x, i4, 3h - , i2, 3h = , i4)
+1110 format (//52h * the number of correctly computed digits in each p,&
+    &   56harameter usually differs by less than 1 from the value g,&
+     &   10hiven here.)
+1120 format (/47h the program was unable to compute the variance,&
+    &   19h-covariance matrix./&
+    &   52h the design matrix is either nearly singular or very,&
+    &   17h ill conditioned./&
+     &   29h check your input for errors.)
+1140 format (54h0estimates for the standard deviation of the estimated,&
+    &   55hparameters omitting the last independent variable could/&
+    &   59h not be computed.  the zeros printed for the estimates of t,&
+    &   50hhe parameters, their standard deviations and their/&
+    &   59h ratios for the fit omitting the last variable are meaningl,&
+     &   4hess.)
+1150 format (/30h the design matrix is singular,&
+    &   29h to within machine precision./&
+    &   50h check the design matrix for a linear relationship,&
+     &   29h between some of the columns.)
+ 1160 format (//1x, 11('*')/ 1x, 11h*  error  */ 1x, 11('*'))
+ 1170 format (' ')
+1180 format (/50h the least squares fit of the data to the model is,&
+    &   35h exact to within machine precision./&
+     &   38h statistical analysis is not possible.)
+      end

@@ -1,6 +1,6 @@
 !ETAMDL
-      SUBROUTINE ETAMDL(MDL, PAR, NPAR, XM, N, M, IXM, ETA, NETA,
-     &   PARTMP, PV, NROWIN)
+     subroutine etamdl(mdl, par, npar, xm, n, m, ixm, eta, neta,&
+     &   partmp, pv, nrowin)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,38 +17,38 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ETA
-      INTEGER
-     &   IXM,M,N,NETA,NPAR,NROWIN
+     real(kind=wp) ::&
+     &   eta
+     integer&
+     &   ixm,m,n,neta,npar,nrowin
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),PARTMP(NPAR),PV(N),XM(IXM,M)
+     real(kind=wp) ::&
+     &   par(npar),partmp(npar),pv(n),xm(ixm,m)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL MDL
+       external mdl
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   A,B,FAC,FPLRS,J,RSSSM,RSSSMJ,SQRTMP
-      INTEGER
-     &   I,K,NROW
+     real(kind=wp) ::&
+     &   a,b,fac,fplrs,j,rsssm,rsssmj,sqrtmp
+     integer&
+     &   i,k,nrow
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSS(5)
+     real(kind=wp) ::&
+     &   rss(5)
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   D1MACH
+     real(kind=wp) ::&
+     &   d1mach
 !       EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL SETROW
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG10,MAX,SQRT
+      intrinsic abs,log10,max,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -102,37 +102,37 @@
 !     REAL(KIND=WP) :: XM(IXM,M)
 !        INDEPENDENT VARIABLES
 !
-      FPLRS = D1MACH(4)
+      fplrs = d1mach(4)
 !
 !     SELECT FIRST ROW OF INDEPENDENT VARIABLES WHICH CONTAINS NO ZEROS
 !
-      CALL SETROW(NROWIN, XM, N, M, IXM, NROW)
+      call setrow(nrowin, xm, n, m, ixm, nrow)
 !
-      SQRTMP = SQRT(FPLRS)
-      RSSSM = 0.0_WP
-      RSSSMJ = 0.0_WP
-      DO 20 I=1,5
-         J = I-3
-         DO 10 K=1,NPAR
-            PARTMP(K) = PAR(K)*(1.0_WP+J*SQRTMP)
-   10    CONTINUE
-         CALL MDL(PARTMP, NPAR, XM, N, M, IXM, PV)
+      sqrtmp = sqrt(fplrs)
+      rsssm = 0.0_wp
+      rsssmj = 0.0_wp
+      do 20 i=1,5
+         j = i-3
+         do 10 k=1,npar
+            partmp(k) = par(k)*(1.0_wp+j*sqrtmp)
+   10    continue
+         call mdl(partmp, npar, xm, n, m, ixm, pv)
 !
-         RSS(I) = PV(NROW)
+         rss(i) = pv(nrow)
 !
-         RSSSM = RSSSM + RSS(I)
-         RSSSMJ = RSSSMJ + J*RSS(I)
-   20 CONTINUE
-      A = 0.20_WP*RSSSM
-      B = 0.10_WP*RSSSMJ
-      FAC = 1.0_WP
-      IF (RSS(3).NE.0.0_WP) FAC = FAC/RSS(3)
-      DO 30 I=1,5
-         J = I-3
-         RSS(I) = ABS((RSS(I)-(A+J*B))*FAC)
-   30 CONTINUE
-      ETA = MAX(RSS(1),RSS(2),RSS(3),RSS(4),RSS(5),FPLRS)
-      NETA = -LOG10(ETA)
-      ETA = 10.0_WP**(-NETA)
-      RETURN
-      END
+         rsssm = rsssm + rss(i)
+         rsssmj = rsssmj + j*rss(i)
+   20 continue
+      a = 0.20_wp*rsssm
+      b = 0.10_wp*rsssmj
+      fac = 1.0_wp
+      if (rss(3).ne.0.0_wp) fac = fac/rss(3)
+      do 30 i=1,5
+         j = i-3
+         rss(i) = abs((rss(i)-(a+j*b))*fac)
+   30 continue
+      eta = max(rss(1),rss(2),rss(3),rss(4),rss(5),fplrs)
+      neta = -log10(eta)
+      eta = 10.0_wp**(-neta)
+      return
+      end

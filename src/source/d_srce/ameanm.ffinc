@@ -1,5 +1,5 @@
 !AMEANM
-      SUBROUTINE AMEANM (Y, YMISS, N, NUSED, YMEAN)
+      subroutine ameanm (y, ymiss, n, nused, ymean)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,23 +16,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) :: YMEAN,YMISS
-      INTEGER
-     &   N,NUSED
+      real(kind=wp) :: ymean,ymiss
+     integer&
+     &   n,nused
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*)
+     real(kind=wp) ::&
+     &   y(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   SUMY
-      INTEGER
-     &   I
+     real(kind=wp) ::&
+     &   sumy
+     integer&
+     &   i
 !
 !  EXTERNAL FUNCTIONS
-      LOGICAL
-     &   MVCHK
+     logical&
+     &   mvchk
 !       EXTERNAL MVCHK
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
@@ -54,17 +54,17 @@
 !        NOT AN OBSERVATION IS MISSING.  IF Y(I) = YMISS,
 !        THE VALUE IS ASSUMED MISSING, OTHERWISE IT IS NOT.
 !
-      NUSED = 0
-      SUMY = 0.0_WP
-      DO 10 I = 1, N
-         IF (MVCHK(Y(I), YMISS)) GO TO 10
-         SUMY = SUMY + Y(I)
-         NUSED = NUSED + 1
-   10 CONTINUE
-      IF (NUSED.GE.1) THEN
-         YMEAN = SUMY / NUSED
-      ELSE
-         YMEAN = SUMY
-      END IF
-      RETURN
-      END
+      nused = 0
+      sumy = 0.0_wp
+      do 10 i = 1, n
+         if (mvchk(y(i), ymiss)) go to 10
+         sumy = sumy + y(i)
+         nused = nused + 1
+   10 continue
+      if (nused.ge.1) then
+         ymean = sumy / nused
+      else
+         ymean = sumy
+      end if
+      return
+      end

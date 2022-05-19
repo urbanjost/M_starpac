@@ -1,5 +1,5 @@
 !SPCCK
-      SUBROUTINE SPCCK (SPC, ISORT, NF, SPCMN, SPCMX, NSPC, ISPCER)
+      subroutine spcck (spc, isort, nf, spcmn, spcmx, nspc, ispcer)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,26 +19,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   SPCMN,SPCMX
-      INTEGER
-     &   ISPCER,NF,NSPC
+     real(kind=wp) ::&
+     &   spcmn,spcmx
+     integer&
+     &   ispcer,nf,nspc
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   SPC(NF)
-      INTEGER
-     &   ISORT(NF)
+     real(kind=wp) ::&
+     &   spc(nf)
+     integer&
+     &   isort(nf)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,K1,K2,LOG1,LOG2
+     integer&
+     &   i,k1,k2,log1,log2
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL SRTIR,SRTRI
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC LOG10
+      intrinsic log10
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -66,36 +66,36 @@
 !
 !     ORDER THE SPECTRAL ESTIMATES FROM SMALLEST TO LARGEST.
 !
-      DO 10 I = 1, NF
-         ISORT(I) = I
-   10 CONTINUE
-      CALL SRTIR (ISORT, NF, SPC)
+      do 10 i = 1, nf
+         isort(i) = i
+   10 continue
+      call srtir (isort, nf, spc)
 !
 !     DETERMINE SIGINIFICANT VALUES TO BE PLOTTED.
 !
-      K1 = NF
-      K2 = K1
-      IF ((SPC(NF) .LE. 0.0E0) .OR. (NF.EQ.1)) GO TO 30
-      LOG1 = LOG10(SPC(NF))
-      IF (SPC(NF) .LT. 1.0E0) LOG1 = LOG1 - 1
-      DO 20 I = 2, NF
-         K2 = K1 - 1
-         IF (SPC(K2) .LE. 0.0E0) GO TO 30
-         LOG2 = LOG10(SPC(K2))
-         IF (SPC(K2) .LT. 1.0E0) LOG2 = LOG2 - 1
-         IF (LOG1-LOG2 .GE. 3 .AND. NF-K2 .GE. 5) GO TO 30
-         LOG1 = LOG2
-         K1 = K2
-   20 CONTINUE
+      k1 = nf
+      k2 = k1
+      if ((spc(nf) .le. 0.0e0) .or. (nf.eq.1)) go to 30
+      log1 = log10(spc(nf))
+      if (spc(nf) .lt. 1.0e0) log1 = log1 - 1
+      do 20 i = 2, nf
+         k2 = k1 - 1
+         if (spc(k2) .le. 0.0e0) go to 30
+         log2 = log10(spc(k2))
+         if (spc(k2) .lt. 1.0e0) log2 = log2 - 1
+         if (log1-log2 .ge. 3 .and. nf-k2 .ge. 5) go to 30
+         log1 = log2
+         k1 = k2
+   20 continue
 !
-   30 SPCMN = SPC(K1)
-      NSPC = NF + 1 - K1
+   30 spcmn = spc(k1)
+      nspc = nf + 1 - k1
 !
-      SPCMX = SPC(NF)
+      spcmx = spc(nf)
 !
-      CALL SRTRI (SPC, NF, ISORT)
-      ISPCER = 0
-      IF (NF-K2 .LE. 0) ISPCER = 1
+      call srtri (spc, nf, isort)
+      ispcer = 0
+      if (nf-k2 .le. 0) ispcer = 1
 !
-      RETURN
-      END
+      return
+      end

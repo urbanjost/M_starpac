@@ -1,7 +1,7 @@
 !GFOUT
-      SUBROUTINE GFOUT (XORD, YORD, NORD, FREQ, PHAS, NF,
-     &   NTERM, SYM, XPLTMN, XPLTMX, YPLTMN, YPLTMX, NPRT, IGFERR,
-     &   NMSUB)
+     subroutine gfout (xord, yord, nord, freq, phas, nf,&
+    &   nterm, sym, xpltmn, xpltmx, ypltmn, ypltmx, nprt, igferr,&
+     &   nmsub)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,40 +17,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XPLTMN,XPLTMX,YPLTMN,YPLTMX
-      INTEGER
-     &   IGFERR,NF,NORD,NPRT,NTERM
-      LOGICAL
-     &   SYM
+     real(kind=wp) ::&
+     &   xpltmn,xpltmx,ypltmn,ypltmx
+     integer&
+     &   igferr,nf,nord,nprt,nterm
+     logical&
+     &   sym
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FREQ(NF),PHAS(NF),XORD(NORD),YORD(NORD)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   freq(nf),phas(nf),xord(nord),yord(nord)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   PI,XMN,XMX,YMN,YMX
-      INTEGER
-     &   ILOG,IPRT
-      LOGICAL
-     &   ERROR
+     real(kind=wp) ::&
+     &   pi,xmn,xmx,ymn,ymx
+     integer&
+     &   ilog,iprt
+     logical&
+     &   error
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISYM(1)
+     integer&
+     &   isym(1)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL GETPI,IPRINT,PPLMT,PPMN,VERSP
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -107,85 +107,85 @@
 !
 !     SET UNIT NUMBER FOR OUTPUT AND SET OUTPUT WIDTH.
 !
-      CALL IPRINT (IPRT)
+      call iprint (iprt)
 !
-      CALL VERSP(.TRUE.)
+      call versp(.true.)
 !
-      IF (SYM) WRITE (IPRT, 1000) NTERM
-      IF (.NOT. SYM) WRITE (IPRT, 1003) NTERM
+      if (sym) write (iprt, 1000) nterm
+      if (.not. sym) write (iprt, 1003) nterm
 !
-      IF (IGFERR .EQ. 0) GO TO 5
-      WRITE (IPRT, 1004)
-      RETURN
+      if (igferr .eq. 0) go to 5
+      write (iprt, 1004)
+      return
 !
-    5 CONTINUE
+    5 continue
 !
-      IF (NPRT.GE.1) THEN
-        ILOG = 1
-      ELSE
-        ILOG = 0
-      END IF
+      if (nprt.ge.1) then
+        ilog = 1
+      else
+        ilog = 0
+      end if
 !
 !     DETERMINE THE BOUNDS FOR THE X AND Y AXIS AND COMPLETE THE
 !     ERROR CHECKING
 !
-      CALL PPLMT (YORD, YORD, XORD, XORD(1), NORD, 1, NORD,
-     &   YPLTMN, YPLTMX, YMN, YMX, XPLTMN, XPLTMX, XMN, XMX,
-     &   ERROR, NMSUB, .FALSE.)
-      IF (ERROR) THEN
-        IERR = 1
-        RETURN
-      ELSE
-        CALL PPMN (YORD,YORD,XORD,XORD(1),NORD,1,NORD,0,ISYM,1,0,
-     &   0, YMN, YMX, XMN, XMX, .FALSE., ILOG)
-      END IF
+     call pplmt (yord, yord, xord, xord(1), nord, 1, nord,&
+    &   ypltmn, ypltmx, ymn, ymx, xpltmn, xpltmx, xmn, xmx,&
+     &   error, nmsub, .false.)
+      if (error) then
+        ierr = 1
+        return
+      else
+       call ppmn (yord,yord,xord,xord(1),nord,1,nord,0,isym,1,0,&
+     &   0, ymn, ymx, xmn, xmx, .false., ilog)
+      end if
 !
-      IF (XPLTMN .NE. 0.0E0 .OR. XPLTMX .NE. 0.5E0) GO TO 10
+      if (xpltmn .ne. 0.0e0 .or. xpltmx .ne. 0.5e0) go to 10
 !
-      WRITE (IPRT, 1002)
+      write (iprt, 1002)
 !
-   10 IF (SYM) RETURN
+   10 if (sym) return
 !
-      WRITE (IPRT, 1006)
+      write (iprt, 1006)
 !
-      CALL VERSP(.TRUE.)
+      call versp(.true.)
 !
 !     PRINT PHASE PLOT FOR AUTOREGRESSIVE FILTER
 !
-      CALL GETPI(PI)
+      call getpi(pi)
 !
-      WRITE (IPRT, 1005) NTERM
+      write (iprt, 1005) nterm
 !
-      CALL PPLMT (PHAS,PHAS,FREQ,FREQ(1),NORD,1,NORD,
-     &   -PI, PI, YMN, YMX, XPLTMN, XPLTMX, XMN, XMX,
-     &   ERROR, NMSUB, .FALSE.)
-      IF (ERROR) THEN
-        IERR = 1
-        RETURN
-      ELSE
-        CALL PPMN (PHAS,PHAS,FREQ,FREQ(1),NORD,1,NORD,0,ISYM,1,0,
-     &   0, YMN, YMX, XMN, XMX, .FALSE., 0)
-      END IF
+     call pplmt (phas,phas,freq,freq(1),nord,1,nord,&
+    &   -pi, pi, ymn, ymx, xpltmn, xpltmx, xmn, xmx,&
+     &   error, nmsub, .false.)
+      if (error) then
+        ierr = 1
+        return
+      else
+       call ppmn (phas,phas,freq,freq(1),nord,1,nord,0,isym,1,0,&
+     &   0, ymn, ymx, xmn, xmx, .false., 0)
+      end if
 !
-      IF (XPLTMN .NE. 0.0E0 .OR. XPLTMX .NE. 0.5E0) RETURN
+      if (xpltmn .ne. 0.0e0 .or. xpltmx .ne. 0.5e0) return
 !
-      WRITE (IPRT, 1002)
+      write (iprt, 1002)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (18H GAIN FUNCTION OF , I3, 15H TERM SYMMETRIC,
-     &   14H LINEAR FILTER)
- 1002 FORMAT(5H+FREQ/
-     &   7H PERIOD, 9X, 3HINF, 7X, 3H20., 7X, 3H10., 8X, 6H6.6667, 4X,
-     &   2H5., 8X, 2H4., 8X, 6H3.3333, 4X, 6H2.8571, 4X, 3H2.5, 7X,
-     &   6H2.2222, 4X, 2H2.)
- 1003 FORMAT (18H GAIN FUNCTION OF , I3, 21H TERM AUTOREGRESSIVE,,
-     &   22H OR DIFFERENCE, FILTER)
- 1004 FORMAT (//51H THE PLOT HAS BEEN SUPRESSED BECAUSE FEWER THAN TWO/
-     &   45H NON ZERO GAIN FUNCTION VALUES WERE COMPUTED.)
- 1005 FORMAT (19H PHASE FUNCTION OF , I3, 21H TERM AUTOREGRESSIVE,,
-     &   22H OR DIFFERENCE, FILTER)
- 1006 FORMAT ('1')
-      END
+1000 format (18h gain function of , i3, 15h term symmetric,&
+     &   14h linear filter)
+1002 format(5h+freq/&
+    &   7h period, 9x, 3hinf, 7x, 3h20., 7x, 3h10., 8x, 6h6.6667, 4x,&
+    &   2h5., 8x, 2h4., 8x, 6h3.3333, 4x, 6h2.8571, 4x, 3h2.5, 7x,&
+     &   6h2.2222, 4x, 2h2.)
+1003 format (18h gain function of , i3, 21h term autoregressive,,&
+     &   22h or difference, filter)
+1004 format (//51h the plot has been supressed because fewer than two/&
+     &   45h non zero gain function values were computed.)
+1005 format (19h phase function of , i3, 21h term autoregressive,,&
+     &   22h or difference, filter)
+ 1006 format ('1')
+      end

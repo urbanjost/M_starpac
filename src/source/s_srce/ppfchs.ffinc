@@ -1,5 +1,5 @@
 !PPFCHS
-      REAL(KIND=WP) FUNCTION PPFCHS(P, NU)
+      real(kind=wp) function ppfchs(p, nu)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -78,61 +78,61 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   P
-      INTEGER
-     &   NU
+     real(kind=wp) ::&
+     &   p
+     integer&
+     &   nu
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   A,AJ,B,C,CUT1,CUT2,CUTOFF,DEN,DX,FP,GAMMA,
-     &   PCALC,SUM,TERM,XDEL,XLOWER,XMAX,XMID,XMIN,XMIN0,XUPPER,
-     &   Z,Z2,Z3,Z4,Z5
-      INTEGER
-     &   ICOUNT,ILOOP,IPRT,J,MAXIT
+     real(kind=wp) ::&
+    &   a,aj,b,c,cut1,cut2,cutoff,den,dx,fp,gamma,&
+    &   pcalc,sum,term,xdel,xlower,xmax,xmid,xmin,xmin0,xupper,&
+     &   z,z2,z3,z4,z5
+     integer&
+     &   icount,iloop,iprt,j,maxit
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   D(10)
+     real(kind=wp) ::&
+     &   d(10)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC EXP,LOG
+      intrinsic exp,log
 !
 !
-      DATA C/0.918938533204672741E0/
-      DATA D(3),D(4),D(5)
-     &  /+0.793650793650793651E-3,
-     &   -0.595238095238095238E-3,
-     &   +0.8417508417508417151E-3/
-      DATA D(6),D(7),D(8),D(9),D(10)
-     &  /-0.191752691752691753E-2,
-     &   +0.641025641025641025E-2,
-     &   -0.2955065359147712418E-1,
-     &   +0.179644372368830573E0,
-     &   -0.139243221690590111E1/
+      data c/0.918938533204672741e0/
+     data d(3),d(4),d(5)&
+    &  /+0.793650793650793651e-3,&
+    &   -0.595238095238095238e-3,&
+     &   +0.8417508417508417151e-3/
+     data d(6),d(7),d(8),d(9),d(10)&
+    &  /-0.191752691752691753e-2,&
+    &   +0.641025641025641025e-2,&
+    &   -0.2955065359147712418e-1,&
+    &   +0.179644372368830573e0,&
+     &   -0.139243221690590111e1/
 !
-      D(1) = 1.0E0/12.0E0
-      D(2) = 1.0E0/360.0E0
+      d(1) = 1.0e0/12.0e0
+      d(2) = 1.0e0/360.0e0
 !
-      CALL IPRINT (IPRT)
+      call iprint (iprt)
 !
 !     CHECK THE INPUT ARGUMENTS FOR ERRORS
 !
-      IF (P.LT.0.0E0 .OR. P.GE.1.0E0) THEN
-         WRITE(IPRT,1010)
-         WRITE(IPRT,1030) P
-         PPFCHS = 0.0E0
-         RETURN
-      END IF
-      IF(NU.LT.1) THEN
-         WRITE(IPRT,1020)
-         WRITE(IPRT,1040) NU
-         PPFCHS = 0.0E0
-         RETURN
-      END IF
+      if (p.lt.0.0e0 .or. p.ge.1.0e0) then
+         write(iprt,1010)
+         write(iprt,1030) p
+         ppfchs = 0.0e0
+         return
+      end if
+      if(nu.lt.1) then
+         write(iprt,1020)
+         write(iprt,1040) nu
+         ppfchs = 0.0e0
+         return
+      end if
 !
 !-----START POINT-----------------------------------------------------
 !
@@ -141,9 +141,9 @@
 !     DISTRIBUTION PERCENT POINT FUNCTION,
 !     AND THEN EVALUATE THE LATTER.
 !
-      FP = P
-      GAMMA = NU/2.0E0
-      MAXIT = 10000
+      fp = p
+      gamma = nu/2.0e0
+      maxit = 10000
 !
 !     COMPUTE THE GAMMA FUNCTION USING THE ALGORITHM IN THE
 !     NBS APPLIED MATHEMATICS SERIES REFERENCE.
@@ -151,68 +151,68 @@
 !     IT IS USED IN THE CALCULATION OF THE CDF BASED ON
 !     THE TENTATIVE VALUE OF THE PPFCHS IN THE ITERATION.
 !
-      Z = GAMMA
-      DEN = 1.0E0
-  150 IF(Z.LT.10.0E0) THEN
-         DEN = DEN*Z
-         Z = Z+1.0E0
-         GO TO 150
-      END IF
-      Z2 = Z*Z
-      Z3 = Z*Z2
-      Z4 = Z2*Z2
-      Z5 = Z2*Z3
-      A = (Z-0.5E0)*LOG(Z)-Z+C
-      B = D(1)/Z + D(2)/Z3 + D(3)/Z5 + D(4)/(Z2*Z5) + D(5)/(Z4*Z5) +
-     &    D(6)/(Z*Z5*Z5) + D(7)/(Z3*Z5*Z5) + D(8)/(Z5*Z5*Z5) +
-     &    D(9)/(Z2*Z5*Z5*Z5)
+      z = gamma
+      den = 1.0e0
+  150 if(z.lt.10.0e0) then
+         den = den*z
+         z = z+1.0e0
+         go to 150
+      end if
+      z2 = z*z
+      z3 = z*z2
+      z4 = z2*z2
+      z5 = z2*z3
+      a = (z-0.5e0)*log(z)-z+c
+     b = d(1)/z + d(2)/z3 + d(3)/z5 + d(4)/(z2*z5) + d(5)/(z4*z5) +&
+    &    d(6)/(z*z5*z5) + d(7)/(z3*z5*z5) + d(8)/(z5*z5*z5) +&
+     &    d(9)/(z2*z5*z5*z5)
 !     G = EXP(A+B)/DEN
 !
 !     DETERMINE LOWER AND UPPER LIMITS ON THE DESIRED 100P
 !     PERCENT POINT.
 !
-      ILOOP = 1
+      iloop = 1
 !     XMIN0 = (FP*GAMMA*G)**(1.0E0/GAMMA)
-      XMIN0 = EXP((1.0E0/GAMMA)*(LOG(FP)+LOG(GAMMA)+(A+B)-LOG(DEN)))
-      XMIN = XMIN0
-      XLOWER = XMIN
-      XMID = XMIN
-      XUPPER = XMIN
-      ICOUNT = 1
-  350 CONTINUE
-      XMAX = ICOUNT*XMIN0
-      DX = XMAX
-      GO TO 600
-  360 IF(PCALC.LT.FP) THEN
-         XMIN = XMAX
-         ICOUNT = ICOUNT+1
-         IF(ICOUNT.LE.30000) GO TO 350
-      END IF
-      XMID = (XMIN+XMAX)/2.0E0
+      xmin0 = exp((1.0e0/gamma)*(log(fp)+log(gamma)+(a+b)-log(den)))
+      xmin = xmin0
+      xlower = xmin
+      xmid = xmin
+      xupper = xmin
+      icount = 1
+  350 continue
+      xmax = icount*xmin0
+      dx = xmax
+      go to 600
+  360 if(pcalc.lt.fp) then
+         xmin = xmax
+         icount = icount+1
+         if(icount.le.30000) go to 350
+      end if
+      xmid = (xmin+xmax)/2.0e0
 !
 !     NOW ITERATE BY BISECTION UNTIL THE DESIRED ACCURACY IS ACHIEVED.
 !
-      ILOOP = 2
-      XLOWER = XMIN
-      XUPPER = XMAX
-      ICOUNT = 0
-  550 DX = XMID
-      GO TO 600
-  560 IF(PCALC.NE.FP) THEN
-         IF(PCALC.GT.FP) THEN
-            XUPPER = XMID
-            XMID = (XMID+XLOWER)/2.0E0
-         ELSE
-            XLOWER = XMID
-            XMID = (XMID+XUPPER)/2.0E0
-         END IF
-         XDEL = XMID-XLOWER
-         IF(XDEL.LT.0.0E0)XDEL = -XDEL
-         ICOUNT = ICOUNT+1
-         IF((XDEL.GE.0.0000000001E0) .AND. (ICOUNT.LE.100)) GO TO 550
-      END IF
-      PPFCHS = 2.0E0*XMID
-      RETURN
+      iloop = 2
+      xlower = xmin
+      xupper = xmax
+      icount = 0
+  550 dx = xmid
+      go to 600
+  560 if(pcalc.ne.fp) then
+         if(pcalc.gt.fp) then
+            xupper = xmid
+            xmid = (xmid+xlower)/2.0e0
+         else
+            xlower = xmid
+            xmid = (xmid+xupper)/2.0e0
+         end if
+         xdel = xmid-xlower
+         if(xdel.lt.0.0e0)xdel = -xdel
+         icount = icount+1
+         if((xdel.ge.0.0000000001e0) .and. (icount.le.100)) go to 550
+      end if
+      ppfchs = 2.0e0*xmid
+      return
 !
 !********************************************************************
 !     THIS SECTION BELOW IS LOGICALLY SEPARATE FROM THE ABOVE.
@@ -223,40 +223,40 @@
 !     COMPUTE T-SUB-Q AS DEFINED ON PAGE 4 OF THE WILK, GNANADESIKAN,
 !     AND HUYETT REFERENCE
 !
-  600 SUM = 1.0E0/GAMMA
-      TERM = 1.0E0/GAMMA
-      CUT1 = DX-GAMMA
-      CUT2 = DX*10000000000.0E0
-      DO 700 J=1,MAXIT
-         AJ = J
-         TERM = DX*TERM/(GAMMA+AJ)
-         SUM = SUM+TERM
-         CUTOFF = CUT1+(CUT2*TERM/SUM)
-         IF (AJ.GT.CUTOFF) GO TO 750
-  700 CONTINUE
-      WRITE(IPRT,1050)MAXIT
-      WRITE(IPRT,1060)P
-      WRITE(IPRT,1070)NU
-      WRITE(IPRT,1080)
-      PPFCHS = 0.0E0
-      RETURN
+  600 sum = 1.0e0/gamma
+      term = 1.0e0/gamma
+      cut1 = dx-gamma
+      cut2 = dx*10000000000.0e0
+      do 700 j=1,maxit
+         aj = j
+         term = dx*term/(gamma+aj)
+         sum = sum+term
+         cutoff = cut1+(cut2*term/sum)
+         if (aj.gt.cutoff) go to 750
+  700 continue
+      write(iprt,1050)maxit
+      write(iprt,1060)p
+      write(iprt,1070)nu
+      write(iprt,1080)
+      ppfchs = 0.0e0
+      return
 !
-  750 CONTINUE
+  750 continue
 !     PCALC = (DX**GAMMA)*(EXP(-DX))*SUM/G
-      PCALC = EXP(GAMMA*LOG(DX) + LOG(SUM) + LOG(DEN) - DX - A - B)
-      IF (ILOOP.EQ.1) GO TO 360
-      GO TO 560
+      pcalc = exp(gamma*log(dx) + log(sum) + log(den) - dx - a - b)
+      if (iloop.eq.1) go to 360
+      go to 560
 !
- 1010 FORMAT(' ',115H***** FATAL ERROR--THE FIRST  INPUT ARGUMENT TO THE
-     & PPFCHS FUNCTION IS OUTSIDE THE ALLOWABLE (0,1  ) INTERVAL *****)
- 1020 FORMAT(' ', 91H***** FATAL ERROR--THE SECOND INPUT ARGUMENT TO THE
-     & PPFCHS FUNCTION IS NON-POSITIVE *****  )
- 1030 FORMAT(' ', 35H***** THE VALUE OF THE ARGUMENT IS ,E15.8,6H *****)
- 1040 FORMAT(' ', 35H***** THE VALUE OF THE ARGUMENT IS ,I8   ,6H *****)
- 1050 FORMAT(' ',48H*****ERROR IN INTERNAL OPERATIONS IN THE PPFCHS ,
-     & 43HFUNCTION--THE NUMBER OF ITERATIONS EXCEEDS ,I7)
- 1060 FORMAT(' ',33H     THE INPUT VALUE OF P     IS ,E15.8)
- 1070 FORMAT(' ',33H     THE INPUT VALUE OF NU    IS ,I8)
- 1080 FORMAT(52H      THE OUTPUT VALUE OF PPFCHS HAS BEEN SET TO 0.0)
+1010 format(' ',115h***** fatal error--the first  input argument to the&
+     & ppfchs function is outside the allowable (0,1  ) interval *****)
+1020 format(' ', 91h***** fatal error--the second input argument to the&
+     & ppfchs function is non-positive *****  )
+ 1030 format(' ', 35h***** the value of the argument is ,e15.8,6h *****)
+ 1040 format(' ', 35h***** the value of the argument is ,i8   ,6h *****)
+1050 format(' ',48h*****error in internal operations in the ppfchs ,&
+     & 43hfunction--the number of iterations exceeds ,i7)
+ 1060 format(' ',33h     the input value of p     is ,e15.8)
+ 1070 format(' ',33h     the input value of nu    is ,i8)
+ 1080 format(52h      the output value of ppfchs has been set to 0.0)
 !
-      END
+      end

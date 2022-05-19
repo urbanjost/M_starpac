@@ -1,19 +1,19 @@
 !ALNREL
-      REAL FUNCTION ALNREL (X)
+      real function alnrel (x)
 ! APRIL 1977 VERSION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL X
+      real x
 !
 !  LOCAL SCALARS
-      REAL XMIN
-      INTEGER NLNREL
+      real xmin
+      integer nlnrel
 !
 !  LOCAL ARRAYS
-      REAL ALNRCS(23)
+      real alnrcs(23)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL CSEVL,R1MACH
@@ -24,7 +24,7 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG,SQRT
+      intrinsic abs,log,sqrt
 !
 ! SERIES FOR ALNR       ON THE INTERVAL -3.75000D-01 TO  3.75000D-01
 !                                        WITH WEIGHTED ERROR   1.93E-17
@@ -32,47 +32,47 @@
 !                               SIGNIFICANT FIGURES REQUIRED  16.44
 !                                    DECIMAL PLACES REQUIRED  17.40
 !
-      DATA ALNRCS( 1) /   1.0378693562 743770E0 /
-      DATA ALNRCS( 2) /   -.1336430150 4908918E0 /
-      DATA ALNRCS( 3) /    .0194082491 35520563E0 /
-      DATA ALNRCS( 4) /   -.0030107551 12753577E0 /
-      DATA ALNRCS( 5) /    .0004869461 47971548E0 /
-      DATA ALNRCS( 6) /   -.0000810548 81893175E0 /
-      DATA ALNRCS( 7) /    .0000137788 47799559E0 /
-      DATA ALNRCS( 8) /   -.0000023802 21089435E0 /
-      DATA ALNRCS( 9) /    .0000004164 04162138E0 /
-      DATA ALNRCS(10) /   -.0000000735 95828378E0 /
-      DATA ALNRCS(11) /    .0000000131 17611876E0 /
-      DATA ALNRCS(12) /   -.0000000023 54670931E0 /
-      DATA ALNRCS(13) /    .0000000004 25227732E0 /
-      DATA ALNRCS(14) /   -.0000000000 77190894E0 /
-      DATA ALNRCS(15) /    .0000000000 14075746E0 /
-      DATA ALNRCS(16) /   -.0000000000 02576907E0 /
-      DATA ALNRCS(17) /    .0000000000 00473424E0 /
-      DATA ALNRCS(18) /   -.0000000000 00087249E0 /
-      DATA ALNRCS(19) /    .0000000000 00016124E0 /
-      DATA ALNRCS(20) /   -.0000000000 00002987E0 /
-      DATA ALNRCS(21) /    .0000000000 00000554E0 /
-      DATA ALNRCS(22) /   -.0000000000 00000103E0 /
-      DATA ALNRCS(23) /    .0000000000 00000019E0 /
+      data alnrcs( 1) /   1.0378693562743770e0 /
+      data alnrcs( 2) /   -.13364301504908918e0 /
+      data alnrcs( 3) /    .019408249135520563e0 /
+      data alnrcs( 4) /   -.003010755112753577e0 /
+      data alnrcs( 5) /    .000486946147971548e0 /
+      data alnrcs( 6) /   -.000081054881893175e0 /
+      data alnrcs( 7) /    .000013778847799559e0 /
+      data alnrcs( 8) /   -.000002380221089435e0 /
+      data alnrcs( 9) /    .000000416404162138e0 /
+      data alnrcs(10) /   -.000000073595828378e0 /
+      data alnrcs(11) /    .000000013117611876e0 /
+      data alnrcs(12) /   -.000000002354670931e0 /
+      data alnrcs(13) /    .000000000425227732e0 /
+      data alnrcs(14) /   -.000000000077190894e0 /
+      data alnrcs(15) /    .000000000014075746e0 /
+      data alnrcs(16) /   -.000000000002576907e0 /
+      data alnrcs(17) /    .000000000000473424e0 /
+      data alnrcs(18) /   -.000000000000087249e0 /
+      data alnrcs(19) /    .000000000000016124e0 /
+      data alnrcs(20) /   -.000000000000002987e0 /
+      data alnrcs(21) /    .000000000000000554e0 /
+      data alnrcs(22) /   -.000000000000000103e0 /
+      data alnrcs(23) /    .000000000000000019e0 /
 !
-      DATA NLNREL, XMIN /0, 0./
+      data nlnrel, xmin /0, 0./
 !
-      IF (NLNREL.NE.0) GO TO 10
-      NLNREL = INITS (ALNRCS, 23, 0.1*R1MACH(3))
-      XMIN = -1.0 + SQRT(R1MACH(4))
+      if (nlnrel.ne.0) go to 10
+      nlnrel = inits (alnrcs, 23, 0.1*r1mach(3))
+      xmin = -1.0 + sqrt(r1mach(4))
 !
- 10   IF (X.LE.(-1.0)) CALL XERROR (
+10   if (x.le.(-1.0)) call xerror (&
      &  'ALNREL  X IS LE -1', 18, 2, 2)
-      IF (X.LT.XMIN) CALL XERROR (
-     &  'ALNREL  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR -1', 54,
+     if (x.lt.xmin) call xerror (&
+    &  'ALNREL  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR -1', 54,&
      &  1, 1)
 !
-      IF (ABS(X).LE.0.375) THEN
-         ALNREL = X*(1.0-X*CSEVL(X/0.375,ALNRCS,NLNREL))
-      ELSE
-         ALNREL = LOG (1.0+X)
-      END IF
+      if (abs(x).le.0.375) then
+         alnrel = x*(1.0-x*csevl(x/0.375,alnrcs,nlnrel))
+      else
+         alnrel = log (1.0+x)
+      end if
 !
-      RETURN
-      END
+      return
+      end

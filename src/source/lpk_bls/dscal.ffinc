@@ -1,5 +1,5 @@
 !DSCAL
-      SUBROUTINE DSCAL(N,DA,DX,INCX)
+      subroutine dscal(n,da,dx,incx)
 !
 !     REPLACE DOUBLE PRECISION DX BY DOUBLE PRECISION DA*DX.
 !     FOR I = 0 TO N-1, REPLACE DX(1+I*INCX) WITH  DA * DX(1+I*INCX)
@@ -8,47 +8,47 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION DA
-      INTEGER INCX,N
+      double precision da
+      integer incx,n
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION DX(*)
+      double precision dx(*)
 !
 !  LOCAL SCALARS
-      INTEGER I,M,MP1,NS
+      integer i,m,mp1,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
-      IF(N.LE.0)RETURN
-      IF(INCX.EQ.1)GOTO 20
+      if(n.le.0)return
+      if(incx.eq.1)goto 20
 !
 !        CODE FOR INCREMENTS NOT EQUAL TO 1.
 !
-      NS = N*INCX
-          DO 10 I = 1,NS,INCX
-          DX(I) = DA*DX(I)
-   10     CONTINUE
-      RETURN
+      ns = n*incx
+          do 10 i = 1,ns,incx
+          dx(i) = da*dx(i)
+   10     continue
+      return
 !
 !        CODE FOR INCREMENTS EQUAL TO 1.
 !
 !
 !        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 5.
 !
-   20 M = MOD(N,5)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-        DX(I) = DA*DX(I)
-   30 CONTINUE
-      IF( N .LT. 5 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,5
-        DX(I) = DA*DX(I)
-        DX(I + 1) = DA*DX(I + 1)
-        DX(I + 2) = DA*DX(I + 2)
-        DX(I + 3) = DA*DX(I + 3)
-        DX(I + 4) = DA*DX(I + 4)
-   50 CONTINUE
-      RETURN
-      END
+   20 m = mod(n,5)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+        dx(i) = da*dx(i)
+   30 continue
+      if( n .lt. 5 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,5
+        dx(i) = da*dx(i)
+        dx(i + 1) = da*dx(i + 1)
+        dx(i + 2) = da*dx(i + 2)
+        dx(i + 3) = da*dx(i + 3)
+        dx(i + 4) = da*dx(i + 4)
+   50 continue
+      return
+      end

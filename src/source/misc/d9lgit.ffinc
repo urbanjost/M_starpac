@@ -1,5 +1,5 @@
 !D9LGIT
-      DOUBLE PRECISION FUNCTION D9LGIT(A,X,ALGAP1)
+      double precision function d9lgit(a,x,algap1)
 !***BEGIN PROLOGUE  D9LGIT
 !***DATE WRITTEN   770701   (YYMMDD)
 !***REVISION DATE  820801   (YYMMDD)
@@ -20,11 +20,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION A,ALGAP1,X
+      double precision a,algap1,x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION A1X,AX,EPS,FK,HSTAR,P,R,S,SQEPS,T
-      INTEGER K
+      double precision a1x,ax,eps,fk,hstar,p,r,s,sqeps,t
+      integer k
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH
@@ -34,38 +34,38 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,DSQRT,LOG
+      intrinsic abs,dsqrt,log
 !
-      DATA EPS, SQEPS / 2*0.D0 /
+      data eps, sqeps / 2*0.d0 /
 !***FIRST EXECUTABLE STATEMENT  D9LGIT
-      IF (EPS.NE.0.D0) GO TO 10
-      EPS = 0.5D0*D1MACH(3)
-      SQEPS = DSQRT (D1MACH(4))
+      if (eps.ne.0.d0) go to 10
+      eps = 0.5d0*d1mach(3)
+      sqeps = dsqrt (d1mach(4))
 !
- 10   IF (X.LE.0.D0 .OR. A.LT.X) CALL XERROR ( 'D9LGIT  X SHOULD BE GT 0
+10   if (x.le.0.d0 .or. a.lt.x) call xerror ( 'D9LGIT  X SHOULD BE GT 0&
      &.0 AND LE A', 35, 2, 2)
 !
-      AX = A + X
-      A1X = AX + 1.0D0
-      R = 0.D0
-      P = 1.D0
-      S = P
-      DO 20 K=1,200
-        FK = K
-        T = (A+FK)*X*(1.D0+R)
-        R = T/((AX+FK)*(A1X+FK)-T)
-        P = R*P
-        S = S + P
-        IF (ABS(P).LT.EPS*S) GO TO 30
- 20   CONTINUE
-      CALL XERROR ( 'D9LGIT  NO CONVERGENCE IN 200 TERMS OF CONTINUED FR
+      ax = a + x
+      a1x = ax + 1.0d0
+      r = 0.d0
+      p = 1.d0
+      s = p
+      do 20 k=1,200
+        fk = k
+        t = (a+fk)*x*(1.d0+r)
+        r = t/((ax+fk)*(a1x+fk)-t)
+        p = r*p
+        s = s + p
+        if (abs(p).lt.eps*s) go to 30
+ 20   continue
+     call xerror ( 'D9LGIT  NO CONVERGENCE IN 200 TERMS OF CONTINUED FR&
      &ACTION', 57, 3, 2)
 !
- 30   HSTAR = 1.0D0 - X*S/A1X
-      IF (HSTAR.LT.SQEPS) CALL XERROR ( 'D9LGIT  RESULT LESS THAN HALF P
+ 30   hstar = 1.0d0 - x*s/a1x
+     if (hstar.lt.sqeps) call xerror ( 'D9LGIT  RESULT LESS THAN HALF P&
      &RECISION', 39, 1, 1)
 !
-      D9LGIT = -X - ALGAP1 - LOG(HSTAR)
-      RETURN
+      d9lgit = -x - algap1 - log(hstar)
+      return
 !
-      END
+      end

@@ -1,5 +1,5 @@
 !DRV2
-      SUBROUTINE DRV2(PAR, NPAR, XM, N, M, IXM, D)
+      subroutine drv2(par, npar, xm, n, m, ixm, d)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,16 +15,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,M,N,NPAR
+     integer&
+     &   ixm,m,n,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   D(N,NPAR),PAR(NPAR),XM(IXM,M)
+     real(kind=wp) ::&
+     &   d(n,npar),par(npar),xm(ixm,m)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -46,12 +46,12 @@
 !        MODEL INDEPENDENT VARIABLE
 !
 !
-      DO 10 I=1,N
-         D(I,1) = XM(I,1)
-         D(I,2) = XM(I,2)
-         D(I,3) = XM(I,3)**3
-   10 CONTINUE
+      do 10 i=1,n
+         d(i,1) = xm(i,1)
+         d(i,2) = xm(i,2)
+         d(i,3) = xm(i,3)**3
+   10 continue
 !
-      RETURN
+      return
 !
-      END
+      end

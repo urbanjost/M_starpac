@@ -1,5 +1,5 @@
 !XSETF
-      SUBROUTINE XSETF(KONTRL)
+      subroutine xsetf(kontrl)
 !
 !     ABSTRACT
 !        XSETF SETS THE ERROR CONTROL FLAG VALUE TO KONTRL.
@@ -33,10 +33,10 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER KONTRL
+      integer kontrl
 !
 !  LOCAL SCALARS
-      INTEGER JUNK
+      integer junk
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER J4SAVE
@@ -45,10 +45,10 @@
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL XERRWV
 !
-      IF ((KONTRL.GE.(-2)).AND.(KONTRL.LE.2)) GO TO 10
-         CALL XERRWV('XSETF  -- INVALID VALUE OF KONTRL (I1).',33,1,2,
-     &   1,KONTRL,0,0,0.,0.)
-         RETURN
-   10 JUNK = J4SAVE(2,KONTRL,.TRUE.)
-      RETURN
-      END
+      if ((kontrl.ge.(-2)).and.(kontrl.le.2)) go to 10
+        call xerrwv('XSETF  -- INVALID VALUE OF KONTRL (I1).',33,1,2,&
+     &   1,kontrl,0,0,0.,0.)
+         return
+   10 junk = j4save(2,kontrl,.true.)
+      return
+      end

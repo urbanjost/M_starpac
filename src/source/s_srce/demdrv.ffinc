@@ -1,6 +1,6 @@
 !DEMDRV
-      SUBROUTINE DEMDRV (Y, N, FD, FC, K, HLP, AMPL, PHASE, IPHASE,
-     &   NDEM, NPRT, NMSUB)
+     subroutine demdrv (y, n, fd, fc, k, hlp, ampl, phase, iphase,&
+     &   ndem, nprt, nmsub)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -25,16 +25,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FC,FD
-      INTEGER
-     &   IPHASE,K,N,NDEM,NPRT
+     real(kind=wp) ::&
+     &   fc,fd
+     integer&
+     &   iphase,k,n,ndem,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   AMPL(N),HLP(K),PHASE(IPHASE,2),Y(N)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   ampl(n),hlp(k),phase(iphase,2),y(n)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL DEMODU,DEMORD,DEMOUT,FLTSL,LPFLT,POLAR
@@ -70,18 +70,18 @@
 !        THE INPUT ARRAY CONTAINING THE OBSERVED SERIES.
 !
 !
-      CALL DEMODU (Y, N, FD, AMPL, PHASE)
-      CALL LPFLT (FC, K, HLP)
-      CALL FLTSL (AMPL, N, K, HLP, AMPL, NDEM)
-      CALL FLTSL (PHASE, N, K, HLP, PHASE, NDEM)
+      call demodu (y, n, fd, ampl, phase)
+      call lpflt (fc, k, hlp)
+      call fltsl (ampl, n, k, hlp, ampl, ndem)
+      call fltsl (phase, n, k, hlp, phase, ndem)
 !
-      CALL POLAR (AMPL, PHASE, NDEM)
+      call polar (ampl, phase, ndem)
 !
-      IF (NPRT .EQ. 0) RETURN
+      if (nprt .eq. 0) return
 !
-      CALL DEMORD (PHASE, PHASE(1,2), NDEM, N)
-      CALL DEMOUT (FD, FC, K, AMPL, PHASE, IPHASE, NDEM, NMSUB)
+      call demord (phase, phase(1,2), ndem, n)
+      call demout (fd, fc, k, ampl, phase, iphase, ndem, nmsub)
 !
-      RETURN
+      return
 !
-      END
+      end

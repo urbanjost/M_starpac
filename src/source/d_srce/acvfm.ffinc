@@ -1,6 +1,6 @@
 !ACVFM
-      SUBROUTINE ACVFM (Y, YMISS, N, YMEAN, ACOV, LAGMAX,
-     &   LAGLST, NLPPA, LACOV)
+     subroutine acvfm (y, ymiss, n, ymean, acov, lagmax,&
+     &   laglst, nlppa, lacov)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,27 +17,27 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) :: YMEAN,YMISS
-      INTEGER
-     &   LACOV,LAGLST,LAGMAX,N
+      real(kind=wp) :: ymean,ymiss
+     integer&
+     &   lacov,laglst,lagmax,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV(*),Y(*)
-      INTEGER
-     &   NLPPA(*)
+     real(kind=wp) ::&
+     &   acov(*),y(*)
+     integer&
+     &   nlppa(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DOTXY,DOTYY,FPLM
-      INTEGER
-     &   LAG,NDOTXY,NDOTYY,NUSED
+     real(kind=wp) ::&
+     &   dotxy,dotyy,fplm
+     integer&
+     &   lag,ndotxy,ndotyy,nused
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   D1MACH
-      INTEGER
-     &   LSTLAG
+     real(kind=wp) ::&
+     &   d1mach
+     integer&
+     &   lstlag
 !      EXTERNAL D1MACH,LSTLAG
 !
 !  EXTERNAL SUBROUTINES
@@ -80,37 +80,37 @@
 !        THE VALUE IS ASSUMED MISSING, OTHERWISE IT IS NOT.
 !
 !
-      FPLM = D1MACH(2)
+      fplm = d1mach(2)
 !
 !     COMPUTE ARITHMETIC MEAN, WITH MISSING VALUES TAKEN INTO ACCOUNT
 !
-      CALL AMEANM (Y, YMISS, N, NUSED, YMEAN)
+      call ameanm (y, ymiss, n, nused, ymean)
 !
 !     COMPUTE THE VARIANCE OF THE SERIES Y
 !
-      CALL DOTCM (Y, YMEAN, YMISS, N, Y, YMEAN, YMISS, N,
-     &   DOTYY, NDOTYY)
-      NLPPA(1) = NDOTYY
-      IF (NLPPA(1).EQ.0) THEN
-         LAGLST = 0
-      ELSE
-         ACOV(1) = DOTYY / NDOTYY
+     call dotcm (y, ymean, ymiss, n, y, ymean, ymiss, n,&
+     &   dotyy, ndotyy)
+      nlppa(1) = ndotyy
+      if (nlppa(1).eq.0) then
+         laglst = 0
+      else
+         acov(1) = dotyy / ndotyy
 !
 !     COMPUTE AUTOCORRELATIONS, WITH MISSING VALUES TAKEN INTO ACCOUNT
 !
-         DO 10 LAG = 1, LAGMAX
-            CALL DOTCM (Y, YMEAN, YMISS, N, Y(LAG+1), YMEAN,
-     &         YMISS, N - LAG, DOTXY, NDOTXY)
-            NLPPA(LAG + 1) = NDOTXY
-            ACOV(LAG + 1) = FPLM
-            IF (NLPPA(LAG + 1) .LE. 0) GO TO 10
-            ACOV(LAG + 1) = DOTXY * (N-LAG) / (NLPPA(LAG + 1) * N)
-   10    CONTINUE
+         do 10 lag = 1, lagmax
+           call dotcm (y, ymean, ymiss, n, y(lag+1), ymean,&
+     &         ymiss, n - lag, dotxy, ndotxy)
+            nlppa(lag + 1) = ndotxy
+            acov(lag + 1) = fplm
+            if (nlppa(lag + 1) .le. 0) go to 10
+            acov(lag + 1) = dotxy * (n-lag) / (nlppa(lag + 1) * n)
+   10    continue
 !
 !     FIND THE LAST AUTOCORRELATION TO BE COMPUTED BEFORE
 !     ONE COULD NOT BE COMPUTED DUE TO MISSING DATA
 !
-         LAGLST = LSTLAG(NLPPA, LAGMAX, LACOV)
-      END IF
-      RETURN
-      END
+         laglst = lstlag(nlppa, lagmax, lacov)
+      end if
+      return
+      end

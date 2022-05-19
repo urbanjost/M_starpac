@@ -1,5 +1,5 @@
 !DIFSER
-      SUBROUTINE DIFSER (Y, N, NDF, ND, IOD, YDIFF, NDIFF)
+      subroutine difser (y, n, ndf, nd, iod, ydiff, ndiff)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,18 +17,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,NDF,NDIFF
+     integer&
+     &   n,ndf,ndiff
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*),YDIFF(*)
-      INTEGER
-     &   IOD(*),ND(*)
+     real(kind=wp) ::&
+     &   y(*),ydiff(*)
+     integer&
+     &   iod(*),nd(*)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,J,K,L,NTIMES
+     integer&
+     &   i,j,k,l,ntimes
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -53,23 +53,23 @@
 !        THE VECTOR CONTAINING THE SERIES OBSERVATIONS AND THE VECTOR
 !        IN WHICH THE DIFFERENCED SERIES IS RETURNED.
 !
-      DO 10 I = 1, N
-         YDIFF(I) = Y(I)
-   10 CONTINUE
+      do 10 i = 1, n
+         ydiff(i) = y(i)
+   10 continue
 !
-      NDIFF = N
+      ndiff = n
 !
-      IF (NDF .EQ. 0) RETURN
+      if (ndf .eq. 0) return
 !
-      DO 40 I = 1, NDF
-         NTIMES = ND(I)
-         DO 30 L = 1, NTIMES
-            NDIFF = NDIFF - IOD(I)
-            DO 20 J = 1, NDIFF
-               K = J + IOD(I)
-               YDIFF(J) = YDIFF(K) - YDIFF(J)
-   20       CONTINUE
-   30    CONTINUE
-   40 CONTINUE
-      RETURN
-      END
+      do 40 i = 1, ndf
+         ntimes = nd(i)
+         do 30 l = 1, ntimes
+            ndiff = ndiff - iod(i)
+            do 20 j = 1, ndiff
+               k = j + iod(i)
+               ydiff(j) = ydiff(k) - ydiff(j)
+   20       continue
+   30    continue
+   40 continue
+      return
+      end

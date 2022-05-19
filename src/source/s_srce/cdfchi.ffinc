@@ -1,5 +1,5 @@
 !CDFCHI
-      REAL(KIND=WP) FUNCTION CDFCHI(CHISQR, DF)
+      real(kind=wp) function cdfchi(chisqr, df)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,18 +18,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CHISQR,DF
+     real(kind=wp) ::&
+     &   chisqr,df
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLPM
+     real(kind=wp) ::&
+     &   fplpm
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &    GAMI, GAMMA,R1MACH
-      LOGICAL
-     &   MVCHK
+     real(kind=wp) ::&
+     &    gami, gamma,r1mach
+     logical&
+     &   mvchk
 !       EXTERNAL  GAMI, GAMMA,R1MACH,MVCHK
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
@@ -43,16 +43,16 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      FPLPM = R1MACH(2)
+      fplpm = r1mach(2)
 !
-      CDFCHI =  GAMI(0.5E0*DF, 0.5E0*CHISQR)
-      IF (MVCHK(CDFCHI,FPLPM)) THEN
-         CDFCHI = 1.0E0
-      ELSE
-         CDFCHI = CDFCHI /  GAMMA(0.5E0*DF)
-         IF (CDFCHI.LT.0.0E0) CDFCHI = 0.0E0
-         IF (CDFCHI.GT.1.0E0) CDFCHI = 1.0E0
-      END IF
+      cdfchi =  gami(0.5e0*df, 0.5e0*chisqr)
+      if (mvchk(cdfchi,fplpm)) then
+         cdfchi = 1.0e0
+      else
+         cdfchi = cdfchi /  gamma(0.5e0*df)
+         if (cdfchi.lt.0.0e0) cdfchi = 0.0e0
+         if (cdfchi.gt.1.0e0) cdfchi = 1.0e0
+      end if
 !
-      RETURN
-      END
+      return
+      end

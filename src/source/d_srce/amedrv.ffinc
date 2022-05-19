@@ -1,8 +1,8 @@
 !AMEDRV
-      SUBROUTINE AMEDRV(Y, N, MSPEC, NFAC, PAR, NPAR,
-     &   RES, LDSTAK, IFIXED, LIFIXD, STP, LSTP, MIT, STOPSS, STOPP,
-     &   SCALE, LSCALE, DELTA, IVAPRX, NPRT, RSD, PV, LPV, SDPV, LSDPV,
-     &   SDRES, LSDRES, VCV, IVCV, NMSUB, SAVE, NPARE)
+     subroutine amedrv(y, n, mspec, nfac, par, npar,&
+    &   res, ldstak, ifixed, lifixd, stp, lstp, mit, stopss, stopp,&
+    &   scale, lscale, delta, ivaprx, nprt, rsd, pv, lpv, sdpv, lsdpv,&
+     &   sdres, lsdres, vcv, ivcv, nmsub, save, npare)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,67 +19,67 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   DELTA,RSD,STOPP,STOPSS
-      INTEGER
-     &   IVAPRX,IVCV,LDSTAK,LIFIXD,LPV,LSCALE,LSDPV,LSDRES,LSTP,
-     &   MIT,N,NFAC,NPAR,NPARE,NPRT
-      LOGICAL
-     &   SAVE
+     real(kind=wp) ::&
+     &   delta,rsd,stopp,stopss
+     integer&
+    &   ivaprx,ivcv,ldstak,lifixd,lpv,lscale,lsdpv,lsdres,lstp,&
+     &   mit,n,nfac,npar,npare,nprt
+     logical&
+     &   save
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),PV(*),RES(*),SCALE(*),SDPV(*),SDRES(*),STP(*),VCV(*),
-     &   Y(*)
-      INTEGER
-     &   IFIXED(*),MSPEC(4,*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+    &   par(*),pv(*),res(*),scale(*),sdpv(*),sdres(*),stp(*),vcv(*),&
+     &   y(*)
+     integer&
+     &   ifixed(*),mspec(4,*)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR,IFLAG,MBO,MBOL,MSPECT,NFACT,NPARAR,NPARDF,NPARMA,
-     &   NRESTS,PARAR,PARDF,PARMA,T,TEMP
+     integer&
+    &   ierr,iflag,mbo,mbol,mspect,nfact,nparar,npardf,nparma,&
+     &   nrests,parar,pardf,parma,t,temp
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   EXMPT
-      INTEGER
-     &   IFP,IS,ISUBHD,IXM,LDSMIN,LWT,M,NALL0,NDIGIT,NETA,NNZW,STPT
-      LOGICAL
-     &   APRXDV,HLFRPT,PAGE,PRTFXD,WEIGHT,WIDE
+     real(kind=wp) ::&
+     &   exmpt
+     integer&
+     &   ifp,is,isubhd,ixm,ldsmin,lwt,m,nall0,ndigit,neta,nnzw,stpt
+     logical&
+     &   aprxdv,hlfrpt,page,prtfxd,weight,wide
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSTAK(12),WT(1)
-      INTEGER
-     &   IPTOUT(5),ISTAK(12)
+     real(kind=wp) ::&
+     &   rstak(12),wt(1)
+     integer&
+     &   iptout(5),istak(12)
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     &   ICNTI,STKST
+     integer&
+     &   icnti,stkst
 !       EXTERNAL ICNTI,STKST
 !
 !  EXTERNAL SUBROUTINES
-!       EXTERNAL AMECNT,AMEER,AMEHDR,AMESTP,BACKOP,CPYVII,
-     &   DCOEF,DRV,LDSCMP,MDLTS1,MDLTS3,NLDRVN,PRTCNT,DCOPY,
-     &   STKCLR,STKSET,STPAMO
+       external amecnt,ameer,amehdr,amestp,backop,cpyvii,&
+    &   dcoef,drv,ldscmp,mdlts1,mdlts3,nldrvn,prtcnt,dcopy,&
+     &   stkclr,stkset,stpamo
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
-      COMMON /MDLTSC/MSPECT,NFACT,PARDF,NPARDF,PARAR,NPARAR,PARMA,
-     &   NPARMA,MBO,MBOL,T,TEMP,NRESTS,IFLAG
+      common /cstak/dstak
+      common /errchk/ierr
+     common /mdltsc/mspect,nfact,pardf,npardf,parar,nparar,parma,&
+     &   nparma,mbo,mbol,t,temp,nrests,iflag
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
+      equivalence (dstak(1),istak(1))
+      equivalence (dstak(1),rstak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -296,108 +296,108 @@
 !
 !     SET VARIOUS PROGRAM VALUES
 !
-      WEIGHT = .FALSE.
-      WT(1) = 1.0_WP
-      LWT = 1
+      weight = .false.
+      wt(1) = 1.0_wp
+      lwt = 1
 !
-      HLFRPT = .FALSE.
-      APRXDV = .TRUE.
-      PRTFXD = .TRUE.
-      EXMPT = -1.0_WP
-      NETA = 0
+      hlfrpt = .false.
+      aprxdv = .true.
+      prtfxd = .true.
+      exmpt = -1.0_wp
+      neta = 0
 !
-      WIDE = .TRUE.
-      PAGE = .FALSE.
+      wide = .true.
+      page = .false.
 !
-      NDIGIT = 5
+      ndigit = 5
 !
 !     COMPUTE BACK OPERATORS
 !
-      CALL BACKOP(MSPEC, NFAC, NPARDF, MBOL, MBO, NPARMA, NPARAR)
-      NNZW = N - NPARDF
+      call backop(mspec, nfac, npardf, mbol, mbo, nparma, nparar)
+      nnzw = n - npardf
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      NPARE = NPAR
-      IF ((IFIXED(1).GE.0) .AND. (NPAR.GE.1)) NPARE =
-     &   ICNTI(IFIXED,NPAR,0)
-      IS = 0
-      IF (STP(1).LE.0.0_WP) IS = 1
+      ierr = 0
+      npare = npar
+     if ((ifixed(1).ge.0) .and. (npar.ge.1)) npare =&
+     &   icnti(ifixed,npar,0)
+      is = 0
+      if (stp(1).le.0.0_wp) is = 1
 !
-      CALL LDSCMP(25, 0, MAX(IS*2*(N+NPAR),60+NPAR+NPARE) + 4*NFAC,
-     &   0, 0, 0, 'D', 5*MBO +
-     &   MAX(IS*(10*N+6*MBO+606),
-     &        94+4*(N+MBO+101)+NPARE*(3*NPARE+35)/2),
-     &   LDSMIN)
+     call ldscmp(25, 0, max(is*2*(n+npar),60+npar+npare) + 4*nfac,&
+    &   0, 0, 0, 'D', 5*mbo +&
+    &   max(is*(10*n+6*mbo+606),&
+    &        94+4*(n+mbo+101)+npare*(3*npare+35)/2),&
+     &   ldsmin)
 !
-      CALL AMEER(NMSUB, N, NPAR, NPARE, LDSTAK,
-     &   LDSMIN, STP, LSTP, SCALE, LSCALE, IVCV, SAVE, MSPEC, NFAC)
+     call ameer(nmsub, n, npar, npare, ldstak,&
+     &   ldsmin, stp, lstp, scale, lscale, ivcv, save, mspec, nfac)
 !
-      IF (IERR.NE.0) RETURN
+      if (ierr.ne.0) return
 !
-      CALL STKSET(LDSTAK, 4)
+      call stkset(ldstak, 4)
 !
 !     SET PRINT CONTROL VALUES
 !
-      CALL PRTCNT(NPRT, NDIGIT, IPTOUT)
+      call prtcnt(nprt, ndigit, iptout)
 !
 !     SUBDIVIDE WORKSPACE FOR STEP SIZES
 !
-      NALL0 = STKST(1)
+      nall0 = stkst(1)
 !
-      IFP = 4
+      ifp = 4
 !
-      STPT = STKGET(NPAR,IFP)
+      stpt = stkget(npar,ifp)
 !
-      PARDF = STKGET(MBO, IFP)
-      PARAR = STKGET(MBO, IFP)
-      PARMA = STKGET(MBO, IFP)
-      T = STKGET(2*MBO, IFP)
+      pardf = stkget(mbo, ifp)
+      parar = stkget(mbo, ifp)
+      parma = stkget(mbo, ifp)
+      t = stkget(2*mbo, ifp)
 !
-      TEMP = T + MBO
+      temp = t + mbo
 !
-      NFACT = NFAC
-      MSPECT = STKGET(4*NFAC, 2)
+      nfact = nfac
+      mspect = stkget(4*nfac, 2)
 !
 !     SET UP FOR MODEL
 !
-      APRXDV = .TRUE.
-      M = 1
-      IXM = N
-      NRESTS = MBO + 101 + N
+      aprxdv = .true.
+      m = 1
+      ixm = n
+      nrests = mbo + 101 + n
 !
-      CALL CPYVII(NFAC, MSPEC(1,1), 4, ISTAK(MSPECT), 1)
-      CALL CPYVII(NFAC, MSPEC(2,1), 4, ISTAK(MSPECT+NFAC), 1)
-      CALL CPYVII(NFAC, MSPEC(3,1), 4, ISTAK(MSPECT+2*NFAC), 1)
-      CALL CPYVII(NFAC, MSPEC(4,1), 4, ISTAK(MSPECT+3*NFAC), 1)
-      CALL DCOEF (NFAC, ISTAK(MSPECT+NFAC), ISTAK(MSPECT+3*NFAC),
-     &  NPARDF, RSTAK(PARDF), MBO, RSTAK(T))
+      call cpyvii(nfac, mspec(1,1), 4, istak(mspect), 1)
+      call cpyvii(nfac, mspec(2,1), 4, istak(mspect+nfac), 1)
+      call cpyvii(nfac, mspec(3,1), 4, istak(mspect+2*nfac), 1)
+      call cpyvii(nfac, mspec(4,1), 4, istak(mspect+3*nfac), 1)
+     call dcoef (nfac, istak(mspect+nfac), istak(mspect+3*nfac),&
+     &  npardf, rstak(pardf), mbo, rstak(t))
 !
 !     COPY SUPPLIED STEP SIZES TO WORK SPACE
 !
-      CALL DCOPY(LSTP, STP, 1, RSTAK(STPT), 1)
+      call dcopy(lstp, stp, 1, rstak(stpt), 1)
 !
-      IF (IERR.NE.0) GO TO 10
+      if (ierr.ne.0) go to 10
 !
 !     SELECT STEP SIZES, IF DESIRED
 !
-      ISUBHD = 1
-      IF (STP(1).LE.0.0_WP) CALL AMESTP(Y, N, M, IXM, MDLTS3, PAR, NPAR,
-     &  RSTAK(STPT), EXMPT, NETA, SCALE, LSCALE, IPTOUT(1), AMEHDR,
-     &  PAGE, WIDE, ISUBHD, HLFRPT, PRTFXD, IFIXED, LIFIXD, STPAMO,
-     &  NRESTS-N)
+      isubhd = 1
+     if (stp(1).le.0.0_wp) call amestp(y, n, m, ixm, mdlts3, par, npar,&
+    &  rstak(stpt), exmpt, neta, scale, lscale, iptout(1), amehdr,&
+    &  page, wide, isubhd, hlfrpt, prtfxd, ifixed, lifixd, stpamo,&
+     &  nrests-n)
 !
-      CALL AMECNT(Y, WT, LWT, Y, N, M, IXM, MDLTS1, NLDRVN, APRXDV, DRV,
-     &  PAR, NPAR, RES, IFIXED, LIFIXD, RSTAK(STPT), NPAR, MIT,
-     &  STOPSS, STOPP, SCALE, LSCALE, DELTA, IVAPRX, RSD, PV, LPV,
-     &  SDPV, LSDPV, SDRES, LSDRES, VCV, IVCV, WEIGHT, SAVE, NNZW,
-     &  NPARE, AMEHDR, PAGE, WIDE, IPTOUT, NDIGIT, HLFRPT, NRESTS)
+     call amecnt(y, wt, lwt, y, n, m, ixm, mdlts1, nldrvn, aprxdv, drv,&
+    &  par, npar, res, ifixed, lifixd, rstak(stpt), npar, mit,&
+    &  stopss, stopp, scale, lscale, delta, ivaprx, rsd, pv, lpv,&
+    &  sdpv, lsdpv, sdres, lsdres, vcv, ivcv, weight, save, nnzw,&
+     &  npare, amehdr, page, wide, iptout, ndigit, hlfrpt, nrests)
 !
-   10 CONTINUE
+   10 continue
 !
-      CALL STKCLR(NALL0)
+      call stkclr(nall0)
 !
-      RETURN
+      return
 !
-      END
+      end

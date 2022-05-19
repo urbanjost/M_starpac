@@ -1,14 +1,14 @@
 !DLNGAM
-      DOUBLE PRECISION FUNCTION DLNGAM (X)
+      double precision function dlngam (x)
 ! JUNE 1977 EDITION.   W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION X
+      double precision x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION DXREL,PI,SINPIY,SQ2PIL,SQPI2L,XMAX,Y
+      double precision dxrel,pi,sinpiy,sq2pil,sqpi2l,xmax,y
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH,D9LGMC,DGAMMA
@@ -18,47 +18,47 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,DSQRT,INT,LOG,SIN
+      intrinsic abs,dsqrt,int,log,sin
 !
 !
-      DATA SQ2PIL / 0.9189385332 0467274178 0329736405 62 D0 /
+      data sq2pil / 0.91893853320467274178032973640562d0 /
 ! SQ2PIL = LOG (SQRT(2*PI)),  SQPI2L = LOG(SQRT(PI/2))
-      DATA SQPI2L / +.2257913526 4472743236 3097614947 441 D+0    /
-      DATA PI / 3.1415926535 8979323846 2643383279 50 D0 /
+      data sqpi2l / +.225791352644727432363097614947441d+0    /
+      data pi / 3.14159265358979323846264338327950d0 /
 !
-      DATA XMAX, DXREL / 2*0.D0 /
+      data xmax, dxrel / 2*0.d0 /
 !
-      IF (XMAX.NE.0.D0) GO TO 10
-      XMAX = D1MACH(2)/LOG(D1MACH(2))
-      DXREL = DSQRT (D1MACH(4))
+      if (xmax.ne.0.d0) go to 10
+      xmax = d1mach(2)/log(d1mach(2))
+      dxrel = dsqrt (d1mach(4))
 !
- 10   Y = ABS (X)
-      IF (Y.GT.10.D0) GO TO 20
+ 10   y = abs (x)
+      if (y.gt.10.d0) go to 20
 !
 ! LOG (ABS (DGAMMA(X)) ) FOR ABS(X) .LE. 10.0
 !
-      DLNGAM = LOG (ABS (DGAMMA(X)) )
-      RETURN
+      dlngam = log (abs (dgamma(x)) )
+      return
 !
 ! LOG ( ABS (DGAMMA(X)) ) FOR ABS(X) .GT. 10.0
 !
- 20   IF (Y.GT.XMAX) CALL XERROR (
+20   if (y.gt.xmax) call xerror (&
      &  'DLNGAM  ABS(X) SO BIG DLNGAM OVERFLOWS', 39, 2, 2)
 !
-      IF (X.GT.0.D0) THEN
-         DLNGAM = SQ2PIL + (X-0.5D0)*LOG(X) - X + D9LGMC(Y)
-         RETURN
-      END IF
+      if (x.gt.0.d0) then
+         dlngam = sq2pil + (x-0.5d0)*log(x) - x + d9lgmc(y)
+         return
+      end if
 !
-      SINPIY = ABS (SIN(PI*Y))
-      IF (SINPIY.EQ.0.D0) CALL XERROR (
+      sinpiy = abs (sin(pi*y))
+     if (sinpiy.eq.0.d0) call xerror (&
      &  'DLNGAM  X IS A NEGATIVE INTEGER', 31, 3, 2)
 !
-      IF (ABS ((X-INT(X-0.5D0))/X).LT.DXREL) CALL XERROR (
-     &    'DLNGAM  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR NEGATIVE
+     if (abs ((x-int(x-0.5d0))/x).lt.dxrel) call xerror (&
+    &    'DLNGAM  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR NEGATIVE&
      &INTEGER', 68, 1, 1)
 !
-      DLNGAM = SQPI2L + (X-0.5D0)*LOG(Y) - X - LOG(SINPIY) - D9LGMC(Y)
-      RETURN
+      dlngam = sqpi2l + (x-0.5d0)*log(y) - x - log(sinpiy) - d9lgmc(y)
+      return
 !
-      END
+      end

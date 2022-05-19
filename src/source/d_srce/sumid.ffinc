@@ -1,5 +1,5 @@
 !SUMID
-      SUBROUTINE SUMID(X, N, XMEAN, SUMDI)
+      subroutine sumid(x, n, xmean, sumdi)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   SUMDI,XMEAN
-      INTEGER
-     &   N
+     real(kind=wp) ::&
+     &   sumdi,xmean
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(N)
+     real(kind=wp) ::&
+     &   x(n)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DIFF
-      INTEGER
-     &   I
+     real(kind=wp) ::&
+     &   diff
+     integer&
+     &   i
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -47,10 +47,10 @@
 !     REAL(KIND=WP) :: XMEAN
 !        INPUT PARAMETER.  THE MEAN OF X.
 !
-      SUMDI = 0.0_WP
-      DO 10 I=1,N
-         DIFF = X(I) - XMEAN
-         SUMDI = SUMDI + I*DIFF
-   10 CONTINUE
-      RETURN
-      END
+      sumdi = 0.0_wp
+      do 10 i=1,n
+         diff = x(i) - xmean
+         sumdi = sumdi + i*diff
+   10 continue
+      return
+      end

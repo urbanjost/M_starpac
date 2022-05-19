@@ -1,6 +1,6 @@
 !STPDRV
-      SUBROUTINE STPDRV(NMSUB, XM, N, M, IXM, MDL, PAR, NPAR, LDSTAK,
-     &   STP, NETA, EXMPT, SCALE, LSCALE, NPRT)
+     subroutine stpdrv(nmsub, xm, n, m, ixm, mdl, par, npar, ldstak,&
+     &   stp, neta, exmpt, scale, lscale, nprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,43 +18,43 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   EXMPT
-      INTEGER
-     &   IXM,LDSTAK,LSCALE,M,N,NETA,NPAR,NPRT
+     real(kind=wp) ::&
+     &   exmpt
+     integer&
+     &   ixm,ldstak,lscale,m,n,neta,npar,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),SCALE(*),STP(*),XM(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   par(*),scale(*),stp(*),xm(*)
+     character&
+     &   nmsub(6)*1
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL MDL
+       external mdl
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   ISUBHD,LIFIXD
-      LOGICAL
-     &   HLFRPT,PAGE,PRTFXD,WIDE
+     integer&
+     &   isubhd,lifixd
+     logical&
+     &   hlfrpt,page,prtfxd,wide
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   IFIXED(1)
+     integer&
+     &   ifixed(1)
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL STKSET,STPCNT,STPER,STPHDR
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -131,26 +131,26 @@
 !
 !     PERFORM ERROR CHECKING
 !
-      CALL STPER(NMSUB, N, M, IXM, NPAR, LDSTAK, SCALE, LSCALE)
+      call stper(nmsub, n, m, ixm, npar, ldstak, scale, lscale)
 !
-      IF (IERR.NE.0) RETURN
+      if (ierr.ne.0) return
 !
-      CALL STKSET(LDSTAK, 4)
+      call stkset(ldstak, 4)
 !
-      PAGE = .FALSE.
-      WIDE = .TRUE.
-      ISUBHD = 0
+      page = .false.
+      wide = .true.
+      isubhd = 0
 !
-      PRTFXD = .FALSE.
-      IFIXED(1) = -1
-      LIFIXD = 1
+      prtfxd = .false.
+      ifixed(1) = -1
+      lifixd = 1
 !
 !     PASS CONTROL OF STEP SIZE SELECTION TO SUBROUTINE STPCNT
 !
-      CALL STPCNT(XM, N, M, IXM, MDL, PAR, NPAR, STP, EXMPT, NETA,
-     &   SCALE, LSCALE, NPRT, STPHDR, PAGE, WIDE, ISUBHD, HLFRPT,
-     &   PRTFXD, IFIXED, LIFIXD)
+     call stpcnt(xm, n, m, ixm, mdl, par, npar, stp, exmpt, neta,&
+    &   scale, lscale, nprt, stphdr, page, wide, isubhd, hlfrpt,&
+     &   prtfxd, ifixed, lifixd)
 !
-      RETURN
+      return
 !
-      END
+      end

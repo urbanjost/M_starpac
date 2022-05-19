@@ -1,8 +1,8 @@
 !NLOUT
-      SUBROUTINE NLOUT(Y, WEIGHT, NNZW, WT, LWT, XM, N, M, IXM, IFIXD,
-     &   PAR, NPAR, NPARE, RES, IPTOUT, NDIGIT, PAGE, IDF, COND, RSS,
-     &   RSD, YSS, EXACT, PV, SDPV, SDRES, VCVL, LVCVL, IVCVPT, ISKULL,
-     &   NLHDR, WIDE)
+     subroutine nlout(y, weight, nnzw, wt, lwt, xm, n, m, ixm, ifixd,&
+    &   par, npar, npare, res, iptout, ndigit, page, idf, cond, rss,&
+    &   rsd, yss, exact, pv, sdpv, sdres, vcvl, lvcvl, ivcvpt, iskull,&
+     &   nlhdr, wide)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,32 +19,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   COND,RSD,RSS,YSS
-      INTEGER
-     &   IDF,IVCVPT,IXM,LVCVL,LWT,M,N,NDIGIT,NNZW,NPAR,NPARE
-      LOGICAL
-     &   EXACT,PAGE,WEIGHT,WIDE
+     real(kind=wp) ::&
+     &   cond,rsd,rss,yss
+     integer&
+     &   idf,ivcvpt,ixm,lvcvl,lwt,m,n,ndigit,nnzw,npar,npare
+     logical&
+     &   exact,page,weight,wide
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),PV(N),RES(N),SDPV(N),SDRES(N),VCVL(LVCVL),WT(LWT),
-     &   XM(IXM,M),Y(N)
-      INTEGER
-     &   IFIXD(NPAR),IPTOUT(NDIGIT),ISKULL(10)
+     real(kind=wp) ::&
+    &   par(npar),pv(n),res(n),sdpv(n),sdres(n),vcvl(lvcvl),wt(lwt),&
+     &   xm(ixm,m),y(n)
+     integer&
+     &   ifixd(npar),iptout(ndigit),iskull(10)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL NLHDR
+       external nlhdr
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM,PLL,PUL,RATIO,SDPAR,T
-      INTEGER
-     &   I,IPK,IPK2,IPRT,ISUBHD
+     real(kind=wp) ::&
+     &   fplm,pll,pul,ratio,sdpar,t
+     integer&
+     &   i,ipk,ipk2,iprt,isubhd
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -55,10 +55,10 @@
 !      EXTERNAL FITPT1,FITPT2,IPRINT,NLSKL,VCVOTF
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX,SQRT
+      intrinsic max,sqrt
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -172,163 +172,163 @@
 !        THE SUM OF SQUARES OF THE DEPENDENT VARIABLE Y.
 !
 !
-      FPLM = R1MACH(2)
+      fplm = r1mach(2)
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      IF ((IERR.GE.1) .AND. (IERR.NE.4)) GO TO 60
+      if ((ierr.ge.1) .and. (ierr.ne.4)) go to 60
 !
 !     TEST FOR EXACT FIT
 !
-      IF ((IDF.LE.0) .OR. EXACT) GO TO 70
+      if ((idf.le.0) .or. exact) go to 70
 !
 !     PRINT ERROR HEADING IF NECESSARY
 !
-      IF (IERR.EQ.4) CALL NLSKL(ISKULL, PAGE, WIDE, NLHDR)
+      if (ierr.eq.4) call nlskl(iskull, page, wide, nlhdr)
 !
 !     PRINT PRIMARY REPORT
 !
-      IF ((IERR.EQ.0) .AND. (IPTOUT(3).EQ.0)) GO TO 10
-      ISUBHD = 0
-      CALL NLHDR(PAGE, WIDE, ISUBHD)
-      CALL FITPT1(N, M, XM, Y, PV, SDPV, RES, SDRES, WT, IXM, NNZW,
-     &   WEIGHT, MAX(1, IPTOUT(3)))
+      if ((ierr.eq.0) .and. (iptout(3).eq.0)) go to 10
+      isubhd = 0
+      call nlhdr(page, wide, isubhd)
+     call fitpt1(n, m, xm, y, pv, sdpv, res, sdres, wt, ixm, nnzw,&
+     &   weight, max(1, iptout(3)))
 !
 !     PRINT STANDARDIZED RESIDUAL PLOTS
 !
-   10 IF (IPTOUT(4).EQ.0) GO TO 20
-      ISUBHD = 0
-      CALL NLHDR(PAGE, WIDE, ISUBHD)
+   10 if (iptout(4).eq.0) go to 20
+      isubhd = 0
+      call nlhdr(page, wide, isubhd)
 !
-      CALL FITPT2 (SDRES, PV, WT, N, NNZW, WEIGHT, RES, RSS)
+      call fitpt2 (sdres, pv, wt, n, nnzw, weight, res, rss)
 !
 !     PRINT THE COVARIANCE AND CORRELATION MATRIX
 !
-   20 IF ((IERR.EQ.0) .AND. (IPTOUT(5).EQ.0)) RETURN
-      ISUBHD = 0
-      CALL NLHDR(PAGE, WIDE, ISUBHD)
+   20 if ((ierr.eq.0) .and. (iptout(5).eq.0)) return
+      isubhd = 0
+      call nlhdr(page, wide, isubhd)
 !
-      IF ((IERR.EQ.0) .AND. (IPTOUT(5).LE.1)) GO TO 30
+      if ((ierr.eq.0) .and. (iptout(5).le.1)) go to 30
 !
-      CALL VCVOTF(NPARE, VCVL, LVCVL, .TRUE., NPAR, IFIXD, IVCVPT)
+      call vcvotf(npare, vcvl, lvcvl, .true., npar, ifixd, ivcvpt)
 !
 !     PRINT ANALYSIS SUMMARY
 !
-   30 WRITE (IPRT,1000)
-      WRITE (IPRT,1010)
+   30 write (iprt,1000)
+      write (iprt,1010)
 !
-      T = PPFT(0.975E0,IDF)
-      IPK = 0
-      DO 50 I=1,NPAR
+      t = ppft(0.975e0,idf)
+      ipk = 0
+      do 50 i=1,npar
 !
-         IF (IFIXD(I).EQ.0) GO TO 40
+         if (ifixd(i).eq.0) go to 40
 !
-         WRITE (IPRT,1030) I, PAR(I)
-         GO TO 50
+         write (iprt,1030) i, par(i)
+         go to 50
 !
-   40    IPK = IPK + 1
-         IPK2 = IPK*(IPK-1)/2 + IPK
-         RATIO = FPLM
-         SDPAR = SQRT(VCVL(IPK2))
-         IF (SDPAR.GT.0.0E0) RATIO = PAR(I)/SDPAR
-         PLL = PAR(I) - T*SDPAR
-         PUL = PAR(I) + T*SDPAR
-         WRITE (IPRT,1020) I, PAR(I), SDPAR, RATIO, PLL, PUL
-   50 CONTINUE
-      WRITE (IPRT,1040) RSS, RSD, NNZW, NPARE, IDF
-      WRITE (IPRT,1050) COND
+   40    ipk = ipk + 1
+         ipk2 = ipk*(ipk-1)/2 + ipk
+         ratio = fplm
+         sdpar = sqrt(vcvl(ipk2))
+         if (sdpar.gt.0.0e0) ratio = par(i)/sdpar
+         pll = par(i) - t*sdpar
+         pul = par(i) + t*sdpar
+         write (iprt,1020) i, par(i), sdpar, ratio, pll, pul
+   50 continue
+      write (iprt,1040) rss, rsd, nnzw, npare, idf
+      write (iprt,1050) cond
 !
-      IF (RSS.GT.YSS) WRITE (IPRT,1060)
+      if (rss.gt.yss) write (iprt,1060)
 !
-      RETURN
+      return
 !
 !     PRINT OUT ERROR HEADING
 !
-   60 CALL NLSKL(ISKULL, PAGE, WIDE, NLHDR)
+   60 call nlskl(iskull, page, wide, nlhdr)
 !
-      IF (IERR.LE.2) RETURN
+      if (ierr.le.2) return
 !
 !     PRINT SECONDARY REPORT
 !
-   70 CONTINUE
-      ISUBHD = 0
-      CALL NLHDR(PAGE, WIDE, ISUBHD)
-      IF (IERR.NE.0) WRITE (IPRT,1080)
-      WRITE (IPRT,1000)
-      WRITE (IPRT,1100)
-      DO 80 I=1,NPAR
-         IF (IFIXD(I).EQ.0) WRITE (IPRT,1110) I, PAR(I)
-         IF (IFIXD(I).NE.0) WRITE (IPRT,1120) I, PAR(I)
-   80 CONTINUE
-      WRITE (IPRT,1040) RSS, RSD, NNZW, NPARE, IDF
-      IF (IERR.NE.3) WRITE (IPRT,1050) COND
+   70 continue
+      isubhd = 0
+      call nlhdr(page, wide, isubhd)
+      if (ierr.ne.0) write (iprt,1080)
+      write (iprt,1000)
+      write (iprt,1100)
+      do 80 i=1,npar
+         if (ifixd(i).eq.0) write (iprt,1110) i, par(i)
+         if (ifixd(i).ne.0) write (iprt,1120) i, par(i)
+   80 continue
+      write (iprt,1040) rss, rsd, nnzw, npare, idf
+      if (ierr.ne.3) write (iprt,1050) cond
 !
-      IF ((IERR.EQ.0) .AND. (.NOT.EXACT) .AND. (IDF.LE.0)) WRITE
-     &   (IPRT,1070)
-      IF ((IERR.EQ.0) .AND. EXACT) WRITE (IPRT,1090)
+     if ((ierr.eq.0) .and. (.not.exact) .and. (idf.le.0)) write&
+     &   (iprt,1070)
+      if ((ierr.eq.0) .and. exact) write (iprt,1090)
 !
-      IF (IERR.NE.0) GO TO 100
+      if (ierr.ne.0) go to 100
 !
-      DO 90 I=1,N
-         SDRES(I) = 0.0E0
-         SDPV(I) = 0.0E0
-   90 CONTINUE
+      do 90 i=1,n
+         sdres(i) = 0.0e0
+         sdpv(i) = 0.0e0
+   90 continue
 !
-      RETURN
+      return
 !
-  100 CONTINUE
+  100 continue
 !
-      DO 110 I=1,N
-         SDRES(I) = FPLM
-         SDPV(I) = FPLM
-  110 CONTINUE
+      do 110 i=1,n
+         sdres(i) = fplm
+         sdpv(i) = fplm
+  110 continue
 !
 !     PRINT OUT ERROR EXIT STATISTICS
 !
-      CALL FITPT1(N, M, XM, Y, PV, SDPV, RES, SDRES, WT, IXM, NNZW,
-     &   WEIGHT, MAX(IPTOUT(3),1))
+     call fitpt1(n, m, xm, y, pv, sdpv, res, sdres, wt, ixm, nnzw,&
+     &   weight, max(iptout(3),1))
 !
 !
 !     WIPE OUT SDRES VECTOR
 !
-      DO 120 I=1,N
-         SDRES(I) = FPLM
-  120 CONTINUE
+      do 120 i=1,n
+         sdres(i) = fplm
+  120 continue
 !
 !     WIPE OUT VCV MATRIX
 !
-      DO 140 I=1,LVCVL
-         VCVL(I) = FPLM
-  140 CONTINUE
+      do 140 i=1,lvcvl
+         vcvl(i) = fplm
+  140 continue
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (///33H ESTIMATES FROM LEAST SQUARES FIT/1X, 33('-'))
- 1010 FORMAT (//69X, 11HAPPROXIMATE/61X, 28H95 PERCENT CONFIDENCE LIMITS
-     &   /1X, 5HINDEX, 2X, 5HFIXED, 3X, 9HPARAMETER, 8X, 9HSD OF PAR,
-     &   7X, 5HRATIO, 12X, 5HLOWER, 12X, 5HUPPER/)
- 1020 FORMAT (1X, I3, 5X, 3H NO, 2G17.8, 2X, G10.4, 2G17.8)
- 1030 FORMAT (1X, I3, 5X, 3HYES, G17.8, 10X, 3H---, 8X, 3H---, 15X,
-     &   3H---, 14X, 3H---)
- 1040 FORMAT (//31H RESIDUAL SUM OF SQUARES       , 8X, G15.7//6H RESID,
-     &   25HUAL STANDARD DEVIATION   , 8X, G15.7/19H BASED ON DEGREES O,
-     &   9HF FREEDOM, 5X, I4, 3H - , I3, 3H = , I4)
- 1050 FORMAT (/29H APPROXIMATE CONDITION NUMBER, 10X, G15.7)
- 1060 FORMAT (52H THE RESIDUAL SUM OF SQUARES AFTER THE LEAST SQUARES,
-     &   20H FIT IS GREATER THAN/35H THE SUM OF SQUARES ABOUT THE MEAN ,
-     &   19HY OBSERVATION.  THE, 14H MODEL IS LESS/17H REPRESENTATIVE O,
-     &   39HF THE DATA THAN A SIMPLE AVERAGE.  DATA, 15H AND MODEL SHOU,
-     &   2HLD/48H BE CHECKED TO BE SURE THAT THEY ARE COMPATABLE.)
- 1070 FORMAT (/49H THE DEGREES OF FREEDOM FOR THIS PROBLEM IS ZERO.,
-     &   54H  STATISTICAL ANALYSIS OF THE RESULTS IS NOT POSSIBLE.)
- 1080 FORMAT (//40H THE FOLLOWING SUMMARY SHOULD BE USED TO, 8H ANALYZE,
-     &   30H THE ABOVE MENTIONED PROBLEMS.)
- 1090 FORMAT (/50H THE LEAST SQUARES FIT OF THE DATA TO THE MODEL IS,
-     &   35H EXACT TO WITHIN MACHINE PRECISION./20H STATISTICAL ANALYSI,
-     &   33HS OF THE RESULTS IS NOT POSSIBLE.)
- 1100 FORMAT (//1X, 5HINDEX, 2X, 5HFIXED, 3X, 9HPARAMETER)
- 1110 FORMAT (1X, I3, 5X, 3H NO, G17.8)
- 1120 FORMAT (1X, I3, 5X, 3HYES, G17.8)
-      END
+ 1000 format (///33h estimates from least squares fit/1x, 33('-'))
+1010 format (//69x, 11happroximate/61x, 28h95 percent confidence limits&
+    &   /1x, 5hindex, 2x, 5hfixed, 3x, 9hparameter, 8x, 9hsd of par,&
+     &   7x, 5hratio, 12x, 5hlower, 12x, 5hupper/)
+ 1020 format (1x, i3, 5x, 3h no, 2g17.8, 2x, g10.4, 2g17.8)
+1030 format (1x, i3, 5x, 3hyes, g17.8, 10x, 3h---, 8x, 3h---, 15x,&
+     &   3h---, 14x, 3h---)
+1040 format (//31h residual sum of squares       , 8x, g15.7//6h resid,&
+    &   25hual standard deviation   , 8x, g15.7/19h based on degrees o,&
+     &   9hf freedom, 5x, i4, 3h - , i3, 3h = , i4)
+ 1050 format (/29h approximate condition number, 10x, g15.7)
+1060 format (52h the residual sum of squares after the least squares,&
+    &   20h fit is greater than/35h the sum of squares about the mean ,&
+    &   19hy observation.  the, 14h model is less/17h representative o,&
+    &   39hf the data than a simple average.  data, 15h and model shou,&
+     &   2hld/48h be checked to be sure that they are compatable.)
+1070 format (/49h the degrees of freedom for this problem is zero.,&
+     &   54h  statistical analysis of the results is not possible.)
+1080 format (//40h the following summary should be used to, 8h analyze,&
+     &   30h the above mentioned problems.)
+1090 format (/50h the least squares fit of the data to the model is,&
+    &   35h exact to within machine precision./20h statistical analysi,&
+     &   33hs of the results is not possible.)
+ 1100 format (//1x, 5hindex, 2x, 5hfixed, 3x, 9hparameter)
+ 1110 format (1x, i3, 5x, 3h no, g17.8)
+ 1120 format (1x, i3, 5x, 3hyes, g17.8)
+      end

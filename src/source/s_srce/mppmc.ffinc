@@ -1,6 +1,6 @@
 !MPPMC
-      SUBROUTINE MPPMC(YM, YMMISS, X, XMISS, N, M, IYM, ILOG, ISIZE,
-     &   NOUT, YLB, YUB, XLB, XUB)
+     subroutine mppmc(ym, ymmiss, x, xmiss, n, m, iym, ilog, isize,&
+     &   nout, ylb, yub, xlb, xub)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,36 +18,36 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XLB,XMISS,XUB,YLB,YUB
-      INTEGER
-     &   ILOG,ISIZE,IYM,M,N,NOUT
+     real(kind=wp) ::&
+     &   xlb,xmiss,xub,ylb,yub
+     integer&
+     &   ilog,isize,iym,m,n,nout
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(*),YM(*),YMMISS(*)
+     real(kind=wp) ::&
+     &   x(*),ym(*),ymmiss(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,ISCHCK,LISYM
-      LOGICAL
-     &   MISS,MULTI
+     integer&
+     &   iprt,ischck,lisym
+     logical&
+     &   miss,multi
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISYM(1)
-      CHARACTER
-     &   NMSUB(6)*1
+     integer&
+     &   isym(1)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,PPCNT
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -120,34 +120,34 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      &    /  'M',       'P',       'P',       'M',       'C',       ' '/
 !
 !     COMMENCE BODY OF ROUTINE
 !
 !     SET DEFAULT VALUES
 !
-      MULTI = .TRUE.
-      ISCHCK = 2
-      MISS = .TRUE.
-      LISYM = 1
+      multi = .true.
+      ischck = 2
+      miss = .true.
+      lisym = 1
 !
-      CALL PPCNT (YM, YMMISS, X, XMISS, N, M, IYM, MULTI, ILOG,
-     &  YLB, YUB, XLB, XUB, NMSUB, ISCHCK, ISYM, ISIZE, NOUT, MISS,
-     &  LISYM)
+     call ppcnt (ym, ymmiss, x, xmiss, n, m, iym, multi, ilog,&
+    &  ylb, yub, xlb, xub, nmsub, ischck, isym, isize, nout, miss,&
+     &  lisym)
 !
-      IF (IERR.NE.0) THEN
-        IERR = 1
-        CALL IPRINT(IPRT)
-        WRITE (IPRT,1000)
-      END IF
+      if (ierr.ne.0) then
+        ierr = 1
+        call iprint(iprt)
+        write (iprt,1000)
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   '       CALL MPPMC (YM, YMMISS, X, XMISS, N, M, IYM, ILOG,'/
+1000 format (/42h the correct form of the call statement is//&
+    &   '       CALL MPPMC (YM, YMMISS, X, XMISS, N, M, IYM, ILOG,'/&
      &   '      +            ISIZE, NOUT, YLB, YUB, XLB, XUB)')
-      END
+      end

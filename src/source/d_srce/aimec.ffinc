@@ -1,6 +1,6 @@
 !AIMEC
-      SUBROUTINE AIMEC(Y, N, MSPEC, NFAC, PAR, NPAR, RES, LDSTAK,
-     &   IFIXED, STP, MIT, STOPSS, STOPP, SCALE, DELTA, IVAPRX, NPRT)
+     subroutine aimec(y, n, mspec, nfac, par, npar, res, ldstak,&
+     &   ifixed, stp, mit, stopss, stopp, scale, delta, ivaprx, nprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,44 +17,44 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   DELTA,STOPP,STOPSS
-      INTEGER
-     &   IVAPRX,LDSTAK,MIT,N,NFAC,NPAR,NPRT
+     real(kind=wp) ::&
+     &   delta,stopp,stopss
+     integer&
+     &   ivaprx,ldstak,mit,n,nfac,npar,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),RES(*),SCALE(*),STP(*),Y(*)
-      INTEGER
-     &   IFIXED(1),MSPEC(4,*)
+     real(kind=wp) ::&
+     &   par(*),res(*),scale(*),stp(*),y(*)
+     integer&
+     &   ifixed(1),mspec(4,*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   RSD
-      INTEGER
-     &   IPRT,IVCV,LIFIXD,LPV,LSCALE,LSDPV,LSDRES,LSTP,NPARE
-      LOGICAL
-     &   SAVE
+     real(kind=wp) ::&
+     &   rsd
+     integer&
+     &   iprt,ivcv,lifixd,lpv,lscale,lsdpv,lsdres,lstp,npare
+     logical&
+     &   save
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   PV(1),SDPV(1),SDRES(1),VCV(1,1)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   pv(1),sdpv(1),sdres(1),vcv(1,1)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL AMEDRV,IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -170,41 +170,41 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
+     data nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6) /&
      &   'A','I','M','E','C',' '/
 !
 !     SET VARIOUS PROGRAM PARAMETERS
 !
-      SAVE = .FALSE.
+      save = .false.
 !
-      LIFIXD = NPAR
-      IF (IFIXED(1).LE.-1) LIFIXD = 1
-      LPV = 1
-      LSCALE = NPAR
-      IF (SCALE(1).LE.0.0_WP) LSCALE = 1
-      LSTP = NPAR
-      IF (STP(1).LE.0.0_WP) LSTP = 1
-      LSDPV = 1
-      LSDRES = 1
-      IVCV = 1
+      lifixd = npar
+      if (ifixed(1).le.-1) lifixd = 1
+      lpv = 1
+      lscale = npar
+      if (scale(1).le.0.0_wp) lscale = 1
+      lstp = npar
+      if (stp(1).le.0.0_wp) lstp = 1
+      lsdpv = 1
+      lsdres = 1
+      ivcv = 1
 !
-      CALL AMEDRV(Y, N, MSPEC, NFAC, PAR, NPAR, RES,
-     &   LDSTAK, IFIXED, LIFIXD, STP, LSTP, MIT, STOPSS, STOPP, SCALE,
-     &   LSCALE, DELTA, IVAPRX, NPRT, RSD, PV, LPV, SDPV, LSDPV, SDRES,
-     &   LSDRES, VCV, IVCV, NMSUB, SAVE, NPARE)
+     call amedrv(y, n, mspec, nfac, par, npar, res,&
+    &   ldstak, ifixed, lifixd, stp, lstp, mit, stopss, stopp, scale,&
+    &   lscale, delta, ivaprx, nprt, rsd, pv, lpv, sdpv, lsdpv, sdres,&
+     &   lsdres, vcv, ivcv, nmsub, save, npare)
 !
-      IF (IERR.NE.1) RETURN
+      if (ierr.ne.1) return
 !
 !     PRINT PROPER CALL SEQUENCE
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
-      RETURN
+      call iprint(iprt)
+      write (iprt,1000)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/' THE CORRECT FORM OF THE CALL STATEMENT IS'//
-     &  '       CALL AIMEC (Y, N, MSPEC, NFAC, PAR, NPAR, RES, LDSTAK,'/
-     &  '      +            IFIXED, STP, MIT, STOPSS, STOPP, SCALE,'/
+1000 format (/' THE CORRECT FORM OF THE CALL STATEMENT IS'//&
+    &  '       CALL AIMEC (Y, N, MSPEC, NFAC, PAR, NPAR, RES, LDSTAK,'/&
+    &  '      +            IFIXED, STP, MIT, STOPSS, STOPP, SCALE,'/&
      &  '      +            DELTA, IVAPRX, NPRT)')
-      END
+      end

@@ -1,5 +1,5 @@
 !CNTR
-      SUBROUTINE CNTR (Y, N, YC)
+      subroutine cntr (y, n, yc)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,18 +16,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*),YC(*)
+     real(kind=wp) ::&
+     &   y(*),yc(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   YMEAN
-      INTEGER
-     &   I
+     real(kind=wp) ::&
+     &   ymean
+     integer&
+     &   i
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL AMEAN
@@ -45,12 +45,12 @@
 !     REAL(KIND=WP) :: YMEAN
 !        THE MEAN OF THE INPUT SERIES.
 !
-      CALL AMEAN (Y, N, YMEAN)
+      call amean (y, n, ymean)
 !
-      DO 10 I = 1, N
-         YC(I) = Y(I) - YMEAN
-   10 CONTINUE
+      do 10 i = 1, n
+         yc(i) = y(i) - ymean
+   10 continue
 !
-      RETURN
+      return
 !
-      END
+      end

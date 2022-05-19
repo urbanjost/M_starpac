@@ -1,5 +1,5 @@
 !J4SAVE
-      INTEGER FUNCTION J4SAVE(IWHICH,IVALUE,ISET)
+      integer function j4save(iwhich,ivalue,iset)
 !
 !     ABSTRACT
 !        J4SAVE SAVES AND RECALLS SEVERAL GLOBAL VARIABLES NEEDED
@@ -38,16 +38,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER IVALUE,IWHICH
-      LOGICAL ISET
+      integer ivalue,iwhich
+      logical iset
 !
 !  LOCAL ARRAYS
-      INTEGER IPARAM(9)
+      integer iparam(9)
 !
-      DATA IPARAM(1),IPARAM(2),IPARAM(3),IPARAM(4)/0,1,0,10/
-      DATA IPARAM(5)/1/
-      DATA IPARAM(6),IPARAM(7),IPARAM(8),IPARAM(9)/0,0,0,0/
-      J4SAVE = IPARAM(IWHICH)
-      IF (ISET) IPARAM(IWHICH) = IVALUE
-      RETURN
-      END
+      data iparam(1),iparam(2),iparam(3),iparam(4)/0,1,0,10/
+      data iparam(5)/1/
+      data iparam(6),iparam(7),iparam(8),iparam(9)/0,0,0,0/
+      j4save = iparam(iwhich)
+      if (iset) iparam(iwhich) = ivalue
+      return
+      end

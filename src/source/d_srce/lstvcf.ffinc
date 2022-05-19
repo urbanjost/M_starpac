@@ -1,5 +1,5 @@
 !LSTVCF
-      SUBROUTINE LSTVCF(N, VEC, LMASK, MASK)
+      subroutine lstvcf(n, vec, lmask, mask)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,22 +18,22 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LMASK,N
+     integer&
+     &   lmask,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   VEC(N)
-      INTEGER
-     &   MASK(LMASK)
+     real(kind=wp) ::&
+     &   vec(n)
+     integer&
+     &   mask(lmask)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IMASK,IMAX,IMIN,INDEX,IPRT,J,JMAX,NPERL
+     integer&
+     &   i,imask,imax,imin,index,iprt,j,jmax,nperl
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   INDW(10)
+     integer&
+     &   indw(10)
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -44,7 +44,7 @@
 !      EXTERNAL IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -76,38 +76,38 @@
 !     REAL(KIND=WP) :: VEC(N)
 !        THE VECTOR OF VALUES TO BE PRINTED.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      NPERL = INPERL(0)
+      nperl = inperl(0)
 !        NOTE - INPERL(0) IS ASSUMED TO BE AT MOST 10.0_WP  IF GREATER,
 !               INCREASE THE DIMENSION OF INDW.
 !
 !
-      IMASK = 0
-      DO 30 I = 1, N, NPERL
-         IMIN = I
-         IMAX = MIN(I+NPERL-1, N)
-         JMAX = MIN(N - IMIN + 1, NPERL)
-         DO 20 J = 1, JMAX
-   10       IF (IMASK .GE. LMASK) GO TO 40
-            IMASK = IMASK + 1
-            IF (MASK(IMASK) .NE. 0) GO TO 10
-            INDW(J) = IMASK
-   20    CONTINUE
-         WRITE(IPRT, 1010) (INDW(INDEX), INDEX = 1, JMAX)
-         WRITE(IPRT, 1020) (VEC(INDEX), INDEX = IMIN, IMAX)
-   30 CONTINUE
+      imask = 0
+      do 30 i = 1, n, nperl
+         imin = i
+         imax = min(i+nperl-1, n)
+         jmax = min(n - imin + 1, nperl)
+         do 20 j = 1, jmax
+   10       if (imask .ge. lmask) go to 40
+            imask = imask + 1
+            if (mask(imask) .ne. 0) go to 10
+            indw(j) = imask
+   20    continue
+         write(iprt, 1010) (indw(index), index = 1, jmax)
+         write(iprt, 1020) (vec(index), index = imin, imax)
+   30 continue
 !
-      RETURN
+      return
 !
-   40 WRITE (IPRT, 1030)
-      RETURN
+   40 write (iprt, 1030)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT(10X, 5HINDEX, I5, 6I15)
- 1020 FORMAT(10X, 5HVALUE, 7(1X, G14.7)/)
- 1030 FORMAT (/47H ERROR IN STARPAC.  LSTVEC TRIED TO ACCESS MORE,
-     &   29H ELEMENTS THAN EXIST IN MASK.)
+ 1010 format(10x, 5hindex, i5, 6i15)
+ 1020 format(10x, 5hvalue, 7(1x, g14.7)/)
+1030 format (/47h error in starpac.  lstvec tried to access more,&
+     &   29h elements than exist in mask.)
 !
-      END
+      end

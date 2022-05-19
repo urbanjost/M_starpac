@@ -1,5 +1,5 @@
 !HPFLT
-      SUBROUTINE HPFLT (HLP, K, HHP)
+      subroutine hpflt (hlp, k, hhp)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,16 +16,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   K
+     integer&
+     &   k
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   HHP(K),HLP(K)
+     real(kind=wp) ::&
+     &   hhp(k),hlp(k)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,KMID
+     integer&
+     &   i,kmid
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -42,13 +42,13 @@
 !     INTEGER KMID
 !        THE MIDPOINT OF THE FILTER.
 !
-      DO 20 I = 1, K
-         HHP(I) = -HLP(I)
-   20 CONTINUE
+      do 20 i = 1, k
+         hhp(i) = -hlp(i)
+   20 continue
 !
-      KMID = (K + 1) / 2
+      kmid = (k + 1) / 2
 !
-      HHP(KMID) = HHP(KMID) + 1.0_WP
+      hhp(kmid) = hhp(kmid) + 1.0_wp
 !
-      RETURN
-      END
+      return
+      end

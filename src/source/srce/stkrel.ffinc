@@ -1,5 +1,5 @@
 !STKREL
-      SUBROUTINE STKREL(NUMBER)
+      subroutine stkrel(number)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -25,38 +25,38 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   NUMBER
+     integer&
+     &   number
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IN,IPRT,LBOOK,LMAX,LNOW,LOUT,LUSED
+     integer&
+     &   in,iprt,lbook,lmax,lnow,lout,lused
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISTAK(12)
+     integer&
+     &   istak(12)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (ISTAK(1),LOUT)
-      EQUIVALENCE (ISTAK(2),LNOW)
-      EQUIVALENCE (ISTAK(3),LUSED)
-      EQUIVALENCE (ISTAK(4),LMAX)
-      EQUIVALENCE (ISTAK(5),LBOOK)
+      equivalence (dstak(1),istak(1))
+      equivalence (istak(1),lout)
+      equivalence (istak(2),lnow)
+      equivalence (istak(3),lused)
+      equivalence (istak(4),lmax)
+      equivalence (istak(5),lbook)
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -87,48 +87,48 @@
 !        THE NUMBER OF ALLOCATIONS TO BE FREED FROM THE STACK.
 !
 !
-      IF (LNOW.LT.LBOOK.OR.LNOW.GT.LUSED.OR.LUSED.GT.LMAX) GO TO 20
+      if (lnow.lt.lbook.or.lnow.gt.lused.or.lused.gt.lmax) go to 20
 !
-      IN = NUMBER
- 10      IF (IN.EQ.0) RETURN
+      in = number
+ 10      if (in.eq.0) return
 !
-         IF (LNOW.LE.LBOOK) GO TO 30
+         if (lnow.le.lbook) go to 30
 !
 !     CHECK TO MAKE SURE THE BACK POINTERS ARE MONOTONE.
 !
-         IF (ISTAK(LNOW).LT.LBOOK.OR.ISTAK(LNOW).GE.LNOW-1) GO TO 40
+         if (istak(lnow).lt.lbook.or.istak(lnow).ge.lnow-1) go to 40
 !
-         LOUT = LOUT-1
-         LNOW = ISTAK(LNOW)
-         IN = IN-1
-         GO TO 10
+         lout = lout-1
+         lnow = istak(lnow)
+         in = in-1
+         go to 10
 !
 !     PRINT ERROR MESSAGES
 !
-   20 IERR = 1
-      CALL IPRINT(IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+   20 ierr = 1
+      call iprint(iprt)
+      write (iprt, 1000)
+      return
 !
-   30 IERR = 1
-      CALL IPRINT(IPRT)
-      WRITE (IPRT, 1010)
-      RETURN
+   30 ierr = 1
+      call iprint(iprt)
+      write (iprt, 1010)
+      return
 !
-   40 IERR = 1
-      CALL IPRINT(IPRT)
-      WRITE (IPRT, 1020) LOUT
-      RETURN
+   40 ierr = 1
+      call iprint(iprt)
+      write (iprt, 1020) lout
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (///18H ***** ERROR *****//
-     &   50H DSTAK BOOKKEEPING ELEMENTS HAVE BEEN OVERWRITTEN.)
- 1010 FORMAT (///18H ***** ERROR *****//
-     &   52H ATTEMPT HAS BEEN MADE TO DE-ALLOCATE A NON-EXISTANT,
-     &   21H ALLOCATION IN DSTAK.)
- 1020 FORMAT (///18H ***** ERROR *****//
-     &   35H THE POINTER FOR ALLOCATION NUMBER , I3, 9H HAS BEEN,
-     &   13H OVERWRITTEN.)
+1000 format (///18h ***** error *****//&
+     &   50h dstak bookkeeping elements have been overwritten.)
+1010 format (///18h ***** error *****//&
+    &   52h attempt has been made to de-allocate a non-existant,&
+     &   21h allocation in dstak.)
+1020 format (///18h ***** error *****//&
+    &   35h the pointer for allocation number , i3, 9h has been,&
+     &   13h overwritten.)
 !
-      END
+      end

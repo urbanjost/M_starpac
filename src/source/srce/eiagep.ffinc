@@ -1,6 +1,6 @@
 !EIAGEP
-      SUBROUTINE EIAGEP (NMSUB, NMVAR, YMMN, NVMX, HEAD, MSGTYP, NV,
-     &   NMMIN)
+     subroutine eiagep (nmsub, nmvar, ymmn, nvmx, head, msgtyp, nv,&
+     &   nmmin)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,18 +16,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   MSGTYP,NV,NVMX,YMMN
-      LOGICAL
-     &   HEAD
+     integer&
+     &   msgtyp,nv,nvmx,ymmn
+     logical&
+     &   head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     character&
+     &   nmmin(8)*1,nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -62,49 +62,49 @@
 !     INTEGER YMMN
 !        THE MINIMUM ACCEPTABLE VALUE.
 !
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
+      call iprint(iprt)
+      call ehdr(nmsub, head)
 !
-      IF (MSGTYP.LE.2)
-     &   WRITE (IPRT, 1000) (NMVAR(I),I=1,6), YMMN, NV
-      IF (MSGTYP.GE.3)
-     &   WRITE (IPRT, 1005) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8), NV
+     if (msgtyp.le.2)&
+     &   write (iprt, 1000) (nmvar(i),i=1,6), ymmn, nv
+     if (msgtyp.ge.3)&
+     &   write (iprt, 1005) (nmvar(i),i=1,6), (nmmin(i),i=1,8), nv
 !
-      GO TO (10, 20, 30, 40), MSGTYP
+      go to (10, 20, 30, 40), msgtyp
 !
-   10 WRITE(IPRT, 1010) (NMVAR(I),I=1,6), YMMN
-      RETURN
+   10 write(iprt, 1010) (nmvar(i),i=1,6), ymmn
+      return
 !
-   20 WRITE(IPRT, 1020) (NMVAR(I),I=1,6), YMMN, NVMX
-      RETURN
+   20 write(iprt, 1020) (nmvar(i),i=1,6), ymmn, nvmx
+      return
 !
-   30 WRITE(IPRT, 1030) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8)
-      RETURN
+   30 write(iprt, 1030) (nmvar(i),i=1,6), (nmmin(i),i=1,8)
+      return
 !
-   40 WRITE(IPRT, 1040) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8), NVMX
-      RETURN
+   40 write(iprt, 1040) (nmvar(i),i=1,6), (nmmin(i),i=1,8), nvmx
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/
-     &   31H THE NUMBER OF VALUES IN ARRAY , 6A1,
-     &   ' LESS THAN ', I5, 4H IS , I6, '.')
- 1005 FORMAT (/
-     &   31H THE NUMBER OF VALUES IN ARRAY , 6A1,
-     &   ' LESS THAN ', 8A1, 4H IS , I6, '.')
- 1010 FORMAT(
-     &   25H THE VALUES IN THE ARRAY , 6A1,
-     &   ' MUST ALL BE GREATER THAN OR EQUAL TO ', I5, '.')
- 1020 FORMAT(
-     &   35H THE NUMBER OF VALUES IN THE ARRAY , 6A1,
-     &   ' LESS THAN ', 8A1/
-     &   19H MUST BE LESS THAN , I5, '.')
- 1030 FORMAT(
-     &   25H THE VALUES IN THE ARRAY , 6A1,
-     &   ' MUST ALL BE GREATER THAN OR EQUAL TO ', I5, '.')
- 1040 FORMAT(
-     &   35H THE NUMBER OF VALUES IN THE ARRAY , 6A1,
-     &   ' LESS THAN ', 8A1/
-     &   19H MUST BE LESS THAN , I5, '.')
+1000 format (/&
+    &   31h the number of values in array , 6a1,&
+     &   ' LESS THAN ', i5, 4h is , i6, '.')
+1005 format (/&
+    &   31h the number of values in array , 6a1,&
+     &   ' LESS THAN ', 8a1, 4h is , i6, '.')
+1010 format(&
+    &   25h the values in the array , 6a1,&
+     &   ' MUST ALL BE GREATER THAN OR EQUAL TO ', i5, '.')
+1020 format(&
+    &   35h the number of values in the array , 6a1,&
+    &   ' LESS THAN ', 8a1/&
+     &   19h must be less than , i5, '.')
+1030 format(&
+    &   25h the values in the array , 6a1,&
+     &   ' MUST ALL BE GREATER THAN OR EQUAL TO ', i5, '.')
+1040 format(&
+    &   35h the number of values in the array , 6a1,&
+    &   ' LESS THAN ', 8a1/&
+     &   19h must be less than , i5, '.')
 !
-      END
+      end

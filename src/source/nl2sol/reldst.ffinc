@@ -11,17 +11,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
+     integer&
      &   p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   d(p),x(p),x0(p)
 !
 !  LOCAL SCALARS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   emax,t,xmax,zero
-      integer
+     integer&
      &   i
 !
 !  INTRINSIC FUNCTIONS

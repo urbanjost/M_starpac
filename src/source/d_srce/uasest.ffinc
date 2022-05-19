@@ -1,6 +1,6 @@
 !UASEST
-      SUBROUTINE UASEST (IAR, VAR, PHI, NF, FREQ, DELTA, SPCA, LPHI,
-     &   ISPC)
+     subroutine uasest (iar, var, phi, nf, freq, delta, spca, lphi,&
+     &   ispc)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,26 +17,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   DELTA,VAR
-      INTEGER
-     &   IAR,ISPC,LPHI,NF
+     real(kind=wp) ::&
+     &   delta,var
+     integer&
+     &   iar,ispc,lphi,nf
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FREQ(NF),PHI(LPHI),SPCA(ISPC)
+     real(kind=wp) ::&
+     &   freq(nf),phi(lphi),spca(ispc)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ARG,EI,ER,EXI,EXR,EXRTMP,PI,TI,TR
-      INTEGER
-     &   I,J
+     real(kind=wp) ::&
+     &   arg,ei,er,exi,exr,exrtmp,pi,ti,tr
+     integer&
+     &   i,j
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC COS,SIN
+      intrinsic cos,sin
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -75,44 +75,44 @@
 !     REAL(KIND=WP) :: VAR
 !        THE ONE STEP PREDICTION VARIANCE FOR THE SELECTED ORDER (IAR).
 !
-      CALL GETPI(PI)
+      call getpi(pi)
 !
-      DO 20 J=1,NF
-         SPCA(J) = DELTA * VAR
-         IF (IAR.GE.1) THEN
-            IF (DELTA.EQ.1.0_WP) THEN
-               IF (FREQ(J).EQ.0.0_WP) THEN
-                  ER = 1.0_WP
-                  EI = 0.0_WP
-               ELSE IF (FREQ(J).EQ.0.25_WP) THEN
-                  ER = 0.0_WP
-                  EI = 1.0_WP
-               ELSE IF (FREQ(J).EQ.0.5_WP) THEN
-                  ER = -1.0_WP
-                  EI = 0.0_WP
-               ELSE
-                  ARG = 2.0_WP * PI * DELTA * FREQ(J)
-                  ER = COS(ARG)
-                  EI = SIN(ARG)
-               END IF
-            ELSE
-               ARG = 2.0_WP * PI * DELTA * FREQ(J)
-               ER = COS(ARG)
-               EI = SIN(ARG)
-            END IF
-            EXR = 1.0_WP
-            EXI = 0.0_WP
-            TR = 1.0_WP
-            TI = 0.0_WP
-            DO 10 I=1,IAR
-               EXRTMP = EXR*ER - EXI*EI
-               EXI = EXR*EI + EXI*ER
-               EXR = EXRTMP
-               TR = TR - PHI(I) * EXR
-               TI = TI - PHI(I) * EXI
-   10       CONTINUE
-            SPCA(J) = SPCA(J)/(TR*TR + TI*TI)
-         END IF
-   20 CONTINUE
-      RETURN
-      END
+      do 20 j=1,nf
+         spca(j) = delta * var
+         if (iar.ge.1) then
+            if (delta.eq.1.0_wp) then
+               if (freq(j).eq.0.0_wp) then
+                  er = 1.0_wp
+                  ei = 0.0_wp
+               else if (freq(j).eq.0.25_wp) then
+                  er = 0.0_wp
+                  ei = 1.0_wp
+               else if (freq(j).eq.0.5_wp) then
+                  er = -1.0_wp
+                  ei = 0.0_wp
+               else
+                  arg = 2.0_wp * pi * delta * freq(j)
+                  er = cos(arg)
+                  ei = sin(arg)
+               end if
+            else
+               arg = 2.0_wp * pi * delta * freq(j)
+               er = cos(arg)
+               ei = sin(arg)
+            end if
+            exr = 1.0_wp
+            exi = 0.0_wp
+            tr = 1.0_wp
+            ti = 0.0_wp
+            do 10 i=1,iar
+               exrtmp = exr*er - exi*ei
+               exi = exr*ei + exi*er
+               exr = exrtmp
+               tr = tr - phi(i) * exr
+               ti = ti - phi(i) * exi
+   10       continue
+            spca(j) = spca(j)/(tr*tr + ti*ti)
+         end if
+   20 continue
+      return
+      end

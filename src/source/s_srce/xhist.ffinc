@@ -1,5 +1,5 @@
 !XHIST
-      SUBROUTINE XHIST(LDSTAK,typ)
+      subroutine xhist(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -17,35 +17,35 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   YLB,YUB
-      INTEGER
-     &   I,IPRT,LDSMIN,N,NCELL,NCONST,NPRTOF,NPRTON
+     real(kind=wp) ::&
+     &   ylb,yub
+     integer&
+     &   i,iprt,ldsmin,n,ncell,nconst,nprtof,nprton
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   Y(84),YCONST(10),YLONG(200),YPATH(10)
+     real(kind=wp) ::&
+     &   y(84),yconst(10),ylong(200),ypath(10)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL HIST,HISTC,IPRINT,LDSCMP,NRAND
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ANINT,LOG10,MIN,NINT,REAL
+      intrinsic anint,log10,min,nint,real
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -91,197 +91,197 @@
 !
 !     DATA INITIALIZATIONS.
 !
-      DATA N /84/
-      DATA NCONST /10/
-      DATA NPRTON /1/
-      DATA NPRTOF /0/
-      DATA NCELL/10/
-      DATA YLB/0.60E0/, YUB/0.63E0/
+      data n /84/
+      data nconst /10/
+      data nprton /1/
+      data nprtof /0/
+      data ncell/10/
+      data ylb/0.60e0/, yub/0.63e0/
 !
 !     DAVIS-HARRISON R.H. DATA, PIKES PEAK.
 !
 !     THIS IS AN ARBITRARILY CHOSEN DATA SET.
 !
-      DATA Y( 1), Y( 2), Y( 3), Y( 4)
-     &    / 0.6067E0, 0.6087E0, 0.6086E0, 0.6134E0/
-      DATA Y( 5), Y( 6), Y( 7)
-     &    / 0.6108E0, 0.6138E0, 0.6125E0/
-      DATA Y( 8), Y( 9), Y(10), Y(11)
-     &    / 0.6122E0, 0.6110E0, 0.6104E0, 0.7213E0/
-      DATA Y(12), Y(13), Y(14)
-     &    / 0.7078E0, 0.7021E0, 0.7004E0/
-      DATA Y(15), Y(16), Y(17), Y(18)
-     &    / 0.6981E0, 0.7242E0, 0.7268E0, 0.7418E0/
-      DATA Y(19), Y(20), Y(21)
-     &    / 0.7407E0, 0.7199E0, 0.6225E0/
-      DATA Y(22), Y(23), Y(24), Y(25)
-     &    / 0.6254E0, 0.6252E0, 0.6267E0, 0.6218E0/
-      DATA Y(26), Y(27), Y(28)
-     &    / 0.6178E0, 0.6216E0, 0.6192E0/
-      DATA Y(29), Y(30), Y(31), Y(32)
-     &    / 0.6191E0, 0.6250E0, 0.6188E0, 0.6233E0/
-      DATA Y(33), Y(34), Y(35)
-     &    / 0.6225E0, 0.6204E0, 0.6207E0/
-      DATA Y(36), Y(37), Y(38), Y(39)
-     &    / 0.6168E0, 0.6141E0, 0.6291E0, 0.6231E0/
-      DATA Y(40), Y(41), Y(42)
-     &    / 0.6222E0, 0.6252E0, 0.6308E0/
-      DATA Y(43), Y(44), Y(45), Y(46)
-     &    / 0.6376E0, 0.6330E0, 0.6303E0, 0.6301E0/
-      DATA Y(47), Y(48), Y(49)
-     &    / 0.6390E0, 0.6423E0, 0.6300E0/
-      DATA Y(50), Y(51), Y(52), Y(53)
-     &    / 0.6260E0, 0.6292E0, 0.6298E0, 0.6290E0/
-      DATA Y(54), Y(55), Y(56)
-     &    / 0.6262E0, 0.5952E0, 0.5951E0/
-      DATA Y(57), Y(58), Y(59), Y(60)
-     &    / 0.6314E0, 0.6440E0, 0.6439E0, 0.6326E0/
-      DATA Y(61), Y(62), Y(63)
-     &    / 0.6392E0, 0.6417E0, 0.6412E0/
-      DATA Y(64), Y(65), Y(66), Y(67)
-     &    / 0.6530E0, 0.6411E0, 0.6355E0, 0.6344E0/
-      DATA Y(68), Y(69), Y(70)
-     &    / 0.6623E0, 0.6276E0, 0.6307E0/
-      DATA Y(71), Y(72), Y(73), Y(74)
-     &    / 0.6354E0, 0.6197E0, 0.6153E0, 0.6340E0/
-      DATA Y(75), Y(76), Y(77)
-     &    / 0.6338E0, 0.6284E0, 0.6162E0/
-      DATA Y(78), Y(79), Y(80), Y(81)
-     &    / 0.6252E0, 0.6349E0, 0.6344E0, 0.6361E0/
-      DATA Y(82), Y(83), Y(84)
-     &    / 0.6373E0, 0.6337E0, 0.6383E0/
+     data y( 1), y( 2), y( 3), y( 4)&
+     &    / 0.6067e0, 0.6087e0, 0.6086e0, 0.6134e0/
+     data y( 5), y( 6), y( 7)&
+     &    / 0.6108e0, 0.6138e0, 0.6125e0/
+     data y( 8), y( 9), y(10), y(11)&
+     &    / 0.6122e0, 0.6110e0, 0.6104e0, 0.7213e0/
+     data y(12), y(13), y(14)&
+     &    / 0.7078e0, 0.7021e0, 0.7004e0/
+     data y(15), y(16), y(17), y(18)&
+     &    / 0.6981e0, 0.7242e0, 0.7268e0, 0.7418e0/
+     data y(19), y(20), y(21)&
+     &    / 0.7407e0, 0.7199e0, 0.6225e0/
+     data y(22), y(23), y(24), y(25)&
+     &    / 0.6254e0, 0.6252e0, 0.6267e0, 0.6218e0/
+     data y(26), y(27), y(28)&
+     &    / 0.6178e0, 0.6216e0, 0.6192e0/
+     data y(29), y(30), y(31), y(32)&
+     &    / 0.6191e0, 0.6250e0, 0.6188e0, 0.6233e0/
+     data y(33), y(34), y(35)&
+     &    / 0.6225e0, 0.6204e0, 0.6207e0/
+     data y(36), y(37), y(38), y(39)&
+     &    / 0.6168e0, 0.6141e0, 0.6291e0, 0.6231e0/
+     data y(40), y(41), y(42)&
+     &    / 0.6222e0, 0.6252e0, 0.6308e0/
+     data y(43), y(44), y(45), y(46)&
+     &    / 0.6376e0, 0.6330e0, 0.6303e0, 0.6301e0/
+     data y(47), y(48), y(49)&
+     &    / 0.6390e0, 0.6423e0, 0.6300e0/
+     data y(50), y(51), y(52), y(53)&
+     &    / 0.6260e0, 0.6292e0, 0.6298e0, 0.6290e0/
+     data y(54), y(55), y(56)&
+     &    / 0.6262e0, 0.5952e0, 0.5951e0/
+     data y(57), y(58), y(59), y(60)&
+     &    / 0.6314e0, 0.6440e0, 0.6439e0, 0.6326e0/
+     data y(61), y(62), y(63)&
+     &    / 0.6392e0, 0.6417e0, 0.6412e0/
+     data y(64), y(65), y(66), y(67)&
+     &    / 0.6530e0, 0.6411e0, 0.6355e0, 0.6344e0/
+     data y(68), y(69), y(70)&
+     &    / 0.6623e0, 0.6276e0, 0.6307e0/
+     data y(71), y(72), y(73), y(74)&
+     &    / 0.6354e0, 0.6197e0, 0.6153e0, 0.6340e0/
+     data y(75), y(76), y(77)&
+     &    / 0.6338e0, 0.6284e0, 0.6162e0/
+     data y(78), y(79), y(80), y(81)&
+     &    / 0.6252e0, 0.6349e0, 0.6344e0, 0.6361e0/
+     data y(82), y(83), y(84)&
+     &    / 0.6373e0, 0.6337e0, 0.6383e0/
 !
 !     DEFINE IPRT, THE CURRENT OUTPUT UNIT.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     CHECK FOR SUFFICIENT WORK AREA LENGTH.
 !
-      IF (LDSTAK.LT.300) THEN
-        WRITE (IPRT, 1000)
-         RETURN
-      END IF
+      if (ldstak.lt.300) then
+        write (iprt, 1000)
+         return
+      end if
 !
-      DO 20 I=1,NCONST
-         YCONST(I) = 1.0E0
-   20 CONTINUE
+      do 20 i=1,nconst
+         yconst(i) = 1.0e0
+   20 continue
 !
 !     HEADING.
 !
-      WRITE (IPRT,1150)
+      write (iprt,1150)
 !
 !     TEST 1.  CHECK ALL ERROR MESSAGES.
 !
-      WRITE (IPRT,1160)
+      write (iprt,1160)
 !
 !     ERROR 1, ZERO OR FEWER ELEMENTS.
 !
-      WRITE (IPRT,1180)
-      CALL HIST(Y, 0, LDSTAK)
-      WRITE (IPRT, 1350)
-      WRITE (IPRT, 1360) (Y(I), I = 1, N)
-      WRITE (IPRT,1170) IERR
-      CALL HISTC(Y, 0, NCELL, YLB, YUB, LDSTAK)
-      WRITE (IPRT, 1350)
-      WRITE (IPRT, 1360) (Y(I), I = 1, N)
-      WRITE (IPRT,1170) IERR
+      write (iprt,1180)
+      call hist(y, 0, ldstak)
+      write (iprt, 1350)
+      write (iprt, 1360) (y(i), i = 1, n)
+      write (iprt,1170) ierr
+      call histc(y, 0, ncell, ylb, yub, ldstak)
+      write (iprt, 1350)
+      write (iprt, 1360) (y(i), i = 1, n)
+      write (iprt,1170) ierr
 !
 !     ERROR 2, NOT ENOUGH SPACE IN CSTAK.
 !
-      WRITE (IPRT,1190)
-      CALL LDSCMP(2, 0, N, 0, 0, 0, 'S',
-     &            MIN(NINT(5.5+1.5*ANINT(LOG10(REAL(N)))),25),LDSMIN)
-      CALL HIST(Y, N, LDSMIN-1)
-      WRITE (IPRT,1170) IERR
-      WRITE (IPRT,1195)
-      CALL HIST(Y, N, LDSMIN)
-      WRITE (IPRT,1170) IERR
-      WRITE (IPRT,1190)
-      CALL LDSCMP(2, 0, N, 0, 0, 0, 'S', NCELL, LDSMIN)
-      CALL HISTC(Y, N, NCELL, YLB, YUB, LDSMIN-1)
-      WRITE (IPRT,1170) IERR
-      WRITE (IPRT,1195)
-      CALL HISTC(Y, N, NCELL, YLB, YUB, LDSMIN)
-      WRITE (IPRT,1170) IERR
+      write (iprt,1190)
+     call ldscmp(2, 0, n, 0, 0, 0, 'S',&
+     &            min(nint(5.5+1.5*anint(log10(real(n)))),25),ldsmin)
+      call hist(y, n, ldsmin-1)
+      write (iprt,1170) ierr
+      write (iprt,1195)
+      call hist(y, n, ldsmin)
+      write (iprt,1170) ierr
+      write (iprt,1190)
+      call ldscmp(2, 0, n, 0, 0, 0, 'S', ncell, ldsmin)
+      call histc(y, n, ncell, ylb, yub, ldsmin-1)
+      write (iprt,1170) ierr
+      write (iprt,1195)
+      call histc(y, n, ncell, ylb, yub, ldsmin)
+      write (iprt,1170) ierr
 !
 !     CONSTANT Y. (NOT AN ERROR)
 !
-      WRITE (IPRT,1200)
-      CALL HIST(YCONST, NCONST, LDSTAK)
-      WRITE (IPRT,1170) IERR
-      WRITE (IPRT,1200)
-      CALL HISTC(YCONST, NCONST, NCELL, YLB, YUB, LDSTAK)
-      WRITE (IPRT,1170) IERR
+      write (iprt,1200)
+      call hist(yconst, nconst, ldstak)
+      write (iprt,1170) ierr
+      write (iprt,1200)
+      call histc(yconst, nconst, ncell, ylb, yub, ldstak)
+      write (iprt,1170) ierr
 !
 !     ERROR 4, NO DATA WITHIN USER SUPPLIED LIMITS
 !
-      WRITE (IPRT, 1110)
-      CALL HISTC(Y, N, 0, 4.0E0, 10.0E0, LDSTAK)
-      WRITE (IPRT, 1170) IERR
+      write (iprt, 1110)
+      call histc(y, n, 0, 4.0e0, 10.0e0, ldstak)
+      write (iprt, 1170) ierr
 !
 !     TEST 2.  MAKE A WORKING RUN OF EACH ROUTINE TO CHECK
 !     THE OUTPUT.
 !
-      WRITE (IPRT,1300)
-      WRITE (IPRT,1310)
-      CALL HIST(Y, N, LDSTAK)
-      WRITE (IPRT, 1350)
-      WRITE (IPRT, 1360) (Y(I), I = 1, N)
-      WRITE (IPRT,1170) IERR
+      write (iprt,1300)
+      write (iprt,1310)
+      call hist(y, n, ldstak)
+      write (iprt, 1350)
+      write (iprt, 1360) (y(i), i = 1, n)
+      write (iprt,1170) ierr
 !
-      WRITE (IPRT,1340)
-      CALL HISTC(Y, N, NCELL, YLB, YUB, LDSTAK)
-      WRITE (IPRT, 1350)
-      WRITE (IPRT, 1360) (Y(I), I = 1, N)
-      WRITE (IPRT,1170) IERR
+      write (iprt,1340)
+      call histc(y, n, ncell, ylb, yub, ldstak)
+      write (iprt, 1350)
+      write (iprt, 1360) (y(i), i = 1, n)
+      write (iprt,1170) ierr
 !
 !     RUN DATA SET 6.7.
 !
-      DO 90 I=1,10
-         YPATH(I) = 0.0E0
-   90 CONTINUE
-      YPATH(1) = -1.0E0
-      YPATH(10) = 1.0E0
-      WRITE (IPRT,1130)
-      CALL HIST(YPATH, NCONST, LDSTAK)
-      WRITE (IPRT,1170) IERR
-      WRITE (IPRT, 1130)
-      CALL HISTC(YPATH, NCONST, 0, 0.0E0, 0.0E0, LDSTAK)
-      WRITE (IPRT, 1130)
-      CALL HISTC(YPATH, NCONST, 1, 0.0E0, 0.0E0, LDSTAK)
-      WRITE (IPRT, 1130)
-      CALL HISTC(YPATH, NCONST, 0, -0.5E0, 0.5E0, LDSTAK)
-      WRITE (IPRT, 1130)
-      CALL HISTC(YPATH, NCONST, 0, 1.0E0, 4.0E0, LDSTAK)
+      do 90 i=1,10
+         ypath(i) = 0.0e0
+   90 continue
+      ypath(1) = -1.0e0
+      ypath(10) = 1.0e0
+      write (iprt,1130)
+      call hist(ypath, nconst, ldstak)
+      write (iprt,1170) ierr
+      write (iprt, 1130)
+      call histc(ypath, nconst, 0, 0.0e0, 0.0e0, ldstak)
+      write (iprt, 1130)
+      call histc(ypath, nconst, 1, 0.0e0, 0.0e0, ldstak)
+      write (iprt, 1130)
+      call histc(ypath, nconst, 0, -0.5e0, 0.5e0, ldstak)
+      write (iprt, 1130)
+      call histc(ypath, nconst, 0, 1.0e0, 4.0e0, ldstak)
 !
 !     RUN DATA SET 6.8
 !
-      WRITE (IPRT, 1120)
-      CALL NRAND (YLONG, 200, 3254767)
-      CALL HIST (YLONG, 200, LDSTAK)
-      RETURN
+      write (iprt, 1120)
+      call nrand (ylong, 200, 3254767)
+      call hist (ylong, 200, ldstak)
+      return
 !
 !     FORMATS
 !
- 1000 FORMAT ('1THE DIMENSION OF DSTAK AND THE VALUE OF LDSTAK NEEDED'/
-     &  ' FOR HISTX MUST EQUAL OR EXCEED 300.  CHANGE DRIVER'/
+1000 format ('1THE DIMENSION OF DSTAK AND THE VALUE OF LDSTAK NEEDED'/&
+    &  ' FOR HISTX MUST EQUAL OR EXCEED 300.  CHANGE DRIVER'/&
      &  ' AND RECALL HISTX.')
- 1110 FORMAT (41H1TRY NO DATA WITHIN USER SUPPLIED LIMITS.)
- 1120 FORMAT (38H1RUN HIST ON 200 PSEUDO-RANDON NUMBERS)
- 1130 FORMAT(24H1RUN HIST ON -1, 8*0, 1.)
- 1150 FORMAT (48H1TEST RUNS FOR THE HISTOGRAM FAMILY OF ROUTINES.)
- 1160 FORMAT(47H TEST 1.  GENERATE ONE OF EACH OF THE POSSIBLE ,
-     &   15HERROR MESSAGES.)
- 1170 FORMAT(22H THE VALUE OF IERR IS , I4)
- 1180 FORMAT(28H TRY ZERO OR FEWER ELEMENTS.)
- 1190 FORMAT('1TEST WITH INSUFFICIENT WORK AREA')
- 1195 FORMAT(' TEST WITH EXACTLY THE RIGHT AMOUNT OF WORK AREA.')
- 1200 FORMAT('1TRY CONSTANT Y. (NOT AN ERROR)')
- 1300 FORMAT(52H1TEST 4.  MAKE WORKING RUNS OF ALL ROUTINES TO CHECK,
-     &   12H THE OUTPUT.)
- 1310 FORMAT(48H1RUN HIST ON THE DAVIS-HARRISON PIKES PEAK DATA.)
- 1340 FORMAT(49H1RUN HISTC ON THE DAVIS-HARRISON PIKES PEAK DATA.)
- 1350 FORMAT(/48H PRINT THE DATA TO INSURE THE ORIGINAL ORDER HAS,
-     &   15H BEEN RESTORED.)
- 1360 FORMAT (7F10.5)
-      END
+ 1110 format (41h1try no data within user supplied limits.)
+ 1120 format (38h1run hist on 200 pseudo-randon numbers)
+ 1130 format(24h1run hist on -1, 8*0, 1.)
+ 1150 format (48h1test runs for the histogram family of routines.)
+1160 format(47h test 1.  generate one of each of the possible ,&
+     &   15herror messages.)
+ 1170 format(22h the value of ierr is , i4)
+ 1180 format(28h try zero or fewer elements.)
+ 1190 format('1TEST WITH INSUFFICIENT WORK AREA')
+ 1195 format(' TEST WITH EXACTLY THE RIGHT AMOUNT OF WORK AREA.')
+ 1200 format('1TRY CONSTANT Y. (NOT AN ERROR)')
+1300 format(52h1test 4.  make working runs of all routines to check,&
+     &   12h the output.)
+ 1310 format(48h1run hist on the davis-harrison pikes peak data.)
+ 1340 format(49h1run histc on the davis-harrison pikes peak data.)
+1350 format(/48h print the data to insure the original order has,&
+     &   15h been restored.)
+ 1360 format (7f10.5)
+      end

@@ -1,5 +1,5 @@
 !STKSET
-      SUBROUTINE STKSET (NITEMS, ITYPE)
+      subroutine stkset (nitems, itype)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,34 +17,34 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ITYPE,NITEMS
+     integer&
+     &   itype,nitems
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   LBOOK,LMAX,LNOW,LOUT,LUSED
+     integer&
+     &   lbook,lmax,lnow,lout,lused
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISIZE(5),ISTAK(12)
+     integer&
+     &   isize(5),istak(12)
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
+      common /cstak/dstak
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (ISTAK(1),LOUT)
-      EQUIVALENCE (ISTAK(2),LNOW)
-      EQUIVALENCE (ISTAK(3),LUSED)
-      EQUIVALENCE (ISTAK(4),LMAX)
-      EQUIVALENCE (ISTAK(5),LBOOK)
-      EQUIVALENCE (ISTAK(6),ISIZE(1))
+      equivalence (dstak(1),istak(1))
+      equivalence (istak(1),lout)
+      equivalence (istak(2),lnow)
+      equivalence (istak(3),lused)
+      equivalence (istak(4),lmax)
+      equivalence (istak(5),lbook)
+      equivalence (istak(6),isize(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -76,22 +76,22 @@
 !  MEASURE OF SIZE.
 !
 !  LOGICAL
-      ISIZE(1) = 1
+      isize(1) = 1
 !  INTEGER
-      ISIZE(2) = 1
+      isize(2) = 1
 !  REAL
-      ISIZE(3) = 1
+      isize(3) = 1
 !  DOUBLE PRECISION
-      ISIZE(4) = 2
+      isize(4) = 2
 !  COMPLEX
-      ISIZE(5) = 2
+      isize(5) = 2
 !
-      LBOOK = 10
-      LNOW  = LBOOK
-      LUSED = LBOOK
-      LMAX  = MAX( (NITEMS*ISIZE(ITYPE))/ISIZE(2), 12 )
-      LOUT  = 0
+      lbook = 10
+      lnow  = lbook
+      lused = lbook
+      lmax  = max( (nitems*isize(itype))/isize(2), 12 )
+      lout  = 0
 !
-      RETURN
+      return
 !
-      END
+      end

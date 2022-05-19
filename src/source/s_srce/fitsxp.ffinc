@@ -1,6 +1,6 @@
 !FITSXP
-      SUBROUTINE FITSXP(PAR, PV, SDPV, RES, SDRES, VCV, N, NPAR, IVCV,
-     &    RSD)
+     subroutine fitsxp(par, pv, sdpv, res, sdres, vcv, n, npar, ivcv,&
+     &    rsd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,18 +16,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RSD
-      INTEGER
-     &   IVCV,N,NPAR
+     real(kind=wp) ::&
+     &   rsd
+     integer&
+     &   ivcv,n,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),PV(N),RES(N),SDPV(N),SDRES(N),VCV(IVCV,NPAR)
+     real(kind=wp) ::&
+     &   par(npar),pv(n),res(n),sdpv(n),sdres(n),vcv(ivcv,npar)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,LSTVEC,MATPRT
@@ -59,26 +59,26 @@
 !     REAL VCV(IVCV,NPAR)
 !        VARIANCE COVARANCE MATRIX
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
-      WRITE (IPRT,1002)
-      CALL LSTVEC(NPAR, PAR)
-      WRITE (IPRT,1001)
-      DO 10 I=1,N
-         WRITE (IPRT,1010) PV(I), SDPV(I), RES(I), SDRES(I)
-   10 CONTINUE
-      WRITE (IPRT,1020)
-      CALL MATPRT(VCV, VCV, NPAR, IPRT, 1, 1, IVCV)
-      WRITE (IPRT,1030) RSD
+      call iprint(iprt)
+      write (iprt,1000)
+      write (iprt,1002)
+      call lstvec(npar, par)
+      write (iprt,1001)
+      do 10 i=1,n
+         write (iprt,1010) pv(i), sdpv(i), res(i), sdres(i)
+   10 continue
+      write (iprt,1020)
+      call matprt(vcv, vcv, npar, iprt, 1, 1, ivcv)
+      write (iprt,1030) rsd
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(//40H RETURNED RESULTS FROM LEAST SQUARES FIT/ 1X, 39('-'))
- 1001 FORMAT (//7X, 2HPV, 13X, 4HSDPV, 12X, 3HRES,12X, 5HSDRES)
- 1002 FORMAT (//20H PARAMETERS FROM FIT)
- 1010 FORMAT (1X, G14.7, 2X, G14.7, 2X, G14.7, 2X, G14.7)
- 1020 FORMAT (//27H VARIANCE COVARIANCE MATRIX)
- 1030 FORMAT (//6H RSD =, G14.7)
-      END
+ 1000 format(//40h returned results from least squares fit/ 1x, 39('-'))
+ 1001 format (//7x, 2hpv, 13x, 4hsdpv, 12x, 3hres,12x, 5hsdres)
+ 1002 format (//20h parameters from fit)
+ 1010 format (1x, g14.7, 2x, g14.7, 2x, g14.7, 2x, g14.7)
+ 1020 format (//27h variance covariance matrix)
+ 1030 format (//6h rsd =, g14.7)
+      end

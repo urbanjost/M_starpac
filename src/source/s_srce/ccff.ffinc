@@ -1,5 +1,5 @@
 !CCFF
-      SUBROUTINE CCFF (YFFT1, YFFT2, N, LYFFT, LDSTAK)
+      subroutine ccff (yfft1, yfft2, n, lyfft, ldstak)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,36 +17,36 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK,LYFFT,N
+     integer&
+     &   ldstak,lyfft,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YFFT1(*),YFFT2(*)
+     real(kind=wp) ::&
+     &   yfft1(*),yfft2(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   Y1MEAN,Y1SD,Y2MEAN,Y2SD
-      INTEGER
-     &   ICCOV,IFP,INLPPC,IPRT,IYM,IYMFFT,JCCOV,JNLPPC,LAGMAX,
-     &   LDSMIN,M,NALL0,NFFT,WORK
-      LOGICAL
-     &   ISFFT,ISLONG
+     real(kind=wp) ::&
+     &   y1mean,y1sd,y2mean,y2sd
+     integer&
+    &   iccov,ifp,inlppc,iprt,iym,iymfft,jccov,jnlppc,lagmax,&
+     &   ldsmin,m,nall0,nfft,work
+     logical&
+     &   isfft,islong
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   CCOV(101,2,2),RHOC(201),RSTAK(12),SDRHOC(201),STAK(12)
-      INTEGER
-     &   NDUM(1)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   ccov(101,2,2),rhoc(201),rstak(12),sdrhoc(201),stak(12)
+     integer&
+     &   ndum(1)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -58,15 +58,15 @@
 !     +   STKCLR,STKSET
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
-      EQUIVALENCE (DSTAK(1),STAK(1))
+      equivalence (dstak(1),rstak(1))
+      equivalence (dstak(1),stak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -145,96 +145,96 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'C',       'C',       'F',       'F',       ' ',       ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      ICCOV = 101
-      INLPPC = 1
-      IYM = N
-      JCCOV = 2
-      JNLPPC = 1
-      LAGMAX = 1
-      IYMFFT = LYFFT
-      M = 2
-      NFFT = N
-      ISFFT = .TRUE.
-      ISLONG = .FALSE.
+      ierr = 0
+      iccov = 101
+      inlppc = 1
+      iym = n
+      jccov = 2
+      jnlppc = 1
+      lagmax = 1
+      iymfft = lyfft
+      m = 2
+      nfft = n
+      isfft = .true.
+      islong = .false.
 !
-      IF (N.GE.3) THEN
+      if (n.ge.3) then
 !
 !     SET LARGEST LAG VALUE TO BE USED
 !
-        CALL SETLAG(N, LAGMAX)
+        call setlag(n, lagmax)
 !
 !     SET LENGTH OF THE EXTENDED SERIES
 !
-        CALL FFTLEN(N+LAGMAX, 4, NFFT)
-      END IF
+        call fftlen(n+lagmax, 4, nfft)
+      end if
 !
-      CALL LDSCMP(1, 0, 0, 0, 0, 0, 'S', NFFT, LDSMIN)
+      call ldscmp(1, 0, 0, 0, 0, 0, 'S', nfft, ldsmin)
 !
-      CALL CCFER(NMSUB, N, LAGMAX, LDSTAK, LDSMIN, ICCOV, JCCOV,
-     &  INLPPC, JNLPPC, M, LYFFT, NFFT, IYM, IYMFFT, ISFFT, ISLONG)
+     call ccfer(nmsub, n, lagmax, ldstak, ldsmin, iccov, jccov,&
+     &  inlppc, jnlppc, m, lyfft, nfft, iym, iymfft, isfft, islong)
 !
 !     CHECK WHETHER AN ERROR HAS BEEN DETECTED
 !
-      IF (IERR.EQ.0) THEN
+      if (ierr.eq.0) then
 !
 !       SET UP THE WORK AREA.
 !
-        CALL STKSET (LDSTAK, 4)
-        NALL0 = STKST(1)
+        call stkset (ldstak, 4)
+        nall0 = stkst(1)
 !
-        IFP = 3
+        ifp = 3
 !
-        WORK = STKGET(NFFT, IFP)
+        work = stkget(nfft, ifp)
 !
-        IF (IERR.EQ.0) THEN
+        if (ierr.eq.0) then
 !
 !         COMPUTE THE SERIES ACVF AND SD
 !
-          CALL ACVFF (YFFT1, N, NFFT, Y1MEAN, CCOV(1,1,1), LAGMAX, 101,
-     &       LYFFT, STAK(WORK), NFFT)
-          Y1SD = SQRT(CCOV(1,1,1) * N / (N-1))
+         call acvff (yfft1, n, nfft, y1mean, ccov(1,1,1), lagmax, 101,&
+     &       lyfft, stak(work), nfft)
+          y1sd = sqrt(ccov(1,1,1) * n / (n-1))
 !
-          CALL ACVFF (YFFT2, N, NFFT, Y2MEAN, CCOV(1,2,2), LAGMAX, 101,
-     &       LYFFT, STAK(WORK), NFFT)
-          Y2SD = SQRT(CCOV(1,2,2) * N / (N-1))
+         call acvff (yfft2, n, nfft, y2mean, ccov(1,2,2), lagmax, 101,&
+     &       lyfft, stak(work), nfft)
+          y2sd = sqrt(ccov(1,2,2) * n / (n-1))
 !
 !         CALL ROUTINE FOR MAIN AUTOCORRELATION COMPUTATIONS.
 !
-          IF (CCOV(1,1,1)*CCOV(1,2,2) .NE. 0.0E0)
-     &       CALL CCFMNF (YFFT1, YFFT2, N, NFFT, LAGMAX, 2*LAGMAX+1,
-     &       CCOV(1,1,1), CCOV(1,2,2), CCOV(1,1,2), CCOV(1,2,1), 101,
-     &       RHOC, SDRHOC, 1, LYFFT, STAK(WORK), NFFT)
+         if (ccov(1,1,1)*ccov(1,2,2) .ne. 0.0e0)&
+    &       call ccfmnf (yfft1, yfft2, n, nfft, lagmax, 2*lagmax+1,&
+    &       ccov(1,1,1), ccov(1,2,2), ccov(1,1,2), ccov(1,2,1), 101,&
+     &       rhoc, sdrhoc, 1, lyfft, stak(work), nfft)
 !
 !         CALL ROUTINE TO PRINT OUT AUTOCORRELATIONS
 !
-          CALL CCFOUT (1, Y1MEAN, Y1SD, N, N, 2, Y2MEAN, Y2SD, N,
-     &       N, LAGMAX, 2*LAGMAX+1, RHOC, SDRHOC, .FALSE., NDUM, NDUM,
-     &       1, 0.0E0, 0.0E0, .FALSE.)
-        END IF
+         call ccfout (1, y1mean, y1sd, n, n, 2, y2mean, y2sd, n,&
+    &       n, lagmax, 2*lagmax+1, rhoc, sdrhoc, .false., ndum, ndum,&
+     &       1, 0.0e0, 0.0e0, .false.)
+        end if
 !
-        CALL STKCLR(NALL0)
-      END IF
+        call stkclr(nall0)
+      end if
 !
-      IF (IERR.NE.0) THEN
+      if (ierr.ne.0) then
 !
 !     PRINT PROPER CALL SEQUENCE AND RETURN
 !
-        IERR = 1
-        CALL IPRINT (IPRT)
-        WRITE (IPRT, 1000)
-      END IF
+        ierr = 1
+        call iprint (iprt)
+        write (iprt, 1000)
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format(/42h the correct form of the call statement is//&
      &  '       CALL CCFF (YFFT1, YFFT2, N, LYFFT, LDSTAK)')
-      END
+      end

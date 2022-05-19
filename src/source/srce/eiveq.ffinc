@@ -1,6 +1,6 @@
 !EIVEQ
-      SUBROUTINE EIVEQ (NMSUB, NMVAR1, IVEC, N, IVAL, NEQMN, HEAD, NEQ,
-     &                  NNE, MSGTYP, ERROR, NMVAR2, NMVAR3)
+     subroutine eiveq (nmsub, nmvar1, ivec, n, ival, neqmn, head, neq,&
+     &                  nne, msgtyp, error, nmvar2, nmvar3)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,20 +17,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IVAL,MSGTYP,N,NEQ,NEQMN,NNE
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   ival,msgtyp,n,neq,neqmn,nne
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IVEC(*)
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1,NMVAR3(8)*1
+     integer&
+     &   ivec(*)
+     character&
+     &   nmsub(6)*1,nmvar1(8)*1,nmvar2(8)*1,nmvar3(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -74,40 +74,40 @@
 !     INTEGER NNE
 !        THE NUMBER OF ELEMENTS NOT EQUAL TO IVAL.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (N.LE.0) RETURN
+      if (n.le.0) return
 !
 !     CHECK FOR VALUES EQUAL TO IVAL
 !
-      NEQ = 0
-      DO 10 I = 1, N
-         IF (IVEC(I) .EQ. IVAL) NEQ = NEQ + 1
-   10 CONTINUE
+      neq = 0
+      do 10 i = 1, n
+         if (ivec(i) .eq. ival) neq = neq + 1
+   10 continue
 !
-      NNE = N - NEQ
-      IF (NEQ .GE. NEQMN) RETURN
+      nne = n - neq
+      if (neq .ge. neqmn) return
 !
 !     INSUFFICIENT NUMBER OF ELEMENTS EQUAL TO IVAL.
 !
-      ERROR = .TRUE.
+      error = .true.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      IF (MSGTYP.EQ.1) WRITE(IPRT, 1000)
-     &   (NMVAR1(I),I=1,8), (NMVAR2(I),I=1,8), NEQ,
-     &   (NMVAR2(I),I=1,8), (NMVAR3(I),I=1,8)
+     if (msgtyp.eq.1) write(iprt, 1000)&
+    &   (nmvar1(i),i=1,8), (nmvar2(i),i=1,8), neq,&
+     &   (nmvar2(i),i=1,8), (nmvar3(i),i=1,8)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(
-     &   ' THE NUMBER OF ELEMENTS IN ', 8A1,
-     &   ' EQUAL TO ', 8A1, ' IS ', I6, '.'/
-     &   ' THE NUMBER OF ELEMENTS EQUAL TO ', 8A1,
-     &   ' MUST BE GREATER THAN OR EQUAL TO ', 8A1, '.')
+1000 format(&
+    &   ' THE NUMBER OF ELEMENTS IN ', 8a1,&
+    &   ' EQUAL TO ', 8a1, ' IS ', i6, '.'/&
+    &   ' THE NUMBER OF ELEMENTS EQUAL TO ', 8a1,&
+     &   ' MUST BE GREATER THAN OR EQUAL TO ', 8a1, '.')
 !
-      END
+      end

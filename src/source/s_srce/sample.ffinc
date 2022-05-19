@@ -1,5 +1,5 @@
 !SAMPLE
-      SUBROUTINE SAMPLE (Y, N, NS, YS, NYS)
+      subroutine sample (y, n, ns, ys, nys)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,32 +16,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,NS,NYS
+     integer&
+     &   n,ns,nys
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*),YS(*)
+     real(kind=wp) ::&
+     &   y(*),ys(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
-      LOGICAL
-     &   ERR01,ERR02,HEAD
+     integer&
+     &   iprt
+     logical&
+     &   err01,err02,head
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   LN(8)*1,LNS(8)*1,LONE(8)*1,NMSUB(6)*1
+     character&
+     &   ln(8)*1,lns(8)*1,lone(8)*1,nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EISGE,EISII,IPRINT,SMPLY
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -76,48 +76,48 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'S',       'A',       'M',       'P',       'L',       'E'/
-      DATA
-     &  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     data&
+    &  ln(1), ln(2), ln(3), ln(4), ln(5), ln(6), ln(7), ln(8)&
      & /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
-      DATA
-     &  LNS(1), LNS(2), LNS(3), LNS(4), LNS(5), LNS(6), LNS(7), LNS(8)
+     data&
+    &  lns(1), lns(2), lns(3), lns(4), lns(5), lns(6), lns(7), lns(8)&
      & /  'N',   'S',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
-      DATA
-     &  LONE(1), LONE(2), LONE(3), LONE(4), LONE(5), LONE(6), LONE(7),
-     &  LONE(8)
+     data&
+    &  lone(1), lone(2), lone(3), lone(4), lone(5), lone(6), lone(7),&
+    &  lone(8)&
      & /  'O',   'N',   'E',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 3, 1, HEAD, ERR01, LN)
+      call eisge(nmsub, ln, n, 3, 1, head, err01, ln)
 !
-      CALL EISII(NMSUB, LNS, NS, 1, N, 1, HEAD, ERR02, LONE, LN)
+      call eisii(nmsub, lns, ns, 1, n, 1, head, err02, lone, ln)
 !
-      IF (ERR01 .OR. ERR02) GO TO 10
-      GO TO 20
+      if (err01 .or. err02) go to 10
+      go to 20
 !
-   10 CONTINUE
-      IERR = 1
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+   10 continue
+      ierr = 1
+      call iprint (iprt)
+      write (iprt, 1000)
+      return
 !
-   20 CONTINUE
+   20 continue
 !
-      CALL SMPLY (Y, N, NS, YS, NYS)
+      call smply (y, n, ns, ys, nys)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   38H       CALL SAMPLE (Y, N, NS, YS, NYS))
-      END
+1000 format (/42h the correct form of the call statement is//&
+     &   38h       call sample (y, n, ns, ys, nys))
+      end

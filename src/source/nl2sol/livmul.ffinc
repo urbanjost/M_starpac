@@ -9,17 +9,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
+     integer&
      &   n
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   l(1),x(n),y(n)
 !
 !  LOCAL SCALARS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   t,zero
-      integer
+     integer&
      &   i,j,k
 !
 !  EXTERNAL FUNCTIONS

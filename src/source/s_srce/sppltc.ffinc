@@ -1,6 +1,6 @@
 !SPPLTC
-      SUBROUTINE SPPLTC (XAXIS, YAXIS, ISYM, NPTS, XPLTMN, XPLTMX, BW,
-     &   CILOW, CIMID, CIUP, LPCV)
+     subroutine sppltc (xaxis, yaxis, isym, npts, xpltmn, xpltmx, bw,&
+     &   cilow, cimid, ciup, lpcv)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,19 +17,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   BW,CILOW,CIMID,CIUP,XPLTMN,XPLTMX
-      INTEGER
-     &   LPCV,NPTS
+     real(kind=wp) ::&
+     &   bw,cilow,cimid,ciup,xpltmn,xpltmx
+     integer&
+     &   lpcv,npts
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XAXIS(LPCV),YAXIS(LPCV)
-      INTEGER
-     &   ISYM(LPCV)
+     real(kind=wp) ::&
+     &   xaxis(lpcv),yaxis(lpcv)
+     integer&
+     &   isym(lpcv)
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -51,42 +51,42 @@
 !     REAL YAXIS(LPCV)
 !        THE Y AXIS VALUES FOR THE SPECTRUM PLOTS.
 !
-      IF (XPLTMX - XPLTMN .GE. BW) GO TO 10
+      if (xpltmx - xpltmn .ge. bw) go to 10
 !
-      XPLTMX = MAX(XPLTMX + (BW - XPLTMX + XPLTMN) / 2.0E0, 0.5E0)
-      XPLTMN = XPLTMX - BW
+      xpltmx = max(xpltmx + (bw - xpltmx + xpltmn) / 2.0e0, 0.5e0)
+      xpltmn = xpltmx - bw
 !
-   10 CONTINUE
+   10 continue
 !
-      NPTS = NPTS + 1
+      npts = npts + 1
 !
-      XAXIS(NPTS) = XPLTMX - 0.5E0 * BW
-      YAXIS(NPTS) = CIUP
-      ISYM(NPTS) = 7
+      xaxis(npts) = xpltmx - 0.5e0 * bw
+      yaxis(npts) = ciup
+      isym(npts) = 7
 !
-      NPTS = NPTS + 1
+      npts = npts + 1
 !
-      XAXIS(NPTS) = XPLTMX - 0.5E0 * BW
-      YAXIS(NPTS) = CIMID
-      ISYM(NPTS) = 3
+      xaxis(npts) = xpltmx - 0.5e0 * bw
+      yaxis(npts) = cimid
+      isym(npts) = 3
 !
-      NPTS = NPTS + 1
+      npts = npts + 1
 !
-      XAXIS(NPTS) = XPLTMX - 0.5E0 * BW
-      YAXIS(NPTS) = CILOW
-      ISYM(NPTS) = 13
+      xaxis(npts) = xpltmx - 0.5e0 * bw
+      yaxis(npts) = cilow
+      isym(npts) = 13
 !
-      NPTS = NPTS + 1
+      npts = npts + 1
 !
-      XAXIS(NPTS) = XPLTMX - BW
-      YAXIS(NPTS)  = CIMID
-      ISYM(NPTS) = 6
+      xaxis(npts) = xpltmx - bw
+      yaxis(npts)  = cimid
+      isym(npts) = 6
 !
-      NPTS = NPTS + 1
+      npts = npts + 1
 !
-      XAXIS(NPTS) = XPLTMX
-      YAXIS(NPTS)  = CIMID
-      ISYM(NPTS) = 27
+      xaxis(npts) = xpltmx
+      yaxis(npts)  = cimid
+      isym(npts) = 27
 !
-      RETURN
-      END
+      return
+      end

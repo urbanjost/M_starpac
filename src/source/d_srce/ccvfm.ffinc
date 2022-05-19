@@ -1,6 +1,6 @@
 !CCVFM
-      SUBROUTINE CCVFM(Y1, Y1MISS, Y2, Y2MISS, N, NC, Y1MEAN, Y2MEAN,
-     &   CCOV12, CCOV21, ICCOV, NLPP12, NLPP21)
+     subroutine ccvfm(y1, y1miss, y2, y2miss, n, nc, y1mean, y2mean,&
+     &   ccov12, ccov21, iccov, nlpp12, nlpp21)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,26 +17,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y1MEAN,Y1MISS,Y2MEAN,Y2MISS
-      INTEGER
-     &   ICCOV,N,NC
+     real(kind=wp) ::&
+     &   y1mean,y1miss,y2mean,y2miss
+     integer&
+     &   iccov,n,nc
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CCOV12(ICCOV),CCOV21(ICCOV),Y1(N),Y2(N)
-      INTEGER
-     &   NLPP12(ICCOV),NLPP21(ICCOV)
+     real(kind=wp) ::&
+     &   ccov12(iccov),ccov21(iccov),y1(n),y2(n)
+     integer&
+     &   nlpp12(iccov),nlpp21(iccov)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DOTXY,FPLM
-      INTEGER
-     &   LAG,NDOTXY
+     real(kind=wp) ::&
+     &   dotxy,fplm
+     integer&
+     &   lag,ndotxy
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   D1MACH
+     real(kind=wp) ::&
+     &   d1mach
 !       EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
@@ -71,39 +71,39 @@
 !     REAL(KIND=WP) :: Y2(N), Y2MEAN, Y2MISS
 !        THE SECOND SERIES, AND ITS MEAN, AND MISSING VALUE CODE.
 !
-      FPLM = D1MACH(2)
+      fplm = d1mach(2)
 !
 !     COMPUTE THE CROSS COVARIANCES
 !
-      CALL DOTCM (Y1, Y1MEAN, Y1MISS, N, Y2, Y2MEAN, Y2MISS, N, DOTXY,
-     &   NDOTXY)
+     call dotcm (y1, y1mean, y1miss, n, y2, y2mean, y2miss, n, dotxy,&
+     &   ndotxy)
 !
-      NLPP12(1) = NDOTXY
-      CCOV12(1) = FPLM
-      IF (NDOTXY .GE. 1) CCOV12(1) = DOTXY / NDOTXY
+      nlpp12(1) = ndotxy
+      ccov12(1) = fplm
+      if (ndotxy .ge. 1) ccov12(1) = dotxy / ndotxy
 !
-      CCOV21(1) = CCOV12(1)
-      NLPP21(1) = NDOTXY
+      ccov21(1) = ccov12(1)
+      nlpp21(1) = ndotxy
 !
-      DO 10 LAG = 1, NC
+      do 10 lag = 1, nc
 !
-         CALL DOTCM (Y1, Y1MEAN, Y1MISS, N, Y2(LAG+1), Y2MEAN, Y2MISS,
-     &       N-LAG, DOTXY, NDOTXY)
+        call dotcm (y1, y1mean, y1miss, n, y2(lag+1), y2mean, y2miss,&
+     &       n-lag, dotxy, ndotxy)
 !
-         NLPP12(LAG+1) = NDOTXY
-         CCOV12(LAG+1) = FPLM
-         IF (NDOTXY .GE. 1)
-     &      CCOV12(LAG+1) = DOTXY * (N-LAG) / (N*NDOTXY)
+         nlpp12(lag+1) = ndotxy
+         ccov12(lag+1) = fplm
+        if (ndotxy .ge. 1)&
+     &      ccov12(lag+1) = dotxy * (n-lag) / (n*ndotxy)
 !
-         CALL DOTCM (Y2, Y2MEAN, Y2MISS, N, Y1(LAG+1), Y1MEAN, Y1MISS,
-     &      N-LAG, DOTXY, NDOTXY)
+        call dotcm (y2, y2mean, y2miss, n, y1(lag+1), y1mean, y1miss,&
+     &      n-lag, dotxy, ndotxy)
 !
-         NLPP21(LAG+1) = NDOTXY
-         CCOV21(LAG+1) = FPLM
-         IF (NDOTXY .GE. 1)
-     &      CCOV21(LAG+1) = DOTXY * (N-LAG) / (N*NDOTXY)
+         nlpp21(lag+1) = ndotxy
+         ccov21(lag+1) = fplm
+        if (ndotxy .ge. 1)&
+     &      ccov21(lag+1) = dotxy * (n-lag) / (n*ndotxy)
 !
-   10 CONTINUE
+   10 continue
 !
-      RETURN
-      END
+      return
+      end

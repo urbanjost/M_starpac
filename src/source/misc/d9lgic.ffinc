@@ -1,5 +1,5 @@
 !D9LGIC
-      DOUBLE PRECISION FUNCTION D9LGIC(A,X,ALX)
+      double precision function d9lgic(a,x,alx)
 !***BEGIN PROLOGUE  D9LGIC
 !***DATE WRITTEN   770701   (YYMMDD)
 !***REVISION DATE  820801   (YYMMDD)
@@ -20,11 +20,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION A,ALX,X
+      double precision a,alx,x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION EPS,FK,P,R,S,T,XMA,XPA
-      INTEGER K
+      double precision eps,fk,p,r,s,t,xma,xpa
+      integer k
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH
@@ -34,31 +34,31 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG
+      intrinsic abs,log
 !
-      DATA EPS / 0.D0 /
+      data eps / 0.d0 /
 !***FIRST EXECUTABLE STATEMENT  D9LGIC
-      IF (EPS.EQ.0.D0) EPS = 0.5D0*D1MACH(3)
+      if (eps.eq.0.d0) eps = 0.5d0*d1mach(3)
 !
-      XPA = X + 1.0D0 - A
-      XMA = X - 1.D0 - A
+      xpa = x + 1.0d0 - a
+      xma = x - 1.d0 - a
 !
-      R = 0.D0
-      P = 1.D0
-      S = P
-      DO 10 K=1,300
-        FK = K
-        T = FK*(A-FK)*(1.D0+R)
-        R = -T/((XMA+2.D0*FK)*(XPA+2.D0*FK)+T)
-        P = R*P
-        S = S + P
-        IF (ABS(P).LT.EPS*S) GO TO 20
- 10   CONTINUE
-      CALL XERROR 
-     &('D9LGIC  NO CONVERGENCE IN 300 TERMS OF CONTINUED FRACTION',
+      r = 0.d0
+      p = 1.d0
+      s = p
+      do 10 k=1,300
+        fk = k
+        t = fk*(a-fk)*(1.d0+r)
+        r = -t/((xma+2.d0*fk)*(xpa+2.d0*fk)+t)
+        p = r*p
+        s = s + p
+        if (abs(p).lt.eps*s) go to 20
+ 10   continue
+     call xerror&
+    &('D9LGIC  NO CONVERGENCE IN 300 TERMS OF CONTINUED FRACTION',&
      & 57,1,2)
 !
- 20   D9LGIC = A*ALX - X + LOG(S/XPA)
+ 20   d9lgic = a*alx - x + log(s/xpa)
 !
-      RETURN
-      END
+      return
+      end

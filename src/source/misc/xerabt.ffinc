@@ -1,5 +1,5 @@
 !XERABT
-      SUBROUTINE XERABT(MESSG,NMESSG)
+      subroutine xerabt(messg,nmessg)
 !
 !     LATEST REVISION  -  JANUARY 24, 1990 (JRD)
 !
@@ -21,10 +21,10 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER NMESSG
+      integer nmessg
 !
 !  ARRAY ARGUMENTS
-      CHARACTER MESSG(1)*4
+      character messg(1)*4
 !
-      STOP
-      END
+      stop
+      end

@@ -1,6 +1,6 @@
 !CCFMNF
-      SUBROUTINE CCFMNF (Y1, Y2, N, NFFT, LAGMAX, NCC, CCOV11, CCOV22,
-     &   CCOV12, CCOV21, LCCOV, RHOC, SDRHOC, NPRT, LYFFT, WORK, LWORK)
+     subroutine ccfmnf (y1, y2, n, nfft, lagmax, ncc, ccov11, ccov22,&
+     &   ccov12, ccov21, lccov, rhoc, sdrhoc, nprt, lyfft, work, lwork)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,25 +17,25 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LAGMAX,LCCOV,LWORK,LYFFT,N,NCC,NFFT,NPRT
+     integer&
+     &   lagmax,lccov,lwork,lyfft,n,ncc,nfft,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CCOV11(LCCOV),CCOV12(LCCOV),CCOV21(LCCOV),CCOV22(LCCOV),
-     &   RHOC(NCC),SDRHOC(NCC),WORK(LWORK),Y1(LYFFT),Y2(LYFFT)
+     real(kind=wp) ::&
+    &   ccov11(lccov),ccov12(lccov),ccov21(lccov),ccov22(lccov),&
+     &   rhoc(ncc),sdrhoc(ncc),work(lwork),y1(lyfft),y2(lyfft)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FAC
-      INTEGER
-     &   I,I0,IM,IP
+     real(kind=wp) ::&
+     &   fac
+     integer&
+     &   i,i0,im,ip
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL CCFSD,CCVFF
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -86,26 +86,26 @@
 !
 !     COMPUTE THE CROSS CORRELATIONS.
 !
-      CALL CCVFF (Y1, Y2, N, NFFT, LAGMAX, CCOV12, CCOV21, LCCOV, LYFFT,
-     &   WORK, LWORK)
+     call ccvff (y1, y2, n, nfft, lagmax, ccov12, ccov21, lccov, lyfft,&
+     &   work, lwork)
 !
-      IF (NPRT .EQ. 0 .OR. CCOV11(1)*CCOV22(1) .EQ. 0.0E0) RETURN
+      if (nprt .eq. 0 .or. ccov11(1)*ccov22(1) .eq. 0.0e0) return
 !
-      FAC = 1.0E0 / SQRT(CCOV11(1) * CCOV22(1))
+      fac = 1.0e0 / sqrt(ccov11(1) * ccov22(1))
 !
-      I0 = LAGMAX + 1
-      RHOC(I0) = CCOV12(1) * FAC
-      DO 10 I = 1, LAGMAX
-         IP = I0 + I
-         RHOC(IP) = CCOV12(I+1) * FAC
+      i0 = lagmax + 1
+      rhoc(i0) = ccov12(1) * fac
+      do 10 i = 1, lagmax
+         ip = i0 + i
+         rhoc(ip) = ccov12(i+1) * fac
 !
-         IM = I0 - I
-         RHOC(IM) = CCOV21(I+1) * FAC
-   10 CONTINUE
+         im = i0 - i
+         rhoc(im) = ccov21(i+1) * fac
+   10 continue
 !
 !     COMPUTE STANDARD ERROR OF THE CROSSCORRELATIONS.
 !
-      CALL CCFSD (CCOV11, CCOV22, SDRHOC, LAGMAX, NCC, N, LCCOV)
+      call ccfsd (ccov11, ccov22, sdrhoc, lagmax, ncc, n, lccov)
 !
-      RETURN
-      END
+      return
+      end

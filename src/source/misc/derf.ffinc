@@ -1,18 +1,18 @@
 !DERF
-      DOUBLE PRECISION FUNCTION DERF (X)
+      double precision function derf (x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION X
+      double precision x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION SQEPS,SQRTPI,XBIG,Y
-      INTEGER NTERF
+      double precision sqeps,sqrtpi,xbig,y
+      integer nterf
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION ERFCS(21)
+      double precision erfcs(21)
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH,DCSEVL,DERFC
@@ -20,7 +20,7 @@
 !       EXTERNAL D1MACH,DCSEVL,DERFC,INITDS
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,DSIGN,DSQRT,LOG,SNGL
+      intrinsic abs,dsign,dsqrt,log,sngl
 !
 !
 ! SERIES FOR ERF        ON THE INTERVAL  0.          TO  1.00000E+00
@@ -29,56 +29,56 @@
 !                               SIGNIFICANT FIGURES REQUIRED  31.05
 !                                    DECIMAL PLACES REQUIRED  32.55
 !
-      DATA ERF CS(  1) / -.4904612123 4691808039 9845440333 76 D-1     /
-      DATA ERF CS(  2) / -.1422612051 0371364237 8247418996 31 D+0     /
-      DATA ERF CS(  3) / +.1003558218 7599795575 7546767129 33 D-1     /
-      DATA ERF CS(  4) / -.5768764699 7674847650 8270255091 67 D-3     /
-      DATA ERF CS(  5) / +.2741993125 2196061034 4221607914 71 D-4     /
-      DATA ERF CS(  6) / -.1104317550 7344507604 1353812959 05 D-5     /
-      DATA ERF CS(  7) / +.3848875542 0345036949 9613114981 74 D-7     /
-      DATA ERF CS(  8) / -.1180858253 3875466969 6317518015 81 D-8     /
-      DATA ERF CS(  9) / +.3233421582 6050909646 4029309533 54 D-10    /
-      DATA ERF CS( 10) / -.7991015947 0045487581 6073747085 95 D-12    /
-      DATA ERF CS( 11) / +.1799072511 3961455611 9672454866 34 D-13    /
-      DATA ERF CS( 12) / -.3718635487 8186926382 3168282094 93 D-15    /
-      DATA ERF CS( 13) / +.7103599003 7142529711 6899083946 66 D-17    /
-      DATA ERF CS( 14) / -.1261245511 9155225832 4954248533 33 D-18    /
-      DATA ERF CS( 15) / +.2091640694 1769294369 1705002666 66 D-20    /
-      DATA ERF CS( 16) / -.3253973102 9314072982 3641600000 00 D-22    /
-      DATA ERF CS( 17) / +.4766867209 7976748332 3733333333 33 D-24    /
-      DATA ERF CS( 18) / -.6598012078 2851343155 1999999999 99 D-26    /
-      DATA ERF CS( 19) / +.8655011469 9637626197 3333333333 33 D-28    /
-      DATA ERF CS( 20) / -.1078892517 7498064213 3333333333 33 D-29    /
-      DATA ERF CS( 21) / +.1281188399 3017002666 6666666666 66 D-31    /
+      data erfcs(  1) / -.49046121234691808039984544033376d-1     /
+      data erfcs(  2) / -.14226120510371364237824741899631d+0     /
+      data erfcs(  3) / +.10035582187599795575754676712933d-1     /
+      data erfcs(  4) / -.57687646997674847650827025509167d-3     /
+      data erfcs(  5) / +.27419931252196061034422160791471d-4     /
+      data erfcs(  6) / -.11043175507344507604135381295905d-5     /
+      data erfcs(  7) / +.38488755420345036949961311498174d-7     /
+      data erfcs(  8) / -.11808582533875466969631751801581d-8     /
+      data erfcs(  9) / +.32334215826050909646402930953354d-10    /
+      data erfcs( 10) / -.79910159470045487581607374708595d-12    /
+      data erfcs( 11) / +.17990725113961455611967245486634d-13    /
+      data erfcs( 12) / -.37186354878186926382316828209493d-15    /
+      data erfcs( 13) / +.71035990037142529711689908394666d-17    /
+      data erfcs( 14) / -.12612455119155225832495424853333d-18    /
+      data erfcs( 15) / +.20916406941769294369170500266666d-20    /
+      data erfcs( 16) / -.32539731029314072982364160000000d-22    /
+      data erfcs( 17) / +.47668672097976748332373333333333d-24    /
+      data erfcs( 18) / -.65980120782851343155199999999999d-26    /
+      data erfcs( 19) / +.86550114699637626197333333333333d-28    /
+      data erfcs( 20) / -.10788925177498064213333333333333d-29    /
+      data erfcs( 21) / +.12811883993017002666666666666666d-31    /
 !
-      DATA SQRTPI / 1.772453850 9055160272 9816748334 115D0 /
-      DATA NTERF, XBIG, SQEPS / 0, 2*0.D0 /
+      data sqrtpi / 1.77245385090551602729816748334115d0 /
+      data nterf, xbig, sqeps / 0, 2*0.d0 /
 !
-      IF (NTERF.NE.0) GO TO 10
-      NTERF = INITDS (ERFCS, 21, 0.1*SNGL(D1MACH(3)))
-      XBIG = DSQRT (-LOG(SQRTPI*D1MACH(3)))
-      SQEPS = DSQRT (2.0D0*D1MACH(3))
+      if (nterf.ne.0) go to 10
+      nterf = initds (erfcs, 21, 0.1*sngl(d1mach(3)))
+      xbig = dsqrt (-log(sqrtpi*d1mach(3)))
+      sqeps = dsqrt (2.0d0*d1mach(3))
 !
- 10   Y = ABS(X)
-      IF (Y.GT.1.D0) GO TO 20
+ 10   y = abs(x)
+      if (y.gt.1.d0) go to 20
 !
 ! ERF(X) = 1.0 - ERFC(X)  FOR  -1.0 .LE. X .LE. 1.0
 !
-      IF (Y.LE.SQEPS) THEN
-         DERF = 2.0D0*X*X/SQRTPI
-      ELSE
-         DERF = X*(1.0D0+DCSEVL(2.D0*X*X-1.D0,ERFCS,NTERF))
-      END IF
+      if (y.le.sqeps) then
+         derf = 2.0d0*x*x/sqrtpi
+      else
+         derf = x*(1.0d0+dcsevl(2.d0*x*x-1.d0,erfcs,nterf))
+      end if
 !
-      RETURN
+      return
 !
 ! ERF(X) = 1.0 - ERFC(X) FOR ABS(X) .GT. 1.0
 !
- 20   IF (Y.LE.XBIG) THEN
-         DERF = DSIGN (1.0D0-DERFC(Y), X)
-      ELSE
-         DERF = DSIGN (1.0D0, X)
-      END IF
+ 20   if (y.le.xbig) then
+         derf = dsign (1.0d0-derfc(y), x)
+      else
+         derf = dsign (1.0d0, x)
+      end if
 !
-      RETURN
-      END
+      return
+      end

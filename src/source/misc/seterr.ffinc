@@ -1,5 +1,5 @@
 !SETERR
-      SUBROUTINE SETERR(MESSG,NMESSG,NERR,IOPT)
+      subroutine seterr(messg,nmessg,nerr,iopt)
 !
 !  SETERR SETS LERROR = NERR, OPTIONALLY PRINTS THE MESSAGE AND DUMPS
 !  ACCORDING TO THE FOLLOWING RULES...
@@ -33,13 +33,13 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER IOPT,NERR,NMESSG
+      integer iopt,nerr,nmessg
 !
 !  ARRAY ARGUMENTS
-      CHARACTER MESSG(NMESSG)*4
+      character messg(nmessg)*4
 !
 !  LOCAL SCALARS
-      INTEGER ITEMP,IWUNIT,NW
+      integer itemp,iwunit,nw
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER I1MACH,I8SAVE
@@ -49,72 +49,72 @@
 !       EXTERNAL E9RINT,EPRINT,FDUMP
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !
 !  THE UNIT FOR ERROR MESSAGES.
 !
-      IWUNIT=I1MACH(4)
+      iwunit=i1mach(4)
 !
-      IF (NMESSG.GE.1) GO TO 10
+      if (nmessg.ge.1) go to 10
 !
 !  A MESSAGE OF NON-POSITIVE LENGTH IS FATAL.
 !
-        WRITE(IWUNIT,9000)
- 9000   FORMAT('1ERROR    1 IN SETERR - MESSAGE LENGTH NOT POSITIVE.')
-        GO TO 60
+        write(iwunit,9000)
+ 9000   format('1ERROR    1 IN SETERR - MESSAGE LENGTH NOT POSITIVE.')
+        go to 60
 !
 !  NW IS THE NUMBER OF WORDS THE MESSAGE OCCUPIES.
 !
- 10   NW=(MIN(NMESSG,72)-1)/I1MACH(6)+1
+ 10   nw=(min(nmessg,72)-1)/i1mach(6)+1
 !
-      IF (NERR.NE.0) GO TO 20
+      if (nerr.ne.0) go to 20
 !
 !  CANNOT TURN THE ERROR STATE OFF USING SETERR.
 !
-        WRITE(IWUNIT,9001)
- 9001   FORMAT('1ERROR    2 IN SETERR - CANNOT HAVE NERR=0'//
+        write(iwunit,9001)
+9001   format('1ERROR    2 IN SETERR - CANNOT HAVE NERR=0'//&
      &         ' THE CURRENT ERROR MESSAGE FOLLOWS'///)
-        CALL E9RINT(MESSG,NW,NERR,.TRUE.)
-        ITEMP=I8SAVE(1,1,.TRUE.)
-        GO TO 50
+        call e9rint(messg,nw,nerr,.true.)
+        itemp=i8save(1,1,.true.)
+        go to 50
 !
 !  SET LERROR AND TEST FOR A PREVIOUS UNRECOVERED ERROR.
 !
- 20   IF (I8SAVE(1,NERR,.TRUE.).EQ.0) GO TO 30
+ 20   if (i8save(1,nerr,.true.).eq.0) go to 30
 !
-        WRITE(IWUNIT,9002)
- 9002   FORMAT('1ERROR    3 IN SETERR -',
-     &         ' AN UNRECOVERED ERROR FOLLOWED BY ANOTHER ERROR.'//
+        write(iwunit,9002)
+9002   format('1ERROR    3 IN SETERR -',&
+    &         ' AN UNRECOVERED ERROR FOLLOWED BY ANOTHER ERROR.'//&
      &         ' THE PREVIOUS AND CURRENT ERROR MESSAGES FOLLOW.'///)
-        CALL EPRINT
-        CALL E9RINT(MESSG,NW,NERR,.TRUE.)
-        GO TO 50
+        call eprint
+        call e9rint(messg,nw,nerr,.true.)
+        go to 50
 !
 !  SAVE THIS MESSAGE IN CASE IT IS NOT RECOVERED FROM PROPERLY.
 !
- 30   CALL E9RINT(MESSG,NW,NERR,.TRUE.)
+ 30   call e9rint(messg,nw,nerr,.true.)
 !
-      IF (IOPT.EQ.1 .OR. IOPT.EQ.2) GO TO 40
+      if (iopt.eq.1 .or. iopt.eq.2) go to 40
 !
 !  MUST HAVE IOPT = 1 OR 2.
 !
-        WRITE(IWUNIT,9003)
- 9003   FORMAT('1ERROR    4 IN SETERR - BAD VALUE FOR IOPT'//
+        write(iwunit,9003)
+9003   format('1ERROR    4 IN SETERR - BAD VALUE FOR IOPT'//&
      &         ' THE CURRENT ERROR MESSAGE FOLLOWS'///)
-        GO TO 50
+        go to 50
 !
 !  TEST FOR RECOVERY.
 !
- 40   IF (IOPT.EQ.2) GO TO 50
+ 40   if (iopt.eq.2) go to 50
 !
-      IF (I8SAVE(2,0,.FALSE.).EQ.1) RETURN
+      if (i8save(2,0,.false.).eq.1) return
 !
-      CALL EPRINT
-      STOP
+      call eprint
+      stop
 !
- 50   CALL EPRINT
- 60   CALL FDUMP
-      STOP
+ 50   call eprint
+ 60   call fdump
+      stop
 !
-      END
+      end

@@ -1,9 +1,9 @@
 !NLCNT
-      SUBROUTINE NLCNT(Y, WT, LWT, XM, N, M, IXM, MDL, NLDRV, APRXDV,
-     &   DRV, PAR, NPAR, RES, IFIXED, LIFIXD, STP, LSTP, MIT, STOPSS,
-     &   STOPP, SCALE, LSCALE, DELTA, IVAPRX, RSD, PV, LPV, SDPV,
-     &   LSDPV, SDRES, LSDRES, VCV, IVCV, WEIGHT, SAVE, NNZW, NPARE,
-     &   NLHDR, PAGE, WIDE, IPTOUT, NDIGIT, HLFRPT)
+     subroutine nlcnt(y, wt, lwt, xm, n, m, ixm, mdl, nldrv, aprxdv,&
+    &   drv, par, npar, res, ifixed, lifixd, stp, lstp, mit, stopss,&
+    &   stopp, scale, lscale, delta, ivaprx, rsd, pv, lpv, sdpv,&
+    &   lsdpv, sdres, lsdres, vcv, ivcv, weight, save, nnzw, npare,&
+     &   nlhdr, page, wide, iptout, ndigit, hlfrpt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,57 +20,57 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   DELTA,RSD,STOPP,STOPSS
-      INTEGER
-     &   IVAPRX,IVCV,IXM,LIFIXD,LPV,LSCALE,LSDPV,LSDRES,LSTP,LWT,M,
-     &   MIT,N,NDIGIT,NNZW,NPAR,NPARE
-      LOGICAL
-     &   APRXDV,HLFRPT,PAGE,SAVE,WEIGHT,WIDE
+     real(kind=wp) ::&
+     &   delta,rsd,stopp,stopss
+     integer&
+    &   ivaprx,ivcv,ixm,lifixd,lpv,lscale,lsdpv,lsdres,lstp,lwt,m,&
+     &   mit,n,ndigit,nnzw,npar,npare
+     logical&
+     &   aprxdv,hlfrpt,page,save,weight,wide
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),PV(*),RES(*),SCALE(*),SDPV(*),SDRES(*),STP(*),VCV(*),
-     &   WT(*),XM(*),Y(*)
-      INTEGER
-     &   IFIXED(*),IPTOUT(5)
+     real(kind=wp) ::&
+    &   par(*),pv(*),res(*),scale(*),sdpv(*),sdres(*),stp(*),vcv(*),&
+     &   wt(*),xm(*),y(*)
+     integer&
+     &   ifixed(*),iptout(5)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL DRV,MDL,NLDRV,NLHDR
+       external drv,mdl,nldrv,nlhdr
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   D,IFIXD,IFP,IIWORK,IRWORK,IWORK,LVCVL,NALL0,PARE,PVI,
-     &   RWORK,SDPVI,SDRESI,VCVL
+     integer&
+    &   d,ifixd,ifp,iiwork,irwork,iwork,lvcvl,nall0,pare,pvi,&
+     &   rwork,sdpvi,sdresi,vcvl
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSTAK(12)
-      INTEGER
-     &   ISTAK(12)
+     real(kind=wp) ::&
+     &   rstak(12)
+     integer&
+     &   istak(12)
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     &   STKST
+     integer&
+     &   stkst
 !       EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL CPYASF,CPYVII,NLMN,DCOPY,SETIV,STKCLR
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
+      equivalence (dstak(1),istak(1))
+      equivalence (dstak(1),rstak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -267,52 +267,52 @@
 !
 !     SET VARIOUS PROGRAM VALUES
 !
-      NALL0 = STKST(1)
+      nall0 = stkst(1)
 !
-      IFP = 4
+      ifp = 4
 !
-      IERR = 0
+      ierr = 0
 !
 !     SUBDIVIDE WORK AREA FOR LEAST SQUARES ANALYSIS
 !
-      IIWORK = NPARE + 60
-      IRWORK = 94 + 2*N + NPARE*(3*NPARE+33)/2
+      iiwork = npare + 60
+      irwork = 94 + 2*n + npare*(3*npare+33)/2
 !
-      IFIXD = STKGET(NPAR,2)
-      IWORK = STKGET(IIWORK,2)
+      ifixd = stkget(npar,2)
+      iwork = stkget(iiwork,2)
 !
-      D = STKGET(N*NPAR,IFP)
-      PARE = STKGET(NPARE,IFP)
-      PVI = STKGET(N,IFP)
-      RWORK = STKGET(IRWORK,IFP)
+      d = stkget(n*npar,ifp)
+      pare = stkget(npare,ifp)
+      pvi = stkget(n,ifp)
+      rwork = stkget(irwork,ifp)
 !
-      IF (IERR.EQ.1) RETURN
+      if (ierr.eq.1) return
 !
 !     SET VALUES FOR IFIXD
 !
-      IF (IFIXED(1).GE.0) CALL CPYVII(NPAR, IFIXED, 1, ISTAK(IFIXD), 1)
-      IF (IFIXED(1).LT.0) CALL SETIV(ISTAK(IFIXD), NPAR, 0)
+      if (ifixed(1).ge.0) call cpyvii(npar, ifixed, 1, istak(ifixd), 1)
+      if (ifixed(1).lt.0) call setiv(istak(ifixd), npar, 0)
 !
-      CALL NLMN(Y, WEIGHT, NNZW, WT, LWT, XM, N, M, IXM, MDL, NLDRV,
-     &   APRXDV, DRV, ISTAK(IFIXD), PAR, RSTAK(PARE), NPAR, RES, PAGE,
-     &   WIDE, HLFRPT, STP, LSTP, MIT, STOPSS, STOPP, SCALE, LSCALE,
-     &   DELTA, IVAPRX, IPTOUT, NDIGIT, RSD, RSTAK(PVI), SDPVI,
-     &   SDRESI, VCVL, LVCVL, RSTAK(D), ISTAK(IWORK), IIWORK,
-     &   RSTAK(RWORK), IRWORK, NLHDR, NPARE)
+     call nlmn(y, weight, nnzw, wt, lwt, xm, n, m, ixm, mdl, nldrv,&
+    &   aprxdv, drv, istak(ifixd), par, rstak(pare), npar, res, page,&
+    &   wide, hlfrpt, stp, lstp, mit, stopss, stopp, scale, lscale,&
+    &   delta, ivaprx, iptout, ndigit, rsd, rstak(pvi), sdpvi,&
+    &   sdresi, vcvl, lvcvl, rstak(d), istak(iwork), iiwork,&
+     &   rstak(rwork), irwork, nlhdr, npare)
 !
-      IF (.NOT.SAVE) GO TO 10
+      if (.not.save) go to 10
 !
-      SDPVI = RWORK + SDPVI - 1
-      SDRESI = RWORK + SDRESI - 1
-      VCVL = RWORK + VCVL - 1
+      sdpvi = rwork + sdpvi - 1
+      sdresi = rwork + sdresi - 1
+      vcvl = rwork + vcvl - 1
 !
-      CALL DCOPY(N, RSTAK(PVI), 1, PV, 1)
-      CALL DCOPY(N, RSTAK(SDPVI), 1, SDPV, 1)
-      CALL DCOPY(N, RSTAK(SDRESI), 1, SDRES, 1)
-      CALL CPYASF(NPARE, RSTAK(VCVL), LVCVL, VCV, IVCV)
+      call dcopy(n, rstak(pvi), 1, pv, 1)
+      call dcopy(n, rstak(sdpvi), 1, sdpv, 1)
+      call dcopy(n, rstak(sdresi), 1, sdres, 1)
+      call cpyasf(npare, rstak(vcvl), lvcvl, vcv, ivcv)
 !
-   10 CALL STKCLR(NALL0)
+   10 call stkclr(nall0)
 !
-      RETURN
+      return
 !
-      END
+      end

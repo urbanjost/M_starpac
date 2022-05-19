@@ -1,6 +1,6 @@
 !EISLE
-      SUBROUTINE EISLE(NMSUB, NMVAR1, NVAL, NMAX, MSGTYP, HEAD, ERROR,
-     &   NMVAR2)
+     subroutine eisle(nmsub, nmvar1, nval, nmax, msgtyp, head, error,&
+     &   nmvar2)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,18 +17,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   MSGTYP,NMAX,NVAL
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   msgtyp,nmax,nval
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1
+     character&
+     &   nmsub(6)*1,nmvar1(8)*1,nmvar2(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -63,40 +63,40 @@
 !     INTEGER NVAL
 !        THE INPUT VALUE OF THE ARGUMENT BEING CHECKED.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (NVAL .LE. NMAX) RETURN
+      if (nval .le. nmax) return
 !
-      ERROR = .TRUE.
+      error = .true.
 !
-      CALL IPRINT (IPRT)
+      call iprint (iprt)
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      WRITE (IPRT, 1000) (NMVAR1(I), I=1,6), NVAL
+      write (iprt, 1000) (nmvar1(i), i=1,6), nval
 !
-      GO TO (10, 20), MSGTYP
+      go to (10, 20), msgtyp
 !
 !     PRINT MESSAGE FOR VALUE TOO LARGE BASED ON LIMITS IMPOSED
 !     BY STARPAC.
 !
-   10 WRITE (IPRT, 1010) (NMVAR1(I), I=1,6), NMAX
-      RETURN
+   10 write (iprt, 1010) (nmvar1(i), i=1,6), nmax
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO LARGE BASED ON OTHER INPUT
 !     ARGUMENTS.
 !
-   20 WRITE (IPRT, 1020) (NMVAR1(I), I=1,6), (NMVAR2(I), I=1,8)
-      RETURN
+   20 write (iprt, 1020) (nmvar1(i), i=1,6), (nmvar2(i), i=1,8)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/20H THE INPUT VALUE OF , 6A1, 4H IS , I5, '.')
- 1010 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   31H MUST BE LESS THAN OR EQUAL TO , I5, '.')
- 1020 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   31H MUST BE LESS THAN OR EQUAL TO , 8A1, '.')
+ 1000 format (/20h the input value of , 6a1, 4h is , i5, '.')
+1010 format(&
+    &   27h the value of the argument , 6a1,&
+     &   31h must be less than or equal to , i5, '.')
+1020 format(&
+    &   27h the value of the argument , 6a1,&
+     &   31h must be less than or equal to , 8a1, '.')
 !
-      END
+      end

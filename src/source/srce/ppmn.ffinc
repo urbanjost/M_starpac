@@ -1,6 +1,6 @@
 !PPMN
-      SUBROUTINE PPMN (YM, YMMISS, X, XMISS, N, M, IYM, ISCHCK, ISYM,
-     &  LISYM, ISIZE, NOUT, YMN, YMX, XMN, XMX, MISS, ILOG)
+     subroutine ppmn (ym, ymmiss, x, xmiss, n, m, iym, ischck, isym,&
+     &  lisym, isize, nout, ymn, ymx, xmn, xmx, miss, ilog)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -144,35 +144,35 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) :: XMISS,XMN,XMX,YMN,YMX
-      INTEGER :: ILOG,ISCHCK,ISIZE,IYM,LISYM,M,N,NOUT
-      LOGICAL :: MISS
+      real(kind=wp) :: xmiss,xmn,xmx,ymn,ymx
+      integer :: ilog,ischck,isize,iym,lisym,m,n,nout
+      logical :: miss
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) :: X(N),YM(IYM,M),YMMISS(M)
-      INTEGER ISYM(LISYM)
+      real(kind=wp) :: x(n),ym(iym,m),ymmiss(m)
+      integer isym(lisym)
 !
 !  SCALARS IN COMMON
-      INTEGER IERR
+      integer ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DELX,DELY,TN,TX,XDMN,XDMX,XWIDTH,XX,YDMN,YDMX,YL,YLOWER,
-     &   YUPPER,YWIDTH,YY
-      INTEGER
-     &   I,IC,ICOL,IK,ILOGX,ILOGY,IOUT,IPRT,IROW,IT,ITEST,J,JCOL,K,
-     &   L,NLABLX,NLABLY,NLU,NN,NUMCOL,NUMCP2,NUMROW
-      CHARACTER
-     &   ALPHAI*1,ALPHAX*1,AXISCH*1,BLANK*1,HYPHEN*1,FMT*4,
-     &   XLFMT*205,XLFMT2*205
+     real(kind=wp) ::&
+    &   delx,dely,tn,tx,xdmn,xdmx,xwidth,xx,ydmn,ydmx,yl,ylower,&
+     &   yupper,ywidth,yy
+     integer&
+    &   i,ic,icol,ik,ilogx,ilogy,iout,iprt,irow,it,itest,j,jcol,k,&
+     &   l,nlablx,nlably,nlu,nn,numcol,numcp2,numrow
+     character&
+    &   alphai*1,alphax*1,axisch*1,blank*1,hyphen*1,fmt*4,&
+     &   xlfmt*205,xlfmt2*205
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   TEMP(50,2),XLABEL(20),YLABEL(20)
-      INTEGER
-     &   ALINE(105),ILOGXY(2),ISIZXY(2),ISPACE(20),KSS(101)
-      CHARACTER
-     &   CLINE(105)*1,ITEMP(50)*1,SYM(30)*1,SYM1(9)*1
+     real(kind=wp) ::&
+     &   temp(50,2),xlabel(20),ylabel(20)
+     integer&
+     &   aline(105),ilogxy(2),isizxy(2),ispace(20),kss(101)
+     character&
+     &   cline(105)*1,itemp(50)*1,sym(30)*1,sym1(9)*1
 !
 !  EXTERNAL FUNCTIONS
 !      LOGICAL
@@ -183,10 +183,10 @@
 !      EXTERNAL IPRINT,LOGLMT,PRTCNT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG10,MAX,MIN
+      intrinsic abs,log10,max,min
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -266,305 +266,305 @@
 !     REAL(KIND=WP) :: YMMISS(M)
 !     REAL(KIND=WP) :: YMN, YMX, YUPPER, YWIDTH, YY
 !
-      DATA BLANK/' '/,HYPHEN/'-'/,ALPHAI/'I'/,ALPHAX/'X'/
-      DATA SYM( 1)/'+'/,SYM( 2)/'.'/,SYM( 3)/'*'/,SYM( 4)/'-'/,
-     &     SYM( 5)/'A'/,SYM( 6)/'B'/,SYM( 7)/'C'/,SYM( 8)/'D'/,
-     &     SYM( 9)/'E'/,SYM(10)/'F'/,SYM(11)/'G'/,SYM(12)/'H'/,
-     &     SYM(13)/'I'/,SYM(14)/'J'/,SYM(15)/'K'/,SYM(16)/'L'/,
-     &     SYM(17)/'M'/,SYM(18)/'N'/,SYM(19)/'O'/,SYM(20)/'P'/,
-     &     SYM(21)/'Q'/,SYM(22)/'R'/,SYM(23)/'S'/,SYM(24)/'T'/,
-     &     SYM(25)/'U'/,SYM(26)/'V'/,SYM(27)/'W'/,SYM(28)/'Y'/,
-     &     SYM(29)/'Z'/,SYM(30)/'Z'/
-      DATA SYM1(1)/'1'/,SYM1(2)/'2'/,SYM1(3)/'3'/,SYM1(4)/'4'/,
-     &     SYM1(5)/'5'/,SYM1(6)/'6'/,SYM1(7)/'7'/,SYM1(8)/'8'/,
-     &     SYM1(9)/'9'/
+      data blank/' '/,hyphen/'-'/,alphai/'I'/,alphax/'X'/
+     data sym( 1)/'+'/,sym( 2)/'.'/,sym( 3)/'*'/,sym( 4)/'-'/,&
+    &     sym( 5)/'A'/,sym( 6)/'B'/,sym( 7)/'C'/,sym( 8)/'D'/,&
+    &     sym( 9)/'E'/,sym(10)/'F'/,sym(11)/'G'/,sym(12)/'H'/,&
+    &     sym(13)/'I'/,sym(14)/'J'/,sym(15)/'K'/,sym(16)/'L'/,&
+    &     sym(17)/'M'/,sym(18)/'N'/,sym(19)/'O'/,sym(20)/'P'/,&
+    &     sym(21)/'Q'/,sym(22)/'R'/,sym(23)/'S'/,sym(24)/'T'/,&
+    &     sym(25)/'U'/,sym(26)/'V'/,sym(27)/'W'/,sym(28)/'Y'/,&
+     &     sym(29)/'Z'/,sym(30)/'Z'/
+     data sym1(1)/'1'/,sym1(2)/'2'/,sym1(3)/'3'/,sym1(4)/'4'/,&
+    &     sym1(5)/'5'/,sym1(6)/'6'/,sym1(7)/'7'/,sym1(8)/'8'/,&
+     &     sym1(9)/'9'/
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     DEFINE THE NUMBER OF ROWS AND COLUMNS WITHIN THE PLOT
 !
-      CALL PRTCNT(MAX(0,ISIZE),2,ISIZXY)
-      IF (ISIZXY(1).EQ.0) THEN
-        NUMCOL=101
-      ELSE
-        NUMCOL = 51
-      END IF
-      IF (ISIZXY(2).EQ.0) THEN
-        NUMROW = 51
-      ELSE
-        NUMROW = 26
-      END IF
+      call prtcnt(max(0,isize),2,isizxy)
+      if (isizxy(1).eq.0) then
+        numcol=101
+      else
+        numcol = 51
+      end if
+      if (isizxy(2).eq.0) then
+        numrow = 51
+      else
+        numrow = 26
+      end if
 !
-      NUMCP2 = NUMCOL + 2
-      NN=(NUMROW-1)/5
+      numcp2 = numcol + 2
+      nn=(numrow-1)/5
 !
 !     ADJUST FOR LOG PLOTS IF NECESSARY AND FIND AXIS LABELS
 !
-      CALL PRTCNT (MAX(0,ILOG),2,ILOGXY)
-      ILOGX = ILOGXY(1)
-      ILOGY = ILOGXY(2)
-      CALL LOGLMT (ILOGY, YMN, YMX, YLABEL, NUMROW, 5, DELY, YWIDTH,
-     &  NLABLY, YDMN, YDMX)
-      CALL LOGLMT (ILOGX, XMN, XMX, XLABEL, NUMCOL, 10, DELX, XWIDTH,
-     &  NLABLX, XDMN, XDMX)
+      call prtcnt (max(0,ilog),2,ilogxy)
+      ilogx = ilogxy(1)
+      ilogy = ilogxy(2)
+     call loglmt (ilogy, ymn, ymx, ylabel, numrow, 5, dely, ywidth,&
+     &  nlably, ydmn, ydmx)
+     call loglmt (ilogx, xmn, xmx, xlabel, numcol, 10, delx, xwidth,&
+     &  nlablx, xdmn, xdmx)
 !
 !     TEST FOR FORMAT FOR Y AXIS LABELS
 !
-      ITEST=0
-      TX=YMX
-      TN=YMN
-      IF (ILOGY.EQ.0) GO TO 190
-      TX=10.0_WP**TX
-      TN=10.0_WP**TN
-  190 IF ((TN .GE. 1.0E6_WP .OR. TN .LE. (-1.0E5_WP)) .OR.
-     &   (ABS(TN).GT.0.0_WP.AND.ABS(TN).LT.0.001_WP)) ITEST=1
-      IF ((TX .GE. 1.0E6_WP .OR. TX .LE. (-1.0E5_WP)) .OR.
-     &   (ABS(TX).GT.0.0_WP.AND.ABS(TX).LT.0.001_WP)) ITEST=1
+      itest=0
+      tx=ymx
+      tn=ymn
+      if (ilogy.eq.0) go to 190
+      tx=10.0_wp**tx
+      tn=10.0_wp**tn
+ 190 if ((tn .ge. 1.0e6_wp .or. tn .le. (-1.0e5_wp)) .or.&
+     &   (abs(tn).gt.0.0_wp.and.abs(tn).lt.0.001_wp)) itest=1
+     if ((tx .ge. 1.0e6_wp .or. tx .le. (-1.0e5_wp)) .or.&
+     &   (abs(tx).gt.0.0_wp.and.abs(tx).lt.0.001_wp)) itest=1
 !
 !     BLANK OUT THE PLOT PRINT LINE CLINE
 !
-      DO 200 ICOL=1,105
-         CLINE(ICOL)=BLANK
-  200 CONTINUE
+      do 200 icol=1,105
+         cline(icol)=blank
+  200 continue
 !
 !     WRITE OUT THE TOP HORIZONTAL AXIS OF THE PLOT
 !
-      DO 210 ICOL=1,NUMCOL
-         CLINE(ICOL)=HYPHEN
-  210 CONTINUE
-      CLINE(1)=ALPHAI
-      IF (ILOGX.EQ.0) THEN
-        DO 215 ICOL=11,NUMCOL,10
-           CLINE(ICOL)=ALPHAI
-  215   CONTINUE
-      ELSE
-        DO 216 IK = NLABLX, 1, -1
-          ICOL = ((LOG10(XLABEL(IK))-XMN)/XWIDTH)+1.5_WP
-          CLINE(ICOL) = ALPHAI
-  216   CONTINUE
-      END IF
-      CLINE(NUMCOL+1)=HYPHEN
-      CLINE(NUMCOL+2)=BLANK
-      WRITE (IPRT, 1004) HYPHEN,(CLINE(I),I=1,NUMCOL),HYPHEN
-      DO 217 ICOL=1,105
-         CLINE(ICOL)=BLANK
-  217 CONTINUE
+      do 210 icol=1,numcol
+         cline(icol)=hyphen
+  210 continue
+      cline(1)=alphai
+      if (ilogx.eq.0) then
+        do 215 icol=11,numcol,10
+           cline(icol)=alphai
+  215   continue
+      else
+        do 216 ik = nlablx, 1, -1
+          icol = ((log10(xlabel(ik))-xmn)/xwidth)+1.5_wp
+          cline(icol) = alphai
+  216   continue
+      end if
+      cline(numcol+1)=hyphen
+      cline(numcol+2)=blank
+      write (iprt, 1004) hyphen,(cline(i),i=1,numcol),hyphen
+      do 217 icol=1,105
+         cline(icol)=blank
+  217 continue
 !
 !     DETERMINE AND WRITE OUT THE PLOT POSITIONS ONE LINE AT A TIME.
 !
-      L=-1
-      IK=1
-      DO 320 IROW=1,NUMROW
-         L=L+1
-         IF (L.GT.NN) L=1
-         DO 235 ICOL=1,NUMCOL
-            ALINE(ICOL)=0
-            KSS(ICOL)=0
-  235    CONTINUE
-         YUPPER=YMX+(1.5_WP-IROW)*YWIDTH
-         YLOWER=YMX+(0.5_WP-IROW)*YWIDTH
-      DO 255 I = 1, N
+      l=-1
+      ik=1
+      do 320 irow=1,numrow
+         l=l+1
+         if (l.gt.nn) l=1
+         do 235 icol=1,numcol
+            aline(icol)=0
+            kss(icol)=0
+  235    continue
+         yupper=ymx+(1.5_wp-irow)*ywidth
+         ylower=ymx+(0.5_wp-irow)*ywidth
+      do 255 i = 1, n
 !
-         IF (MISS .AND. MVCHK(X(I), XMISS)) GO TO 255
+         if (miss .and. mvchk(x(i), xmiss)) go to 255
 !
-         IF (ILOGX.EQ.0) THEN
-           XX=X(I)
-         ELSE
-           XX=LOG10(X(I))
-         END IF
-         DO 250 J=1,M
+         if (ilogx.eq.0) then
+           xx=x(i)
+         else
+           xx=log10(x(i))
+         end if
+         do 250 j=1,m
 !
-            IF (MISS .AND. MVCHK(YM(I,J), YMMISS(J))) GO TO 250
-               IF (ILOGY.EQ.0) THEN
-                 YY=YM(I,J)
-               ELSE
-                 YY=LOG10(YM(I,J))
-               END IF
-               IF (((YLOWER.LE.YY).AND.(YY.LT.YUPPER)) .AND.
-     &             ((YY.GE.YDMN).AND.(YY.LE.YDMX))) THEN
-                  IF ((XX.GE.XDMN) .AND. (XX.LE.XDMX)) THEN
-                     ICOL=((XX-XMN)/XWIDTH)+1.5_WP
-                     ALINE(ICOL) = ALINE(ICOL) + 1
+            if (miss .and. mvchk(ym(i,j), ymmiss(j))) go to 250
+               if (ilogy.eq.0) then
+                 yy=ym(i,j)
+               else
+                 yy=log10(ym(i,j))
+               end if
+              if (((ylower.le.yy).and.(yy.lt.yupper)) .and.&
+     &             ((yy.ge.ydmn).and.(yy.le.ydmx))) then
+                  if ((xx.ge.xdmn) .and. (xx.le.xdmx)) then
+                     icol=((xx-xmn)/xwidth)+1.5_wp
+                     aline(icol) = aline(icol) + 1
 !     SIMPLE PLOTTING (PLT)
-                     KSS(ICOL)=1
+                     kss(icol)=1
 !     SYMBOL PLOTS (SPLT)
-                     IF (ISCHCK .EQ. 1) KSS(ICOL) = ISYM(I)
+                     if (ischck .eq. 1) kss(icol) = isym(i)
 !     MULTIPLE PLOTS (MPLT)
-                     IF (ISCHCK .EQ. 2) KSS(ICOL) = J + 4
-                     IF (KSS(ICOL).GT.30) KSS(ICOL)=30
-                     IF (KSS(ICOL).LT.1) KSS(ICOL)=1
-                  END IF
-               END IF
-  250       CONTINUE
-  255    CONTINUE
-         DO 290 ICOL=1,NUMCOL
-            IF (ALINE(ICOL).EQ.0) THEN
-              CLINE(ICOL)=BLANK
-            ELSE
-              IF (ALINE(ICOL).EQ.1) THEN
-                K=KSS(ICOL)
-                CLINE(ICOL)=SYM(K)
-              ELSE
-                IF (ALINE(ICOL).LE.9) THEN
-                  CLINE(ICOL)=SYM1(ALINE(ICOL))
-                ELSE
-                  CLINE(ICOL)=ALPHAX
-                END IF
-              END IF
-            END IF
-  290    CONTINUE
-         CLINE(NUMCOL+2)=HYPHEN
-         AXISCH=HYPHEN
-         IF (ILOGY.EQ.0) THEN
-           YL = YLABEL(IK)
-         ELSE
-           YL = LOG10(YLABEL(IK))
-         END IF
-         IF ((YLOWER.GT.YL) .OR. (YL.GE.YUPPER)) THEN
+                     if (ischck .eq. 2) kss(icol) = j + 4
+                     if (kss(icol).gt.30) kss(icol)=30
+                     if (kss(icol).lt.1) kss(icol)=1
+                  end if
+               end if
+  250       continue
+  255    continue
+         do 290 icol=1,numcol
+            if (aline(icol).eq.0) then
+              cline(icol)=blank
+            else
+              if (aline(icol).eq.1) then
+                k=kss(icol)
+                cline(icol)=sym(k)
+              else
+                if (aline(icol).le.9) then
+                  cline(icol)=sym1(aline(icol))
+                else
+                  cline(icol)=alphax
+                end if
+              end if
+            end if
+  290    continue
+         cline(numcol+2)=hyphen
+         axisch=hyphen
+         if (ilogy.eq.0) then
+           yl = ylabel(ik)
+         else
+           yl = log10(ylabel(ik))
+         end if
+         if ((ylower.gt.yl) .or. (yl.ge.yupper)) then
 !
 !          PRINT LINE WITHOUT LABEL
 !
-           CLINE(NUMCP2)=ALPHAI
-           WRITE(IPRT, 1008) ALPHAI, (CLINE(ICOL), ICOL=1,NUMCP2)
-         ELSE
+           cline(numcp2)=alphai
+           write(iprt, 1008) alphai, (cline(icol), icol=1,numcp2)
+         else
 !
 !          PRINT LINE WITH LABEL
 !
-           IF (ITEST.EQ.0) THEN
-             WRITE(IPRT,1006) YLABEL(IK),AXISCH,
-     &         (CLINE(ICOL),ICOL=1,NUMCP2)
-           ELSE
-             WRITE(IPRT,1007) YLABEL(IK),AXISCH,
-     &         (CLINE(ICOL),ICOL=1,NUMCP2)
-           END IF
-           IK=IK+1
-         END IF
-  320 CONTINUE
+           if (itest.eq.0) then
+            write(iprt,1006) ylabel(ik),axisch,&
+     &         (cline(icol),icol=1,numcp2)
+           else
+            write(iprt,1007) ylabel(ik),axisch,&
+     &         (cline(icol),icol=1,numcp2)
+           end if
+           ik=ik+1
+         end if
+  320 continue
 !
 !     WRITE OUT THE BOTTOM HORIZONTAL AXIS AND THE X AXIS LABELS.
 !
-      DO 330 ICOL=1,NUMCOL
-         CLINE(ICOL)=HYPHEN
-  330 CONTINUE
-      CLINE(1)=ALPHAI
-      IF (ILOGX.EQ.0) THEN
-        NLU = NLABLX+1
-        DO 340 ICOL=NUMCOL,1,-10
-           CLINE(ICOL)=ALPHAI
-           NLU = NLU - 1
-           ISPACE(NLU) = 1
-  340   CONTINUE
-      ELSE
-        JCOL = 1
-        CLINE(JCOL) = ALPHAI
-        NLU = NLABLX
-        DO 345 IK = NLABLX, 1, -1
-          ICOL = ((LOG10(XLABEL(IK))-XMN)/XWIDTH)+1.5
-          CLINE(ICOL) = ALPHAI
-          IF (ICOL-JCOL.GE.10) THEN
-            ISPACE(NLU) = ICOL-JCOL-9
-            NLU = NLU - 1
-            XLABEL(NLU) = XLABEL(IK)
-            JCOL = ICOL
-          END IF
-  345   CONTINUE
-      END IF
-      CLINE(NUMCOL+1)=HYPHEN
-      CLINE(NUMCOL+2)=BLANK
+      do 330 icol=1,numcol
+         cline(icol)=hyphen
+  330 continue
+      cline(1)=alphai
+      if (ilogx.eq.0) then
+        nlu = nlablx+1
+        do 340 icol=numcol,1,-10
+           cline(icol)=alphai
+           nlu = nlu - 1
+           ispace(nlu) = 1
+  340   continue
+      else
+        jcol = 1
+        cline(jcol) = alphai
+        nlu = nlablx
+        do 345 ik = nlablx, 1, -1
+          icol = ((log10(xlabel(ik))-xmn)/xwidth)+1.5
+          cline(icol) = alphai
+          if (icol-jcol.ge.10) then
+            ispace(nlu) = icol-jcol-9
+            nlu = nlu - 1
+            xlabel(nlu) = xlabel(ik)
+            jcol = icol
+          end if
+  345   continue
+      end if
+      cline(numcol+1)=hyphen
+      cline(numcol+2)=blank
 !
-      WRITE(IPRT, 1004) HYPHEN, (CLINE(ICOL), ICOL = 1, NUMCP2)
+      write(iprt, 1004) hyphen, (cline(icol), icol = 1, numcp2)
 !
 !     CHECK X-AXIS LABELS FOR FORMAT
 !
-      FMT = 'F9.4'
-      DO 350 I=1,NLABLX
-        IF (((ABS(XLABEL(I)).GT.0.0_WP) .AND.
-     &     (ABS(XLABEL(I)).LT.0.01_WP))
-     &     .OR.
-     &     ((XLABEL(I).GE.1.0E4_WP) .OR. (XLABEL(I).LE.(-1.0E3_WP))))
-     &     THEN
-          FMT = 'E9.4'
-           GO TO 355
-         END IF
-  350 CONTINUE
-  355 CONTINUE
-      WRITE(XLFMT2,1000) NLABLX-NLU
-      WRITE(XLFMT,XLFMT2) (FMT, ISPACE(I), I=NLABLX,NLU+1,-1), FMT
-      WRITE(IPRT, XLFMT) (XLABEL(I),I=NLABLX,NLU,-1)
+      fmt = 'F9.4'
+      do 350 i=1,nlablx
+       if (((abs(xlabel(i)).gt.0.0_wp) .and.&
+    &     (abs(xlabel(i)).lt.0.01_wp))&
+    &     .or.&
+    &     ((xlabel(i).ge.1.0e4_wp) .or. (xlabel(i).le.(-1.0e3_wp))))&
+     &     then
+          fmt = 'E9.4'
+           go to 355
+         end if
+  350 continue
+  355 continue
+      write(xlfmt2,1000) nlablx-nlu
+      write(xlfmt,xlfmt2) (fmt, ispace(i), i=nlablx,nlu+1,-1), fmt
+      write(iprt, xlfmt) (xlabel(i),i=nlablx,nlu,-1)
 !
 !     DETERMINE VALUES TO BE LISTED IF OUTSIDE OF AXIS LIMITS.
 !
-      IC = 0
-      IOUT = MIN(NOUT,50)
-      IF (IOUT.GE.0) THEN
-        DO 180 I = 1, N
+      ic = 0
+      iout = min(nout,50)
+      if (iout.ge.0) then
+        do 180 i = 1, n
 !
-          IF (MISS .AND. MVCHK(X(I), XMISS)) GO TO 180
+          if (miss .and. mvchk(x(i), xmiss)) go to 180
 !
-          IF (ILOGX.EQ.0) THEN
-            XX = X(I)
-          ELSE
-            XX = LOG10(X(I))
-          END IF
-           DO 175 J=1,M
+          if (ilogx.eq.0) then
+            xx = x(i)
+          else
+            xx = log10(x(i))
+          end if
+           do 175 j=1,m
 !
-              IF (MISS .AND. MVCHK(YM(I,J), YMMISS(J))) GO TO 175
+              if (miss .and. mvchk(ym(i,j), ymmiss(j))) go to 175
 !
-              IF (ILOGY.EQ.0) THEN
-                YY = YM(I,J)
-              ELSE
-                YY = LOG10(YM(I,J))
-              END IF
+              if (ilogy.eq.0) then
+                yy = ym(i,j)
+              else
+                yy = log10(ym(i,j))
+              end if
 !
-              IF (((YDMN .LE. YY) .AND. (YY .LE. YDMX)) .AND.
-     &            ((XDMN .LE. XX) .AND. (XX .LE. XDMX))) GO TO 175
+             if (((ydmn .le. yy) .and. (yy .le. ydmx)) .and.&
+     &            ((xdmn .le. xx) .and. (xx .le. xdmx))) go to 175
 !
-              IC=IC+1
-              IF (IC.GT.IOUT) GO TO 175
-              TEMP(IC,1)=X(I)
-              TEMP(IC,2)=YM(I,J)
-              IT=1
-              IF (ISCHCK.EQ.1) IT=ISYM(I)
-              IF (ISCHCK.EQ.2) IT=J+4
-              IF (IT.LT.1) IT=1
-              IF (IT.GT.30) IT=30
-              ITEMP(IC) = SYM(IT)
-  175      CONTINUE
-  180   CONTINUE
-      END IF
+              ic=ic+1
+              if (ic.gt.iout) go to 175
+              temp(ic,1)=x(i)
+              temp(ic,2)=ym(i,j)
+              it=1
+              if (ischck.eq.1) it=isym(i)
+              if (ischck.eq.2) it=j+4
+              if (it.lt.1) it=1
+              if (it.gt.30) it=30
+              itemp(ic) = sym(it)
+  175      continue
+  180   continue
+      end if
 !
 !     CHECK FOR POINTS OUTSIDE OF GRAPH LIMITS AND LIST IF REQUESTED
 !     THE TOTAL NUMBER OF POINTS TO BE PLOTTED IS N*M
 !
-      IF (IC.EQ.0) RETURN
-      IF (IOUT .LT. 0) RETURN
-      WRITE (IPRT, 1010) IC
-      IF (IOUT.LE.0) RETURN
-      WRITE (IPRT, 1016)
-      IF (IC.LE.IOUT) GO TO 360
-      IC=IOUT
-      WRITE(IPRT, 1011) IOUT
-      GO TO 370
-  360 WRITE(IPRT, 1012)
-  370 WRITE(IPRT, 1013) (TEMP(I,1), TEMP(I,2), ITEMP(I), I = 1, IC)
-      RETURN
+      if (ic.eq.0) return
+      if (iout .lt. 0) return
+      write (iprt, 1010) ic
+      if (iout.le.0) return
+      write (iprt, 1016)
+      if (ic.le.iout) go to 360
+      ic=iout
+      write(iprt, 1011) iout
+      go to 370
+  360 write(iprt, 1012)
+  370 write(iprt, 1013) (temp(i,1), temp(i,2), itemp(i), i = 1, ic)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT ('(''(14X'',', I2, '('', '', A4, '','', I2, ''X''),',
+1000 format ('(''(14X'',', i2, '('', '', A4, '','', I2, ''X''),',&
      &  ''', '', A4, '')'')')
- 1004 FORMAT (' ',16X, A1, 105A1)
- 1006 FORMAT(4X,F11.4,1X,A1,1X,105A1)
- 1007 FORMAT (' ', E14.7, 1X, A1, 1X, 105A1)
- 1008 FORMAT (' ', 15X, A1, 1X, 105A1)
- 1010 FORMAT(16X,6H**NOTE,I4,43H VALUES FELL OUTSIDE THE SPECIFIED LIMIT
-     &S**)
- 1011 FORMAT ('1', 15X, 10HTHE FIRST , I3,
-     &   35H VALUES OUTSIDE THE PLOT LIMITS ARE/ 22X,
-     & 33H X               Y            SYM)
- 1012 FORMAT ('1', 15X, 38HTHE VALUES OUTSIDE THE PLOT LIMITS ARE/ 22X,
-     & 33H X               Y            SYM)
- 1013 FORMAT (15X,2E15.8,9X,A1)
- 1016 FORMAT (16X, 22HSEE NEXT PAGE FOR LIST)
+ 1004 format (' ',16x, a1, 105a1)
+ 1006 format(4x,f11.4,1x,a1,1x,105a1)
+ 1007 format (' ', e14.7, 1x, a1, 1x, 105a1)
+ 1008 format (' ', 15x, a1, 1x, 105a1)
+1010 format(16x,6h**note,i4,43h values fell outside the specified limit&
+     &s**)
+1011 format ('1', 15x, 10hthe first , i3,&
+    &   35h values outside the plot limits are/ 22x,&
+     & 33h x               y            sym)
+1012 format ('1', 15x, 38hthe values outside the plot limits are/ 22x,&
+     & 33h x               y            sym)
+ 1013 format (15x,2e15.8,9x,a1)
+ 1016 format (16x, 22hsee next page for list)
 !
-      END
+      end

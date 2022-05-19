@@ -1,5 +1,5 @@
 !ACFM
-      SUBROUTINE ACFM (Y, YMISS, N)
+      subroutine acfm (y, ymiss, n)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,48 +17,48 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) :: YMISS
-      INTEGER
-     &   N
+      real(kind=wp) :: ymiss
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*)
+     real(kind=wp) ::&
+     &   y(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   CHIA,CHIAP,OSPVAR,YMEAN,YSD
-      INTEGER
-     &   IAR,IPRT,LACOV,LAGLST,LAGMAX,LAIC,LDSMIN,LDSTAK,LYFFT,
-     &   NFAC,NFFT,NPRT
-      LOGICAL
-     &   DIFFER,ISFFT
+     real(kind=wp) ::&
+     &   chia,chiap,ospvar,ymean,ysd
+     integer&
+    &   iar,iprt,lacov,laglst,lagmax,laic,ldsmin,ldstak,lyfft,&
+     &   nfac,nfft,nprt
+     logical&
+     &   differ,isfft
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   ACOV(101),AIC(101),FTEST(2,100),PHI(100),PRHO(100),RHO(100),
-     &   SDRHO(100),WORK(100)
-      INTEGER
-     &   IOD(1),ND(1),NDUM(1),NLPPA(101)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+    &   acov(101),aic(101),ftest(2,100),phi(100),prho(100),rho(100),&
+     &   sdrho(100),work(100)
+     integer&
+     &   iod(1),nd(1),ndum(1),nlppa(101)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL ACFER,ACFMNM,ACFOUT,IPRINT,SETLAG
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (ACOV(2),RHO(1))
-      EQUIVALENCE (WORK(1),SDRHO(1))
+      equivalence (acov(2),rho(1))
+      equivalence (work(1),sdrho(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -151,69 +151,69 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'A',       'C',       'F',       'M',       ' ',       ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      LAGMAX = 1
-      LACOV = 101
-      LAIC = 101
-      NPRT = 1
-      LDSMIN = 0
-      LDSTAK = 0
-      DIFFER = .FALSE.
-      NFAC = 1
-      ND(1) = 0
-      IOD(1) = 0
-      ISFFT = .FALSE.
-      LYFFT = N
-      NFFT = N
+      ierr = 0
+      lagmax = 1
+      lacov = 101
+      laic = 101
+      nprt = 1
+      ldsmin = 0
+      ldstak = 0
+      differ = .false.
+      nfac = 1
+      nd(1) = 0
+      iod(1) = 0
+      isfft = .false.
+      lyfft = n
+      nfft = n
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL ACFER(NMSUB, N, LAGMAX, LACOV, LDSTAK, LDSMIN,
-     &  DIFFER, NFAC, ND, IOD, ISFFT, LYFFT, NFFT)
+     call acfer(nmsub, n, lagmax, lacov, ldstak, ldsmin,&
+     &  differ, nfac, nd, iod, isfft, lyfft, nfft)
 !
 !     CHECK WHETHER AN ERROR HAS BEEN DETECTED
 !
-      IF (IERR.EQ.0) THEN
+      if (ierr.eq.0) then
 !
 !       SET LARGEST LAG TO BE USED.
 !
-        CALL SETLAG(N, LAGMAX)
+        call setlag(n, lagmax)
 !
 !       CALL ROUTINE FOR MAIN AUTOCORRELATION COMPUTATIONS.
 !
-        CALL ACFMNM (Y, YMISS, N, LAGMAX, RHO, SDRHO, NLPPA, YMEAN,
-     &     PRHO, AIC, FTEST, PHI, IAR, OSPVAR, ACOV, LACOV, LAIC, CHIA,
-     &     CHIAP, LAGLST, WORK, NPRT)
+       call acfmnm (y, ymiss, n, lagmax, rho, sdrho, nlppa, ymean,&
+    &     prho, aic, ftest, phi, iar, ospvar, acov, lacov, laic, chia,&
+     &     chiap, laglst, work, nprt)
 !
-        YSD = ACOV(1)
-        IF (LAGLST.GE.0) YSD = SQRT (ACOV(1) * N / (N - 1))
+        ysd = acov(1)
+        if (laglst.ge.0) ysd = sqrt (acov(1) * n / (n - 1))
 !
 !       CALL ROUTINE TO PRINT OUT AUTOCORRELATIONS
 !
-        CALL ACFOUT (YMEAN, YSD, N, NLPPA(1), LAGMAX, RHO, SDRHO, PRHO,
-     &     NLPPA, AIC, LAGMAX+1, FTEST, IAR, PHI, OSPVAR, CHIA, CHIAP,
-     &     LAGLST, .TRUE., YMISS, .FALSE., .FALSE., 0, NDUM, NDUM, 0)
-      END IF
+       call acfout (ymean, ysd, n, nlppa(1), lagmax, rho, sdrho, prho,&
+    &     nlppa, aic, lagmax+1, ftest, iar, phi, ospvar, chia, chiap,&
+     &     laglst, .true., ymiss, .false., .false., 0, ndum, ndum, 0)
+      end if
 !
-      IF (IERR.NE.0) THEN
+      if (ierr.ne.0) then
 !
 !     PRINT PROPER CALL SEQUENCE AND RETURN
 !
-        IERR = 1
-        CALL IPRINT (IPRT)
-        WRITE (IPRT, 1000)
-      END IF
+        ierr = 1
+        call iprint (iprt)
+        write (iprt, 1000)
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   30H       CALL ACFM (Y, YMISS, N))
-      END
+1000 format(/42h the correct form of the call statement is//&
+     &   30h       call acfm (y, ymiss, n))
+      end

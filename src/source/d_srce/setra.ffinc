@@ -1,5 +1,5 @@
 !SETRA
-      SUBROUTINE SETRA(ARRAY, IM, M, N, VALUE)
+      subroutine setra(array, im, m, n, value)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,18 +15,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   VALUE
-      INTEGER
-     &   IM,M,N
+     real(kind=wp) ::&
+     &   value
+     integer&
+     &   im,m,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ARRAY(IM,M)
+     real(kind=wp) ::&
+     &   array(im,m)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,J
+     integer&
+     &   i,j
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -46,10 +46,10 @@
 !        VALUE TO WHICH THE ELEMENTS ARE TO BE SET
 !
 !
-      DO 20 I=1,N
-         DO 10 J=1,M
-            ARRAY(I,J) = VALUE
-   10    CONTINUE
-   20 CONTINUE
-      RETURN
-      END
+      do 20 i=1,n
+         do 10 j=1,m
+            array(i,j) = value
+   10    continue
+   20 continue
+      return
+      end

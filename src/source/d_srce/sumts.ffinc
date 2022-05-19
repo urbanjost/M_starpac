@@ -1,5 +1,5 @@
 !SUMTS
-      SUBROUTINE SUMTS(X, N, ALPHA, SUMT1, XTRM)
+      subroutine sumts(x, n, alpha, sumt1, xtrm)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,24 +17,24 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ALPHA,SUMT1,XTRM
-      INTEGER
-     &   N
+     real(kind=wp) ::&
+     &   alpha,sumt1,xtrm
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(N)
+     real(kind=wp) ::&
+     &   x(n)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   CURHI,CURLO,I,IREV,ITHI,ITLO,MID,NALPHA
+     integer&
+     &   curhi,curlo,i,irev,ithi,itlo,mid,nalpha
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL SUMBS
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,MAX,MIN
+      intrinsic abs,max,min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -76,43 +76,43 @@
 !     SET UP LIMITS TRIMMING THE NUMBER OF VALUES AT EACH END
 !     BY ALPHA PER CENT.
 !
-      NALPHA = ALPHA*N
-      ITLO = NALPHA + 1
-      ITHI = N - NALPHA
-      CALL SUMBS(X, N, ITLO, MID, ITHI)
+      nalpha = alpha*n
+      itlo = nalpha + 1
+      ithi = n - nalpha
+      call sumbs(x, n, itlo, mid, ithi)
 !
 !     INITIALIZE SUMMATION VARIABLES.
 !
-      SUMT1 = X(MID)
-      CURLO = MID - 1
-      CURHI = MID + 1
+      sumt1 = x(mid)
+      curlo = mid - 1
+      curhi = mid + 1
 !
 !     SUM OUTWARDS FROM THE VALUE NEAREST ZERO.  THAT IS, SUM FROM
 !     THE LEAST IN MAGNITUDE TO THE GREATEST.
 !
-   10 IF (CURHI.GT.ITHI .OR. CURLO.LT.ITLO) GO TO 30
-      IF (ABS(X(CURHI)).LT.ABS(X(CURLO))) GO TO 20
-      SUMT1 = SUMT1 + X(CURLO)
-      CURLO = CURLO - 1
-      GO TO 10
-   20 SUMT1 = SUMT1 + X(CURHI)
-      CURHI = CURHI + 1
-      GO TO 10
+   10 if (curhi.gt.ithi .or. curlo.lt.itlo) go to 30
+      if (abs(x(curhi)).lt.abs(x(curlo))) go to 20
+      sumt1 = sumt1 + x(curlo)
+      curlo = curlo - 1
+      go to 10
+   20 sumt1 = sumt1 + x(curhi)
+      curhi = curhi + 1
+      go to 10
 !
 !     SUM UP ANY VALUES WHICH MAY REMAIN BECAUSE OF AN OFF
 !     CENTER ZERO POINT.
 !
-   30 IF (CURHI.GT.ITHI) GO TO 50
-      CURHI = MAX(CURHI,ITLO)
-      DO 40 I=CURHI,ITHI
-         SUMT1 = SUMT1 + X(I)
-   40 CONTINUE
-   50 IF (CURLO.LT.ITLO) GO TO 70
-      CURLO = MIN(CURLO,ITHI)
-      DO 60 IREV=ITLO,CURLO
-         I = ITLO - IREV + CURLO
-         SUMT1 = SUMT1 + X(I)
-   60 CONTINUE
-   70 XTRM = SUMT1/(N-2*NALPHA)
-      RETURN
-      END
+   30 if (curhi.gt.ithi) go to 50
+      curhi = max(curhi,itlo)
+      do 40 i=curhi,ithi
+         sumt1 = sumt1 + x(i)
+   40 continue
+   50 if (curlo.lt.itlo) go to 70
+      curlo = min(curlo,ithi)
+      do 60 irev=itlo,curlo
+         i = itlo - irev + curlo
+         sumt1 = sumt1 + x(i)
+   60 continue
+   70 xtrm = sumt1/(n-2*nalpha)
+      return
+      end

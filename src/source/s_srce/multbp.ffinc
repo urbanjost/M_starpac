@@ -1,5 +1,5 @@
 !MULTBP
-      SUBROUTINE MULTBP(T, LT, C, LC, TEMP, LTEMP, MBO)
+      subroutine multbp(t, lt, c, lc, temp, ltemp, mbo)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,16 +16,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LC,LT,LTEMP,MBO
+     integer&
+     &   lc,lt,ltemp,mbo
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   C(MBO),T(2*MBO),TEMP(MBO)
+     real(kind=wp) ::&
+     &   c(mbo),t(2*mbo),temp(mbo)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,J,JI,K
+     integer&
+     &   i,j,ji,k
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -53,27 +53,27 @@
 !     REAL TEMP(MBO)
 !        A TEMPORARY WORK VECTOR
 !
-      IF (LC .EQ. 0) GO TO 15
-      DO 10 J = 1, LC
-         TEMP(J) = C(J)
-   10 CONTINUE
-   15 K = LC + 1
-      DO 20 J=K,LTEMP
-         TEMP(J) = 0.0E0
-   20 CONTINUE
-      IF (LT .EQ. 0) GO TO 50
-      DO 40 J=1,LT
-         TEMP(J) = TEMP(J) + T(J)
-         IF (LC .EQ. 0) GO TO 40
-         DO 30 I=1,LC
-            JI = J + I
-            TEMP(JI) = TEMP(JI) - C(I)*T(J)
-   30    CONTINUE
-   40 CONTINUE
+      if (lc .eq. 0) go to 15
+      do 10 j = 1, lc
+         temp(j) = c(j)
+   10 continue
+   15 k = lc + 1
+      do 20 j=k,ltemp
+         temp(j) = 0.0e0
+   20 continue
+      if (lt .eq. 0) go to 50
+      do 40 j=1,lt
+         temp(j) = temp(j) + t(j)
+         if (lc .eq. 0) go to 40
+         do 30 i=1,lc
+            ji = j + i
+            temp(ji) = temp(ji) - c(i)*t(j)
+   30    continue
+   40 continue
 !
-   50 DO 60 J=1,LTEMP
-         C(J) = TEMP(J)
-   60 CONTINUE
-      LC = LTEMP
-      RETURN
-      END
+   50 do 60 j=1,ltemp
+         c(j) = temp(j)
+   60 continue
+      lc = ltemp
+      return
+      end

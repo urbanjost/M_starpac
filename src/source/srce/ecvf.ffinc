@@ -1,5 +1,5 @@
 !ECVF
-      SUBROUTINE ECVF(NMSUB)
+      subroutine ecvf(nmsub)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,14 +17,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
-      LOGICAL
-     &   HEAD
+     integer&
+     &   iprt
+     logical&
+     &   head
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -40,21 +40,21 @@
 !     CHARACTER*1 NMSUB(6)
 !        THE ARRAY CONTAINING THE NAME OF THIS SUBROUTINE.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      HEAD = .TRUE.
+      head = .true.
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      WRITE(IPRT, 1010)
-      RETURN
+      write(iprt, 1010)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT (/
-     &   46H THE COVARIANCES AT LAGS ZERO AND/OR ONE COULD,
-     &   16H NOT BE COMPUTED/
-     &   49H BECAUSE OF MISSING DATA.  NO FURTHER ANALYSIS IS,
-     &   10H POSSIBLE.)
+1010 format (/&
+    &   46h the covariances at lags zero and/or one could,&
+    &   16h not be computed/&
+    &   49h because of missing data.  no further analysis is,&
+     &   10h possible.)
 !
-      END
+      end

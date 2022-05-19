@@ -1,6 +1,6 @@
 !NLDRVN
-      SUBROUTINE NLDRVN (MDL, DRV, DONE, IFIXD, PAR, NPAR, XM, N, M,
-     &   IXM, PVT, D, WEIGHT, WT, LWT, STPT, LSTPT, SCL, LSCL)
+     subroutine nldrvn (mdl, drv, done, ifixd, par, npar, xm, n, m,&
+     &   ixm, pvt, d, weight, wt, lwt, stpt, lstpt, scl, lscl)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,36 +17,36 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,LSCL,LSTPT,LWT,M,N,NPAR
-      LOGICAL
-     &   DONE,WEIGHT
+     integer&
+     &   ixm,lscl,lstpt,lwt,m,n,npar
+     logical&
+     &   done,weight
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   D(N,NPAR),PAR(NPAR),PVT(N),SCL(LSCL),STPT(LSTPT),WT(LWT),
-     &   XM(IXM,M)
-      INTEGER
-     &   IFIXD(NPAR)
+     real(kind=wp) ::&
+    &   d(n,npar),par(npar),pvt(n),scl(lscl),stpt(lstpt),wt(lwt),&
+     &   xm(ixm,m)
+     integer&
+     &   ifixd(npar)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL DRV,MDL
+       external drv,mdl
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   PJ,STPJ,WTSQRT
-      INTEGER
-     &   I,J,JPK
+     real(kind=wp) ::&
+     &   pj,stpj,wtsqrt
+     integer&
+     &   i,j,jpk
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,MAX,SIGN,SQRT
+      intrinsic abs,max,sign,sqrt
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -115,40 +115,40 @@
 !
 !     COMPUTE FINITE-DIFFERENCE JACOBIAN OF THE OPTIMIZED PARAMETERS
 !
-      JPK = 0
+      jpk = 0
 !
-      DO 20 J=1,NPAR
-         IF (IFIXD(J).EQ.0) THEN
-            JPK = JPK + 1
-            PJ = PAR(J)
-            IF (SCL(JPK).EQ.0.0_WP) THEN
-               IF (PAR(J).NE.0.0_WP) THEN
-                  STPJ = STPT(J)*SIGN(1.0_WP,PAR(J))*ABS(PAR(J))
-               ELSE
-                  STPJ = STPT(J)
-               END IF
-            ELSE
-               STPJ = STPT(J)*
-     &                SIGN(1.0_WP,PAR(J))*MAX(ABS(PAR(J)),1.0_WP/
-     &                ABS(SCL(JPK)))
-            END IF
+      do 20 j=1,npar
+         if (ifixd(j).eq.0) then
+            jpk = jpk + 1
+            pj = par(j)
+            if (scl(jpk).eq.0.0_wp) then
+               if (par(j).ne.0.0_wp) then
+                  stpj = stpt(j)*sign(1.0_wp,par(j))*abs(par(j))
+               else
+                  stpj = stpt(j)
+               end if
+            else
+              stpj = stpt(j)*&
+    &                sign(1.0_wp,par(j))*max(abs(par(j)),1.0_wp/&
+     &                abs(scl(jpk)))
+            end if
 !
-            STPJ = STPJ + PAR(J)
-            STPJ = STPJ - PAR(J)
+            stpj = stpj + par(j)
+            stpj = stpj - par(j)
 !
-            PAR(J) = PJ + STPJ
-            CALL MDL(PAR, NPAR, XM, N, M, IXM, D(1,J))
+            par(j) = pj + stpj
+            call mdl(par, npar, xm, n, m, ixm, d(1,j))
 !
-            DO 10 I=1,N
-               WTSQRT = 1.0_WP
-               IF (WEIGHT .AND. (.NOT.DONE)) WTSQRT = SQRT(WT(I))
-               D(I,JPK) = WTSQRT*(PVT(I)-D(I,J))/STPJ
-   10       CONTINUE
+            do 10 i=1,n
+               wtsqrt = 1.0_wp
+               if (weight .and. (.not.done)) wtsqrt = sqrt(wt(i))
+               d(i,jpk) = wtsqrt*(pvt(i)-d(i,j))/stpj
+   10       continue
 !
-            PAR(J) = PJ
-         END IF
-   20 CONTINUE
+            par(j) = pj
+         end if
+   20 continue
 !
-      RETURN
+      return
 !
-      END
+      end

@@ -1,6 +1,6 @@
 !ERSII
-      SUBROUTINE ERSII(NMSUB, NMVAR, VAL, VALMN, VALMX, MSGTYP, HEAD,
-     &   ERROR, NMMIN, NMMAX)
+     subroutine ersii(nmsub, nmvar, val, valmn, valmx, msgtyp, head,&
+     &   error, nmmin, nmmax)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,20 +18,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   VAL,VALMN,VALMX
-      INTEGER
-     &   MSGTYP
-      LOGICAL
-     &   ERROR,HEAD
+     real(kind=wp) ::&
+     &   val,valmn,valmx
+     integer&
+     &   msgtyp
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMMAX(8)*1,NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     character&
+     &   nmmax(8)*1,nmmin(8)*1,nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -70,40 +70,40 @@
 !        THE MINIMUM AND MAXIMUM OF THE RANGE WITHIN WHICH THE
 !        ARGUMENT MUST LIE.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (((VALMN.LE.VAL) .AND. (VAL.LE.VALMX)) .OR.
-     &   (VALMX.LT.VALMN)) RETURN
+     if (((valmn.le.val) .and. (val.le.valmx)) .or.&
+     &   (valmx.lt.valmn)) return
 !
-      ERROR = .TRUE.
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
+      error = .true.
+      call iprint(iprt)
+      call ehdr(nmsub, head)
 !
-      WRITE (IPRT, 1000) (NMVAR(I),I=1,6), VAL
+      write (iprt, 1000) (nmvar(i),i=1,6), val
 !
 !     PRINT MESSAGE FOR VALUE OUTSIDE OF RANGE DETERMINED FROM
 !     OTHER INPUT ARGUMENTS.
 !
-      IF (MSGTYP .EQ. 1)
-     &   WRITE (IPRT, 1010) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8),
-     &      (NMMAX(I),I=1,8)
+     if (msgtyp .eq. 1)&
+    &   write (iprt, 1010) (nmvar(i),i=1,6), (nmmin(i),i=1,8),&
+     &      (nmmax(i),i=1,8)
 !
 !     PRINT MESSAGE FOR VALUE OUTSIDE OF RANGE IMPOSED BY STARPAC
 !
-      IF (MSGTYP .EQ. 2)
-     &   WRITE (IPRT, 1020) (NMVAR(I),I=1,6), VALMN, VALMX
-      RETURN
+     if (msgtyp .eq. 2)&
+     &   write (iprt, 1020) (nmvar(i),i=1,6), valmn, valmx
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/20H THE INPUT VALUE OF , 6A1, 4H IS , G15.8, '.')
- 1010 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   16H MUST BE BETWEEN, 1X, 8A1,
-     &   5H AND , 8A1, 12H, INCLUSIVE.)
- 1020 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   16H MUST BE BETWEEN, 1X, G15.8,
-     &   5H AND , G15.8, 12H, INCLUSIVE.)
+ 1000 format (/20h the input value of , 6a1, 4h is , g15.8, '.')
+1010 format(&
+    &   27h the value of the argument , 6a1,&
+    &   16h must be between, 1x, 8a1,&
+     &   5h and , 8a1, 12h, inclusive.)
+1020 format(&
+    &   27h the value of the argument , 6a1,&
+    &   16h must be between, 1x, g15.8,&
+     &   5h and , g15.8, 12h, inclusive.)
 !
-      END
+      end

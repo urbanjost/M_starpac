@@ -1,5 +1,5 @@
 !DCKLS
-      SUBROUTINE DCKLS(XM, N, M, IXM, MDL, DRV, PAR, NPAR, LDSTAK)
+      subroutine dckls(xm, n, m, ixm, mdl, drv, par, npar, ldstak)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,33 +17,33 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER IXM,LDSTAK,M,N,NPAR
+      integer ixm,ldstak,m,n,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) :: PAR(*),XM(:,:)
+      real(kind=wp) :: par(*),xm(:,:)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL DRV,MDL
+       external drv,mdl
 !
 !  SCALARS IN COMMON
-      INTEGER IERR
+      integer ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER IPRT,LSCALE,NETA,NPRT,NROW,NTAU
+      integer iprt,lscale,neta,nprt,nrow,ntau
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) :: SCALE(1)
-      CHARACTER NMSUB(6)*1
+      real(kind=wp) :: scale(1)
+      character nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL DCKDRV,IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -100,32 +100,32 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
+     data nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6) /&
      &   'D','C','K','L','S',' '/
 !
 !     SET DEFAULT VALUES
 !
-      NETA = 0
-      NTAU = 0
-      SCALE(1) = 0.0_WP
-      LSCALE = 1
-      NPRT = 1
-      NROW = 0
+      neta = 0
+      ntau = 0
+      scale(1) = 0.0_wp
+      lscale = 1
+      nprt = 1
+      nrow = 0
 !
 !     PASS CONTROL OF DERIVATIVE CHECKING TO DCKDRV
 !
-      CALL DCKDRV(NMSUB, LDSTAK, XM, N, M, IXM, MDL, DRV, PAR, NPAR,
-     &   NETA, NTAU, SCALE, LSCALE, NROW, NPRT)
+     call dckdrv(nmsub, ldstak, xm, n, m, ixm, mdl, drv, par, npar,&
+     &   neta, ntau, scale, lscale, nrow, nprt)
 !
-      IF (IERR.NE.1) RETURN
+      if (ierr.ne.1) return
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
-      RETURN
+      call iprint(iprt)
+      write (iprt,1000)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   '       CALL DCKLS (XM, N, M, IXM, NLSMDL, NLSDRV,'/
+1000 format (/42h the correct form of the call statement is//&
+    &   '       CALL DCKLS (XM, N, M, IXM, NLSMDL, NLSDRV,'/&
      &   '      +            PAR, NPAR, LDSTAK)')
-      END
+      end

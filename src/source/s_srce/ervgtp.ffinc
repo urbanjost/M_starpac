@@ -1,6 +1,6 @@
 !ERVGTP
-      SUBROUTINE ERVGTP (NMSUB, NMVAR, VECLB, NVMN, NVMX, HEAD, MSGTYP,
-     &  NV, NMMIN)
+     subroutine ervgtp (nmsub, nmvar, veclb, nvmn, nvmx, head, msgtyp,&
+     &  nv, nmmin)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   VECLB
-      INTEGER
-     &   MSGTYP,NV,NVMN,NVMX
-      LOGICAL
-     &   HEAD
+     real(kind=wp) ::&
+     &   veclb
+     integer&
+     &   msgtyp,nv,nvmn,nvmx
+     logical&
+     &   head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     character&
+     &   nmmin(8)*1,nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -65,77 +65,77 @@
 !     REAL VECLB
 !        THE VALUE THAT THE VECTOR IS BEING TESTED AGAINST.
 !
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
+      call iprint(iprt)
+      call ehdr(nmsub, head)
 !
-      IF (MSGTYP.LE.3) THEN
-        WRITE (IPRT, 1000) (NMVAR(I),I=1,6), VECLB, NV
-      ELSE
-        IF (MSGTYP.GE.7) THEN
-          WRITE (IPRT, 1001) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8), NV
-        ELSE
-          WRITE (IPRT, 1002) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8), NV
-        END IF
-      END IF
+      if (msgtyp.le.3) then
+        write (iprt, 1000) (nmvar(i),i=1,6), veclb, nv
+      else
+        if (msgtyp.ge.7) then
+          write (iprt, 1001) (nmvar(i),i=1,6), (nmmin(i),i=1,8), nv
+        else
+          write (iprt, 1002) (nmvar(i),i=1,6), (nmmin(i),i=1,8), nv
+        end if
+      end if
 !
-      GO TO (10, 20, 30, 40, 50, 60, 70), MSGTYP
+      go to (10, 20, 30, 40, 50, 60, 70), msgtyp
 !
-   10 WRITE(IPRT, 1010) (NMVAR(I),I=1,6), VECLB
-      RETURN
+   10 write(iprt, 1010) (nmvar(i),i=1,6), veclb
+      return
 !
-   20 WRITE(IPRT, 1020) (NMVAR(I),I=1,3), VECLB, NVMX
-      RETURN
+   20 write(iprt, 1020) (nmvar(i),i=1,3), veclb, nvmx
+      return
 !
-   30 WRITE(IPRT, 1030) (NMVAR(I),I=1,6), VECLB, VECLB
-      RETURN
+   30 write(iprt, 1030) (nmvar(i),i=1,6), veclb, veclb
+      return
 !
-   40 WRITE(IPRT, 1040) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8)
-      RETURN
+   40 write(iprt, 1040) (nmvar(i),i=1,6), (nmmin(i),i=1,8)
+      return
 !
-   50 WRITE(IPRT, 1050) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8), NVMX
-      RETURN
+   50 write(iprt, 1050) (nmvar(i),i=1,6), (nmmin(i),i=1,8), nvmx
+      return
 !
-   60 WRITE(IPRT, 1060) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8),
-     &   (NMMIN(I),I=1,8)
-      RETURN
+  60 write(iprt, 1060) (nmvar(i),i=1,6), (nmmin(i),i=1,8),&
+     &   (nmmin(i),i=1,8)
+      return
 !
-   70 WRITE(IPRT, 1070) NVMN, (NMVAR(I),I=1,6), (NMMIN(I),I=1,8)
-      RETURN
+   70 write(iprt, 1070) nvmn, (nmvar(i),i=1,6), (nmmin(i),i=1,8)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/
-     &   32H THE NUMBER OF VALUES IN VECTOR , 6A1,
-     &   23H LESS THAN OR EQUAL TO , 1PE14.7, 4H IS , I6, '.')
- 1001 FORMAT (/
-     &   32H THE NUMBER OF VALUES IN VECTOR , 6A1,
-     &  ' GREATER THAN ', 8A1, ' IS ', I2, '.')
- 1002 FORMAT (/
-     &   32H THE NUMBER OF VALUES IN VECTOR , 6A1,
-     &   23H LESS THAN OR EQUAL TO , 8A1, 4H IS , I6, '.')
- 1010 FORMAT(
-     &   26H THE VALUES IN THE VECTOR , 6A1,
-     &   26H MUST ALL BE GREATER THAN , 1PE14.7, '.')
- 1020 FORMAT(
-     &   36H THE NUMBER OF VALUES IN THE VECTOR , 6A1,
-     &   23H LESS THAN OR EQUAL TO , 1PE14.7/
-     &   19H MUST BE LESS THAN , I5, '.')
- 1030 FORMAT(
-     &   37H SINCE THE FIRST VALUE OF THE VECTOR , 6A1,
-     &   17H IS GREATER THAN , 1PE14.7/
-     &   40H ALL OF THE VALUES MUST BE GREATER THAN , 1PE14.7, '.')
- 1040 FORMAT(
-     &   26H THE VALUES IN THE VECTOR , 6A1,
-     &   26H MUST ALL BE GREATER THAN , 8A1, '.')
- 1050 FORMAT(
-     &   36H THE NUMBER OF VALUES IN THE VECTOR , 6A1,
-     &   23H LESS THAN OR EQUAL TO , 8A1/
-     &   19H MUST BE LESS THAN , I5, '.')
- 1060 FORMAT(
-     &   37H SINCE THE FIRST VALUE OF THE VECTOR , 6A1,
-     &   17H IS GREATER THAN , 8A1/
-     &   40H ALL OF THE VALUES MUST BE GREATER THAN , 8A1, '.')
- 1070 FORMAT(/' THERE MUST BE AT LEAST ', I2, ' VALUES IN VECTOR ', 6A1/
-     &  ' GREATER THAN OR EQUAL TO ', 8A1, '.')
+1000 format (/&
+    &   32h the number of values in vector , 6a1,&
+     &   23h less than or equal to , 1pe14.7, 4h is , i6, '.')
+1001 format (/&
+    &   32h the number of values in vector , 6a1,&
+     &  ' GREATER THAN ', 8a1, ' IS ', i2, '.')
+1002 format (/&
+    &   32h the number of values in vector , 6a1,&
+     &   23h less than or equal to , 8a1, 4h is , i6, '.')
+1010 format(&
+    &   26h the values in the vector , 6a1,&
+     &   26h must all be greater than , 1pe14.7, '.')
+1020 format(&
+    &   36h the number of values in the vector , 6a1,&
+    &   23h less than or equal to , 1pe14.7/&
+     &   19h must be less than , i5, '.')
+1030 format(&
+    &   37h since the first value of the vector , 6a1,&
+    &   17h is greater than , 1pe14.7/&
+     &   40h all of the values must be greater than , 1pe14.7, '.')
+1040 format(&
+    &   26h the values in the vector , 6a1,&
+     &   26h must all be greater than , 8a1, '.')
+1050 format(&
+    &   36h the number of values in the vector , 6a1,&
+    &   23h less than or equal to , 8a1/&
+     &   19h must be less than , i5, '.')
+1060 format(&
+    &   37h since the first value of the vector , 6a1,&
+    &   17h is greater than , 8a1/&
+     &   40h all of the values must be greater than , 8a1, '.')
+1070 format(/' THERE MUST BE AT LEAST ', i2, ' VALUES IN VECTOR ', 6a1/&
+     &  ' GREATER THAN OR EQUAL TO ', 8a1, '.')
 !
-      END
+      end

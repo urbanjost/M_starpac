@@ -1,6 +1,6 @@
 !LDSCMP
-      SUBROUTINE LDSCMP (NARR, NLOG, NINT, NREAL, NDBL, NCMP,
-     &   FLAG, NFP, LDSMIN)
+     subroutine ldscmp (narr, nlog, nint, nreal, ndbl, ncmp,&
+     &   flag, nfp, ldsmin)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -27,14 +27,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSMIN,NARR,NCMP,NDBL,NFP,NINT,NLOG,NREAL
-      CHARACTER
-     &   FLAG*1
+     integer&
+     &   ldsmin,narr,ncmp,ndbl,nfp,nint,nlog,nreal
+     character&
+     &   flag*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   NOVER
+     integer&
+     &   nover
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -73,16 +73,16 @@
 !
 !     DEFINE CONSTANTS
 !
-      DATA NOVER /10/
+      data nover /10/
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      LDSMIN = (NLOG + NINT + NREAL + 3*NARR + NOVER + 1)/2
-     &       + NDBL + NCMP
-      IF (FLAG.EQ.'S') THEN
-         LDSMIN = LDSMIN + (NFP+1)/2
-      ELSE
-         LDSMIN = LDSMIN + NFP
-      END IF
-      RETURN
-      END
+     ldsmin = (nlog + nint + nreal + 3*narr + nover + 1)/2&
+     &       + ndbl + ncmp
+      if (flag.eq.'S') then
+         ldsmin = ldsmin + (nfp+1)/2
+      else
+         ldsmin = ldsmin + nfp
+      end if
+      return
+      end

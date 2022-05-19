@@ -1,5 +1,5 @@
 !EHDR
-      SUBROUTINE EHDR(NMSUB, HEAD)
+      subroutine ehdr(nmsub, head)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,16 +15,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      LOGICAL
-     &   HEAD
+     logical&
+     &   head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VERSP
@@ -42,20 +42,20 @@
 !     CHARACTER*1 NMSUB(6)
 !        THE CHARACTERS OF THE CALLING ROUTINES NAME.
 !
-      IF (.NOT.HEAD) RETURN
+      if (.not.head) return
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      CALL VERSP(.FALSE.)
-      WRITE(IPRT,1010)
-      WRITE (IPRT, 1000) (NMSUB(I), I=1,6)
-      HEAD = .FALSE.
+      call versp(.false.)
+      write(iprt,1010)
+      write (iprt, 1000) (nmsub(i), i=1,6)
+      head = .false.
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/31H ERROR CHECKING FOR SUBROUTINE , 6A1/ 1X, 37('-'))
- 1010 FORMAT ('+', 18(1H*)/19H * ERROR MESSAGES */1X, 18(1H*))
+ 1000 format (/31h error checking for subroutine , 6a1/ 1x, 37('-'))
+ 1010 format ('+', 18(1h*)/19h * error messages */1x, 18(1h*))
 !
-      END
+      end

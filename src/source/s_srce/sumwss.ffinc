@@ -1,6 +1,6 @@
 !SUMWSS
-      SUBROUTINE SUMWSS(X, W, N, LO, MID, HI, NNZW, SUM1, SUMW1, SUMW2,
-     &   SUMWA, SUMW, XMEAN, XMEANW)
+     subroutine sumwss(x, w, n, lo, mid, hi, nnzw, sum1, sumw1, sumw2,&
+     &   sumwa, sumw, xmean, xmeanw)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,21 +19,21 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   SUM1,SUMW,SUMW1,SUMW2,SUMWA,XMEAN,XMEANW
-      INTEGER
-     &   HI,LO,MID,N,NNZW
+     real(kind=wp) ::&
+     &   sum1,sumw,sumw1,sumw2,sumwa,xmean,xmeanw
+     integer&
+     &   hi,lo,mid,n,nnzw
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   W(N),X(N)
+     real(kind=wp) ::&
+     &   w(n),x(n)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   CURHI,CURLO,I,IREV
+     integer&
+     &   curhi,curlo,i,irev
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS
+      intrinsic abs
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -85,65 +85,65 @@
 !
 !     INITIALIZE SUMMATION VARIABLES.
 !
-      SUM1 = 0.0E0
-      SUMW1 = 0.0E0
-      SUMW2 = 0.0E0
-      SUMWA = 0.0E0
-      SUMW = 0.0E0
-      IF (W(MID).EQ.0.0E0) GO TO 10
-      SUM1 = X(MID)
-      SUMW1 = W(MID)*X(MID)
-      SUMW2 = W(MID)*X(MID)*X(MID)
-      SUMWA = W(MID)*ABS(X(MID))
-      SUMW = W(MID)
-   10 CURLO = MID - 1
-      CURHI = MID + 1
+      sum1 = 0.0e0
+      sumw1 = 0.0e0
+      sumw2 = 0.0e0
+      sumwa = 0.0e0
+      sumw = 0.0e0
+      if (w(mid).eq.0.0e0) go to 10
+      sum1 = x(mid)
+      sumw1 = w(mid)*x(mid)
+      sumw2 = w(mid)*x(mid)*x(mid)
+      sumwa = w(mid)*abs(x(mid))
+      sumw = w(mid)
+   10 curlo = mid - 1
+      curhi = mid + 1
 !
 !     SUM OUTWARDS, FROM THE VALUE NEAREST ZERO.  THAT IS, FROM
 !     THE LEAST IN MAGNITUDE TO THE GREATEST.
 !
-   20 IF (CURHI.GT.HI .OR. CURLO.LT.LO) GO TO 60
-      IF (ABS(X(CURHI)).LT.ABS(X(CURLO))) GO TO 40
-      IF (W(CURLO).EQ.0.0E0) GO TO 30
-      SUM1 = SUM1 + X(CURLO)
-      SUMW1 = SUMW1 + W(CURLO)*X(CURLO)
-      SUMW2 = SUMW2 + W(CURLO)*X(CURLO)*X(CURLO)
-      SUMWA = SUMWA + W(CURLO)*ABS(X(CURLO))
-      SUMW = SUMW + W(CURLO)
-   30 CURLO = CURLO - 1
-      GO TO 20
-   40 IF (W(CURHI).EQ.0.0E0) GO TO 50
-      SUM1 = SUM1 + X(CURHI)
-      SUMW1 = SUMW1 + W(CURHI)*X(CURHI)
-      SUMW2 = SUMW2 + W(CURHI)*X(CURHI)*X(CURHI)
-      SUMWA = SUMWA + W(CURHI)*ABS(X(CURHI))
-      SUMW = SUMW + W(CURHI)
-   50 CURHI = CURHI + 1
-      GO TO 20
+   20 if (curhi.gt.hi .or. curlo.lt.lo) go to 60
+      if (abs(x(curhi)).lt.abs(x(curlo))) go to 40
+      if (w(curlo).eq.0.0e0) go to 30
+      sum1 = sum1 + x(curlo)
+      sumw1 = sumw1 + w(curlo)*x(curlo)
+      sumw2 = sumw2 + w(curlo)*x(curlo)*x(curlo)
+      sumwa = sumwa + w(curlo)*abs(x(curlo))
+      sumw = sumw + w(curlo)
+   30 curlo = curlo - 1
+      go to 20
+   40 if (w(curhi).eq.0.0e0) go to 50
+      sum1 = sum1 + x(curhi)
+      sumw1 = sumw1 + w(curhi)*x(curhi)
+      sumw2 = sumw2 + w(curhi)*x(curhi)*x(curhi)
+      sumwa = sumwa + w(curhi)*abs(x(curhi))
+      sumw = sumw + w(curhi)
+   50 curhi = curhi + 1
+      go to 20
 !
 !     SUM UP ANY VALUES WHICH MAY REMAIN BECAUSE OF AN OFF
 !     CENTER ZERO POINT.
 !
-   60 IF (CURHI.GT.HI) GO TO 80
-      DO 70 I=CURHI,HI
-         IF (W(I).EQ.0.0E0) GO TO 70
-         SUM1 = SUM1 + X(I)
-         SUMW1 = SUMW1 + W(I)*X(I)
-         SUMW2 = SUMW2 + W(I)*X(I)*X(I)
-         SUMWA = SUMWA + W(I)*ABS(X(I))
-         SUMW = SUMW + W(I)
-   70 CONTINUE
-   80 IF (CURLO.LT.LO) GO TO 100
-      DO 90 IREV=LO,CURLO
-         I = LO - IREV + CURLO
-         IF (W(I).EQ.0.0E0) GO TO 90
-         SUM1 = SUM1 + X(I)
-         SUMW1 = SUMW1 + W(I)*X(I)
-         SUMW2 = SUMW2 + W(I)*X(I)*X(I)
-         SUMWA = SUMWA + W(I)*ABS(X(I))
-         SUMW = SUMW + W(I)
-   90 CONTINUE
-  100 XMEAN = SUM1/NNZW
-      XMEANW = SUMW1/SUMW
-      RETURN
-      END
+   60 if (curhi.gt.hi) go to 80
+      do 70 i=curhi,hi
+         if (w(i).eq.0.0e0) go to 70
+         sum1 = sum1 + x(i)
+         sumw1 = sumw1 + w(i)*x(i)
+         sumw2 = sumw2 + w(i)*x(i)*x(i)
+         sumwa = sumwa + w(i)*abs(x(i))
+         sumw = sumw + w(i)
+   70 continue
+   80 if (curlo.lt.lo) go to 100
+      do 90 irev=lo,curlo
+         i = lo - irev + curlo
+         if (w(i).eq.0.0e0) go to 90
+         sum1 = sum1 + x(i)
+         sumw1 = sumw1 + w(i)*x(i)
+         sumw2 = sumw2 + w(i)*x(i)*x(i)
+         sumwa = sumwa + w(i)*abs(x(i))
+         sumw = sumw + w(i)
+   90 continue
+  100 xmean = sum1/nnzw
+      xmeanw = sumw1/sumw
+      return
+      end

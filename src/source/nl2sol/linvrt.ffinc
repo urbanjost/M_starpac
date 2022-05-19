@@ -8,17 +8,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
+     integer&
      &   n
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   l(*),lin(*)
 !
 !  LOCAL SCALARS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   one,t,zero
-      integer
+     integer&
      &   i,ii,im1,j0,j1,jj,k,k0,np1
 !
 !  ***  PARAMETERS  ***

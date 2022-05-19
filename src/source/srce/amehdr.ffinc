@@ -1,5 +1,5 @@
 !AMEHDR
-      SUBROUTINE AMEHDR(PAGE, WIDE, ISUBHD)
+      subroutine amehdr(page, wide, isubhd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,14 +17,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISUBHD
-      LOGICAL
-     &   PAGE,WIDE
+     integer&
+     &   isubhd
+     logical&
+     &   page,wide
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VERSP
@@ -42,30 +42,30 @@
 !        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
 !        BE FULL WIDTH (TRUE) OR NOT (FALSE).
 !
-      CALL IPRINT(IPRT)
-      IF (PAGE) WRITE (IPRT, 1020)
-      CALL VERSP(WIDE)
-      IF (PAGE) WRITE (IPRT,1000)
-      IF (.NOT.PAGE) WRITE (IPRT,1010)
-      PAGE = .TRUE.
+      call iprint(iprt)
+      if (page) write (iprt, 1020)
+      call versp(wide)
+      if (page) write (iprt,1000)
+      if (.not.page) write (iprt,1010)
+      page = .true.
 !
-      IF (ISUBHD.EQ.0) RETURN
+      if (isubhd.eq.0) return
 !
-      GO TO (10), ISUBHD
+      go to (10), isubhd
 !
-   10 WRITE (IPRT, 1030)
+   10 write (iprt, 1030)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS FOR PAGE HEADINGS
 !
- 1000 FORMAT ('+NONLINEAR LEAST SQUARES ESTIMATION',
+1000 format ('+NONLINEAR LEAST SQUARES ESTIMATION',&
      &   ' FOR THE PARAMETERS OF AN ARIMA MODEL, CONTINUED')
- 1010 FORMAT ('+', 77(1H*)/
-     &   1X, 37H*  NONLINEAR LEAST SQUARES ESTIMATION,
-     &   40H FOR THE PARAMETERS OF AN ARIMA MODEL  */
-     &   2H *, 16X, 45H             USING BACKFORECASTS             ,
-     &   14X, 1H*/1X, 77(1H*))
- 1020 FORMAT ('1')
- 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
-      END
+1010 format ('+', 77(1h*)/&
+    &   1x, 37h*  nonlinear least squares estimation,&
+    &   40h for the parameters of an arima model  */&
+    &   2h *, 16x, 45h             using backforecasts             ,&
+     &   14x, 1h*/1x, 77(1h*))
+ 1020 format ('1')
+ 1030 format (//30h summary of initial conditions/ 1x, 30('-'))
+      end

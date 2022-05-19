@@ -1,5 +1,5 @@
 !XDEMOD
-      SUBROUTINE XDEMOD(LDS,typ)
+      subroutine xdemod(lds,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -20,32 +20,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDS
+     integer&
+     &   lds
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FC,FD
-      INTEGER
-     &   I,IPRT,ITEST,K,LDSTAK,N,NDEM,NPRT
+     real(kind=wp) ::&
+     &   fc,fd
+     integer&
+     &   i,iprt,itest,k,ldstak,n,ndem,nprt
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   AMPL(300),PHAS(300),Y(300)
+     real(kind=wp) ::&
+     &   ampl(300),phas(300),y(300)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL DEMOD,DEMODS,IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -86,150 +86,150 @@
 !     REAL(KIND=WP) :: Y(300)
 !        THE VECTOR CONTAINING THE OBSERVED TIME SERIES.
 !
-      DATA   Y(  1),  Y(  2),  Y(  3),  Y(  4),  Y(  5),  Y(  6)
-     &    /     5.0_WP, 11.0_WP, 16.0_WP, 23.0_WP, 36.0_WP, 58.0_WP/
-      DATA   Y(  7),  Y(  8),  Y(  9),  Y( 10),  Y( 11),  Y( 12)
-     &    /    29.0_WP, 20.0_WP, 10.0_WP,  8.0_WP,  3.0_WP,  0.0_WP/
-      DATA   Y( 13),  Y( 14),  Y( 15),  Y( 16),  Y( 17),  Y( 18)
-     &    /     0.0_WP, 2.0_WP, 11.0_WP, 27.0_WP, 47.0_WP, 63.0_WP/
-      DATA   Y( 19),  Y( 20),  Y( 21),  Y( 22),  Y( 23),  Y( 24)
-     &    /    60.0_WP, 39.0_WP, 28.0_WP, 26.0_WP, 22.0_WP, 11.0_WP/
-      DATA   Y( 25),  Y( 26),  Y( 27),  Y( 28),  Y( 29),  Y( 30)
-     &    /    21.0_WP, 40.0_WP, 78.0_WP,122.0_WP,103.0_WP, 73.0_WP/
-      DATA   Y( 31),  Y( 32),  Y( 33),  Y( 34),  Y( 35),  Y( 36)
-     &    /    47.0_WP, 35.0_WP, 11.0_WP,  5.0_WP, 16.0_WP, 34.0_WP/
-      DATA   Y( 37),  Y( 38),  Y( 39),  Y( 40),  Y( 41),  Y( 42)
-     &    /    70.0_WP, 81.0_WP,111.0_WP,101.0_WP, 73.0_WP, 40.0_WP/
-      DATA   Y( 43),  Y( 44),  Y( 45),  Y( 46),  Y( 47),  Y( 48)
-     &    /    20.0_WP, 16.0_WP,  5.0_WP, 11.0_WP, 22.0_WP, 40.0_WP/
-      DATA   Y( 49),  Y( 50),  Y( 51),  Y( 52),  Y( 53),  Y( 54)
-     &    /    60.0_WP, 80.9_WP,83.4_WP,47.7_WP,47.8_WP,30.7_WP/
-      DATA   Y( 55),  Y( 56),  Y( 57),  Y( 58),  Y( 59),  Y( 60)
-     &    /    12.2_WP, 9.6_WP,10.2_WP,32.4_WP,47.6_WP,54.0_WP/
-      DATA   Y( 61),  Y( 62),  Y( 63),  Y( 64),  Y( 65),  Y( 66)
-     &    /    62.9_WP,85.9_WP,61.2_WP,45.1_WP,36.4_WP,20.9_WP/
-      DATA   Y( 67),  Y( 68),  Y( 69),  Y( 70),  Y( 71),  Y( 72)
-     &    /    11.4_WP,37.8_WP,69.8_WP,106.1_WP,100.8_WP,81.6_WP/
-      DATA   Y( 73),  Y( 74),  Y( 75),  Y( 76),  Y( 77),  Y( 78)
-     &    /    66.5_WP,34.8_WP,30.6_WP, 7.0_WP, 19.8_WP,92.5_WP/
-      DATA   Y( 79),  Y( 80),  Y( 81),  Y( 82),  Y( 83),  Y( 84)
-     &    /   154.4_WP,125.9_WP,84.8_WP,68.1_WP,38.5_WP,22.8_WP/
-      DATA   Y( 85),  Y( 86),  Y( 87),  Y( 88),  Y( 89),  Y( 90)
-     &    /    10.2_WP,24.1_WP,82.9_WP,132.0_WP,130.9_WP,118.1_WP/
-      DATA   Y( 91),  Y( 92),  Y( 93),  Y( 94),  Y( 95),  Y( 96)
-     &    /    89.9_WP,66.6_WP,60.0_WP, 46.9_WP,41.0_WP, 21.3_WP/
-      DATA   Y( 97),  Y( 98),  Y( 99),  Y(100),  Y(101),  Y(102)
-     &    /    16.0_WP,  6.4_WP, 4.1_WP, 6.8_WP,14.5_WP,34.0_WP/
-      DATA   Y(103),  Y(104),  Y(105),  Y(106),  Y(107),  Y(108)
-     &    /    45.0_WP, 43.1_WP,47.5_WP,42.2_WP,28.1_WP,10.1_WP/
-      DATA   Y(109),  Y(110),  Y(111),  Y(112),  Y(113),  Y(114)
-     &    /     8.1_WP, 2.5_WP, 0.0_WP,  1.4_WP, 5.0_WP, 12.2_WP/
-      DATA   Y(115),  Y(116),  Y(117),  Y(118),  Y(119),  Y(120)
-     &    /    13.9_WP,35.4_WP,45.8_WP,41.1_WP,30.1_WP,23.9_WP/
-      DATA   Y(121),  Y(122),  Y(123),  Y(124),  Y(125),  Y(126)
-     &    /    15.6_WP, 6.6_WP, 4.0_WP,  1.8_WP, 8.5_WP,16.6_WP/
-      DATA   Y(127),  Y(128),  Y(129),  Y(130),  Y(131),  Y(132)
-     &    /    36.3_WP,49.6_WP,64.2_WP,67.0_WP, 70.9_WP,47.8_WP/
-      DATA   Y(133),  Y(134),  Y(135),  Y(136),  Y(137),  Y(138)
-     &    /    27.5_WP, 8.5_WP,13.2_WP,56.9_WP,121.5_WP,138.3_WP/
-      DATA   Y(139),  Y(140),  Y(141),  Y(142),  Y(143),  Y(144)
-     &    /   103.2_WP,85.7_WP,64.6_WP,36.7_WP,24.2_WP,10.7_WP/
-      DATA   Y(145),  Y(146),  Y(147),  Y(148),  Y(149),  Y(150)
-     &    /    15.0_WP, 40.1_WP,61.5_WP,98.5_WP,124.7_WP,96.3_WP/
-      DATA   Y(151),  Y(152),  Y(153),  Y(154),  Y(155),  Y(156)
-     &    /    66.6_WP,64.5_WP,54.1_WP,39.0_WP, 20.6_WP, 6.7_WP/
-      DATA   Y(157),  Y(158),  Y(159),  Y(160),  Y(161),  Y(162)
-     &    /     4.3_WP,22.7_WP,54.8_WP,93.8_WP,95.8_WP,77.2_WP/
-      DATA   Y(163),  Y(164),  Y(165),  Y(166),  Y(167),  Y(168)
-     &    /    59.1_WP,44.0_WP, 47.0_WP, 30.5_WP,16.3_WP, 7.3_WP/
-      DATA   Y(169),  Y(170),  Y(171),  Y(172),  Y(173),  Y(174)
-     &    /    37.6_WP,74.0_WP,139.0_WP,111.2_WP,101.6_WP,66.2_WP/
-      DATA   Y(175),  Y(176),  Y(177),  Y(178),  Y(179),  Y(180)
-     &    /    44.7_WP,17.0_WP, 11.3_WP,12.4_WP, 3.4_WP, 6.0_WP/
-      DATA   Y(181),  Y(182),  Y(183),  Y(184),  Y(185),  Y(186)
-     &    /    32.3_WP,54.3_WP,59.7_WP,63.7_WP,63.5_WP,52.2_WP/
-      DATA   Y(187),  Y(188),  Y(189),  Y(190),  Y(191),  Y(192)
-     &    /    25.4_WP,13.1_WP, 6.8_WP, 6.3_WP, 7.1_WP,35.6_WP/
-      DATA   Y(193),  Y(194),  Y(195),  Y(196),  Y(197),  Y(198)
-     &    /    73.0_WP, 85.1_WP,78.0_WP, 64.0_WP, 41.8_WP,26.2_WP/
-      DATA   Y(199),  Y(200),  Y(201),  Y(202),  Y(203),  Y(204)
-     &    /    26.7_WP,12.1_WP, 9.5_WP, 2.7_WP, 5.0_WP, 24.4_WP/
-      DATA   Y(205),  Y(206),  Y(207),  Y(208),  Y(209),  Y(210)
-     &    /    42.0_WP, 63.5_WP,53.8_WP,62.0_WP, 48.5_WP,43.9_WP/
-      DATA   Y(211),  Y(212),  Y(213),  Y(214),  Y(215),  Y(216)
-     &    /    18.6_WP, 5.7_WP, 3.6_WP, 1.4_WP, 9.6_WP,47.4_WP/
-      DATA   Y(217),  Y(218),  Y(219),  Y(220),  Y(221),  Y(222)
-     &    /    57.1_WP,103.9_WP,80.6_WP,63.6_WP,37.6_WP,26.1_WP/
-      DATA   Y(223),  Y(224),  Y(225),  Y(226),  Y(227),  Y(228)
-     &    /    14.2_WP, 5.8_WP,16.7_WP,44.3_WP,63.9_WP,69.0_WP/
-      DATA   Y(229),  Y(230),  Y(231),  Y(232),  Y(233),  Y(234)
-     &    /    77.8_WP,64.9_WP,35.7_WP,21.2_WP,11.1_WP, 5.7_WP/
-      DATA   Y(235),  Y(236),  Y(237),  Y(238),  Y(239),  Y(240)
-     &    /     8.7_WP,36.1_WP,79.7_WP,114.4_WP,109.6_WP,88.8_WP/
-      DATA   Y(241),  Y(242),  Y(243),  Y(244),  Y(245),  Y(246)
-     &    /    67.8_WP,47.5_WP,30.6_WP,16.3_WP, 9.6_WP,33.2_WP/
-      DATA   Y(247),  Y(248),  Y(249),  Y(250),  Y(251),  Y(252)
-     &    /    92.6_WP,151.6_WP,136.3_WP,134.7_WP,83.9_WP,69.4_WP/
-      DATA   Y(253),  Y(254),  Y(255),  Y(256),  Y(257),  Y(258)
-     &    /    31.5_WP,13.9_WP, 4.4_WP,38.0_WP,141.7_WP,190.2_WP/
-      DATA   Y(259),  Y(260),  Y(261)
-     &    /   184.8_WP,159.0_WP,112.3_WP/
+     data   y(  1),  y(  2),  y(  3),  y(  4),  y(  5),  y(  6)&
+     &    /     5.0_wp, 11.0_wp, 16.0_wp, 23.0_wp, 36.0_wp, 58.0_wp/
+     data   y(  7),  y(  8),  y(  9),  y( 10),  y( 11),  y( 12)&
+     &    /    29.0_wp, 20.0_wp, 10.0_wp,  8.0_wp,  3.0_wp,  0.0_wp/
+     data   y( 13),  y( 14),  y( 15),  y( 16),  y( 17),  y( 18)&
+     &    /     0.0_wp, 2.0_wp, 11.0_wp, 27.0_wp, 47.0_wp, 63.0_wp/
+     data   y( 19),  y( 20),  y( 21),  y( 22),  y( 23),  y( 24)&
+     &    /    60.0_wp, 39.0_wp, 28.0_wp, 26.0_wp, 22.0_wp, 11.0_wp/
+     data   y( 25),  y( 26),  y( 27),  y( 28),  y( 29),  y( 30)&
+     &    /    21.0_wp, 40.0_wp, 78.0_wp,122.0_wp,103.0_wp, 73.0_wp/
+     data   y( 31),  y( 32),  y( 33),  y( 34),  y( 35),  y( 36)&
+     &    /    47.0_wp, 35.0_wp, 11.0_wp,  5.0_wp, 16.0_wp, 34.0_wp/
+     data   y( 37),  y( 38),  y( 39),  y( 40),  y( 41),  y( 42)&
+     &    /    70.0_wp, 81.0_wp,111.0_wp,101.0_wp, 73.0_wp, 40.0_wp/
+     data   y( 43),  y( 44),  y( 45),  y( 46),  y( 47),  y( 48)&
+     &    /    20.0_wp, 16.0_wp,  5.0_wp, 11.0_wp, 22.0_wp, 40.0_wp/
+     data   y( 49),  y( 50),  y( 51),  y( 52),  y( 53),  y( 54)&
+     &    /    60.0_wp, 80.9_wp,83.4_wp,47.7_wp,47.8_wp,30.7_wp/
+     data   y( 55),  y( 56),  y( 57),  y( 58),  y( 59),  y( 60)&
+     &    /    12.2_wp, 9.6_wp,10.2_wp,32.4_wp,47.6_wp,54.0_wp/
+     data   y( 61),  y( 62),  y( 63),  y( 64),  y( 65),  y( 66)&
+     &    /    62.9_wp,85.9_wp,61.2_wp,45.1_wp,36.4_wp,20.9_wp/
+     data   y( 67),  y( 68),  y( 69),  y( 70),  y( 71),  y( 72)&
+     &    /    11.4_wp,37.8_wp,69.8_wp,106.1_wp,100.8_wp,81.6_wp/
+     data   y( 73),  y( 74),  y( 75),  y( 76),  y( 77),  y( 78)&
+     &    /    66.5_wp,34.8_wp,30.6_wp, 7.0_wp, 19.8_wp,92.5_wp/
+     data   y( 79),  y( 80),  y( 81),  y( 82),  y( 83),  y( 84)&
+     &    /   154.4_wp,125.9_wp,84.8_wp,68.1_wp,38.5_wp,22.8_wp/
+     data   y( 85),  y( 86),  y( 87),  y( 88),  y( 89),  y( 90)&
+     &    /    10.2_wp,24.1_wp,82.9_wp,132.0_wp,130.9_wp,118.1_wp/
+     data   y( 91),  y( 92),  y( 93),  y( 94),  y( 95),  y( 96)&
+     &    /    89.9_wp,66.6_wp,60.0_wp, 46.9_wp,41.0_wp, 21.3_wp/
+     data   y( 97),  y( 98),  y( 99),  y(100),  y(101),  y(102)&
+     &    /    16.0_wp,  6.4_wp, 4.1_wp, 6.8_wp,14.5_wp,34.0_wp/
+     data   y(103),  y(104),  y(105),  y(106),  y(107),  y(108)&
+     &    /    45.0_wp, 43.1_wp,47.5_wp,42.2_wp,28.1_wp,10.1_wp/
+     data   y(109),  y(110),  y(111),  y(112),  y(113),  y(114)&
+     &    /     8.1_wp, 2.5_wp, 0.0_wp,  1.4_wp, 5.0_wp, 12.2_wp/
+     data   y(115),  y(116),  y(117),  y(118),  y(119),  y(120)&
+     &    /    13.9_wp,35.4_wp,45.8_wp,41.1_wp,30.1_wp,23.9_wp/
+     data   y(121),  y(122),  y(123),  y(124),  y(125),  y(126)&
+     &    /    15.6_wp, 6.6_wp, 4.0_wp,  1.8_wp, 8.5_wp,16.6_wp/
+     data   y(127),  y(128),  y(129),  y(130),  y(131),  y(132)&
+     &    /    36.3_wp,49.6_wp,64.2_wp,67.0_wp, 70.9_wp,47.8_wp/
+     data   y(133),  y(134),  y(135),  y(136),  y(137),  y(138)&
+     &    /    27.5_wp, 8.5_wp,13.2_wp,56.9_wp,121.5_wp,138.3_wp/
+     data   y(139),  y(140),  y(141),  y(142),  y(143),  y(144)&
+     &    /   103.2_wp,85.7_wp,64.6_wp,36.7_wp,24.2_wp,10.7_wp/
+     data   y(145),  y(146),  y(147),  y(148),  y(149),  y(150)&
+     &    /    15.0_wp, 40.1_wp,61.5_wp,98.5_wp,124.7_wp,96.3_wp/
+     data   y(151),  y(152),  y(153),  y(154),  y(155),  y(156)&
+     &    /    66.6_wp,64.5_wp,54.1_wp,39.0_wp, 20.6_wp, 6.7_wp/
+     data   y(157),  y(158),  y(159),  y(160),  y(161),  y(162)&
+     &    /     4.3_wp,22.7_wp,54.8_wp,93.8_wp,95.8_wp,77.2_wp/
+     data   y(163),  y(164),  y(165),  y(166),  y(167),  y(168)&
+     &    /    59.1_wp,44.0_wp, 47.0_wp, 30.5_wp,16.3_wp, 7.3_wp/
+     data   y(169),  y(170),  y(171),  y(172),  y(173),  y(174)&
+     &    /    37.6_wp,74.0_wp,139.0_wp,111.2_wp,101.6_wp,66.2_wp/
+     data   y(175),  y(176),  y(177),  y(178),  y(179),  y(180)&
+     &    /    44.7_wp,17.0_wp, 11.3_wp,12.4_wp, 3.4_wp, 6.0_wp/
+     data   y(181),  y(182),  y(183),  y(184),  y(185),  y(186)&
+     &    /    32.3_wp,54.3_wp,59.7_wp,63.7_wp,63.5_wp,52.2_wp/
+     data   y(187),  y(188),  y(189),  y(190),  y(191),  y(192)&
+     &    /    25.4_wp,13.1_wp, 6.8_wp, 6.3_wp, 7.1_wp,35.6_wp/
+     data   y(193),  y(194),  y(195),  y(196),  y(197),  y(198)&
+     &    /    73.0_wp, 85.1_wp,78.0_wp, 64.0_wp, 41.8_wp,26.2_wp/
+     data   y(199),  y(200),  y(201),  y(202),  y(203),  y(204)&
+     &    /    26.7_wp,12.1_wp, 9.5_wp, 2.7_wp, 5.0_wp, 24.4_wp/
+     data   y(205),  y(206),  y(207),  y(208),  y(209),  y(210)&
+     &    /    42.0_wp, 63.5_wp,53.8_wp,62.0_wp, 48.5_wp,43.9_wp/
+     data   y(211),  y(212),  y(213),  y(214),  y(215),  y(216)&
+     &    /    18.6_wp, 5.7_wp, 3.6_wp, 1.4_wp, 9.6_wp,47.4_wp/
+     data   y(217),  y(218),  y(219),  y(220),  y(221),  y(222)&
+     &    /    57.1_wp,103.9_wp,80.6_wp,63.6_wp,37.6_wp,26.1_wp/
+     data   y(223),  y(224),  y(225),  y(226),  y(227),  y(228)&
+     &    /    14.2_wp, 5.8_wp,16.7_wp,44.3_wp,63.9_wp,69.0_wp/
+     data   y(229),  y(230),  y(231),  y(232),  y(233),  y(234)&
+     &    /    77.8_wp,64.9_wp,35.7_wp,21.2_wp,11.1_wp, 5.7_wp/
+     data   y(235),  y(236),  y(237),  y(238),  y(239),  y(240)&
+     &    /     8.7_wp,36.1_wp,79.7_wp,114.4_wp,109.6_wp,88.8_wp/
+     data   y(241),  y(242),  y(243),  y(244),  y(245),  y(246)&
+     &    /    67.8_wp,47.5_wp,30.6_wp,16.3_wp, 9.6_wp,33.2_wp/
+     data   y(247),  y(248),  y(249),  y(250),  y(251),  y(252)&
+     &    /    92.6_wp,151.6_wp,136.3_wp,134.7_wp,83.9_wp,69.4_wp/
+     data   y(253),  y(254),  y(255),  y(256),  y(257),  y(258)&
+     &    /    31.5_wp,13.9_wp, 4.4_wp,38.0_wp,141.7_wp,190.2_wp/
+     data   y(259),  y(260),  y(261)&
+     &    /   184.8_wp,159.0_wp,112.3_wp/
 !
-      CALL IPRINT(IPRT)
-      ITEST = 1
-      LDSTAK = LDS
+      call iprint(iprt)
+      itest = 1
+      ldstak = lds
 !
-      N = 261
-      NPRT = 1
-      FD = 1.0_WP/11.0_WP
-      FC = 1.0_WP/22.0_WP
-      K = 41
+      n = 261
+      nprt = 1
+      fd = 1.0_wp/11.0_wp
+      fc = 1.0_wp/22.0_wp
+      k = 41
 !
 !     TEST OF DEMOD
 !
-    5 WRITE (IPRT, 1016)
-      CALL DEMOD (Y, N, FD, FC, K, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+    5 write (iprt, 1016)
+      call demod (y, n, fd, fc, k, ldstak)
+      write (iprt, 1002) ierr
 !
 !     TEST OF DEMODS
 !
-      WRITE (IPRT, 1017)
-      CALL DEMODS (Y, N, FD, FC, K, AMPL, PHAS, NDEM, NPRT, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1017)
+      call demods (y, n, fd, fc, k, ampl, phas, ndem, nprt, ldstak)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM DEMODS
 !
-      IF (IERR.EQ.0) THEN
-        WRITE (IPRT, 1004) (AMPL(I), I = 1, NDEM)
-        WRITE (IPRT, 1004) (PHAS(I), I = 1, NDEM)
-      END IF
+      if (ierr.eq.0) then
+        write (iprt, 1004) (ampl(i), i = 1, ndem)
+        write (iprt, 1004) (phas(i), i = 1, ndem)
+      end if
 !
-      GO TO (100, 200, 300), ITEST
+      go to (100, 200, 300), itest
 !
 !     TEST MINIMUM PROBLEM SPECIFICATIONS
 !
-  100 ITEST = ITEST + 1
-      N = 17
-      K = 15
-      NPRT = -1
-      GO TO 5
+  100 itest = itest + 1
+      n = 17
+      k = 15
+      nprt = -1
+      go to 5
 !
 !     TEST ERROR CONDITIONS
 !
-  200 ITEST = ITEST + 1
-      N = 0
-      FD = 0.5_WP
-      FC = 0.3_WP
-      K = 1
-      GO TO 5
+  200 itest = itest + 1
+      n = 0
+      fd = 0.5_wp
+      fc = 0.3_wp
+      k = 1
+      go to 5
 !
-  300 RETURN
+  300 return
 !
 !     FORMAT STATEMENTS
 !
- 1002 FORMAT (8H IERR IS, I5)
- 1004 FORMAT (10F10.5)
- 1016 FORMAT ('1', 13HTEST OF DEMOD)
- 1017 FORMAT ('1', 14HTEST OF DEMODS)
+ 1002 format (8h ierr is, i5)
+ 1004 format (10f10.5)
+ 1016 format ('1', 13htest of demod)
+ 1017 format ('1', 14htest of demods)
 !
-      END
+      end

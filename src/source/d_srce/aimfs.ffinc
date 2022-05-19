@@ -1,6 +1,6 @@
 !AIMFS
-      SUBROUTINE AIMFS(Y, N, MSPEC, NFAC, PAR, NPAR, LDSTAK,
-     &   NFCST, NFCSTO, IFCSTO, NPRT, FCST, IFCST, FCSTSD)
+     subroutine aimfs(y, n, mspec, nfac, par, npar, ldstak,&
+     &   nfcst, nfcsto, ifcsto, nprt, fcst, ifcst, fcstsd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,41 +17,41 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IFCST,LDSTAK,N,NFAC,NFCST,NFCSTO,NPAR,NPRT
+     integer&
+     &   ifcst,ldstak,n,nfac,nfcst,nfcsto,npar,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FCST(*),FCSTSD(*),PAR(*),Y(*)
-      INTEGER
-     &   IFCSTO(*),MSPEC(4,*)
+     real(kind=wp) ::&
+     &   fcst(*),fcstsd(*),par(*),y(*)
+     integer&
+     &   ifcsto(*),mspec(4,*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,NFCSTU
-      LOGICAL
-     &   SAVE
+     integer&
+     &   iprt,nfcstu
+     logical&
+     &   save
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   NMSUB(6)*1
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL AMFCNT,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -104,34 +104,34 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
+     data nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6) /&
      &   'A','I','M','F','S',' '/
 !
 !     SET VARIOUS PROGRAM PARAMETERS
 !
-      SAVE = .TRUE.
+      save = .true.
 !
-      IF ((NFCST.GE.1) .AND. (NFCST.LE.N)) THEN
-         NFCSTU = NFCST
-      ELSE
-         NFCSTU = (N/10)+1
-      END IF
+      if ((nfcst.ge.1) .and. (nfcst.le.n)) then
+         nfcstu = nfcst
+      else
+         nfcstu = (n/10)+1
+      end if
 !
-      CALL AMFCNT(Y, N, MSPEC, NFAC, PAR, NPAR, LDSTAK, NFCSTU,
-     &   MAX(1,NFCSTO), IFCSTO, NPRT, FCST, IFCST, FCSTSD, NMSUB, SAVE)
+     call amfcnt(y, n, mspec, nfac, par, npar, ldstak, nfcstu,&
+     &   max(1,nfcsto), ifcsto, nprt, fcst, ifcst, fcstsd, nmsub, save)
 !
-      IF (IERR.NE.1) RETURN
+      if (ierr.ne.1) return
 !
 !     PRINT PROPER CALL SEQUENCE
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
-      RETURN
+      call iprint(iprt)
+      write (iprt,1000)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/' THE CORRECT FORM OF THE CALL STATEMENT IS'//
-     &  '       CALL AIMFS (Y, N, MSPEC, NFAC, PAR, NPAR, LDSTAK,'/
-     &  '      +            NFCST, NFCSTO, IFCSTO, NPRT, FCST, IFCST,',
+1000 format (/' THE CORRECT FORM OF THE CALL STATEMENT IS'//&
+    &  '       CALL AIMFS (Y, N, MSPEC, NFAC, PAR, NPAR, LDSTAK,'/&
+    &  '      +            NFCST, NFCSTO, IFCSTO, NPRT, FCST, IFCST,',&
      &  ' FCSTSD)')
-      END
+      end

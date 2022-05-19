@@ -1,5 +1,5 @@
 !GFAEST
-      SUBROUTINE GFAEST (PHI, IAR, NF, FREQ, GAIN, PHAS, DELTA)
+      subroutine gfaest (phi, iar, nf, freq, gain, phas, delta)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,26 +17,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   DELTA
-      INTEGER
-     &   IAR,NF
+     real(kind=wp) ::&
+     &   delta
+     integer&
+     &   iar,nf
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FREQ(NF),GAIN(NF),PHAS(NF),PHI(IAR)
+     real(kind=wp) ::&
+     &   freq(nf),gain(nf),phas(nf),phi(iar)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ARG,C,PI,S,V0,V1,V2,Z0,Z1,Z2
-      INTEGER
-     &   I,J,JJ
+     real(kind=wp) ::&
+     &   arg,c,pi,s,v0,v1,v2,z0,z1,z2
+     integer&
+     &   i,j,jj
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ATAN2,COS,SIN,SQRT
+      intrinsic atan2,cos,sin,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -73,57 +73,57 @@
 !     REAL(KIND=WP) :: Z0, Z1, Z2
 !        CONSTANTS USED FOR COMPUTING THE GAIN FUNCTION ESTIMATES.
 !
-      CALL GETPI(PI)
+      call getpi(pi)
 !
 !     COMPUTE GAIN FUNCTION ESTIMATES AND THEIR CONFIDENCE LIMITS.
 !
-      DO 30 I = 1, NF
-         IF (FREQ(I).EQ.0.0_WP) THEN
-            ARG = 0.0_WP
-            C = 1.0_WP
-            S = 0.0_WP
-         ELSE IF (FREQ(I).EQ.0.25_WP) THEN
-            ARG = PI/2.0_WP
-            C = 0.0_WP
-            S = 1.0_WP
-         ELSE IF (FREQ(I).EQ.0.5_WP) THEN
-            ARG = PI
-            C = -1.0_WP
-            S = 0.0_WP
-         ELSE
-            ARG = 2.0_WP * PI * FREQ(I)
-            C = COS(ARG)
-            S = SIN(ARG)
-         END IF
-         V0 = 0.0_WP
-         V1 = 0.0_WP
-         Z0 = 0.0_WP
-         Z1 = 0.0_WP
+      do 30 i = 1, nf
+         if (freq(i).eq.0.0_wp) then
+            arg = 0.0_wp
+            c = 1.0_wp
+            s = 0.0_wp
+         else if (freq(i).eq.0.25_wp) then
+            arg = pi/2.0_wp
+            c = 0.0_wp
+            s = 1.0_wp
+         else if (freq(i).eq.0.5_wp) then
+            arg = pi
+            c = -1.0_wp
+            s = 0.0_wp
+         else
+            arg = 2.0_wp * pi * freq(i)
+            c = cos(arg)
+            s = sin(arg)
+         end if
+         v0 = 0.0_wp
+         v1 = 0.0_wp
+         z0 = 0.0_wp
+         z1 = 0.0_wp
 !
-         JJ = IAR + 1
+         jj = iar + 1
 !
-         DO 20 J = 1, IAR
-            JJ = JJ -1
+         do 20 j = 1, iar
+            jj = jj -1
 !
-            V2 = C * V1 - V0 - PHI(JJ)
-            V0 = V1
-            V1 = V2
+            v2 = c * v1 - v0 - phi(jj)
+            v0 = v1
+            v1 = v2
 !
-            Z2 = S * Z1 - Z0 - PHI(JJ)
-            Z0 = Z1
-            Z1 = Z2
-   20    CONTINUE
+            z2 = s * z1 - z0 - phi(jj)
+            z0 = z1
+            z1 = z2
+   20    continue
 !
-         V2 = DELTA * (1.0_WP + (V1 * C - V0))
+         v2 = delta * (1.0_wp + (v1 * c - v0))
 !
-         Z2 = DELTA * Z1 * S
+         z2 = delta * z1 * s
 !
-         GAIN(I) = SQRT(V2*V2 + Z2*Z2)
+         gain(i) = sqrt(v2*v2 + z2*z2)
 !
-         PHAS(I) = -0.5_WP * PI
-         IF (Z2.NE.0.0_WP .AND. V2.NE.0.0_WP) PHAS(I) = ATAN2(Z2, V2)
+         phas(i) = -0.5_wp * pi
+         if (z2.ne.0.0_wp .and. v2.ne.0.0_wp) phas(i) = atan2(z2, v2)
 !
-   30 CONTINUE
+   30 continue
 !
-      RETURN
-      END
+      return
+      end

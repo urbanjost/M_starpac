@@ -1,6 +1,6 @@
 !UFSMN
-      SUBROUTINE UFSMN(ACOV, NLPPA, LAG, DF, NF, FREQ, ALPHA, BW, SPCF,
-     &   ALOW, AUP, LACOV, ISPCF, WINDOW, W, LW, N, DELTA, MISS, LNLPPA)
+     subroutine ufsmn(acov, nlppa, lag, df, nf, freq, alpha, bw, spcf,&
+     &   alow, aup, lacov, ispcf, window, w, lw, n, delta, miss, lnlppa)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,32 +17,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ALOW,ALPHA,AUP,BW,DELTA,DF
-      INTEGER
-     &   ISPCF,LACOV,LAG,LNLPPA,LW,N,NF
-      LOGICAL
-     &   MISS
+     real(kind=wp) ::&
+     &   alow,alpha,aup,bw,delta,df
+     integer&
+     &   ispcf,lacov,lag,lnlppa,lw,n,nf
+     logical&
+     &   miss
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV(LACOV),FREQ(NF),SPCF(ISPCF),W(LW)
-      INTEGER
-     &   NLPPA(LNLPPA)
+     real(kind=wp) ::&
+     &   acov(lacov),freq(nf),spcf(ispcf),w(lw)
+     integer&
+     &   nlppa(lnlppa)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL WINDOW
+       external window
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   PPFCHS
+     real(kind=wp) ::&
+     &   ppfchs
 !       EXTERNAL PPFCHS
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL DFBW,DFBWM,UFSEST
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC NINT
+      intrinsic nint
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -93,19 +93,19 @@
 !     COMPUTE THE WINDOW, EFFECTIVE DEGREES OF FREEDOM AND
 !     BANDWIDTH BASED ON THE WINDOW.
 !
-      CALL WINDOW(LAG, W, LW)
-      IF (.NOT.MISS) CALL DFBW(N, LAG, W, LW, DF, BW)
-      IF (MISS) CALL DFBWM(N, LAG, W, LW, NLPPA, NLPPA, LNLPPA, DF, BW)
+      call window(lag, w, lw)
+      if (.not.miss) call dfbw(n, lag, w, lw, df, bw)
+      if (miss) call dfbwm(n, lag, w, lw, nlppa, nlppa, lnlppa, df, bw)
 !
 !     COMPUTE THE SPECTRUM
 !
-      CALL UFSEST(ACOV, W, LAG, SPCF, ISPCF, LACOV, LW, NF, FREQ, DELTA)
+      call ufsest(acov, w, lag, spcf, ispcf, lacov, lw, nf, freq, delta)
 !
 !     COMPUTE -ALPHA- PERCENT POINT FUNCTION VALUE FOR
 !     SPECTRUM WINDOW BEING USED.
 !
-      ALOW = DF/PPFCHS(0.5E0+ALPHA/2.0E0,NINT(DF))
-      AUP = DF/PPFCHS(0.5E0-ALPHA/2.0E0,NINT(DF))
+      alow = df/ppfchs(0.5e0+alpha/2.0e0,nint(df))
+      aup = df/ppfchs(0.5e0-alpha/2.0e0,nint(df))
 !
-      RETURN
-      END
+      return
+      end

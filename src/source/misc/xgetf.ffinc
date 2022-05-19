@@ -1,5 +1,5 @@
 !XGETF
-      SUBROUTINE XGETF(KONTRL)
+      subroutine xgetf(kontrl)
 !
 !     ABSTRACT
 !        XGETF RETURNS THE CURRENT VALUE OF THE ERROR CONTROL FLAG
@@ -13,12 +13,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER KONTRL
+      integer kontrl
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER J4SAVE
 !       EXTERNAL J4SAVE
 !
-      KONTRL = J4SAVE(2,0,.FALSE.)
-      RETURN
-      END
+      kontrl = j4save(2,0,.false.)
+      return
+      end

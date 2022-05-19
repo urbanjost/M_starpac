@@ -1,8 +1,8 @@
 !AMFMN
-      SUBROUTINE AMFMN (PAR, PV, Y, NPAR, N, NFAC, MSPECT,
-     &  PARDF, NPARDF, T, TEMP, PARAR, PARMA, MBO, MBOL, N1, N2, NPRT,
-     &  SAVE, NFCST, NFCSTO, IFCSTO, FCST, IFCST, FCSTSD, F,
-     &  FSD, NPARAR, NPARMA)
+     subroutine amfmn (par, pv, y, npar, n, nfac, mspect,&
+    &  pardf, npardf, t, temp, parar, parma, mbo, mbol, n1, n2, nprt,&
+    &  save, nfcst, nfcsto, ifcsto, fcst, ifcst, fcstsd, f,&
+     &  fsd, nparar, nparma)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,26 +19,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IFCST,MBO,MBOL,N,N1,N2,NFAC,NFCST,NFCSTO,NPAR,NPARAR,
-     &   NPARDF,NPARMA,NPRT
-      LOGICAL
-     &   SAVE
+     integer&
+    &   ifcst,mbo,mbol,n,n1,n2,nfac,nfcst,nfcsto,npar,nparar,&
+     &   npardf,nparma,nprt
+     logical&
+     &   save
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   F(*),FCST(IFCST,*),FCSTSD(*),FSD(*),PAR(:),PARAR(*),PARDF(*),
-     &   PARMA(*),PV(N1:N2),T(*),TEMP(*),Y(*)
-      INTEGER
-     &   IFCSTO(*),MSPECT(NFAC,4)
+     real(kind=wp) ::&
+    &   f(*),fcst(ifcst,*),fcstsd(*),fsd(*),par(:),parar(*),pardf(*),&
+     &   parma(*),pv(n1:n2),t(*),temp(*),y(*)
+     integer&
+     &   ifcsto(*),mspect(nfac,4)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   CONST,PMU,RSD,RSS,T975,WSUM,WSUMT
-      INTEGER
-     &   I,I1,IDF,IF,IFC,IFLAG,IFO,IFOMIN,IPRT,J,K,NT
-      LOGICAL
-     &   PAGE
+     real(kind=wp) ::&
+     &   const,pmu,rsd,rss,t975,wsum,wsumt
+     integer&
+     &   i,i1,idf,if,ifc,iflag,ifo,ifomin,iprt,j,k,nt
+     logical&
+     &   page
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -49,7 +49,7 @@
 !      EXTERNAL AMFHDR,AMFOUT,AMLST,DCOEF,IPRINT,MDLTS2,MODSUM,MULTBP
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN,SQRT
+      intrinsic min,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -156,153 +156,152 @@
 !     REAL(KIND=WP) :: Y(N)
 !        THE DEPENDENT VARIABLE.
 !
-      CALL IPRINT (IPRT)
+      call iprint (iprt)
 !
 !     COMPUTE DIFFERENCING PARAMETERS
 !
-      CALL DCOEF (NFAC, MSPECT(1,2), MSPECT(1,4), NPARDF, PARDF, MBO, T)
+      call dcoef (nfac, mspect(1,2), mspect(1,4), npardf, pardf, mbo, t)
 !
 !     COMPUTE RESIDUALS, GIVEN VALUES OF PARAMETERS
 !
-      CALL MDLTS2 (PAR, PV, Y, NPAR, N, NFAC, MSPECT, PMU,
-     &  PARDF, NPARDF, T, TEMP, PARAR, PARMA, MBO, N1, N2, IFLAG)
-      IDF = N - NPARDF - NPAR
-      RSS = DDOT(N, PV(1), 1, PV(1), 1)
-      RSD = SQRT(RSS / IDF)
+     call mdlts2 (par, pv, y, npar, n, nfac, mspect, pmu,&
+     &  pardf, npardf, t, temp, parar, parma, mbo, n1, n2, iflag)
+      idf = n - npardf - npar
+      rss = ddot(n, pv(1), 1, pv(1), 1)
+      rsd = sqrt(rss / idf)
 !
 !     PRINT INITIAL SUMMARY
 !
-      PAGE = .FALSE.
-      IF (NPRT.EQ.0) GO TO 10
-      CALL AMFHDR(PAGE, .TRUE., 2)
-      CALL MODSUM(NFAC, MSPECT)
-
+      page = .false.
+      if (nprt.eq.0) go to 10
+      call amfhdr(page, .true., 2)
+      call modsum(nfac, mspect)
 
 !
 !AMLST(iamhd,PAR(*),npar,nfac,MSPECT(nfac,4),n,VCVL(*),lvcvl,SCALE(*),lscale,STPT(*),lstpt,IFIXD(*),rss,rsd,npardf,npare,idf)
-! This call uses PAR over and over, messed up. Added int() function to can even build for now 
+! This call uses PAR over and over, messed up. Added int() function to can even build for now
       write(*,*)'BAD CALL OF AMLST'
-      CALL AMLST(2, PAR, NPAR, NFAC, MSPECT, N, PAR, NPAR, PAR,
-     &  NPAR, PAR, NPAR, int(PAR), RSS, RSD, NPARDF, NPAR, IDF)
-      PAGE = .TRUE.
+     call amlst(2, par, npar, nfac, mspect, n, par, npar, par,&
+     &  npar, par, npar, int(par), rss, rsd, npardf, npar, idf)
+      page = .true.
 !
-   10 CONTINUE
+   10 continue
 !
 !     COMBINE PARDF AND PARAR INTO T
 !
-      NT = NPARAR + NPARDF
-      CALL MULTBP(PARAR, NPARAR, PARDF, NPARDF, T, NT, MBO)
+      nt = nparar + npardf
+      call multbp(parar, nparar, pardf, npardf, t, nt, mbo)
 !
 !     COMPUTE CONSTANT
 !
-      CONST = 0.0_WP
-      IF (PMU.NE.0.0_WP) THEN
-        IF (NPARAR.GE.1) THEN
-          DO 20 J = 1, NPARAR
-            CONST = CONST - PARAR(J)
-   20     CONTINUE
-        END IF
-        CONST = (1.0_WP + CONST) * PMU
-      END IF
+      const = 0.0_wp
+      if (pmu.ne.0.0_wp) then
+        if (nparar.ge.1) then
+          do 20 j = 1, nparar
+            const = const - parar(j)
+   20     continue
+        end if
+        const = (1.0_wp + const) * pmu
+      end if
 !
 !     FIND LOWEST ORIGIN
 !
-      IFOMIN = IFCSTO(1)
-      DO 30 IFO = 1, NFCSTO
-        IFOMIN = MIN(IFOMIN, IFCSTO(IFO))
-   30 CONTINUE
+      ifomin = ifcsto(1)
+      do 30 ifo = 1, nfcsto
+        ifomin = min(ifomin, ifcsto(ifo))
+   30 continue
 !
 !     SET TEMP TO BACKFORECAST OF Y IF NECESSARY
 !
-      IF ((MBOL.GE.1) .AND. (IFOMIN.LT.MBOL)) THEN
-        I1 = IFOMIN-MBOL+1
-        DO 60 I = 0, I1, -1
-          K = 1-I
-          TEMP(K) = CONST
-          DO 40 J = 1, MBOL
-            IF (I+J.LE.N) THEN
-              IF (I+J.GE.1) THEN
-                TEMP(K) = TEMP(K) + T(J)*Y(I+J)
-              ELSE
-                TEMP(K) = TEMP(K) + T(J)*TEMP(MBOL-I-J)
-              END IF
-            END IF
-   40     CONTINUE
-          IF (NPARMA.GE.1) THEN
-            DO 50 J =1, NPARMA
-              IF (I+J.LE.N) TEMP(K) = TEMP(K) - PARMA(J)*PV(I+J)
-   50       CONTINUE
-          END IF
-   60   CONTINUE
-      END IF
+      if ((mbol.ge.1) .and. (ifomin.lt.mbol)) then
+        i1 = ifomin-mbol+1
+        do 60 i = 0, i1, -1
+          k = 1-i
+          temp(k) = const
+          do 40 j = 1, mbol
+            if (i+j.le.n) then
+              if (i+j.ge.1) then
+                temp(k) = temp(k) + t(j)*y(i+j)
+              else
+                temp(k) = temp(k) + t(j)*temp(mbol-i-j)
+              end if
+            end if
+   40     continue
+          if (nparma.ge.1) then
+            do 50 j =1, nparma
+              if (i+j.le.n) temp(k) = temp(k) - parma(j)*pv(i+j)
+   50       continue
+          end if
+   60   continue
+      end if
 !
 !      COMPUTE WEIGHTS FOR COMPUTING STANDARD DEVIATIONS OF THE FORECAST
 !
-      DO 65 J = 1, NFCST
-        FSD(J) = 0.0_WP
-        IF (MBOL.GE.1) THEN
-          DO 64 I = 1, MBOL
-            IF (J-I.GE.1) THEN
-              FSD(J) = FSD(J) + T(I)*FSD(J-I)
-            ELSE
-              IF (J-I.EQ.0) FSD(J) = FSD(J) + T(I)
-            END IF
-   64     CONTINUE
-        END IF
-        IF (J.LE.NPARMA) FSD(J) = FSD(J) - PARMA(J)
-   65 CONTINUE
+      do 65 j = 1, nfcst
+        fsd(j) = 0.0_wp
+        if (mbol.ge.1) then
+          do 64 i = 1, mbol
+            if (j-i.ge.1) then
+              fsd(j) = fsd(j) + t(i)*fsd(j-i)
+            else
+              if (j-i.eq.0) fsd(j) = fsd(j) + t(i)
+            end if
+   64     continue
+        end if
+        if (j.le.nparma) fsd(j) = fsd(j) - parma(j)
+   65 continue
 !
 !     COMPUTE STANDARD DEVIATIONS OF FORECASTS
 !
-      WSUM = 1.0_WP
-      DO 66 I = 1, NFCST
-        WSUMT =WSUM
-        WSUM = WSUM + FSD(I)*FSD(I)
-        FSD(I) = SQRT(WSUMT)*RSD
-   66 CONTINUE
+      wsum = 1.0_wp
+      do 66 i = 1, nfcst
+        wsumt =wsum
+        wsum = wsum + fsd(i)*fsd(i)
+        fsd(i) = sqrt(wsumt)*rsd
+   66 continue
 !
 !     SET PERCENT POINT VALUE FOR 95 PERCENT CONFIDENCE LIMITS
 !
-      T975 = PPFT(0.975_WP, N-NPAR)
+      t975 = ppft(0.975_wp, n-npar)
 !
 !     COMPUTE FORECASTS FOR EACH ORIGIN
 !
-      DO 100 IFO = 1, NFCSTO
-        IFC = IFCSTO(IFO)
-        IF ((IFC.LT.1) .OR. (IFC.GT.N)) IFC = N
-        DO 90 IF = 1, NFCST
-          F(IF) = CONST
-          IF (MBOL.GE.1) THEN
-            DO 70 J = 1, MBOL
-              K = IF + IFC-J
-              IF (K.LE.0) THEN
-                F(IF) = F(IF) + T(J)*TEMP(1-K)
-              ELSE
-                IF (K.LE.IFC) THEN
-                  F(IF) = F(IF) + T(J)*Y(K)
-                ELSE
-                  F(IF) = F(IF) + T(J)*F(IF-J)
-                END IF
-              END IF
-   70       CONTINUE
-          END IF
-          IF (NPARMA.GE.1) THEN
-            DO 80 J = 1, NPARMA
-              K = IF + IFC - J
-              IF (K.LE.IFC) F(IF) = F(IF) - PARMA(J)*PV(K)
-   80       CONTINUE
-          END IF
-          IF (SAVE) FCST(IF,IFO) = F(IF)
-   90   CONTINUE
+      do 100 ifo = 1, nfcsto
+        ifc = ifcsto(ifo)
+        if ((ifc.lt.1) .or. (ifc.gt.n)) ifc = n
+        do 90 if = 1, nfcst
+          f(if) = const
+          if (mbol.ge.1) then
+            do 70 j = 1, mbol
+              k = if + ifc-j
+              if (k.le.0) then
+                f(if) = f(if) + t(j)*temp(1-k)
+              else
+                if (k.le.ifc) then
+                  f(if) = f(if) + t(j)*y(k)
+                else
+                  f(if) = f(if) + t(j)*f(if-j)
+                end if
+              end if
+   70       continue
+          end if
+          if (nparma.ge.1) then
+            do 80 j = 1, nparma
+              k = if + ifc - j
+              if (k.le.ifc) f(if) = f(if) - parma(j)*pv(k)
+   80       continue
+          end if
+          if (save) fcst(if,ifo) = f(if)
+   90   continue
 !
 !     PRINT RESULTS FROM THIS ORIGIN
 !
-        IF (NPRT.NE.0)
-     &    CALL AMFOUT(F, FSD, N, NFCST, IFCSTO, IFO, NFCSTO, Y, T975,
-     &    PAGE)
+       if (nprt.ne.0)&
+    &    call amfout(f, fsd, n, nfcst, ifcsto, ifo, nfcsto, y, t975,&
+     &    page)
 !
-  100 CONTINUE
+  100 continue
 !
-      RETURN
+      return
 !
-      END
+      end

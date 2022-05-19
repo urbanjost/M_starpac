@@ -1,6 +1,6 @@
 !SUMDS
-      SUBROUTINE SUMDS(X, N, LO, MID, HI, XMEANW, SUMDA, SUMD2, SUMD3,
-     &   SUMD4)
+     subroutine sumds(x, n, lo, mid, hi, xmeanw, sumda, sumd2, sumd3,&
+     &   sumd4)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,23 +19,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   SUMD2,SUMD3,SUMD4,SUMDA,XMEANW
-      INTEGER
-     &   HI,LO,MID,N
+     real(kind=wp) ::&
+     &   sumd2,sumd3,sumd4,sumda,xmeanw
+     integer&
+     &   hi,lo,mid,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(N)
+     real(kind=wp) ::&
+     &   x(n)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DIFF
-      INTEGER
-     &   CURHI,CURLO,I,IREV
+     real(kind=wp) ::&
+     &   diff
+     integer&
+     &   curhi,curlo,i,irev
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS
+      intrinsic abs
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -81,53 +81,53 @@
 !
 !     INITIALIZE SUMMATION VARIABLES.
 !
-      DIFF = X(MID) - XMEANW
-      SUMDA = ABS(DIFF)
-      SUMD2 = DIFF*DIFF
-      SUMD3 = DIFF*DIFF*DIFF
-      SUMD4 = DIFF*DIFF*DIFF*DIFF
-      CURLO = MID - 1
-      CURHI = MID + 1
+      diff = x(mid) - xmeanw
+      sumda = abs(diff)
+      sumd2 = diff*diff
+      sumd3 = diff*diff*diff
+      sumd4 = diff*diff*diff*diff
+      curlo = mid - 1
+      curhi = mid + 1
 !
 !     SUM OUTWARDS FROM THE VALUE NEAREST ZERO.  THAT IS, SUM FROM
 !     THE LEAST IN MAGNITUDE TO THE GREATEST.
 !
-   10 IF (CURHI.GT.HI .OR. CURLO.LT.LO) GO TO 30
-      IF (ABS(X(CURHI)).LT.ABS(X(CURLO))) GO TO 20
-      DIFF = X(CURLO) - XMEANW
-      SUMDA = SUMDA + ABS(DIFF)
-      SUMD2 = SUMD2 + DIFF*DIFF
-      SUMD3 = SUMD3 + DIFF*DIFF*DIFF
-      SUMD4 = SUMD4 + DIFF*DIFF*DIFF*DIFF
-      CURLO = CURLO - 1
-      GO TO 10
-   20 DIFF = X(CURHI) - XMEANW
-      SUMDA = SUMDA + ABS(DIFF)
-      SUMD2 = SUMD2 + DIFF*DIFF
-      SUMD3 = SUMD3 + DIFF*DIFF*DIFF
-      SUMD4 = SUMD4 + DIFF*DIFF*DIFF*DIFF
-      CURHI = CURHI + 1
-      GO TO 10
+   10 if (curhi.gt.hi .or. curlo.lt.lo) go to 30
+      if (abs(x(curhi)).lt.abs(x(curlo))) go to 20
+      diff = x(curlo) - xmeanw
+      sumda = sumda + abs(diff)
+      sumd2 = sumd2 + diff*diff
+      sumd3 = sumd3 + diff*diff*diff
+      sumd4 = sumd4 + diff*diff*diff*diff
+      curlo = curlo - 1
+      go to 10
+   20 diff = x(curhi) - xmeanw
+      sumda = sumda + abs(diff)
+      sumd2 = sumd2 + diff*diff
+      sumd3 = sumd3 + diff*diff*diff
+      sumd4 = sumd4 + diff*diff*diff*diff
+      curhi = curhi + 1
+      go to 10
 !
 !     SUM UP ANY VALUES WHICH MAY REMAIN BECAUSE OF AN OFF
 !     CENTER ZERO POINT.
 !
-   30 IF (CURHI.GT.HI) GO TO 50
-      DO 40 I=CURHI,HI
-         DIFF = X(I) - XMEANW
-         SUMDA = SUMDA + ABS(DIFF)
-         SUMD2 = SUMD2 + DIFF*DIFF
-         SUMD3 = SUMD3 + DIFF*DIFF*DIFF
-         SUMD4 = SUMD4 + DIFF*DIFF*DIFF*DIFF
-   40 CONTINUE
-   50 IF (CURLO.LT.LO) GO TO 70
-      DO 60 IREV=LO,CURLO
-         I = LO - IREV + CURLO
-         DIFF = X(I) - XMEANW
-         SUMDA = SUMDA + ABS(DIFF)
-         SUMD2 = SUMD2 + DIFF*DIFF
-         SUMD3 = SUMD3 + DIFF*DIFF*DIFF
-         SUMD4 = SUMD4 + DIFF*DIFF*DIFF*DIFF
-   60 CONTINUE
-   70 RETURN
-      END
+   30 if (curhi.gt.hi) go to 50
+      do 40 i=curhi,hi
+         diff = x(i) - xmeanw
+         sumda = sumda + abs(diff)
+         sumd2 = sumd2 + diff*diff
+         sumd3 = sumd3 + diff*diff*diff
+         sumd4 = sumd4 + diff*diff*diff*diff
+   40 continue
+   50 if (curlo.lt.lo) go to 70
+      do 60 irev=lo,curlo
+         i = lo - irev + curlo
+         diff = x(i) - xmeanw
+         sumda = sumda + abs(diff)
+         sumd2 = sumd2 + diff*diff
+         sumd3 = sumd3 + diff*diff*diff
+         sumd4 = sumd4 + diff*diff*diff*diff
+   60 continue
+   70 return
+      end

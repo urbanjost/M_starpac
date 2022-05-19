@@ -7,17 +7,17 @@
 !
 !
 !  SCALAR ARGUMENTS
-      integer
+     integer&
      &   ierr,n,nn,p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   j(nn,p),r(n)
 !
 !  LOCAL SCALARS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   t
-      integer
+     integer&
      &   i,k,l,nl1
 !
 !  EXTERNAL FUNCTIONS

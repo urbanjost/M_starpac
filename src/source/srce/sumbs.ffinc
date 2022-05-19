@@ -1,5 +1,5 @@
 !SUMBS
-      SUBROUTINE SUMBS(X, N, LO, MID, HI)
+      subroutine sumbs(x, n, lo, mid, hi)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,16 +16,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   HI,LO,MID,N
+     integer&
+     &   hi,lo,mid,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(N)
+     real(kind=wp) ::&
+     &   x(n)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   CURHI,CURLO
+     integer&
+     &   curhi,curlo
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -51,33 +51,33 @@
 !
 !     BINARY SEARCH OF X FOR 0.0_WP OR CLOSEST TO IT.
 !
-      CURLO = LO
-      CURHI = HI
+      curlo = lo
+      curhi = hi
 !
 !     SEE IF ZERO IS OUT OF THE RANGE X(LO) TO X(HI).
 !
-      IF (X(CURLO).LT.0.0_WP) GO TO 10
-      MID = CURLO
-      GO TO 50
-   10 IF (X(CURHI).GT.0.0_WP) GO TO 20
-      MID = CURHI
-      GO TO 50
+      if (x(curlo).lt.0.0_wp) go to 10
+      mid = curlo
+      go to 50
+   10 if (x(curhi).gt.0.0_wp) go to 20
+      mid = curhi
+      go to 50
 !
 !     LOCATE EITHER A ZERO OR A PAIR OF ADJACENT VALUES BETWEEN
 !     WHICH THERE LIES A ZERO.
 !
-   20 IF (CURLO+1.EQ.CURHI) GO TO 30
-      MID = (CURLO+CURHI)/2
-      IF (0.0_WP.LT.X(MID)) CURHI = MID
-      IF (0.0_WP.GT.X(MID)) CURLO = MID
-      IF (0.0_WP.EQ.X(MID)) GO TO 50
-      GO TO 20
+   20 if (curlo+1.eq.curhi) go to 30
+      mid = (curlo+curhi)/2
+      if (0.0_wp.lt.x(mid)) curhi = mid
+      if (0.0_wp.gt.x(mid)) curlo = mid
+      if (0.0_wp.eq.x(mid)) go to 50
+      go to 20
 !
 !     PICK AS MIDPOINT THE CURRENT ENDPOINT CLOSEST TO ZERO.
 !
-   30 IF (X(CURHI)+X(CURLO).GT.0.0_WP) GO TO 40
-      MID = CURHI
-      GO TO 50
-   40 MID = CURLO
-   50 RETURN
-      END
+   30 if (x(curhi)+x(curlo).gt.0.0_wp) go to 40
+      mid = curhi
+      go to 50
+   40 mid = curlo
+   50 return
+      end

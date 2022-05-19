@@ -1,7 +1,7 @@
 !NLCMP
-      SUBROUTINE NLCMP (Y, WEIGHT, WT, LWT, N, NPAR, NPARE,
-     &   RES, D, RD, COND, VCVL, LVCVL, NNZW, IDF, RSSHLF, RSS, RSD,
-     &   YSS, EXACT, PVT, SDPVT, SDREST, ISKULL)
+     subroutine nlcmp (y, weight, wt, lwt, n, npar, npare,&
+    &   res, d, rd, cond, vcvl, lvcvl, nnzw, idf, rsshlf, rss, rsd,&
+     &   yss, exact, pvt, sdpvt, sdrest, iskull)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,43 +19,43 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   COND,RSD,RSS,RSSHLF,YSS
-      INTEGER
-     &   IDF,LVCVL,LWT,N,NNZW,NPAR,NPARE
-      LOGICAL
-     &   EXACT,WEIGHT
+     real(kind=wp) ::&
+     &   cond,rsd,rss,rsshlf,yss
+     integer&
+     &   idf,lvcvl,lwt,n,nnzw,npar,npare
+     logical&
+     &   exact,weight
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   D(N,NPAR),PVT(N),RD(N),RES(N),SDPVT(N),SDREST(N),VCVL(LVCVL),
-     &   WT(LWT),Y(N)
-      INTEGER
-     &   ISKULL(10)
+     real(kind=wp) ::&
+    &   d(n,npar),pvt(n),rd(n),res(n),sdpvt(n),sdrest(n),vcvl(lvcvl),&
+     &   wt(lwt),y(n)
+     integer&
+     &   iskull(10)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FAC,FPLM,RVAR,SM,TJ,WTI,WTSUM,YWTSM,YWTYSM
-      INTEGER
-     &   I,J,JK,K
+     real(kind=wp) ::&
+     &   fac,fplm,rvar,sm,tj,wti,wtsum,ywtsm,ywtysm
+     integer&
+     &   i,j,jk,k
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   D1MACH
+     real(kind=wp) ::&
+     &   d1mach
 !       EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL FITEXT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,MAX,SQRT
+      intrinsic abs,max,sqrt
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -145,57 +145,57 @@
 !     REAL(KIND=WP) :: YWTYSM
 !        THE SUM OF THE VALUES Y(I)*WT(I)*WT(I), I=1,N.
 !
-      FPLM = D1MACH(2)
+      fplm = d1mach(2)
 !
 !     COMPUTE RESIDUALS
 !
-      DO 10 I=1,N
-         RES(I) = Y(I) - PVT(I)
-   10 CONTINUE
+      do 10 i=1,n
+         res(i) = y(i) - pvt(i)
+   10 continue
 !
 !     COMPUTE VARIOUS STATISTICS
 !
-      IDF = NNZW - NPARE
-      RSS = 2.0_WP*RSSHLF
-      RVAR = 0.0_WP
-      IF (IDF.GE.1) RVAR = RSS/IDF
-      RSD = SQRT(RVAR)
-      YWTSM = 0.0_WP
-      YWTYSM = 0.0_WP
-      WTSUM = 0.0_WP
-      DO 20 I=1,N
-         WTI = 1.0_WP
-         IF (WEIGHT) WTI = WT(I)
-         YWTSM = YWTSM + Y(I)*WTI
-         YWTYSM = YWTYSM + Y(I)*WTI*Y(I)
-         WTSUM = WTSUM + WTI
-   20 CONTINUE
-      YSS = MAX(YWTYSM-(YWTSM*YWTSM)/WTSUM,0.0_WP)
+      idf = nnzw - npare
+      rss = 2.0_wp*rsshlf
+      rvar = 0.0_wp
+      if (idf.ge.1) rvar = rss/idf
+      rsd = sqrt(rvar)
+      ywtsm = 0.0_wp
+      ywtysm = 0.0_wp
+      wtsum = 0.0_wp
+      do 20 i=1,n
+         wti = 1.0_wp
+         if (weight) wti = wt(i)
+         ywtsm = ywtsm + y(i)*wti
+         ywtysm = ywtysm + y(i)*wti*y(i)
+         wtsum = wtsum + wti
+   20 continue
+      yss = max(ywtysm-(ywtsm*ywtsm)/wtsum,0.0_wp)
 !
-      CALL FITEXT(RSS, YSS, EXACT)
+      call fitext(rss, yss, exact)
 !
-      COND = FPLM
-      IF (RD(NPARE).NE.0.0_WP) COND = ABS(RD(1)/RD(NPARE))
+      cond = fplm
+      if (rd(npare).ne.0.0_wp) cond = abs(rd(1)/rd(npare))
 !
-      IF (IERR.NE.0) RETURN
+      if (ierr.ne.0) return
 !
 !     CORRECT FOR DEGREES OF FREEDOM IF NECESSARY BECAUSE OF ZERO
 !     WEIGHTED OBSERVATIONS.
 !
-      IF (N.EQ.NNZW) GO TO 40
+      if (n.eq.nnzw) go to 40
 !
-      FAC = N-NPARE
-      IF (IDF.GE.1) FAC = FAC/IDF
-      DO 30 I=1,LVCVL
-         VCVL(I) = VCVL(I)*FAC
-   30 CONTINUE
+      fac = n-npare
+      if (idf.ge.1) fac = fac/idf
+      do 30 i=1,lvcvl
+         vcvl(i) = vcvl(i)*fac
+   30 continue
 !
-   40 CONTINUE
+   40 continue
 !
 !     IF THE RESIDUAL SUM OF SQUARES IS IDENTICALLY ZERO, THEN
 !     NO FURTHER COMPUTATIONS ARE NECESSARY
 !
-      IF ((IDF.LE.0) .OR. EXACT) RETURN
+      if ((idf.le.0) .or. exact) return
 !
 !     IF THE STANDARD DEVIATIONS OF THE PREDICTED VALUES AND
 !     STANDARDIZED RESIDUALS ARE NOT SAVED OR PRINTED, THEN NO
@@ -203,47 +203,47 @@
 !
 !     COMPUTE THE STANDARD DEVIATIONS OF THE PREDICTED VALUES (SDPVT)
 !
-      DO 90 I=1,N
-         SM = 0.0_WP
-         DO 60 J=1,NPARE
-            TJ = 0.0_WP
-            DO 50 K=1,NPARE
-               IF (J.GE.K) THEN
-                  JK = J*(J-1)/2 + K
-               ELSE
-                  JK = K*(K-1)/2 + J
-               END IF
-               TJ = TJ + VCVL(JK)*D(I,K)
-   50       CONTINUE
-               SM = SM + D(I,J)*TJ
-   60    CONTINUE
-         IF (SM.LT.0.0_WP) SM = 0.0_WP
-         SDPVT(I) = SQRT(SM)
+      do 90 i=1,n
+         sm = 0.0_wp
+         do 60 j=1,npare
+            tj = 0.0_wp
+            do 50 k=1,npare
+               if (j.ge.k) then
+                  jk = j*(j-1)/2 + k
+               else
+                  jk = k*(k-1)/2 + j
+               end if
+               tj = tj + vcvl(jk)*d(i,k)
+   50       continue
+               sm = sm + d(i,j)*tj
+   60    continue
+         if (sm.lt.0.0_wp) sm = 0.0_wp
+         sdpvt(i) = sqrt(sm)
 !
-         SDREST(I) = FPLM
-         WTI = 1.0_WP
-         IF (WEIGHT) WTI = WT(I)
-         IF (WTI.EQ.0.0_WP) GO TO 90
+         sdrest(i) = fplm
+         wti = 1.0_wp
+         if (weight) wti = wt(i)
+         if (wti.eq.0.0_wp) go to 90
 !
-         IF (RVAR/WTI-SM.LE.0.0_WP) GO TO 70
-         GO TO 80
+         if (rvar/wti-sm.le.0.0_wp) go to 70
+         go to 80
 !
 !           THEN
 !
-   70    SDREST(I) = FPLM
-         ISKULL(1) = 1
-         ISKULL(4) = 1
-         IERR = 4
-         GO TO 90
+   70    sdrest(i) = fplm
+         iskull(1) = 1
+         iskull(4) = 1
+         ierr = 4
+         go to 90
 !
 !           ELSE
 !
-   80    SDREST(I) = RES(I)/SQRT(RVAR/WTI-SM)
+   80    sdrest(i) = res(i)/sqrt(rvar/wti-sm)
 !
 !        END IF
 !
-   90 CONTINUE
+   90 continue
 !
-      RETURN
+      return
 !
-      END
+      end

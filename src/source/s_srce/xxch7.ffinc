@@ -1,5 +1,5 @@
 !XXCH7
-      SUBROUTINE XXCH7(LDSTAK,typ)
+      subroutine xxch7(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -19,30 +19,30 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,IYM,M,N
+     integer&
+     &   iprt,iym,m,n
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   YM(10,5)
+     real(kind=wp) ::&
+     &   ym(10,5)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL CORR,IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -67,49 +67,49 @@
 !        THE OBSERVED MULTIVARIATE DATA.
 !
 !
-      DATA     YM(1,1),   YM(1,2),   YM(1,3),   YM(1,4)
-     &    /      42.2E0,  11.2E0,  31.9E0, 167.1E0/
-      DATA     YM(2,1),   YM(2,2),   YM(2,3),   YM(2,4)
-     &    /      48.6E0,  10.6E0,  13.2E0, 174.4E0/
-      DATA     YM(3,1),   YM(3,2),   YM(3,3),   YM(3,4)
-     &    /      42.6E0,  10.6E0,  28.7E0, 160.8E0/
-      DATA     YM(4,1),   YM(4,2),   YM(4,3),   YM(4,4)
-     &    /      39.0E0,  10.4E0,  26.1E0, 162.0E0/
-      DATA     YM(5,1),   YM(5,2),   YM(5,3),   YM(5,4)
-     &    /      34.7E0,   9.3E0,  30.1E0, 140.8E0/
-      DATA     YM(6,1),   YM(6,2),   YM(6,3),   YM(6,4)
-     &    /      44.5E0,  10.8E0,   8.5E0, 174.6E0/
-      DATA     YM(7,1),   YM(7,2),   YM(7,3),   YM(7,4)
-     &    /      39.1E0,  10.7E0,  24.3E0, 163.7E0/
-      DATA     YM(8,1),   YM(8,2),   YM(8,3),   YM(8,4)
-     &    /      40.1E0,  10.0E0,  18.6E0, 174.5E0/
-      DATA     YM(9,1),   YM(9,2),   YM(9,3),   YM(9,4)
-     &    /      45.9E0,  12.0E0,  20.4E0, 185.7E0/
+     data     ym(1,1),   ym(1,2),   ym(1,3),   ym(1,4)&
+     &    /      42.2e0,  11.2e0,  31.9e0, 167.1e0/
+     data     ym(2,1),   ym(2,2),   ym(2,3),   ym(2,4)&
+     &    /      48.6e0,  10.6e0,  13.2e0, 174.4e0/
+     data     ym(3,1),   ym(3,2),   ym(3,3),   ym(3,4)&
+     &    /      42.6e0,  10.6e0,  28.7e0, 160.8e0/
+     data     ym(4,1),   ym(4,2),   ym(4,3),   ym(4,4)&
+     &    /      39.0e0,  10.4e0,  26.1e0, 162.0e0/
+     data     ym(5,1),   ym(5,2),   ym(5,3),   ym(5,4)&
+     &    /      34.7e0,   9.3e0,  30.1e0, 140.8e0/
+     data     ym(6,1),   ym(6,2),   ym(6,3),   ym(6,4)&
+     &    /      44.5e0,  10.8e0,   8.5e0, 174.6e0/
+     data     ym(7,1),   ym(7,2),   ym(7,3),   ym(7,4)&
+     &    /      39.1e0,  10.7e0,  24.3e0, 163.7e0/
+     data     ym(8,1),   ym(8,2),   ym(8,3),   ym(8,4)&
+     &    /      40.1e0,  10.0e0,  18.6e0, 174.5e0/
+     data     ym(9,1),   ym(9,2),   ym(9,3),   ym(9,4)&
+     &    /      45.9e0,  12.0e0,  20.4e0, 185.7e0/
 !
 !
 !     SET PARAMETERS NECESSARY FOR THE COMPUTATIONS
 !
-      CALL IPRINT(IPRT)
-      IYM = 10
-      N = 9
-      M = 4
+      call iprint(iprt)
+      iym = 10
+      n = 9
+      m = 4
 !
 !     PRINT HEADER
 !
-      WRITE (IPRT,1000)
+      write (iprt,1000)
 !
 !     RUN SIMPLE EXAMPLE OF CORR
 !
-      WRITE (IPRT,1100)
-      CALL CORR(YM, N, M, IYM, LDSTAK)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1100)
+      call corr(ym, n, m, iym, ldstak)
+      write (iprt,2000) ierr
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT ('1*CH7')
- 1100 FORMAT (' SIMPLE TEST OF CORR')
- 2000 FORMAT (/' THE VALUE OF IERR IS ', I4)
+ 1000 format ('1*CH7')
+ 1100 format (' SIMPLE TEST OF CORR')
+ 2000 format (/' THE VALUE OF IERR IS ', i4)
 !
-      END
+      end

@@ -1,5 +1,5 @@
 !LLHDRP
-      SUBROUTINE LLHDRP(PAGE, WIDE, ISUBHD)
+      subroutine llhdrp(page, wide, isubhd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,14 +16,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISUBHD
-      LOGICAL
-     &   PAGE,WIDE
+     integer&
+     &   isubhd
+     logical&
+     &   page,wide
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VERSP
@@ -41,29 +41,29 @@
 !        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
 !        BE FULL WIDTH (TRUE) OR NOT (FALSE).
 !
-      CALL IPRINT(IPRT)
-      IF (PAGE) WRITE (IPRT,1020)
-      CALL VERSP(WIDE)
-      IF (PAGE) WRITE (IPRT,1000)
-      IF (.NOT.PAGE) WRITE (IPRT,1010)
-      PAGE = .TRUE.
+      call iprint(iprt)
+      if (page) write (iprt,1020)
+      call versp(wide)
+      if (page) write (iprt,1000)
+      if (.not.page) write (iprt,1010)
+      page = .true.
 !
-      IF (ISUBHD.EQ.0) RETURN
+      if (isubhd.eq.0) return
 !
-      GO TO (10), ISUBHD
+      go to (10), isubhd
 !
-   10 WRITE (IPRT,1030)
+   10 write (iprt,1030)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS FOR PAGE HEADINGS
 !
- 1000 FORMAT (32H+LINEAR LEAST SQUARES ESTIMATION,
-     &   33H WITH POLYNOMIAL MODEL, CONTINUED)
- 1010 FORMAT ('+', 59('*')/
-     &   1X, 34H*  LINEAR LEAST SQUARES ESTIMATION,
-     &   25H WITH POLYNOMIAL MODEL  */ 1X,
+1000 format (32h+linear least squares estimation,&
+     &   33h with polynomial model, continued)
+1010 format ('+', 59('*')/&
+    &   1x, 34h*  linear least squares estimation,&
+    &   25h with polynomial model  */ 1x,&
      &   59('*'))
- 1020 FORMAT ('1')
- 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
-      END
+ 1020 format ('1')
+ 1030 format (//30h summary of initial conditions/ 1x, 30('-'))
+      end

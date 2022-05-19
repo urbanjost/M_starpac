@@ -1,7 +1,7 @@
 !VPCNT
-      SUBROUTINE VPCNT (YM, YMMISS, N, M, IYM, MULTI, ILOG, YLB, YUB,
-     &  XLB, XINC, NS, IRLIN, IBAR, NMSUB, ISCHCK, ISYM, ISIZE,
-     &  MISS, LISYM)
+     subroutine vpcnt (ym, ymmiss, n, m, iym, multi, ilog, ylb, yub,&
+    &  xlb, xinc, ns, irlin, ibar, nmsub, ischck, isym, isize,&
+     &  miss, lisym)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,41 +17,41 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XINC,XLB,YLB,YUB
-      INTEGER
-     &   IBAR,ILOG,IRLIN,ISCHCK,ISIZE,IYM,LISYM,M,N,NS
-      LOGICAL
-     &   MISS,MULTI
+     real(kind=wp) ::&
+     &   xinc,xlb,ylb,yub
+     integer&
+     &   ibar,ilog,irlin,ischck,isize,iym,lisym,m,n,ns
+     logical&
+     &   miss,multi
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YM(*),YMMISS(*)
-      INTEGER
-     &   ISYM(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   ym(*),ymmiss(*)
+     integer&
+     &   isym(*)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   YMN,YMX
-      INTEGER
-     &   NSAMPL
-      LOGICAL
-     &   ERROR,XCHECK
+     real(kind=wp) ::&
+     &   ymn,ymx
+     integer&
+     &   nsampl
+     logical&
+     &   error,xcheck
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL PLTCHK,VERSP,VPLMT,VPMN
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX,MOD
+      intrinsic max,mod
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -132,35 +132,35 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      XCHECK = .FALSE.
-      CALL PLTCHK (YM, YMMISS, YM, YMMISS(1), N, M, IYM, MULTI,
-     &   ILOG, YLB, YUB, XLB, XINC, NMSUB, MISS, XCHECK)
+      xcheck = .false.
+     call pltchk (ym, ymmiss, ym, ymmiss(1), n, m, iym, multi,&
+     &   ilog, ylb, yub, xlb, xinc, nmsub, miss, xcheck)
 !
-      IF (IERR.EQ.0) THEN
+      if (ierr.eq.0) then
 !
 !       DETERMINE THE BOUNDS FOR THEY AXIS AND COMPLETE ERROR CHECKING
 !
-        NSAMPL = MAX(1, NS)
-        CALL VPLMT (YM, YMMISS, N, M, IYM, YLB, YUB, YMN, YMX,
-     &    ERROR, NMSUB, MISS, NSAMPL)
+        nsampl = max(1, ns)
+       call vplmt (ym, ymmiss, n, m, iym, ylb, yub, ymn, ymx,&
+     &    error, nmsub, miss, nsampl)
 !
-        IF (ERROR) THEN
-          IERR = 1
-        ELSE
+        if (error) then
+          ierr = 1
+        else
 !
 !       PRINT PLOT
 !
-        IF (MOD(MAX(0,ISIZE),10).EQ.0) THEN
-          CALL VERSP(.TRUE.)
-        ELSE
-          CALL VERSP(.FALSE.)
-        END IF
-        CALL VPMN (YM, YMMISS, N, M, IYM, NSAMPL, ISCHCK, ISYM, LISYM,
-     &    ISIZE, YMN, YMX, XLB, XINC, MISS, ILOG, IRLIN, IBAR)
+        if (mod(max(0,isize),10).eq.0) then
+          call versp(.true.)
+        else
+          call versp(.false.)
+        end if
+       call vpmn (ym, ymmiss, n, m, iym, nsampl, ischck, isym, lisym,&
+     &    isize, ymn, ymx, xlb, xinc, miss, ilog, irlin, ibar)
 !
-        END IF
-      END IF
+        end if
+      end if
 !
-      RETURN
+      return
 !
-      END
+      end

@@ -1,5 +1,5 @@
 !XSTPLE
-      SUBROUTINE XSTPLE(LDSTAK,typ)
+      subroutine xstple(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -16,32 +16,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DELTA,EXMPT
-      INTEGER
-     &   I,IPRT,IXM,LDSMIN,M,N,NETA,NPAR,NPRT,NTEST
+     real(kind=wp) ::&
+     &   delta,exmpt
+     integer&
+     &   i,iprt,ixm,ldsmin,m,n,neta,npar,nprt,ntest
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   PAR(10),SCALE(10),STP(10),XM(200,2)
+     real(kind=wp) ::&
+     &   par(10),scale(10),stp(10),xm(200,2)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,LDSCMP,MDL4,STPLS,STPLS1,STPLS2,STPLSC
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -97,82 +97,82 @@
 !        THE ARRAY IN WHICH ONE ROW OF THE INDEPENDENT VARIABLE ARRAY
 !        IS STORED.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     SET PARAMETER VALUES
 !
-      CALL STPLS1(N, M, IXM, PAR, NPAR, NETA, EXMPT, SCALE, NPRT)
-      CALL STPLS2(NPAR, STP)
-      CALL LDSCMP(14, 0, 2*(N+NPAR), 0, 0, 0, 'D', 10*N, LDSMIN)
+      call stpls1(n, m, ixm, par, npar, neta, exmpt, scale, nprt)
+      call stpls2(npar, stp)
+      call ldscmp(14, 0, 2*(n+npar), 0, 0, 0, 'D', 10*n, ldsmin)
 !
-      IF (LDSMIN.LE.LDSTAK) GO TO 5
+      if (ldsmin.le.ldstak) go to 5
 !
-      WRITE (IPRT, 1040) LDSMIN
-      RETURN
+      write (iprt, 1040) ldsmin
+      return
 !
-    5 CONTINUE
+    5 continue
 !
 !     CREATE INDEPENDENT VARIABLE
 !
-      DELTA = 0.0625_WP
-      XM(1,1) = 0.0_WP
-      DO 10 I=2,N
-         XM(I,1) = XM(I-1,1) + DELTA
-   10 CONTINUE
+      delta = 0.0625_wp
+      xm(1,1) = 0.0_wp
+      do 10 i=2,n
+         xm(i,1) = xm(i-1,1) + delta
+   10 continue
 !
-      NTEST = 0
+      ntest = 0
 !     CHECK ERROR HANDLING
 !
 !        TEST 1  -  MISCELANEOUS ERROR CHECKING
 !
-      N = -5
-      M = -5
-      IXM = -10
-      NPAR = -10
+      n = -5
+      m = -5
+      ixm = -10
+      npar = -10
 !
 !
-      NTEST = NTEST + 1
-      WRITE (IPRT,1090) NTEST
-      WRITE (IPRT,1020)
-      WRITE (IPRT,1000)
-      IERR = -1
-      CALL STPLS(XM, N, M, IXM, MDL4, PAR, NPAR, LDSTAK, STP)
-      WRITE (IPRT,1050) IERR
-      WRITE (IPRT,1010)
-      IERR = -1
-      CALL STPLSC(XM, N, M, IXM, MDL4, PAR, NPAR, LDSTAK, STP, NETA,
-     &   EXMPT, SCALE, NPRT)
-      WRITE (IPRT,1050) IERR
+      ntest = ntest + 1
+      write (iprt,1090) ntest
+      write (iprt,1020)
+      write (iprt,1000)
+      ierr = -1
+      call stpls(xm, n, m, ixm, mdl4, par, npar, ldstak, stp)
+      write (iprt,1050) ierr
+      write (iprt,1010)
+      ierr = -1
+     call stplsc(xm, n, m, ixm, mdl4, par, npar, ldstak, stp, neta,&
+     &   exmpt, scale, nprt)
+      write (iprt,1050) ierr
 !
 !        TEST 2  -  MISCELANEOUS ERROR CHECKING (CONTINUED)
 !
-      CALL STPLS1(N, M, IXM, PAR, NPAR, NETA, EXMPT, SCALE, NPRT)
-      SCALE(2) = 0.0_WP
+      call stpls1(n, m, ixm, par, npar, neta, exmpt, scale, nprt)
+      scale(2) = 0.0_wp
 !
-      NTEST = NTEST + 1
-      WRITE (IPRT,1090) NTEST
-      WRITE (IPRT,1030)
-      WRITE (IPRT,1000)
-      IERR = -1
-      CALL STPLS(XM, N, M, IXM, MDL4, PAR, NPAR, LDSMIN-1, STP)
-      WRITE (IPRT,1050) IERR
-      WRITE (IPRT,1010)
-      IERR = -1
-      CALL STPLSC(XM, N, M, IXM, MDL4, PAR, NPAR, LDSMIN-1, STP, NETA,
-     &   EXMPT, SCALE, NPRT)
-      WRITE (IPRT,1050) IERR
+      ntest = ntest + 1
+      write (iprt,1090) ntest
+      write (iprt,1030)
+      write (iprt,1000)
+      ierr = -1
+      call stpls(xm, n, m, ixm, mdl4, par, npar, ldsmin-1, stp)
+      write (iprt,1050) ierr
+      write (iprt,1010)
+      ierr = -1
+     call stplsc(xm, n, m, ixm, mdl4, par, npar, ldsmin-1, stp, neta,&
+     &   exmpt, scale, nprt)
+      write (iprt,1050) ierr
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (15H TEST OF STPLS )
- 1010 FORMAT (15H TEST OF STPLSC)
- 1020 FORMAT (32H CHECK ERROR HANDLING  -  TEST 1)
- 1030 FORMAT (32H CHECK ERROR HANDLING  -  TEST 2)
- 1040 FORMAT (45H1 *** LDSTAK MUST BE GREATER THAN OR EQUAL TO , I6)
- 1050 FORMAT (/29H ***** RETURNED RESULTS *****, 5X, 15H (-1 INDICATES ,
-     &   39HVALUE NOT CHANGED BY CALLED SUBROUTINE)//9H IERR IS , I3)
- 1090 FORMAT (54H1DERIVATIVE STEP SIZE SELECTION SUBROUTINE TEST NUMBER,
-     &   I5)
-      END
+ 1000 format (15h test of stpls )
+ 1010 format (15h test of stplsc)
+ 1020 format (32h check error handling  -  test 1)
+ 1030 format (32h check error handling  -  test 2)
+ 1040 format (45h1 *** ldstak must be greater than or equal to , i6)
+1050 format (/29h ***** returned results *****, 5x, 15h (-1 indicates ,&
+     &   39hvalue not changed by called subroutine)//9h ierr is , i3)
+1090 format (54h1derivative step size selection subroutine test number,&
+     &   i5)
+      end

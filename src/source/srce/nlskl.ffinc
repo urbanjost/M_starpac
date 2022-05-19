@@ -1,5 +1,5 @@
 !NLSKL
-      SUBROUTINE NLSKL(ISKULL, PAGE, WIDE, NLHDR)
+      subroutine nlskl(iskull, page, wide, nlhdr)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,19 +16,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      LOGICAL
-     &   PAGE,WIDE
+     logical&
+     &   page,wide
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   ISKULL(10)
+     integer&
+     &   iskull(10)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL NLHDR
+       external nlhdr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,ISUBHD
+     integer&
+     &   iprt,isubhd
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
@@ -50,63 +50,63 @@
 !        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
 !        BE FULL WIDTH (TRUE) OR NOT (FALSE).
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      ISUBHD = 0
-      CALL NLHDR(PAGE, WIDE, ISUBHD)
+      isubhd = 0
+      call nlhdr(page, wide, isubhd)
 !
-      IF (WIDE) THEN
-         WRITE (IPRT,1010)
-         WRITE (IPRT,1020)
+      if (wide) then
+         write (iprt,1010)
+         write (iprt,1020)
 !        WRITE (IPRT,1030)
 !        WRITE (IPRT,1040)
 !        WRITE (IPRT,1050)
-         WRITE (IPRT,1000)
-      END IF
-      WRITE (IPRT,1060)
+         write (iprt,1000)
+      end if
+      write (iprt,1060)
 !
 !     VCV COMPUTATION NOT COMPLETED
 !
-      IF (ISKULL(7).NE.0) WRITE (IPRT,1120)
+      if (iskull(7).ne.0) write (iprt,1120)
 !
 !     MAXIMUM NUMBER OF ITERATIONS REACHED BEFORE CONVERGENCE
 !
-      IF (ISKULL(6).NE.0) WRITE (IPRT,1100)
+      if (iskull(6).ne.0) write (iprt,1100)
 !
 !     FALSE CONVERGENCE
 !
-      IF (ISKULL(5).NE.0) WRITE (IPRT,1090)
+      if (iskull(5).ne.0) write (iprt,1090)
 !
 !     MEANINGLESS VCV MATRIX
 !
-      IF (ISKULL(4).NE.0) WRITE (IPRT,1080)
+      if (iskull(4).ne.0) write (iprt,1080)
 !
 !     PROBLEM IS COMPUTATIONALLY SINGULAR
 !
-      IF (ISKULL(3).NE.0) WRITE (IPRT,1070)
+      if (iskull(3).ne.0) write (iprt,1070)
 !
 !     INITIAL RESIDUAL SUM OF SQUARES COMPUTATION OVERFLOWED
 !
-      IF (ISKULL(2).NE.0) WRITE (IPRT,1110)
+      if (iskull(2).ne.0) write (iprt,1110)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (///)
- 1010 FORMAT (/48H  W      W     AA     RRRRRRR   N      N    IIII,
-     &   19H    N      N    GGG/31H  W      W    A  A    R     RR ,
-     &   38H NN     N     II     NN     N   G    G/12H  W      W  ,
-     &   51H  A  A    R      R  N N    N     II     N N    N  G/
-     &   59H  WW    WW   AA  AA   R     RR  N  N   N     II     N  N   ,
-     &   4HN  G/47H   W    W    AAAAAA   RRRRRRR   N  NN  N     II,
-     &   23H     N  NN  N  G  GGGGG)
- 1020 FORMAT (49H   W WW W    A    A   R R       N   N  N     II  ,
-     &   21H   N   N  N  G      G/29H   W WW W    A    A   R  R   ,
-     &   41H   N    N N     II     N    N N  G      G/9H    W  W ,
-     &   59H   AA    AA  R   R     N     NN     II     N     NN   G    ,
-     &   2HGG/49H    W  W    A      A  R    R    N      N    IIII ,
-     &   21H   N      N    GGGG G/)
+ 1000 format (///)
+1010 format (/48h  w      w     aa     rrrrrrr   n      n    iiii,&
+    &   19h    n      n    ggg/31h  w      w    a  a    r     rr ,&
+    &   38h nn     n     ii     nn     n   g    g/12h  w      w  ,&
+    &   51h  a  a    r      r  n n    n     ii     n n    n  g/&
+    &   59h  ww    ww   aa  aa   r     rr  n  n   n     ii     n  n   ,&
+    &   4hn  g/47h   w    w    aaaaaa   rrrrrrr   n  nn  n     ii,&
+     &   23h     n  nn  n  g  ggggg)
+1020 format (49h   w ww w    a    a   r r       n   n  n     ii  ,&
+    &   21h   n   n  n  g      g/29h   w ww w    a    a   r  r   ,&
+    &   41h   n    n n     ii     n    n n  g      g/9h    w  w ,&
+    &   59h   aa    aa  r   r     n     nn     ii     n     nn   g    ,&
+    &   2hgg/49h    w  w    a      a  r    r    n      n    iiii ,&
+     &   21h   n      n    gggg g/)
 !1010 FORMAT (/30X, 48H  W      W     AA     RRRRRRR   N      N    IIII,
 !    *   19H    N      N    GGG/30X, 31H  W      W    A  A    R     RR ,
 !    *   38H NN     N     II     NN     N   G    G/30X, 12H  W      W  ,
@@ -144,24 +144,24 @@
 !    *   4HXXXX/38X, 5('X'), 46X, 5('X')/36X, 5('X'), 50X, 5('X')/31X,
 !    *   9('X'), 52X, 9('X')/31X, 7('X'), 56X, 7('X')/31X, 6('X'), 58X,
 !    *   6('X')/1(34X, 3HXXX, 58X, 3HXXX))
- 1060 FORMAT (22H **  ERROR SUMMARY  **)
- 1070 FORMAT (/50H THIS MODEL AND DATA ARE COMPUTATIONALLY SINGULAR.,
-     &   29H CHECK YOUR INPUT FOR ERRORS.)
- 1080 FORMAT (/43H AT LEAST ONE OF THE STANDARDIZED RESIDUALS, 6H COULD,
-     &   47H NOT BE COMPUTED BECAUSE THE STANDARD DEVIATION, 8H OF THE ,
-     &   18HRESIDUAL WAS ZERO./37H THE VALIDITY OF THE COVARIANCE MATRI,
-     &   18HX IS QUESTIONABLE.)
- 1090 FORMAT (/46H THE ITERATIONS DO NOT APPEAR TO BE CONVERGING,
-     &   13H TO A MINIMUM, 41H (FALSE CONVERGENCE), INDICATING THAT THE,
-     &   12H CONVERGENCE, 16H CRITERIA STOPSS/22H AND STOPP MAY BE TOO ,
-     &   35HSMALL FOR THE ACCURACY OF THE MODEL, 17H AND DERIVATIVES,,
-     &   52H THAT THERE IS AN ERROR IN THE DERIVATIVE MATRIX, OR/
-     &   15H THAT THE MODEL, 39H IS DISCONTINUOUS NEAR THE CURRENT COEF,
-     &   18HFICIENT ESTIMATES.)
- 1100 FORMAT (/53H PROGRAM DID NOT CONVERGE IN THE NUMBER OF ITERATIONS,
-     &   13H OR NUMBER OF, 32H MODEL SUBROUTINE CALLS ALLOWED.)
- 1110 FORMAT (/50H THE RESIDUAL SUM OF SQUARES COULD NOT BE COMPUTED,
-     &   19H USING THE STARTING, 26H MODEL COEFFICIENT VALUES.)
- 1120 FORMAT (/44H THE VARIANCE-COVARIANCE MATRIX COULD NOT BE,
-     &   26H COMPUTED AT THE SOLUTION.)
-      END
+ 1060 format (22h **  error summary  **)
+1070 format (/50h this model and data are computationally singular.,&
+     &   29h check your input for errors.)
+1080 format (/43h at least one of the standardized residuals, 6h could,&
+    &   47h not be computed because the standard deviation, 8h of the ,&
+    &   18hresidual was zero./37h the validity of the covariance matri,&
+     &   18hx is questionable.)
+1090 format (/46h the iterations do not appear to be converging,&
+    &   13h to a minimum, 41h (false convergence), indicating that the,&
+    &   12h convergence, 16h criteria stopss/22h and stopp may be too ,&
+    &   35hsmall for the accuracy of the model, 17h and derivatives,,&
+    &   52h that there is an error in the derivative matrix, or/&
+    &   15h that the model, 39h is discontinuous near the current coef,&
+     &   18hficient estimates.)
+1100 format (/53h program did not converge in the number of iterations,&
+     &   13h or number of, 32h model subroutine calls allowed.)
+1110 format (/50h the residual sum of squares could not be computed,&
+     &   19h using the starting, 26h model coefficient values.)
+1120 format (/44h the variance-covariance matrix could not be,&
+     &   26h computed at the solution.)
+      end

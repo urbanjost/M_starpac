@@ -1,5 +1,5 @@
 !XXCH3
-      SUBROUTINE XXCH3(LDSTAK,typ)
+      subroutine xxch3(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -17,28 +17,28 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   SIGMA,YMEAN
-      INTEGER
-     &   I,IPRT,ISEED,IYM,M,N
+     real(kind=wp) ::&
+     &   sigma,ymean
+     integer&
+     &   i,iprt,iseed,iym,m,n
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   YM(50,2)
+     real(kind=wp) ::&
+     &   ym(50,2)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,MVP,NRAND,NRANDC
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -69,49 +69,49 @@
 !
 !     DATA INITIALIZATION
 !
-      IYM = 50
-      ISEED = 531
-      N = 50
-      M = 2
-      YMEAN = 4.0_WP
-      SIGMA = 0.5_WP
+      iym = 50
+      iseed = 531
+      n = 50
+      m = 2
+      ymean = 4.0_wp
+      sigma = 0.5_wp
 !
 !     DEFINE IPRT, THE CURRENT OUTPUT UNIT.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     WRITE HEADING
 !
-      WRITE (IPRT,1000)
+      write (iprt,1000)
 !
 !     GENERATE STANDARD NORMAL PSEUDO-RANDOM NUMBERS INTO COLUMN 1 OF YM
 !
-      WRITE (IPRT,1100)
-      CALL NRAND(YM(1,1), N, ISEED)
-      WRITE (IPRT,2000) IERR
-      WRITE (IPRT, 1400) (YM(I,1),I=1,N)
+      write (iprt,1100)
+      call nrand(ym(1,1), n, iseed)
+      write (iprt,2000) ierr
+      write (iprt, 1400) (ym(i,1),i=1,n)
 !
 !     GENERATE NORMAL PSEUDO-RANDOM NUMBERS
 !     WITH MEAN 4.0 AND STANDARD DEVIATION 0.5 INTO COLUMN 2 OF YM
 !
-      WRITE (IPRT,1200)
-      CALL NRANDC(YM(1,2), N, ISEED, YMEAN, SIGMA)
-      WRITE (IPRT,2000) IERR
-      WRITE (IPRT, 1400) (YM(I,2),I=1,N)
+      write (iprt,1200)
+      call nrandc(ym(1,2), n, iseed, ymean, sigma)
+      write (iprt,2000) ierr
+      write (iprt, 1400) (ym(i,2),i=1,n)
 !
 !     PLOT RESULTS, SAMPLING EVERY OBSERVATION
 !
-      WRITE (IPRT,1500)
-      CALL MVP (YM, N, M, IYM, 1)
+      write (iprt,1500)
+      call mvp (ym, n, m, iym, 1)
 !
-      RETURN
+      return
 !
 !     FORMATS
 !
- 1000 FORMAT ('1*CH3')
- 1100 FORMAT (' SIMPLE TEST OF NRAND')
- 1200 FORMAT ('1SIMPLE TEST OF NRANDC')
- 2000 FORMAT (/' THE VALUE OF IERR IS ', I4)
- 1400 FORMAT (/' GENERATED RESULTS = '//(5E15.8))
- 1500 FORMAT ('1MVP DISPLAY OF GENERATED RESULTS')
-      END
+ 1000 format ('1*CH3')
+ 1100 format (' SIMPLE TEST OF NRAND')
+ 1200 format ('1SIMPLE TEST OF NRANDC')
+ 2000 format (/' THE VALUE OF IERR IS ', i4)
+ 1400 format (/' GENERATED RESULTS = '//(5e15.8))
+ 1500 format ('1MVP DISPLAY OF GENERATED RESULTS')
+      end

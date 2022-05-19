@@ -1,5 +1,5 @@
 !FLTSL
-      SUBROUTINE FLTSL (Y, N, K, H, YF, NYF)
+      subroutine fltsl (y, n, k, h, yf, nyf)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,18 +16,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   K,N,NYF
+     integer&
+     &   k,n,nyf
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   H(K),Y(N),YF(N)
+     real(kind=wp) ::&
+     &   h(k),y(n),yf(n)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   TEMP
-      INTEGER
-     &   I,I1,IHM,IHP,IKMID,IM,IP,J,KHALF,KMID
+     real(kind=wp) ::&
+     &   temp
+     integer&
+     &   i,i1,ihm,ihp,ikmid,im,ip,j,khalf,kmid
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -52,33 +52,33 @@
 !     REAL(KIND=WP) :: YF(N)
 !        THE VECTOR IN WHICH THE FILTERED SERIES IS RETURNED.
 !
-      DO 10 I = 1, N
-         YF(I) = Y(I)
-   10 CONTINUE
+      do 10 i = 1, n
+         yf(i) = y(i)
+   10 continue
 !
-      NYF = N - (K - 1)
+      nyf = n - (k - 1)
 !
-      KHALF = (K - 1) / 2
+      khalf = (k - 1) / 2
 !
-      KMID = KHALF + 1
+      kmid = khalf + 1
 !
-      DO 30 I = 1, NYF
-         IKMID = I + KHALF
-         TEMP = H(KMID) * YF(IKMID)
-         DO 20 J = 1, KHALF
-            IP = IKMID + J
-            IHP = KMID + J
-            IM = IKMID - J
-            IHM = KMID - J
-            TEMP = TEMP + H(IHP)*YF(IP) + H(IHM)*YF(IM)
-   20    CONTINUE
-         YF(I) = TEMP
-   30 CONTINUE
+      do 30 i = 1, nyf
+         ikmid = i + khalf
+         temp = h(kmid) * yf(ikmid)
+         do 20 j = 1, khalf
+            ip = ikmid + j
+            ihp = kmid + j
+            im = ikmid - j
+            ihm = kmid - j
+            temp = temp + h(ihp)*yf(ip) + h(ihm)*yf(im)
+   20    continue
+         yf(i) = temp
+   30 continue
 !
-      I1 = NYF + 1
+      i1 = nyf + 1
 !
-      DO 40 I = I1, N
-         YF(I) = 0.0_WP
-   40 CONTINUE
-      RETURN
-      END
+      do 40 i = i1, n
+         yf(i) = 0.0_wp
+   40 continue
+      return
+      end

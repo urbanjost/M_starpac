@@ -1,7 +1,7 @@
 !DCKOUT
-      SUBROUTINE DCKOUT(XM, IXM, N, M, NROW, NETA, NTAU, NPAR, MSG,
-     &   LMSG, PAR, SCALE, LSCALE, HDR, PAGE, WIDE, ISUBHD, PRTFXD,
-     &   IFIXD)
+     subroutine dckout(xm, ixm, n, m, nrow, neta, ntau, npar, msg,&
+    &   lmsg, par, scale, lscale, hdr, page, wide, isubhd, prtfxd,&
+     &   ifixd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,37 +18,37 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISUBHD,IXM,LMSG,LSCALE,M,N,NETA,NPAR,NROW,NTAU
-      LOGICAL
-     &   PAGE,PRTFXD,WIDE
+     integer&
+     &   isubhd,ixm,lmsg,lscale,m,n,neta,npar,nrow,ntau
+     logical&
+     &   page,prtfxd,wide
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),SCALE(LSCALE),XM(IXM,M)
-      INTEGER
-     &   IFIXD(NPAR),MSG(LMSG)
+     real(kind=wp) ::&
+     &   par(npar),scale(lscale),xm(ixm,m)
+     integer&
+     &   ifixd(npar),msg(lmsg)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL HDR
+       external hdr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IMAX,IMIN,INDEX,IPRT,J,K,NPERL
-      CHARACTER
-     &   BLANK*1
+     integer&
+     &   i,imax,imin,index,iprt,j,k,nperl
+     character&
+     &   blank*1
 !
 !  LOCAL ARRAYS
-      LOGICAL
-     &   FTNOTE(6)
-      CHARACTER
-     &   FIXED(3)*1
+     logical&
+     &   ftnote(6)
+     character&
+     &   fixed(3)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL FIXPRT,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -121,147 +121,147 @@
 !     REAL(KIND=WP) :: XM(IXM,M)
 !        THE INDEPENDENT VARIABLE.
 !
-      DATA BLANK /' '/
+      data blank /' '/
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     INITIALIZE ARRAY FIXED
 !
-      DO 10 K=1,3
-         FIXED(K) = BLANK
-   10 CONTINUE
+      do 10 k=1,3
+         fixed(k) = blank
+   10 continue
 !
-      CALL HDR(PAGE, WIDE, ISUBHD)
+      call hdr(page, wide, isubhd)
 !
 !     SET UP FOR FOOTNOTES
 !
-      DO 20 I=1,6
-         FTNOTE(I) = .FALSE.
-   20 CONTINUE
+      do 20 i=1,6
+         ftnote(i) = .false.
+   20 continue
 !
-      IF (MSG(1).LE.0) GO TO 40
+      if (msg(1).le.0) go to 40
 !
-      DO 30 I=1,NPAR
-         IF ((MSG(I+1).EQ.0) .OR. (MSG(I+1).EQ.2)) GO TO 30
-         K = MSG(I+1) - 2
-         IF (K.EQ.-1) K = 5
-         FTNOTE(1) = .TRUE.
-         FTNOTE(K+1) = .TRUE.
-   30 CONTINUE
+      do 30 i=1,npar
+         if ((msg(i+1).eq.0) .or. (msg(i+1).eq.2)) go to 30
+         k = msg(i+1) - 2
+         if (k.eq.-1) k = 5
+         ftnote(1) = .true.
+         ftnote(k+1) = .true.
+   30 continue
 !
 !     PRINT REPORT
 !
-   40 CONTINUE
+   40 continue
 !
-      WRITE (IPRT,1000)
-      IF (FTNOTE(1)) WRITE (IPRT,1040)
-      IF (PRTFXD) WRITE (IPRT,1160)
-      IF (.NOT.PRTFXD) WRITE (IPRT,1170)
+      write (iprt,1000)
+      if (ftnote(1)) write (iprt,1040)
+      if (prtfxd) write (iprt,1160)
+      if (.not.prtfxd) write (iprt,1170)
 !
-      IF (SCALE(1).LE.0.0_WP) GO TO 60
+      if (scale(1).le.0.0_wp) go to 60
 !
-      DO 50 I=1,NPAR
-         IF (PRTFXD) CALL FIXPRT(IFIXD(I), FIXED)
-         K = MSG(I+1) - 2
-         IF (K.EQ.-1) K = 5
-         IF (K.EQ.-2) WRITE (IPRT,1010) I, (FIXED(J),J=1,3), PAR(I),
-     &      SCALE(I)
-         IF (K.EQ.0) WRITE (IPRT,1020) I, (FIXED(J),J=1,3), PAR(I),
-     &      SCALE(I)
-         IF (K.GE.1) WRITE (IPRT,1030) I, (FIXED(J),J=1,3), PAR(I),
-     &      SCALE(I), K
-   50 CONTINUE
-      GO TO 80
+      do 50 i=1,npar
+         if (prtfxd) call fixprt(ifixd(i), fixed)
+         k = msg(i+1) - 2
+         if (k.eq.-1) k = 5
+        if (k.eq.-2) write (iprt,1010) i, (fixed(j),j=1,3), par(i),&
+     &      scale(i)
+        if (k.eq.0) write (iprt,1020) i, (fixed(j),j=1,3), par(i),&
+     &      scale(i)
+        if (k.ge.1) write (iprt,1030) i, (fixed(j),j=1,3), par(i),&
+     &      scale(i), k
+   50 continue
+      go to 80
 !
-   60 CONTINUE
+   60 continue
 !
-      DO 70 I=1,NPAR
-         IF (PRTFXD) CALL FIXPRT(IFIXD(I), FIXED)
-         K = MSG(I+1) - 2
-         IF (K.EQ.-1) K = 5
-         IF (K.EQ.-2) WRITE (IPRT,1180) I, (FIXED(J),J=1,3), PAR(I)
-         IF (K.EQ.0) WRITE (IPRT,1190) I, (FIXED(J),J=1,3), PAR(I)
-         IF (K.GE.1) WRITE (IPRT,1200) I, (FIXED(J),J=1,3), PAR(I), K
-   70 CONTINUE
+      do 70 i=1,npar
+         if (prtfxd) call fixprt(ifixd(i), fixed)
+         k = msg(i+1) - 2
+         if (k.eq.-1) k = 5
+         if (k.eq.-2) write (iprt,1180) i, (fixed(j),j=1,3), par(i)
+         if (k.eq.0) write (iprt,1190) i, (fixed(j),j=1,3), par(i)
+         if (k.ge.1) write (iprt,1200) i, (fixed(j),j=1,3), par(i), k
+   70 continue
 !
-   80 CONTINUE
+   80 continue
 !
 !     PRINT FOOTNOTES
 !
-      IF (.NOT.FTNOTE(1)) GO TO 90
+      if (.not.ftnote(1)) go to 90
 !
-      WRITE (IPRT,1060)
-      IF (FTNOTE(2)) WRITE (IPRT,1070)
-      IF (FTNOTE(3)) WRITE (IPRT,1080)
-      IF (FTNOTE(4)) WRITE (IPRT,1090)
-      IF (FTNOTE(5)) WRITE (IPRT,1100)
-      IF (FTNOTE(6)) WRITE (IPRT,1050)
+      write (iprt,1060)
+      if (ftnote(2)) write (iprt,1070)
+      if (ftnote(3)) write (iprt,1080)
+      if (ftnote(4)) write (iprt,1090)
+      if (ftnote(5)) write (iprt,1100)
+      if (ftnote(6)) write (iprt,1050)
 !
-   90 CONTINUE
+   90 continue
 !
-      WRITE (IPRT,1110) NETA
-      WRITE (IPRT,1120) NTAU
+      write (iprt,1110) neta
+      write (iprt,1120) ntau
 !
 !     PRINT OUT ROW OF INDEPENDENT VARIABLE WHICH WAS CHECKED.
 !
-      WRITE (IPRT,1130) NROW
-      NPERL = 7
+      write (iprt,1130) nrow
+      nperl = 7
 !
-      DO 100 I=1,M,NPERL
-         IMIN = I
-         IMAX = MIN(I+NPERL-1,M)
-         WRITE (IPRT,1140) (INDEX,INDEX=IMIN,IMAX)
-         WRITE (IPRT,1150) (XM(NROW,INDEX),INDEX=IMIN,IMAX)
-  100 CONTINUE
-      WRITE (IPRT,1210) N
+      do 100 i=1,m,nperl
+         imin = i
+         imax = min(i+nperl-1,m)
+         write (iprt,1140) (index,index=imin,imax)
+         write (iprt,1150) (xm(nrow,index),index=imin,imax)
+  100 continue
+      write (iprt,1210) n
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (//)
- 1010 FORMAT (1X, I3, 5X, 3A1, 2G17.8, 10X, 2HOK)
- 1020 FORMAT (1X, I3, 5X, 3A1, 2G17.8, 7X, 9HINCORRECT)
- 1030 FORMAT (1X, I3, 5X, 3A1, 2G17.8, 5X, 14HQUESTIONABLE (, I1, ')')
- 1040 FORMAT (62X, 1H*)
- 1050 FORMAT (/48H  (5) USER-SUPPLIED AND APPROXIMATED DERIVATIVES,
-     &   14H DISAGREE, BUT/5X, 37H APPROXIMATED DERIVATIVE IS QUESTIONA,
-     &   11HBLE BECAUSE, 6H RATIO/5X, 30H OF RELATIVE CURVATURE TO RELA,
-     &   17HTIVE SLOPE IS TOO, 6H HIGH.)
- 1060 FORMAT (/53H * NUMBERS IN PARENTHESES REFER TO THE FOLLOWING NOTE,
-     &   2HS.)
- 1070 FORMAT (/48H  (1) USER-SUPPLIED AND APPROXIMATED DERIVATIVES,
-     &   11H AGREE, BUT/5X, 40H BOTH ARE ZERO.  RECHECK AT ANOTHER ROW.)
- 1080 FORMAT (/48H  (2) USER-SUPPLIED AND APPROXIMATED DERIVATIVES,
-     &   15H MAY AGREE, BUT/5X, 36H USER-SUPPLIED DERIVATIVE IS IDENTIC,
-     &   9HALLY ZERO, 17H AND APPROXIMATED/5X, 21H DERIVATIVE IS ONLY A,
-     &   18HPPROXIMATELY ZERO., 25H  RECHECK AT ANOTHER ROW.)
- 1090 FORMAT (/48H  (3) USER-SUPPLIED AND APPROXIMATED DERIVATIVES,
-     &   14H DISAGREE, BUT/5X, 37H USER-SUPPLIED DERIVATIVE IS IDENTICA,
-     &   9HLLY ZERO., 12H  RECHECK AT/5X, 13H ANOTHER ROW.)
- 1100 FORMAT (/48H  (4) USER-SUPPLIED AND APPROXIMATED DERIVATIVES,
-     &   14H DISAGREE, BUT/5X, 37H APPROXIMATED DERIVATIVE IS QUESTIONA,
-     &   11HBLE BECAUSE, 13H EITHER RATIO/5X, 22H OF RELATIVE CURVATURE,
-     &   25H TO RELATIVE SLOPE IS TOO, 9H HIGH, OR/5X, 13H SCALE(K) IS ,
-     &   6HWRONG.)
- 1110 FORMAT (/43H NUMBER OF RELIABLE DIGITS IN MODEL RESULTS, 25X,
-     &   6H(NETA), 1X, I5)
- 1120 FORMAT (/40H NUMBER OF DIGITS IN DERIVATIVE CHECKING, 9H AGREEMEN,
-     &   11HT TOLERANCE, 8X, 6H(NTAU), 1X, I5)
- 1130 FORMAT (/45H ROW NUMBER AT WHICH DERIVATIVES WERE CHECKED, 23X,
-     &   6H(NROW), 1X, I5/42H   -VALUES OF THE INDEPENDENT VARIABLES AT,
-     &   9H THIS ROW)
- 1140 FORMAT (10X, 5HINDEX, I5, 6I15)
- 1150 FORMAT (10X, 5HVALUE, 7(1X, G14.7)/)
- 1160 FORMAT (52X, 10HDERIVATIVE/7X, 24HPARAMETER STARTING VALUE, 6X,
-     &   5HSCALE, 10X, 10HASSESSMENT/1X, 5HINDEX, 2X, 5HFIXED, 6X,
-     &   5H(PAR), 12X, 7H(SCALE)/)
- 1170 FORMAT (17X, 9HPARAMETER, 26X, 10HDERIVATIVE/15X, 12HSTARTING VAL,
-     &   2HUE, 8X, 5HSCALE, 10X, 10HASSESSMENT/1X, 5HINDEX, 13X,
-     &   5H(PAR), 12X, 7H(SCALE)/)
- 1180 FORMAT (1X, I3, 5X, 3A1, G17.8, 7X, 7HDEFAULT, 13X, 2HOK)
- 1190 FORMAT (1X, I3, 5X, 3A1, G17.8, 7X, 7HDEFAULT, 10X, 9HINCORRECT)
- 1200 FORMAT (1X, I3, 5X, 3A1, G17.8, 7X, 7HDEFAULT, 8X, 11HQUESTIONABL,
-     &   3HE (, I1, ')')
- 1210 FORMAT (/23H NUMBER OF OBSERVATIONS, 48X, 3H(N), 1X, I5)
-      END
+ 1000 format (//)
+ 1010 format (1x, i3, 5x, 3a1, 2g17.8, 10x, 2hok)
+ 1020 format (1x, i3, 5x, 3a1, 2g17.8, 7x, 9hincorrect)
+ 1030 format (1x, i3, 5x, 3a1, 2g17.8, 5x, 14hquestionable (, i1, ')')
+ 1040 format (62x, 1h*)
+1050 format (/48h  (5) user-supplied and approximated derivatives,&
+    &   14h disagree, but/5x, 37h approximated derivative is questiona,&
+    &   11hble because, 6h ratio/5x, 30h of relative curvature to rela,&
+     &   17htive slope is too, 6h high.)
+1060 format (/53h * numbers in parentheses refer to the following note,&
+     &   2hs.)
+1070 format (/48h  (1) user-supplied and approximated derivatives,&
+     &   11h agree, but/5x, 40h both are zero.  recheck at another row.)
+1080 format (/48h  (2) user-supplied and approximated derivatives,&
+    &   15h may agree, but/5x, 36h user-supplied derivative is identic,&
+    &   9hally zero, 17h and approximated/5x, 21h derivative is only a,&
+     &   18hpproximately zero., 25h  recheck at another row.)
+1090 format (/48h  (3) user-supplied and approximated derivatives,&
+    &   14h disagree, but/5x, 37h user-supplied derivative is identica,&
+     &   9hlly zero., 12h  recheck at/5x, 13h another row.)
+1100 format (/48h  (4) user-supplied and approximated derivatives,&
+    &   14h disagree, but/5x, 37h approximated derivative is questiona,&
+    &   11hble because, 13h either ratio/5x, 22h of relative curvature,&
+    &   25h to relative slope is too, 9h high, or/5x, 13h scale(k) is ,&
+     &   6hwrong.)
+1110 format (/43h number of reliable digits in model results, 25x,&
+     &   6h(neta), 1x, i5)
+1120 format (/40h number of digits in derivative checking, 9h agreemen,&
+     &   11ht tolerance, 8x, 6h(ntau), 1x, i5)
+1130 format (/45h row number at which derivatives were checked, 23x,&
+    &   6h(nrow), 1x, i5/42h   -values of the independent variables at,&
+     &   9h this row)
+ 1140 format (10x, 5hindex, i5, 6i15)
+ 1150 format (10x, 5hvalue, 7(1x, g14.7)/)
+1160 format (52x, 10hderivative/7x, 24hparameter starting value, 6x,&
+    &   5hscale, 10x, 10hassessment/1x, 5hindex, 2x, 5hfixed, 6x,&
+     &   5h(par), 12x, 7h(scale)/)
+1170 format (17x, 9hparameter, 26x, 10hderivative/15x, 12hstarting val,&
+    &   2hue, 8x, 5hscale, 10x, 10hassessment/1x, 5hindex, 13x,&
+     &   5h(par), 12x, 7h(scale)/)
+ 1180 format (1x, i3, 5x, 3a1, g17.8, 7x, 7hdefault, 13x, 2hok)
+ 1190 format (1x, i3, 5x, 3a1, g17.8, 7x, 7hdefault, 10x, 9hincorrect)
+1200 format (1x, i3, 5x, 3a1, g17.8, 7x, 7hdefault, 8x, 11hquestionabl,&
+     &   3he (, i1, ')')
+ 1210 format (/23h number of observations, 48x, 3h(n), 1x, i5)
+      end

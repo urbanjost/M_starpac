@@ -1,5 +1,5 @@
 !CORRHD
-      SUBROUTINE CORRHD(IPRT, M, N)
+      subroutine corrhd(iprt, m, n)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,8 +16,8 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IPRT,M,N
+     integer&
+     &   iprt,m,n
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL VERSP
@@ -31,12 +31,12 @@
 !     INTEGER N
 !        THE NUMBER OF OBSERVATIONS FOR EACH VARIABLE
 !
-      CALL VERSP(.TRUE.)
-      WRITE (IPRT,1000) M, N
-      RETURN
+      call versp(.true.)
+      write (iprt,1000) m, n
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/25H CORRELATION ANALYSIS FOR, I3, 15H VARIABLES WITH,
-     &   I5, 13H OBSERVATIONS/)
-      END
+1000 format (/25h correlation analysis for, i3, 15h variables with,&
+     &   i5, 13h observations/)
+      end

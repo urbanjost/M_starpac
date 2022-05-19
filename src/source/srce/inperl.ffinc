@@ -1,5 +1,5 @@
 !INPERL
-      INTEGER FUNCTION INPERL (IDUM)
+      integer function inperl (idum)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -26,15 +26,15 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IDUM
+     integer&
+     &   idum
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IEW,IMAXE,IMAXW,IOCPL,IWIDTH
+     integer&
+     &   iew,imaxe,imaxw,iocpl,iwidth
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -56,12 +56,12 @@
 !
 !     INITIALIZATIONS
 !
-      DATA IEW /15/, IMAXE /7/, IMAXW /132/, IOCPL /15/
+      data iew /15/, imaxe /7/, imaxw /132/, iocpl /15/
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      IWIDTH = 132
-      INPERL = (MIN(IWIDTH, IMAXW) - IOCPL)/IEW
-      INPERL = MIN(INPERL, IMAXE)
-      RETURN
-      END
+      iwidth = 132
+      inperl = (min(iwidth, imaxw) - iocpl)/iew
+      inperl = min(inperl, imaxe)
+      return
+      end

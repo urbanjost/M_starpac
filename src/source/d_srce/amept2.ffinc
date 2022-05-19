@@ -1,5 +1,5 @@
 !AMEPT2
-      SUBROUTINE AMEPT2 (RES, SDREST, N, RSS)
+      subroutine amept2 (res, sdrest, n, rss)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,32 +16,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RSS
-      INTEGER
-     &   N
+     real(kind=wp) ::&
+     &   rss
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RES(*),SDREST(*)
+     real(kind=wp) ::&
+     &   res(*),sdrest(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   AN,DOT,FAC1,FAC2,FPLM,GAMMA,PI,RATIO,ROWDIV,ROWMAX,ROWMID,
-     &   ROWMIN,XDIV,XMAX,XMIN,YLABEL,YMAX,YMIN
-      INTEGER
-     &   I,I1,I2,IMID,IPLOT,IPRB,IPRT,IROW,IX,K,L,NCOL,NCOLP1,
-     &   NCOLPL,NCOLT2,NDOT,NROW
-      CHARACTER
-     &   IBLANK*1,IMINUS*1,IPLUS*1,ISTAR*1
+     real(kind=wp) ::&
+    &   an,dot,fac1,fac2,fplm,gamma,pi,ratio,rowdiv,rowmax,rowmid,&
+     &   rowmin,xdiv,xmax,xmin,ylabel,ymax,ymin
+     integer&
+    &   i,i1,i2,imid,iplot,iprb,iprt,irow,ix,k,l,ncol,ncolp1,&
+     &   ncolpl,ncolt2,ndot,nrow
+     character&
+     &   iblank*1,iminus*1,iplus*1,istar*1
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   LINE(113)*1
+     character&
+     &   line(113)*1
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -54,10 +54,10 @@
 !      EXTERNAL DOTC,GETPI,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC INT,MAX,MIN,MOD
+      intrinsic int,max,min,mod
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -151,183 +151,183 @@
 !     REAL(KIND=WP) :: YMIN
 !        THE SMALLEST VALUE ALONG THE Y AXIS.
 !
-      DATA IPLUS/'+'/, IMINUS/'-'/, ISTAR/'*'/, IBLANK/' '/
+      data iplus/'+'/, iminus/'-'/, istar/'*'/, iblank/' '/
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      FPLM = D1MACH(2)
+      fplm = d1mach(2)
 !
 !     CHECK FOR INSUFFICIENT POINTS TO PLOT
 !
-      IF (IERR.NE.4) GO TO 20
-      DO 10 I = 1, N
-         IF (SDREST(I).NE.FPLM) GO TO 20
-   10 CONTINUE
-      WRITE (IPRT, 1090)
-      RETURN
+      if (ierr.ne.4) go to 20
+      do 10 i = 1, n
+         if (sdrest(i).ne.fplm) go to 20
+   10 continue
+      write (iprt, 1090)
+      return
 !
-   20 CONTINUE
+   20 continue
 !
 !     INITIALIZE VALUES FOR PROBABILITY PLOT
 !
-      CALL GETPI(PI)
-      GAMMA = PI/8.0_WP
-      AN = N
-      FAC1 = 1.0_WP / (AN - 2.0_WP*GAMMA + 1.0_WP)
-      FAC2 = 10.0_WP
+      call getpi(pi)
+      gamma = pi/8.0_wp
+      an = n
+      fac1 = 1.0_wp / (an - 2.0_wp*gamma + 1.0_wp)
+      fac2 = 10.0_wp
 !
 !     INITIALIZE THE PLOT SIZE (IN PLOT UNITS)
 !
-      NROW = 26
+      nrow = 26
 !
 !     BEGIN COMPUTATIONS FOR FIRST SET OF PLOTS
 !
-      IPLOT = 1
-      NCOL = 111
+      iplot = 1
+      ncol = 111
 !
 !     SET X AXIS LIMITS FOR STANDARDIZED RESIDUAL VS ROW PLOT,
 !
-      ROWMIN = 1
-      ROWMAX = N
+      rowmin = 1
+      rowmax = n
 !
-      ROWMID = (ROWMAX+ROWMIN)/2.0_WP
-      ROWDIV = (ROWMAX-ROWMIN)/(NCOL-1)
+      rowmid = (rowmax+rowmin)/2.0_wp
+      rowdiv = (rowmax-rowmin)/(ncol-1)
 !
 !     PRINT TITLES FOR FIRST PLOTS
 !
-      WRITE (IPRT,1000)
-      GO TO 90
+      write (iprt,1000)
+      go to 90
 !
 !     BEGIN COMPUTATIONS FOR SECOND SET OF PLOTS
 !
-   40 IPLOT = 2
-      NCOL = 51
+   40 iplot = 2
+      ncol = 51
 !
 !     SET AXIS LIMITS FOR THE STANDARDIZED RESIDUALS VS
 !     STANDARDIZED RESIDUALS LAGGED BY ONE AND FOR PROBABILITY PLOT
 !
-      XMIN = -3.75_WP
-      XMAX = 3.75_WP
-      XDIV = (XMAX-XMIN)/(NCOL-1)
+      xmin = -3.75_wp
+      xmax = 3.75_wp
+      xdiv = (xmax-xmin)/(ncol-1)
 !
 !     PRINT TITLES FOR SECOND PLOTS
 !
-      WRITE (IPRT,1050)
+      write (iprt,1050)
 !
 !     WRITE FIRST LINE OF PLOTS
 !
-   90 CONTINUE
+   90 continue
 !
 !     PRINT PLOTS, ONE LINE AT A TIME
 !
-      NCOLP1 = NCOL + 1
-      NCOLT2 = 2*NCOL
-      YLABEL = 3.75_WP
-      YMAX = FPLM
-      YMIN = 4.05_WP
-      DO 160 K=1,NROW
-         YMIN = YMIN - 0.3_WP
-         IF (-3.70_WP.GE.YMIN) YMIN = -FPLM
-         DO 100 L=1,NCOL
-            NCOLPL = L + NCOL
-            LINE(L) = IBLANK
-            IF (IPLOT.EQ.2) LINE(NCOLPL) = IBLANK
-            IF ((K.NE.1) .AND. (K.NE.NROW)) GO TO 100
-               LINE(L) = IMINUS
-               IF (IPLOT.EQ.2) LINE(NCOLPL) = IMINUS
-               IF ((MOD(L,10).NE.1) .AND. (L.NE.1+NCOL/2)) GO TO 100
-                  LINE(L) = IPLUS
-                  IF (IPLOT.EQ.2) LINE(NCOLPL) = IPLUS
-  100    CONTINUE
-         DO 130 I=1,N
-            IF (.NOT.MVCHK(SDREST(I),FPLM)) THEN
-               IF ((SDREST(I).GT.YMIN) .AND. (SDREST(I).LE.YMAX)) THEN
-                  IF (IPLOT.EQ.1) THEN
-                      IROW = INT(((I-ROWMIN)/ROWDIV)+1.5_WP)
-                      LINE(IROW) = ISTAR
-                   ELSE
-                      RATIO = (AN-GAMMA) * FAC1
-                      IPRB = INT(4.91_WP*(RATIO**0.14_WP -
-     &                          (1.0_WP-RATIO)**0.14_WP)*FAC2) + 77
-                      IF (IPRB.LE.NCOL) IPRB = NCOL+1
-                      IF (IPRB.GE.103) IPRB = 102
-                      LINE(IPRB) = ISTAR
-                      AN = AN - 1.0_WP
-                      IF ((AN.LT.2.0_WP) .AND. (N.LE.10)) THEN
-                         GAMMA = 1.0_WP/3.0_WP
-                      END IF
-                   END IF
-                END IF
-             END IF
-  130    CONTINUE
+      ncolp1 = ncol + 1
+      ncolt2 = 2*ncol
+      ylabel = 3.75_wp
+      ymax = fplm
+      ymin = 4.05_wp
+      do 160 k=1,nrow
+         ymin = ymin - 0.3_wp
+         if (-3.70_wp.ge.ymin) ymin = -fplm
+         do 100 l=1,ncol
+            ncolpl = l + ncol
+            line(l) = iblank
+            if (iplot.eq.2) line(ncolpl) = iblank
+            if ((k.ne.1) .and. (k.ne.nrow)) go to 100
+               line(l) = iminus
+               if (iplot.eq.2) line(ncolpl) = iminus
+               if ((mod(l,10).ne.1) .and. (l.ne.1+ncol/2)) go to 100
+                  line(l) = iplus
+                  if (iplot.eq.2) line(ncolpl) = iplus
+  100    continue
+         do 130 i=1,n
+            if (.not.mvchk(sdrest(i),fplm)) then
+               if ((sdrest(i).gt.ymin) .and. (sdrest(i).le.ymax)) then
+                  if (iplot.eq.1) then
+                      irow = int(((i-rowmin)/rowdiv)+1.5_wp)
+                      line(irow) = istar
+                   else
+                      ratio = (an-gamma) * fac1
+                     iprb = int(4.91_wp*(ratio**0.14_wp -&
+     &                          (1.0_wp-ratio)**0.14_wp)*fac2) + 77
+                      if (iprb.le.ncol) iprb = ncol+1
+                      if (iprb.ge.103) iprb = 102
+                      line(iprb) = istar
+                      an = an - 1.0_wp
+                      if ((an.lt.2.0_wp) .and. (n.le.10)) then
+                         gamma = 1.0_wp/3.0_wp
+                      end if
+                   end if
+                end if
+             end if
+  130    continue
 !
 !     SET PLOT LINE FOR CORRELATION PLOT OF SECOND SET OF PLOTS
 !
-         IF (IPLOT.EQ.2) THEN
-            IMID = (NCOL-1)/2
-            IF (K.LE.N-1) THEN
-               DOT = 0.0_WP
-               CALL DOTC(RES, 0.0_WP, N, RES(K+1), 0.0_WP,
-     &                   N-K, DOT, NDOT)
-               IX = INT(IMID*DOT/RSS) + IMID + 1
-               I1 = MIN(IX,IMID+1)
-               I2 = MAX(IX,IMID+1)
-               DO 135 IX=I1,I2
-                  LINE(IX) = ISTAR
-  135          CONTINUE
-            END IF
-         END IF
-         IF (MOD(K,5).EQ.1) THEN
-            IF (IPLOT.EQ.1) THEN
-               WRITE (IPRT,2020) YLABEL, (LINE(L),L=1,NCOL)
-            ELSE
-               WRITE (IPRT,1020) K, (LINE(L),L=1,NCOL), YLABEL,
-     &                           (LINE(L),L=NCOLP1,NCOLT2)
-            END IF
-            YLABEL = YLABEL - 1.5_WP
-         ELSE
-            IF (IPLOT.EQ.1) THEN
-               WRITE (IPRT,2030) (LINE(L),L=1,111)
-            ELSE
-               WRITE (IPRT,1030) (LINE(L),L=1,102)
-            END IF
-         END IF
-         YMAX = YMIN
-  160 CONTINUE
+         if (iplot.eq.2) then
+            imid = (ncol-1)/2
+            if (k.le.n-1) then
+               dot = 0.0_wp
+              call dotc(res, 0.0_wp, n, res(k+1), 0.0_wp,&
+     &                   n-k, dot, ndot)
+               ix = int(imid*dot/rss) + imid + 1
+               i1 = min(ix,imid+1)
+               i2 = max(ix,imid+1)
+               do 135 ix=i1,i2
+                  line(ix) = istar
+  135          continue
+            end if
+         end if
+         if (mod(k,5).eq.1) then
+            if (iplot.eq.1) then
+               write (iprt,2020) ylabel, (line(l),l=1,ncol)
+            else
+              write (iprt,1020) k, (line(l),l=1,ncol), ylabel,&
+     &                           (line(l),l=ncolp1,ncolt2)
+            end if
+            ylabel = ylabel - 1.5_wp
+         else
+            if (iplot.eq.1) then
+               write (iprt,2030) (line(l),l=1,111)
+            else
+               write (iprt,1030) (line(l),l=1,102)
+            end if
+         end if
+         ymax = ymin
+  160 continue
 !
 !     PRINT BOTTOM LINE OF GRAPHS
 !
-      IF (IPLOT.EQ.1) THEN
+      if (iplot.eq.1) then
 !
 !     PRINT X AXIS LABELS FOR FIRST SET OF PLOTS
 !
-         WRITE (IPRT,1040) ROWMIN, ROWMID, ROWMAX
-         GO TO 40
+         write (iprt,1040) rowmin, rowmid, rowmax
+         go to 40
 !
 !     PRINT X AXIS LABELS FOR SECOND SET OF PLOTS
 !
-      ELSE
-         WRITE (IPRT,1070)
-      END IF
+      else
+         write (iprt,1070)
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/51X, 23H STD RES VS ROW NUMBER )
- 1020 FORMAT (1X, I5, '+', 51A1, '+', 2X, F5.2, '+', 51A1, '+')
- 1030 FORMAT (6X, '-', 51A1, '-', 7X, '-', 51A1, '-')
- 1040 FORMAT (1X, F8.1, 47X, F8.1, 47X, F8.1)
- 1050 FORMAT (/13X, 'AUTOCORRELATION FUNCTION OF RESIDUALS',
-     &   23X, 36H NORMAL PROBABILITY PLOT OF STD RES )
- 1070 FORMAT (4X, 5H-1.00, 22X, 3H0.0, 21X, 4H1.00, 5X, 4H-2.5, 23X,
-     &   3H0.0, 22X, 3H2.5)
- 1090 FORMAT (// 1X, 13(1H*)/ 1X, 13H*  WARNING  */ 1X, 13(1H*)//
-     &   54H THE STANDARDIZED RESIDUAL PLOTS HAVE BEEN SUPPRESSED.,
-     &   45H  NONE OF THE STANDARDIZED RESIDUALS COULD BE,
-     &   10H COMPUTED,/
-     &   50H BECAUSE FOR EACH OBSERVATION EITHER THE WEIGHT OR,
-     &   48H THE STANDARD DEVIATION OF THE RESIDUAL IS ZERO.)
- 2020 FORMAT (1X, F5.2, '+', 111A1, '+')
- 2030 FORMAT (6X, '-', 111A1, '-')
-      END
+ 1000 format (/51x, 23h std res vs row number )
+ 1020 format (1x, i5, '+', 51a1, '+', 2x, f5.2, '+', 51a1, '+')
+ 1030 format (6x, '-', 51a1, '-', 7x, '-', 51a1, '-')
+ 1040 format (1x, f8.1, 47x, f8.1, 47x, f8.1)
+1050 format (/13x, 'AUTOCORRELATION FUNCTION OF RESIDUALS',&
+     &   23x, 36h normal probability plot of std res )
+1070 format (4x, 5h-1.00, 22x, 3h0.0, 21x, 4h1.00, 5x, 4h-2.5, 23x,&
+     &   3h0.0, 22x, 3h2.5)
+1090 format (// 1x, 13(1h*)/ 1x, 13h*  warning  */ 1x, 13(1h*)//&
+    &   54h the standardized residual plots have been suppressed.,&
+    &   45h  none of the standardized residuals could be,&
+    &   10h computed,/&
+    &   50h because for each observation either the weight or,&
+     &   48h the standard deviation of the residual is zero.)
+ 2020 format (1x, f5.2, '+', 111a1, '+')
+ 2030 format (6x, '-', 111a1, '-')
+      end

@@ -1,5 +1,5 @@
 !MATPRT
-      SUBROUTINE MATPRT (X, Y, NC, IPRT, MODE, CODE, IRDIM)
+      subroutine matprt (x, y, nc, iprt, mode, code, irdim)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,21 +17,21 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   CODE,IPRT,IRDIM,MODE,NC
+     integer&
+     &   code,iprt,irdim,mode,nc
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(IRDIM,NC),Y(IRDIM,NC)
+     real(kind=wp) ::&
+     &   x(irdim,nc),y(irdim,nc)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   TEMP
-      INTEGER
-     &   I,IWIDTH,J,K,KM,KN,L,NF
+     real(kind=wp) ::&
+     &   temp
+     integer&
+     &   i,iwidth,j,k,km,kn,l,nf
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN,SQRT
+      intrinsic min,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -75,33 +75,33 @@
 !     REAL Y(IRDIM,NC)
 !                  MATRIX TO BE PRINTED ON THE SECOND LEVEL IF CODE=2
 !
-      IWIDTH = 132
-      NF = MIN(7, (IWIDTH - 7)/17)
-      L = 1
-      DO 20 J=1,NC, NF
-         KN = MIN(NC, J+NF-1)
-         WRITE(IPRT,1000) (K,K=J,KN)
-         WRITE(IPRT,1030)
-         IF ((MODE.EQ.00) .OR. (MODE.EQ.2)) L = J
-         DO 10 I=L,NC
-            TEMP = X(I,I)
-            KM = KN
-            IF ((MODE.EQ.0) .OR. (MODE.EQ.2))
-     &         KM = J + MIN(I-L, NF-1)
-            IF ((MODE.EQ.2) .AND. ((I.GE.J) .AND. (I.LE.KM)))
-     &         X(I,I) = SQRT(X(I,I))
-            WRITE(IPRT,1010) I, (X(I,K),K=J,KM)
-            IF (CODE.EQ.2) WRITE(IPRT,1020) (Y(I,K),K=J,KM)
-            IF (CODE.EQ.2) WRITE(IPRT,1030)
-            X(I,I) = TEMP
-   10    CONTINUE
-   20 CONTINUE
-      RETURN
+      iwidth = 132
+      nf = min(7, (iwidth - 7)/17)
+      l = 1
+      do 20 j=1,nc, nf
+         kn = min(nc, j+nf-1)
+         write(iprt,1000) (k,k=j,kn)
+         write(iprt,1030)
+         if ((mode.eq.00) .or. (mode.eq.2)) l = j
+         do 10 i=l,nc
+            temp = x(i,i)
+            km = kn
+           if ((mode.eq.0) .or. (mode.eq.2))&
+     &         km = j + min(i-l, nf-1)
+           if ((mode.eq.2) .and. ((i.ge.j) .and. (i.le.km)))&
+     &         x(i,i) = sqrt(x(i,i))
+            write(iprt,1010) i, (x(i,k),k=j,km)
+            if (code.eq.2) write(iprt,1020) (y(i,k),k=j,km)
+            if (code.eq.2) write(iprt,1030)
+            x(i,i) = temp
+   10    continue
+   20 continue
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/4X, 7HCOLUMN , 7(I9, 8X))
- 1010 FORMAT (4X, I6, 1X, 7(3X, G14.8))
- 1020 FORMAT (9X, 7(3X, G14.8))
- 1030 FORMAT (4X)
-      END
+ 1000 format (/4x, 7hcolumn , 7(i9, 8x))
+ 1010 format (4x, i6, 1x, 7(3x, g14.8))
+ 1020 format (9x, 7(3x, g14.8))
+ 1030 format (4x)
+      end

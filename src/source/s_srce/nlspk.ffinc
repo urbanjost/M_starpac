@@ -1,5 +1,5 @@
 !NLSPK
-      SUBROUTINE NLSPK(PAR, MASK, NPAR, PPAR, NPPAR)
+      subroutine nlspk(par, mask, npar, ppar, nppar)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,18 +18,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   NPAR,NPPAR
+     integer&
+     &   npar,nppar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),PPAR(NPPAR)
-      INTEGER
-     &   MASK(NPAR)
+     real(kind=wp) ::&
+     &   par(npar),ppar(nppar)
+     integer&
+     &   mask(npar)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPPAR
+     integer&
+     &   i,ippar
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -54,11 +54,11 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      IPPAR = 0
-      DO 10 I=1,NPAR
-         IF (MASK(I).NE.0) GO TO 10
-         IPPAR = IPPAR + 1
-         PPAR(IPPAR) = PAR(I)
-   10 CONTINUE
-      RETURN
-      END
+      ippar = 0
+      do 10 i=1,npar
+         if (mask(i).ne.0) go to 10
+         ippar = ippar + 1
+         ppar(ippar) = par(i)
+   10 continue
+      return
+      end

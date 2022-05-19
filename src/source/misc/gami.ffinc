@@ -1,5 +1,5 @@
 !GAMI
-      REAL FUNCTION GAMI (A, X)
+      real function gami (a, x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! EVALUATE THE INCOMPLETE GAMMA FUNCTION DEFINED BY
@@ -16,10 +16,10 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL A,X
+      real a,x
 !
 !  LOCAL SCALARS
-      REAL FACTOR
+      real factor
 !
 !  EXTERNAL FUNCTIONS
 !      REAL ALNGAM,GAMIT,R1MACH
@@ -29,22 +29,22 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC EXP,LOG
+      intrinsic exp,log
 !
-      IF (A.LE.0.0) CALL XERROR ('GAMI    A MUST BE GT ZERO', 25, 1, 2)
-      IF (X.LT.0.0) CALL XERROR ('GAMI    X MUST BE GE ZERO', 25, 2, 2)
+      if (a.le.0.0) call xerror ('GAMI    A MUST BE GT ZERO', 25, 1, 2)
+      if (x.lt.0.0) call xerror ('GAMI    X MUST BE GE ZERO', 25, 2, 2)
 !
-      GAMI = 0.0
-      IF (X.EQ.0.0) RETURN
+      gami = 0.0
+      if (x.eq.0.0) return
 !
 ! THE ONLY ERROR POSSIBLE IN THE EXPRESSION BELOW IS A FATAL OVERFLOW.
 !
-      FACTOR = ALNGAM(A) + A*LOG(X)
-      IF (FACTOR.GT.LOG(R1MACH(2))) THEN
-         GAMI = R1MACH(2)
-      ELSE
-         GAMI = EXP(FACTOR) * GAMIT(A,X)
-      END IF
+      factor = alngam(a) + a*log(x)
+      if (factor.gt.log(r1mach(2))) then
+         gami = r1mach(2)
+      else
+         gami = exp(factor) * gamit(a,x)
+      end if
 !
-      RETURN
-      END
+      return
+      end

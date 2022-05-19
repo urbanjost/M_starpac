@@ -1,5 +1,5 @@
 !MVCHK
-      LOGICAL FUNCTION MVCHK (X, XMISS)
+      logical function mvchk (x, xmiss)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,11 +17,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X,XMISS
+     real(kind=wp) ::&
+     &   x,xmiss
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS
+      intrinsic abs
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -32,15 +32,15 @@
 !        NOT AN OBSERVATION IS MISSING.  IF X = XMISS,
 !        THE VALUE IS ASSUMED MISSING, OTHERWISE IT IS NOT.
 !
-      IF ((X .GT. 0.0E0 .AND. XMISS .LT. 0.0E0) .OR.
-     &    (X .LT. 0.0E0 .AND. XMISS .GT. 0.0E0)) GO TO 10
+     if ((x .gt. 0.0e0 .and. xmiss .lt. 0.0e0) .or.&
+     &    (x .lt. 0.0e0 .and. xmiss .gt. 0.0e0)) go to 10
 !
-      IF (ABS(X) .EQ. ABS(XMISS)) GO TO 20
+      if (abs(x) .eq. abs(xmiss)) go to 20
 !
-   10 MVCHK = .FALSE.
-      RETURN
+   10 mvchk = .false.
+      return
 !
-   20 MVCHK = .TRUE.
-      RETURN
+   20 mvchk = .true.
+      return
 !
-      END
+      end

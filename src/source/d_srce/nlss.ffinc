@@ -1,7 +1,7 @@
 !NLSS
-      SUBROUTINE NLSS(Y, XM, N, M, IXM, MDL, PAR, NPAR, RES, LDSTAK,
-     &   IFIXED, STP, MIT, STOPSS, STOPP, SCALE, DELTA, IVAPRX, NPRT,
-     &   NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)
+     subroutine nlss(y, xm, n, m, ixm, mdl, par, npar, res, ldstak,&
+    &   ifixed, stp, mit, stopss, stopp, scale, delta, ivaprx, nprt,&
+     &   npare, rsd, pv, sdpv, sdres, vcv, ivcv)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,46 +19,46 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   DELTA,RSD,STOPP,STOPSS
-      INTEGER
-     &   IVAPRX,IVCV,IXM,LDSTAK,M,MIT,N,NPAR,NPARE,NPRT
+     real(kind=wp) ::&
+     &   delta,rsd,stopp,stopss
+     integer&
+     &   ivaprx,ivcv,ixm,ldstak,m,mit,n,npar,npare,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),PV(*),RES(*),SCALE(*),SDPV(*),SDRES(*),STP(*),VCV(*),
-     &   XM(*),Y(*)
-      INTEGER
-     &   IFIXED(*)
+     real(kind=wp) ::&
+    &   par(*),pv(*),res(*),scale(*),sdpv(*),sdres(*),stp(*),vcv(*),&
+     &   xm(*),y(*)
+     integer&
+     &   ifixed(*)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL MDL
+       external mdl
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,LIFIXD,LPV,LSCALE,LSDPV,LSDRES,LSTP,LWT,NNZW
-      LOGICAL
-     &   SAVE,WEIGHT
+     integer&
+     &   iprt,lifixd,lpv,lscale,lsdpv,lsdres,lstp,lwt,nnzw
+     logical&
+     &   save,weight
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   WT(1)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   wt(1)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,NLCNTN
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -192,42 +192,42 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
+     data nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6) /&
      &   'N','L','S','S',' ',' '/
 !
 !     SET VARIOUS PROGRAM PARAMETERS
 !
-      WEIGHT = .FALSE.
-      SAVE = .TRUE.
+      weight = .false.
+      save = .true.
 !
-      WT(1) = 1.0_WP
-      LIFIXD = NPAR
-      LPV = N
-      LSCALE = NPAR
-      LSTP = NPAR
-      LSDPV = N
-      LSDRES = N
-      LWT = 1
+      wt(1) = 1.0_wp
+      lifixd = npar
+      lpv = n
+      lscale = npar
+      lstp = npar
+      lsdpv = n
+      lsdres = n
+      lwt = 1
 !
-      CALL NLCNTN(Y, WT, LWT, XM, N, M, IXM, MDL, PAR, NPAR, RES,
-     &   LDSTAK, IFIXED, LIFIXD, STP, LSTP, MIT, STOPSS, STOPP, SCALE,
-     &   LSCALE, DELTA, IVAPRX, NPRT, RSD, PV, LPV, SDPV, LSDPV, SDRES,
-     &   LSDRES, VCV, IVCV, NMSUB, WEIGHT, SAVE, NNZW, NPARE)
+     call nlcntn(y, wt, lwt, xm, n, m, ixm, mdl, par, npar, res,&
+    &   ldstak, ifixed, lifixd, stp, lstp, mit, stopss, stopp, scale,&
+    &   lscale, delta, ivaprx, nprt, rsd, pv, lpv, sdpv, lsdpv, sdres,&
+     &   lsdres, vcv, ivcv, nmsub, weight, save, nnzw, npare)
 !
-      IF (IERR.NE.1) RETURN
+      if (ierr.ne.1) return
 !
 !     PRINT PROPER CALL SEQUENCE
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
-      RETURN
+      call iprint(iprt)
+      write (iprt,1000)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   '       CALL NLSS (Y, XM, N, M, IXM, NLSMDL,'/
-     &   '      +           PAR, NPAR, RES, LDSTAK,'/
-     &   '      +           IFIXED, STP, MIT, STOPSS, STOPP,'/
-     &   '      +           SCALE, DELTA, IVAPRX, NPRT,'/
+1000 format (/42h the correct form of the call statement is//&
+    &   '       CALL NLSS (Y, XM, N, M, IXM, NLSMDL,'/&
+    &   '      +           PAR, NPAR, RES, LDSTAK,'/&
+    &   '      +           IFIXED, STP, MIT, STOPSS, STOPP,'/&
+    &   '      +           SCALE, DELTA, IVAPRX, NPRT,'/&
      &   '      +           NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)')
-      END
+      end

@@ -1,5 +1,5 @@
 !PLTPLX
-      SUBROUTINE PLTPLX(POINT, YMN, SCALE, IPOINT, IEND)
+      subroutine pltplx(point, ymn, scale, ipoint, iend)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,10 +15,10 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   POINT,SCALE,YMN
-      INTEGER
-     &   IEND,IPOINT
+     real(kind=wp) ::&
+     &   point,scale,ymn
+     integer&
+     &   iend,ipoint
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -33,8 +33,8 @@
 !     REAL(KIND=WP) :: YMN
 !        THE GRAPH AXIS LOWER LIMITS ACTUALLY USED.
 !
-      IPOINT = (POINT-YMN)/SCALE + 2.5
-      IF (IPOINT .LT. 2) IPOINT = 1
-      IF (IPOINT .GT. IEND) IPOINT = IEND
-      RETURN
-      END
+      ipoint = (point-ymn)/scale + 2.5
+      if (ipoint .lt. 2) ipoint = 1
+      if (ipoint .gt. iend) ipoint = iend
+      return
+      end

@@ -1,7 +1,7 @@
 !BFSMN
-      SUBROUTINE BFSMN(SPCF1, SPCF2, CEVEN, CODD, W, LW, LAG, DF, NPRT,
-     &   NF, CSPC2, PHAS, FREQ, NPTS, XAXIS, YAXIS, ISYM, LPCV, ALPHA,
-     &   LAGMX1, DELTA)
+     subroutine bfsmn(spcf1, spcf2, ceven, codd, w, lw, lag, df, nprt,&
+    &   nf, cspc2, phas, freq, npts, xaxis, yaxis, isym, lpcv, alpha,&
+     &   lagmx1, delta)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -21,35 +21,35 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ALPHA,DELTA,DF
-      INTEGER
-     &   LAG,LAGMX1,LPCV,LW,NF,NPRT,NPTS
+     real(kind=wp) ::&
+     &   alpha,delta,df
+     integer&
+     &   lag,lagmx1,lpcv,lw,nf,nprt,npts
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CEVEN(*),CODD(*),CSPC2(*),FREQ(*),PHAS(*),SPCF1(*),SPCF2(*),
-     &   W(*),XAXIS(*),YAXIS(*)
-      INTEGER
-     &   ISYM(*)
+     real(kind=wp) ::&
+    &   ceven(*),codd(*),cspc2(*),freq(*),phas(*),spcf1(*),spcf2(*),&
+     &   w(*),xaxis(*),yaxis(*)
+     integer&
+     &   isym(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ARG,BARL,BARQ,BARY,C,CI,FAC,FPLM,FPLRS,FPSPM,G,PI,PIT2,SN,V0,
-     &   V1,V2,Z0,Z1,Z2
-      INTEGER
-     &   I,K
+     real(kind=wp) ::&
+    &   arg,barl,barq,bary,c,ci,fac,fplm,fplrs,fpspm,g,pi,pit2,sn,v0,&
+     &   v1,v2,z0,z1,z2
+     integer&
+     &   i,k
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   PPFNML,D1MACH
+     real(kind=wp) ::&
+     &   ppfnml,d1mach
 !       EXTERNAL PPFNML,D1MACH
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ATAN2,COS,LOG,SIGN,SIN,SQRT,TANH
+      intrinsic atan2,cos,log,sign,sin,sqrt,tanh
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -133,115 +133,115 @@
 !        ARGUMENTS USED IN THE COMPUTATION OF THE SPECTRUM.
 !
 !
-      CALL GETPI(PI)
-      PIT2 = PI*2.0_WP
+      call getpi(pi)
+      pit2 = pi*2.0_wp
 !
-      FPSPM = D1MACH(1)
-      FPLM = D1MACH(2)
-      FPLRS = D1MACH(4)
+      fpspm = d1mach(1)
+      fplm = d1mach(2)
+      fplrs = d1mach(4)
 !
-      FAC = 180.0_WP/PI
+      fac = 180.0_wp/pi
 !
 !
 !     COMPUTE SMOOTHED CO-SPECTRAL ESTIMATE
 !
-      DO 40 I=1,NF
+      do 40 i=1,nf
 !
 !           COMPUTE SMOOTHED CO- AND QUADRATURE SPECTRA USING
 !           THE ALGORITHM SHOWN ON PAGE 420 OF JENKINS AND WATTS
 !
-         IF (FREQ(I).EQ.0.0_WP) THEN
-            C = 1.0_WP
-            SN = 0.0_WP
-         ELSE IF (FREQ(I).EQ.0.25_WP) THEN
-            C = 0.0_WP
-            SN = 1.0_WP
-         ELSE IF (FREQ(I).EQ.0.5_WP) THEN
-            C = -1.0_WP
-            SN = 0.0
-         ELSE
-            ARG = PIT2*FREQ(I)
-            C = COS(ARG)
-            SN = SIN(ARG)
-         END IF
-         V0 = 0.0_WP
-         V1 = 0.0_WP
-         Z0 = 0.0_WP
-         Z1 = 0.0_WP
-         DO 10 K=LAG-1,1,-1
-            V2 = 2.0_WP*C*V1 - V0 + W(K+1)*CEVEN(K+1)
-            Z2 = 2.0_WP*C*Z1 - Z0 + W(K+1)*CODD(K+1)
-            V0 = V1
-            V1 = V2
-            Z0 = Z1
-            Z1 = Z2
-   10    CONTINUE
-         BARL = DELTA*(CEVEN(1)+2.0_WP*(V1*C-V0))
-         BARQ = 2.0_WP*DELTA*Z1*SN
+         if (freq(i).eq.0.0_wp) then
+            c = 1.0_wp
+            sn = 0.0_wp
+         else if (freq(i).eq.0.25_wp) then
+            c = 0.0_wp
+            sn = 1.0_wp
+         else if (freq(i).eq.0.5_wp) then
+            c = -1.0_wp
+            sn = 0.0
+         else
+            arg = pit2*freq(i)
+            c = cos(arg)
+            sn = sin(arg)
+         end if
+         v0 = 0.0_wp
+         v1 = 0.0_wp
+         z0 = 0.0_wp
+         z1 = 0.0_wp
+         do 10 k=lag-1,1,-1
+            v2 = 2.0_wp*c*v1 - v0 + w(k+1)*ceven(k+1)
+            z2 = 2.0_wp*c*z1 - z0 + w(k+1)*codd(k+1)
+            v0 = v1
+            v1 = v2
+            z0 = z1
+            z1 = z2
+   10    continue
+         barl = delta*(ceven(1)+2.0_wp*(v1*c-v0))
+         barq = 2.0_wp*delta*z1*sn
 !
 !     COMPUTE THE SMOOTHED SQUARED COHERENCY SPECTRA
 !
-         IF (SPCF1(I)*SPCF2(I).GT.0.0_WP) THEN
-            CSPC2(I) = (BARL*BARL+BARQ*BARQ)
-            CSPC2(I) = CSPC2(I)/(SPCF1(I)*SPCF2(I))
-         ELSE
-            CSPC2(I) = FPLM
-         END IF
+         if (spcf1(i)*spcf2(i).gt.0.0_wp) then
+            cspc2(i) = (barl*barl+barq*barq)
+            cspc2(i) = cspc2(i)/(spcf1(i)*spcf2(i))
+         else
+            cspc2(i) = fplm
+         end if
 !
 !     COMPUTE PHASE (IN RADIANS)
 !
-         IF ((BARQ.NE.0.0_WP) .OR. (BARL.NE.0.0_WP)) THEN
-            PHAS(I) = ATAN2(-BARQ,BARL)
-         ELSE
-            IF (I.EQ.1) THEN
-               PHAS(I) = 0.0_WP
-            ELSE
-               PHAS(I) = SIGN(PI,PHAS(I-1))
-            END IF
-         END IF
-   40 CONTINUE
+         if ((barq.ne.0.0_wp) .or. (barl.ne.0.0_wp)) then
+            phas(i) = atan2(-barq,barl)
+         else
+            if (i.eq.1) then
+               phas(i) = 0.0_wp
+            else
+               phas(i) = sign(pi,phas(i-1))
+            end if
+         end if
+   40 continue
 !
-      IF (NPRT.EQ.0) RETURN
+      if (nprt.eq.0) return
 !
 !     COMPUTE SMOOTHED SQUARED COHERENCY PLOT VECTORS
 !
-      CI = PPFNML(ALPHA)*SQRT(1.0_WP/DF)
-      G = 2.0_WP/DF
-      G = 1.0_WP - (1.0_WP-ALPHA)**(G/(1.0_WP-G))
-      NPTS = 0
-      DO 60 I=1,NF
-         NPTS = NPTS + 1
+      ci = ppfnml(alpha)*sqrt(1.0_wp/df)
+      g = 2.0_wp/df
+      g = 1.0_wp - (1.0_wp-alpha)**(g/(1.0_wp-g))
+      npts = 0
+      do 60 i=1,nf
+         npts = npts + 1
 !
 !     COMPUTE 95 PER CENT SIGNIFICANCE LEVEL
 !
-         YAXIS(NPTS) = G
-         XAXIS(NPTS) = FREQ(I)
-         ISYM(NPTS) = 4
-         IF (SPCF1(I)*SPCF2(I).LE.0.0_WP) GO TO 60
+         yaxis(npts) = g
+         xaxis(npts) = freq(i)
+         isym(npts) = 4
+         if (spcf1(i)*spcf2(i).le.0.0_wp) go to 60
 !
 !     COMPUTE COHERENCE SPECTRAL ESTIMATE
 !
-         IF (CSPC2(I).GT.1.0_WP) GO TO 60
-         NPTS = NPTS + 1
-         YAXIS(NPTS) = CSPC2(I)
-         XAXIS(NPTS) = FREQ(I)
-         ISYM(NPTS) = 1
-         IF (CSPC2(I).LT.G) GO TO 60
+         if (cspc2(i).gt.1.0_wp) go to 60
+         npts = npts + 1
+         yaxis(npts) = cspc2(i)
+         xaxis(npts) = freq(i)
+         isym(npts) = 1
+         if (cspc2(i).lt.g) go to 60
 !
 !     COMPUTE CONFIDENCE INTERVAL
 !
-         BARY = SQRT(CSPC2(I))
-         BARY = 0.5_WP*(LOG((1.0_WP+BARY)/(1.0_WP-BARY)))
-         NPTS = NPTS + 1
-         YAXIS(NPTS) = (TANH(BARY+CI))*(TANH(BARY+CI))
-         XAXIS(NPTS) = FREQ(I)
-         ISYM(NPTS) = 2
-         NPTS = NPTS + 1
-         YAXIS(NPTS) = (TANH(BARY-CI))*(TANH(BARY-CI))
-         XAXIS(NPTS) = FREQ(I)
-         ISYM(NPTS) = 2
-   60 CONTINUE
+         bary = sqrt(cspc2(i))
+         bary = 0.5_wp*(log((1.0_wp+bary)/(1.0_wp-bary)))
+         npts = npts + 1
+         yaxis(npts) = (tanh(bary+ci))*(tanh(bary+ci))
+         xaxis(npts) = freq(i)
+         isym(npts) = 2
+         npts = npts + 1
+         yaxis(npts) = (tanh(bary-ci))*(tanh(bary-ci))
+         xaxis(npts) = freq(i)
+         isym(npts) = 2
+   60 continue
 !
-      RETURN
+      return
 !
-      END
+      end

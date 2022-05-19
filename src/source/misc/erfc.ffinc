@@ -1,18 +1,18 @@
 !ERFC
-      REAL FUNCTION ERFC (X)
+      real function erfc (x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL X
+      real x
 !
 !  LOCAL SCALARS
-      REAL ETA,SQEPS,SQRTPI,XMAX,XSML,Y
-      INTEGER NTERC2,NTERF,NTERFC
+      real eta,sqeps,sqrtpi,xmax,xsml,y
+      integer nterc2,nterf,nterfc
 !
 !  LOCAL ARRAYS
-      REAL ERC2CS(23),ERFCCS(24),ERFCS(13)
+      real erc2cs(23),erfccs(24),erfcs(13)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL CSEVL,R1MACH
@@ -23,7 +23,7 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,EXP,LOG,SQRT
+      intrinsic abs,exp,log,sqrt
 !
 !
 ! SERIES FOR ERF        ON THE INTERVAL  0.          TO  1.00000D+00
@@ -32,19 +32,19 @@
 !                               SIGNIFICANT FIGURES REQUIRED  16.31
 !                                    DECIMAL PLACES REQUIRED  17.71
 !
-      DATA ERF CS( 1) /   -.0490461212 34691808E0 /
-      DATA ERF CS( 2) /   -.1422612051 0371364E0 /
-      DATA ERF CS( 3) /    .0100355821 87599796E0 /
-      DATA ERF CS( 4) /   -.0005768764 69976748E0 /
-      DATA ERF CS( 5) /    .0000274199 31252196E0 /
-      DATA ERF CS( 6) /   -.0000011043 17550734E0 /
-      DATA ERF CS( 7) /    .0000000384 88755420E0 /
-      DATA ERF CS( 8) /   -.0000000011 80858253E0 /
-      DATA ERF CS( 9) /    .0000000000 32334215E0 /
-      DATA ERF CS(10) /   -.0000000000 00799101E0 /
-      DATA ERF CS(11) /    .0000000000 00017990E0 /
-      DATA ERF CS(12) /   -.0000000000 00000371E0 /
-      DATA ERF CS(13) /    .0000000000 00000007E0 /
+      data erfcs( 1) /   -.049046121234691808e0 /
+      data erfcs( 2) /   -.14226120510371364e0 /
+      data erfcs( 3) /    .010035582187599796e0 /
+      data erfcs( 4) /   -.000576876469976748e0 /
+      data erfcs( 5) /    .000027419931252196e0 /
+      data erfcs( 6) /   -.000001104317550734e0 /
+      data erfcs( 7) /    .000000038488755420e0 /
+      data erfcs( 8) /   -.000000001180858253e0 /
+      data erfcs( 9) /    .000000000032334215e0 /
+      data erfcs(10) /   -.000000000000799101e0 /
+      data erfcs(11) /    .000000000000017990e0 /
+      data erfcs(12) /   -.000000000000000371e0 /
+      data erfcs(13) /    .000000000000000007e0 /
 !
 ! SERIES FOR ERFC       ON THE INTERVAL  0.          TO  2.50000D-01
 !                                        WITH WEIGHTED ERROR   4.81E-17
@@ -56,107 +56,107 @@
 !                        APPROX SIGNIFICANT FIGURES REQUIRED  15.0
 !                                    DECIMAL PLACES REQUIRED  16.96
 !
-      DATA ERC2CS( 1) /   -.0696013466 02309501E0 /
-      DATA ERC2CS( 2) /   -.0411013393 62620893E0 /
-      DATA ERC2CS( 3) /    .0039144958 66689626E0 /
-      DATA ERC2CS( 4) /   -.0004906395 65054897E0 /
-      DATA ERC2CS( 5) /    .0000715747 90013770E0 /
-      DATA ERC2CS( 6) /   -.0000115307 16341312E0 /
-      DATA ERC2CS( 7) /    .0000019946 70590201E0 /
-      DATA ERC2CS( 8) /   -.0000003642 66647159E0 /
-      DATA ERC2CS( 9) /    .0000000694 43726100E0 /
-      DATA ERC2CS(10) /   -.0000000137 12209021E0 /
-      DATA ERC2CS(11) /    .0000000027 88389661E0 /
-      DATA ERC2CS(12) /   -.0000000005 81416472E0 /
-      DATA ERC2CS(13) /    .0000000001 23892049E0 /
-      DATA ERC2CS(14) /   -.0000000000 26906391E0 /
-      DATA ERC2CS(15) /    .0000000000 05942614E0 /
-      DATA ERC2CS(16) /   -.0000000000 01332386E0 /
-      DATA ERC2CS(17) /    .0000000000 00302804E0 /
-      DATA ERC2CS(18) /   -.0000000000 00069666E0 /
-      DATA ERC2CS(19) /    .0000000000 00016208E0 /
-      DATA ERC2CS(20) /   -.0000000000 00003809E0 /
-      DATA ERC2CS(21) /    .0000000000 00000904E0 /
-      DATA ERC2CS(22) /   -.0000000000 00000216E0 /
-      DATA ERC2CS(23) /    .0000000000 00000052E0 /
+      data erc2cs( 1) /   -.069601346602309501e0 /
+      data erc2cs( 2) /   -.041101339362620893e0 /
+      data erc2cs( 3) /    .003914495866689626e0 /
+      data erc2cs( 4) /   -.000490639565054897e0 /
+      data erc2cs( 5) /    .000071574790013770e0 /
+      data erc2cs( 6) /   -.000011530716341312e0 /
+      data erc2cs( 7) /    .000001994670590201e0 /
+      data erc2cs( 8) /   -.000000364266647159e0 /
+      data erc2cs( 9) /    .000000069443726100e0 /
+      data erc2cs(10) /   -.000000013712209021e0 /
+      data erc2cs(11) /    .000000002788389661e0 /
+      data erc2cs(12) /   -.000000000581416472e0 /
+      data erc2cs(13) /    .000000000123892049e0 /
+      data erc2cs(14) /   -.000000000026906391e0 /
+      data erc2cs(15) /    .000000000005942614e0 /
+      data erc2cs(16) /   -.000000000001332386e0 /
+      data erc2cs(17) /    .000000000000302804e0 /
+      data erc2cs(18) /   -.000000000000069666e0 /
+      data erc2cs(19) /    .000000000000016208e0 /
+      data erc2cs(20) /   -.000000000000003809e0 /
+      data erc2cs(21) /    .000000000000000904e0 /
+      data erc2cs(22) /   -.000000000000000216e0 /
+      data erc2cs(23) /    .000000000000000052e0 /
 !
 !                                    DECIMAL PLACES REQUIRED  17.01
 !
-      DATA ERFCCS( 1) /   0.0715179310 202925E0 /
-      DATA ERFCCS( 2) /   -.0265324343 37606719E0 /
-      DATA ERFCCS( 3) /    .0017111539 77920853E0 /
-      DATA ERFCCS( 4) /   -.0001637516 63458512E0 /
-      DATA ERFCCS( 5) /    .0000198712 93500549E0 /
-      DATA ERFCCS( 6) /   -.0000028437 12412769E0 /
-      DATA ERFCCS( 7) /    .0000004606 16130901E0 /
-      DATA ERFCCS( 8) /   -.0000000822 77530261E0 /
-      DATA ERFCCS( 9) /    .0000000159 21418724E0 /
-      DATA ERFCCS(10) /   -.0000000032 95071356E0 /
-      DATA ERFCCS(11) /    .0000000007 22343973E0 /
-      DATA ERFCCS(12) /   -.0000000001 66485584E0 /
-      DATA ERFCCS(13) /    .0000000000 40103931E0 /
-      DATA ERFCCS(14) /   -.0000000000 10048164E0 /
-      DATA ERFCCS(15) /    .0000000000 02608272E0 /
-      DATA ERFCCS(16) /   -.0000000000 00699105E0 /
-      DATA ERFCCS(17) /    .0000000000 00192946E0 /
-      DATA ERFCCS(18) /   -.0000000000 00054704E0 /
-      DATA ERFCCS(19) /    .0000000000 00015901E0 /
-      DATA ERFCCS(20) /   -.0000000000 00004729E0 /
-      DATA ERFCCS(21) /    .0000000000 00001432E0 /
-      DATA ERFCCS(22) /   -.0000000000 00000439E0 /
-      DATA ERFCCS(23) /    .0000000000 00000138E0 /
-      DATA ERFCCS(24) /   -.0000000000 00000048E0 /
+      data erfccs( 1) /   0.0715179310202925e0 /
+      data erfccs( 2) /   -.026532434337606719e0 /
+      data erfccs( 3) /    .001711153977920853e0 /
+      data erfccs( 4) /   -.000163751663458512e0 /
+      data erfccs( 5) /    .000019871293500549e0 /
+      data erfccs( 6) /   -.000002843712412769e0 /
+      data erfccs( 7) /    .000000460616130901e0 /
+      data erfccs( 8) /   -.000000082277530261e0 /
+      data erfccs( 9) /    .000000015921418724e0 /
+      data erfccs(10) /   -.000000003295071356e0 /
+      data erfccs(11) /    .000000000722343973e0 /
+      data erfccs(12) /   -.000000000166485584e0 /
+      data erfccs(13) /    .000000000040103931e0 /
+      data erfccs(14) /   -.000000000010048164e0 /
+      data erfccs(15) /    .000000000002608272e0 /
+      data erfccs(16) /   -.000000000000699105e0 /
+      data erfccs(17) /    .000000000000192946e0 /
+      data erfccs(18) /   -.000000000000054704e0 /
+      data erfccs(19) /    .000000000000015901e0 /
+      data erfccs(20) /   -.000000000000004729e0 /
+      data erfccs(21) /    .000000000000001432e0 /
+      data erfccs(22) /   -.000000000000000439e0 /
+      data erfccs(23) /    .000000000000000138e0 /
+      data erfccs(24) /   -.000000000000000048e0 /
 !
-      DATA SQRTPI /1.772453850 9055160E0/
-      DATA NTERF, NTERFC, NTERC2, XSML, XMAX, SQEPS /3*0, 3*0./
+      data sqrtpi /1.7724538509055160e0/
+      data nterf, nterfc, nterc2, xsml, xmax, sqeps /3*0, 3*0./
 !
-      IF (NTERF.NE.0) GO TO 10
-      ETA = 0.1*R1MACH(3)
-      NTERF = INITS (ERFCS, 13, ETA)
-      NTERFC = INITS (ERFCCS, 24, ETA)
-      NTERC2 = INITS (ERC2CS, 23, ETA)
+      if (nterf.ne.0) go to 10
+      eta = 0.1*r1mach(3)
+      nterf = inits (erfcs, 13, eta)
+      nterfc = inits (erfccs, 24, eta)
+      nterc2 = inits (erc2cs, 23, eta)
 !
-      XSML = -SQRT (-LOG(SQRTPI*R1MACH(3)))
-      XMAX = SQRT (-LOG(SQRTPI*R1MACH(1)))
-      XMAX = XMAX - 0.5*LOG(XMAX)/XMAX - 0.01
-      SQEPS = SQRT (2.0*R1MACH(3))
+      xsml = -sqrt (-log(sqrtpi*r1mach(3)))
+      xmax = sqrt (-log(sqrtpi*r1mach(1)))
+      xmax = xmax - 0.5*log(xmax)/xmax - 0.01
+      sqeps = sqrt (2.0*r1mach(3))
 !
- 10   IF (X.GT.XSML) GO TO 20
+ 10   if (x.gt.xsml) go to 20
 !
 ! ERFC(X) = 1.0 - ERF(X) FOR X .LT. XSML
 !
-      ERFC = 2.0
-      RETURN
+      erfc = 2.0
+      return
 !
- 20   IF (X.GT.XMAX) GO TO 40
-      Y = ABS(X)
-      IF (Y.GT.1.0) GO TO 30
+ 20   if (x.gt.xmax) go to 40
+      y = abs(x)
+      if (y.gt.1.0) go to 30
 !
 ! ERFC(X) = 1.0 - ERF(X) FOR -1. .LE. X .LE. 1.
 !
-      IF (Y.LT.SQEPS) THEN
-         ERFC = 1.0 - 2.0*X/SQRTPI
-      ELSE
-         ERFC = 1.0 - X*(1.0 + CSEVL (2.*X*X-1., ERFCS, NTERF) )
-      END IF
+      if (y.lt.sqeps) then
+         erfc = 1.0 - 2.0*x/sqrtpi
+      else
+         erfc = 1.0 - x*(1.0 + csevl (2.*x*x-1., erfcs, nterf) )
+      end if
 !
-      RETURN
+      return
 !
 ! ERFC(X) = 1.0 - ERF(X) FOR 1. .LT. ABS(X) .LE. XMAX
 !
- 30   Y = Y*Y
-      IF (Y.LE.4.) THEN
-         ERFC = EXP(-Y)/ABS(X) *
-     &         (0.5 + CSEVL ((8.0/Y-5.0)/3.0, ERC2CS, NTERC2) )
-      ELSE
-         ERFC = EXP(-Y)/ABS(X) *
-     &          (0.5 + CSEVL (8.0/Y-1.0, ERFCCS, NTERFC) )
-      END IF
-      IF (X.LT.0.0) ERFC = 2.0 - ERFC
-      RETURN
+ 30   y = y*y
+      if (y.le.4.) then
+        erfc = exp(-y)/abs(x) *&
+     &         (0.5 + csevl ((8.0/y-5.0)/3.0, erc2cs, nterc2) )
+      else
+        erfc = exp(-y)/abs(x) *&
+     &          (0.5 + csevl (8.0/y-1.0, erfccs, nterfc) )
+      end if
+      if (x.lt.0.0) erfc = 2.0 - erfc
+      return
 !
- 40   CALL XERROR ('ERFC    X SO BIG ERFC UNDERFLOWS', 32, 1, 1)
-      ERFC = 0.0
-      RETURN
+ 40   call xerror ('ERFC    X SO BIG ERFC UNDERFLOWS', 32, 1, 1)
+      erfc = 0.0
+      return
 !
-      END
+      end

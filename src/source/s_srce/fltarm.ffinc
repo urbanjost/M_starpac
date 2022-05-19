@@ -1,5 +1,5 @@
 !FLTARM
-      SUBROUTINE FLTARM (Y, YMISS, N, IAR, PHI, YF, YFMISS, NYF)
+      subroutine fltarm (y, ymiss, n, iar, phi, yf, yfmiss, nyf)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,25 +17,25 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) :: YFMISS,YMISS
-      INTEGER
-     &   IAR,N,NYF
+      real(kind=wp) :: yfmiss,ymiss
+     integer&
+     &   iar,n,nyf
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PHI(*),Y(*),YF(*)
+     real(kind=wp) ::&
+     &   phi(*),y(*),yf(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM,TEMP
-      INTEGER
-     &   I,I1,J,K
+     real(kind=wp) ::&
+     &   fplm,temp
+     integer&
+     &   i,i1,j,k
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   R1MACH
-      LOGICAL
-     &   MVCHK
+     real(kind=wp) ::&
+     &   r1mach
+     logical&
+     &   mvchk
 !       EXTERNAL R1MACH,MVCHK
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
@@ -67,36 +67,36 @@
 !        THE MISSING VALUE CODE USED IN THE INPUT SERIES TO INDICATE
 !        AN OBSERVATION IS MISSING.
 !
-      FPLM = R1MACH(2)
+      fplm = r1mach(2)
 !
-      YFMISS = FPLM
+      yfmiss = fplm
 !
-      DO 10 I = 1, N
-         YF(I) = Y(I)
-   10 CONTINUE
+      do 10 i = 1, n
+         yf(i) = y(i)
+   10 continue
 !
-      NYF = N - IAR
+      nyf = n - iar
 !
-      DO 50 I = 1, NYF
-         TEMP = YFMISS
-         K = I + IAR
-         IF (MVCHK(YF(K), YMISS)) GO TO 40
-         TEMP = YF(K)
-         DO 30 J = 1, IAR
-            K = K - 1
-            IF (.NOT. MVCHK(YF(K), YMISS)) GO TO 20
-            TEMP = YFMISS
-            GO TO 40
-   20       CONTINUE
-            TEMP = TEMP - PHI(J) * YF(K)
-   30    CONTINUE
-   40    YF(I) = TEMP
-   50 CONTINUE
+      do 50 i = 1, nyf
+         temp = yfmiss
+         k = i + iar
+         if (mvchk(yf(k), ymiss)) go to 40
+         temp = yf(k)
+         do 30 j = 1, iar
+            k = k - 1
+            if (.not. mvchk(yf(k), ymiss)) go to 20
+            temp = yfmiss
+            go to 40
+   20       continue
+            temp = temp - phi(j) * yf(k)
+   30    continue
+   40    yf(i) = temp
+   50 continue
 !
-      I1 = NYF + 1
+      i1 = nyf + 1
 !
-      DO 60 I = I1, N
-         YF(I) = 0.0E0
-   60 CONTINUE
-      RETURN
-      END
+      do 60 i = i1, n
+         yf(i) = 0.0e0
+   60 continue
+      return
+      end

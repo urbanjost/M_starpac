@@ -1,5 +1,5 @@
 !GAMR
-      REAL FUNCTION GAMR (X)
+      real function gamr (x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 ! THIS ROUTINE, NOT GAMMA(X), SHOULD BE THE FUNDAMENTAL ONE.
 !
@@ -7,11 +7,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL X
+      real x
 !
 !  LOCAL SCALARS
-      REAL ALNGX,SGNGX
-      INTEGER IROLD
+      real alngx,sgngx
+      integer irold
 !
 !  EXTERNAL FUNCTIONS
 !      REAL GAMMA
@@ -21,23 +21,23 @@
 !       EXTERNAL ALGAMS,XERCLR,XGETF,XSETF
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,AINT,EXP
+      intrinsic abs,aint,exp
 !
-      GAMR = 0.0
-      IF (X.LE.0.0 .AND. AINT(X).EQ.X) RETURN
+      gamr = 0.0
+      if (x.le.0.0 .and. aint(x).eq.x) return
 !
-      CALL XGETF (IROLD)
-      CALL XSETF (1)
-      IF (ABS(X).GT.10.0) GO TO 10
-      GAMR = 1.0/GAMMA(X)
-      CALL XERCLR
-      CALL XSETF (IROLD)
-      RETURN
+      call xgetf (irold)
+      call xsetf (1)
+      if (abs(x).gt.10.0) go to 10
+      gamr = 1.0/gamma(x)
+      call xerclr
+      call xsetf (irold)
+      return
 !
- 10   CALL ALGAMS (X, ALNGX, SGNGX)
-      CALL XERCLR
-      CALL XSETF (IROLD)
-      GAMR = SGNGX * EXP(-ALNGX)
-      RETURN
+ 10   call algams (x, alngx, sgngx)
+      call xerclr
+      call xsetf (irold)
+      gamr = sgngx * exp(-alngx)
+      return
 !
-      END
+      end

@@ -1,6 +1,6 @@
 !AMLST1
-      SUBROUTINE AMLST1 (IAMHD, PAR, NPAR, MSPECT, NFAC, VCVL, LVCVL,
-     &  SCALE, LSCALE, STPT, LSTPT, IPARMN, IPARMX, LBLTYP, T975, IFIXD)
+     subroutine amlst1 (iamhd, par, npar, mspect, nfac, vcvl, lvcvl,&
+     &  scale, lscale, stpt, lstpt, iparmn, iparmx, lbltyp, t975, ifixd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,26 +16,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   T975
-      INTEGER
-     &   IAMHD,IPARMN,IPARMX,LBLTYP,LSCALE,LSTPT,LVCVL,NFAC,NPAR
+     real(kind=wp) ::&
+     &   t975
+     integer&
+     &   iamhd,iparmn,iparmx,lbltyp,lscale,lstpt,lvcvl,nfac,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),SCALE(*),STPT(*),VCVL(*)
-      INTEGER
-     &   IFIXD(*),MSPECT(NFAC,4)
+     real(kind=wp) ::&
+     &   par(*),scale(*),stpt(*),vcvl(*)
+     integer&
+     &   ifixd(*),mspect(nfac,4)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM,PLL,PUL,RATIO,SDPAR
-      INTEGER
-     &   IPRT,J,K,L,LL,LPAR,ORDER
+     real(kind=wp) ::&
+     &   fplm,pll,pul,ratio,sdpar
+     integer&
+     &   iprt,j,k,l,ll,lpar,order
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   FIXED(3)*1
+     character&
+     &   fixed(3)*1
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -46,7 +46,7 @@
 !      EXTERNAL FIXPRT,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -122,79 +122,79 @@
 !        ROW WISE.
 !
 !
-      FPLM = R1MACH(2)
+      fplm = r1mach(2)
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     PRINT NEXT SET OF TERMS
 !
-      LPAR = 0
-      DO 1 J=1,IPARMX
-         IF (IFIXD(J).EQ.0) LPAR = LPAR + 1
-    1 CONTINUE
+      lpar = 0
+      do 1 j=1,iparmx
+         if (ifixd(j).eq.0) lpar = lpar + 1
+    1 continue
 
-      DO 40 J=1,NFAC
-        IF ((MSPECT(J,LBLTYP).EQ.0) .AND. (LBLTYP.NE.2)) GO TO 40
-        IF (LBLTYP.NE.2) IPARMX = IPARMX + MSPECT(J,LBLTYP)
-        IF (LBLTYP.EQ.2) IPARMX = IPARMX + 1
-        ORDER = 0
-        DO 30 L = IPARMN, IPARMX
-          ORDER = ORDER + MSPECT(J,4)
-          IF (IAMHD.EQ.2) GO TO 25
-          CALL FIXPRT(IFIXD(L), FIXED)
-          IF (LBLTYP.EQ.1) WRITE(IPRT, 1000) L, J, ORDER,
-     &      (FIXED(K),K=1,3), PAR(L)
-          IF (LBLTYP.EQ.2) WRITE(IPRT, 1004) L,
-     &      (FIXED(K),K=1,3), PAR(L)
-          IF (LBLTYP.EQ.3) WRITE(IPRT, 1005) L, J, ORDER,
-     &      (FIXED(K),K=1,3), PAR(L)
-            IF (IAMHD.EQ.3) GO TO 10
+      do 40 j=1,nfac
+        if ((mspect(j,lbltyp).eq.0) .and. (lbltyp.ne.2)) go to 40
+        if (lbltyp.ne.2) iparmx = iparmx + mspect(j,lbltyp)
+        if (lbltyp.eq.2) iparmx = iparmx + 1
+        order = 0
+        do 30 l = iparmn, iparmx
+          order = order + mspect(j,4)
+          if (iamhd.eq.2) go to 25
+          call fixprt(ifixd(l), fixed)
+         if (lbltyp.eq.1) write(iprt, 1000) l, j, order,&
+     &      (fixed(k),k=1,3), par(l)
+         if (lbltyp.eq.2) write(iprt, 1004) l,&
+     &      (fixed(k),k=1,3), par(l)
+         if (lbltyp.eq.3) write(iprt, 1005) l, j, order,&
+     &      (fixed(k),k=1,3), par(l)
+            if (iamhd.eq.3) go to 10
 !
-            IF (IFIXD(L).EQ.0) GO TO 5
-            WRITE (IPRT, 1007)
-            GO TO 10
+            if (ifixd(l).eq.0) go to 5
+            write (iprt, 1007)
+            go to 10
 !
-    5       CONTINUE
-            IF (SCALE(1).LE.0.0E0) WRITE (IPRT, 1001) STPT(L)
-            IF (SCALE(1).GT.0.0E0) WRITE (IPRT, 1002) SCALE(L), STPT(L)
-   10     CONTINUE
-          IF (IAMHD .EQ. 1) GO TO 30
+    5       continue
+            if (scale(1).le.0.0e0) write (iprt, 1001) stpt(l)
+            if (scale(1).gt.0.0e0) write (iprt, 1002) scale(l), stpt(l)
+   10     continue
+          if (iamhd .eq. 1) go to 30
 !
-          IF (IFIXD(L).EQ.0) GO TO 20
-          WRITE(IPRT, 1006)
-          GO TO 30
+          if (ifixd(l).eq.0) go to 20
+          write(iprt, 1006)
+          go to 30
 !
-   20     CONTINUE
-          LPAR = LPAR + 1
-          RATIO = FPLM
-          LL = LPAR*(LPAR-1)/2 + LPAR
-          IF (VCVL(LL).GT.0.0E0) RATIO = PAR(L)/SQRT(VCVL(LL))
-          SDPAR = SQRT(VCVL(LL))
-          PLL = PAR(L) - T975*SDPAR
-          PUL = PAR(L) + T975*SDPAR
-          WRITE(IPRT, 1003) SDPAR, RATIO, PLL, PUL
-          GO TO 30
-   25     CONTINUE
-          IF (LBLTYP.EQ.1) WRITE(IPRT, 1010) L, J, ORDER, PAR(L)
-          IF (LBLTYP.EQ.2) WRITE(IPRT, 1014) L, PAR(L)
-          IF (LBLTYP.EQ.3) WRITE(IPRT, 1015) L, J, ORDER, PAR(L)
-   30   CONTINUE
-        IPARMN = IPARMX + 1
-   40 CONTINUE
+   20     continue
+          lpar = lpar + 1
+          ratio = fplm
+          ll = lpar*(lpar-1)/2 + lpar
+          if (vcvl(ll).gt.0.0e0) ratio = par(l)/sqrt(vcvl(ll))
+          sdpar = sqrt(vcvl(ll))
+          pll = par(l) - t975*sdpar
+          pul = par(l) + t975*sdpar
+          write(iprt, 1003) sdpar, ratio, pll, pul
+          go to 30
+   25     continue
+          if (lbltyp.eq.1) write(iprt, 1010) l, j, order, par(l)
+          if (lbltyp.eq.2) write(iprt, 1014) l, par(l)
+          if (lbltyp.eq.3) write(iprt, 1015) l, j, order, par(l)
+   30   continue
+        iparmn = iparmx + 1
+   40 continue
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(1X, I5, 2X, 'AR (FACTOR', I2, ')',4X,I5,6X,3A1,E17.8)
- 1001 FORMAT ('+', 65X, 7HDEFAULT, E17.8)
- 1002 FORMAT ('+', 55X, 2E17.8)
- 1003 FORMAT ('+', 55X, 4(2X, E15.8))
- 1004 FORMAT(1X, I5, 13X, 'MU', 4X, '  ---' ,6X,3A1,E17.8)
- 1005 FORMAT(1X, I5, 2X, 'MA (FACTOR', I2, ')',4X,I5,6X,3A1,E17.8)
- 1006 FORMAT('+', 55X, 4(14X, '---'))
- 1007 FORMAT('+', 69X, '---', 14X, '---')
- 1010 FORMAT(1X, I5, 2X, 'AR (FACTOR', I2, ')',4X,I5,E17.8)
- 1014 FORMAT(1X, I5, 13X, 'MU', 4X, '  ---' ,E17.8)
- 1015 FORMAT(1X, I5, 2X, 'MA (FACTOR', I2, ')',4X,I5,E17.8)
-      END
+ 1000 format(1x, i5, 2x, 'AR (FACTOR', i2, ')',4x,i5,6x,3a1,e17.8)
+ 1001 format ('+', 65x, 7hdefault, e17.8)
+ 1002 format ('+', 55x, 2e17.8)
+ 1003 format ('+', 55x, 4(2x, e15.8))
+ 1004 format(1x, i5, 13x, 'MU', 4x, '  ---' ,6x,3a1,e17.8)
+ 1005 format(1x, i5, 2x, 'MA (FACTOR', i2, ')',4x,i5,6x,3a1,e17.8)
+ 1006 format('+', 55x, 4(14x, '---'))
+ 1007 format('+', 69x, '---', 14x, '---')
+ 1010 format(1x, i5, 2x, 'AR (FACTOR', i2, ')',4x,i5,e17.8)
+ 1014 format(1x, i5, 13x, 'MU', 4x, '  ---' ,e17.8)
+ 1015 format(1x, i5, 2x, 'MA (FACTOR', i2, ')',4x,i5,e17.8)
+      end

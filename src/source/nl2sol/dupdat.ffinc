@@ -9,19 +9,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
+     integer&
      &   n,nn,p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   d(p),j(nn,p),v(1)
-      integer
+     integer&
      &   iv(1)
 !
 !  LOCAL SCALARS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   sii,t,vdfac,zero
-      integer
+     integer&
      &   d0,dfac,dtype,i,jtol0,jtoli,niter,s,s1
 !
 !  EXTERNAL FUNCTIONS

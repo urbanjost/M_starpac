@@ -1,5 +1,5 @@
 !XACF
-      SUBROUTINE XACF(LDS,typ)
+      subroutine xacf(lds,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -20,33 +20,33 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDS
+     integer&
+     &   lds
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) :: AMISS,YMISS
-      INTEGER
-     &   I,IAR,IPRT,ITEST,LACOV,LAGMAX,LDSTAK,LYFFT,N,NFAC,NPRT,NYD
+      real(kind=wp) :: amiss,ymiss
+     integer&
+     &   i,iar,iprt,itest,lacov,lagmax,ldstak,lyfft,n,nfac,nprt,nyd
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   ACOV(21),PHI(21),Y(100),YD(150),YFFT(150)
-      INTEGER
-     &   IOD(2),ND(2),NLPPA(21)
+     real(kind=wp) ::&
+     &   acov(21),phi(21),y(100),yd(150),yfft(150)
+     integer&
+     &   iod(2),nd(2),nlppa(21)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL ACF,ACFD,ACFF,ACFFS,ACFM,ACFMS,ACFS,IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -107,233 +107,233 @@
 !     REAL YMISS
 !        THE MISSING VALUE CODES FOR SERIES Y AND YM.
 !
-      DATA    Y(  1),   Y(  2),   Y(  3),   Y(  4),   Y(  5),   Y(  6)
-     &    / -2.07_WP, -1.15_WP,  0.69_WP, -0.46_WP, -1.49_WP, -0.70_WP/
-      DATA    Y(  7),   Y(  8),   Y(  9),   Y( 10),   Y( 11),   Y( 12)
-     &    / -1.07_WP, -0.69_WP, -0.68_WP,  1.27_WP, -1.05_WP, -0.05_WP/
-      DATA    Y( 13),   Y( 14),   Y( 15),   Y( 16),   Y( 17),   Y( 18)
-     &    / -0.84_WP, -0.62_WP, -0.49_WP, -1.29_WP, -0.49_WP, -1.06_WP/
-      DATA    Y( 19),   Y( 20),   Y( 21),   Y( 22),   Y( 23),   Y( 24)
-     &    / -0.38_WP, -0.52_WP, -0.13_WP,  1.3_WP, -1.51_WP, -0.43_WP/
-      DATA    Y( 25),   Y( 26),   Y( 27),   Y( 28),   Y( 29),   Y( 30)
-     &    / -1.33_WP, -0.78_WP,  0.31_WP, -0.95_WP, -0.9_WP, -0.30_WP/
-      DATA    Y( 31),   Y( 32),   Y( 33),   Y( 34),   Y( 35),   Y( 36)
-     &    / -1.02_WP, -0.53_WP,  0.15_WP,  1.4_WP,  1.22_WP,  0.59_WP/
-      DATA    Y( 37),   Y( 38),   Y( 39),   Y( 40),   Y( 41),   Y( 42)
-     &    /  0.7_WP,  1.7_WP,  2.78_WP,  1.98_WP,  1.39_WP,  1.85_WP/
-      DATA    Y( 43),   Y( 44),   Y( 45),   Y( 46),   Y( 47),   Y( 48)
-     &    /  2.6_WP,  0.51_WP,  2.77_WP,  1.16_WP,  1.07_WP, -0.48_WP/
-      DATA    Y( 49),   Y( 50),   Y( 51),   Y( 52),   Y( 53),   Y( 54)
-     &    / -0.52_WP,  0.37_WP,  0.0_WP, -1.99_WP, -1.75_WP,  0.70_WP/
-      DATA    Y( 55),   Y( 56),   Y( 57),   Y( 58),   Y( 59),   Y( 60)
-     &    /  0.73_WP,  1.16_WP,  0.06_WP, -0.02_WP,  1.1_WP, -0.35_WP/
-      DATA    Y( 61),   Y( 62),   Y( 63),   Y( 64),   Y( 65),   Y( 66)
-     &    / -1.67_WP, -1.57_WP,  1.16_WP,  1.84_WP,  3.35_WP,  0.40_WP/
-      DATA    Y( 67),   Y( 68),   Y( 69),   Y( 70),   Y( 71),   Y( 72)
-     &    /  0.45_WP,  1.3_WP,  0.93_WP,  1.17_WP, -1.74_WP, -1.28_WP/
-      DATA    Y( 73),   Y( 74),   Y( 75),   Y( 76),   Y( 77),   Y( 78)
-     &    / -0.07_WP,  1.5_WP,  0.53_WP,  0.2_WP, -0.42_WP,  1.18_WP/
-      DATA    Y( 79),   Y( 80),   Y( 81),   Y( 82),   Y( 83),   Y( 84)
-     &    /  0.82_WP,  1.5_WP,  2.92_WP,  1.18_WP,  1.23_WP,  3.16_WP/
-      DATA    Y( 85),   Y( 86),   Y( 87),   Y( 88),   Y( 89),   Y( 90)
-     &    /  0.79_WP,  0.68_WP,  1.14_WP,  1.02_WP,  1.02_WP, -0.71_WP/
-      DATA    Y( 91),   Y( 92),   Y( 93),   Y( 94),   Y( 95),   Y( 96)
-     &    / -0.17_WP, -1.5_WP, -0.26_WP, -0.38_WP,  0.93_WP, -0.33_WP/
-      DATA    Y( 97),   Y( 98),   Y( 99),   Y(100)
-     &    / -1.12_WP, -2.95_WP, -2.09_WP, -1.11_WP                    /
+     data    y(  1),   y(  2),   y(  3),   y(  4),   y(  5),   y(  6)&
+     &    / -2.07_wp, -1.15_wp,  0.69_wp, -0.46_wp, -1.49_wp, -0.70_wp/
+     data    y(  7),   y(  8),   y(  9),   y( 10),   y( 11),   y( 12)&
+     &    / -1.07_wp, -0.69_wp, -0.68_wp,  1.27_wp, -1.05_wp, -0.05_wp/
+     data    y( 13),   y( 14),   y( 15),   y( 16),   y( 17),   y( 18)&
+     &    / -0.84_wp, -0.62_wp, -0.49_wp, -1.29_wp, -0.49_wp, -1.06_wp/
+     data    y( 19),   y( 20),   y( 21),   y( 22),   y( 23),   y( 24)&
+     &    / -0.38_wp, -0.52_wp, -0.13_wp,  1.3_wp, -1.51_wp, -0.43_wp/
+     data    y( 25),   y( 26),   y( 27),   y( 28),   y( 29),   y( 30)&
+     &    / -1.33_wp, -0.78_wp,  0.31_wp, -0.95_wp, -0.9_wp, -0.30_wp/
+     data    y( 31),   y( 32),   y( 33),   y( 34),   y( 35),   y( 36)&
+     &    / -1.02_wp, -0.53_wp,  0.15_wp,  1.4_wp,  1.22_wp,  0.59_wp/
+     data    y( 37),   y( 38),   y( 39),   y( 40),   y( 41),   y( 42)&
+     &    /  0.7_wp,  1.7_wp,  2.78_wp,  1.98_wp,  1.39_wp,  1.85_wp/
+     data    y( 43),   y( 44),   y( 45),   y( 46),   y( 47),   y( 48)&
+     &    /  2.6_wp,  0.51_wp,  2.77_wp,  1.16_wp,  1.07_wp, -0.48_wp/
+     data    y( 49),   y( 50),   y( 51),   y( 52),   y( 53),   y( 54)&
+     &    / -0.52_wp,  0.37_wp,  0.0_wp, -1.99_wp, -1.75_wp,  0.70_wp/
+     data    y( 55),   y( 56),   y( 57),   y( 58),   y( 59),   y( 60)&
+     &    /  0.73_wp,  1.16_wp,  0.06_wp, -0.02_wp,  1.1_wp, -0.35_wp/
+     data    y( 61),   y( 62),   y( 63),   y( 64),   y( 65),   y( 66)&
+     &    / -1.67_wp, -1.57_wp,  1.16_wp,  1.84_wp,  3.35_wp,  0.40_wp/
+     data    y( 67),   y( 68),   y( 69),   y( 70),   y( 71),   y( 72)&
+     &    /  0.45_wp,  1.3_wp,  0.93_wp,  1.17_wp, -1.74_wp, -1.28_wp/
+     data    y( 73),   y( 74),   y( 75),   y( 76),   y( 77),   y( 78)&
+     &    / -0.07_wp,  1.5_wp,  0.53_wp,  0.2_wp, -0.42_wp,  1.18_wp/
+     data    y( 79),   y( 80),   y( 81),   y( 82),   y( 83),   y( 84)&
+     &    /  0.82_wp,  1.5_wp,  2.92_wp,  1.18_wp,  1.23_wp,  3.16_wp/
+     data    y( 85),   y( 86),   y( 87),   y( 88),   y( 89),   y( 90)&
+     &    /  0.79_wp,  0.68_wp,  1.14_wp,  1.02_wp,  1.02_wp, -0.71_wp/
+     data    y( 91),   y( 92),   y( 93),   y( 94),   y( 95),   y( 96)&
+     &    / -0.17_wp, -1.5_wp, -0.26_wp, -0.38_wp,  0.93_wp, -0.33_wp/
+     data    y( 97),   y( 98),   y( 99),   y(100)&
+     &    / -1.12_wp, -2.95_wp, -2.09_wp, -1.11_wp                    /
 !
-      DATA   YD(  1),  YD(  2),  YD(  3),  YD(  4),  YD(  5),  YD(  6)
-     &    /  112._WP, 118._WP, 132._WP, 129._WP, 121._WP, 135.0_WP/
-      DATA   YD(  7),  YD(  8),  YD(  9),  YD( 10),  YD( 11),  YD( 12)
-     &    /  148._WP, 148._WP, 136._WP, 119._WP, 104._WP, 118.0_WP/
-      DATA   YD( 13),  YD( 14),  YD( 15),  YD( 16),  YD( 17),  YD( 18)
-     &    /  115._WP, 126._WP, 141._WP, 135._WP, 125._WP, 149.0_WP/
-      DATA   YD( 19),  YD( 20),  YD( 21),  YD( 22),  YD( 23),  YD( 24)
-     &    /  170._WP, 170._WP, 158._WP, 133._WP, 114._WP, 140.0_WP/
-      DATA   YD( 25),  YD( 26),  YD( 27),  YD( 28),  YD( 29),  YD( 30)
-     &    /  145._WP, 150._WP, 178._WP, 163._WP, 172._WP, 178.0_WP/
-      DATA   YD( 31),  YD( 32),  YD( 33),  YD( 34),  YD( 35),  YD( 36)
-     &    /  199._WP, 199._WP, 184._WP, 162._WP, 146._WP, 166.0_WP/
-      DATA   YD( 37),  YD( 38),  YD( 39),  YD( 40),  YD( 41),  YD( 42)
-     &    /  171._WP, 180._WP, 193._WP, 181._WP, 183._WP, 218.0_WP/
-      DATA   YD( 43),  YD( 44),  YD( 45),  YD( 46),  YD( 47),  YD( 48)
-     &    /  230._WP, 242._WP, 209._WP, 191._WP, 172._WP, 194.0_WP/
-      DATA   YD( 49),  YD( 50),  YD( 51),  YD( 52),  YD( 53),  YD( 54)
-     &    /  196._WP, 196._WP, 236._WP, 235._WP, 229._WP, 243.0_WP/
-      DATA   YD( 55),  YD( 56),  YD( 57),  YD( 58),  YD( 59),  YD( 60)
-     &    /  264._WP, 272._WP, 237._WP, 211._WP, 180._WP, 201.0_WP/
-      DATA   YD( 61),  YD( 62),  YD( 63),  YD( 64),  YD( 65),  YD( 66)
-     &    /  204._WP, 188._WP, 235._WP, 227._WP, 234._WP, 264.0_WP/
-      DATA   YD( 67),  YD( 68),  YD( 69),  YD( 70),  YD( 71),  YD( 72)
-     &    /  302._WP, 293._WP, 259._WP, 229._WP, 203._WP, 229.0_WP/
-      DATA   YD( 73),  YD( 74),  YD( 75),  YD( 76),  YD( 77),  YD( 78)
-     &    /  242._WP, 233._WP, 267._WP, 269._WP, 270._WP, 315.0_WP/
-      DATA   YD( 79),  YD( 80),  YD( 81),  YD( 82),  YD( 83),  YD( 84)
-     &    /  364._WP, 347._WP, 312._WP, 274._WP, 237._WP, 278.0_WP/
-      DATA   YD( 85),  YD( 86),  YD( 87),  YD( 88),  YD( 89),  YD( 90)
-     &    /  284._WP, 277._WP, 317._WP, 313._WP, 318._WP, 374.0_WP/
-      DATA   YD( 91),  YD( 92),  YD( 93),  YD( 94),  YD( 95),  YD( 96)
-     &    /  413._WP, 405._WP, 355._WP, 306._WP, 271._WP, 306.0_WP/
-      DATA   YD( 97),  YD( 98),  YD( 99),  YD(100),  YD(101),  YD(102)
-     &    /  315._WP, 301._WP, 356._WP, 348._WP, 355._WP, 422.0_WP/
-      DATA   YD(103),  YD(104),  YD(105),  YD(106),  YD(107),  YD(108)
-     &    /  465._WP, 467._WP, 404._WP, 347._WP, 305._WP, 336.0_WP/
-      DATA   YD(109),  YD(110),  YD(111),  YD(112),  YD(113),  YD(114)
-     &    /  340._WP, 318._WP, 362._WP, 348._WP, 363._WP, 435.0_WP/
-      DATA   YD(115),  YD(116),  YD(117),  YD(118),  YD(119),  YD(120)
-     &    /  491._WP, 505._WP, 404._WP, 359._WP, 310._WP, 337.0_WP/
-      DATA   YD(121),  YD(122),  YD(123),  YD(124),  YD(125),  YD(126)
-     &    /  360._WP, 342._WP, 406._WP, 396._WP, 420._WP, 472.0_WP/
-      DATA   YD(127),  YD(128),  YD(129),  YD(130),  YD(131),  YD(132)
-     &    /  548._WP, 559._WP, 463._WP, 407._WP, 362._WP, 405.0_WP/
-      DATA   YD(133),  YD(134),  YD(135),  YD(136),  YD(137),  YD(138)
-     &    /  417._WP, 391._WP, 419._WP, 461._WP, 472._WP, 535.0_WP/
-      DATA   YD(139),  YD(140),  YD(141),  YD(142),  YD(143),  YD(144)
-     &    /  622._WP, 606._WP, 508._WP, 461._WP, 390._WP, 432.0_WP/
+     data   yd(  1),  yd(  2),  yd(  3),  yd(  4),  yd(  5),  yd(  6)&
+     &    /  112._wp, 118._wp, 132._wp, 129._wp, 121._wp, 135.0_wp/
+     data   yd(  7),  yd(  8),  yd(  9),  yd( 10),  yd( 11),  yd( 12)&
+     &    /  148._wp, 148._wp, 136._wp, 119._wp, 104._wp, 118.0_wp/
+     data   yd( 13),  yd( 14),  yd( 15),  yd( 16),  yd( 17),  yd( 18)&
+     &    /  115._wp, 126._wp, 141._wp, 135._wp, 125._wp, 149.0_wp/
+     data   yd( 19),  yd( 20),  yd( 21),  yd( 22),  yd( 23),  yd( 24)&
+     &    /  170._wp, 170._wp, 158._wp, 133._wp, 114._wp, 140.0_wp/
+     data   yd( 25),  yd( 26),  yd( 27),  yd( 28),  yd( 29),  yd( 30)&
+     &    /  145._wp, 150._wp, 178._wp, 163._wp, 172._wp, 178.0_wp/
+     data   yd( 31),  yd( 32),  yd( 33),  yd( 34),  yd( 35),  yd( 36)&
+     &    /  199._wp, 199._wp, 184._wp, 162._wp, 146._wp, 166.0_wp/
+     data   yd( 37),  yd( 38),  yd( 39),  yd( 40),  yd( 41),  yd( 42)&
+     &    /  171._wp, 180._wp, 193._wp, 181._wp, 183._wp, 218.0_wp/
+     data   yd( 43),  yd( 44),  yd( 45),  yd( 46),  yd( 47),  yd( 48)&
+     &    /  230._wp, 242._wp, 209._wp, 191._wp, 172._wp, 194.0_wp/
+     data   yd( 49),  yd( 50),  yd( 51),  yd( 52),  yd( 53),  yd( 54)&
+     &    /  196._wp, 196._wp, 236._wp, 235._wp, 229._wp, 243.0_wp/
+     data   yd( 55),  yd( 56),  yd( 57),  yd( 58),  yd( 59),  yd( 60)&
+     &    /  264._wp, 272._wp, 237._wp, 211._wp, 180._wp, 201.0_wp/
+     data   yd( 61),  yd( 62),  yd( 63),  yd( 64),  yd( 65),  yd( 66)&
+     &    /  204._wp, 188._wp, 235._wp, 227._wp, 234._wp, 264.0_wp/
+     data   yd( 67),  yd( 68),  yd( 69),  yd( 70),  yd( 71),  yd( 72)&
+     &    /  302._wp, 293._wp, 259._wp, 229._wp, 203._wp, 229.0_wp/
+     data   yd( 73),  yd( 74),  yd( 75),  yd( 76),  yd( 77),  yd( 78)&
+     &    /  242._wp, 233._wp, 267._wp, 269._wp, 270._wp, 315.0_wp/
+     data   yd( 79),  yd( 80),  yd( 81),  yd( 82),  yd( 83),  yd( 84)&
+     &    /  364._wp, 347._wp, 312._wp, 274._wp, 237._wp, 278.0_wp/
+     data   yd( 85),  yd( 86),  yd( 87),  yd( 88),  yd( 89),  yd( 90)&
+     &    /  284._wp, 277._wp, 317._wp, 313._wp, 318._wp, 374.0_wp/
+     data   yd( 91),  yd( 92),  yd( 93),  yd( 94),  yd( 95),  yd( 96)&
+     &    /  413._wp, 405._wp, 355._wp, 306._wp, 271._wp, 306.0_wp/
+     data   yd( 97),  yd( 98),  yd( 99),  yd(100),  yd(101),  yd(102)&
+     &    /  315._wp, 301._wp, 356._wp, 348._wp, 355._wp, 422.0_wp/
+     data   yd(103),  yd(104),  yd(105),  yd(106),  yd(107),  yd(108)&
+     &    /  465._wp, 467._wp, 404._wp, 347._wp, 305._wp, 336.0_wp/
+     data   yd(109),  yd(110),  yd(111),  yd(112),  yd(113),  yd(114)&
+     &    /  340._wp, 318._wp, 362._wp, 348._wp, 363._wp, 435.0_wp/
+     data   yd(115),  yd(116),  yd(117),  yd(118),  yd(119),  yd(120)&
+     &    /  491._wp, 505._wp, 404._wp, 359._wp, 310._wp, 337.0_wp/
+     data   yd(121),  yd(122),  yd(123),  yd(124),  yd(125),  yd(126)&
+     &    /  360._wp, 342._wp, 406._wp, 396._wp, 420._wp, 472.0_wp/
+     data   yd(127),  yd(128),  yd(129),  yd(130),  yd(131),  yd(132)&
+     &    /  548._wp, 559._wp, 463._wp, 407._wp, 362._wp, 405.0_wp/
+     data   yd(133),  yd(134),  yd(135),  yd(136),  yd(137),  yd(138)&
+     &    /  417._wp, 391._wp, 419._wp, 461._wp, 472._wp, 535.0_wp/
+     data   yd(139),  yd(140),  yd(141),  yd(142),  yd(143),  yd(144)&
+     &    /  622._wp, 606._wp, 508._wp, 461._wp, 390._wp, 432.0_wp/
 !
-      CALL IPRINT(IPRT)
-      ITEST = 1
-      LDSTAK = LDS
+      call iprint(iprt)
+      itest = 1
+      ldstak = lds
 !
-      N = 100
-      LAGMAX = 20
-      NPRT = 1
-      LYFFT = 150
-      LACOV = 21
-      NYD = 144
-      NFAC = 2
-      ND(1) = 1
-      ND(2) = 1
-      IOD(1) = 12
-      IOD(2) = 1
-      YMISS = 1.16_WP
+      n = 100
+      lagmax = 20
+      nprt = 1
+      lyfft = 150
+      lacov = 21
+      nyd = 144
+      nfac = 2
+      nd(1) = 1
+      nd(2) = 1
+      iod(1) = 12
+      iod(2) = 1
+      ymiss = 1.16_wp
 !
 !     TEST OF ACF
 !
-    5 WRITE (IPRT,1000)
-      CALL ACF(Y, N)
-      WRITE (IPRT,1010) IERR
+    5 write (iprt,1000)
+      call acf(y, n)
+      write (iprt,1010) ierr
 !
 !     TEST OF ACFS
 !
-      WRITE (IPRT,1020)
-      CALL ACFS(Y, N, LAGMAX, LACOV, ACOV, IAR, PHI, NPRT, LDSTAK)
-      WRITE (IPRT,1010) IERR
+      write (iprt,1020)
+      call acfs(y, n, lagmax, lacov, acov, iar, phi, nprt, ldstak)
+      write (iprt,1010) ierr
 !
 !     PRINT STORAGE FROM ACFS
 !
-      IF (IERR.EQ.0) THEN
-        WRITE (IPRT,1030) (ACOV(I),I=1,LAGMAX+1)
-        WRITE (IPRT,1030) (PHI(I),I=1,IAR)
-      END IF
+      if (ierr.eq.0) then
+        write (iprt,1030) (acov(i),i=1,lagmax+1)
+        write (iprt,1030) (phi(i),i=1,iar)
+      end if
 !
 !     TEST OF ACFD
 !
-      WRITE (IPRT,1040)
-      CALL ACFD(YD, NYD, LAGMAX, NFAC, ND, IOD, LDSTAK)
-      WRITE (IPRT,1010) IERR
+      write (iprt,1040)
+      call acfd(yd, nyd, lagmax, nfac, nd, iod, ldstak)
+      write (iprt,1010) ierr
 !
 !     TEST OF ACFM
 !
-      WRITE (IPRT,1050)
-      CALL ACFM(Y, YMISS, N)
-      WRITE (IPRT,1010) IERR
+      write (iprt,1050)
+      call acfm(y, ymiss, n)
+      write (iprt,1010) ierr
 !
 !     TEST OF ACFMS
 !
-      WRITE (IPRT,1120)
-      CALL ACFMS(Y, YMISS, N, LAGMAX, LACOV, ACOV, AMISS, NLPPA, NPRT,
-     &   LDSTAK)
-      WRITE (IPRT,1010) IERR
+      write (iprt,1120)
+     call acfms(y, ymiss, n, lagmax, lacov, acov, amiss, nlppa, nprt,&
+     &   ldstak)
+      write (iprt,1010) ierr
 !
 !     PRINT STORAGE FROM ACFMS
 !
-      IF (IERR.EQ.0) THEN
-        WRITE (IPRT,1030) (ACOV(I),I=1,LAGMAX+1)
-        WRITE (IPRT,1140) (NLPPA(I),I=1,LAGMAX+1)
-      END IF
+      if (ierr.eq.0) then
+        write (iprt,1030) (acov(i),i=1,lagmax+1)
+        write (iprt,1140) (nlppa(i),i=1,lagmax+1)
+      end if
 !
 !     COPY DATA INTO YFFT FOR ACFF
 !
-      DO 10 I=1,N
-         YFFT(I) = Y(I)
-   10 CONTINUE
+      do 10 i=1,n
+         yfft(i) = y(i)
+   10 continue
 !
 !     TEST OF ACFF
 !
-      WRITE (IPRT,1090)
-      CALL ACFF(YFFT, N, LYFFT, LDSTAK)
-      WRITE (IPRT,1010) IERR
+      write (iprt,1090)
+      call acff(yfft, n, lyfft, ldstak)
+      write (iprt,1010) ierr
 !
 !     COPY DATA INTO YFFT FOR ACFFS
 !
-      DO 20 I=1,N
-         YFFT(I) = Y(I)
-   20 CONTINUE
+      do 20 i=1,n
+         yfft(i) = y(i)
+   20 continue
 !
 !     TEST OF ACFFS
 !
-      WRITE (IPRT,1130)
-      CALL ACFFS(YFFT, N, LYFFT, LDSTAK, LAGMAX, LACOV, ACOV, IAR, PHI,
-     &   NPRT)
-      WRITE (IPRT,1010) IERR
+      write (iprt,1130)
+     call acffs(yfft, n, lyfft, ldstak, lagmax, lacov, acov, iar, phi,&
+     &   nprt)
+      write (iprt,1010) ierr
 !
 !     PRINT STORAGE FROM ACFFS
 !
-      IF (IERR.EQ.0) THEN
-        WRITE (IPRT,1030) (ACOV(I),I=1,LAGMAX+1)
-        WRITE (IPRT,1030) (PHI(I),I=1,IAR)
-      END IF
+      if (ierr.eq.0) then
+        write (iprt,1030) (acov(i),i=1,lagmax+1)
+        write (iprt,1030) (phi(i),i=1,iar)
+      end if
 !
-      GO TO (100, 200, 300, 400), ITEST
+      go to (100, 200, 300, 400), itest
 !
 !     TEST MINIMUM PROBLEM SIZE
 !
-  100 ITEST = ITEST + 1
-      N = 13
-      LAGMAX = 1
-      NFAC = 1
-      ND(1) = 1
-      IOD(1) = 1
-      GO TO 5
+  100 itest = itest + 1
+      n = 13
+      lagmax = 1
+      nfac = 1
+      nd(1) = 1
+      iod(1) = 1
+      go to 5
 !
 !     CHECK ERROR HANDLING
 !
-  200 ITEST = ITEST + 1
-      N = 0
-      LAGMAX = 20
-      LYFFT = 0
-      LACOV = 0
-      NYD = 0
-      NFAC = 1
-      ND(1) = 0
-      IOD(1) = 0
-      GO TO 5
+  200 itest = itest + 1
+      n = 0
+      lagmax = 20
+      lyfft = 0
+      lacov = 0
+      nyd = 0
+      nfac = 1
+      nd(1) = 0
+      iod(1) = 0
+      go to 5
 !
 !     CHECK ERROR HANDLING
 !
-  300 ITEST = ITEST + 1
-      N = 100
-      LAGMAX = 0
-      LYFFT = 0
-      LACOV = 0
-      NYD = 144
-      NFAC = 0
-      LDSTAK = 0
-      GO TO 5
+  300 itest = itest + 1
+      n = 100
+      lagmax = 0
+      lyfft = 0
+      lacov = 0
+      nyd = 144
+      nfac = 0
+      ldstak = 0
+      go to 5
 !
-  400 RETURN
+  400 return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT ('1TEST OF ACF')
- 1010 FORMAT (8H IERR IS, I5)
- 1020 FORMAT ('1', 12HTEST OF ACFS)
- 1030 FORMAT (9F10.5)
- 1040 FORMAT ('1', 12HTEST OF ACFD)
- 1050 FORMAT ('1', 12HTEST OF ACFM)
- 1090 FORMAT ('1', 12HTEST OF ACFF)
- 1120 FORMAT ('1', 13HTEST OF ACFMS)
- 1130 FORMAT ('1', 13HTEST OF ACFFS)
- 1140 FORMAT (9I10)
-      END
+ 1000 format ('1TEST OF ACF')
+ 1010 format (8h ierr is, i5)
+ 1020 format ('1', 12htest of acfs)
+ 1030 format (9f10.5)
+ 1040 format ('1', 12htest of acfd)
+ 1050 format ('1', 12htest of acfm)
+ 1090 format ('1', 12htest of acff)
+ 1120 format ('1', 13htest of acfms)
+ 1130 format ('1', 13htest of acffs)
+ 1140 format (9i10)
+      end

@@ -1,5 +1,5 @@
 !IPGMP
-      SUBROUTINE IPGMP (PER, FREQ, NF, N, LDSTAK)
+      subroutine ipgmp (per, freq, nf, n, ldstak)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,33 +16,33 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK,N,NF
+     integer&
+     &   ldstak,n,nf
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FREQ(*),PER(*)
+     real(kind=wp) ::&
+     &   freq(*),per(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,ISYM,LDSMIN,LPCV,NALL0,NPRT,PERI,XAXIS,YAXIS
-      LOGICAL
-     &   ERR01,ERR02,ERR03,HEAD
+     integer&
+     &   iprt,isym,ldsmin,lpcv,nall0,nprt,peri,xaxis,yaxis
+     logical&
+     &   err01,err02,err03,head
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSTAK(12)
-      INTEGER
-     &   ISTAK(12)
-      CHARACTER
-     &   LLDS(8)*1,LN(8)*1,LNF(8)*1,NMSUB(6)*1
+     real(kind=wp) ::&
+     &   rstak(12)
+     integer&
+     &   istak(12)
+     character&
+     &   llds(8)*1,ln(8)*1,lnf(8)*1,nmsub(6)*1
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -53,12 +53,12 @@
 !      EXTERNAL EISGE,IPGDV,IPRINT,LDSCMP,STKCLR,STKSET
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
+      equivalence (dstak(1),rstak(1))
+      equivalence (dstak(1),istak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -124,79 +124,79 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'I',       'P',       'G',       'M',       'P',       ' '/
-      DATA
-     & LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
-     &  LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
-      DATA
-     & LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     data&
+    & llds(1), llds(2), llds(3), llds(4), llds(5),&
+     &  llds(6), llds(7), llds(8) /'L','D','S','T','A','K',' ',' '/
+     data&
+    & ln(1), ln(2), ln(3), ln(4), ln(5), ln(6), ln(7), ln(8)&
      & /'N',' ',' ',' ',' ',' ',' ',' '/
-      DATA
-     & LNF(1), LNF(2), LNF(3), LNF(4), LNF(5), LNF(6), LNF(7), LNF(8)
+     data&
+    & lnf(1), lnf(2), lnf(3), lnf(4), lnf(5), lnf(6), lnf(7), lnf(8)&
      & /'N','F',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 17, 1, HEAD, ERR01, LN)
+      call eisge(nmsub, ln, n, 17, 1, head, err01, ln)
 !
-      CALL EISGE(NMSUB, LNF, NF, (N+2)/2, 1, HEAD, ERR02, LNF)
+      call eisge(nmsub, lnf, nf, (n+2)/2, 1, head, err02, lnf)
 !
-      IF (ERR01) GO TO 5
+      if (err01) go to 5
 !
-      CALL LDSCMP(4, 0, NF+103, 0, 0, 0, 'D', 3*NF+206, LDSMIN)
+      call ldscmp(4, 0, nf+103, 0, 0, 0, 'D', 3*nf+206, ldsmin)
 !
-      CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR03, LLDS)
+      call eisge(nmsub, llds, ldstak, ldsmin, 9, head, err03, llds)
 !
-      IF (ERR02 .OR. ERR03) GO TO 5
-      GO TO 10
+      if (err02 .or. err03) go to 5
+      go to 10
 !
-    5 CONTINUE
-      IERR = 1
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+    5 continue
+      ierr = 1
+      call iprint (iprt)
+      write (iprt, 1000)
+      return
 !
-   10 CONTINUE
+   10 continue
 !
 !     SET THE SIZE OF THE WORK AREA
 !
-      CALL STKSET(LDSTAK, 4)
+      call stkset(ldstak, 4)
 !
 !     SET THE NUMBER OF OUTSTANDING ALLOCATIONS.
 !
-      NALL0 = STKST(1)
+      nall0 = stkst(1)
 !
 !     SET VARIOUS PROGRAM PARAMETERS.
 !
-      LPCV = NF + 103
-      NPRT = 1
+      lpcv = nf + 103
+      nprt = 1
 !
 !     SUBDIVIDE THE STACK.
 !
-      ISYM = STKGET(LPCV, 2)
-      PERI = STKGET(NF, 4)
-      XAXIS = STKGET(LPCV, 4)
-      YAXIS = STKGET(LPCV, 4)
+      isym = stkget(lpcv, 2)
+      peri = stkget(nf, 4)
+      xaxis = stkget(lpcv, 4)
+      yaxis = stkget(lpcv, 4)
 !
 !     CALL THE MAIN DRIVER FOR COMPUTING (AND PLOTTING) THE INTEGRATED
 !     PERIODOGRAM.
 !
-      CALL IPGDV (PER, NF, N, RSTAK(PERI), FREQ, RSTAK(XAXIS),
-     &   RSTAK(YAXIS), ISTAK(ISYM), LPCV, NPRT)
+     call ipgdv (per, nf, n, rstak(peri), freq, rstak(xaxis),&
+     &   rstak(yaxis), istak(isym), lpcv, nprt)
 !
-      CALL STKCLR(NALL0)
+      call stkclr(nall0)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &  '       CALL IPGMP (PER, FREQ, NF, N, LDSTAK)')
-      END
+      end

@@ -1,6 +1,6 @@
 !EISGE
-      SUBROUTINE EISGE(NMSUB, NMVAR1, NVAL, NMIN, MSGTYP, HEAD, ERROR,
-     &   NMVAR2)
+     subroutine eisge(nmsub, nmvar1, nval, nmin, msgtyp, head, error,&
+     &   nmvar2)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,18 +17,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   MSGTYP,NMIN,NVAL
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   msgtyp,nmin,nval
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1
+     character&
+     &   nmsub(6)*1,nmvar1(8)*1,nmvar2(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -109,116 +109,116 @@
 !     INTEGER NVAL
 !        THE INPUT VALUE OF THE ARGUMENT BEING CHECKED.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (NVAL .GE. NMIN) RETURN
+      if (nval .ge. nmin) return
 !
-      ERROR = .TRUE.
+      error = .true.
 !
-      CALL IPRINT (IPRT)
+      call iprint (iprt)
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      WRITE (IPRT, 1000) (NMVAR1(I), I=1,6), NVAL
+      write (iprt, 1000) (nmvar1(i), i=1,6), nval
 !
-      GO TO (20, 30, 40, 50, 60, 70, 80, 90, 100), MSGTYP
+      go to (20, 30, 40, 50, 60, 70, 80, 90, 100), msgtyp
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL BASED ON LIMITS IMPOSED
 !     BY STARPAC.
 !
-   20 WRITE (IPRT, 1010) (NMVAR1(I), I=1,6), NMIN
-      RETURN
+   20 write (iprt, 1010) (nmvar1(i), i=1,6), nmin
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL BASED ON OTHER INPUT
 !     ARGUMENTS.
 !
-   30 WRITE (IPRT, 1020) (NMVAR1(I), I=1,6), (NMVAR2(I), I=1,8)
-      RETURN
+   30 write (iprt, 1020) (nmvar1(i), i=1,6), (nmvar2(i), i=1,8)
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
 !     FIRST DIMENSION OF A DIMENSIONED ARRAY.
 !
-   40 WRITE (IPRT, 1030) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6),
-     &   (NMVAR2(I), I=1,8)
-      RETURN
+  40 write (iprt, 1030) (nmvar1(i), i=2,7), (nmvar1(i), i=1,6),&
+     &   (nmvar2(i), i=1,8)
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
 !     SECOND DIMENSION OF A DIMENSIONED ARRAY.
 !
-   50 WRITE (IPRT, 1040) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6),
-     &   (NMVAR2(I), I=1,8)
-      RETURN
+  50 write (iprt, 1040) (nmvar1(i), i=2,7), (nmvar1(i), i=1,6),&
+     &   (nmvar2(i), i=1,8)
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL, WHEN ARGUMENT IS LDSTAK.
 !
-   60 WRITE(IPRT, 1050) NMIN
-      RETURN
+   60 write(iprt, 1050) nmin
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
 !     FIRST DIMENSION OF A DIMENSIONED ARRAY CHECK AGAINST THE NUMBER OF
 !     UNFIXED PARAMETERS.
 !
-   70 WRITE (IPRT, 1060) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6)
-      RETURN
+   70 write (iprt, 1060) (nmvar1(i), i=2,7), (nmvar1(i), i=1,6)
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
 !     DIMENSION OF A VECTOR.
 !
-   80 WRITE (IPRT, 1070) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6),
-     &   (NMVAR2(I), I=1,8)
-      RETURN
+  80 write (iprt, 1070) (nmvar1(i), i=2,7), (nmvar1(i), i=1,6),&
+     &   (nmvar2(i), i=1,8)
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
 !     DIMENSION OF THE VECTORS ACOV AND NLPPA.
 !
-   90 WRITE (IPRT, 1080) (NMVAR1(I), I=1,6), (NMVAR2(I), I=1,8)
-      RETURN
+   90 write (iprt, 1080) (nmvar1(i), i=1,6), (nmvar2(i), i=1,8)
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
 !     DIMENSION OF A VECTOR.
 !
-  100 WRITE (IPRT, 1090) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6),
-     &   NMIN
-      RETURN
+ 100 write (iprt, 1090) (nmvar1(i), i=2,7), (nmvar1(i), i=1,6),&
+     &   nmin
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/20H THE INPUT VALUE OF , 6A1, 4H IS , I5, '.')
- 1010 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   34H MUST BE GREATER THAN OR EQUAL TO , I5, '.')
- 1020 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   34H MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
- 1030 FORMAT(
-     &   24H THE FIRST DIMENSION OF , 6A1,
-     &   30H, AS INDICATED BY THE ARGUMENT/
-     &    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
- 1040 FORMAT(
-     &   25H THE SECOND DIMENSION OF , 6A1,
-     &   30H, AS INDICATED BY THE ARGUMENT/
-     &    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
- 1050 FORMAT(
-     &   55H THE DIMENSION OF THE DOUBLE PRECISION VECTOR DSTAK, AS,
-     &   13H INDICATED BY/
-     &   54H THE ARGUMENT LDSTAK, MUST BE GREATER THAN OR EQUAL TO,
-     &   I5, '.')
- 1060 FORMAT(
-     &   24H THE FIRST DIMENSION OF , 6A1,
-     &   30H, AS INDICATED BY THE ARGUMENT/
-     &    1X, 6A1, 34H, MUST BE GREATER THAN OR EQUAL TO,
-     &   34H THE NUMBER OF UNFIXED PARAMETERS.)
- 1070 FORMAT(
-     &   15H THE LENGTH OF , 6A1,
-     &   30H, AS INDICATED BY THE ARGUMENT/
-     &    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
- 1080 FORMAT(
-     &   29H THE LENGTH OF ACOV AND NLPPA,
-     &   30H, AS INDICATED BY THE ARGUMENT/
-     &    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
- 1090 FORMAT(
-     &   15H THE LENGTH OF , 6A1,
-     &   30H, AS INDICATED BY THE ARGUMENT/
-     &    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , I6, '.')
+ 1000 format (/20h the input value of , 6a1, 4h is , i5, '.')
+1010 format(&
+    &   27h the value of the argument , 6a1,&
+     &   34h must be greater than or equal to , i5, '.')
+1020 format(&
+    &   27h the value of the argument , 6a1,&
+     &   34h must be greater than or equal to , 8a1, '.')
+1030 format(&
+    &   24h the first dimension of , 6a1,&
+    &   30h, as indicated by the argument/&
+     &    1x, 6a1, 35h, must be greater than or equal to , 8a1, '.')
+1040 format(&
+    &   25h the second dimension of , 6a1,&
+    &   30h, as indicated by the argument/&
+     &    1x, 6a1, 35h, must be greater than or equal to , 8a1, '.')
+1050 format(&
+    &   55h the dimension of the double precision vector dstak, as,&
+    &   13h indicated by/&
+    &   54h the argument ldstak, must be greater than or equal to,&
+     &   i5, '.')
+1060 format(&
+    &   24h the first dimension of , 6a1,&
+    &   30h, as indicated by the argument/&
+    &    1x, 6a1, 34h, must be greater than or equal to,&
+     &   34h the number of unfixed parameters.)
+1070 format(&
+    &   15h the length of , 6a1,&
+    &   30h, as indicated by the argument/&
+     &    1x, 6a1, 35h, must be greater than or equal to , 8a1, '.')
+1080 format(&
+    &   29h the length of acov and nlppa,&
+    &   30h, as indicated by the argument/&
+     &    1x, 6a1, 35h, must be greater than or equal to , 8a1, '.')
+1090 format(&
+    &   15h the length of , 6a1,&
+    &   30h, as indicated by the argument/&
+     &    1x, 6a1, 35h, must be greater than or equal to , i6, '.')
 !
-      END
+      end

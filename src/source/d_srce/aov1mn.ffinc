@@ -1,6 +1,6 @@
 !AOV1MN
-      SUBROUTINE AOV1MN(Y, TAG, N, TVALUE, TSIZE, TMEAN, TSD, NPRT,
-     &   INDEX, SRANK, GPMIN, GPMAX, B10, RANKS, ITEMP, NG, NZW)
+     subroutine aov1mn(y, tag, n, tvalue, tsize, tmean, tsd, nprt,&
+     &   index, srank, gpmin, gpmax, b10, ranks, itemp, ng, nzw)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -23,32 +23,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,NG,NPRT,NZW
+     integer&
+     &   n,ng,nprt,nzw
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   B10(*),GPMAX(*),GPMIN(*),RANKS(*),SRANK(*),TAG(*),TMEAN(*),
-     &   TSD(*),TSIZE(*),TVALUE(*),Y(*)
-      INTEGER
-     &   INDEX(*),ITEMP(*)
+     real(kind=wp) ::&
+    &   b10(*),gpmax(*),gpmin(*),ranks(*),srank(*),tag(*),tmean(*),&
+     &   tsd(*),tsize(*),tvalue(*),y(*)
+     integer&
+     &   index(*),itemp(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   AF,BF,BFRAT,BFSIG,BMS,BSS,C,CC,CFKW,DF,DFRAT,DFSIG,DMS,DSS,F,
-     &   F1KW,F2KW,FMLC,FMUC,FNZW,FPLM,FSTAT,G1,GM,GR,HSTAT,IBAR,K0,
-     &   MF,MKW,Q,RESSQ,RMLC,RMUC,RX,SBMS,SC,SFRAT,SFSIG,SIGKW,SLBF,
-     &   SLCC,SMAX,SMIN,SMS,SNC,SOS,SQB,SQMS,SQOM,SQT,SSF,SSS,STMS,
-     &   SUM,SWMS,T1,T2,T3,TIES,TMS,TSS,U1,U2,UMLC,UMUC,V1,V2,VKW,VLS,
-     &   WMS,WSS,YBMAX,YBMIN,YMAX,YMIN
-      INTEGER
-     &   I,IPRT,ISZ,J,K,KK,KKK,L,M,M28,M3,M5,NN,NNE1,NZPNTR
-      CHARACTER
-     &   BLANK*1,HIGH*1,ISD*1,LOW*1,MEAN*1
+     real(kind=wp) ::&
+    &   af,bf,bfrat,bfsig,bms,bss,c,cc,cfkw,df,dfrat,dfsig,dms,dss,f,&
+    &   f1kw,f2kw,fmlc,fmuc,fnzw,fplm,fstat,g1,gm,gr,hstat,ibar,k0,&
+    &   mf,mkw,q,ressq,rmlc,rmuc,rx,sbms,sc,sfrat,sfsig,sigkw,slbf,&
+    &   slcc,smax,smin,sms,snc,sos,sqb,sqms,sqom,sqt,ssf,sss,stms,&
+    &   sum,swms,t1,t2,t3,ties,tms,tss,u1,u2,umlc,umuc,v1,v2,vkw,vls,&
+     &   wms,wss,ybmax,ybmin,ymax,ymin
+     integer&
+     &   i,iprt,isz,j,k,kk,kkk,l,m,m28,m3,m5,nn,nne1,nzpntr
+     character&
+     &   blank*1,high*1,isd*1,low*1,mean*1
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   STATS(15)
+     real(kind=wp) ::&
+     &   stats(15)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -59,7 +59,7 @@
 !      EXTERNAL GENI,IPRINT,RANKO,SRTIR,SRTRI,SRTRRI
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,ANINT,INT,LOG,MAX,MIN,NINT,DBLE,SQRT
+      intrinsic abs,anint,int,log,max,min,nint,dble,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -300,533 +300,533 @@
 !
 !     MACHINE DEPENDENT VARIABLE - FPLM
 !
-      DATA BLANK /' '/
-      DATA LOW /'-'/
-      DATA HIGH /'+'/
+      data blank /' '/
+      data low /'-'/
+      data high /'+'/
 !
-      CALL IPRINT(IPRT)
-      FPLM = D1MACH(2)
-      NZPNTR = N - NZW + 1
-      FNZW = NZW
+      call iprint(iprt)
+      fplm = d1mach(2)
+      nzpntr = n - nzw + 1
+      fnzw = nzw
 !
 !     ZERO WORK VECTORS
 !
-      DO 10 I=1,NG
-         TVALUE(I) = 0.0_WP
-         TSIZE(I) = 0.0_WP
-         TMEAN(I) = 0.0_WP
-         TSD(I) = 0.0_WP
-         SRANK(I) = 0.0_WP
-         GPMIN(I) = 0.0_WP
-         GPMAX(I) = 0.0_WP
-         B10(I) = 0.0_WP
-   10 CONTINUE
+      do 10 i=1,ng
+         tvalue(i) = 0.0_wp
+         tsize(i) = 0.0_wp
+         tmean(i) = 0.0_wp
+         tsd(i) = 0.0_wp
+         srank(i) = 0.0_wp
+         gpmin(i) = 0.0_wp
+         gpmax(i) = 0.0_wp
+         b10(i) = 0.0_wp
+   10 continue
 !
-      DO 20 I=1,15
-         STATS(I) = 0.0_WP
-   20 CONTINUE
+      do 20 i=1,15
+         stats(i) = 0.0_wp
+   20 continue
 !
-      CC = 0.0_WP
-      F = 0.0_WP
-      DMS = 0.0_WP
-      BSS = 0.0_WP
-      WSS = 0.0_WP
-      HSTAT = 0.0_WP
-      MF = 0.0_WP
-      SC = 0.0_WP
-      SMAX = 0.0_WP
-      NNE1 = 0
-      SNC = 0.0_WP
-      SOS = 0.0_WP
-      SSS = 0.0_WP
-      SUM = 0.0_WP
-      TIES = 0.0_WP
-      TSS = 0.0_WP
-      SMIN = 0.0_WP
-      SFRAT = 0.0_WP
+      cc = 0.0_wp
+      f = 0.0_wp
+      dms = 0.0_wp
+      bss = 0.0_wp
+      wss = 0.0_wp
+      hstat = 0.0_wp
+      mf = 0.0_wp
+      sc = 0.0_wp
+      smax = 0.0_wp
+      nne1 = 0
+      snc = 0.0_wp
+      sos = 0.0_wp
+      sss = 0.0_wp
+      sum = 0.0_wp
+      ties = 0.0_wp
+      tss = 0.0_wp
+      smin = 0.0_wp
+      sfrat = 0.0_wp
 !
 !     BEGIN COMPUTATIONS
 !
 !     COMPUTE RANKS
 !
-      CALL RANKO(NZW, Y(NZPNTR), ITEMP, RANKS, TIES)
+      call ranko(nzw, y(nzpntr), itemp, ranks, ties)
 !
 !     INITIALIZE FIRST ELEMENT BEFORE ENTERING LOOP
 !
-      TVALUE(1) = TAG(NZPNTR)
-      SRANK(1) = RANKS(1)
-      GPMIN(1) = Y(NZPNTR)
-      GPMAX(1) = Y(NZPNTR)
-      YMIN = GPMIN(1)
-      YMAX = GPMAX(1)
-      GM = Y(NZPNTR)
-      IBAR = 1.0_WP
-      TMEAN(1) = Y(NZPNTR)
-      TSIZE(1) = 1.0_WP
+      tvalue(1) = tag(nzpntr)
+      srank(1) = ranks(1)
+      gpmin(1) = y(nzpntr)
+      gpmax(1) = y(nzpntr)
+      ymin = gpmin(1)
+      ymax = gpmax(1)
+      gm = y(nzpntr)
+      ibar = 1.0_wp
+      tmean(1) = y(nzpntr)
+      tsize(1) = 1.0_wp
 !
 !     DETERMINE MEANS AND MAXS, DO SUMMATION PRIOR TO
 !     DETERIMING MEANS
 !     HERE J IS THE GROUP NUMBER
 !
-      J = 1
-      L = NZPNTR + 1
-      DO 50 I=L,N
-         IF (TAG(I).EQ.TAG(I-1)) GO TO 40
+      j = 1
+      l = nzpntr + 1
+      do 50 i=l,n
+         if (tag(i).eq.tag(i-1)) go to 40
 !
 !        NEW TAG GROUP
-         J = J + 1
-         TVALUE(J) = TAG(I)
-         GPMIN(J) = Y(I)
-         GPMAX(J) = Y(I)
-   40    TSIZE(J) = TSIZE(J) + 1.0_WP
-         TMEAN(J) = TMEAN(J) + Y(I)
-         GM = GM + Y(I)
+         j = j + 1
+         tvalue(j) = tag(i)
+         gpmin(j) = y(i)
+         gpmax(j) = y(i)
+   40    tsize(j) = tsize(j) + 1.0_wp
+         tmean(j) = tmean(j) + y(i)
+         gm = gm + y(i)
 !
 !     UNNECESSARY COMPUTATIONS IF PRINTED OUTPUT IS SUPRESSED
 !
-         IF (NPRT.EQ.0) GO TO 50
-         K = I + 1 - NZPNTR
-         SRANK(J) = SRANK(J) + RANKS(K)
-         GPMIN(J) = MIN(GPMIN(J),Y(I))
-         GPMAX(J) = MAX(GPMAX(J),Y(I))
-         YMIN = MIN(YMIN,GPMIN(J))
-         YMAX = MAX(YMAX,GPMAX(J))
-         IBAR = IBAR + J
-   50 CONTINUE
+         if (nprt.eq.0) go to 50
+         k = i + 1 - nzpntr
+         srank(j) = srank(j) + ranks(k)
+         gpmin(j) = min(gpmin(j),y(i))
+         gpmax(j) = max(gpmax(j),y(i))
+         ymin = min(ymin,gpmin(j))
+         ymax = max(ymax,gpmax(j))
+         ibar = ibar + j
+   50 continue
 !
 !     CALCULATE MEANS
 !
-      GM = GM/FNZW
-      IBAR = IBAR/FNZW
-      K = NZPNTR-1
-      I = NZPNTR
-      DO 70 J=1,NG
-         IF (TSIZE(J).GE.2.0_WP) THEN
-            TMEAN(J) = TMEAN(J)/TSIZE(J)
-         ELSE
-            TMEAN(J) = TMEAN(J)
-         END IF
-         K = K + INT(TSIZE(J))
+      gm = gm/fnzw
+      ibar = ibar/fnzw
+      k = nzpntr-1
+      i = nzpntr
+      do 70 j=1,ng
+         if (tsize(j).ge.2.0_wp) then
+            tmean(j) = tmean(j)/tsize(j)
+         else
+            tmean(j) = tmean(j)
+         end if
+         k = k + int(tsize(j))
 !
 !     L GIVES INDEX TO Y VALUE WITHIN GROUP J
 !
-         DO 60 L=I,K
-            RESSQ = (Y(L)-TMEAN(J))*(Y(L)-TMEAN(J))
-            TSD(J) = TSD(J) + RESSQ
-            IF (NPRT.EQ.0) GO TO 60
-            BSS = BSS + (TMEAN(J)-GM)*(TMEAN(J)-GM)
-            WSS = WSS + RESSQ
-            TSS = TSS + (Y(L)-GM)*(Y(L)-GM)
-   60    CONTINUE
-         I = K + 1
-   70 CONTINUE
+         do 60 l=i,k
+            ressq = (y(l)-tmean(j))*(y(l)-tmean(j))
+            tsd(j) = tsd(j) + ressq
+            if (nprt.eq.0) go to 60
+            bss = bss + (tmean(j)-gm)*(tmean(j)-gm)
+            wss = wss + ressq
+            tss = tss + (y(l)-gm)*(y(l)-gm)
+   60    continue
+         i = k + 1
+   70 continue
 !
 !     NOW DONE WITH TAG VECTOR, RETURN VECTOR TO INPUT ORDER
 !     INDEX IS FREED FOR USE IN OTHER PLACES
 !
-      CALL SRTRRI(TAG, Y, N, INDEX)
+      call srtrri(tag, y, n, index)
 !
 !     CHECK FOR PRINTED OUTPUT
 !
-      IF (NPRT.NE.0) GO TO 90
+      if (nprt.ne.0) go to 90
 !
 !     COMPUTE STANDARD DEVIATIONS WITHIN EACH GROUP
 !
-      DO 80 J=1,NG
-         TSD(J) = SQRT(TSD(J))
-         IF (TSIZE(J).LE.1.0_WP) GO TO 80
-         TSD(J) = TSD(J)/SQRT(TSIZE(J)-1.0_WP)
-   80 CONTINUE
+      do 80 j=1,ng
+         tsd(j) = sqrt(tsd(j))
+         if (tsize(j).le.1.0_wp) go to 80
+         tsd(j) = tsd(j)/sqrt(tsize(j)-1.0_wp)
+   80 continue
 !
 !     COMPUTATIONS COMPLETE FOR STORED OUTPUT - RETURN IF PRINTED
 !     OUTPUT IS SUPRESSED
 !
-      RETURN
-   90 YBMIN = TMEAN(1)
-      YBMAX = TMEAN(1)
-      SMIN = FPLM
+      return
+   90 ybmin = tmean(1)
+      ybmax = tmean(1)
+      smin = fplm
 !     HERE I IS THE GROUP NUMBER
-      DO 120 I=1,NG
-         IF (TSD(I).GT.0.0_WP) THEN
-            B10(I) = TSIZE(I)*(TSIZE(I)-1.0_WP)/TSD(I)
-            STATS(1) = STATS(1) + B10(I)*TMEAN(I)
-            STATS(2) = STATS(2) + B10(I)
-            IF (TSIZE(I).GT.1.0_WP) THEN
-               TSD(I) = SQRT(TSD(I)/(TSIZE(I)-1.0_WP))
-            END IF
-            MF = MF + (TSIZE(I)-1.0_WP)*LOG(TSD(I)*TSD(I))
-         END IF
-         IF (NINT(TSIZE(I)).GE.2) THEN
-            NNE1 = NNE1 + 1
-            SMAX = MAX(SMAX,TSD(I))
-            SMIN = MIN(SMIN,TSD(I))
-            STATS(3) = STATS(3) + 1.0_WP/(TSIZE(I)-1.0_WP)
-         END IF
-         SSS = SSS + TSIZE(I)*(I-IBAR)*(TMEAN(I)-GM)
-         STATS(4) = STATS(4) + TSIZE(I)*(I-IBAR)*(I-IBAR)
+      do 120 i=1,ng
+         if (tsd(i).gt.0.0_wp) then
+            b10(i) = tsize(i)*(tsize(i)-1.0_wp)/tsd(i)
+            stats(1) = stats(1) + b10(i)*tmean(i)
+            stats(2) = stats(2) + b10(i)
+            if (tsize(i).gt.1.0_wp) then
+               tsd(i) = sqrt(tsd(i)/(tsize(i)-1.0_wp))
+            end if
+            mf = mf + (tsize(i)-1.0_wp)*log(tsd(i)*tsd(i))
+         end if
+         if (nint(tsize(i)).ge.2) then
+            nne1 = nne1 + 1
+            smax = max(smax,tsd(i))
+            smin = min(smin,tsd(i))
+            stats(3) = stats(3) + 1.0_wp/(tsize(i)-1.0_wp)
+         end if
+         sss = sss + tsize(i)*(i-ibar)*(tmean(i)-gm)
+         stats(4) = stats(4) + tsize(i)*(i-ibar)*(i-ibar)
 !
 !        LOOK FOR SMALLEST AND LARGEST MEANS (YBAR)
 !
-         YBMIN = MIN(YBMIN,TMEAN(I))
-         YBMAX = MAX(YBMAX,TMEAN(I))
+         ybmin = min(ybmin,tmean(i))
+         ybmax = max(ybmax,tmean(i))
 !
-         HSTAT = HSTAT + SRANK(I)*SRANK(I)/TSIZE(I)
-         SUM = SUM + 1.0_WP/TSIZE(I)
-         STATS(5) = STATS(5) + (TMEAN(I)-GM)*(TMEAN(I)-GM)
-         SOS = SOS + TSD(I)*TSD(I)
-         SNC = SNC + TSIZE(I)*TSIZE(I)
-         SC = SC + TSIZE(I)*TSIZE(I)*TSIZE(I)
-  120 CONTINUE
-      IF (STATS(2).NE.0.0_WP) STATS(1) = STATS(1)/STATS(2)
-      IF (STATS(4).NE.0.0_WP) SSS = SSS*SSS/STATS(4)
-      DSS = BSS - SSS
+         hstat = hstat + srank(i)*srank(i)/tsize(i)
+         sum = sum + 1.0_wp/tsize(i)
+         stats(5) = stats(5) + (tmean(i)-gm)*(tmean(i)-gm)
+         sos = sos + tsd(i)*tsd(i)
+         snc = snc + tsize(i)*tsize(i)
+         sc = sc + tsize(i)*tsize(i)*tsize(i)
+  120 continue
+      if (stats(2).ne.0.0_wp) stats(1) = stats(1)/stats(2)
+      if (stats(4).ne.0.0_wp) sss = sss*sss/stats(4)
+      dss = bss - sss
 !
 !     DEGREES OF FREEDOM FOR ANOVA
 !
-      G1 = NG-1
-      M3 = NG - 2
-      GR = NZW-NG
-      M5 = NZW - 1
+      g1 = ng-1
+      m3 = ng - 2
+      gr = nzw-ng
+      m5 = nzw - 1
 !
 !     MEAN SQUARES
 !
-      BMS = BSS/G1
-      SMS = SSS
-      IF (NG.GE.3) DMS = DSS/M3
-      WMS = WSS/GR
-      TMS = TSS/M5
-      IF (WMS.EQ.BMS) THEN
-         BFRAT = 1.0_WP
-         BFSIG = 1.0_WP
-      ELSE IF (WMS.EQ.0.0_WP) THEN
-         BFRAT = FPLM
-         BFSIG = 0.0_WP
-      ELSE
-         BFRAT = BMS/WMS
-         BFSIG = 1.0_WP - CDFF(BFRAT,G1,GR)
-      END IF
-      IF (WMS.EQ.DMS) THEN
-         DFRAT = 1.0_WP
-         DFSIG = 1.0_WP
-      ELSE IF (WMS.EQ.0.0_WP) THEN
-         DFRAT = FPLM
-         DFSIG = 0.0_WP
-      ELSE
-         DFRAT = DMS/WMS
-         DFSIG = 1.0_WP - CDFF(DFRAT,DBLE(M3),DBLE(NZW-2))
-      END IF
-      IF (SMS.EQ.DSS+WSS) THEN
-         SFRAT = 1.0_WP
-         SFSIG = 1.0_WP
-      ELSE IF (DSS+WSS.EQ.0.0_WP) THEN
-         SFRAT = FPLM
-         SFSIG = 0.0_WP
-      ELSE
-         SFRAT = SMS/((DSS+WSS)/(FNZW-2.0_WP))
-         SFSIG = 1.0_WP - CDFF(SFRAT,1.0_WP,GR)
-      END IF
+      bms = bss/g1
+      sms = sss
+      if (ng.ge.3) dms = dss/m3
+      wms = wss/gr
+      tms = tss/m5
+      if (wms.eq.bms) then
+         bfrat = 1.0_wp
+         bfsig = 1.0_wp
+      else if (wms.eq.0.0_wp) then
+         bfrat = fplm
+         bfsig = 0.0_wp
+      else
+         bfrat = bms/wms
+         bfsig = 1.0_wp - cdff(bfrat,g1,gr)
+      end if
+      if (wms.eq.dms) then
+         dfrat = 1.0_wp
+         dfsig = 1.0_wp
+      else if (wms.eq.0.0_wp) then
+         dfrat = fplm
+         dfsig = 0.0_wp
+      else
+         dfrat = dms/wms
+         dfsig = 1.0_wp - cdff(dfrat,dble(m3),dble(nzw-2))
+      end if
+      if (sms.eq.dss+wss) then
+         sfrat = 1.0_wp
+         sfsig = 1.0_wp
+      else if (dss+wss.eq.0.0_wp) then
+         sfrat = fplm
+         sfsig = 0.0_wp
+      else
+         sfrat = sms/((dss+wss)/(fnzw-2.0_wp))
+         sfsig = 1.0_wp - cdff(sfrat,1.0_wp,gr)
+      end if
 !
 !     COMPUTE FOR KRUSKAL-WALLIS TEST
 !     FOR FORMULAE WITH CLEARER FORM AND NAMES SEE
 !     KRAFT AND VAN EEDEN  A NON PARAMETRIC INTRODUCTION TO STATISTICS,
 !     PP. 238 - 240
 !
-      STATS(6) = NZW*(NZW+1)
-      HSTAT = (12.0_WP*HSTAT/STATS(6)) - (3.0_WP*(NZW+1))
-      IF (TIES.EQ.NZW*NZW*NZW-NZW) THEN
-         CFKW = 0.0_WP
-         HSTAT = 0.0_WP
-         MKW = 0.0_WP
-      ELSE
-         CFKW = 1.0_WP - TIES/(NZW*NZW*NZW-NZW)
-         HSTAT = HSTAT/CFKW
-         MKW = ((NZW*NZW*NZW-SC)/STATS(6))/CFKW
-      END IF
-      VKW = 2.0_WP*G1 -
-     &   (0.4_WP*(3*NG*M3+NZW*(2*NG*(NG-3)+1)))/STATS(6)
-     &   - 6.0_WP*SUM/5.0_WP
-      IF (MKW-HSTAT.GT.0.0_WP .AND.
-     &    MKW.NE.0.0_WP .AND. VKW.NE.0.0_WP) THEN
-         F1KW = (G1*(G1*(MKW-G1)-VKW))/(0.5_WP*VKW*MKW)
-         F2KW = (MKW-G1)*F1KW/G1
-         FSTAT = (HSTAT*(MKW-G1))/(G1*(MKW-HSTAT))
-         SIGKW = 1.0_WP - CDFF(FSTAT,ANINT(F1KW),ANINT(F2KW))
-      ELSE
-         SIGKW = 0.0_WP
-      END IF
+      stats(6) = nzw*(nzw+1)
+      hstat = (12.0_wp*hstat/stats(6)) - (3.0_wp*(nzw+1))
+      if (ties.eq.nzw*nzw*nzw-nzw) then
+         cfkw = 0.0_wp
+         hstat = 0.0_wp
+         mkw = 0.0_wp
+      else
+         cfkw = 1.0_wp - ties/(nzw*nzw*nzw-nzw)
+         hstat = hstat/cfkw
+         mkw = ((nzw*nzw*nzw-sc)/stats(6))/cfkw
+      end if
+     vkw = 2.0_wp*g1 -&
+    &   (0.4_wp*(3*ng*m3+nzw*(2*ng*(ng-3)+1)))/stats(6)&
+     &   - 6.0_wp*sum/5.0_wp
+     if (mkw-hstat.gt.0.0_wp .and.&
+     &    mkw.ne.0.0_wp .and. vkw.ne.0.0_wp) then
+         f1kw = (g1*(g1*(mkw-g1)-vkw))/(0.5_wp*vkw*mkw)
+         f2kw = (mkw-g1)*f1kw/g1
+         fstat = (hstat*(mkw-g1))/(g1*(mkw-hstat))
+         sigkw = 1.0_wp - cdff(fstat,anint(f1kw),anint(f2kw))
+      else
+         sigkw = 0.0_wp
+      end if
 !
 !     COMPUTE TOTAL STATISTICS
 !
-      SWMS = SQRT(WMS)
-      SBMS = SQRT(STATS(5)/G1)
-      STMS = SQRT(TMS)
-      SQMS = SWMS/(SQRT(FNZW))
-      SQB = SBMS/(SQRT(DBLE(NG)))
-      SQT = STMS/(SQRT(FNZW))
-      T1 = PPFT(0.975_WP,INT(GR))
-      T2 = PPFT(0.975_WP,INT(G1))
-      T3 = PPFT(0.975_WP,M5)
-      FMLC = GM - SQMS*T1
-      RMLC = GM - SQB*T2
-      UMLC = GM - SQT*T3
-      FMUC = GM + SQMS*T1
-      RMUC = GM + SQB*T2
-      UMUC = GM + SQT*T3
+      swms = sqrt(wms)
+      sbms = sqrt(stats(5)/g1)
+      stms = sqrt(tms)
+      sqms = swms/(sqrt(fnzw))
+      sqb = sbms/(sqrt(dble(ng)))
+      sqt = stms/(sqrt(fnzw))
+      t1 = ppft(0.975_wp,int(gr))
+      t2 = ppft(0.975_wp,int(g1))
+      t3 = ppft(0.975_wp,m5)
+      fmlc = gm - sqms*t1
+      rmlc = gm - sqb*t2
+      umlc = gm - sqt*t3
+      fmuc = gm + sqms*t1
+      rmuc = gm + sqb*t2
+      umuc = gm + sqt*t3
 !
-      SSF = SWMS*SQRT(G1*PPFF(0.95_WP,INT(G1),INT(GR)))
+      ssf = swms*sqrt(g1*ppff(0.95_wp,int(g1),int(gr)))
 !
 !     TESTS FOR HOMOGENEITY OF VARIANCES
 !
-      IF (SMAX*SMAX.EQ.SOS) THEN
-         CC = 1.0_WP
-      ELSE IF (SOS.NE.0.0_WP) THEN
-         CC = SMAX*SMAX/SOS
-      END IF
-      STATS(7) = ANINT(FNZW/NG)
-      IF ((NNE1.GE.2) .AND. (CC.NE.1.0_WP)) THEN
-         SLCC = 1.0_WP -
-     &          CDFF((NNE1-1)*CC/(1.0_WP-CC),STATS(7),
-     &          STATS(7)*(NNE1-1))
-      ELSE
-         SLCC = 1.0_WP
-      END IF
-      SLCC = (NNE1-1)*SLCC
-      IF (SLCC.GT.1.0_WP) SLCC = 1.0_WP
+      if (smax*smax.eq.sos) then
+         cc = 1.0_wp
+      else if (sos.ne.0.0_wp) then
+         cc = smax*smax/sos
+      end if
+      stats(7) = anint(fnzw/ng)
+      if ((nne1.ge.2) .and. (cc.ne.1.0_wp)) then
+        slcc = 1.0_wp -&
+    &          cdff((nne1-1)*cc/(1.0_wp-cc),stats(7),&
+     &          stats(7)*(nne1-1))
+      else
+         slcc = 1.0_wp
+      end if
+      slcc = (nne1-1)*slcc
+      if (slcc.gt.1.0_wp) slcc = 1.0_wp
 !
-      IF (SMIN.EQ.SMAX) THEN
-         VLS = 1.0_WP
-      ELSE
-         IF (SMIN.EQ.0.0_WP) THEN
-            VLS = FPLM
-         ELSE
-            VLS = (SMAX/SMIN)*(SMAX/SMIN)
-         END IF
-      END IF
-      IF (WMS.GT.0.0_WP) MF = GR*LOG(WMS) - MF
-      AF = (STATS(3)-(1.0_WP/GR))/(3.0_WP*G1)
-      SLBF = 1.0_WP
-      IF ((AF.NE.1.0_WP) .AND. (NNE1.GE.2)) THEN
-         DF = (NNE1+1)/(AF*AF)
-         BF = (DF*MF)/((NNE1-1)*(DF/(1.0_WP-AF+(2.0_WP/DF))-MF))
-         IF (BF.LT.0.0_WP) BF = 0.0_WP
-         SLBF = 1.0_WP - CDFF(BF,DBLE(NNE1-1),ANINT(DF))
-      ELSE
-         BF = FPLM
-      END IF
-      K0 = (FNZW-(SNC/FNZW))/G1
-      SQOM = (BMS-WMS)/K0
+      if (smin.eq.smax) then
+         vls = 1.0_wp
+      else
+         if (smin.eq.0.0_wp) then
+            vls = fplm
+         else
+            vls = (smax/smin)*(smax/smin)
+         end if
+      end if
+      if (wms.gt.0.0_wp) mf = gr*log(wms) - mf
+      af = (stats(3)-(1.0_wp/gr))/(3.0_wp*g1)
+      slbf = 1.0_wp
+      if ((af.ne.1.0_wp) .and. (nne1.ge.2)) then
+         df = (nne1+1)/(af*af)
+         bf = (df*mf)/((nne1-1)*(df/(1.0_wp-af+(2.0_wp/df))-mf))
+         if (bf.lt.0.0_wp) bf = 0.0_wp
+         slbf = 1.0_wp - cdff(bf,dble(nne1-1),anint(df))
+      else
+         bf = fplm
+      end if
+      k0 = (fnzw-(snc/fnzw))/g1
+      sqom = (bms-wms)/k0
 !
 !     COMPUTATIONS ARE NOW COMPLETE ************************************
 !
 !     PRINT ANOVA
 !
-      NN = N - NZW
-      WRITE (IPRT,1000) NN
-      NN = NG - 1
-      WRITE (IPRT,1010) NN, BSS, BMS, BFRAT, BFSIG
-      IF (NG.LT.3) GO TO 180
-      IF (BFSIG.GE..10) GO TO 180
-      NN = 1
-      WRITE (IPRT,1020) NN, SSS, SMS, SFRAT, SFSIG
-      WRITE (IPRT,1030) M3, DSS, DMS, DFRAT, DFSIG
-  180 NN = NZW - NG
-      WRITE (IPRT,1040) NN, WSS, WMS
-      WRITE (IPRT,1050) M5, TSS
+      nn = n - nzw
+      write (iprt,1000) nn
+      nn = ng - 1
+      write (iprt,1010) nn, bss, bms, bfrat, bfsig
+      if (ng.lt.3) go to 180
+      if (bfsig.ge..10) go to 180
+      nn = 1
+      write (iprt,1020) nn, sss, sms, sfrat, sfsig
+      write (iprt,1030) m3, dss, dms, dfrat, dfsig
+  180 nn = nzw - ng
+      write (iprt,1040) nn, wss, wms
+      write (iprt,1050) m5, tss
 !
 !     PRINT KRUSKAL-WALLIS TEST
 !
-      WRITE (IPRT,1060) HSTAT, SIGKW
+      write (iprt,1060) hstat, sigkw
 !
 !     PRINT ESTIMATES
 !
-      WRITE (IPRT,1070)
-      DO 200 I=1,NG
-         MEAN = BLANK
-         IF (TMEAN(I).LE.YBMIN) MEAN = LOW
-         IF (TMEAN(I).GE.YBMAX) MEAN = HIGH
-         ISD = BLANK
-         IF (TSD(I).LE.SMIN) ISD = LOW
-         IF (TSD(I).GE.SMAX) ISD = HIGH
-         ISZ = INT(TSIZE(I))
-         IF (ISZ.LE.1) THEN
-            WRITE (IPRT,1090) TVALUE(I), ISZ, TMEAN(I), MEAN, GPMIN(I),
-     &         GPMAX(I), SRANK(I)
-         ELSE
-            STATS(9) = TSD(I)/SQRT(TSIZE(I))
-            STATS(10) = PPFT(0.975_WP,ISZ-1)
-            STATS(8) = TMEAN(I) - STATS(9)*STATS(10)
-            STATS(11) = TMEAN(I) + STATS(9)*STATS(10)
-            WRITE (IPRT,1080) TVALUE(I), ISZ, TMEAN(I), MEAN, TSD(I),
-     &                        ISD, STATS(9), GPMIN(I), GPMAX(I),
-     &                        SRANK(I), STATS(8), STATS(11)
-         END IF
-  200 CONTINUE
-      WRITE (IPRT,1100) NZW, GM, YMIN, YMAX, SWMS, SQMS, FMLC, FMUC,
-     &   SBMS, SQB, RMLC, RMUC, STMS, SQT, UMLC, UMUC
-      IF (BFSIG.LT.0.10) THEN
+      write (iprt,1070)
+      do 200 i=1,ng
+         mean = blank
+         if (tmean(i).le.ybmin) mean = low
+         if (tmean(i).ge.ybmax) mean = high
+         isd = blank
+         if (tsd(i).le.smin) isd = low
+         if (tsd(i).ge.smax) isd = high
+         isz = int(tsize(i))
+         if (isz.le.1) then
+           write (iprt,1090) tvalue(i), isz, tmean(i), mean, gpmin(i),&
+     &         gpmax(i), srank(i)
+         else
+            stats(9) = tsd(i)/sqrt(tsize(i))
+            stats(10) = ppft(0.975_wp,isz-1)
+            stats(8) = tmean(i) - stats(9)*stats(10)
+            stats(11) = tmean(i) + stats(9)*stats(10)
+           write (iprt,1080) tvalue(i), isz, tmean(i), mean, tsd(i),&
+    &                        isd, stats(9), gpmin(i), gpmax(i),&
+     &                        srank(i), stats(8), stats(11)
+         end if
+  200 continue
+     write (iprt,1100) nzw, gm, ymin, ymax, swms, sqms, fmlc, fmuc,&
+     &   sbms, sqb, rmlc, rmuc, stms, sqt, umlc, umuc
+      if (bfsig.lt.0.10) then
 !
 !     SORT YBAR FOR MULTIPLE COMPARISIONS OF MEANS
 !
-         CALL GENI(INDEX, NG, 1, 1)
-         CALL SRTIR(INDEX, NG, TMEAN)
+         call geni(index, ng, 1, 1)
+         call srtir(index, ng, tmean)
 !
 !     COMPUTE AND PRINT FOR MULTIPLE COMPARISIONS
 !
-         IF (NZW-NG.LT.4) GO TO 270
-         WRITE (IPRT,1110)
+         if (nzw-ng.lt.4) go to 270
+         write (iprt,1110)
 !
 !     NEWMAN-KEULS-HARTLEY
 !
-         WRITE (IPRT,1120)
-         RX = -.283917_WP +
-     &   2.63532_WP*(GR-1.00123_WP)**(-.95862_WP)
-         U1 = -.314115_WP +
-     &   2.38301_WP*(GR-1.03428_WP)**(-.864005_WP)
-         U2 = 3.65961_WP*U1**2 - 1.00891_WP*U1 - 0.166346_WP
-         J = 1
-         M28 = 0
-  210    I = NG
-  220    IF (I.LE.M28) GO TO 260
-         IF (I.EQ.J) GO TO 230
-         STATS(14) = ABS(TMEAN(I)-TMEAN(J))
+         write (iprt,1120)
+        rx = -.283917_wp +&
+     &   2.63532_wp*(gr-1.00123_wp)**(-.95862_wp)
+        u1 = -.314115_wp +&
+     &   2.38301_wp*(gr-1.03428_wp)**(-.864005_wp)
+         u2 = 3.65961_wp*u1**2 - 1.00891_wp*u1 - 0.166346_wp
+         j = 1
+         m28 = 0
+  210    i = ng
+  220    if (i.le.m28) go to 260
+         if (i.eq.j) go to 230
+         stats(14) = abs(tmean(i)-tmean(j))
 !
 !     MANDEL APPROXIMATION TO PERCENT POINT OF STUDENTIZED RANGE
 !
-         STATS(12) = I-J+1
-         C = 2.3849867_WP -
-     &       2.9051857_WP*(STATS(12)-
-     &       0.57583164_WP)**(-.069648109_WP)
-         V1 = 1.30153_WP -
-     &        1.95073_WP*(STATS(12)+.394915_WP)**(-.139783_WP)
-         V2 = 4.72863_WP*V1**2 + 0.404271_WP*V1 - 0.135104_WP
-         STATS(13) = 6.15075_WP + 4.441409_WP*RX +
-     &               6.7514569_WP*C + 7.4671282_WP*U1*V1 -
-     &               0.157537_WP*U2*V2
-         KK = INDEX(I)
-         KKK = INDEX(J)
-         STATS(13) = STATS(13)*
-     &            SQRT(0.5_WP*((1.0_WP/TSIZE(KK))+(1.0_WP/TSIZE(KKK))))*
-     &            SWMS
-         IF (STATS(14).LE.STATS(13)) GO TO 230
-         I = I - 1
-         GO TO 220
-  230    IF (J.EQ.1) GO TO 250
-         IF (J.GT.M28) GO TO 240
-         WRITE (IPRT,1150)
-         GO TO 250
-  240    WRITE (IPRT,1160)
-  250    WRITE (IPRT,1140) (TMEAN(M),M=J,I)
-         IF (I.GE.NG) GO TO 270
-         M28 = I
-  260    J = J + 1
-         GO TO 210
+         stats(12) = i-j+1
+        c = 2.3849867_wp -&
+    &       2.9051857_wp*(stats(12)-&
+     &       0.57583164_wp)**(-.069648109_wp)
+        v1 = 1.30153_wp -&
+     &        1.95073_wp*(stats(12)+.394915_wp)**(-.139783_wp)
+         v2 = 4.72863_wp*v1**2 + 0.404271_wp*v1 - 0.135104_wp
+        stats(13) = 6.15075_wp + 4.441409_wp*rx +&
+    &               6.7514569_wp*c + 7.4671282_wp*u1*v1 -&
+     &               0.157537_wp*u2*v2
+         kk = index(i)
+         kkk = index(j)
+        stats(13) = stats(13)*&
+    &            sqrt(0.5_wp*((1.0_wp/tsize(kk))+(1.0_wp/tsize(kkk))))*&
+     &            swms
+         if (stats(14).le.stats(13)) go to 230
+         i = i - 1
+         go to 220
+  230    if (j.eq.1) go to 250
+         if (j.gt.m28) go to 240
+         write (iprt,1150)
+         go to 250
+  240    write (iprt,1160)
+  250    write (iprt,1140) (tmean(m),m=j,i)
+         if (i.ge.ng) go to 270
+         m28 = i
+  260    j = j + 1
+         go to 210
 !
 !     SCHEFFE METHOD
 !
-  270    WRITE (IPRT,1130)
-         J = 1
-         M28 = 0
-  280    I = NG
-  290    IF (I.LE.M28) GO TO 330
-         IF (I.EQ.J) GO TO 300
-         KK = INDEX(I)
-         KKK = INDEX(J)
-         STATS(14) = ABS(TMEAN(I)-TMEAN(J))
-         STATS(13) = SSF*SQRT((1.0_WP/TSIZE(KK))+(1./TSIZE(KKK)))
-         IF (STATS(14)-STATS(13).LE.0.0_WP) GO TO 300
-         I = I - 1
-         GO TO 290
-  300    IF (J.EQ.1) GO TO 320
-         IF (J.GT.M28) GO TO 310
-         WRITE (IPRT,1150)
-         GO TO 320
-  310    WRITE (IPRT,1160)
-  320    WRITE (IPRT,1140) (TMEAN(M),M=J,I)
-         IF (I.GE.NG) GO TO 340
-         M28 = I
-  330    J = J + 1
-         GO TO 280
+  270    write (iprt,1130)
+         j = 1
+         m28 = 0
+  280    i = ng
+  290    if (i.le.m28) go to 330
+         if (i.eq.j) go to 300
+         kk = index(i)
+         kkk = index(j)
+         stats(14) = abs(tmean(i)-tmean(j))
+         stats(13) = ssf*sqrt((1.0_wp/tsize(kk))+(1./tsize(kkk)))
+         if (stats(14)-stats(13).le.0.0_wp) go to 300
+         i = i - 1
+         go to 290
+  300    if (j.eq.1) go to 320
+         if (j.gt.m28) go to 310
+         write (iprt,1150)
+         go to 320
+  310    write (iprt,1160)
+  320    write (iprt,1140) (tmean(m),m=j,i)
+         if (i.ge.ng) go to 340
+         m28 = i
+  330    j = j + 1
+         go to 280
 !
 !     RETURN TAG MEANS TO ORIGINAL ORDER
 !
-  340    CALL SRTRI(TMEAN, NG, INDEX)
-      END IF
+  340    call srtri(tmean, ng, index)
+      end if
 !
-      IF (NNE1.LE.1) RETURN
-      WRITE (IPRT,1170) CC, SLCC, BF, SLBF, VLS
-      IF (SLCC.GT.0.1_WP .AND. SLBF.GT.0.1_WP) GO TO 390
-      DO 360 I=1,NG
-         F = F + B10(I)*(TMEAN(I)-STATS(1))*(TMEAN(I)-STATS(1))
-         IF (STATS(2).EQ.0.0_WP .OR. TSIZE(I).LE.1.0_WP) GO TO 360
-         STATS(15) = STATS(15) +
-     &               (1.0_WP-B10(I)*B10(I)/STATS(2)/STATS(2))/
-     &               (TSIZE(I)-1.0_WP)
-  360 CONTINUE
-      IF (STATS(15).EQ.0.0_WP) GO TO 370
-      STATS(15) = (NG*NG-1.0_WP)/(3.0_WP*STATS(15))
-      IF (NG.LE.1) GO TO 370
-      F = (F/G1)/(1.0_WP+(2.0_WP*M3/(3.0_WP*STATS(15))))
-      GO TO 380
-  370 F = 0.0_WP
-  380 Q = 1.0_WP - CDFF(F,G1,ANINT(STATS(15)))
-      WRITE (IPRT,1180) F, Q
-  390 WRITE (IPRT,1190) SQOM
-      RETURN
+      if (nne1.le.1) return
+      write (iprt,1170) cc, slcc, bf, slbf, vls
+      if (slcc.gt.0.1_wp .and. slbf.gt.0.1_wp) go to 390
+      do 360 i=1,ng
+         f = f + b10(i)*(tmean(i)-stats(1))*(tmean(i)-stats(1))
+         if (stats(2).eq.0.0_wp .or. tsize(i).le.1.0_wp) go to 360
+        stats(15) = stats(15) +&
+    &               (1.0_wp-b10(i)*b10(i)/stats(2)/stats(2))/&
+     &               (tsize(i)-1.0_wp)
+  360 continue
+      if (stats(15).eq.0.0_wp) go to 370
+      stats(15) = (ng*ng-1.0_wp)/(3.0_wp*stats(15))
+      if (ng.le.1) go to 370
+      f = (f/g1)/(1.0_wp+(2.0_wp*m3/(3.0_wp*stats(15))))
+      go to 380
+  370 f = 0.0_wp
+  380 q = 1.0_wp - cdff(f,g1,anint(stats(15)))
+      write (iprt,1180) f, q
+  390 write (iprt,1190) sqom
+      return
 !
 !     AUTOMATIC PRINTOUT IS FINISHED
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(54H *GROUP NUMBERS HAVE BEEN ASSIGNED ACCORDING TO TAG VA,
-     &   59HLUES GIVEN, WHERE THE SMALLEST TAG GREATER THAN ZERO HAS BE,
-     &   14HEN ASSIGNED  */41H *GROUP NUMBER 1, THE NEXT SMALLEST, GROU,
-     &   59HP NUMBER 2, ETC.  TAGS LESS THAN OR EQUAL TO ZERO HAVE NOT ,
-     &   27HBEEN INCLUDED IN ANALYSIS.*/28H *NUMBER OF VALUES EXCLUDED ,
-     &   17HFROM ANALYSIS IS , I4, 77X, 1H*//17X, 6HSOURCE, 14X, 4HD.F.,
-     &   4X, 14HSUM OF SQUARES, 5X, 12HMEAN SQUARES, 9X, 7HF RATIO, 4X,
-     &   7HF PROB./)
- 1010 FORMAT(17X, 14HBETWEEN GROUPS, 5X, I4, 1P2E18.6, 4X, 0PE11.3,
-     &   F10.3)
- 1020 FORMAT(20X, 5HSLOPE, 14X, I4, 1P2E18.6, 3X, 0PE11.3, F10.3)
- 1030 FORMAT(20X, 16HDEVS. ABOUT LINE, 3X, I4, 1P2E18.6, 3X, 0PE11.3,
-     &   F10.3)
- 1040 FORMAT(17X, 13HWITHIN GROUPS, 6X, I4, 1P2E18.6)
- 1050 FORMAT(17X, 5HTOTAL, 14X, I4, 1PE18.6//)
- 1060 FORMAT(11X, 49HKRUSKAL-WALLIS RANK TEST FOR DIFFERENCE BETWEEN G,
-     &   16HROUP MEANS * H =, E11.3, 10H, F PROB =, F6.3, 10H (APPROX.)
+1000 format(54h *group numbers have been assigned according to tag va,&
+    &   59hlues given, where the smallest tag greater than zero has be,&
+    &   14hen assigned  */41h *group number 1, the next smallest, grou,&
+    &   59hp number 2, etc.  tags less than or equal to zero have not ,&
+    &   27hbeen included in analysis.*/28h *number of values excluded ,&
+    &   17hfrom analysis is , i4, 77x, 1h*//17x, 6hsource, 14x, 4hd.f.,&
+    &   4x, 14hsum of squares, 5x, 12hmean squares, 9x, 7hf ratio, 4x,&
+     &   7hf prob./)
+1010 format(17x, 14hbetween groups, 5x, i4, 1p2e18.6, 4x, 0pe11.3,&
+     &   f10.3)
+ 1020 format(20x, 5hslope, 14x, i4, 1p2e18.6, 3x, 0pe11.3, f10.3)
+1030 format(20x, 16hdevs. about line, 3x, i4, 1p2e18.6, 3x, 0pe11.3,&
+     &   f10.3)
+ 1040 format(17x, 13hwithin groups, 6x, i4, 1p2e18.6)
+ 1050 format(17x, 5htotal, 14x, i4, 1pe18.6//)
+1060 format(11x, 49hkruskal-wallis rank test for difference between g,&
+    &   16hroup means * h =, e11.3, 10h, f prob =, f6.3, 10h (approx.)&
      &   /)
- 1070 FORMAT(55X, 9HESTIMATES/96X, 6HSUM OF/5X, 5H TAG , 10X, 3HNO.,
-     &   6X, 4HMEAN, 7X, 11HWITHIN S.D., 2X, 12HS.D. OF MEAN, 5X,
-     &   7HMINIMUM, 7X, 7HMAXIMUM, 6X, 5HRANKS, 3X, 16H95PCT CONF INT F,
-     &   7HOR MEAN/)
- 1080 FORMAT(1X, 1PE14.6, I8, E14.5, A1, E13.5, A1, E13.5, 2E14.5,
-     &   0PF9.1, 1PE13.5, 3H TO, E12.5)
- 1090 FORMAT(1X, 1PE14.6, I8, E14.5, A1, 3X, 23H ESTIMATE NOT AVAILABLE,
-     &   ' ', 2E14.5, 0PF9.1, 3X, 25H********** TO ********** )
- 1100 FORMAT(/11X, 5HTOTAL, I7, 1PE14.5, 28X, 2E14.5//
-     &   17X, 20HFIXED EFFECTS MODEL , 2E14.5, 37X, E13.5, 3H TO, E12.5/
-     &   17X, 7HRANDOM ,
-     &   13HEFFECTS MODEL, 2E14.5, 37X, E13.5, 3H TO, E12.5/17X,
-     &   14HUNGROUPED DATA, 6X, 2E14.5, 37X, E13.5, 3H TO, E12.5/)
- 1110 FORMAT(1X, 50HPAIRWISE MULTIPLE COMPARISON OF MEANS.  THE MEANS ,
-     &   59HARE PUT IN INCREASING ORDER IN GROUPS SEPARATED BY *****.  ,
-     &   11HA MEAN IS  /44H ADJUDGED NON-SIGNIFICANTLY DIFFERENT FROM A,
-     &   59HNY MEAN IN THE SAME GROUP AND SIGNIFICANTLY DIFFERENT AT TH,
-     &   17HE .05 LEVEL FROM /38H ANY MEAN IN ANOTHER GROUP.  ***** ***,
-     &   59H** INDICATES ADJACENT GROUPS HAVE NO COMMON MEAN.          ,
-     &   23H                       )
- 1120 FORMAT(/3X, 49HNEWMAN-KEULS TECHNIQUE, HARTLEY MODIFICATION. (AP,
-     &   40HPROXIMATE IF GROUP NUMBERS ARE UNEQUAL.))
- 1130 FORMAT(/3X, 18HSCHEFFE TECHNIQUE.)
- 1140 FORMAT(3X, 9(1PE12.5, ','))
- 1150 FORMAT(6X, 5H*****)
- 1160 FORMAT(3X, 11H***** *****)
- 1170 FORMAT(/36H TESTS FOR HOMOGENEITY OF VARIANCES./7X, 9HCOCHRANS ,
-     &   35HC = MAX. VARIANCE/SUM(VARIANCES) = , F7.4, 6H, P = , F6.3,
-     &   10H (APPROX.)/7X, 17HBARTLETT-BOX F = , F9.3, 6H, P = ,
-     &   F6.3/7X, 38HMAXIMUM VARIANCE / MINIMUM VARIANCE = , F14.4)
- 1180 FORMAT(7X, 50HAPPROX BETWEEN MEANS F-TEST IN PRESENCE OF HETEROG,
-     &   20HENEOUS VARIANCE. F =, F8.3, 5H, P =, F6.3)
- 1190 FORMAT(/35H MODEL II - COMPONENTS OF VARIANCE./7X, 10HESTIMATE O,
-     &   20HF BETWEEN COMPONENT , 1PE14.6)
-      END
+1070 format(55x, 9hestimates/96x, 6hsum of/5x, 5h tag , 10x, 3hno.,&
+    &   6x, 4hmean, 7x, 11hwithin s.d., 2x, 12hs.d. of mean, 5x,&
+    &   7hminimum, 7x, 7hmaximum, 6x, 5hranks, 3x, 16h95pct conf int f,&
+     &   7hor mean/)
+1080 format(1x, 1pe14.6, i8, e14.5, a1, e13.5, a1, e13.5, 2e14.5,&
+     &   0pf9.1, 1pe13.5, 3h to, e12.5)
+1090 format(1x, 1pe14.6, i8, e14.5, a1, 3x, 23h estimate not available,&
+     &   ' ', 2e14.5, 0pf9.1, 3x, 25h********** to ********** )
+1100 format(/11x, 5htotal, i7, 1pe14.5, 28x, 2e14.5//&
+    &   17x, 20hfixed effects model , 2e14.5, 37x, e13.5, 3h to, e12.5/&
+    &   17x, 7hrandom ,&
+    &   13heffects model, 2e14.5, 37x, e13.5, 3h to, e12.5/17x,&
+     &   14hungrouped data, 6x, 2e14.5, 37x, e13.5, 3h to, e12.5/)
+1110 format(1x, 50hpairwise multiple comparison of means.  the means ,&
+    &   59hare put in increasing order in groups separated by *****.  ,&
+    &   11ha mean is  /44h adjudged non-significantly different from a,&
+    &   59hny mean in the same group and significantly different at th,&
+    &   17he .05 level from /38h any mean in another group.  ***** ***,&
+    &   59h** indicates adjacent groups have no common mean.          ,&
+     &   23h                       )
+1120 format(/3x, 49hnewman-keuls technique, hartley modification. (ap,&
+     &   40hproximate if group numbers are unequal.))
+ 1130 format(/3x, 18hscheffe technique.)
+ 1140 format(3x, 9(1pe12.5, ','))
+ 1150 format(6x, 5h*****)
+ 1160 format(3x, 11h***** *****)
+1170 format(/36h tests for homogeneity of variances./7x, 9hcochrans ,&
+    &   35hc = max. variance/sum(variances) = , f7.4, 6h, p = , f6.3,&
+    &   10h (approx.)/7x, 17hbartlett-box f = , f9.3, 6h, p = ,&
+     &   f6.3/7x, 38hmaximum variance / minimum variance = , f14.4)
+1180 format(7x, 50happrox between means f-test in presence of heterog,&
+     &   20heneous variance. f =, f8.3, 5h, p =, f6.3)
+1190 format(/35h model ii - components of variance./7x, 10hestimate o,&
+     &   20hf between component , 1pe14.6)
+      end

@@ -1,5 +1,5 @@
 !SUMSS
-      SUBROUTINE SUMSS(X, N, LO, MID, HI, SUM1, SUM2, SUMA, XMEAN)
+      subroutine sumss(x, n, lo, mid, hi, sum1, sum2, suma, xmean)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,21 +18,21 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   SUM1,SUM2,SUMA,XMEAN
-      INTEGER
-     &   HI,LO,MID,N
+     real(kind=wp) ::&
+     &   sum1,sum2,suma,xmean
+     integer&
+     &   hi,lo,mid,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(N)
+     real(kind=wp) ::&
+     &   x(n)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   CURHI,CURLO,I,IREV
+     integer&
+     &   curhi,curlo,i,irev
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS
+      intrinsic abs
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -72,44 +72,44 @@
 !
 !     INITIALIZE SUMMATION VARIABLES.
 !
-      SUM1 = X(MID)
-      SUM2 = X(MID)*X(MID)
-      SUMA = ABS(X(MID))
-      CURLO = MID - 1
-      CURHI = MID + 1
+      sum1 = x(mid)
+      sum2 = x(mid)*x(mid)
+      suma = abs(x(mid))
+      curlo = mid - 1
+      curhi = mid + 1
 !
 !     SUM OUTWARDS FROM THE VALUE NEAREST ZERO.  THAT IS, SUM FROM
 !     THE LEAST IN MAGNITUDE TO THE GREATEST.
 !
-   10 IF (CURHI.GT.HI .OR. CURLO.LT.LO) GO TO 30
-      IF (ABS(X(CURHI)).LT.ABS(X(CURLO))) GO TO 20
-      SUM1 = SUM1 + X(CURLO)
-      SUM2 = SUM2 + X(CURLO)*X(CURLO)
-      SUMA = SUMA + ABS(X(CURLO))
-      CURLO = CURLO - 1
-      GO TO 10
-   20 SUM1 = SUM1 + X(CURHI)
-      SUM2 = SUM2 + X(CURHI)*X(CURHI)
-      SUMA = SUMA + ABS(X(CURHI))
-      CURHI = CURHI + 1
-      GO TO 10
+   10 if (curhi.gt.hi .or. curlo.lt.lo) go to 30
+      if (abs(x(curhi)).lt.abs(x(curlo))) go to 20
+      sum1 = sum1 + x(curlo)
+      sum2 = sum2 + x(curlo)*x(curlo)
+      suma = suma + abs(x(curlo))
+      curlo = curlo - 1
+      go to 10
+   20 sum1 = sum1 + x(curhi)
+      sum2 = sum2 + x(curhi)*x(curhi)
+      suma = suma + abs(x(curhi))
+      curhi = curhi + 1
+      go to 10
 !
 !     SUM UP ANY VALUES WHICH MAY REMAIN BECAUSE OF AN OFF
 !     CENTER ZERO POINT.
 !
-   30 IF (CURHI.GT.HI) GO TO 50
-      DO 40 I=CURHI,HI
-         SUM1 = SUM1 + X(I)
-         SUM2 = SUM2 + X(I)*X(I)
-         SUMA = SUMA + ABS(X(I))
-   40 CONTINUE
-   50 IF (CURLO.LT.LO) GO TO 70
-      DO 60 IREV=LO,CURLO
-         I = LO - IREV + CURLO
-         SUM1 = SUM1 + X(I)
-         SUM2 = SUM2 + X(I)*X(I)
-         SUMA = SUMA + ABS(X(I))
-   60 CONTINUE
-   70 XMEAN = SUM1/(HI-LO+1)
-      RETURN
-      END
+   30 if (curhi.gt.hi) go to 50
+      do 40 i=curhi,hi
+         sum1 = sum1 + x(i)
+         sum2 = sum2 + x(i)*x(i)
+         suma = suma + abs(x(i))
+   40 continue
+   50 if (curlo.lt.lo) go to 70
+      do 60 irev=lo,curlo
+         i = lo - irev + curlo
+         sum1 = sum1 + x(i)
+         sum2 = sum2 + x(i)*x(i)
+         suma = suma + abs(x(i))
+   60 continue
+   70 xmean = sum1/(hi-lo+1)
+      return
+      end

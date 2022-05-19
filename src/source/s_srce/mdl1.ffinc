@@ -1,5 +1,5 @@
 !MDL1
-      SUBROUTINE MDL1(PAR, NPAR, XM, N, M, IXM, PV)
+      subroutine mdl1(par, npar, xm, n, m, ixm, pv)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,16 +15,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,M,N,NPAR
+     integer&
+     &   ixm,m,n,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),PV(N),XM(IXM,M)
+     real(kind=wp) ::&
+     &   par(npar),pv(n),xm(ixm,m)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -45,8 +45,8 @@
 !     REAL XM(IXM,M)
 !        INDEPENDENT VARIABLES
 !
-      DO 10 I=1,N
-         PV(I) = PAR(1)*XM(I,1)**PAR(2)
-   10 CONTINUE
-      RETURN
-      END
+      do 10 i=1,n
+         pv(i) = par(1)*xm(i,1)**par(2)
+   10 continue
+      return
+      end

@@ -1,5 +1,5 @@
 !XXCH5
-      SUBROUTINE XXCH5(LDSTAK,typ)
+      subroutine xxch5(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -19,30 +19,30 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,N
+     integer&
+     &   iprt,n
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   Y(40)
+     real(kind=wp) ::&
+     &   y(40)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,STAT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -61,48 +61,48 @@
 !
 !     DATA INITIALIZATIONS.
 !
-      DATA N /39/
+      data n /39/
 !
-      DATA Y( 1), Y( 2), Y( 3), Y( 4)
+     data y( 1), y( 2), y( 3), y( 4)&
      &    / 0.4, 0.6, 1.0, 1.0/
-      DATA Y( 5), Y( 6), Y( 7), Y( 8)
+     data y( 5), y( 6), y( 7), y( 8)&
      &    / 1.0, 0.5, 0.6, 0.7/
-      DATA Y( 9), Y(10), Y(11), Y(12)
+     data y( 9), y(10), y(11), y(12)&
      &    / 1.0, 0.6, 0.2, 1.9/
-      DATA Y(13), Y(14), Y(15), Y(16)
+     data y(13), y(14), y(15), y(16)&
      &    / 0.2, 0.4, 0.0, -0.4/
-      DATA Y(17), Y(18), Y(19), Y(20)
+     data y(17), y(18), y(19), y(20)&
      &    / -0.3, 0.0, -0.4, -0.3/
-      DATA Y(21), Y(22), Y(23), Y(24)
+     data y(21), y(22), y(23), y(24)&
      &    / 0.1, -0.1, 0.2, -0.5/
-      DATA Y(25), Y(26), Y(27), Y(28)
+     data y(25), y(26), y(27), y(28)&
      &    / 0.3, -0.1, 0.2, -0.2/
-      DATA Y(29), Y(30), Y(31), Y(32)
+     data y(29), y(30), y(31), y(32)&
      &    / 0.8, 0.5, 0.6, 0.8/
-      DATA Y(33), Y(34), Y(35), Y(36)
+     data y(33), y(34), y(35), y(36)&
      &    / 0.7, 0.7, 0.2, 0.5/
-      DATA Y(37), Y(38), Y(39)
+     data y(37), y(38), y(39)&
      &    / 0.7, 0.8, 1.1/
 !
 !     DEFINE IPRT, THE CURRENT OUTPUT UNIT.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     PRINT HEADING
 !
-      WRITE (IPRT,1000)
+      write (iprt,1000)
 !
 !     PERFORM SIMPLE TEST OF STAT
 !
-      WRITE (IPRT,1100)
-      CALL STAT(Y, N, LDSTAK)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1100)
+      call stat(y, n, ldstak)
+      write (iprt,2000) ierr
 !
-      RETURN
+      return
 !
 !     FORMATS
 !
- 1000 FORMAT ('1*CH5')
- 1100 FORMAT (' SIMPLE TEST OF STAT')
- 2000 FORMAT (/' THE VALUE OF IERR IS ', I4)
-      END
+ 1000 format ('1*CH5')
+ 1100 format (' SIMPLE TEST OF STAT')
+ 2000 format (/' THE VALUE OF IERR IS ', i4)
+      end

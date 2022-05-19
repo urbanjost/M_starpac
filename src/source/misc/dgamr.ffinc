@@ -1,5 +1,5 @@
 !DGAMR
-      DOUBLE PRECISION FUNCTION DGAMR (X)
+      double precision function dgamr (x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 ! THIS ROUTINE, NOT DGAMMA(X), SHOULD BE THE FUNDAMENTAL ONE.
 !
@@ -7,11 +7,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION X
+      double precision x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION ALNGX,SGNGX
-      INTEGER IROLD
+      double precision alngx,sgngx
+      integer irold
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION DGAMMA
@@ -21,24 +21,24 @@
 !       EXTERNAL DLGAMS,XERCLR,XGETF,XSETF
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,EXP,INT
+      intrinsic abs,exp,int
 !
 !
-      DGAMR = 0.0D0
-      IF (X.LE.0.0D0 .AND. INT(X).EQ.X) RETURN
+      dgamr = 0.0d0
+      if (x.le.0.0d0 .and. int(x).eq.x) return
 !
-      CALL XGETF (IROLD)
-      CALL XSETF (1)
-      IF (ABS(X).GT.10.0D0) GO TO 10
-      DGAMR = 1.0D0/DGAMMA(X)
-      CALL XERCLR
-      CALL XSETF (IROLD)
-      RETURN
+      call xgetf (irold)
+      call xsetf (1)
+      if (abs(x).gt.10.0d0) go to 10
+      dgamr = 1.0d0/dgamma(x)
+      call xerclr
+      call xsetf (irold)
+      return
 !
- 10   CALL DLGAMS (X, ALNGX, SGNGX)
-      CALL XERCLR
-      CALL XSETF (IROLD)
-      DGAMR = SGNGX * EXP(-ALNGX)
-      RETURN
+ 10   call dlgams (x, alngx, sgngx)
+      call xerclr
+      call xsetf (irold)
+      dgamr = sgngx * exp(-alngx)
+      return
 !
-      END
+      end

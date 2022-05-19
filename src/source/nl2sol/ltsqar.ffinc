@@ -13,17 +13,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
+     integer&
      &   n
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   a(*),l(*)
 !
 !  LOCAL SCALARS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   lii,lj
-      integer
+     integer&
      &   i,i1,ii,iim1,j,k,m
 !
 !     INTEGER N

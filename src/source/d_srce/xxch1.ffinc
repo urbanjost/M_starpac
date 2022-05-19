@@ -1,5 +1,5 @@
 !XXCH1
-      SUBROUTINE XXCH1(LDSTAK,typ)
+      subroutine xxch1(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -19,30 +19,30 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,N
+     integer&
+     &   i,iprt,n
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   X(100),Y(100)
+     real(kind=wp) ::&
+     &   x(100),y(100)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,PP,STAT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -64,87 +64,87 @@
 !        DATA VECTOR FOR TESTS.
 !
 !
-      DATA N /84/
+      data n /84/
 !
-      DATA Y( 1), Y( 2), Y( 3), Y( 4)
-     &    / 0.6067_WP, 0.6087_WP, 0.6086_WP, 0.6134_WP/
-      DATA Y( 5), Y( 6), Y( 7)
-     &    / 0.6108_WP, 0.6138_WP, 0.6125_WP/
-      DATA Y( 8), Y( 9), Y(10), Y(11)
-     &    / 0.6122_WP, 0.6110_WP, 0.6104_WP, 0.7213_WP/
-      DATA Y(12), Y(13), Y(14)
-     &    / 0.7078_WP, 0.7021_WP, 0.7004_WP/
-      DATA Y(15), Y(16), Y(17), Y(18)
-     &    / 0.6981_WP, 0.7242_WP, 0.7268_WP, 0.7418_WP/
-      DATA Y(19), Y(20), Y(21)
-     &    / 0.7407_WP, 0.7199_WP, 0.6225_WP/
-      DATA Y(22), Y(23), Y(24), Y(25)
-     &    / 0.6254_WP, 0.6252_WP, 0.6267_WP, 0.6218_WP/
-      DATA Y(26), Y(27), Y(28)
-     &    / 0.6178_WP, 0.6216_WP, 0.6192_WP/
-      DATA Y(29), Y(30), Y(31), Y(32)
-     &    / 0.6191_WP, 0.6250_WP, 0.6188_WP, 0.6233_WP/
-      DATA Y(33), Y(34), Y(35)
-     &    / 0.6225_WP, 0.6204_WP, 0.6207_WP/
-      DATA Y(36), Y(37), Y(38), Y(39)
-     &    / 0.6168_WP, 0.6141_WP, 0.6291_WP, 0.6231_WP/
-      DATA Y(40), Y(41), Y(42)
-     &    / 0.6222_WP, 0.6252_WP, 0.6308_WP/
-      DATA Y(43), Y(44), Y(45), Y(46)
-     &    / 0.6376_WP, 0.6330_WP, 0.6303_WP, 0.6301_WP/
-      DATA Y(47), Y(48), Y(49)
-     &    / 0.6390_WP, 0.6423_WP, 0.6300_WP/
-      DATA Y(50), Y(51), Y(52), Y(53)
-     &    / 0.6260_WP, 0.6292_WP, 0.6298_WP, 0.6290_WP/
-      DATA Y(54), Y(55), Y(56)
-     &    / 0.6262_WP, 0.5952_WP, 0.5951_WP/
-      DATA Y(57), Y(58), Y(59), Y(60)
-     &    / 0.6314_WP, 0.6440_WP, 0.6439_WP, 0.6326_WP/
-      DATA Y(61), Y(62), Y(63)
-     &    / 0.6392_WP, 0.6417_WP, 0.6412_WP/
-      DATA Y(64), Y(65), Y(66), Y(67)
-     &    / 0.6530_WP, 0.6411_WP, 0.6355_WP, 0.6344_WP/
-      DATA Y(68), Y(69), Y(70)
-     &    / 0.6623_WP, 0.6276_WP, 0.6307_WP/
-      DATA Y(71), Y(72), Y(73), Y(74)
-     &    / 0.6354_WP, 0.6197_WP, 0.6153_WP, 0.6340_WP/
-      DATA Y(75), Y(76), Y(77)
-     &    / 0.6338_WP, 0.6284_WP, 0.6162_WP/
-      DATA Y(78), Y(79), Y(80), Y(81)
-     &    / 0.6252_WP, 0.6349_WP, 0.6344_WP, 0.6361_WP/
-      DATA Y(82), Y(83), Y(84)
-     &    / 0.6373_WP, 0.6337_WP, 0.6383_WP/
+     data y( 1), y( 2), y( 3), y( 4)&
+     &    / 0.6067_wp, 0.6087_wp, 0.6086_wp, 0.6134_wp/
+     data y( 5), y( 6), y( 7)&
+     &    / 0.6108_wp, 0.6138_wp, 0.6125_wp/
+     data y( 8), y( 9), y(10), y(11)&
+     &    / 0.6122_wp, 0.6110_wp, 0.6104_wp, 0.7213_wp/
+     data y(12), y(13), y(14)&
+     &    / 0.7078_wp, 0.7021_wp, 0.7004_wp/
+     data y(15), y(16), y(17), y(18)&
+     &    / 0.6981_wp, 0.7242_wp, 0.7268_wp, 0.7418_wp/
+     data y(19), y(20), y(21)&
+     &    / 0.7407_wp, 0.7199_wp, 0.6225_wp/
+     data y(22), y(23), y(24), y(25)&
+     &    / 0.6254_wp, 0.6252_wp, 0.6267_wp, 0.6218_wp/
+     data y(26), y(27), y(28)&
+     &    / 0.6178_wp, 0.6216_wp, 0.6192_wp/
+     data y(29), y(30), y(31), y(32)&
+     &    / 0.6191_wp, 0.6250_wp, 0.6188_wp, 0.6233_wp/
+     data y(33), y(34), y(35)&
+     &    / 0.6225_wp, 0.6204_wp, 0.6207_wp/
+     data y(36), y(37), y(38), y(39)&
+     &    / 0.6168_wp, 0.6141_wp, 0.6291_wp, 0.6231_wp/
+     data y(40), y(41), y(42)&
+     &    / 0.6222_wp, 0.6252_wp, 0.6308_wp/
+     data y(43), y(44), y(45), y(46)&
+     &    / 0.6376_wp, 0.6330_wp, 0.6303_wp, 0.6301_wp/
+     data y(47), y(48), y(49)&
+     &    / 0.6390_wp, 0.6423_wp, 0.6300_wp/
+     data y(50), y(51), y(52), y(53)&
+     &    / 0.6260_wp, 0.6292_wp, 0.6298_wp, 0.6290_wp/
+     data y(54), y(55), y(56)&
+     &    / 0.6262_wp, 0.5952_wp, 0.5951_wp/
+     data y(57), y(58), y(59), y(60)&
+     &    / 0.6314_wp, 0.6440_wp, 0.6439_wp, 0.6326_wp/
+     data y(61), y(62), y(63)&
+     &    / 0.6392_wp, 0.6417_wp, 0.6412_wp/
+     data y(64), y(65), y(66), y(67)&
+     &    / 0.6530_wp, 0.6411_wp, 0.6355_wp, 0.6344_wp/
+     data y(68), y(69), y(70)&
+     &    / 0.6623_wp, 0.6276_wp, 0.6307_wp/
+     data y(71), y(72), y(73), y(74)&
+     &    / 0.6354_wp, 0.6197_wp, 0.6153_wp, 0.6340_wp/
+     data y(75), y(76), y(77)&
+     &    / 0.6338_wp, 0.6284_wp, 0.6162_wp/
+     data y(78), y(79), y(80), y(81)&
+     &    / 0.6252_wp, 0.6349_wp, 0.6344_wp, 0.6361_wp/
+     data y(82), y(83), y(84)&
+     &    / 0.6373_wp, 0.6337_wp, 0.6383_wp/
 !
 !     DEFINE IPRT, THE CURRENT OUTPUT UNIT.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      DO 10 I=1,N
-         X(I) = I
-   10 CONTINUE
+      do 10 i=1,n
+         x(i) = i
+   10 continue
 !
 !     PRINT HEADING
 !
-      WRITE (IPRT,1000)
+      write (iprt,1000)
 !
 !     PERFORM SIMPLE TEST OF PP
 !
-      WRITE (IPRT,1100)
-      CALL PP(Y, X, N)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1100)
+      call pp(y, x, n)
+      write (iprt,2000) ierr
 !
 !     PERFORM SIMPLE TEST OF STAT
 !
-      WRITE (IPRT,1200)
-      CALL STAT(Y, N, LDSTAK)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1200)
+      call stat(y, n, ldstak)
+      write (iprt,2000) ierr
 !
-      RETURN
+      return
 !
 !     FORMATS
 !
- 1000 FORMAT ('1*CH1')
- 1100 FORMAT (' SIMPLE TEST OF PP')
- 1200 FORMAT ('1SIMPLE TEST OF STAT')
- 2000 FORMAT (/' THE VALUE OF IERR IS ', I4)
-      END
+ 1000 format ('1*CH1')
+ 1100 format (' SIMPLE TEST OF PP')
+ 1200 format ('1SIMPLE TEST OF STAT')
+ 2000 format (/' THE VALUE OF IERR IS ', i4)
+      end

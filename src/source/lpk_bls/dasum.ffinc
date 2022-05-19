@@ -1,5 +1,5 @@
 !DASUM
-      DOUBLE PRECISION FUNCTION DASUM(N,DX,INCX)
+      double precision function dasum(n,dx,incx)
 !***BEGIN PROLOGUE  DASUM
 !***DATE WRITTEN   791001   (YYMMDD)
 !***REVISION DATE  820801   (YYMMDD)
@@ -30,45 +30,45 @@
 !***END PROLOGUE  DASUM
 
 !...SCALAR ARGUMENTS
-      INTEGER INCX,N
+      integer incx,n
 
 !...ARRAY ARGUMENTS
-      DOUBLE PRECISION DX(*)
+      double precision dx(*)
 
 !...LOCAL SCALARS
-      INTEGER I,M,MP1,NS
+      integer i,m,mp1,ns
 
 !...INTRINSIC FUNCTIONS
-      INTRINSIC DABS,MOD
+      intrinsic dabs,mod
 
 !***FIRST EXECUTABLE STATEMENT  DASUM
 
-      DASUM = 0.D0
-      IF(N.LE.0)RETURN
-      IF(INCX.EQ.1)GOTO 20
+      dasum = 0.d0
+      if(n.le.0)return
+      if(incx.eq.1)goto 20
 
 !        CODE FOR INCREMENTS NOT EQUAL TO 1.
 
-      NS = N*INCX
-          DO 10 I=1,NS,INCX
-          DASUM = DASUM + DABS(DX(I))
-   10     CONTINUE
-      RETURN
+      ns = n*incx
+          do 10 i=1,ns,incx
+          dasum = dasum + dabs(dx(i))
+   10     continue
+      return
 
 !        CODE FOR INCREMENTS EQUAL TO 1.
 
 !        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 6.
 
-   20 M = MOD(N,6)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-         DASUM = DASUM + DABS(DX(I))
-   30 CONTINUE
-      IF( N .LT. 6 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,6
-         DASUM = DASUM + DABS(DX(I)) + DABS(DX(I+1)) + DABS(DX(I+2))
-     &   + DABS(DX(I+3)) + DABS(DX(I+4)) + DABS(DX(I+5))
-   50 CONTINUE
-      RETURN
-      END
+   20 m = mod(n,6)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+         dasum = dasum + dabs(dx(i))
+   30 continue
+      if( n .lt. 6 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,6
+        dasum = dasum + dabs(dx(i)) + dabs(dx(i+1)) + dabs(dx(i+2))&
+     &   + dabs(dx(i+3)) + dabs(dx(i+4)) + dabs(dx(i+5))
+   50 continue
+      return
+      end

@@ -1,5 +1,5 @@
 !DGAMI
-      DOUBLE PRECISION FUNCTION DGAMI (A, X)
+      double precision function dgami (a, x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! EVALUATE THE INCOMPLETE GAMMA FUNCTION DEFINED BY
@@ -15,10 +15,10 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION A,X
+      double precision a,x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION FACTOR
+      double precision factor
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH,DGAMIT,DLNGAM
@@ -28,23 +28,23 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC EXP,LOG
+      intrinsic exp,log
 !
 !
-      IF (A.LE.0.D0) CALL XERROR ('DGAMI   A MUST BE GT ZERO', 25, 1,2)
-      IF (X.LT.0.D0) CALL XERROR ('DGAMI   X MUST BE GE ZERO', 25, 2,2)
+      if (a.le.0.d0) call xerror ('DGAMI   A MUST BE GT ZERO', 25, 1,2)
+      if (x.lt.0.d0) call xerror ('DGAMI   X MUST BE GE ZERO', 25, 2,2)
 !
-      DGAMI = 0.D0
-      IF (X.EQ.0.0D0) RETURN
+      dgami = 0.d0
+      if (x.eq.0.0d0) return
 !
 ! THE ONLY ERROR POSSIBLE IN THE EXPRESSION BELOW IS A FATAL OVERFLOW.
 !
-      FACTOR = DLNGAM(A) + A*LOG(X)
-      IF (FACTOR.GT.LOG(D1MACH(2))) THEN
-         DGAMI = D1MACH(2)
-      ELSE
-         DGAMI = EXP(FACTOR) * DGAMIT(A,X)
-      END IF
+      factor = dlngam(a) + a*log(x)
+      if (factor.gt.log(d1mach(2))) then
+         dgami = d1mach(2)
+      else
+         dgami = exp(factor) * dgamit(a,x)
+      end if
 !
-      RETURN
-      END
+      return
+      end

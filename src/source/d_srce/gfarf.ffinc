@@ -1,5 +1,5 @@
 !GFARF
-      SUBROUTINE GFARF (PHI, IAR)
+      subroutine gfarf (phi, iar)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,38 +16,38 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IAR
+     integer&
+     &   iar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PHI(*)
+     real(kind=wp) ::&
+     &   phi(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DELTA,FMAX,FMIN,YPLTMN,YPLTMX
-      INTEGER
-     &   IGFERR,IPRT,NF,NORD,NPRT
-      LOGICAL
-     &   ERR01,HEAD,SYM
+     real(kind=wp) ::&
+     &   delta,fmax,fmin,ypltmn,ypltmx
+     integer&
+     &   igferr,iprt,nf,nord,nprt
+     logical&
+     &   err01,head,sym
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   FREQ(101),GAIN(101),PHAS(101),XORD(101),YORD(101)
-      INTEGER
-     &   ISORT(101)
-      CHARACTER
-     &   LIAR(8)*1,NMSUB(6)*1
+     real(kind=wp) ::&
+     &   freq(101),gain(101),phas(101),xord(101),yord(101)
+     integer&
+     &   isort(101)
+     character&
+     &   liar(8)*1,nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EISGE,GFAEST,GFORD,GFOUT,IPRINT,SETFRQ
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -113,67 +113,67 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'G',       'F',       'A',       'R',       'F',       ' '/
-      DATA
-     &  LIAR(1), LIAR(2), LIAR(3), LIAR(4), LIAR(5), LIAR(6), LIAR(7),
-     &  LIAR(8)
+     data&
+    &  liar(1), liar(2), liar(3), liar(4), liar(5), liar(6), liar(7),&
+    &  liar(8)&
      & /  'I',   'A',   'R',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LIAR, IAR, 1, 1, HEAD, ERR01, LIAR)
+      call eisge(nmsub, liar, iar, 1, 1, head, err01, liar)
 !
-      IF (.NOT. ERR01) GO TO 10
+      if (.not. err01) go to 10
 !
-      IERR = 1
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+      ierr = 1
+      call iprint (iprt)
+      write (iprt, 1000)
+      return
 !
-   10 CONTINUE
+   10 continue
 !
 !     SET VARIOUS PROGRAM PARAMETERS
 !
-      SYM = .FALSE.
+      sym = .false.
 !
-      NF = 101
+      nf = 101
 !
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
+      fmin = 0.0_wp
+      fmax = 0.5_wp
 !
-      DELTA = 1.0_WP
+      delta = 1.0_wp
 !
-      NPRT = -1
+      nprt = -1
 !
 !     SET FREQUENCIES AT WHICH THE GAIN FUNCTION IS TO BE ESTIMATED
 !
-      CALL SETFRQ (FREQ, NF, NPRT, FMIN, FMAX, DELTA)
+      call setfrq (freq, nf, nprt, fmin, fmax, delta)
 !
 !     COMPUTE THE GAIN FUNCTION
 !
-      CALL GFAEST (PHI, IAR, NF, FREQ, GAIN, PHAS, DELTA)
+      call gfaest (phi, iar, nf, freq, gain, phas, delta)
 !
 !     SET THE COORDINATES FOR THE PLOT.
 !
-      CALL GFORD (FREQ, GAIN, ISORT, NF, XORD, YORD, NORD,
-     &   YPLTMN, YPLTMX, NPRT, IGFERR)
+     call gford (freq, gain, isort, nf, xord, yord, nord,&
+     &   ypltmn, ypltmx, nprt, igferr)
 !
 !     PLOT THE RESULTS.
 !
-      CALL GFOUT (XORD, YORD, NORD, FREQ, PHAS, NF, IAR, SYM, FMIN,
-     &   FMAX, YPLTMN, YPLTMX, NPRT, IGFERR, NMSUB)
+     call gfout (xord, yord, nord, freq, phas, nf, iar, sym, fmin,&
+     &   fmax, ypltmn, ypltmx, nprt, igferr, nmsub)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   28H       CALL GFARF (PHI, IAR))
-      END
+1000 format (/42h the correct form of the call statement is//&
+     &   28h       call gfarf (phi, iar))
+      end

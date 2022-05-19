@@ -1,5 +1,5 @@
 !MDLTS3
-      SUBROUTINE MDLTS3 (PAR, NPAR, XM, N, M, IXM, RESTS)
+      subroutine mdlts3 (par, npar, xm, n, m, ixm, rests)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,42 +16,42 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,M,N,NPAR
+     integer&
+     &   ixm,m,n,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),RESTS(NRESTS),XM(IXM,M)
+     real(kind=wp) ::&
+     &   par(npar),rests(nrests),xm(ixm,m)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IFLAG,MBO,MBOL,MSPECT,NFACT,NPARAR,NPARDF,NPARMA,NRESTS,
-     &   PARAR,PARDF,PARMA,T,TEMP
+     integer&
+    &   iflag,mbo,mbol,mspect,nfact,nparar,npardf,nparma,nrests,&
+     &   parar,pardf,parma,t,temp
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   PMU
+     real(kind=wp) ::&
+     &   pmu
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSTAK(12)
-      INTEGER
-     &   ISTAK(12)
+     real(kind=wp) ::&
+     &   rstak(12)
+     integer&
+     &   istak(12)
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL MDLTS2
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /MDLTSC/MSPECT,NFACT,PARDF,NPARDF,PARAR,NPARAR,PARMA,
-     &   NPARMA,MBO,MBOL,T,TEMP,NRESTS,IFLAG
+      common /cstak/dstak
+     common /mdltsc/mspect,nfact,pardf,npardf,parar,nparar,parma,&
+     &   nparma,mbo,mbol,t,temp,nrests,iflag
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
+      equivalence (dstak(1),istak(1))
+      equivalence (dstak(1),rstak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -116,9 +116,9 @@
 !
 !     COMPUTE RESIDUALS
 !
-      CALL MDLTS2 (PAR, RESTS, XM(1,1), NPAR, N, NFACT, ISTAK(MSPECT),
-     &  PMU, RSTAK(PARDF), NPARDF, RSTAK(T), RSTAK(TEMP), RSTAK(PARAR),
-     &  RSTAK(PARMA), MBO, N-NRESTS+1, N, IFLAG)
+     call mdlts2 (par, rests, xm(1,1), npar, n, nfact, istak(mspect),&
+    &  pmu, rstak(pardf), npardf, rstak(t), rstak(temp), rstak(parar),&
+     &  rstak(parma), mbo, n-nrests+1, n, iflag)
 !
-      RETURN
-      END
+      return
+      end

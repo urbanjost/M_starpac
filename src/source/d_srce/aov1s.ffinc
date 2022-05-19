@@ -1,5 +1,5 @@
 !AOV1S
-      SUBROUTINE AOV1S(Y, TAG, N, LDSTAK, NPRT, GSTAT, IGSTAT, NG)
+      subroutine aov1s(y, tag, n, ldstak, nprt, gstat, igstat, ng)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -21,32 +21,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IGSTAT,LDSTAK,N,NG,NPRT
+     integer&
+     &   igstat,ldstak,n,ng,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   GSTAT(*),TAG(*),Y(*)
+     real(kind=wp) ::&
+     &   gstat(*),tag(*),y(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   B10,GPMAX,GPMIN,IFP,INDEX,INT,IPRT,ITEMP,NALL0,NZTAGS,
-     &   RANKS,SRANK
+     integer&
+    &   b10,gpmax,gpmin,ifp,index,int,iprt,itemp,nall0,nztags,&
+     &   ranks,srank
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSTAK(12)
-      INTEGER
-     &   ISTAK(12)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   rstak(12)
+     integer&
+     &   istak(12)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL FUNCTIONS
 !
@@ -54,12 +54,12 @@
 !      EXTERNAL AOV1ER,AOV1HD,AOV1MN,IPRINT,STKCLR
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
+      equivalence (dstak(1),rstak(1))
+      equivalence (dstak(1),istak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -125,59 +125,59 @@
 !     REAL(KIND=WP) :: Y(N)
 !        THE VECTOR OF OBSERVATIONS
 !
-      DATA   NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6)
+     data   nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6)&
      &     /      'A',      'O',      'V',      '1',      'S',      ' '/
 !
 !     SET UP FRAMEWORK VARIABLES FOR NUMBER TYPES
 !
-      INT = 2
-      IFP = 4
+      int = 2
+      ifp = 4
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     CHECK FOR ERRORS IN PARAMETERS, INITIALIZE STACK, AND SET
 !     NALL0.
 !
-      CALL AOV1ER(Y, TAG, N, IGSTAT, NZTAGS, NG, LDSTAK, NMSUB, INDEX,
-     &   0, NALL0)
+     call aov1er(y, tag, n, igstat, nztags, ng, ldstak, nmsub, index,&
+     &   0, nall0)
 !
-      IF (IERR.EQ.0) GO TO 20
+      if (ierr.eq.0) go to 20
 !
 !     PRINT CORRECT FORM OF CALL STATEMENT AND RETURN TO CALLER
 !
-      IERR = 1
-      WRITE (IPRT,1000)
-      RETURN
+      ierr = 1
+      write (iprt,1000)
+      return
 !
 !     PRINT HEADING IF DESIRED
 !
-   20 IF (NPRT.EQ.0) GO TO 30
-      CALL AOV1HD(IPRT)
+   20 if (nprt.eq.0) go to 30
+      call aov1hd(iprt)
 !
 !     SET UP ADDITIONAL WORK VECTORS FOR AOV1MN AS CALLED FROM AOV1S
 !
-   30 SRANK = STKGET(NG,IFP)
-      GPMIN = STKGET(NG,IFP)
-      GPMAX = STKGET(NG,IFP)
-      B10 = STKGET(NG,IFP)
-      RANKS = STKGET(NZTAGS,IFP)
-      ITEMP = STKGET(NZTAGS,INT)
+   30 srank = stkget(ng,ifp)
+      gpmin = stkget(ng,ifp)
+      gpmax = stkget(ng,ifp)
+      b10 = stkget(ng,ifp)
+      ranks = stkget(nztags,ifp)
+      itemp = stkget(nztags,int)
 !
-      CALL AOV1MN(Y, TAG, N,
-     &            GSTAT(1), GSTAT(IGSTAT+1),
-     &            GSTAT(2*IGSTAT+1), GSTAT(3*IGSTAT+1),
-     &            NPRT, ISTAK(INDEX), RSTAK(SRANK), RSTAK(GPMIN),
-     &            RSTAK(GPMAX), RSTAK(B10), RSTAK(RANKS),
-     &            ISTAK(ITEMP), NG, NZTAGS)
+     call aov1mn(y, tag, n,&
+    &            gstat(1), gstat(igstat+1),&
+    &            gstat(2*igstat+1), gstat(3*igstat+1),&
+    &            nprt, istak(index), rstak(srank), rstak(gpmin),&
+    &            rstak(gpmax), rstak(b10), rstak(ranks),&
+     &            istak(itemp), ng, nztags)
 !
 !     RELEASE THE STACK AREA
 !
-      CALL STKCLR(NALL0)
+      call stkclr(nall0)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format(/42h the correct form of the call statement is//&
      & '       CALL AOV1S (Y, TAG, N, LDSTAK, NPRT, GSTAT, IGSTAT, NG)')
-      END
+      end

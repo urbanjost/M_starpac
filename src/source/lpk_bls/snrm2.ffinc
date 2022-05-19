@@ -1,22 +1,22 @@
 !SNRM2
-      REAL FUNCTION SNRM2 ( N, SX, INCX)
+      real function snrm2 ( n, sx, incx)
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INCX,N
+      integer incx,n
 !
 !  ARRAY ARGUMENTS
-      REAL SX(*)
+      real sx(*)
 !
 !  LOCAL SCALARS
-      REAL CUTHI,CUTLO,HITEST,ONE,SUM,XMAX,ZERO
-      INTEGER I,J,NEXT,NN
+      real cuthi,cutlo,hitest,one,sum,xmax,zero
+      integer i,j,next,nn
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,FLOAT,SQRT
+      intrinsic abs,float,sqrt
 !
-      DATA   ZERO, ONE /0.0E0, 1.0E0/
+      data   zero, one /0.0e0, 1.0e0/
 !
 !     EUCLIDEAN NORM OF THE N-VECTOR STORED IN SX() WITH STORAGE
 !     INCREMENT INCX .
@@ -55,84 +55,84 @@
 !     CUTHI, D.P.   SAME AS S.P.  CUTHI = 1.30438D19
 !     DATA CUTLO, CUTHI / 8.232D-11,  1.304D19 /
 !     DATA CUTLO, CUTHI / 4.441E-16,  1.304E19 /
-      DATA CUTLO, CUTHI / 4.441E-16,  1.304E19 /
+      data cutlo, cuthi / 4.441e-16,  1.304e19 /
 !
-      XMAX = ZERO
-      IF(N .GT. 0) GO TO 10
-         SNRM2  = ZERO
-         GO TO 300
+      xmax = zero
+      if(n .gt. 0) go to 10
+         snrm2  = zero
+         go to 300
 !
-   10 ASSIGN 30 TO NEXT
-      SUM = ZERO
-      NN = N * INCX
+   10 assign 30 to next
+      sum = zero
+      nn = n * incx
 !                                                 BEGIN MAIN LOOP
-      I = 1
-   20    GO TO NEXT,(30, 50, 70, 110)
-   30 IF( ABS(SX(I)) .GT. CUTLO) GO TO 85
-      ASSIGN 50 TO NEXT
-      XMAX = ZERO
+      i = 1
+   20    go to next,(30, 50, 70, 110)
+   30 if( abs(sx(i)) .gt. cutlo) go to 85
+      assign 50 to next
+      xmax = zero
 !
 !                        PHASE 1.  SUM IS ZERO
 !
-   50 IF( SX(I) .EQ. ZERO) GO TO 200
-      IF( ABS(SX(I)) .GT. CUTLO) GO TO 85
+   50 if( sx(i) .eq. zero) go to 200
+      if( abs(sx(i)) .gt. cutlo) go to 85
 !
 !                                PREPARE FOR PHASE 2.
-      ASSIGN 70 TO NEXT
-      GO TO 105
+      assign 70 to next
+      go to 105
 !
 !                                PREPARE FOR PHASE 4.
 !
-  100 I = J
-      ASSIGN 110 TO NEXT
-      SUM = (SUM / SX(I)) / SX(I)
-  105 XMAX = ABS(SX(I))
-      GO TO 115
+  100 i = j
+      assign 110 to next
+      sum = (sum / sx(i)) / sx(i)
+  105 xmax = abs(sx(i))
+      go to 115
 !
 !                   PHASE 2.  SUM IS SMALL.
 !                             SCALE TO AVOID DESTRUCTIVE UNDERFLOW.
 !
-   70 IF( ABS(SX(I)) .GT. CUTLO ) GO TO 75
+   70 if( abs(sx(i)) .gt. cutlo ) go to 75
 !
 !                     COMMON CODE FOR PHASES 2 AND 4.
 !                     IN PHASE 4 SUM IS LARGE.  SCALE TO AVOID OVERFLOW.
 !
-  110 IF( ABS(SX(I)) .LE. XMAX ) GO TO 115
-         SUM = ONE + SUM * (XMAX / SX(I))**2
-         XMAX = ABS(SX(I))
-         GO TO 200
+  110 if( abs(sx(i)) .le. xmax ) go to 115
+         sum = one + sum * (xmax / sx(i))**2
+         xmax = abs(sx(i))
+         go to 200
 !
-  115 SUM = SUM + (SX(I)/XMAX)**2
-      GO TO 200
+  115 sum = sum + (sx(i)/xmax)**2
+      go to 200
 !
 !
 !                  PREPARE FOR PHASE 3.
 !
-   75 SUM = (SUM * XMAX) * XMAX
+   75 sum = (sum * xmax) * xmax
 !
 !
 !     FOR REAL OR D.P. SET HITEST = CUTHI/N
 !     FOR COMPLEX      SET HITEST = CUTHI/(2*N)
 !
-   85 HITEST = CUTHI/FLOAT( N )
+   85 hitest = cuthi/float( n )
 !
 !                   PHASE 3.  SUM IS MID-RANGE.  NO SCALING.
 !
-      DO 95 J =I,NN,INCX
-      IF(ABS(SX(J)) .GE. HITEST) GO TO 100
-   95    SUM = SUM + SX(J)**2
-      SNRM2 = SQRT( SUM )
-      GO TO 300
+      do 95 j =i,nn,incx
+      if(abs(sx(j)) .ge. hitest) go to 100
+   95    sum = sum + sx(j)**2
+      snrm2 = sqrt( sum )
+      go to 300
 !
-  200 CONTINUE
-      I = I + INCX
-      IF ( I .LE. NN ) GO TO 20
+  200 continue
+      i = i + incx
+      if ( i .le. nn ) go to 20
 !
 !              END OF MAIN LOOP.
 !
 !              COMPUTE SQUARE ROOT AND ADJUST FOR SCALING.
 !
-      SNRM2 = XMAX * SQRT(SUM)
-  300 CONTINUE
-      RETURN
-      END
+      snrm2 = xmax * sqrt(sum)
+  300 continue
+      return
+      end

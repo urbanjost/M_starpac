@@ -1,5 +1,5 @@
 !IPRINT
-      SUBROUTINE IPRINT(IPRT)
+      subroutine iprint(iprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,8 +15,8 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -28,6 +28,6 @@
 !     INTEGER IPRT
 !        THE UNIT NUMBER FOR OUTPUT.
 !
-      IPRT = I1MACH(2)
-      RETURN
-      END
+      iprt = i1mach(2)
+      return
+      end

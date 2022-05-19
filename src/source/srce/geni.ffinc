@@ -1,5 +1,5 @@
 !GENI
-      SUBROUTINE GENI(IVECT, N, IINIT, ISTP)
+      subroutine geni(ivect, n, iinit, istp)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,16 +16,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IINIT,ISTP,N
+     integer&
+     &   iinit,istp,n
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IVECT(N)
+     integer&
+     &   ivect(n)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,J
+     integer&
+     &   i,j
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -42,10 +42,10 @@
 !     INTEGER N
 !        INPUT PARAMETER.  THE LENGTH OF IVECT.
 !
-      I = IINIT
-      DO 10 J=1,N
-         IVECT(J) = I
-         I = I + ISTP
-   10 CONTINUE
-      RETURN
-      END
+      i = iinit
+      do 10 j=1,n
+         ivect(j) = i
+         i = i + istp
+   10 continue
+      return
+      end

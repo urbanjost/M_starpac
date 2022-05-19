@@ -1,7 +1,7 @@
 !CCFOUT
-      SUBROUTINE CCFOUT (J, YMEANJ, YSDJ, NJ, NUSEDJ, K, YMEANK, YSDK,
-     &   NK, NUSEDK, LAGMAX, NCC, RHOC, SDRHOC, IFMISS, NLPP12,
-     &   NLPP21, LCCOV, YMISSJ, YMISSK, NEWPG)
+     subroutine ccfout (j, ymeanj, ysdj, nj, nusedj, k, ymeank, ysdk,&
+    &   nk, nusedk, lagmax, ncc, rhoc, sdrhoc, ifmiss, nlpp12,&
+     &   nlpp21, lccov, ymissj, ymissk, newpg)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,30 +18,30 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YMEANJ,YMEANK,YMISSJ,YMISSK,YSDJ,YSDK
-      INTEGER
-     &   J,K,LAGMAX,LCCOV,NCC,NJ,NK,NUSEDJ,NUSEDK
-      LOGICAL
-     &   IFMISS,NEWPG
+     real(kind=wp) ::&
+     &   ymeanj,ymeank,ymissj,ymissk,ysdj,ysdk
+     integer&
+     &   j,k,lagmax,lccov,ncc,nj,nk,nusedj,nusedk
+     logical&
+     &   ifmiss,newpg
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RHOC(*),SDRHOC(*)
-      INTEGER
-     &   NLPP12(*),NLPP21(*)
+     real(kind=wp) ::&
+     &   rhoc(*),sdrhoc(*)
+     integer&
+     &   nlpp12(*),nlpp21(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM,PMISSJ,PMISSK
-      INTEGER
-     &   IPRT,NMISSJ,NMISSK
+     real(kind=wp) ::&
+     &   fplm,pmissj,pmissk
+     integer&
+     &   iprt,nmissj,nmissk
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   YMMISS(1)
-      INTEGER
-     &   ISYM(1)
+     real(kind=wp) ::&
+     &   ymmiss(1)
+     integer&
+     &   isym(1)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -52,7 +52,7 @@
 !      EXTERNAL CCFLST,IPRINT,VERSP,VPMN
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC REAL
+      intrinsic real
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -103,74 +103,74 @@
 !     REAL YSDJ, YSDK
 !        THE STANDARD DEVIAION OF EACH SERIES.
 !
-      FPLM = R1MACH(2)
+      fplm = r1mach(2)
 !
-      YMMISS(1) = FPLM
+      ymmiss(1) = fplm
 !
 !     PRINT SUMMARY INFORMATION
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      IF (NEWPG) WRITE (IPRT, 1004)
-      CALL VERSP (.TRUE.)
-      WRITE(IPRT, 1005)
+      if (newpg) write (iprt, 1004)
+      call versp (.true.)
+      write(iprt, 1005)
 !
-      WRITE(IPRT, 1000) J, K, YMEANJ, YMEANK, YSDJ, YSDK, NJ, NK
-      IF (.NOT. IFMISS) GO TO 10
-      NMISSJ = NJ - NUSEDJ
-      PMISSJ = 100.0E0 * NMISSJ / NJ
-      NMISSK = NK - NUSEDK
-      PMISSK = 100.0E0 * NMISSK / NK
-      WRITE(IPRT, 1003) NMISSJ, NMISSK, PMISSJ, PMISSK
+      write(iprt, 1000) j, k, ymeanj, ymeank, ysdj, ysdk, nj, nk
+      if (.not. ifmiss) go to 10
+      nmissj = nj - nusedj
+      pmissj = 100.0e0 * nmissj / nj
+      nmissk = nk - nusedk
+      pmissk = 100.0e0 * nmissk / nk
+      write(iprt, 1003) nmissj, nmissk, pmissj, pmissk
 !
-   10 WRITE(IPRT, 1006) LAGMAX
-      IF (IFMISS) WRITE(IPRT, 1007) YMISSJ, YMISSK
+   10 write(iprt, 1006) lagmax
+      if (ifmiss) write(iprt, 1007) ymissj, ymissk
 !
-      IF (YSDJ .GT. 0.0E0 .AND. YSDK .GT. 0.0E0) GO TO 20
-      WRITE (IPRT, 1008) J, K
-      RETURN
+      if (ysdj .gt. 0.0e0 .and. ysdk .gt. 0.0e0) go to 20
+      write (iprt, 1008) j, k
+      return
 !
 !     PRINT CCF INFORMATION
 !
-   20 CONTINUE
-      WRITE(IPRT, 1002)
-      WRITE (IPRT, 1001) J, K
-      CALL CCFLST (RHOC, SDRHOC, NLPP12, NLPP21, LAGMAX, LCCOV, NCC,
-     &   IFMISS)
+   20 continue
+      write(iprt, 1002)
+      write (iprt, 1001) j, k
+     call ccflst (rhoc, sdrhoc, nlpp12, nlpp21, lagmax, lccov, ncc,&
+     &   ifmiss)
 !
 !     PLOT CCF INFORMATION
 !
-      WRITE(IPRT, 1004)
-      CALL VERSP (.TRUE.)
-      WRITE (IPRT, 1001) J, K
-      CALL VPMN(RHOC, YMMISS, 2*LAGMAX+1, 1, 2*LAGMAX+1, 1, 0,
-     &   ISYM, 1, 0, -1.0E0, 1.0E0, REAL(-LAGMAX), 1.0E0, IFMISS,
+      write(iprt, 1004)
+      call versp (.true.)
+      write (iprt, 1001) j, k
+     call vpmn(rhoc, ymmiss, 2*lagmax+1, 1, 2*lagmax+1, 1, 0,&
+    &   isym, 1, 0, -1.0e0, 1.0e0, real(-lagmax), 1.0e0, ifmiss,&
      &   0, 0, 1)
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(/ 42X, 7HSERIES , I2, 5X, 7HSERIES , I2//
-     &   41H AVERAGE OF THE SERIES                 = , 2G14.7/
-     &   41H STANDARD DEVIATION OF THE SERIES      = , 2G14.7/
-     &   41H NUMBER OF TIME POINTS                 = , 2(I10, 4X))
- 1001 FORMAT (42H CROSS CORRELATION FUNCTION ESTIMATE (CCF)//
-     &   22H CCF CORRELATES SERIES , I2, 22H AT TIME T WITH SERIES , I2,
-     &   15H AT TIME T + K./
-     &   5X, 55H(IF PEAK CORRELATION OCCURES AT POSITIVE (NEGATIVE) LAG/
-     &   8X, 36HTHEN SERIES 1 LEADS (LAGS) SERIES 2))
- 1002 FORMAT(//)
- 1003 FORMAT (
-     &   41H NUMBER OF MISSING OBSERVATIONS        = , 2(I10, 4X)/
-     &   41H PERCENTAGE OF OBSERVATIONS MISSING    = , 2(F10.4, 4X))
- 1004 FORMAT ('1')
- 1005 FORMAT ( 27H CROSS CORRELATION ANALYSIS)
- 1006 FORMAT(/
-     &   41H LARGEST LAG VALUE TO BE USED          = , I10)
- 1007 FORMAT(
-     &   41H MISSING VALUE CODE                    = , 2G14.7)
- 1008 FORMAT (//35H CROSS CORRELATIONS BETWEEN SERIES , I2, 5H AND ,
-     &   I2, 22H COULD NOT BE COMPUTED/
-     &   54H BECAUSE THE LAG ZERO AUTOCOVARIANCE OF ONE OR BOTH OF/
-     &   20H THE SERIES IS ZERO.)
-      END
+1000 format(/ 42x, 7hseries , i2, 5x, 7hseries , i2//&
+    &   41h average of the series                 = , 2g14.7/&
+    &   41h standard deviation of the series      = , 2g14.7/&
+     &   41h number of time points                 = , 2(i10, 4x))
+1001 format (42h cross correlation function estimate (ccf)//&
+    &   22h ccf correlates series , i2, 22h at time t with series , i2,&
+    &   15h at time t + k./&
+    &   5x, 55h(if peak correlation occures at positive (negative) lag/&
+     &   8x, 36hthen series 1 leads (lags) series 2))
+ 1002 format(//)
+1003 format (&
+    &   41h number of missing observations        = , 2(i10, 4x)/&
+     &   41h percentage of observations missing    = , 2(f10.4, 4x))
+ 1004 format ('1')
+ 1005 format ( 27h cross correlation analysis)
+1006 format(/&
+     &   41h largest lag value to be used          = , i10)
+1007 format(&
+     &   41h missing value code                    = , 2g14.7)
+1008 format (//35h cross correlations between series , i2, 5h and ,&
+    &   i2, 22h could not be computed/&
+    &   54h because the lag zero autocovariance of one or both of/&
+     &   20h the series is zero.)
+      end

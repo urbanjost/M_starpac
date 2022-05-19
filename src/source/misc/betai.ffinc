@@ -1,5 +1,5 @@
 !BETAI
-      REAL FUNCTION BETAI (X, PIN, QIN)
+      real function betai (x, pin, qin)
 ! APRIL 1977 VERSION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 ! BASED ON BOSTEN AND BATTISTE, REMARK ON ALGORITHM 179, COMM. ACM,
 ! V 17, P 153, (1974).
@@ -15,11 +15,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL PIN,QIN,X
+      real pin,qin,x
 !
 !  LOCAL SCALARS
-      REAL ALNEPS,ALNSML,C,EPS,FAC1,FAC2,FINSUM,P,P1,PS,Q,SML,TERM,XB,Y
-      INTEGER I,IB,N
+      real alneps,alnsml,c,eps,fac1,fac2,finsum,p,p1,ps,q,sml,term,xb,y
+      integer i,ib,n
 !
 !  EXTERNAL FUNCTIONS
 !      REAL ALBETA,R1MACH
@@ -29,103 +29,103 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,AINT,EXP,FLOAT,LOG,MAX,MIN,REAL
+      intrinsic abs,aint,exp,float,log,max,min,real
 !
-      DATA             EPS, ALNEPS, SML, ALNSML / 4*0.0 /
+      data             eps, alneps, sml, alnsml / 4*0.0 /
 !
-      IF (EPS.NE.0.) GO TO 10
-      EPS = R1MACH(3)
-      ALNEPS = LOG(EPS)
-      SML = R1MACH(1)
-      ALNSML = LOG(SML)
+      if (eps.ne.0.) go to 10
+      eps = r1mach(3)
+      alneps = log(eps)
+      sml = r1mach(1)
+      alnsml = log(sml)
 !
- 10   IF (X.LT.0. .OR. X.GT.1.0) CALL XERROR (
+10   if (x.lt.0. .or. x.gt.1.0) call xerror (&
      &  'BETAI   X IS NOT IN THE RANGE (0,1)', 35, 1, 2)
-      IF (PIN.LE.0. .OR. QIN.LE.0.) CALL XERROR (
+     if (pin.le.0. .or. qin.le.0.) call xerror (&
      &  'BETAI   P AND/OR Q IS LE ZERO', 29, 2, 2)
 !
-      Y = X
-      P = PIN
-      Q = QIN
-      IF (Q.LE.P .AND. X.LT.0.8) GO TO 20
-      IF (X.LT.0.2) GO TO 20
-      Y = 1.0 - Y
-      P = QIN
-      Q = PIN
+      y = x
+      p = pin
+      q = qin
+      if (q.le.p .and. x.lt.0.8) go to 20
+      if (x.lt.0.2) go to 20
+      y = 1.0 - y
+      p = qin
+      q = pin
 !
- 20   IF ((P+Q)*Y/(P+1.).LT.EPS) GO TO 80
+ 20   if ((p+q)*y/(p+1.).lt.eps) go to 80
 !
 ! EVALUATE THE INFINITE SUM FIRST.
 ! TERM WILL EQUAL Y**P/BETA(PS,P) * (1.-PS)I * Y**I / FAC(I)
 !
-      PS = Q - AINT(Q)
-      IF (PS.EQ.0.) PS = 1.0
-      XB = P*LOG(Y) -  ALBETA(PS, P) - LOG(P)
-      BETAI = 0.0
-      IF (XB.GE.ALNSML) THEN
-         BETAI = EXP(XB)
-         FAC2 = 1.0
-         IF (PS.NE.1.0E0) THEN
-            FAC1 = 1.0
-            N = MAX(ALNEPS/LOG(Y), 4.0E0)
-            DO 30 I=1,N
-               IF ((I-PS.EQ.0.0E0) .OR. (FAC1.EQ.0.0E0)) THEN
-                  FAC1 = 0.0E0
-               ELSE
-                  IF (LOG(ABS(FAC1)) + LOG(ABS(I-PS)) + LOG(Y) -
-     &                LOG(REAL(I)) .LT. ALNSML) THEN
-                     FAC1 = 0.0E0
-                  ELSE
-                     FAC1 = FAC1 * (I-PS)*Y/I
-                  END IF
-               END IF
-               FAC2 = FAC2 + FAC1*P/(P+I)
- 30         CONTINUE
-         END IF
-         BETAI = BETAI*FAC2
-      END IF
+      ps = q - aint(q)
+      if (ps.eq.0.) ps = 1.0
+      xb = p*log(y) -  albeta(ps, p) - log(p)
+      betai = 0.0
+      if (xb.ge.alnsml) then
+         betai = exp(xb)
+         fac2 = 1.0
+         if (ps.ne.1.0e0) then
+            fac1 = 1.0
+            n = max(alneps/log(y), 4.0e0)
+            do 30 i=1,n
+               if ((i-ps.eq.0.0e0) .or. (fac1.eq.0.0e0)) then
+                  fac1 = 0.0e0
+               else
+                 if (log(abs(fac1)) + log(abs(i-ps)) + log(y) -&
+     &                log(real(i)) .lt. alnsml) then
+                     fac1 = 0.0e0
+                  else
+                     fac1 = fac1 * (i-ps)*y/i
+                  end if
+               end if
+               fac2 = fac2 + fac1*p/(p+i)
+ 30         continue
+         end if
+         betai = betai*fac2
+      end if
 !
 ! NOW EVALUATE THE FINITE SUM, MAYBE.
 !
-      IF (Q.LE.1.0) GO TO 70
+      if (q.le.1.0) go to 70
 !
-      XB = P*LOG(Y) + Q*LOG(1.0-Y) - ALBETA(P,Q) - LOG(Q)
-      IB = MAX (XB/ALNSML, 0.0)
-      TERM = EXP (XB - FLOAT(IB)*ALNSML)
-      C = 1.0/(1.0-Y)
-      P1 = Q*C/(P+Q-1.)
+      xb = p*log(y) + q*log(1.0-y) - albeta(p,q) - log(q)
+      ib = max (xb/alnsml, 0.0)
+      term = exp (xb - float(ib)*alnsml)
+      c = 1.0/(1.0-y)
+      p1 = q*c/(p+q-1.)
 !
-      FINSUM = 0.0
-      N = Q
-      IF (Q.EQ.FLOAT(N)) N = N - 1
-      DO 50 I=1,N
-        IF (P1.LE.1.0 .AND. TERM/EPS.LE.FINSUM) GO TO 60
-        IF (Q-I+1.0E0 .EQ. 0.0E0) THEN
-          TERM = 0.0E0
-        ELSE
-          IF (LOG(ABS(Q-I+1.0E0)) + LOG(ABS(C)) + LOG(ABS(TERM)) -
-     &        LOG(ABS(P+Q-I)) .LT. ALNSML) THEN
-            TERM = 0.0E0
-          ELSE
-            TERM = (Q-I+1.0E0)*C*TERM/(P+Q-I)
-          END IF
-        END IF
+      finsum = 0.0
+      n = q
+      if (q.eq.float(n)) n = n - 1
+      do 50 i=1,n
+        if (p1.le.1.0 .and. term/eps.le.finsum) go to 60
+        if (q-i+1.0e0 .eq. 0.0e0) then
+          term = 0.0e0
+        else
+         if (log(abs(q-i+1.0e0)) + log(abs(c)) + log(abs(term)) -&
+     &        log(abs(p+q-i)) .lt. alnsml) then
+            term = 0.0e0
+          else
+            term = (q-i+1.0e0)*c*term/(p+q-i)
+          end if
+        end if
 !
-        IF (TERM.GT.1.0) IB = IB - 1
-        IF (TERM.GT.1.0) TERM = TERM*SML
+        if (term.gt.1.0) ib = ib - 1
+        if (term.gt.1.0) term = term*sml
 !
-        IF (IB.EQ.0) FINSUM = FINSUM + TERM
- 50   CONTINUE
+        if (ib.eq.0) finsum = finsum + term
+ 50   continue
 !
- 60   BETAI = BETAI + FINSUM
- 70   IF (Y.NE.X .OR. P.NE.PIN) BETAI = 1.0 - BETAI
-      BETAI = MAX (MIN (BETAI, 1.0), 0.0)
-      RETURN
+ 60   betai = betai + finsum
+ 70   if (y.ne.x .or. p.ne.pin) betai = 1.0 - betai
+      betai = max (min (betai, 1.0), 0.0)
+      return
 !
- 80   BETAI = 0.0
-      XB = P*LOG(MAX(Y,SML)) - LOG(P) - ALBETA(P,Q)
-      IF (XB.GT.ALNSML .AND. Y.NE.0.) BETAI = EXP (XB)
-      IF (Y.NE.X .OR. P.NE.PIN) BETAI = 1.0 - BETAI
-      RETURN
+ 80   betai = 0.0
+      xb = p*log(max(y,sml)) - log(p) - albeta(p,q)
+      if (xb.gt.alnsml .and. y.ne.0.) betai = exp (xb)
+      if (y.ne.x .or. p.ne.pin) betai = 1.0 - betai
+      return
 !
-      END
+      end

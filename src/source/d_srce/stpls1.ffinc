@@ -1,5 +1,5 @@
 !STPLS1
-      SUBROUTINE STPLS1(N, M, IXM, PAR, NPAR, NETA, EXMPT, SCALE, NPRT)
+      subroutine stpls1(n, m, ixm, par, npar, neta, exmpt, scale, nprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,18 +16,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   EXMPT
-      INTEGER
-     &   IXM,M,N,NETA,NPAR,NPRT
+     real(kind=wp) ::&
+     &   exmpt
+     integer&
+     &   ixm,m,n,neta,npar,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(10),SCALE(10)
+     real(kind=wp) ::&
+     &   par(10),scale(10)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -55,22 +55,22 @@
 !        A VALUE TO INDICATE USE OF THE DEFAULT VALUES OF
 !        THE TYPICAL SIZE OF THE UNKNOWN PARAMETERS.
 !
-      PAR(1) = 0.0_WP
-      PAR(2) = 3.125_WP
-      PAR(3) = 1.0_WP
-      PAR(4) = 2.0_WP
+      par(1) = 0.0_wp
+      par(2) = 3.125_wp
+      par(3) = 1.0_wp
+      par(4) = 2.0_wp
 !
-      N = 101
-      M = 1
-      IXM = 200
-      NPAR = 4
-      DO 10 I=1,10
-         SCALE(I) = 1.0_WP
-   10 CONTINUE
-      NETA = 0
-      EXMPT = 0.0_WP
-      NPRT = 1
+      n = 101
+      m = 1
+      ixm = 200
+      npar = 4
+      do 10 i=1,10
+         scale(i) = 1.0_wp
+   10 continue
+      neta = 0
+      exmpt = 0.0_wp
+      nprt = 1
 !
-      RETURN
+      return
 !
-      END
+      end

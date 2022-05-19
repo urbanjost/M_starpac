@@ -1,7 +1,7 @@
 !NLSDC
-      SUBROUTINE NLSDC(Y, XM, N, M, IXM, MDL, DRV, PAR, NPAR, RES,
-     &   LDSTAK, IFIXED, IDRVCK, MIT, STOPSS, STOPP, SCALE, DELTA,
-     &   IVAPRX, NPRT)
+     subroutine nlsdc(y, xm, n, m, ixm, mdl, drv, par, npar, res,&
+    &   ldstak, ifixed, idrvck, mit, stopss, stopp, scale, delta,&
+     &   ivaprx, nprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,47 +19,47 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   DELTA,STOPP,STOPSS
-      INTEGER
-     &   IDRVCK,IVAPRX,IXM,LDSTAK,M,MIT,N,NPAR,NPRT
+     real(kind=wp) ::&
+     &   delta,stopp,stopss
+     integer&
+     &   idrvck,ivaprx,ixm,ldstak,m,mit,n,npar,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),RES(*),SCALE(*),XM(*),Y(*)
-      INTEGER
-     &   IFIXED(*)
+     real(kind=wp) ::&
+     &   par(*),res(*),scale(*),xm(*),y(*)
+     integer&
+     &   ifixed(*)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL DRV,MDL
+       external drv,mdl
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   RSD
-      INTEGER
-     &   IPRT,IVCV,LIFIXD,LPV,LSCALE,LSDPV,LSDRES,LWT,NNZW,NPARE
-      LOGICAL
-     &   SAVE,WEIGHT
+     real(kind=wp) ::&
+     &   rsd
+     integer&
+     &   iprt,ivcv,lifixd,lpv,lscale,lsdpv,lsdres,lwt,nnzw,npare
+     logical&
+     &   save,weight
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   PV(1),SDPV(1),SDRES(1),VCV(1,1),WT(1)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   pv(1),sdpv(1),sdres(1),vcv(1,1),wt(1)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,NLCNTA
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -199,41 +199,41 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
+     data nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6) /&
      &   'N','L','S','D','C',' '/
 !
 !     SET VARIOUS PROGRAM PARAMETERS
 !
-      WEIGHT = .FALSE.
-      SAVE = .FALSE.
+      weight = .false.
+      save = .false.
 !
-      WT(1) = 1.0_WP
-      LIFIXD = NPAR
-      LPV = 1
-      LSCALE = NPAR
-      LSDPV = 1
-      LSDRES = 1
-      LWT = 1
-      IVCV = 1
+      wt(1) = 1.0_wp
+      lifixd = npar
+      lpv = 1
+      lscale = npar
+      lsdpv = 1
+      lsdres = 1
+      lwt = 1
+      ivcv = 1
 !
-      CALL NLCNTA(Y, WT, LWT, XM, N, M, IXM, MDL, DRV, PAR, NPAR, RES,
-     &   LDSTAK, IFIXED, LIFIXD, IDRVCK, MIT, STOPSS, STOPP, SCALE,
-     &   LSCALE, DELTA, IVAPRX, NPRT, RSD, PV, LPV, SDPV, LSDPV, SDRES,
-     &   LSDRES, VCV, IVCV, NMSUB, WEIGHT, SAVE, NNZW, NPARE)
+     call nlcnta(y, wt, lwt, xm, n, m, ixm, mdl, drv, par, npar, res,&
+    &   ldstak, ifixed, lifixd, idrvck, mit, stopss, stopp, scale,&
+    &   lscale, delta, ivaprx, nprt, rsd, pv, lpv, sdpv, lsdpv, sdres,&
+     &   lsdres, vcv, ivcv, nmsub, weight, save, nnzw, npare)
 !
-      IF (IERR.NE.1) RETURN
+      if (ierr.ne.1) return
 !
 !     PRINT PROPER CALL SEQUENCE
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
-      RETURN
+      call iprint(iprt)
+      write (iprt,1000)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   '       CALL NLSDC (Y, XM, N, M, IXM, NLSMDL, NLSDRV,'/
-     &   '      +            PAR, NPAR, RES, LDSTAK,'/
-     &   '      +            IFIXED, IDRVCK, MIT, STOPSS, STOPP,'/
+1000 format (/42h the correct form of the call statement is//&
+    &   '       CALL NLSDC (Y, XM, N, M, IXM, NLSMDL, NLSDRV,'/&
+    &   '      +            PAR, NPAR, RES, LDSTAK,'/&
+    &   '      +            IFIXED, IDRVCK, MIT, STOPSS, STOPP,'/&
      &   '      +            SCALE, DELTA, IVAPRX, NPRT)')
-      END
+      end

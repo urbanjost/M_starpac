@@ -1,5 +1,5 @@
 !DRV3
-      SUBROUTINE DRV3(PAR, NPAR, XM, N, M, IXM, D)
+      subroutine drv3(par, npar, xm, n, m, ixm, d)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,16 +15,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,M,N,NPAR
+     integer&
+     &   ixm,m,n,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   D(N,NPAR),PAR(NPAR),XM(IXM,M)
+     real(kind=wp) ::&
+     &   d(n,npar),par(npar),xm(ixm,m)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,J
+     integer&
+     &   i,j
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -45,12 +45,12 @@
 !     REAL(KIND=WP) :: XM(IXM,M)
 !        INDEPENDENT VARIABLE
 !
-      DO 20 I=1,N
-         DO 10 J=1,NPAR
-            D(I,J) = XM(I,J)
-   10    CONTINUE
-   20 CONTINUE
+      do 20 i=1,n
+         do 10 j=1,npar
+            d(i,j) = xm(i,j)
+   10    continue
+   20 continue
 !
-      RETURN
+      return
 !
-      END
+      end

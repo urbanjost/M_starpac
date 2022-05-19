@@ -1,5 +1,5 @@
 !CPYMSS
-      SUBROUTINE CPYMSS (N, M, X, IX, Y, IY)
+      subroutine cpymss (n, m, x, ix, y, iy)
 !
 !     LATEST REVISION  -  03/15/90  (JRD
 !
@@ -16,16 +16,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IX,IY,M,N
+     integer&
+     &   ix,iy,m,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(IX,*),Y(IY,*)
+     real(kind=wp) ::&
+     &   x(ix,*),y(iy,*)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,J
+     integer&
+     &   i,j
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -47,12 +47,12 @@
 !        THE MATRIX TO BE COPIED TO.
 !
 !
-      DO 20 J = 1, M
-         DO 10 I = 1, N
-            Y(I,J) = X(I,J)
-   10    CONTINUE
-   20 CONTINUE
+      do 20 j = 1, m
+         do 10 i = 1, n
+            y(i,j) = x(i,j)
+   10    continue
+   20 continue
 !
-      RETURN
+      return
 !
-      END
+      end

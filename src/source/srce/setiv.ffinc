@@ -1,5 +1,5 @@
 !SETIV
-      SUBROUTINE SETIV(VECTOR, N, VALUE)
+      subroutine setiv(vector, n, value)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,16 +16,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,VALUE
+     integer&
+     &   n,value
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   VECTOR(N)
+     integer&
+     &   vector(n)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -38,10 +38,10 @@
 !     INTEGER VECTOR(N)
 !        VECTOR WHOSE FIRST N ELEMENTS ARE TO BE SET.
 !
-      DO 10 I=1,N
-         VECTOR(I) = VALUE
-   10 CONTINUE
+      do 10 i=1,n
+         vector(i) = value
+   10 continue
 !
-      RETURN
+      return
 !
-      END
+      end

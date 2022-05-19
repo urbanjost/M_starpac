@@ -1,5 +1,5 @@
 !MODSUM
-      SUBROUTINE MODSUM(NFAC, MSPECT)
+      subroutine modsum(nfac, mspect)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,16 +15,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   NFAC
+     integer&
+     &   nfac
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   MSPECT(NFAC,4)
+     integer&
+     &   mspect(nfac,4)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,J
+     integer&
+     &   i,iprt,j
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
@@ -43,18 +43,18 @@
 !        THE ARRAY CONTAINING THE VALUES OF P, D, Q, AND S FOR EACH FACT
 !
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     PRINT MODEL SPECIFICATION
 !
-      WRITE(IPRT, 1002) (I, (MSPECT(I,J),J=1,4), I=1,NFAC)
+      write(iprt, 1002) (i, (mspect(i,j),j=1,4), i=1,nfac)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1002 FORMAT(//
-     &   '    MODEL SPECIFICATION'//
-     &   '       FACTOR          (P     D     Q)    S'//
-     &   (7X, I6, 6X, 4I6))
-      END
+1002 format(//&
+    &   '    MODEL SPECIFICATION'//&
+    &   '       FACTOR          (P     D     Q)    S'//&
+     &   (7x, i6, 6x, 4i6))
+      end

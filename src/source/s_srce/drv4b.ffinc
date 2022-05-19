@@ -1,5 +1,5 @@
 !DRV4B
-      SUBROUTINE DRV4B (COEF, NCOEF, XM, N, M, IXM, D)
+      subroutine drv4b (coef, ncoef, xm, n, m, ixm, d)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,19 +15,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,M,N,NCOEF
+     integer&
+     &   ixm,m,n,ncoef
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   COEF(NCOEF),D(N,NCOEF),XM(IXM,M)
+     real(kind=wp) ::&
+     &   coef(ncoef),d(n,ncoef),xm(ixm,m)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC EXP
+      intrinsic exp
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -51,15 +51,15 @@
 !        IS STORED.
 !
 !
-      DO 10 I = 1, N
-         D(I,1) = 0.0E0
-         D(I,2) = (COEF(3)*2.0E0*(XM(I,1)-COEF(2))/COEF(4)) *
-     &      EXP(-((XM(I,1)-COEF(2))**2)/COEF(4))
-         D(I,3) = 0.0E0
-         D(I,4) = COEF(3)*(-((XM(I,1)-COEF(2))**2) /
-     &      (COEF(4)**2)) * EXP(-((XM(I,1)-COEF(2))**2)/COEF(4))
-   10 CONTINUE
+      do 10 i = 1, n
+         d(i,1) = 0.0e0
+        d(i,2) = (coef(3)*2.0e0*(xm(i,1)-coef(2))/coef(4)) *&
+     &      exp(-((xm(i,1)-coef(2))**2)/coef(4))
+         d(i,3) = 0.0e0
+        d(i,4) = coef(3)*(-((xm(i,1)-coef(2))**2) /&
+     &      (coef(4)**2)) * exp(-((xm(i,1)-coef(2))**2)/coef(4))
+   10 continue
 !
-      RETURN
+      return
 !
-      END
+      end

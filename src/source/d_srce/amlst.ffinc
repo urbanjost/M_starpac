@@ -1,7 +1,7 @@
 !AMLST
-      SUBROUTINE AMLST (IAMHD, PAR, NPAR, NFAC, MSPECT, N, VCVL,
-     &   LVCVL, SCALE, LSCALE, STPT, LSTPT, IFIXD, RSS, RSD, NPARDF,
-     &   NPARE, IDF)
+     subroutine amlst (iamhd, par, npar, nfac, mspect, n, vcvl,&
+    &   lvcvl, scale, lscale, stpt, lstpt, ifixd, rss, rsd, npardf,&
+     &   npare, idf)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,22 +18,22 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RSD,RSS
-      INTEGER
-     &   IAMHD,IDF,LSCALE,LSTPT,LVCVL,N,NFAC,NPAR,NPARDF,NPARE
+     real(kind=wp) ::&
+     &   rsd,rss
+     integer&
+     &   iamhd,idf,lscale,lstpt,lvcvl,n,nfac,npar,npardf,npare
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),SCALE(*),STPT(*),VCVL(*)
-      INTEGER
-     &   IFIXD(*),MSPECT(NFAC,4)
+     real(kind=wp) ::&
+     &   par(*),scale(*),stpt(*),vcvl(*)
+     integer&
+     &   ifixd(*),mspect(nfac,4)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM,T975
-      INTEGER
-     &   IPARMN,IPARMX,IPRT,LBLTYP
+     real(kind=wp) ::&
+     &   fplm,t975
+     integer&
+     &   iparmn,iparmx,iprt,lbltyp
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -104,72 +104,72 @@
 !        THE LOWER HALF OF THE VARIANCE-COVARIANCE MATRIX, STORED
 !        ROW WISE.
 !
-      FPLM = D1MACH(2)
+      fplm = d1mach(2)
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     PRINT HEADING FOR INFORMATION ABOUT PARAMETERS
 !
-      WRITE(IPRT, 1001)
+      write(iprt, 1001)
 !
-      IF (IAMHD .EQ. 1) WRITE(IPRT, 1004)
-      IF (IAMHD .EQ. 2) WRITE(IPRT, 1005)
-      IF (IAMHD .EQ. 3) WRITE(IPRT, 1006)
-      WRITE(IPRT, 1001)
+      if (iamhd .eq. 1) write(iprt, 1004)
+      if (iamhd .eq. 2) write(iprt, 1005)
+      if (iamhd .eq. 3) write(iprt, 1006)
+      write(iprt, 1001)
 !
 !     PRINT MODEL SUMMARY INFORMATION
 !
-      IPARMN = 1
-      IPARMX = 0
-      T975 = PPFT(0.95_WP, N-NPAR)
+      iparmn = 1
+      iparmx = 0
+      t975 = ppft(0.95_wp, n-npar)
 !
 !     PRINT AUTOREGRESSIVE TERMS
 !
-      LBLTYP = 1
-      CALL AMLST1 (IAMHD, PAR, NPAR, MSPECT, NFAC, VCVL, LVCVL,
-     &  SCALE, LSCALE, STPT, LSTPT, IPARMN, IPARMX, LBLTYP, T975, IFIXD)
+      lbltyp = 1
+     call amlst1 (iamhd, par, npar, mspect, nfac, vcvl, lvcvl,&
+     &  scale, lscale, stpt, lstpt, iparmn, iparmx, lbltyp, t975, ifixd)
 !
 !     PRINT MEAN OR TREND TERM
 !
-      LBLTYP = 2
-      CALL AMLST1 (IAMHD, PAR, NPAR, MSPECT, 1, VCVL, LVCVL,
-     &  SCALE, LSCALE, STPT, LSTPT, IPARMN, IPARMX, LBLTYP, T975, IFIXD)
+      lbltyp = 2
+     call amlst1 (iamhd, par, npar, mspect, 1, vcvl, lvcvl,&
+     &  scale, lscale, stpt, lstpt, iparmn, iparmx, lbltyp, t975, ifixd)
 !
 !     PRINT MOVING AVERAGE TERMS
 !
-      LBLTYP = 3
-      CALL AMLST1 (IAMHD, PAR, NPAR, MSPECT, NFAC, VCVL, LVCVL,
-     &  SCALE, LSCALE, STPT, LSTPT, IPARMN, IPARMX, LBLTYP, T975, IFIXD)
+      lbltyp = 3
+     call amlst1 (iamhd, par, npar, mspect, nfac, vcvl, lvcvl,&
+     &  scale, lscale, stpt, lstpt, iparmn, iparmx, lbltyp, t975, ifixd)
 !
-      WRITE (IPRT, 1160) N
-      IF (IAMHD.GE.2)
-     &   WRITE (IPRT, 1040) RSS, RSD, N, NPARDF, NPARE, IDF
-      RETURN
+      write (iprt, 1160) n
+     if (iamhd.ge.2)&
+     &   write (iprt, 1040) rss, rsd, n, npardf, npare, idf
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1001 FORMAT(1X)
- 1004 FORMAT (//73X, '  --STEP SIZE FOR'/
-     &  39X, '  ------PARAMETER', 17X, '  --APPROXIMATING'/
-     &  ' -----------------PARAMETER DESCRIPTION  STARTING VALUES',
-     &  '  ----------SCALE  -----DERIVATIVE'/
-     &  ' INDEX  ---------TYPE  --ORDER  --FIXED  ----------(PAR)',
+ 1001 format(1x)
+1004 format (//73x, '  --STEP SIZE FOR'/&
+    &  39x, '  ------PARAMETER', 17x, '  --APPROXIMATING'/&
+    &  ' -----------------PARAMETER DESCRIPTION  STARTING VALUES',&
+    &  '  ----------SCALE  -----DERIVATIVE'/&
+    &  ' INDEX  ---------TYPE  --ORDER  --FIXED  ----------(PAR)',&
      &  '  --------(SCALE)  ----------(STP)')
- 1005 FORMAT(30X, '  ------PARAMETER'/
-     &  ' --------PARAMETER DESCRIPTION  ------ESTIMATES'/
+1005 format(30x, '  ------PARAMETER'/&
+    &  ' --------PARAMETER DESCRIPTION  ------ESTIMATES'/&
      &  ' INDEX  ---------TYPE  --ORDER  ----------(PAR)')
- 1006 FORMAT(
-     &  39X, '  ------PARAMETER  -----STD DEV OF', 17X,
-     &  '  ---------------------APPROXIMATE'/
-     &  ' -----------------PARAMETER DESCRIPTION  ------ESTIMATES',
-     &  '  ------PARAMETER  ----------RATIO',
-     &  '  ----95 PERCENT CONFIDENCE LIMITS'/
-     &  ' INDEX  ---------TYPE  --ORDER  --FIXED  ----------(PAR)',
-     &  '  ------ESTIMATES',
+1006 format(&
+    &  39x, '  ------PARAMETER  -----STD DEV OF', 17x,&
+    &  '  ---------------------APPROXIMATE'/&
+    &  ' -----------------PARAMETER DESCRIPTION  ------ESTIMATES',&
+    &  '  ------PARAMETER  ----------RATIO',&
+    &  '  ----95 PERCENT CONFIDENCE LIMITS'/&
+    &  ' INDEX  ---------TYPE  --ORDER  --FIXED  ----------(PAR)',&
+    &  '  ------ESTIMATES',&
      &  '  PAR/(SD OF PAR)  ----------LOWER  ----------UPPER')
- 1040 FORMAT (//' RESIDUAL SUM OF SQUARES       ', 8X, G15.7,
-     &  '  (BACKFORECASTS INCLUDED)'//6H RESID,
-     &   25HUAL STANDARD DEVIATION   , 8X, G15.7/19H BASED ON DEGREES O,
-     &   9HF FREEDOM, 1X, I4, 3H - , I3, 3H - , I3, 3H = , I4)
- 1160 FORMAT (//23H NUMBER OF OBSERVATIONS, 48X, 3H(N), 1X, I5)
-      END
+1040 format (//' RESIDUAL SUM OF SQUARES       ', 8x, g15.7,&
+    &  '  (BACKFORECASTS INCLUDED)'//6h resid,&
+    &   25hual standard deviation   , 8x, g15.7/19h based on degrees o,&
+     &   9hf freedom, 1x, i4, 3h - , i3, 3h - , i3, 3h = , i4)
+ 1160 format (//23h number of observations, 48x, 3h(n), 1x, i5)
+      end

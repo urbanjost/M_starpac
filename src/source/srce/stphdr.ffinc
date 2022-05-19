@@ -1,5 +1,5 @@
 !STPHDR
-      SUBROUTINE STPHDR(PAGE, WIDE, ISUBHD)
+      subroutine stphdr(page, wide, isubhd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,14 +16,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISUBHD
-      LOGICAL
-     &   PAGE,WIDE
+     integer&
+     &   isubhd
+     logical&
+     &   page,wide
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VERSP
@@ -41,27 +41,27 @@
 !       THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
 !        FULL WIDTH (TRUE) OR NOT (FALSE).
 !
-      CALL IPRINT(IPRT)
-      IF (PAGE) WRITE (IPRT, 1020)
-      CALL VERSP(WIDE)
-      IF (PAGE) WRITE (IPRT,1000)
-      IF (.NOT.PAGE) WRITE (IPRT,1010)
-      PAGE = .TRUE.
+      call iprint(iprt)
+      if (page) write (iprt, 1020)
+      call versp(wide)
+      if (page) write (iprt,1000)
+      if (.not.page) write (iprt,1010)
+      page = .true.
 !
-      IF (ISUBHD.EQ.0) RETURN
+      if (isubhd.eq.0) return
 !
-      GO TO (10), ISUBHD
+      go to (10), isubhd
 !
-   10 WRITE (IPRT, 1030)
+   10 write (iprt, 1030)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS FOR PAGE HEADINGS
 !
- 1000 FORMAT (32H+DERIVATIVE STEP SIZE SELECTION,,
-     &   10H CONTINUED)
- 1010 FORMAT ('+', 34(1H*)/ 35H * DERIVATIVE STEP SIZE SELECTION */
-     &   1X, 34(1H*))
- 1020 FORMAT ('1')
- 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
-      END
+1000 format (32h+derivative step size selection,,&
+     &   10h continued)
+1010 format ('+', 34(1h*)/ 35h * derivative step size selection */&
+     &   1x, 34(1h*))
+ 1020 format ('1')
+ 1030 format (//30h summary of initial conditions/ 1x, 30('-'))
+      end

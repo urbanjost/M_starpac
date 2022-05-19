@@ -1,5 +1,5 @@
 !TAPER
-      SUBROUTINE TAPER (Y, N, TAPERP, YT)
+      subroutine taper (y, n, taperp, yt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,39 +18,39 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   TAPERP
-      INTEGER
-     &   N
+     real(kind=wp) ::&
+     &   taperp
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*),YT(*)
+     real(kind=wp) ::&
+     &   y(*),yt(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   PI,WEIGHT
-      INTEGER
-     &   I,IPRT,J,M
-      LOGICAL
-     &   ERR01,HEAD
+     real(kind=wp) ::&
+     &   pi,weight
+     integer&
+     &   i,iprt,j,m
+     logical&
+     &   err01,head
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   LN(8)*1,NMSUB(6)*1
+     character&
+     &   ln(8)*1,nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL CENTER,EISGE,GETPI,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC COS,INT
+      intrinsic cos,int
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -94,50 +94,50 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'T',       'A',       'P',       'E',       'R',       ' '/
-      DATA
-     & LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     data&
+    & ln(1), ln(2), ln(3), ln(4), ln(5), ln(6), ln(7), ln(8)&
      & /'N',' ',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 17, 1, HEAD, ERR01, LN)
-      IF (.NOT. ERR01) GO TO 5
+      call eisge(nmsub, ln, n, 17, 1, head, err01, ln)
+      if (.not. err01) go to 5
 !
-      IERR = 1
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+      ierr = 1
+      call iprint (iprt)
+      write (iprt, 1000)
+      return
 !
-    5 CONTINUE
+    5 continue
 !
-      CALL CENTER (Y, N, YT)
+      call center (y, n, yt)
 !
-      IF ((TAPERP .LE. 0.0_WP) .OR. (TAPERP .GT. 1.0_WP)) RETURN
+      if ((taperp .le. 0.0_wp) .or. (taperp .gt. 1.0_wp)) return
 !
-      CALL GETPI(PI)
+      call getpi(pi)
 !
-      M = INT(TAPERP * N + 0.5_WP) / 2
-      IF (M .EQ. 0) RETURN
+      m = int(taperp * n + 0.5_wp) / 2
+      if (m .eq. 0) return
 !
-      DO 20 I = 1, M
-         WEIGHT = 0.5_WP - 0.5_WP * COS(PI * (I-0.5_WP) / M)
-         YT(I) = WEIGHT * YT(I)
-         J = N + 1 - I
-         YT(J) = WEIGHT * YT(J)
-   20 CONTINUE
+      do 20 i = 1, m
+         weight = 0.5_wp - 0.5_wp * cos(pi * (i-0.5_wp) / m)
+         yt(i) = weight * yt(i)
+         j = n + 1 - i
+         yt(j) = weight * yt(j)
+   20 continue
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   36H       CALL TAPER (Y, N, TAPERP, YT))
-      END
+1000 format (/42h the correct form of the call statement is//&
+     &   36h       call taper (y, n, taperp, yt))
+      end

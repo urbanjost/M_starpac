@@ -1,5 +1,5 @@
 !DOTC
-      SUBROUTINE DOTC (Y, YMEAN, NY, X, XMEAN, NX, DOTXY, NDOTXY)
+      subroutine dotc (y, ymean, ny, x, xmean, nx, dotxy, ndotxy)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,21 +16,21 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   DOTXY,XMEAN,YMEAN
-      INTEGER
-     &   NDOTXY,NX,NY
+     real(kind=wp) ::&
+     &   dotxy,xmean,ymean
+     integer&
+     &   ndotxy,nx,ny
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(NX),Y(NY)
+     real(kind=wp) ::&
+     &   x(nx),y(ny)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,M
+     integer&
+     &   i,m
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -54,12 +54,12 @@
 !     REAL YMEAN
 !        THE MEAN OF THE FIRST SERIES.
 !
-      NDOTXY = 0
-      DOTXY = 0.0E0
-      M = MIN(NY, NX)
-      DO 10 I = 1, M
-         DOTXY = DOTXY + (Y(I) - YMEAN) * (X(I) - XMEAN)
-         NDOTXY = NDOTXY + 1
-   10 CONTINUE
-      RETURN
-      END
+      ndotxy = 0
+      dotxy = 0.0e0
+      m = min(ny, nx)
+      do 10 i = 1, m
+         dotxy = dotxy + (y(i) - ymean) * (x(i) - xmean)
+         ndotxy = ndotxy + 1
+   10 continue
+      return
+      end

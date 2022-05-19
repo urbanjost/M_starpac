@@ -1,5 +1,5 @@
 !NCHOSE
-      INTEGER FUNCTION NCHOSE(N,K)
+      integer function nchose(n,k)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,26 +16,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   K,N
+     integer&
+     &   k,n
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,KK,NN
+     integer&
+     &   i,kk,nn
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !
-      IF (N .GT. K) GO TO 10
-      NCHOSE = 1
-      RETURN
+      if (n .gt. k) go to 10
+      nchose = 1
+      return
 !
-   10 KK = MIN(K, N - K)
-      NN = 1
-      DO 20 I = 1, KK
-         NN = (NN*(N - I + 1))/I
-   20 CONTINUE
-      NCHOSE = NN
-      RETURN
-      END
+   10 kk = min(k, n - k)
+      nn = 1
+      do 20 i = 1, kk
+         nn = (nn*(n - i + 1))/i
+   20 continue
+      nchose = nn
+      return
+      end

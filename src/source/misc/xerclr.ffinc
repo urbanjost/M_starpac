@@ -1,5 +1,5 @@
 !XERCLR
-      SUBROUTINE XERCLR
+      subroutine xerclr
 !
 !     ABSTRACT
 !        THIS ROUTINE SIMPLY RESETS THE CURRENT ERROR NUMBER TO ZERO.
@@ -14,12 +14,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  LOCAL SCALARS
-      INTEGER JUNK
+      integer junk
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER J4SAVE
 !       EXTERNAL J4SAVE
 !
-      JUNK = J4SAVE(1,0,.TRUE.)
-      RETURN
-      END
+      junk = j4save(1,0,.true.)
+      return
+      end

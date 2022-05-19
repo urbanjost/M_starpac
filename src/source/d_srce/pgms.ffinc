@@ -1,6 +1,6 @@
 !PGMS
-      SUBROUTINE PGMS (YFFT, N, NFFT, LYFFT, IEXTND, NF, PER, LPER,
-     &   FREQ, LFREQ, NPRT)
+     subroutine pgms (yfft, n, nfft, lyfft, iextnd, nf, per, lper,&
+     &   freq, lfreq, nprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,32 +17,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IEXTND,LFREQ,LPER,LYFFT,N,NF,NFFT,NPRT
+     integer&
+     &   iextnd,lfreq,lper,lyfft,n,nf,nfft,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FREQ(*),PER(*),YFFT(*)
+     real(kind=wp) ::&
+     &   freq(*),per(*),yfft(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,NFFT2
-      LOGICAL
-     &   ERR01,ERR02,ERR03,ERR04,ERR05,HEAD
+     integer&
+     &   iprt,nfft2
+     logical&
+     &   err01,err02,err03,err04,err05,head
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   LLFREQ(8)*1,LLPER(8)*1,LLYFFT(8)*1,LN(8)*1,NMSUB(6)*1
+     character&
+     &   llfreq(8)*1,llper(8)*1,llyfft(8)*1,ln(8)*1,nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EISGE,ENFFT,IPRINT,PGMMN
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -104,62 +104,62 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'P',       'G',       'M',       'S',       ' ',       ' '/
-      DATA
-     & LLFREQ(1), LLFREQ(2), LLFREQ(3), LLFREQ(4), LLFREQ(5),
-     &  LLFREQ(6), LLFREQ(7), LLFREQ(8)
+     data&
+    & llfreq(1), llfreq(2), llfreq(3), llfreq(4), llfreq(5),&
+    &  llfreq(6), llfreq(7), llfreq(8)&
      &  /'L','F','R','E','Q',' ',' ',' '/
-      DATA
-     & LLPER(1), LLPER(2), LLPER(3), LLPER(4), LLPER(5),
-     &  LLPER(6), LLPER(7), LLPER(8) /'L','P','E','R',' ',' ',' ',' '/
-      DATA
-     & LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
-     &  LLYFFT(6), LLYFFT(7), LLYFFT(8)
+     data&
+    & llper(1), llper(2), llper(3), llper(4), llper(5),&
+     &  llper(6), llper(7), llper(8) /'L','P','E','R',' ',' ',' ',' '/
+     data&
+    & llyfft(1), llyfft(2), llyfft(3), llyfft(4), llyfft(5),&
+    &  llyfft(6), llyfft(7), llyfft(8)&
      &  /'L','Y','F','F','T',' ',' ',' '/
-      DATA
-     & LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     data&
+    & ln(1), ln(2), ln(3), ln(4), ln(5), ln(6), ln(7), ln(8)&
      & /'N',' ',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 17, 1, HEAD, ERR01, LN)
-      IF (ERR01) GO TO 5
+      call eisge(nmsub, ln, n, 17, 1, head, err01, ln)
+      if (err01) go to 5
 !
-      CALL ENFFT(NMSUB, NFFT, 2, N, LYFFT, NFFT2, HEAD, ERR02)
-      NF = NFFT2/2
+      call enfft(nmsub, nfft, 2, n, lyfft, nfft2, head, err02)
+      nf = nfft2/2
 !
-      CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT2, 9, HEAD, ERR03, LLYFFT)
+      call eisge(nmsub, llyfft, lyfft, nfft2, 9, head, err03, llyfft)
 !
-      CALL EISGE(NMSUB, LLPER, LPER, NF, 9, HEAD, ERR04, LLPER)
+      call eisge(nmsub, llper, lper, nf, 9, head, err04, llper)
 !
-      CALL EISGE(NMSUB, LLFREQ, LFREQ, NF, 9, HEAD, ERR05, LLFREQ)
+      call eisge(nmsub, llfreq, lfreq, nf, 9, head, err05, llfreq)
 !
-      IF (ERR02 .OR. ERR03 .OR. ERR04 .OR. ERR05) GO TO 5
-      GO TO 10
+      if (err02 .or. err03 .or. err04 .or. err05) go to 5
+      go to 10
 !
-    5 CONTINUE
-      IERR = 1
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+    5 continue
+      ierr = 1
+      call iprint (iprt)
+      write (iprt, 1000)
+      return
 !
-   10 CONTINUE
+   10 continue
 !
-      CALL PGMMN (YFFT, N, NFFT2, IEXTND, NF, PER, LPER, YFFT, FREQ,
-     &   LFREQ, NPRT, NMSUB)
+     call pgmmn (yfft, n, nfft2, iextnd, nf, per, lper, yfft, freq,&
+     &   lfreq, nprt, nmsub)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &  '       CALL PGMS (YFFT, N, NFFT, LYFFT,'/
+1000 format (/42h the correct form of the call statement is//&
+    &  '       CALL PGMS (YFFT, N, NFFT, LYFFT,'/&
      &  '      +           IEXTND, NF, PER, LPER, FREQ, LFREQ, NPRT)')
-      END
+      end

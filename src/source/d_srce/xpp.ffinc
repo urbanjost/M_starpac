@@ -1,5 +1,5 @@
 !XPP
-      SUBROUTINE XPP(LDSTAK,typ)
+      subroutine xpp(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -19,33 +19,33 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) :: XLB,XMISS,XUB,YLB,YMISS,YUB
-      INTEGER
-     &   ILOG,IPRT,ISIZE,ITEST,IYM,M,NOUT,NY,NYM
+      real(kind=wp) :: xlb,xmiss,xub,ylb,ymiss,yub
+     integer&
+     &   ilog,iprt,isize,itest,iym,m,nout,ny,nym
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   AIR(144),TIME(144),X(144),Y(144),YM(12,12),YMMISS(144)
-      INTEGER
-     &   ISYM(144)
+     real(kind=wp) ::&
+     &   air(144),time(144),x(144),y(144),ym(12,12),ymmiss(144)
+     integer&
+     &   isym(144)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,MPP,MPPC,MPPL,MPPM,MPPMC,MPPML,PP,PPC,PPL,PPM,
 !     +   PPMC,PPML,DCOPY,SETRV,SPP,SPPC,SPPL,SPPM,SPPMC,SPPML
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (Y(1),YM(1,1))
+      equivalence (y(1),ym(1,1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -109,490 +109,490 @@
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
 !
 !
-      DATA     XMISS,    YMISS
-     &    /      7.0_WP,    180.0_WP/
+     data     xmiss,    ymiss&
+     &    /      7.0_wp,    180.0_wp/
 !
-      DATA ISYM(  1),ISYM(  2),ISYM(  3),ISYM(  4),ISYM(  5),ISYM(  6)
+     data isym(  1),isym(  2),isym(  3),isym(  4),isym(  5),isym(  6)&
      &    /    -5000,     6000,        7,        8,        9,       10/
-      DATA ISYM(  7),ISYM(  8),ISYM(  9),ISYM( 10),ISYM( 11),ISYM( 12)
+     data isym(  7),isym(  8),isym(  9),isym( 10),isym( 11),isym( 12)&
      &    /       11,       12,       13,       14,       15,       16/
-      DATA ISYM( 13),ISYM( 14),ISYM( 15),ISYM( 16),ISYM( 17),ISYM( 18)
+     data isym( 13),isym( 14),isym( 15),isym( 16),isym( 17),isym( 18)&
      &    /        5,        6,        7,        8,        9,       10/
-      DATA ISYM( 19),ISYM( 20),ISYM( 21),ISYM( 22),ISYM( 23),ISYM( 24)
+     data isym( 19),isym( 20),isym( 21),isym( 22),isym( 23),isym( 24)&
      &    /       11,       12,       13,       14,       15,       16/
-      DATA ISYM( 25),ISYM( 26),ISYM( 27),ISYM( 28),ISYM( 29),ISYM( 30)
+     data isym( 25),isym( 26),isym( 27),isym( 28),isym( 29),isym( 30)&
      &    /        5,        6,        7,        8,        9,       10/
-      DATA ISYM( 31),ISYM( 32),ISYM( 33),ISYM( 34),ISYM( 35),ISYM( 36)
+     data isym( 31),isym( 32),isym( 33),isym( 34),isym( 35),isym( 36)&
      &    /       11,       12,       13,       14,       15,       16/
-      DATA ISYM( 37),ISYM( 38),ISYM( 39),ISYM( 40),ISYM( 41),ISYM( 42)
+     data isym( 37),isym( 38),isym( 39),isym( 40),isym( 41),isym( 42)&
      &    /        5,        6,        7,        8,        9,       10/
-      DATA ISYM( 43),ISYM( 44),ISYM( 45),ISYM( 46),ISYM( 47),ISYM( 48)
+     data isym( 43),isym( 44),isym( 45),isym( 46),isym( 47),isym( 48)&
      &    /       11,       12,       13,       14,       15,       16/
-      DATA ISYM( 49),ISYM( 50),ISYM( 51),ISYM( 52),ISYM( 53),ISYM( 54)
+     data isym( 49),isym( 50),isym( 51),isym( 52),isym( 53),isym( 54)&
      &    /        5,        6,        7,        8,        9,       10/
-      DATA ISYM( 55),ISYM( 56),ISYM( 57),ISYM( 58),ISYM( 59),ISYM( 60)
+     data isym( 55),isym( 56),isym( 57),isym( 58),isym( 59),isym( 60)&
      &    /       11,       12,       13,       14,       15,       16/
-      DATA ISYM( 61),ISYM( 62),ISYM( 63),ISYM( 64),ISYM( 65),ISYM( 66)
+     data isym( 61),isym( 62),isym( 63),isym( 64),isym( 65),isym( 66)&
      &    /        5,        6,        7,        8,        9,       10/
-      DATA ISYM( 67),ISYM( 68),ISYM( 69),ISYM( 70),ISYM( 71),ISYM( 72)
+     data isym( 67),isym( 68),isym( 69),isym( 70),isym( 71),isym( 72)&
      &    /       11,       12,       13,       14,       15,       16/
-      DATA ISYM( 73),ISYM( 74),ISYM( 75),ISYM( 76),ISYM( 77),ISYM( 78)
+     data isym( 73),isym( 74),isym( 75),isym( 76),isym( 77),isym( 78)&
      &    /        5,        6,        7,        8,        9,       10/
-      DATA ISYM( 79),ISYM( 80),ISYM( 81),ISYM( 82),ISYM( 83),ISYM( 84)
+     data isym( 79),isym( 80),isym( 81),isym( 82),isym( 83),isym( 84)&
      &    /       11,       12,       13,       14,       15,       16/
-      DATA ISYM( 85),ISYM( 86),ISYM( 87),ISYM( 88),ISYM( 89),ISYM( 90)
+     data isym( 85),isym( 86),isym( 87),isym( 88),isym( 89),isym( 90)&
      &    /        5,        6,        7,        8,        9,       10/
-      DATA ISYM( 91),ISYM( 92),ISYM( 93),ISYM( 94),ISYM( 95),ISYM( 96)
+     data isym( 91),isym( 92),isym( 93),isym( 94),isym( 95),isym( 96)&
      &    /       11,       12,       13,       14,       15,       16/
-      DATA ISYM( 97),ISYM( 98),ISYM( 99),ISYM(100),ISYM(101),ISYM(102)
+     data isym( 97),isym( 98),isym( 99),isym(100),isym(101),isym(102)&
      &    /        5,        6,        7,        8,        9,       10/
-      DATA ISYM(103),ISYM(104),ISYM(105),ISYM(106),ISYM(107),ISYM(108)
+     data isym(103),isym(104),isym(105),isym(106),isym(107),isym(108)&
      &    /       11,       12,       13,       14,       15,       16/
-      DATA ISYM(109),ISYM(110),ISYM(111),ISYM(112),ISYM(113),ISYM(114)
+     data isym(109),isym(110),isym(111),isym(112),isym(113),isym(114)&
      &    /        5,        6,        7,        8,        9,       10/
-      DATA ISYM(115),ISYM(116),ISYM(117),ISYM(118),ISYM(119),ISYM(120)
+     data isym(115),isym(116),isym(117),isym(118),isym(119),isym(120)&
      &    /       11,       12,       13,       14,       15,       16/
-      DATA ISYM(121),ISYM(122),ISYM(123),ISYM(124),ISYM(125),ISYM(126)
+     data isym(121),isym(122),isym(123),isym(124),isym(125),isym(126)&
      &    /        5,        6,        7,        8,        9,       10/
-      DATA ISYM(127),ISYM(128),ISYM(129),ISYM(130),ISYM(131),ISYM(132)
+     data isym(127),isym(128),isym(129),isym(130),isym(131),isym(132)&
      &    /       11,       12,       13,       14,       15,       16/
-      DATA ISYM(133),ISYM(134),ISYM(135),ISYM(136),ISYM(137),ISYM(138)
+     data isym(133),isym(134),isym(135),isym(136),isym(137),isym(138)&
      &    /        5,        6,        7,        8,        9,       10/
-      DATA ISYM(139),ISYM(140),ISYM(141),ISYM(142),ISYM(143),ISYM(144)
+     data isym(139),isym(140),isym(141),isym(142),isym(143),isym(144)&
      &    /       11,       12,       13,       14,       15,       16/
 !
-      DATA TIME(  1),TIME(  2),TIME(  3),TIME(  4),TIME(  5),TIME(  6)
-     &    /   1.0_WP,   2.0_WP,   3.0_WP,   4.0_WP,   5.0_WP,   6.0_WP/
-      DATA TIME(  7),TIME(  8),TIME(  9),TIME( 10),TIME( 11),TIME( 12)
-     &    /   7.0_WP,   8.0_WP,   9.0_WP,  10.0_WP,  11.0_WP,  12.0_WP/
-      DATA TIME( 13),TIME( 14),TIME( 15),TIME( 16),TIME( 17),TIME( 18)
-     &    /  13.0_WP,  14.0_WP,  15.0_WP,  16.0_WP,  17.0_WP,  18.0_WP/
-      DATA TIME( 19),TIME( 20),TIME( 21),TIME( 22),TIME( 23),TIME( 24)
-     &    /  19.0_WP,  20.0_WP,  21.0_WP,  22.0_WP,  23.0_WP,  24.0_WP/
-      DATA TIME( 25),TIME( 26),TIME( 27),TIME( 28),TIME( 29),TIME( 30)
-     &    /  25.0_WP,  26.0_WP,  27.0_WP,  28.0_WP,  29.0_WP,  30.0_WP/
-      DATA TIME( 31),TIME( 32),TIME( 33),TIME( 34),TIME( 35),TIME( 36)
-     &    /  31.0_WP,  32.0_WP,  33.0_WP,  34.0_WP,  35.0_WP,  36.0_WP/
-      DATA TIME( 37),TIME( 38),TIME( 39),TIME( 40),TIME( 41),TIME( 42)
-     &    /  37.0_WP,  38.0_WP,  39.0_WP,  40.0_WP,  41.0_WP,  42.0_WP/
-      DATA TIME( 43),TIME( 44),TIME( 45),TIME( 46),TIME( 47),TIME( 48)
-     &    /  43.0_WP,  44.0_WP,  45.0_WP,  46.0_WP,  47.0_WP,  48.0_WP/
-      DATA TIME( 49),TIME( 50),TIME( 51),TIME( 52),TIME( 53),TIME( 54)
-     &    /  49.0_WP,  50.0_WP,  51.0_WP,  52.0_WP,  53.0_WP,  54.0_WP/
-      DATA TIME( 55),TIME( 56),TIME( 57),TIME( 58),TIME( 59),TIME( 60)
-     &    /  55.0_WP,  56.0_WP,  57.0_WP,  58.0_WP,  59.0_WP,  60.0_WP/
-      DATA TIME( 61),TIME( 62),TIME( 63),TIME( 64),TIME( 65),TIME( 66)
-     &    /  61.0_WP,  62.0_WP,  63.0_WP,  64.0_WP,  65.0_WP,  66.0_WP/
-      DATA TIME( 67),TIME( 68),TIME( 69),TIME( 70),TIME( 71),TIME( 72)
-     &    /  67.0_WP,  68.0_WP,  69.0_WP,  70.0_WP,  71.0_WP,  72.0_WP/
-      DATA TIME( 73),TIME( 74),TIME( 75),TIME( 76),TIME( 77),TIME( 78)
-     &    /  73.0_WP,  74.0_WP,  75.0_WP,  76.0_WP,  77.0_WP,  78.0_WP/
-      DATA TIME( 79),TIME( 80),TIME( 81),TIME( 82),TIME( 83),TIME( 84)
-     &    /  79.0_WP,  80.0_WP,  81.0_WP,  82.0_WP,  83.0_WP,  84.0_WP/
-      DATA TIME( 85),TIME( 86),TIME( 87),TIME( 88),TIME( 89),TIME( 90)
-     &    /  85.0_WP,  86.0_WP,  87.0_WP,  88.0_WP,  89.0_WP,  90.0_WP/
-      DATA TIME( 91),TIME( 92),TIME( 93),TIME( 94),TIME( 95),TIME( 96)
-     &    /  91.0_WP,  92.0_WP,  93.0_WP,  94.0_WP,  95.0_WP,  96.0_WP/
-      DATA TIME( 97),TIME( 98),TIME( 99),TIME(100),TIME(101),TIME(102)
-     &    /  97.0_WP,  98.0_WP,  99.0_WP, 100.0_WP, 101.0_WP, 102.0_WP/
-      DATA TIME(103),TIME(104),TIME(105),TIME(106),TIME(107),TIME(108)
-     &    / 103.0_WP, 104.0_WP, 105.0_WP, 106.0_WP, 107.0_WP, 108.0_WP/
-      DATA TIME(109),TIME(110),TIME(111),TIME(112),TIME(113),TIME(114)
-     &    / 109.0_WP, 110.0_WP, 111.0_WP, 112.0_WP, 113.0_WP, 114.0_WP/
-      DATA TIME(115),TIME(116),TIME(117),TIME(118),TIME(119),TIME(120)
-     &    / 115.0_WP, 116.0_WP, 117.0_WP, 118.0_WP, 119.0_WP, 120.0_WP/
-      DATA TIME(121),TIME(122),TIME(123),TIME(124),TIME(125),TIME(126)
-     &    / 121.0_WP, 122.0_WP, 123.0_WP, 124.0_WP, 125.0_WP, 126.0_WP/
-      DATA TIME(127),TIME(128),TIME(129),TIME(130),TIME(131),TIME(132)
-     &    / 127.0_WP, 128.0_WP, 129.0_WP, 130.0_WP, 131.0_WP, 132.0_WP/
-      DATA TIME(133),TIME(134),TIME(135),TIME(136),TIME(137),TIME(138)
-     &    / 133.0_WP, 134.0_WP, 135.0_WP, 136.0_WP, 137.0_WP, 138.0_WP/
-      DATA TIME(139),TIME(140),TIME(141),TIME(142),TIME(143),TIME(144)
-     &    / 139.0_WP, 140.0_WP, 141.0_WP, 142.0_WP, 143.0_WP, 144.0_WP/
+     data time(  1),time(  2),time(  3),time(  4),time(  5),time(  6)&
+     &    /   1.0_wp,   2.0_wp,   3.0_wp,   4.0_wp,   5.0_wp,   6.0_wp/
+     data time(  7),time(  8),time(  9),time( 10),time( 11),time( 12)&
+     &    /   7.0_wp,   8.0_wp,   9.0_wp,  10.0_wp,  11.0_wp,  12.0_wp/
+     data time( 13),time( 14),time( 15),time( 16),time( 17),time( 18)&
+     &    /  13.0_wp,  14.0_wp,  15.0_wp,  16.0_wp,  17.0_wp,  18.0_wp/
+     data time( 19),time( 20),time( 21),time( 22),time( 23),time( 24)&
+     &    /  19.0_wp,  20.0_wp,  21.0_wp,  22.0_wp,  23.0_wp,  24.0_wp/
+     data time( 25),time( 26),time( 27),time( 28),time( 29),time( 30)&
+     &    /  25.0_wp,  26.0_wp,  27.0_wp,  28.0_wp,  29.0_wp,  30.0_wp/
+     data time( 31),time( 32),time( 33),time( 34),time( 35),time( 36)&
+     &    /  31.0_wp,  32.0_wp,  33.0_wp,  34.0_wp,  35.0_wp,  36.0_wp/
+     data time( 37),time( 38),time( 39),time( 40),time( 41),time( 42)&
+     &    /  37.0_wp,  38.0_wp,  39.0_wp,  40.0_wp,  41.0_wp,  42.0_wp/
+     data time( 43),time( 44),time( 45),time( 46),time( 47),time( 48)&
+     &    /  43.0_wp,  44.0_wp,  45.0_wp,  46.0_wp,  47.0_wp,  48.0_wp/
+     data time( 49),time( 50),time( 51),time( 52),time( 53),time( 54)&
+     &    /  49.0_wp,  50.0_wp,  51.0_wp,  52.0_wp,  53.0_wp,  54.0_wp/
+     data time( 55),time( 56),time( 57),time( 58),time( 59),time( 60)&
+     &    /  55.0_wp,  56.0_wp,  57.0_wp,  58.0_wp,  59.0_wp,  60.0_wp/
+     data time( 61),time( 62),time( 63),time( 64),time( 65),time( 66)&
+     &    /  61.0_wp,  62.0_wp,  63.0_wp,  64.0_wp,  65.0_wp,  66.0_wp/
+     data time( 67),time( 68),time( 69),time( 70),time( 71),time( 72)&
+     &    /  67.0_wp,  68.0_wp,  69.0_wp,  70.0_wp,  71.0_wp,  72.0_wp/
+     data time( 73),time( 74),time( 75),time( 76),time( 77),time( 78)&
+     &    /  73.0_wp,  74.0_wp,  75.0_wp,  76.0_wp,  77.0_wp,  78.0_wp/
+     data time( 79),time( 80),time( 81),time( 82),time( 83),time( 84)&
+     &    /  79.0_wp,  80.0_wp,  81.0_wp,  82.0_wp,  83.0_wp,  84.0_wp/
+     data time( 85),time( 86),time( 87),time( 88),time( 89),time( 90)&
+     &    /  85.0_wp,  86.0_wp,  87.0_wp,  88.0_wp,  89.0_wp,  90.0_wp/
+     data time( 91),time( 92),time( 93),time( 94),time( 95),time( 96)&
+     &    /  91.0_wp,  92.0_wp,  93.0_wp,  94.0_wp,  95.0_wp,  96.0_wp/
+     data time( 97),time( 98),time( 99),time(100),time(101),time(102)&
+     &    /  97.0_wp,  98.0_wp,  99.0_wp, 100.0_wp, 101.0_wp, 102.0_wp/
+     data time(103),time(104),time(105),time(106),time(107),time(108)&
+     &    / 103.0_wp, 104.0_wp, 105.0_wp, 106.0_wp, 107.0_wp, 108.0_wp/
+     data time(109),time(110),time(111),time(112),time(113),time(114)&
+     &    / 109.0_wp, 110.0_wp, 111.0_wp, 112.0_wp, 113.0_wp, 114.0_wp/
+     data time(115),time(116),time(117),time(118),time(119),time(120)&
+     &    / 115.0_wp, 116.0_wp, 117.0_wp, 118.0_wp, 119.0_wp, 120.0_wp/
+     data time(121),time(122),time(123),time(124),time(125),time(126)&
+     &    / 121.0_wp, 122.0_wp, 123.0_wp, 124.0_wp, 125.0_wp, 126.0_wp/
+     data time(127),time(128),time(129),time(130),time(131),time(132)&
+     &    / 127.0_wp, 128.0_wp, 129.0_wp, 130.0_wp, 131.0_wp, 132.0_wp/
+     data time(133),time(134),time(135),time(136),time(137),time(138)&
+     &    / 133.0_wp, 134.0_wp, 135.0_wp, 136.0_wp, 137.0_wp, 138.0_wp/
+     data time(139),time(140),time(141),time(142),time(143),time(144)&
+     &    / 139.0_wp, 140.0_wp, 141.0_wp, 142.0_wp, 143.0_wp, 144.0_wp/
 !
-      DATA  AIR(  1), AIR(  2), AIR(  3), AIR(  4), AIR(  5), AIR(  6)
-     &    / 112.0_WP, 118.0_WP, 132.0_WP, 129.0_WP, 121.0_WP, 135.0_WP/
-      DATA  AIR(  7), AIR(  8), AIR(  9), AIR( 10), AIR( 11), AIR( 12)
-     &    / 148.0_WP, 148.0_WP, 136.0_WP, 119.0_WP, 104.0_WP, 118.0_WP/
-      DATA  AIR( 13), AIR( 14), AIR( 15), AIR( 16), AIR( 17), AIR( 18)
-     &    / 115.0_WP, 126.0_WP, 141.0_WP, 135.0_WP, 125.0_WP, 149.0_WP/
-      DATA  AIR( 19), AIR( 20), AIR( 21), AIR( 22), AIR( 23), AIR( 24)
-     &    / 170.0_WP, 170.0_WP, 158.0_WP, 133.0_WP, 114.0_WP, 140.0_WP/
-      DATA  AIR( 25), AIR( 26), AIR( 27), AIR( 28), AIR( 29), AIR( 30)
-     &    / 145.0_WP, 150.0_WP, 178.0_WP, 163.0_WP, 172.0_WP, 178.0_WP/
-      DATA  AIR( 31), AIR( 32), AIR( 33), AIR( 34), AIR( 35), AIR( 36)
-     &    / 199.0_WP, 199.0_WP, 184.0_WP, 162.0_WP, 146.0_WP, 166.0_WP/
-      DATA  AIR( 37), AIR( 38), AIR( 39), AIR( 40), AIR( 41), AIR( 42)
-     &    / 171.0_WP, 180.0_WP, 193.0_WP, 181.0_WP, 183.0_WP, 218.0_WP/
-      DATA  AIR( 43), AIR( 44), AIR( 45), AIR( 46), AIR( 47), AIR( 48)
-     &    / 230.0_WP, 242.0_WP, 209.0_WP, 191.0_WP, 172.0_WP, 194.0_WP/
-      DATA  AIR( 49), AIR( 50), AIR( 51), AIR( 52), AIR( 53), AIR( 54)
-     &    / 196.0_WP, 196.0_WP, 236.0_WP, 235.0_WP, 229.0_WP, 243.0_WP/
-      DATA  AIR( 55), AIR( 56), AIR( 57), AIR( 58), AIR( 59), AIR( 60)
-     &    / 264.0_WP, 272.0_WP, 237.0_WP, 211.0_WP, 180.0_WP, 201.0_WP/
-      DATA  AIR( 61), AIR( 62), AIR( 63), AIR( 64), AIR( 65), AIR( 66)
-     &    / 204.0_WP, 188.0_WP, 235.0_WP, 227.0_WP, 234.0_WP, 264.0_WP/
-      DATA  AIR( 67), AIR( 68), AIR( 69), AIR( 70), AIR( 71), AIR( 72)
-     &    / 302.0_WP, 293.0_WP, 259.0_WP, 229.0_WP, 203.0_WP, 229.0_WP/
-      DATA  AIR( 73), AIR( 74), AIR( 75), AIR( 76), AIR( 77), AIR( 78)
-     &    / 242.0_WP, 233.0_WP, 267.0_WP, 269.0_WP, 270.0_WP, 315.0_WP/
-      DATA  AIR( 79), AIR( 80), AIR( 81), AIR( 82), AIR( 83), AIR( 84)
-     &    / 364.0_WP, 347.0_WP, 312.0_WP, 274.0_WP, 237.0_WP, 278.0_WP/
-      DATA  AIR( 85), AIR( 86), AIR( 87), AIR( 88), AIR( 89), AIR( 90)
-     &    / 284.0_WP, 277.0_WP, 317.0_WP, 313.0_WP, 318.0_WP, 374.0_WP/
-      DATA  AIR( 91), AIR( 92), AIR( 93), AIR( 94), AIR( 95), AIR( 96)
-     &    / 413.0_WP, 405.0_WP, 355.0_WP, 306.0_WP, 271.0_WP, 306.0_WP/
-      DATA  AIR( 97), AIR( 98), AIR( 99), AIR(100), AIR(101), AIR(102)
-     &    / 315.0_WP, 301.0_WP, 356.0_WP, 348.0_WP, 355.0_WP, 422.0_WP/
-      DATA  AIR(103), AIR(104), AIR(105), AIR(106), AIR(107), AIR(108)
-     &    / 465.0_WP, 467.0_WP, 404.0_WP, 347.0_WP, 305.0_WP, 336.0_WP/
-      DATA  AIR(109), AIR(110), AIR(111), AIR(112), AIR(113), AIR(114)
-     &    / 340.0_WP, 318.0_WP, 362.0_WP, 348.0_WP, 363.0_WP, 435.0_WP/
-      DATA  AIR(115), AIR(116), AIR(117), AIR(118), AIR(119), AIR(120)
-     &    / 491.0_WP, 505.0_WP, 404.0_WP, 359.0_WP, 310.0_WP, 337.0_WP/
-      DATA  AIR(121), AIR(122), AIR(123), AIR(124), AIR(125), AIR(126)
-     &    / 360.0_WP, 342.0_WP, 406.0_WP, 396.0_WP, 420.0_WP, 472.0_WP/
-      DATA  AIR(127), AIR(128), AIR(129), AIR(130), AIR(131), AIR(132)
-     &    / 548.0_WP, 559.0_WP, 463.0_WP, 407.0_WP, 362.0_WP, 405.0_WP/
-      DATA  AIR(133), AIR(134), AIR(135), AIR(136), AIR(137), AIR(138)
-     &    / 417.0_WP, 391.0_WP, 419.0_WP, 461.0_WP, 472.0_WP, 535.0_WP/
-      DATA  AIR(139), AIR(140), AIR(141), AIR(142), AIR(143), AIR(144)
-     &    / 622.0_WP, 606.0_WP, 508.0_WP, 461.0_WP, 390.0_WP, 432.0_WP/
+     data  air(  1), air(  2), air(  3), air(  4), air(  5), air(  6)&
+     &    / 112.0_wp, 118.0_wp, 132.0_wp, 129.0_wp, 121.0_wp, 135.0_wp/
+     data  air(  7), air(  8), air(  9), air( 10), air( 11), air( 12)&
+     &    / 148.0_wp, 148.0_wp, 136.0_wp, 119.0_wp, 104.0_wp, 118.0_wp/
+     data  air( 13), air( 14), air( 15), air( 16), air( 17), air( 18)&
+     &    / 115.0_wp, 126.0_wp, 141.0_wp, 135.0_wp, 125.0_wp, 149.0_wp/
+     data  air( 19), air( 20), air( 21), air( 22), air( 23), air( 24)&
+     &    / 170.0_wp, 170.0_wp, 158.0_wp, 133.0_wp, 114.0_wp, 140.0_wp/
+     data  air( 25), air( 26), air( 27), air( 28), air( 29), air( 30)&
+     &    / 145.0_wp, 150.0_wp, 178.0_wp, 163.0_wp, 172.0_wp, 178.0_wp/
+     data  air( 31), air( 32), air( 33), air( 34), air( 35), air( 36)&
+     &    / 199.0_wp, 199.0_wp, 184.0_wp, 162.0_wp, 146.0_wp, 166.0_wp/
+     data  air( 37), air( 38), air( 39), air( 40), air( 41), air( 42)&
+     &    / 171.0_wp, 180.0_wp, 193.0_wp, 181.0_wp, 183.0_wp, 218.0_wp/
+     data  air( 43), air( 44), air( 45), air( 46), air( 47), air( 48)&
+     &    / 230.0_wp, 242.0_wp, 209.0_wp, 191.0_wp, 172.0_wp, 194.0_wp/
+     data  air( 49), air( 50), air( 51), air( 52), air( 53), air( 54)&
+     &    / 196.0_wp, 196.0_wp, 236.0_wp, 235.0_wp, 229.0_wp, 243.0_wp/
+     data  air( 55), air( 56), air( 57), air( 58), air( 59), air( 60)&
+     &    / 264.0_wp, 272.0_wp, 237.0_wp, 211.0_wp, 180.0_wp, 201.0_wp/
+     data  air( 61), air( 62), air( 63), air( 64), air( 65), air( 66)&
+     &    / 204.0_wp, 188.0_wp, 235.0_wp, 227.0_wp, 234.0_wp, 264.0_wp/
+     data  air( 67), air( 68), air( 69), air( 70), air( 71), air( 72)&
+     &    / 302.0_wp, 293.0_wp, 259.0_wp, 229.0_wp, 203.0_wp, 229.0_wp/
+     data  air( 73), air( 74), air( 75), air( 76), air( 77), air( 78)&
+     &    / 242.0_wp, 233.0_wp, 267.0_wp, 269.0_wp, 270.0_wp, 315.0_wp/
+     data  air( 79), air( 80), air( 81), air( 82), air( 83), air( 84)&
+     &    / 364.0_wp, 347.0_wp, 312.0_wp, 274.0_wp, 237.0_wp, 278.0_wp/
+     data  air( 85), air( 86), air( 87), air( 88), air( 89), air( 90)&
+     &    / 284.0_wp, 277.0_wp, 317.0_wp, 313.0_wp, 318.0_wp, 374.0_wp/
+     data  air( 91), air( 92), air( 93), air( 94), air( 95), air( 96)&
+     &    / 413.0_wp, 405.0_wp, 355.0_wp, 306.0_wp, 271.0_wp, 306.0_wp/
+     data  air( 97), air( 98), air( 99), air(100), air(101), air(102)&
+     &    / 315.0_wp, 301.0_wp, 356.0_wp, 348.0_wp, 355.0_wp, 422.0_wp/
+     data  air(103), air(104), air(105), air(106), air(107), air(108)&
+     &    / 465.0_wp, 467.0_wp, 404.0_wp, 347.0_wp, 305.0_wp, 336.0_wp/
+     data  air(109), air(110), air(111), air(112), air(113), air(114)&
+     &    / 340.0_wp, 318.0_wp, 362.0_wp, 348.0_wp, 363.0_wp, 435.0_wp/
+     data  air(115), air(116), air(117), air(118), air(119), air(120)&
+     &    / 491.0_wp, 505.0_wp, 404.0_wp, 359.0_wp, 310.0_wp, 337.0_wp/
+     data  air(121), air(122), air(123), air(124), air(125), air(126)&
+     &    / 360.0_wp, 342.0_wp, 406.0_wp, 396.0_wp, 420.0_wp, 472.0_wp/
+     data  air(127), air(128), air(129), air(130), air(131), air(132)&
+     &    / 548.0_wp, 559.0_wp, 463.0_wp, 407.0_wp, 362.0_wp, 405.0_wp/
+     data  air(133), air(134), air(135), air(136), air(137), air(138)&
+     &    / 417.0_wp, 391.0_wp, 419.0_wp, 461.0_wp, 472.0_wp, 535.0_wp/
+     data  air(139), air(140), air(141), air(142), air(143), air(144)&
+     &    / 622.0_wp, 606.0_wp, 508.0_wp, 461.0_wp, 390.0_wp, 432.0_wp/
 !
-      CALL SETRV(YMMISS, 144, YMISS)
-      CALL DCOPY(144, AIR, 1, Y, 1)
-      CALL DCOPY(144, TIME, 1, X, 1)
+      call setrv(ymmiss, 144, ymiss)
+      call dcopy(144, air, 1, y, 1)
+      call dcopy(144, time, 1, x, 1)
 !
 !     DEFINE CONSTANTS
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      ITEST = 0
+      itest = 0
 !
 !     SHORT CALLS
 !
-      NY = 144
-      NYM = 12
-      IYM = 12
-      M = 12
-      ILOG = -1
-      ISIZE = -1
-      NOUT = -1
-      YLB = 0.0_WP
-      YUB = 0.0_WP
-      XLB = 0.0_WP
-      XUB = 0.0_WP
+      ny = 144
+      nym = 12
+      iym = 12
+      m = 12
+      ilog = -1
+      isize = -1
+      nout = -1
+      ylb = 0.0_wp
+      yub = 0.0_wp
+      xlb = 0.0_wp
+      xub = 0.0_wp
 !
-   10 CONTINUE
+   10 continue
 !
 !     TEST OF PP
 !
-      WRITE(IPRT, 1000)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NY
-      CALL PP(Y, X, NY)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1000)
+      write (iprt, 3100) itest
+      write (iprt, 3010) ny
+      call pp(y, x, ny)
+      write (iprt, 3000) ierr
 !
 !     TEST OF PPM
 !
-      WRITE(IPRT, 1030)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NY
-      CALL PPM(Y, YMISS, X, XMISS, NY)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1030)
+      write (iprt, 3100) itest
+      write (iprt, 3010) ny
+      call ppm(y, ymiss, x, xmiss, ny)
+      write (iprt, 3000) ierr
 !
 !     TEST OF SPP
 !
-      WRITE(IPRT, 1120)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NY
-      CALL SPP(Y, X, NY, ISYM)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1120)
+      write (iprt, 3100) itest
+      write (iprt, 3010) ny
+      call spp(y, x, ny, isym)
+      write (iprt, 3000) ierr
 !
 !     TEST OF SPPM
 !
-      WRITE(IPRT, 1150)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NY
-      CALL SPPM(Y, YMISS, X, XMISS, NY, ISYM)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1150)
+      write (iprt, 3100) itest
+      write (iprt, 3010) ny
+      call sppm(y, ymiss, x, xmiss, ny, isym)
+      write (iprt, 3000) ierr
 !
 !     TEST OF MPP
 !
-      WRITE(IPRT, 1060)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NYM
-      WRITE (IPRT, 3020) M, IYM
-      CALL MPP(YM, X, NYM, M, IYM)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1060)
+      write (iprt, 3100) itest
+      write (iprt, 3010) nym
+      write (iprt, 3020) m, iym
+      call mpp(ym, x, nym, m, iym)
+      write (iprt, 3000) ierr
 !
 !     TEST OF MPPM
 !
-      WRITE(IPRT, 1090)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NYM
-      WRITE (IPRT, 3020) M, IYM
-      CALL MPPM(YM, YMMISS, X, XMISS, NYM, M, IYM)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1090)
+      write (iprt, 3100) itest
+      write (iprt, 3010) nym
+      write (iprt, 3020) m, iym
+      call mppm(ym, ymmiss, x, xmiss, nym, m, iym)
+      write (iprt, 3000) ierr
 !
 !
 !     LOG OPTION CALLS
 !
 !
-   20 CONTINUE
+   20 continue
 !
 !     TEST OF PPL
 !
-      WRITE(IPRT, 1010)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NY
-      WRITE (IPRT, 3040) ILOG
-      CALL PPL(Y, X, NY, ILOG)
+      write(iprt, 1010)
+      write (iprt, 3100) itest
+      write (iprt, 3010) ny
+      write (iprt, 3040) ilog
+      call ppl(y, x, ny, ilog)
 !
-      WRITE (IPRT, 3000) IERR
+      write (iprt, 3000) ierr
 !
 !     TEST OF PPML
 !
-      WRITE(IPRT, 1040)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NY
-      WRITE (IPRT, 3040) ILOG
-      CALL PPML(Y, YMISS, X, XMISS, NY, ILOG)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1040)
+      write (iprt, 3100) itest
+      write (iprt, 3010) ny
+      write (iprt, 3040) ilog
+      call ppml(y, ymiss, x, xmiss, ny, ilog)
+      write (iprt, 3000) ierr
 !
 !     TEST OF SPPL
 !
-      WRITE(IPRT, 1130)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NY
-      WRITE (IPRT, 3040) ILOG
-      CALL SPPL(Y, X, NY, ISYM, ILOG)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1130)
+      write (iprt, 3100) itest
+      write (iprt, 3010) ny
+      write (iprt, 3040) ilog
+      call sppl(y, x, ny, isym, ilog)
+      write (iprt, 3000) ierr
 !
 !     TEST OF SPPML
 !
-      WRITE(IPRT, 1160)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NY
-      WRITE (IPRT, 3040) ILOG
-      CALL SPPML(Y, YMISS, X, XMISS, NY, ISYM, ILOG)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1160)
+      write (iprt, 3100) itest
+      write (iprt, 3010) ny
+      write (iprt, 3040) ilog
+      call sppml(y, ymiss, x, xmiss, ny, isym, ilog)
+      write (iprt, 3000) ierr
 !
 !     TEST OF MPPL
 !
-      WRITE(IPRT, 1070)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NYM
-      WRITE (IPRT, 3020) M, IYM
-      WRITE (IPRT, 3040) ILOG
-      CALL MPPL(YM, X, NYM, M, IYM, ILOG)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1070)
+      write (iprt, 3100) itest
+      write (iprt, 3010) nym
+      write (iprt, 3020) m, iym
+      write (iprt, 3040) ilog
+      call mppl(ym, x, nym, m, iym, ilog)
+      write (iprt, 3000) ierr
 !
 !     TEST OF MPPML
 !
-      WRITE(IPRT, 1100)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NYM
-      WRITE (IPRT, 3020) M, IYM
-      WRITE (IPRT, 3040) ILOG
-      CALL MPPML(YM, YMMISS, X, XMISS, NYM, M, IYM, ILOG)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1100)
+      write (iprt, 3100) itest
+      write (iprt, 3010) nym
+      write (iprt, 3020) m, iym
+      write (iprt, 3040) ilog
+      call mppml(ym, ymmiss, x, xmiss, nym, m, iym, ilog)
+      write (iprt, 3000) ierr
 !
 !
 !     TEST OF LONG CALLS
 !
 !
-   30 CONTINUE
+   30 continue
 !
 !     TEST OF PPC
 !
-      WRITE(IPRT, 1020)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NY
-      WRITE (IPRT, 3040) ILOG
-      WRITE (IPRT, 3050) ISIZE, NOUT
-      WRITE (IPRT, 3070) YLB, YUB, XLB
-      WRITE (IPRT, 3080) XUB
-      CALL PPC(Y, X, NY, ILOG, ISIZE, NOUT, YLB, YUB, XLB, XUB)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1020)
+      write (iprt, 3100) itest
+      write (iprt, 3010) ny
+      write (iprt, 3040) ilog
+      write (iprt, 3050) isize, nout
+      write (iprt, 3070) ylb, yub, xlb
+      write (iprt, 3080) xub
+      call ppc(y, x, ny, ilog, isize, nout, ylb, yub, xlb, xub)
+      write (iprt, 3000) ierr
 !
 !     TEST OF PPMC
 !
-      WRITE(IPRT, 1050)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NY
-      WRITE (IPRT, 3040) ILOG
-      WRITE (IPRT, 3050) ISIZE, NOUT
-      WRITE (IPRT, 3070) YLB, YUB, XLB
-      WRITE (IPRT, 3080) XUB
-      CALL PPMC(Y, YMISS, X, XMISS, NY, ILOG, ISIZE, NOUT, YLB, YUB,
-     &   XLB, XUB)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1050)
+      write (iprt, 3100) itest
+      write (iprt, 3010) ny
+      write (iprt, 3040) ilog
+      write (iprt, 3050) isize, nout
+      write (iprt, 3070) ylb, yub, xlb
+      write (iprt, 3080) xub
+     call ppmc(y, ymiss, x, xmiss, ny, ilog, isize, nout, ylb, yub,&
+     &   xlb, xub)
+      write (iprt, 3000) ierr
 !
 !     TEST OF SPPC
 !
-      WRITE(IPRT, 1140)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NY
-      WRITE (IPRT, 3040) ILOG
-      WRITE (IPRT, 3050) ISIZE, NOUT
-      WRITE (IPRT, 3070) YLB, YUB, XLB
-      WRITE (IPRT, 3080) XUB
-      CALL SPPC(Y, X, NY, ISYM, ILOG, ISIZE, NOUT, YLB, YUB, XLB,
-     &   XUB)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1140)
+      write (iprt, 3100) itest
+      write (iprt, 3010) ny
+      write (iprt, 3040) ilog
+      write (iprt, 3050) isize, nout
+      write (iprt, 3070) ylb, yub, xlb
+      write (iprt, 3080) xub
+     call sppc(y, x, ny, isym, ilog, isize, nout, ylb, yub, xlb,&
+     &   xub)
+      write (iprt, 3000) ierr
 !
 !     TEST OF SPPMC
 !
-      WRITE(IPRT, 1170)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NY
-      WRITE (IPRT, 3040) ILOG
-      WRITE (IPRT, 3050) ISIZE, NOUT
-      WRITE (IPRT, 3070) YLB, YUB, XLB
-      WRITE (IPRT, 3080) XUB
-      CALL SPPMC(Y, YMISS, X, XMISS, NY, ISYM, ILOG, ISIZE, NOUT,
-     &   YLB, YUB, XLB, XUB)
-      WRITE (IPRT, 3000) IERR
+      write(iprt, 1170)
+      write (iprt, 3100) itest
+      write (iprt, 3010) ny
+      write (iprt, 3040) ilog
+      write (iprt, 3050) isize, nout
+      write (iprt, 3070) ylb, yub, xlb
+      write (iprt, 3080) xub
+     call sppmc(y, ymiss, x, xmiss, ny, isym, ilog, isize, nout,&
+     &   ylb, yub, xlb, xub)
+      write (iprt, 3000) ierr
 !
 !     TEST OF MPPC
 !
-   40 WRITE(IPRT, 1080)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NYM
-      WRITE (IPRT, 3020) M, IYM
-      WRITE (IPRT, 3040) ILOG
-      WRITE (IPRT, 3050) ISIZE, NOUT
-      WRITE (IPRT, 3070) YLB, YUB, XLB
-      WRITE (IPRT, 3080) XUB
-      CALL MPPC(YM, X, NYM, M, IYM, ILOG, ISIZE, NOUT, YLB, YUB,
-     &   XLB, XUB)
-      WRITE (IPRT, 3000) IERR
+   40 write(iprt, 1080)
+      write (iprt, 3100) itest
+      write (iprt, 3010) nym
+      write (iprt, 3020) m, iym
+      write (iprt, 3040) ilog
+      write (iprt, 3050) isize, nout
+      write (iprt, 3070) ylb, yub, xlb
+      write (iprt, 3080) xub
+     call mppc(ym, x, nym, m, iym, ilog, isize, nout, ylb, yub,&
+     &   xlb, xub)
+      write (iprt, 3000) ierr
 !
 !     TEST OF MPPMC
 !
-   50 WRITE(IPRT, 1110)
-      WRITE (IPRT, 3100) ITEST
-      WRITE (IPRT, 3010) NYM
-      WRITE (IPRT, 3020) M, IYM
-      WRITE (IPRT, 3040) ILOG
-      WRITE (IPRT, 3050) ISIZE, NOUT
-      WRITE (IPRT, 3070) YLB, YUB, XLB
-      WRITE (IPRT, 3080) XUB
-      CALL MPPMC(YM, YMMISS, X, XMISS, NYM, M, IYM, ILOG, ISIZE, NOUT,
-     &   YLB, YUB, XLB, XUB)
-      WRITE (IPRT, 3000) IERR
+   50 write(iprt, 1110)
+      write (iprt, 3100) itest
+      write (iprt, 3010) nym
+      write (iprt, 3020) m, iym
+      write (iprt, 3040) ilog
+      write (iprt, 3050) isize, nout
+      write (iprt, 3070) ylb, yub, xlb
+      write (iprt, 3080) xub
+     call mppmc(ym, ymmiss, x, xmiss, nym, m, iym, ilog, isize, nout,&
+     &   ylb, yub, xlb, xub)
+      write (iprt, 3000) ierr
 !
-      ITEST = ITEST + 1
+      itest = itest + 1
 !
-      GO TO (110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 300),
-     &  ITEST
+     go to (110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 300),&
+     &  itest
 !
 !     TEST VALID OPTIONS
 !
-  110 ILOG = 0
-      ISIZE = 0
-      NOUT = 0
-      YLB = 100.0_WP
-      YUB = 700.0_WP
-      XLB = 4.0_WP
-      XUB = 16.0_WP
-      GO TO 20
+  110 ilog = 0
+      isize = 0
+      nout = 0
+      ylb = 100.0_wp
+      yub = 700.0_wp
+      xlb = 4.0_wp
+      xub = 16.0_wp
+      go to 20
 !
-  120 ILOG = 2
-      ISIZE = 2
-      NOUT = 5
-      GO TO 20
+  120 ilog = 2
+      isize = 2
+      nout = 5
+      go to 20
 !
-  130 ILOG = 20
-      ISIZE = 20
-      NOUT = 55
-      YUB = 300.0_WP
-      GO TO 30
+  130 ilog = 20
+      isize = 20
+      nout = 55
+      yub = 300.0_wp
+      go to 30
 !
-  140 ILOG = 22
-      ISIZE = 22
-      GO TO 40
+  140 ilog = 22
+      isize = 22
+      go to 40
 !
-  150 NY = 1
-      NYM = 1
-      M = 144
-      IYM = 1
-      X(1) = 10.0_WP
-      GO TO 40
+  150 ny = 1
+      nym = 1
+      m = 144
+      iym = 1
+      x(1) = 10.0_wp
+      go to 40
 !
-  160 CALL SETRV(Y, 144, 1.0_WP)
-      CALL SETRV(X, 144, 1.0_WP)
-      NYM = 6
-      IYM = 12
-      M = 6
-      NY = 36
-      YLB = 0.0_WP
-      YUB = 0.0_WP
-      XLB = 0.0_WP
-      XUB = 0.0_WP
-      GO TO 30
+  160 call setrv(y, 144, 1.0_wp)
+      call setrv(x, 144, 1.0_wp)
+      nym = 6
+      iym = 12
+      m = 6
+      ny = 36
+      ylb = 0.0_wp
+      yub = 0.0_wp
+      xlb = 0.0_wp
+      xub = 0.0_wp
+      go to 30
 !
 !     TEST ERROR RESPONSE
 !
-  170 NY = 0
-      NYM = 0
-      M = 0
-      IYM = -1
-      GO TO 10
+  170 ny = 0
+      nym = 0
+      m = 0
+      iym = -1
+      go to 10
 !
-  180 NY = 144
-      NYM = 12
-      M = 12
-      IYM = -1
-      XLB = -1.0_WP
-      YLB = -1.0_WP
-      GO TO 40
+  180 ny = 144
+      nym = 12
+      m = 12
+      iym = -1
+      xlb = -1.0_wp
+      ylb = -1.0_wp
+      go to 40
 !
-  190 IYM = 12
-      X(1) = 0.0_WP
-      Y(1) = 0.0_WP
-      GO TO 50
+  190 iym = 12
+      x(1) = 0.0_wp
+      y(1) = 0.0_wp
+      go to 50
 !
-  200 CALL SETRV(X, 144, XMISS)
-      CALL SETRV(Y, 144, YMISS)
-      XLB = XUB
-      YLB = YUB
-      GO TO 50
+  200 call setrv(x, 144, xmiss)
+      call setrv(y, 144, ymiss)
+      xlb = xub
+      ylb = yub
+      go to 50
 !
-  300 CONTINUE
+  300 continue
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT ('1', 10HTEST OF PP)
- 1010 FORMAT ('1', 11HTEST OF PPL)
- 1020 FORMAT ('1', 11HTEST OF PPC)
- 1030 FORMAT ('1', 11HTEST OF PPM)
- 1040 FORMAT ('1', 12HTEST OF PPML)
- 1050 FORMAT ('1', 12HTEST OF PPMC)
- 1060 FORMAT ('1', 11HTEST OF MPP)
- 1070 FORMAT ('1', 12HTEST OF MPPL)
- 1080 FORMAT ('1', 12HTEST OF MPPC)
- 1090 FORMAT ('1', 12HTEST OF MPPM)
- 1100 FORMAT ('1', 13HTEST OF MPPML)
- 1110 FORMAT ('1', 13HTEST OF MPPMC)
- 1120 FORMAT ('1', 11HTEST OF SPP)
- 1130 FORMAT ('1', 12HTEST OF SPPL)
- 1140 FORMAT ('1', 12HTEST OF SPPC)
- 1150 FORMAT ('1', 12HTEST OF SPPM)
- 1160 FORMAT ('1', 13HTEST OF SPPML)
- 1170 FORMAT ('1', 13HTEST OF SPPMC)
- 3000 FORMAT (/8H IERR = , I4)
- 3010 FORMAT (' ', 5X, 10H   N     =, I5)
- 3020 FORMAT ('+', 20X, 10H / M     =, I5, 10H / IYM   =, I5)
- 3040 FORMAT ('+', 65X, 10H / ILOG  =, I5)
- 3050 FORMAT (' ',  5X, 10H   ISIZE =, I5, 10H / NOUT  =, I5)
- 3070 FORMAT ('+', 50X, 10H / YLB   =, F10.4, 10H / YUB   =, F10.4,
-     &   10H / XLB   =, F10.4)
- 3080 FORMAT ('+', 110X, 10H / XUB   =, F10.4)
- 3100 FORMAT (' ', 13H TEST NUMBER , I5)
-      END
+ 1000 format ('1', 10htest of pp)
+ 1010 format ('1', 11htest of ppl)
+ 1020 format ('1', 11htest of ppc)
+ 1030 format ('1', 11htest of ppm)
+ 1040 format ('1', 12htest of ppml)
+ 1050 format ('1', 12htest of ppmc)
+ 1060 format ('1', 11htest of mpp)
+ 1070 format ('1', 12htest of mppl)
+ 1080 format ('1', 12htest of mppc)
+ 1090 format ('1', 12htest of mppm)
+ 1100 format ('1', 13htest of mppml)
+ 1110 format ('1', 13htest of mppmc)
+ 1120 format ('1', 11htest of spp)
+ 1130 format ('1', 12htest of sppl)
+ 1140 format ('1', 12htest of sppc)
+ 1150 format ('1', 12htest of sppm)
+ 1160 format ('1', 13htest of sppml)
+ 1170 format ('1', 13htest of sppmc)
+ 3000 format (/8h ierr = , i4)
+ 3010 format (' ', 5x, 10h   n     =, i5)
+ 3020 format ('+', 20x, 10h / m     =, i5, 10h / iym   =, i5)
+ 3040 format ('+', 65x, 10h / ilog  =, i5)
+ 3050 format (' ',  5x, 10h   isize =, i5, 10h / nout  =, i5)
+3070 format ('+', 50x, 10h / ylb   =, f10.4, 10h / yub   =, f10.4,&
+     &   10h / xlb   =, f10.4)
+ 3080 format ('+', 110x, 10h / xub   =, f10.4)
+ 3100 format (' ', 13h test number , i5)
+      end

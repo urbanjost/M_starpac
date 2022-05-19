@@ -1,6 +1,6 @@
 !BFSLAG
-      SUBROUTINE BFSLAG(CCOV, LAGMAX, LAGS, N, NW, NWUSED, ICCOV,
-     &   JCCOV, INDEX1, INDEX2)
+     subroutine bfslag(ccov, lagmax, lags, n, nw, nwused, iccov,&
+     &   jccov, index1, index2)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,23 +17,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ICCOV,INDEX1,INDEX2,JCCOV,LAGMAX,N,NW,NWUSED
+     integer&
+     &   iccov,index1,index2,jccov,lagmax,n,nw,nwused
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CCOV(ICCOV,JCCOV,*)
-      INTEGER
-     &   LAGS(*)
+     real(kind=wp) ::&
+     &   ccov(iccov,jccov,*)
+     integer&
+     &   lags(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   COVMX,COVMXI,FAC11,FAC12,FAC21,FAC22,P95LIM
-      INTEGER
-     &   I,J,K,LAG,NWM1
+     real(kind=wp) ::&
+     &   covmx,covmxi,fac11,fac12,fac21,fac22,p95lim
+     integer&
+     &   i,j,k,lag,nwm1
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,MAX,REAL,SQRT
+      intrinsic abs,max,real,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -74,73 +74,73 @@
 !     REAL P95LIM
 !        THE 95 PERCENT CONFIDENT LIMIT FOR WHITE NOISE.
 !
-      LAGS(NW) = LAGMAX
-      IF (LAGS(NW).LE.32) GO TO 30
+      lags(nw) = lagmax
+      if (lags(nw).le.32) go to 30
 !
 !     COMPUTE 95 PERCENT CONFIDENCE LIMITS ON BIVARIATECOVARIANCES,
 !     ASSUMING WHITE NOISE.
 !
-      P95LIM = 1.96E0/SQRT(REAL(N))
+      p95lim = 1.96e0/sqrt(real(n))
 !
-      FAC11 = CCOV(1,INDEX1,INDEX1)
-      FAC12 = SQRT(CCOV(1,INDEX1,INDEX1)*CCOV(1,INDEX2,INDEX2))
-      FAC21 = FAC12
-      FAC22 = CCOV(1,INDEX2,INDEX2)
+      fac11 = ccov(1,index1,index1)
+      fac12 = sqrt(ccov(1,index1,index1)*ccov(1,index2,index2))
+      fac21 = fac12
+      fac22 = ccov(1,index2,index2)
 !
 !     CHECK FOR FIRST CVF EXCEEDING 95 PERCENT LIMIT ON WHITE NOISE
 !
-      DO 10 I=1,LAGMAX
-         LAG = LAGMAX + 1 - I
-         COVMXI = MAX(ABS(CCOV(LAG,INDEX1,INDEX1)*FAC11),ABS(CCOV(LAG,
-     &      INDEX1,INDEX2)*FAC12),ABS(CCOV(LAG,INDEX2,INDEX1)*FAC21),
-     &      ABS(CCOV(LAG,INDEX2,INDEX2)*FAC22))
-         IF (COVMXI.GE.P95LIM) GO TO 30
-         LAGS(NW) = LAGS(NW) - 1
-   10 CONTINUE
+      do 10 i=1,lagmax
+         lag = lagmax + 1 - i
+        covmxi = max(abs(ccov(lag,index1,index1)*fac11),abs(ccov(lag,&
+    &      index1,index2)*fac12),abs(ccov(lag,index2,index1)*fac21),&
+     &      abs(ccov(lag,index2,index2)*fac22))
+         if (covmxi.ge.p95lim) go to 30
+         lags(nw) = lags(nw) - 1
+   10 continue
 !
 !     IF NO ACVF EXCEEDS WHITE NOISE LIMITS, CHECK FOR LARGEST ACVF.
 !
-      LAGS(NW) = 1
-      COVMX = ABS(CCOV(2,1,1)*FAC11)
-      DO 20 LAG=1,LAGMAX
-         COVMXI = MAX(ABS(CCOV(LAG,INDEX1,INDEX1)*FAC11),ABS(CCOV(LAG,
-     &      INDEX1,INDEX2)*FAC12),ABS(CCOV(LAG,INDEX2,INDEX1)*FAC21),
-     &      ABS(CCOV(LAG,INDEX2,INDEX2)*FAC22))
-         IF (COVMXI.LE.COVMX) GO TO 20
-         LAGS(NW) = LAG
-         COVMX = COVMXI
-   20 CONTINUE
+      lags(nw) = 1
+      covmx = abs(ccov(2,1,1)*fac11)
+      do 20 lag=1,lagmax
+        covmxi = max(abs(ccov(lag,index1,index1)*fac11),abs(ccov(lag,&
+    &      index1,index2)*fac12),abs(ccov(lag,index2,index1)*fac21),&
+     &      abs(ccov(lag,index2,index2)*fac22))
+         if (covmxi.le.covmx) go to 20
+         lags(nw) = lag
+         covmx = covmxi
+   20 continue
 !
 !     COMPUTE LAG WINDOW TRUNCATION POINTS
 !
-   30 LAGS(NW) = LAGS(NW)*3.0E0/2.0E0
-      IF (LAGS(NW).LT.32) LAGS(NW) = 32
-      IF (LAGS(NW).GT.LAGMAX) LAGS(NW) = LAGMAX
-      NWUSED = NW
-      IF (NW.EQ.1) RETURN
-      NWM1 = NW - 1
-      DO 40 I=1,NWM1
-         K = NW - I
-         LAGS(K) = LAGS(K+1)/2
-   40 CONTINUE
+   30 lags(nw) = lags(nw)*3.0e0/2.0e0
+      if (lags(nw).lt.32) lags(nw) = 32
+      if (lags(nw).gt.lagmax) lags(nw) = lagmax
+      nwused = nw
+      if (nw.eq.1) return
+      nwm1 = nw - 1
+      do 40 i=1,nwm1
+         k = nw - i
+         lags(k) = lags(k+1)/2
+   40 continue
 !
 !     CHECK WHETHER ALL NW LAG WINDOW TRUNCATION POINTS CAN BE USED.
 !
-      NWUSED = NW
-      IF (LAGS(1).GE.4) RETURN
+      nwused = nw
+      if (lags(1).ge.4) return
 !
 !     RECONSTURCT -LAGS- VECTOR IF NOT ALL TRUNCATION POINTS ARE
 !     TO BE USED
 !
-      DO 50 I=2,NW
-         NWUSED = NWUSED - 1
-         IF (LAGS(I).GE.4) GO TO 60
-   50 CONTINUE
+      do 50 i=2,nw
+         nwused = nwused - 1
+         if (lags(i).ge.4) go to 60
+   50 continue
 !
-   60 DO 70 I=1,NWUSED
-         J = NW - NWUSED + I
-         LAGS(I) = LAGS(J)
-   70 CONTINUE
+   60 do 70 i=1,nwused
+         j = nw - nwused + i
+         lags(i) = lags(j)
+   70 continue
 !
-      RETURN
-      END
+      return
+      end

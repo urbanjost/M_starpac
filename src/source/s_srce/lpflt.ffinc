@@ -1,5 +1,5 @@
 !LPFLT
-      SUBROUTINE LPFLT (FC, K, HLP)
+      subroutine lpflt (fc, k, hlp)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,26 +15,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FC
-      INTEGER
-     &   K
+     real(kind=wp) ::&
+     &   fc
+     integer&
+     &   k
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   HLP(K)
+     real(kind=wp) ::&
+     &   hlp(k)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ARG,CON,PI,SUM
-      INTEGER
-     &   I,IHM,IHP,KHALF,KMID
+     real(kind=wp) ::&
+     &   arg,con,pi,sum
+     integer&
+     &   i,ihm,ihp,khalf,kmid
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SIN
+      intrinsic sin
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -62,31 +62,31 @@
 !     REAL SUM
 !        A VALUE USED FOR SUMMING.
 !
-      CALL GETPI(PI)
+      call getpi(pi)
 !
-      KMID = (K + 1) / 2
+      kmid = (k + 1) / 2
 !
-      HLP(KMID) = 1.0E0
+      hlp(kmid) = 1.0e0
 !
-      IF (K .EQ. 1) RETURN
+      if (k .eq. 1) return
 !
-      HLP(KMID) = 2.0E0 * FC
-      CON = 2.0E0 * PI / K
-      SUM = HLP(KMID)
+      hlp(kmid) = 2.0e0 * fc
+      con = 2.0e0 * pi / k
+      sum = hlp(kmid)
 !
-      KHALF = (K - 1) / 2
+      khalf = (k - 1) / 2
 !
-      DO 10 I = 1, KHALF
-         ARG = I * CON
-         IHP = KMID + I
-         HLP(IHP) = SIN(I * FC * 2.0E0 * PI) * SIN(ARG) /
-     &      (I * PI * ARG)
-         IHM = KMID - I
-         HLP(IHM) = HLP(IHP)
-         SUM = SUM + HLP(IHM) + HLP(IHP)
-   10 CONTINUE
-      DO 20 I = 1, K
-         HLP(I) = HLP(I) / SUM
-   20 CONTINUE
-      RETURN
-      END
+      do 10 i = 1, khalf
+         arg = i * con
+         ihp = kmid + i
+        hlp(ihp) = sin(i * fc * 2.0e0 * pi) * sin(arg) /&
+     &      (i * pi * arg)
+         ihm = kmid - i
+         hlp(ihm) = hlp(ihp)
+         sum = sum + hlp(ihm) + hlp(ihp)
+   10 continue
+      do 20 i = 1, k
+         hlp(i) = hlp(i) / sum
+   20 continue
+      return
+      end

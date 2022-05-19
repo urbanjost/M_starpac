@@ -1,6 +1,6 @@
 !LLSPS
-      SUBROUTINE LLSPS(Y, XM, N, NDEG, RES, LDSTAK,
-     &   NPRT, LPAR, PAR, NPAR, RSD, PV, SDPV, SDRES, VCV, IVCV)
+     subroutine llsps(y, xm, n, ndeg, res, ldstak,&
+     &   nprt, lpar, par, npar, rsd, pv, sdpv, sdres, vcv, ivcv)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,40 +19,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RSD
-      INTEGER
-     &   IVCV,LDSTAK,LPAR,N,NDEG,NPAR,NPRT
+     real(kind=wp) ::&
+     &   rsd
+     integer&
+     &   ivcv,ldstak,lpar,n,ndeg,npar,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),PV(*),RES(*),SDPV(*),SDRES(*),VCV(*),XM(*),Y(*)
+     real(kind=wp) ::&
+     &   par(*),pv(*),res(*),sdpv(*),sdres(*),vcv(*),xm(*),y(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,LPV,LSDPV,LSDRES,LWT
-      LOGICAL
-     &   SAVE,WEIGHT
+     integer&
+     &   iprt,lpv,lsdpv,lsdres,lwt
+     logical&
+     &   save,weight
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   WT(1)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   wt(1)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,LLCNTP
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -119,34 +119,34 @@
 !        THE DEPENDENT VARIABLE.
 !
 !
-      DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
+     data nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6) /&
      &   'L','L','S','P','S',' '/
 !
 !     SET PARAMETERS NECESSARY FOR THE COMPUTATIONS
 !
-      WEIGHT = .FALSE.
-      SAVE = .TRUE.
-      LPV = N
-      LSDPV = N
-      LSDRES = N
-      LWT = 1
+      weight = .false.
+      save = .true.
+      lpv = n
+      lsdpv = n
+      lsdres = n
+      lwt = 1
 !
-      CALL LLCNTP(Y, WT, LWT, XM, N, NDEG, NPAR, RES, LDSTAK, NPRT,
-     &   PAR, LPAR, RSD, PV, LPV, SDPV, LSDPV, SDRES, LSDRES, VCV, IVCV,
-     &   NMSUB, WEIGHT, SAVE)
+     call llcntp(y, wt, lwt, xm, n, ndeg, npar, res, ldstak, nprt,&
+    &   par, lpar, rsd, pv, lpv, sdpv, lsdpv, sdres, lsdres, vcv, ivcv,&
+     &   nmsub, weight, save)
 !
-      IF (IERR.NE.1) RETURN
+      if (ierr.ne.1) return
 !
 !     PRINT PROPER CALL SEQUENCE
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
-      RETURN
+      call iprint(iprt)
+      write (iprt,1000)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (//42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   '       CALL LLSPS (Y, X, N, NDEG, RES, LSDTAK,'/
-     &   '      +            NPRT, LPAR, PAR, NPAR, RSD, PV, SDPV,'/
+1000 format (//42h the correct form of the call statement is//&
+    &   '       CALL LLSPS (Y, X, N, NDEG, RES, LSDTAK,'/&
+    &   '      +            NPRT, LPAR, PAR, NPAR, RSD, PV, SDPV,'/&
      &   '      +            SDRES, VCV, IVCV)')
-      END
+      end

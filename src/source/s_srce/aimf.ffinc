@@ -1,5 +1,5 @@
 !AIMF
-      SUBROUTINE AIMF (Y, N, MSPEC, NFAC, PAR, NPAR, LDSTAK)
+      subroutine aimf (y, n, mspec, nfac, par, npar, ldstak)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,42 +16,42 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK,N,NFAC,NPAR
+     integer&
+     &   ldstak,n,nfac,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),Y(*)
-      INTEGER
-     &   MSPEC(4,*)
+     real(kind=wp) ::&
+     &   par(*),y(*)
+     integer&
+     &   mspec(4,*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IFCST,IPRT,NFCST,NFCSTO,NPRT
-      LOGICAL
-     &   SAVE
+     integer&
+     &   ifcst,iprt,nfcst,nfcsto,nprt
+     logical&
+     &   save
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   FCST(1,1),FCSTSD(1)
-      INTEGER
-     &   IFCSTO(1)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   fcst(1,1),fcstsd(1)
+     integer&
+     &   ifcsto(1)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL AMFCNT,IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -102,32 +102,32 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
+     data nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6) /&
      &   'A','I','M','F',' ',' '/
 !
 !     SET VARIOUS PROGRAM PARAMETERS
 !
-      SAVE = .FALSE.
+      save = .false.
 !
-      NFCST = N/10 + 1
-      NFCSTO = 1
-      IFCSTO(1) = N
-      NPRT = -1
-      IFCST = 1
+      nfcst = n/10 + 1
+      nfcsto = 1
+      ifcsto(1) = n
+      nprt = -1
+      ifcst = 1
 !
-      CALL AMFCNT(Y, N, MSPEC, NFAC, PAR, NPAR, LDSTAK, NFCST, NFCSTO,
-     &   IFCSTO, NPRT, FCST, IFCST, FCSTSD, NMSUB, SAVE)
+     call amfcnt(y, n, mspec, nfac, par, npar, ldstak, nfcst, nfcsto,&
+     &   ifcsto, nprt, fcst, ifcst, fcstsd, nmsub, save)
 !
-      IF (IERR.NE.1) RETURN
+      if (ierr.ne.1) return
 !
 !     PRINT PROPER CALL SEQUENCE
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
-      RETURN
+      call iprint(iprt)
+      write (iprt,1000)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/' THE CORRECT FORM OF THE CALL STATEMENT IS'//
+1000 format (/' THE CORRECT FORM OF THE CALL STATEMENT IS'//&
      &     '       CALL AIMF (Y, N, MSPEC, NFAC, PAR, NPAR, LDSTAK)')
-      END
+      end

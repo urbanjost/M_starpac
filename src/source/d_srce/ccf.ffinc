@@ -1,5 +1,5 @@
 !CCF
-      SUBROUTINE CCF (Y1, Y2, N)
+      subroutine ccf (y1, y2, n)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,42 +16,42 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y1(*),Y2(*)
+     real(kind=wp) ::&
+     &   y1(*),y2(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   Y1MEAN,Y1SD,Y2MEAN,Y2SD
-      INTEGER
-     &   ICCOV,INLPPC,IPRT,IYM,IYMFFT,JCCOV,JNLPPC,LAGMAX,LDSMIN,
-     &   LDSTAK,LYFFT,M,NFFT
-      LOGICAL
-     &   ISFFT,ISLONG
+     real(kind=wp) ::&
+     &   y1mean,y1sd,y2mean,y2sd
+     integer&
+    &   iccov,inlppc,iprt,iym,iymfft,jccov,jnlppc,lagmax,ldsmin,&
+     &   ldstak,lyfft,m,nfft
+     logical&
+     &   isfft,islong
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   CCOV(101,2,2),RHOC(201),SDRHOC(201)
-      INTEGER
-     &   NDUM(1)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   ccov(101,2,2),rhoc(201),sdrhoc(201)
+     integer&
+     &   ndum(1)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL ACVF,CCFER,CCFMN,CCFOUT,IPRINT,SETLAG
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -117,76 +117,76 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'C',       'C',       'F',       ' ',       ' ',       ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      ICCOV = 101
-      INLPPC = 1
-      IYM = N
-      JCCOV = 2
-      JNLPPC = 1
-      LDSMIN = 0
-      LDSTAK = 0
-      LAGMAX = 1
-      LYFFT = N + LAGMAX
-      IYMFFT = LYFFT
-      M = 2
-      NFFT = N
-      ISFFT = .FALSE.
-      ISLONG = .FALSE.
+      ierr = 0
+      iccov = 101
+      inlppc = 1
+      iym = n
+      jccov = 2
+      jnlppc = 1
+      ldsmin = 0
+      ldstak = 0
+      lagmax = 1
+      lyfft = n + lagmax
+      iymfft = lyfft
+      m = 2
+      nfft = n
+      isfft = .false.
+      islong = .false.
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL CCFER(NMSUB, N, LAGMAX, LDSTAK, LDSMIN, ICCOV, JCCOV,
-     &  INLPPC, JNLPPC, M, LYFFT, NFFT, IYM, IYMFFT, ISFFT, ISLONG)
+     call ccfer(nmsub, n, lagmax, ldstak, ldsmin, iccov, jccov,&
+     &  inlppc, jnlppc, m, lyfft, nfft, iym, iymfft, isfft, islong)
 !
 !     CHECK WHETHER AN ERROR HAS BEEN DETECTED
 !
-      IF (IERR.EQ.0) THEN
+      if (ierr.eq.0) then
 !
 !       SET THE MAXIMUM LAG VALUE TO BE USED.
 !
-        CALL SETLAG (N, LAGMAX)
+        call setlag (n, lagmax)
 !
 !       COMPUTE THE SERIES ACVF AND SD
 !
-        CALL ACVF (Y1, N, Y1MEAN, CCOV(1,1,1), LAGMAX, 101)
-        Y1SD = SQRT(CCOV(1,1,1) * N / (N-1))
+        call acvf (y1, n, y1mean, ccov(1,1,1), lagmax, 101)
+        y1sd = sqrt(ccov(1,1,1) * n / (n-1))
 !
-        CALL ACVF (Y2, N, Y2MEAN, CCOV(1,2,2), LAGMAX, 101)
-        Y2SD = SQRT(CCOV(1,2,2) * N / (N-1))
+        call acvf (y2, n, y2mean, ccov(1,2,2), lagmax, 101)
+        y2sd = sqrt(ccov(1,2,2) * n / (n-1))
 !
 !       CALL ROUTINE FOR MAIN AUTOCORRELATION COMPUTATIONS.
 !
-        IF (CCOV(1,1,1)*CCOV(1,2,2) .NE. 0.0_WP)
-     &    CALL CCFMN (Y1, Y2, N, LAGMAX, 2*LAGMAX+1, CCOV(1,1,1),
-     &     CCOV(1,2,2), CCOV(1,1,2), CCOV(1,2,1), 101, Y1MEAN, Y2MEAN,
-     &     RHOC, SDRHOC, 1)
+       if (ccov(1,1,1)*ccov(1,2,2) .ne. 0.0_wp)&
+    &    call ccfmn (y1, y2, n, lagmax, 2*lagmax+1, ccov(1,1,1),&
+    &     ccov(1,2,2), ccov(1,1,2), ccov(1,2,1), 101, y1mean, y2mean,&
+     &     rhoc, sdrhoc, 1)
 !
 !       CALL ROUTINE TO PRINT OUT AUTOCORRELATIONS
 !
-        CALL CCFOUT (1, Y1MEAN, Y1SD, N, N, 2, Y2MEAN, Y2SD, N,
-     &     N, LAGMAX, 2*LAGMAX+1, RHOC, SDRHOC, .FALSE., NDUM, NDUM, 1,
-     &     0.0_WP, 0.0_WP, .FALSE.)
-      END IF
+       call ccfout (1, y1mean, y1sd, n, n, 2, y2mean, y2sd, n,&
+    &     n, lagmax, 2*lagmax+1, rhoc, sdrhoc, .false., ndum, ndum, 1,&
+     &     0.0_wp, 0.0_wp, .false.)
+      end if
 !
-      IF (IERR.NE.0) THEN
+      if (ierr.ne.0) then
 !
 !     PRINT PROPER CALL SEQUENCE AND RETURN
 !
-        IERR = 1
-        CALL IPRINT (IPRT)
-        WRITE (IPRT, 1000)
-      END IF
+        ierr = 1
+        call iprint (iprt)
+        write (iprt, 1000)
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   27H       CALL CCF (Y1, Y2, N))
-      END
+1000 format(/42h the correct form of the call statement is//&
+     &   27h       call ccf (y1, y2, n))
+      end

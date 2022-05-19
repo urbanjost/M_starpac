@@ -1,5 +1,5 @@
 !IDAMAX
-      INTEGER FUNCTION IDAMAX(N,DX,INCX)
+      integer function idamax(n,dx,incx)
 !
 !     FIND SMALLEST INDEX OF MAXIMUM MAGNITUDE OF DOUBLE PRECISION DX.
 !     IDAMAX =  FIRST I, I = 1 TO N, TO MINIMIZE  ABS(DX(1-INCX+I*INCX))
@@ -8,46 +8,46 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INCX,N
+      integer incx,n
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION DX(*)
+      double precision dx(*)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION DMAX,XMAG
-      INTEGER I,II,NS
+      double precision dmax,xmag
+      integer i,ii,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC DABS
+      intrinsic dabs
 !
-      IDAMAX = 0
-      IF(N.LE.0) RETURN
-      IDAMAX = 1
-      IF(N.LE.1)RETURN
-      IF(INCX.EQ.1)GOTO 20
+      idamax = 0
+      if(n.le.0) return
+      idamax = 1
+      if(n.le.1)return
+      if(incx.eq.1)goto 20
 !
 !        CODE FOR INCREMENTS NOT EQUAL TO 1.
 !
-      DMAX = DABS(DX(1))
-      NS = N*INCX
-      II = 1
-          DO 10 I = 1,NS,INCX
-          XMAG = DABS(DX(I))
-          IF(XMAG.LE.DMAX) GO TO 5
-          IDAMAX = II
-          DMAX = XMAG
-    5     II = II + 1
-   10     CONTINUE
-      RETURN
+      dmax = dabs(dx(1))
+      ns = n*incx
+      ii = 1
+          do 10 i = 1,ns,incx
+          xmag = dabs(dx(i))
+          if(xmag.le.dmax) go to 5
+          idamax = ii
+          dmax = xmag
+    5     ii = ii + 1
+   10     continue
+      return
 !
 !        CODE FOR INCREMENTS EQUAL TO 1.
 !
-   20 DMAX = DABS(DX(1))
-      DO 30 I = 2,N
-          XMAG = DABS(DX(I))
-          IF(XMAG.LE.DMAX) GO TO 30
-          IDAMAX = I
-          DMAX = XMAG
-   30 CONTINUE
-      RETURN
-      END
+   20 dmax = dabs(dx(1))
+      do 30 i = 2,n
+          xmag = dabs(dx(i))
+          if(xmag.le.dmax) go to 30
+          idamax = i
+          dmax = xmag
+   30 continue
+      return
+      end

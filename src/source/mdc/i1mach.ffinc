@@ -699,33 +699,33 @@
       integer,parameter :: dt=digits(0.0d0)
       integer,parameter :: dmine=minexponent(0.0d0)
       integer,parameter :: dmaxe=maxexponent(0.0d0)
-      data IMACH( 1)/stdin/                               ! I/O UNIT NUMBERS : THE STANDARD INPUT UNIT.
-      data IMACH( 2)/stdout/                              ! I/O UNIT NUMBERS : THE STANDARD OUTPUT UNIT.
-      data IMACH( 3)/7/                                   ! I/O UNIT NUMBERS : THE STANDARD PUNCH UNIT.
-      data IMACH( 4)/stderr/                              ! I/O UNIT NUMBERS : THE STANDARD ERROR MESSAGE UNIT.
-      data IMACH( 5)/bpi/                                 ! WORDS            : THE NUMBER OF BITS PER INTEGER STORAGE UNIT.
-      data IMACH( 6)/cpi/                                 ! WORDS            : THE NUMBER OF CHARACTERS PER INTEGER STORAGE UNIT.
+      data imach( 1)/stdin/                               ! I/O UNIT NUMBERS : THE STANDARD INPUT UNIT.
+      data imach( 2)/stdout/                              ! I/O UNIT NUMBERS : THE STANDARD OUTPUT UNIT.
+      data imach( 3)/7/                                   ! I/O UNIT NUMBERS : THE STANDARD PUNCH UNIT.
+      data imach( 4)/stderr/                              ! I/O UNIT NUMBERS : THE STANDARD ERROR MESSAGE UNIT.
+      data imach( 5)/bpi/                                 ! WORDS            : THE NUMBER OF BITS PER INTEGER STORAGE UNIT.
+      data imach( 6)/cpi/                                 ! WORDS            : THE NUMBER OF CHARACTERS PER INTEGER STORAGE UNIT.
 !  INTEGERS.
 !    ASSUME INTEGERS ARE REPRESENTED IN THE S-DIGIT, BASE-A FORM
 !               SIGN ( X(S-1)*A**(S-1) + ... + X(1)*A + X(0) )
 !               WHERE 0 .LE. X(I) .LT. A FOR I=0,...,S-1.
-      data IMACH( 7)/ia/                ! A, THE BASE.
-      data IMACH( 8)/is/                ! S, THE NUMBER OF BASE-A DIGITS.
-      data IMACH( 9)/ibig/              ! A**S - 1, THE LARGEST MAGNITUDE.
+      data imach( 7)/ia/                ! A, THE BASE.
+      data imach( 8)/is/                ! S, THE NUMBER OF BASE-A DIGITS.
+      data imach( 9)/ibig/              ! A**S - 1, THE LARGEST MAGNITUDE.
 !  FLOATING-POINT NUMBERS.
 !    ASSUME FLOATING-POINT NUMBERS ARE REPRESENTED IN THE T-DIGIT, BASE-B FORM
 !         SIGN (B**E)*( (X(1)/B) + ... + (X(T)/B**T) )
 !         WHERE 0 .LE. X(I) .LT. B FOR I=1,...,T,
 !         0 .LT. X(1), AND EMIN .LE. E .LE. EMAX.
-      data IMACH(10)/rb/                 ! B, THE BASE.
+      data imach(10)/rb/                 ! B, THE BASE.
 !  SINGLE-PRECISION
-      data IMACH(11)/rt/                 ! T, THE NUMBER OF BASE-B DIGITS.
-      data IMACH(12)/rmine/              ! EMIN, THE SMALLEST EXPONENT E.
-      data IMACH(13)/rmaxe/              ! EMAX, THE LARGEST EXPONENT E.
+      data imach(11)/rt/                 ! T, THE NUMBER OF BASE-B DIGITS.
+      data imach(12)/rmine/              ! EMIN, THE SMALLEST EXPONENT E.
+      data imach(13)/rmaxe/              ! EMAX, THE LARGEST EXPONENT E.
 !  DOUBLE-PRECISION
-      data IMACH(14)/dt/                 ! T, THE NUMBER OF BASE-B DIGITS.
-      data IMACH(15)/dmine/              ! EMIN, THE SMALLEST EXPONENT E.
-      data IMACH(16)/dmaxe/, SANITY/987/ ! EMAX, THE LARGEST EXPONENT E.
+      data imach(14)/dt/                 ! T, THE NUMBER OF BASE-B DIGITS.
+      data imach(15)/dmine/              ! EMIN, THE SMALLEST EXPONENT E.
+      data imach(16)/dmaxe/, sanity/987/ ! EMAX, THE LARGEST EXPONENT E.
 !
 !  ***  ISSUE STOP IF ALL DATA STATEMENTS ARE COMMENTED...
       if (sanity .ne. 987) then

@@ -1,5 +1,5 @@
 !XGETUA
-      SUBROUTINE XGETUA(IUNIT,N)
+      subroutine xgetua(iunit,n)
 !
 !     ABSTRACT
 !        XGETUA MAY BE CALLED TO DETERMINE THE UNIT NUMBER OR NUMBERS
@@ -26,23 +26,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER N
+      integer n
 !
 !  ARRAY ARGUMENTS
-      INTEGER IUNIT(5)
+      integer iunit(5)
 !
 !  LOCAL SCALARS
-      INTEGER I,INDEX
+      integer i,index
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER J4SAVE
 !       EXTERNAL J4SAVE
 !
-      N = J4SAVE(5,0,.FALSE.)
-      DO 30 I=1,N
-         INDEX = I+4
-         IF (I.EQ.1) INDEX = 3
-         IUNIT(I) = J4SAVE(INDEX,0,.FALSE.)
-   30 CONTINUE
-      RETURN
-      END
+      n = j4save(5,0,.false.)
+      do 30 i=1,n
+         index = i+4
+         if (i.eq.1) index = 3
+         iunit(i) = j4save(index,0,.false.)
+   30 continue
+      return
+      end

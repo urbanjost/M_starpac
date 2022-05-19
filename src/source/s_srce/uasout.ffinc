@@ -1,7 +1,7 @@
 !UASOUT
-      SUBROUTINE UASOUT (XAXIS, YAXIS, ISYM, NPTS, BW, IDF, LAG,
-     &   IAR, PHI, ISPCER, LPCV, XPLTMN, XPLTMX, YPLTMN, YPLTMX,
-     &   FTEST, AIC, LAIC, VAR, NPRT, LAGMAX, AICPRT, N, NMSUB)
+     subroutine uasout (xaxis, yaxis, isym, npts, bw, idf, lag,&
+    &   iar, phi, ispcer, lpcv, xpltmn, xpltmx, ypltmn, ypltmx,&
+     &   ftest, aic, laic, var, nprt, lagmax, aicprt, n, nmsub)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,32 +18,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   BW,VAR,XPLTMN,XPLTMX,YPLTMN,YPLTMX
-      INTEGER
-     &   IAR,IDF,ISPCER,LAG,LAGMAX,LAIC,LPCV,N,NPRT,NPTS
-      LOGICAL
-     &   AICPRT
+     real(kind=wp) ::&
+     &   bw,var,xpltmn,xpltmx,ypltmn,ypltmx
+     integer&
+     &   iar,idf,ispcer,lag,lagmax,laic,lpcv,n,nprt,npts
+     logical&
+     &   aicprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   AIC(LAIC),FTEST(2,LAGMAX),PHI(LAGMAX),XAXIS(LPCV),YAXIS(LPCV)
-      INTEGER
-     &   ISYM(LPCV)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   aic(laic),ftest(2,lagmax),phi(lagmax),xaxis(lpcv),yaxis(lpcv)
+     integer&
+     &   isym(lpcv)
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   XMN,XMX,YMN,YMX
-      INTEGER
-     &   ILOG,IPRT
-      LOGICAL
-     &   ERROR
+     real(kind=wp) ::&
+     &   xmn,xmx,ymn,ymx
+     integer&
+     &   ilog,iprt
+     logical&
+     &   error
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   PRHO(1)
+     real(kind=wp) ::&
+     &   prho(1)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL AOSLST,IPRINT,PPLMT,PPMN,VERSP
@@ -113,61 +113,61 @@
 !
 !     SET LOGICAL UNIT NUMBER FOR OUTPUT AND SET OUTPUT WIDTH.
 !
-      CALL IPRINT (IPRT)
+      call iprint (iprt)
 !
-      IF (.NOT. AICPRT) GO TO 5
+      if (.not. aicprt) go to 5
 !
 !     PRINT AUTOREGRESSIVE MODEL ORDER SELECTION STATISTICS
 !
-      CALL VERSP(.TRUE.)
-      WRITE(IPRT, 1007)
-      CALL AOSLST (PRHO, AIC, FTEST, LAGMAX, LAIC, IAR, PHI, VAR,
-     &   .FALSE., N)
-      WRITE (IPRT, 1001)
+      call versp(.true.)
+      write(iprt, 1007)
+     call aoslst (prho, aic, ftest, lagmax, laic, iar, phi, var,&
+     &   .false., n)
+      write (iprt, 1001)
 !
-    5 CONTINUE
-      CALL VERSP(.TRUE.)
+    5 continue
+      call versp(.true.)
 !
-      WRITE(IPRT, 1002) LAG, BW, IDF
-      WRITE(IPRT, 1000) IAR
-      IF (ISPCER .EQ. 0) GO TO 10
-      WRITE(IPRT, 1006)
-      RETURN
+      write(iprt, 1002) lag, bw, idf
+      write(iprt, 1000) iar
+      if (ispcer .eq. 0) go to 10
+      write(iprt, 1006)
+      return
 !
-   10 CONTINUE
-      IF (NPRT.LE.0) THEN
-        ILOG = 0
-      ELSE
-        ILOG = 1
-      END IF
+   10 continue
+      if (nprt.le.0) then
+        ilog = 0
+      else
+        ilog = 1
+      end if
 !
-      CALL PPLMT(YAXIS,YAXIS,XAXIS,XAXIS(1),NPTS,1,LPCV,YPLTMN,
-     &  YPLTMX, YMN, YMX, XPLTMN, XPLTMX, XMN, XMX, ERROR, NMSUB,
-     &  .FALSE.)
-      IF (.NOT.ERROR)
-     &   CALL PPMN (YAXIS,YAXIS,XAXIS,XAXIS(1),NPTS,1,LPCV,1,ISYM,
-     &    LPCV, 0, -1, YMN, YMX, XMN, XMX, .FALSE., ILOG)
-      IF (XPLTMN .NE. 0.0E0 .OR. XPLTMX .NE. 0.5E0) RETURN
-      WRITE (IPRT, 1004)
+     call pplmt(yaxis,yaxis,xaxis,xaxis(1),npts,1,lpcv,ypltmn,&
+    &  ypltmx, ymn, ymx, xpltmn, xpltmx, xmn, xmx, error, nmsub,&
+     &  .false.)
+     if (.not.error)&
+    &   call ppmn (yaxis,yaxis,xaxis,xaxis(1),npts,1,lpcv,1,isym,&
+     &    lpcv, 0, -1, ymn, ymx, xmn, xmx, .false., ilog)
+      if (xpltmn .ne. 0.0e0 .or. xpltmx .ne. 0.5e0) return
+      write (iprt, 1004)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (11H AND ORDER , I2, 28H AUTOREGRESSIVE SPECTRUM (.))
- 1001 FORMAT ('1')
- 1002 FORMAT (44H FOURIER SPECTRUM (+) (LAG WIND. TRUNC. PT.=, I5,
-     &   1X, 5H/ BW=, F6.4, 1X, 6H/ EDF=, I6, ')')
- 1004 FORMAT(5H+FREQ/
-     &   7H PERIOD, 9X, 3HINF, 7X, 3H20., 7X, 3H10., 8X, 6H6.6667, 4X,
-     &   2H5., 8X, 2H4., 8X, 6H3.3333, 4X, 6H2.8571, 4X, 3H2.5, 7X,
-     &   6H2.2222, 4X, 2H2.)
+ 1000 format (11h and order , i2, 28h autoregressive spectrum (.))
+ 1001 format ('1')
+1002 format (44h fourier spectrum (+) (lag wind. trunc. pt.=, i5,&
+     &   1x, 5h/ bw=, f6.4, 1x, 6h/ edf=, i6, ')')
+1004 format(5h+freq/&
+    &   7h period, 9x, 3hinf, 7x, 3h20., 7x, 3h10., 8x, 6h6.6667, 4x,&
+    &   2h5., 8x, 2h4., 8x, 6h3.3333, 4x, 6h2.8571, 4x, 3h2.5, 7x,&
+     &   6h2.2222, 4x, 2h2.)
 !1005 FORMAT(5H+FREQ/
 !    1   7H PERIOD, 9X, 3HINF, 7X, 3H10., 4X, 2H5., 8X, 6H3.3333, 4X,
 !    2   3H2.5, 4X, 2H2.)
- 1006 FORMAT(//
-     &   56H ** THE PLOT HAS BEEN SUPRESSED BECAUSE FEWER THAN    **/
-     &   56H ** FOUR VALID (POSITIVE) SPECTRAL ESTIMATES COULD BE **/
-     &   56H ** COMPUTED.                                         **)
- 1007 FORMAT (/42H AUTOREGRESSIVE ORDER SELECTION STATISTICS/)
-      END
+1006 format(//&
+    &   56h ** the plot has been supressed because fewer than    **/&
+    &   56h ** four valid (positive) spectral estimates could be **/&
+     &   56h ** computed.                                         **)
+ 1007 format (/42h autoregressive order selection statistics/)
+      end

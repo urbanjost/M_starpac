@@ -1,6 +1,6 @@
 !NLSX2
-      SUBROUTINE NLSX2(N, M, IXM, NPAR, IFIXED, STP, IDRVCK, MIT,
-     &   STOPSS, STOPP, SCALE, DELTA, IVAPRX, NPRT, IVCV)
+     subroutine nlsx2(n, m, ixm, npar, ifixed, stp, idrvck, mit,&
+     &   stopss, stopp, scale, delta, ivaprx, nprt, ivcv)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,28 +17,28 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   DELTA,STOPP,STOPSS
-      INTEGER
-     &   IDRVCK,IVAPRX,IVCV,IXM,M,MIT,N,NPAR,NPRT
+     real(kind=wp) ::&
+     &   delta,stopp,stopss
+     integer&
+     &   idrvck,ivaprx,ivcv,ixm,m,mit,n,npar,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   SCALE(10),STP(10)
-      INTEGER
-     &   IFIXED(10)
+     real(kind=wp) ::&
+     &   scale(10),stp(10)
+     integer&
+     &   ifixed(10)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   SQMEPS
-      INTEGER
-     &   I
+     real(kind=wp) ::&
+     &   sqmeps
+     integer&
+     &   i
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -115,26 +115,26 @@
 !
 !     **SET UP FOR NORMAL STATEMENT**
 !
-      SQMEPS = SQRT(RMDCON(3,typ=0.0_wp))
+      sqmeps = sqrt(rmdcon(3,typ=0.0_wp))
 !
-      N = 6
-      M = 1
-      IXM = 10
-      NPAR = 2
-      MIT = 500
-      DO 10 I=1,10
-         STP(I) = SQMEPS
-         SCALE(I) = 1.0_WP
-   10 CONTINUE
-      IFIXED(1) = -1
-      IDRVCK = 0
-      STOPSS = 10.0E-5_WP
-      STOPP = 10.0E-5_WP
-      DELTA = 0.5_WP
-      NPRT = 11111
-      IVAPRX = 3
-      IVCV = 6
+      n = 6
+      m = 1
+      ixm = 10
+      npar = 2
+      mit = 500
+      do 10 i=1,10
+         stp(i) = sqmeps
+         scale(i) = 1.0_wp
+   10 continue
+      ifixed(1) = -1
+      idrvck = 0
+      stopss = 10.0e-5_wp
+      stopp = 10.0e-5_wp
+      delta = 0.5_wp
+      nprt = 11111
+      ivaprx = 3
+      ivcv = 6
 !
-      RETURN
+      return
 !
-      END
+      end

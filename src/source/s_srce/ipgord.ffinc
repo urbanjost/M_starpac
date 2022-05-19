@@ -1,6 +1,6 @@
 !IPGORD
-      SUBROUTINE IPGORD (PERI, NF, N, FREQ, XAXIS, YAXIS, ISYM, NPTS,
-     &   LPCV)
+     subroutine ipgord (peri, nf, n, freq, xaxis, yaxis, isym, npts,&
+     &   lpcv)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,27 +16,27 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LPCV,N,NF,NPTS
+     integer&
+     &   lpcv,n,nf,npts
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FREQ(NF),PERI(NF),XAXIS(LPCV),YAXIS(LPCV)
-      INTEGER
-     &   ISYM(LPCV)
+     real(kind=wp) ::&
+     &   freq(nf),peri(nf),xaxis(lpcv),yaxis(lpcv)
+     integer&
+     &   isym(lpcv)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   CI,CIMID
-      INTEGER
-     &   I,II,NLIM
+     real(kind=wp) ::&
+     &   ci,cimid
+     integer&
+     &   i,ii,nlim
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   S(40)
+     real(kind=wp) ::&
+     &   s(40)
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD,REAL,SQRT
+      intrinsic mod,real,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -71,56 +71,56 @@
 !     REAL XAXIS(LPCV), YAXIS(LPCV)
 !        THE X, Y CO-ORDINATES FOR THE SPECTRAL PLOTS.
 !
-      DATA S(1)/0.975E0/, S(2)/0.842E0/, S(3)/0.708E0/
-      DATA S(4)/0.624E0/, S(5)/0.563E0/
-      DATA S(6)/0.519E0/, S(7)/0.483E0/, S(8)/0.454E0/
-      DATA S(9)/0.430E0/, S(10)/0.409E0/
-      DATA S(11)/0.391E0/, S(12)/0.375E0/, S(13)/0.361E0/
-      DATA S(14)/0.349E0/, S(15)/0.338E0/
-      DATA S(16)/0.327E0/, S(17)/0.318E0/, S(18)/0.309E0/
-      DATA S(19)/0.301E0/, S(20)/0.294E0/
-      DATA S(21)/0.287E0/, S(22)/0.281E0/, S(23)/0.275E0/
-      DATA S(24)/0.269E0/, S(25)/0.264E0/
-      DATA S(26)/0.259E0/, S(27)/0.254E0/, S(28)/0.250E0/
-      DATA S(29)/0.246E0/, S(30)/0.242E0/
-      DATA S(31)/0.238E0/, S(32)/0.234E0/, S(33)/0.231E0/
-      DATA S(34)/0.227E0/, S(35)/0.224E0/
-      DATA S(36)/0.221E0/, S(37)/0.218E0/, S(38)/0.215E0/
-      DATA S(39)/0.213E0/, S(40)/0.210E0/
+      data s(1)/0.975e0/, s(2)/0.842e0/, s(3)/0.708e0/
+      data s(4)/0.624e0/, s(5)/0.563e0/
+      data s(6)/0.519e0/, s(7)/0.483e0/, s(8)/0.454e0/
+      data s(9)/0.430e0/, s(10)/0.409e0/
+      data s(11)/0.391e0/, s(12)/0.375e0/, s(13)/0.361e0/
+      data s(14)/0.349e0/, s(15)/0.338e0/
+      data s(16)/0.327e0/, s(17)/0.318e0/, s(18)/0.309e0/
+      data s(19)/0.301e0/, s(20)/0.294e0/
+      data s(21)/0.287e0/, s(22)/0.281e0/, s(23)/0.275e0/
+      data s(24)/0.269e0/, s(25)/0.264e0/
+      data s(26)/0.259e0/, s(27)/0.254e0/, s(28)/0.250e0/
+      data s(29)/0.246e0/, s(30)/0.242e0/
+      data s(31)/0.238e0/, s(32)/0.234e0/, s(33)/0.231e0/
+      data s(34)/0.227e0/, s(35)/0.224e0/
+      data s(36)/0.221e0/, s(37)/0.218e0/, s(38)/0.215e0/
+      data s(39)/0.213e0/, s(40)/0.210e0/
 !
-      I = N + MOD(N,2) - 1
+      i = n + mod(n,2) - 1
 !
-      IF (I .LE. 40) THEN
-         CI = S(I)
-      ELSE
-         CI = 1.36E0 / SQRT(REAL(I))
-      END IF
+      if (i .le. 40) then
+         ci = s(i)
+      else
+         ci = 1.36e0 / sqrt(real(i))
+      end if
 !
-      DO 10 I = 1, NF
-         XAXIS(I) = FREQ(I)
-         YAXIS(I) = PERI(I)
-         ISYM(I) = 1
-   10 CONTINUE
+      do 10 i = 1, nf
+         xaxis(i) = freq(i)
+         yaxis(i) = peri(i)
+         isym(i) = 1
+   10 continue
 !
-      NLIM = 101
+      nlim = 101
 !
-      II = NF
+      ii = nf
 !
-      DO 30 I = 1, NLIM, 2
-         CIMID = REAL(I-1) / REAL(NLIM-1)
-         IF (CIMID - CI .LT. 0.0E0) GO TO 20
-         II = II + 1
-         XAXIS(II) = CIMID / 2.0E0
-         YAXIS(II) = CIMID - CI
-         ISYM(II) = 2
-   20    IF (CIMID + CI .GT. 1.0E0) GO TO 30
-         II = II + 1
-         XAXIS(II) = CIMID / 2.0E0
-         YAXIS(II) = CIMID + CI
-         ISYM(II) = 2
-   30 CONTINUE
+      do 30 i = 1, nlim, 2
+         cimid = real(i-1) / real(nlim-1)
+         if (cimid - ci .lt. 0.0e0) go to 20
+         ii = ii + 1
+         xaxis(ii) = cimid / 2.0e0
+         yaxis(ii) = cimid - ci
+         isym(ii) = 2
+   20    if (cimid + ci .gt. 1.0e0) go to 30
+         ii = ii + 1
+         xaxis(ii) = cimid / 2.0e0
+         yaxis(ii) = cimid + ci
+         isym(ii) = 2
+   30 continue
 !
-      NPTS = II
+      npts = ii
 !
-      RETURN
-      END
+      return
+      end

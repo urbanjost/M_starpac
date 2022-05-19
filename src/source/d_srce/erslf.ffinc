@@ -1,5 +1,5 @@
 !ERSLF
-      SUBROUTINE ERSLF (NMSUB, NMVAR, K, H, HEAD, ERROR)
+      subroutine erslf (nmsub, nmvar, k, h, head, error)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   K
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   k
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   H(*)
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR(8)*1
+     real(kind=wp) ::&
+     &   h(*)
+     character&
+     &   nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IHM,IHP,IPRT,KHALF,KMID,NZERO
+     integer&
+     &   i,ihm,ihp,iprt,khalf,kmid,nzero
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -66,42 +66,42 @@
 !     INTEGER NZERO
 !        THE NUMBER OF FILTER COEFFICIENTS EQUAL TO ZERO.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      KMID = (K + 1) / 2
-      KHALF = KMID - 1
-      NZERO = 0
-      DO 10 IHM = 1, KHALF
-         IHP = K + 1 - IHM
-         IF (H(IHM) .EQ. 0.0_WP) NZERO = NZERO + 1
-         IF (H(IHM)  .EQ.  H(IHP)) GO TO 10
+      kmid = (k + 1) / 2
+      khalf = kmid - 1
+      nzero = 0
+      do 10 ihm = 1, khalf
+         ihp = k + 1 - ihm
+         if (h(ihm) .eq. 0.0_wp) nzero = nzero + 1
+         if (h(ihm)  .eq.  h(ihp)) go to 10
 !
-         CALL IPRINT(IPRT)
-         CALL EHDR(NMSUB, HEAD)
-         WRITE (IPRT, 1010) (NMVAR(I), I = 1, 6), (H(I), I = 1, K)
-         ERROR = .TRUE.
-         RETURN
-   10 CONTINUE
+         call iprint(iprt)
+         call ehdr(nmsub, head)
+         write (iprt, 1010) (nmvar(i), i = 1, 6), (h(i), i = 1, k)
+         error = .true.
+         return
+   10 continue
 !
-      IF (H(KMID) .EQ. 0.0_WP) NZERO = NZERO + 1
+      if (h(kmid) .eq. 0.0_wp) nzero = nzero + 1
 !
-      IF (NZERO .LT. KMID) RETURN
+      if (nzero .lt. kmid) return
 !
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
-      WRITE (IPRT, 1020) (NMVAR(I), I = 1, 6)
-      ERROR = .TRUE.
+      call iprint(iprt)
+      call ehdr(nmsub, head)
+      write (iprt, 1020) (nmvar(i), i = 1, 6)
+      error = .true.
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT(/
-     &   18H THE INPUT FILTER , 6A1, 24H MUST BE SYMMETRIC.  THE,
-     &   30H INPUT FILTER COEFFICIENTS ARE/
-     &   5(1X, E15.5))
- 1020 FORMAT(/
-     &   32H ALL THE FILTER COEFFICIENTS IN , 6A1, 16H ARE IDENTICALLY,
-     &   15H EQUAL TO ZERO,/
-     &   42H THEREFORE NO FILTERING WILL BE PERFORMED.)
-      END
+1010 format(/&
+    &   18h the input filter , 6a1, 24h must be symmetric.  the,&
+    &   30h input filter coefficients are/&
+     &   5(1x, e15.5))
+1020 format(/&
+    &   32h all the filter coefficients in , 6a1, 16h are identically,&
+    &   15h equal to zero,/&
+     &   42h therefore no filtering will be performed.)
+      end

@@ -1,5 +1,5 @@
 !ISAMAX
-      INTEGER FUNCTION ISAMAX(N,SX,INCX)
+      integer function isamax(n,sx,incx)
 !
 !     FIND SMALLEST INDEX OF MAXIMUM MAGNITUDE OF SINGLE PRECISION SX.
 !     ISAMAX =  FIRST I, I = 1 TO N, TO MINIMIZE  ABS(SX(1-INCX+I*INCX))
@@ -7,46 +7,46 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INCX,N
+      integer incx,n
 !
 !  ARRAY ARGUMENTS
-      REAL SX(*)
+      real sx(*)
 !
 !  LOCAL SCALARS
-      REAL SMAX,XMAG
-      INTEGER I,II,NS
+      real smax,xmag
+      integer i,ii,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS
+      intrinsic abs
 !
-      ISAMAX = 0
-      IF(N.LE.0) RETURN
-      ISAMAX = 1
-      IF(N.LE.1)RETURN
-      IF(INCX.EQ.1)GOTO 20
+      isamax = 0
+      if(n.le.0) return
+      isamax = 1
+      if(n.le.1)return
+      if(incx.eq.1)goto 20
 !
 !        CODE FOR INCREMENTS NOT EQUAL TO 1.
 !
-      SMAX = ABS(SX(1))
-      NS = N*INCX
-      II = 1
-          DO 10 I=1,NS,INCX
-          XMAG = ABS(SX(I))
-          IF(XMAG.LE.SMAX) GO TO 5
-          ISAMAX = II
-          SMAX = XMAG
-    5     II = II + 1
-   10     CONTINUE
-      RETURN
+      smax = abs(sx(1))
+      ns = n*incx
+      ii = 1
+          do 10 i=1,ns,incx
+          xmag = abs(sx(i))
+          if(xmag.le.smax) go to 5
+          isamax = ii
+          smax = xmag
+    5     ii = ii + 1
+   10     continue
+      return
 !
 !        CODE FOR INCREMENTS EQUAL TO 1.
 !
-   20 SMAX = ABS(SX(1))
-      DO 30 I = 2,N
-         XMAG = ABS(SX(I))
-         IF(XMAG.LE.SMAX) GO TO 30
-         ISAMAX = I
-         SMAX = XMAG
-   30 CONTINUE
-      RETURN
-      END
+   20 smax = abs(sx(1))
+      do 30 i = 2,n
+         xmag = abs(sx(i))
+         if(xmag.le.smax) go to 30
+         isamax = i
+         smax = xmag
+   30 continue
+      return
+      end

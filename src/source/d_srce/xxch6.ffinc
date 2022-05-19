@@ -1,5 +1,5 @@
 !XXCH6
-      SUBROUTINE XXCH6(LDSTAK,typ)
+      subroutine xxch6(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -19,30 +19,30 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,N
+     integer&
+     &   iprt,n
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   TAG(20),Y(20)
+     real(kind=wp) ::&
+     &   tag(20),y(20)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL AOV1,IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -64,45 +64,45 @@
 !
 !     DATA INITIALIZATIONS.
 !
-      DATA N /16/
+      data n /16/
 !
-      DATA Y( 1), Y( 2), Y( 3), Y( 4)
+     data y( 1), y( 2), y( 3), y( 4)&
      &    / 83.0, 81.0, 76.0, 78.0/
-      DATA Y( 5), Y( 6), Y( 7), Y( 8)
+     data y( 5), y( 6), y( 7), y( 8)&
      &    / 79.0, 72.0, 61.0, 61.0/
-      DATA Y( 9), Y(10), Y(11), Y(12)
+     data y( 9), y(10), y(11), y(12)&
      &    / 67.0, 67.0, 64.0, 78.0/
-      DATA Y(13), Y(14), Y(15), Y(16)
+     data y(13), y(14), y(15), y(16)&
      &    / 71.0, 75.0, 72.0, 74.0/
 !
-      DATA TAG( 1), TAG( 2), TAG( 3), TAG( 4)
+     data tag( 1), tag( 2), tag( 3), tag( 4)&
      &    / 1.0, 1.0, 1.0, 1.0/
-      DATA TAG( 5), TAG( 6), TAG( 7), TAG( 8)
+     data tag( 5), tag( 6), tag( 7), tag( 8)&
      &    / 1.0, 1.0, 2.0, 2.0/
-      DATA TAG( 9), TAG(10), TAG(11), TAG(12)
+     data tag( 9), tag(10), tag(11), tag(12)&
      &    / 2.0, 2.0, 2.0, 3.0/
-      DATA TAG(13), TAG(14), TAG(15), TAG(16)
+     data tag(13), tag(14), tag(15), tag(16)&
      &    / 3.0, 3.0, 3.0, 3.0/
 !
 !     DEFINE IPRT, THE CURRENT OUTPUT UNIT.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     PRINT HEADING
 !
-      WRITE (IPRT,1000)
+      write (iprt,1000)
 !
 !     PERFORM SIMPLE TEST OF AOV1
 !
-      WRITE (IPRT,1100)
-      CALL AOV1(Y, TAG, N, LDSTAK)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1100)
+      call aov1(y, tag, n, ldstak)
+      write (iprt,2000) ierr
 !
-      RETURN
+      return
 !
 !     FORMATS
 !
- 1000 FORMAT ('1*CH6')
- 1100 FORMAT (' SIMPLE TEST OF AOV1')
- 2000 FORMAT (/' THE VALUE OF IERR IS ', I4)
-      END
+ 1000 format ('1*CH6')
+ 1100 format (' SIMPLE TEST OF AOV1')
+ 2000 format (/' THE VALUE OF IERR IS ', i4)
+      end

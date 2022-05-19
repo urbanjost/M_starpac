@@ -1,5 +1,5 @@
 !SRTRI
-      SUBROUTINE SRTRI(A, LA, IR)
+      subroutine srtri(a, la, ir)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -24,122 +24,122 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LA
+     integer&
+     &   la
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   A(LA)
-      INTEGER
-     &   IR(LA)
+     real(kind=wp) ::&
+     &   a(la)
+     integer&
+     &   ir(la)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   R,T,TT
-      INTEGER
-     &   I,IJ,IT,ITT,J,K,L,M
+     real(kind=wp) ::&
+     &   r,t,tt
+     integer&
+     &   i,ij,it,itt,j,k,l,m
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   IL(21),IU(21)
+     integer&
+     &   il(21),iu(21)
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC INT
+      intrinsic int
 !
 !
-      M = 1
-      I = 1
-      J = LA
-      R = .375E0
-   10 IF (I.EQ.J) GO TO 90
-      IF (R.GT.0.5898437E0) GO TO 20
-      R = R + 3.90625E-2
-      GO TO 30
-   20 R = R - .21875E0
-   30 K = I
+      m = 1
+      i = 1
+      j = la
+      r = .375e0
+   10 if (i.eq.j) go to 90
+      if (r.gt.0.5898437e0) go to 20
+      r = r + 3.90625e-2
+      go to 30
+   20 r = r - .21875e0
+   30 k = i
 !                                  SELECT A CENTRAL ELEMENT OF THE
 !                                  ARRAY AND SAVE IT IN LOCATION IT
-      IJ = I + INT((J-I)*R)
-      T = A(IJ)
-      IT = IR(IJ)
+      ij = i + int((j-i)*r)
+      t = a(ij)
+      it = ir(ij)
 !                                  IF FIRST ELEMENT OF ARRAY IS GREATER
 !                                  THAN IT, INTERCHANGE WITH IT
-      IF (IR(I).LE.IT) GO TO 40
-      A(IJ) = A(I)
-      A(I) = T
-      T = A(IJ)
-      IR(IJ) = IR(I)
-      IR(I) = IT
-      IT = IR(IJ)
-   40 L = J
+      if (ir(i).le.it) go to 40
+      a(ij) = a(i)
+      a(i) = t
+      t = a(ij)
+      ir(ij) = ir(i)
+      ir(i) = it
+      it = ir(ij)
+   40 l = j
 !                                  IF LAST ELEMENT OF ARRAY IS LESS THAN
 !                                  IT, INTERCHANGE WITH IT
-      IF (IR(J).GE.IT) GO TO 60
-      A(IJ) = A(J)
-      A(J) = T
-      T = A(IJ)
-      IR(IJ) = IR(J)
-      IR(J) = IT
-      IT = IR(IJ)
+      if (ir(j).ge.it) go to 60
+      a(ij) = a(j)
+      a(j) = t
+      t = a(ij)
+      ir(ij) = ir(j)
+      ir(j) = it
+      it = ir(ij)
 !                                  IF FIRST ELEMENT OF ARRAY IS GREATER
 !                                  THAN IT, INTERCHANGE WITH IT
-      IF (IR(I).LE.IT) GO TO 60
-      A(IJ) = A(I)
-      A(I) = T
-      T = A(IJ)
-      IR(IJ) = IR(I)
-      IR(I) = IT
-      IT = IR(IJ)
-      GO TO 60
-   50 TT = A(L)
-      A(L) = A(K)
-      A(K) = TT
-      ITT = IR(L)
-      IR(L) = IR(K)
-      IR(K) = ITT
+      if (ir(i).le.it) go to 60
+      a(ij) = a(i)
+      a(i) = t
+      t = a(ij)
+      ir(ij) = ir(i)
+      ir(i) = it
+      it = ir(ij)
+      go to 60
+   50 tt = a(l)
+      a(l) = a(k)
+      a(k) = tt
+      itt = ir(l)
+      ir(l) = ir(k)
+      ir(k) = itt
 !                                  FIND AN ELEMENT IN THE SECOND HALF OF
 !                                  THE ARRAY WHICH IS SMALLER THAN IT
-   60 L = L - 1
-      IF (IR(L).GT.IT) GO TO 60
+   60 l = l - 1
+      if (ir(l).gt.it) go to 60
 !                                  FIND AN ELEMENT IN THE FIRST HALF OF
 !                                  THE ARRAY WHICH IS GREATER THAN IT
-   70 K = K + 1
-      IF (IR(K).LT.IT) GO TO 70
+   70 k = k + 1
+      if (ir(k).lt.it) go to 70
 !                                  INTERCHANGE THESE ELEMENTS
-      IF (K.LE.L) GO TO 50
+      if (k.le.l) go to 50
 !                                  SAVE UPPER AND LOWER SUBSCRIPTS OF
 !                                  THE ARRAY YET TO BE SORTED
-      IF (L-I.LE.J-K) GO TO 80
-      IL(M) = I
-      IU(M) = L
-      I = K
-      M = M + 1
-      GO TO 100
-   80 IL(M) = K
-      IU(M) = J
-      J = L
-      M = M + 1
-      GO TO 100
+      if (l-i.le.j-k) go to 80
+      il(m) = i
+      iu(m) = l
+      i = k
+      m = m + 1
+      go to 100
+   80 il(m) = k
+      iu(m) = j
+      j = l
+      m = m + 1
+      go to 100
 !                                  BEGIN AGAIN ON ANOTHER PORTION OF
 !                                  THE UNSORTED ARRAY
-   90 M = M - 1
-      IF (M.EQ.0) RETURN
-      I = IL(M)
-      J = IU(M)
-  100 IF (J-I.GE.1) GO TO 30
-      IF (I.EQ.1) GO TO 10
-      I = I - 1
-  110 I = I + 1
-      IF (I.EQ.J) GO TO 90
-      T = A(I+1)
-      IT = IR(I+1)
-      IF (IR(I).LE.IT) GO TO 110
-      K = I
-  120 A(K+1) = A(K)
-      IR(K+1) = IR(K)
-      K = K - 1
-      IF (IT.LT.IR(K)) GO TO 120
-      A(K+1) = T
-      IR(K+1) = IT
-      GO TO 110
-      END
+   90 m = m - 1
+      if (m.eq.0) return
+      i = il(m)
+      j = iu(m)
+  100 if (j-i.ge.1) go to 30
+      if (i.eq.1) go to 10
+      i = i - 1
+  110 i = i + 1
+      if (i.eq.j) go to 90
+      t = a(i+1)
+      it = ir(i+1)
+      if (ir(i).le.it) go to 110
+      k = i
+  120 a(k+1) = a(k)
+      ir(k+1) = ir(k)
+      k = k - 1
+      if (it.lt.ir(k)) go to 120
+      a(k+1) = t
+      ir(k+1) = it
+      go to 110
+      end

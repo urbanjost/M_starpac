@@ -1,5 +1,5 @@
 !PGOUT
-      SUBROUTINE PGOUT (YAXIS, XAXIS, NPTS, NPRT, NMSUB)
+      subroutine pgout (yaxis, xaxis, npts, nprt, nmsub)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,26 +15,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   NPRT,NPTS
+     integer&
+     &   nprt,npts
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XAXIS(NPTS),YAXIS(NPTS)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   xaxis(npts),yaxis(npts)
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM,XMISS,XMN,XMX,YMN,YMX
-      INTEGER
-     &   ILOG,IPRT
-      LOGICAL
-     &   ERROR
-      REAL(KIND=WP) :: YMISS
+     real(kind=wp) ::&
+     &   fplm,xmiss,xmn,xmx,ymn,ymx
+     integer&
+     &   ilog,iprt
+     logical&
+     &   error
+      real(kind=wp) :: ymiss
 !
 !  LOCAL ARRAYS
-      INTEGER :: ISYM(1)
+      integer :: isym(1)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -45,7 +45,7 @@
 !      EXTERNAL IPRINT,PPLMT,PPMN,VERSP,VPLMT,VPMN
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,IABS
+      intrinsic abs,iabs
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -87,62 +87,62 @@
 !     REAL(KIND=WP) :: YMN, YMX
 !
 !
-      FPLM = D1MACH(2)
+      fplm = d1mach(2)
 !
-      XMISS = FPLM
-      YMISS = FPLM
+      xmiss = fplm
+      ymiss = fplm
 !
 !     SET LOGICAL UNIT NUMBER FOR OUTPUT AND SET OUTPUT WIDTH.
 !
-      CALL IPRINT (IPRT)
+      call iprint (iprt)
 !
-      CALL VERSP(.TRUE.)
-      IF (IABS(NPRT).EQ.1) THEN
-         WRITE (IPRT, 1010)
-      ELSE
-         WRITE (IPRT, 1000)
-      END IF
+      call versp(.true.)
+      if (iabs(nprt).eq.1) then
+         write (iprt, 1010)
+      else
+         write (iprt, 1000)
+      end if
 !
-      IF (ABS(NPRT).EQ.1) THEN
-        ILOG = 0
-      ELSE
-        ILOG = 1
-      END IF
-      IF (NPRT.GE.1) THEN
+      if (abs(nprt).eq.1) then
+        ilog = 0
+      else
+        ilog = 1
+      end if
+      if (nprt.ge.1) then
 !
 !       PLOT VERTICAL PLOTS
 !
-        CALL VPLMT(YAXIS,[YMISS],NPTS,1,NPTS,0.0_WP,0.0_WP,YMN,YMX,
-     &    ERROR, NMSUB, .TRUE., 1)
-        IF (.NOT.ERROR)
-     &    CALL VPMN(YAXIS(2),[YMISS],NPTS-1,1,NPTS,1,0,ISYM,1,0,
-     &    YMN, YMX, 0.5_WP/(NPTS-1), 0.5_WP/(NPTS-1),
-     &   .TRUE., ILOG, -1, 0)
-      ELSE
+       call vplmt(yaxis,[ymiss],npts,1,npts,0.0_wp,0.0_wp,ymn,ymx,&
+     &    error, nmsub, .true., 1)
+       if (.not.error)&
+    &    call vpmn(yaxis(2),[ymiss],npts-1,1,npts,1,0,isym,1,0,&
+    &    ymn, ymx, 0.5_wp/(npts-1), 0.5_wp/(npts-1),&
+     &   .true., ilog, -1, 0)
+      else
 !
 !       PLOT PAGE PLOTS
 !
-        CALL PPLMT(YAXIS, [YMISS], XAXIS, XMISS, NPTS, 1, NPTS,
-     &    0.0_WP, 0.0_WP, YMN, YMX, 0.0_WP, 0.5_WP, XMN, XMX,
-     &    ERROR, NMSUB, .TRUE.)
-        IF (.NOT.ERROR) THEN
-          CALL PPMN (YAXIS,[YMISS],XAXIS,XMISS,NPTS,1,NPTS,0,
-     &      ISYM, 1, 0, -1, YMN, YMX, XMN, XMX, .TRUE., ILOG)
-          WRITE(IPRT, 1030)
-        END IF
-      END IF
-      RETURN
+       call pplmt(yaxis, [ymiss], xaxis, xmiss, npts, 1, npts,&
+    &    0.0_wp, 0.0_wp, ymn, ymx, 0.0_wp, 0.5_wp, xmn, xmx,&
+     &    error, nmsub, .true.)
+        if (.not.error) then
+         call ppmn (yaxis,[ymiss],xaxis,xmiss,npts,1,npts,0,&
+     &      isym, 1, 0, -1, ymn, ymx, xmn, xmx, .true., ilog)
+          write(iprt, 1030)
+        end if
+      end if
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (' SAMPLE PERIODOGRAM')
- 1010 FORMAT (' SAMPLE PERIODOGRAM (IN DECIBELS)')
+ 1000 format (' SAMPLE PERIODOGRAM')
+ 1010 format (' SAMPLE PERIODOGRAM (IN DECIBELS)')
 !1020 FORMAT (5H+FREQ/
 !    1   7H PERIOD, 9X, 3HINF, 7X, 3H10., 4X, 2H5., 8X, 6H3.3333, 4X,
 !    2   3H2.5, 4X, 2H2.)
- 1030 FORMAT (5H+FREQ/
-     &   7H PERIOD, 9X, 3HINF, 7X, 3H20., 7X, 3H10., 8X, 6H6.6667, 4X,
-     &   2H5., 8X, 2H4., 8X, 6H3.3333, 4X, 6H2.8571, 4X, 3H2.5, 7X,
-     &   6H2.2222, 4X, 2H2.)
+1030 format (5h+freq/&
+    &   7h period, 9x, 3hinf, 7x, 3h20., 7x, 3h10., 8x, 6h6.6667, 4x,&
+    &   2h5., 8x, 2h4., 8x, 6h3.3333, 4x, 6h2.8571, 4x, 3h2.5, 7x,&
+     &   6h2.2222, 4x, 2h2.)
 !
-      END
+      end

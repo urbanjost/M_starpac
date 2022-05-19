@@ -1,5 +1,5 @@
 !ERIODD
-      SUBROUTINE ERIODD(NMSUB, NMVAR, NVAL, MSGTYP, HEAD, ERROR)
+      subroutine eriodd(nmsub, nmvar, nval, msgtyp, head, error)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,24 +19,24 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   MSGTYP,NVAL
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   msgtyp,nval
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR(8)*1
+     character&
+     &   nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -63,41 +63,41 @@
 !     INTEGER NVAL
 !        THE VALUE OF THE VARIABLE BEING CHECKED.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (MSGTYP .EQ. 2) GO TO 10
+      if (msgtyp .eq. 2) go to 10
 !
 !     CHECK FOR ODD
 !
-      IF (MOD(NVAL, 2) .EQ. 1) RETURN
+      if (mod(nval, 2) .eq. 1) return
 !
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
-      WRITE(IPRT, 1010) (NMVAR(I), I = 1, 6), (NMVAR(I), I = 1, 6), NVAL
-      ERROR = .TRUE.
-      RETURN
+      call iprint(iprt)
+      call ehdr(nmsub, head)
+      write(iprt, 1010) (nmvar(i), i = 1, 6), (nmvar(i), i = 1, 6), nval
+      error = .true.
+      return
 !
-   10 CONTINUE
+   10 continue
 !
 !     CHECK FOR EVEN
 !
-      IF (MOD(NVAL, 2) .EQ. 0) RETURN
+      if (mod(nval, 2) .eq. 0) return
 !
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
-      WRITE(IPRT, 1020) (NMVAR(I), I = 1, 6), (NMVAR(I), I = 1, 6), NVAL
-      ERROR = .TRUE.
-      RETURN
+      call iprint(iprt)
+      call ehdr(nmsub, head)
+      write(iprt, 1020) (nmvar(i), i = 1, 6), (nmvar(i), i = 1, 6), nval
+      error = .true.
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT(/
-     &   27H THE VALUE OF THE VARIABLE , 6A1,
-     &   34H MUST BE ODD.  THE INPUT VALUE OF , 6A1/
-     &    4H IS , I5, '.')
- 1020 FORMAT(/
-     &   27H THE VALUE OF THE VARIABLE , 6A1,
-     &   35H MUST BE EVEN.  THE INPUT VALUE OF , 6A1/
-     &    4H IS , I5, '.')
+1010 format(/&
+    &   27h the value of the variable , 6a1,&
+    &   34h must be odd.  the input value of , 6a1/&
+     &    4h is , i5, '.')
+1020 format(/&
+    &   27h the value of the variable , 6a1,&
+    &   35h must be even.  the input value of , 6a1/&
+     &    4h is , i5, '.')
 !
-      END
+      end

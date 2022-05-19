@@ -1,6 +1,6 @@
 !RANDU
-      FUNCTION RANDU(JD)
-      REAL(KIND=WP) :: RANDU
+      function randu(jd)
+      real(kind=wp) :: randu
 !***BEGIN PROLOGUE  RANDU  (ORIGINALLY UNI)
 !***DATE WRITTEN   810915
 !***REVISION DATE  900315
@@ -75,18 +75,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   JD
+     integer&
+     &   jd
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ONE,ZERO
-      INTEGER
-     &   I,J,J0,J1,JSEED,K,K0,K1,M1,M2,MDIG
+     real(kind=wp) ::&
+     &   one,zero
+     integer&
+     &   i,j,j0,j1,jseed,k,k0,k1,m1,m2,mdig
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   M(17)
+     integer&
+     &   m(17)
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -97,59 +97,59 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,MIN,MOD,REAL
+      intrinsic abs,min,mod,real
 !
 !  SAVE STATEMENT
-      SAVE I,J,M,M1,M2
+      save i,j,m,m1,m2
 !
 !
-      DATA M(1),M(2),M(3),M(4),M(5),M(6),M(7),M(8),M(9),M(10),M(11),
-     &     M(12),M(13),M(14),M(15),M(16),M(17)/30788,23052,2053,19346,
-     &     10646,19427,23975,19049,10949,19693,29746,26748,2796,23890,
+     data m(1),m(2),m(3),m(4),m(5),m(6),m(7),m(8),m(9),m(10),m(11),&
+    &     m(12),m(13),m(14),m(15),m(16),m(17)/30788,23052,2053,19346,&
+    &     10646,19427,23975,19049,10949,19693,29746,26748,2796,23890,&
      &     29168,31924,16499/
-      DATA M1,M2,I,J/32767,256,5,17/
-      DATA ZERO,ONE /0.0_WP,1.0_WP/
+      data m1,m2,i,j/32767,256,5,17/
+      data zero,one /0.0_wp,1.0_wp/
 !
 !***FIRST EXECUTABLE STATEMENT  RANDU
-      IF (JD.NE.0) THEN
+      if (jd.ne.0) then
 !  FILL
-          MDIG = I1MACH(8) + 1
+          mdig = i1mach(8) + 1
 !
 !  MODIFICATION SO SAME NUMBERS WILL BE GENERATED ON ALL MACHINES
 !  WITH I1MACH(8) AT LEAST 31
 !
-          MDIG = MIN(MDIG,32)
+          mdig = min(mdig,32)
 !
 !  BE SURE THAT MDIG AT LEAST 16...
-          IF (MDIG.LT.16) CALL XERROR('RANDU--MDIG LESS THAN 16',22,1,2)
-          M1 = 2** (MDIG-2) + (2** (MDIG-2)-1)
-          M2 = 2** (MDIG/2)
-          JSEED = MIN(ABS(JD),M1)
-          IF (MOD(JSEED,2).EQ.0) JSEED = JSEED - 1
-          K0 = MOD(9069,M2)
-          K1 = 9069/M2
-          J0 = MOD(JSEED,M2)
-          J1 = JSEED/M2
-          DO 10 I = 1,17
-              JSEED = J0*K0
-              J1 = MOD(JSEED/M2+J0*K1+J1*K0,M2/2)
-              J0 = MOD(JSEED,M2)
-              M(I) = J0 + M2*J1
-   10     CONTINUE
-          I = 5
-          J = 17
-      END IF
+          if (mdig.lt.16) call xerror('RANDU--MDIG LESS THAN 16',22,1,2)
+          m1 = 2** (mdig-2) + (2** (mdig-2)-1)
+          m2 = 2** (mdig/2)
+          jseed = min(abs(jd),m1)
+          if (mod(jseed,2).eq.0) jseed = jseed - 1
+          k0 = mod(9069,m2)
+          k1 = 9069/m2
+          j0 = mod(jseed,m2)
+          j1 = jseed/m2
+          do 10 i = 1,17
+              jseed = j0*k0
+              j1 = mod(jseed/m2+j0*k1+j1*k0,m2/2)
+              j0 = mod(jseed,m2)
+              m(i) = j0 + m2*j1
+   10     continue
+          i = 5
+          j = 17
+      end if
 !  BEGIN MAIN LOOP HERE
-      K = M(I) - M(J)
-      IF (K.LT.0) K = K + M1
-      M(J) = K
-      I = I - 1
-      IF (I.EQ.0) I = 17
-      J = J - 1
-      IF (J.EQ.0) J = 17
-      RANDU = DBLE(K)/DBLE(M1)
+      k = m(i) - m(j)
+      if (k.lt.0) k = k + m1
+      m(j) = k
+      i = i - 1
+      if (i.eq.0) i = 17
+      j = j - 1
+      if (j.eq.0) j = 17
+      randu = dble(k)/dble(m1)
 !
 !  MODIFICATION SO RANDOM NUMBERS IN (0,1] RATHER THAN [0,1)
 !
-      IF (RANDU.EQ.ZERO) RANDU = ONE
-      END
+      if (randu.eq.zero) randu = one
+      end

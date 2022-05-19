@@ -1,5 +1,5 @@
 !XERPRT
-      SUBROUTINE XERPRT(MESSG,NMESSG)
+      subroutine xerprt(messg,nmessg)
 !
 !     ABSTRACT
 !        PRINT THE HOLLERITH MESSAGE IN MESSG, OF LENGTH MESSG,
@@ -14,19 +14,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER NMESSG
+      integer nmessg
 !
 !  ARRAY ARGUMENTS
-      CHARACTER MESSG(NMESSG)*4
+      character messg(nmessg)*4
 !
 !  LOCAL SCALARS
-      INTEGER I,IUNIT,KUNIT,NCHAR,NCHARL,NCHLST,NCHREM,NFIELD,NLINES,
-     &   NUNIT,NWORD,NWORD1,NWORD2
-      CHARACTER LA*1,LBLANK*1,LCOM*1
+     integer i,iunit,kunit,nchar,ncharl,nchlst,nchrem,nfield,nlines,&
+     &   nunit,nword,nword1,nword2
+      character la*1,lblank*1,lcom*1
 !
 !  LOCAL ARRAYS
-      INTEGER LUN(5)
-      CHARACTER F(10)*1,G(14)*1
+      integer lun(5)
+      character f(10)*1,g(14)*1
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER I1MACH
@@ -36,53 +36,53 @@
 !       EXTERNAL S88FMT,XGETUA
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
-      DATA F(1),F(2),F(3),F(4),F(5),F(6),F(7),F(8),F(9),F(10)
+     data f(1),f(2),f(3),f(4),f(5),f(6),f(7),f(8),f(9),f(10)&
      &   / '(' ,'1' ,'X' ,',' ,' ' ,' ' ,'A' ,' ' ,' ' ,')' /
-      DATA G(1),G(2),G(3),G(4),G(5),G(6),G(7),G(8),G(9),G(10)
+     data g(1),g(2),g(3),g(4),g(5),g(6),g(7),g(8),g(9),g(10)&
      &   / '(' ,'1' ,'X' ,' ' ,' ' ,' ' ,' ' ,' ' ,' ' ,' ' /
-      DATA G(11),G(12),G(13),G(14)
+     data g(11),g(12),g(13),g(14)&
      &   / ' '  ,' '  ,' '  ,')'  /
-      DATA LA/'A'/,LCOM/','/,LBLANK/' '/
+      data la/'A'/,lcom/','/,lblank/' '/
 !     PREPARE FORMAT FOR WHOLE LINES
-      NCHAR = I1MACH(6)
-      NFIELD = 72/NCHAR
-      CALL S88FMT(2,NFIELD,F(5))
-      CALL S88FMT(2,NCHAR,F(8))
+      nchar = i1mach(6)
+      nfield = 72/nchar
+      call s88fmt(2,nfield,f(5))
+      call s88fmt(2,nchar,f(8))
 !     PREPARE FORMAT FOR LAST, PARTIAL LINE, IF NEEDED
-      NCHARL = NFIELD*NCHAR
-      NLINES = NMESSG/NCHARL
-      NWORD  = NLINES*NFIELD
-      NCHREM = NMESSG - NLINES*NCHARL
-      IF (NCHREM.LE.0) GO TO 40
-         DO 10 I=4,13
-10          G(I) = LBLANK
-         NFIELD = NCHREM/NCHAR
-         IF (NFIELD.LE.0) GO TO 20
+      ncharl = nfield*nchar
+      nlines = nmessg/ncharl
+      nword  = nlines*nfield
+      nchrem = nmessg - nlines*ncharl
+      if (nchrem.le.0) go to 40
+         do 10 i=4,13
+10          g(i) = lblank
+         nfield = nchrem/nchar
+         if (nfield.le.0) go to 20
 !        PREPARE WHOLE WORD FIELDS
-            G(4) = LCOM
-            CALL S88FMT(2,NFIELD,G(5))
-            G(7) = LA
-            CALL S88FMT(2,NCHAR,G(8))
-20       CONTINUE
-         NCHLST = MOD(NCHREM,NCHAR)
-         IF (NCHLST.LE.0) GO TO 30
+            g(4) = lcom
+            call s88fmt(2,nfield,g(5))
+            g(7) = la
+            call s88fmt(2,nchar,g(8))
+20       continue
+         nchlst = mod(nchrem,nchar)
+         if (nchlst.le.0) go to 30
 !        PREPARE PARTIAL WORD FIELD
-            G(10) = LCOM
-            G(11) = LA
-            CALL S88FMT(2,NCHLST,G(12))
-30       CONTINUE
-40    CONTINUE
+            g(10) = lcom
+            g(11) = la
+            call s88fmt(2,nchlst,g(12))
+30       continue
+40    continue
 !     PRINT THE MESSAGE
-      NWORD1 = NWORD+1
-      NWORD2 = (NMESSG+NCHAR-1)/NCHAR
-      CALL XGETUA(LUN,NUNIT)
-      DO 50 KUNIT = 1,NUNIT
-         IUNIT = LUN(KUNIT)
-         IF (IUNIT.EQ.0) IUNIT = I1MACH(4)
-         IF (NWORD.GT.0) WRITE (IUNIT,F) (MESSG(I),I=1,NWORD)
-         IF (NCHREM.GT.0) WRITE (IUNIT,G) (MESSG(I),I=NWORD1,NWORD2)
-50    CONTINUE
-      RETURN
-      END
+      nword1 = nword+1
+      nword2 = (nmessg+nchar-1)/nchar
+      call xgetua(lun,nunit)
+      do 50 kunit = 1,nunit
+         iunit = lun(kunit)
+         if (iunit.eq.0) iunit = i1mach(4)
+         if (nword.gt.0) write (iunit,f) (messg(i),i=1,nword)
+         if (nchrem.gt.0) write (iunit,g) (messg(i),i=nword1,nword2)
+50    continue
+      return
+      end

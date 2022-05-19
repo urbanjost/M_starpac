@@ -1,5 +1,5 @@
 !UASV
-      SUBROUTINE UASV (ACOV, LAGMAX, N)
+      subroutine uasv (acov, lagmax, n)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,40 +17,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LAGMAX,N
+     integer&
+     &   lagmax,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV(*)
+     real(kind=wp) ::&
+     &   acov(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ALPHA,DELTA,FMAX,FMIN,VAR
-      INTEGER
-     &   IAR,IPRT,LACOV,LAG,LAIC,LDSMIN,LDSTAK,LPCV,LPHI,LSPC,
-     &   LWORK,NF,NPRT
+     real(kind=wp) ::&
+     &   alpha,delta,fmax,fmin,var
+     integer&
+    &   iar,iprt,lacov,lag,laic,ldsmin,ldstak,lpcv,lphi,lspc,&
+     &   lwork,nf,nprt
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   AIC(101),FREQ(101),FTEST(2,100),PHI(100),SPCA(101),SPCF(101),
-     &   WORK(101),XAXIS(207),YAXIS(207)
-      INTEGER
-     &   ISORT(101),ISYM(207)
-      LOGICAL
-     &   OPTION(4)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+    &   aic(101),freq(101),ftest(2,100),phi(100),spca(101),spcf(101),&
+     &   work(101),xaxis(207),yaxis(207)
+     integer&
+     &   isort(101),isym(207)
+     logical&
+     &   option(4)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,PARZEN,UASDV,UASER
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -140,61 +140,61 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'U',       'A',       'S',       'V',       ' ',       ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      OPTION(1) = .FALSE.
-      OPTION(2) = .FALSE.
-      OPTION(3) = .TRUE.
-      OPTION(4) = .FALSE.
+      option(1) = .false.
+      option(2) = .false.
+      option(3) = .true.
+      option(4) = .false.
 !
-      LAG = 0
-      IAR = 0
-      NF = 101
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = -1
-      LACOV = LAGMAX+1
-      LDSTAK = 0
-      LDSMIN = 0
+      lag = 0
+      iar = 0
+      nf = 101
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = -1
+      lacov = lagmax+1
+      ldstak = 0
+      ldsmin = 0
 !
 !     CALL ERROR CHECKING ROUTINE
 !
-      CALL UASER(NMSUB, N, ACOV, IAR, PHI, LAGMAX, LAG, LACOV,
-     &   NF, LDSTAK, LDSMIN, N, N, OPTION)
+     call uaser(nmsub, n, acov, iar, phi, lagmax, lag, lacov,&
+     &   nf, ldstak, ldsmin, n, n, option)
 !
-      IF (IERR.NE.0) THEN
-         IERR = 1
-         CALL IPRINT (IPRT)
-         WRITE (IPRT, 1000)
-         RETURN
-      END IF
+      if (ierr.ne.0) then
+         ierr = 1
+         call iprint (iprt)
+         write (iprt, 1000)
+         return
+      end if
 !
 !     SET VARIOUS PROGRAM PARAMETERS
 !
-      LPCV = 207
-      LAIC = 101
-      LSPC = 101
-      LPHI = 100
-      LWORK = 101
+      lpcv = 207
+      laic = 101
+      lspc = 101
+      lphi = 100
+      lwork = 101
 !
-      ALPHA = 0.95_WP
-      DELTA = 1.0_WP
+      alpha = 0.95_wp
+      delta = 1.0_wp
 !
 !     CALL THE MAIN DRIVER FOR AUTOREGRESSIVE SPECTRUM ROUTINES.
 !
-      CALL UASDV(ACOV, SPCA, SPCF, LSPC, IAR, PHI, NF, FMIN, FMAX, FREQ,
-     &   N, LAGMAX, FTEST, AIC, WORK, LACOV, LWORK, DELTA, ISORT,
-     &   ISYM, XAXIS, YAXIS, LPCV, ALPHA, LAG, LAIC, LPHI, NPRT, VAR,
-     &   PARZEN, NMSUB)
+     call uasdv(acov, spca, spcf, lspc, iar, phi, nf, fmin, fmax, freq,&
+    &   n, lagmax, ftest, aic, work, lacov, lwork, delta, isort,&
+    &   isym, xaxis, yaxis, lpcv, alpha, lag, laic, lphi, nprt, var,&
+     &   parzen, nmsub)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &  '       CALL UASV (ACOV, LAGMAX, N)')
-      END
+      end

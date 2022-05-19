@@ -1,5 +1,5 @@
 !XNRAND
-      SUBROUTINE XNRAND(LDSTAK,typ)
+      subroutine xnrand(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -17,32 +17,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   SIGMA,YMEAN
-      INTEGER
-     &   I,IPRT,ISEED,N
+     real(kind=wp) ::&
+     &   sigma,ymean
+     integer&
+     &   i,iprt,iseed,n
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   Y(1000)
+     real(kind=wp) ::&
+     &   y(1000)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL HIST,IPRINT,NRAND,NRANDC
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -71,91 +71,91 @@
 !
 !     DEFINE IPRT, THE CURRENT OUTPUT UNIT.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     CHECK FOR SUFFICIENT WORK AREA LENGTH.
 !
-      IF (LDSTAK.LT.1000) THEN
-        WRITE (IPRT, 1000)
-         RETURN
-      END IF
+      if (ldstak.lt.1000) then
+        write (iprt, 1000)
+         return
+      end if
 !
 !     HEADING.
 !
-      WRITE (IPRT,1150)
+      write (iprt,1150)
 !
 !     TEST 1.  CHECK ALL ERROR MESSAGES.
 !
-      WRITE (IPRT,1160)
+      write (iprt,1160)
 !
 !     ERROR 1, ZERO OR FEWER ELEMENTS OR NEGATIVE STANDARD DEVIATION.
 !
-      ISEED = 0
-      SIGMA = -1
-      N = 0
-      YMEAN = 0.0E0
-      CALL NRAND(Y, N, ISEED)
-      WRITE (IPRT,1170) IERR
-      CALL NRANDC(Y, N, ISEED, YMEAN, SIGMA)
-      WRITE (IPRT,1170) IERR
+      iseed = 0
+      sigma = -1
+      n = 0
+      ymean = 0.0e0
+      call nrand(y, n, iseed)
+      write (iprt,1170) ierr
+      call nrandc(y, n, iseed, ymean, sigma)
+      write (iprt,1170) ierr
 !
 !     COMPARE RESULTS
 !
-      ISEED = 334
-      N = 10
-      YMEAN = 0.0E0
-      SIGMA = 1.0E0
+      iseed = 334
+      n = 10
+      ymean = 0.0e0
+      sigma = 1.0e0
 !
-      WRITE (IPRT, 1120) N, ISEED
-      CALL NRAND (Y, N, ISEED)
-      WRITE (IPRT, 1100) (Y(I),I=1,N)
+      write (iprt, 1120) n, iseed
+      call nrand (y, n, iseed)
+      write (iprt, 1100) (y(i),i=1,n)
 !
-      ISEED = 333
-      WRITE (IPRT, 1130) N, YMEAN, SIGMA, ISEED
-      CALL NRANDC (Y, N, ISEED, YMEAN, SIGMA)
-      WRITE (IPRT, 1100) (Y(I),I=1,N)
+      iseed = 333
+      write (iprt, 1130) n, ymean, sigma, iseed
+      call nrandc (y, n, iseed, ymean, sigma)
+      write (iprt, 1100) (y(i),i=1,n)
 !
-      ISEED = 13531
-      N = 1000
-      YMEAN = 0.0E0
-      SIGMA = 1.0E0
+      iseed = 13531
+      n = 1000
+      ymean = 0.0e0
+      sigma = 1.0e0
 !
-      WRITE (IPRT, 1120) N, ISEED
-      CALL NRAND (Y, N, ISEED)
-      CALL HIST (Y, N, LDSTAK)
+      write (iprt, 1120) n, iseed
+      call nrand (y, n, iseed)
+      call hist (y, n, ldstak)
 !
-      WRITE (IPRT, 1130) N, YMEAN, SIGMA, ISEED
-      CALL NRANDC (Y, N, ISEED, YMEAN, SIGMA)
-      CALL HIST (Y, N, LDSTAK)
+      write (iprt, 1130) n, ymean, sigma, iseed
+      call nrandc (y, n, iseed, ymean, sigma)
+      call hist (y, n, ldstak)
 !
-      ISEED = 99999
-      N = 1000
-      YMEAN = 4.0E0
-      SIGMA = 4.0E0
+      iseed = 99999
+      n = 1000
+      ymean = 4.0e0
+      sigma = 4.0e0
 !
-      WRITE (IPRT, 1120) N, ISEED
-      CALL NRAND (Y, N, ISEED)
-      CALL HIST (Y, N, LDSTAK)
+      write (iprt, 1120) n, iseed
+      call nrand (y, n, iseed)
+      call hist (y, n, ldstak)
 !
-      WRITE (IPRT, 1130) N, YMEAN, SIGMA, ISEED
-      CALL NRANDC (Y, N, ISEED, YMEAN, SIGMA)
-      CALL HIST (Y, N, LDSTAK)
+      write (iprt, 1130) n, ymean, sigma, iseed
+      call nrandc (y, n, iseed, ymean, sigma)
+      call hist (y, n, ldstak)
 !
-      RETURN
+      return
 !
 !     FORMATS
 !
- 1000 FORMAT ('1THE DIMENSION OF DSTAK AND THE VALUE OF LDSTAK NEEDED'/
-     &  ' FOR NRANDX MUST EQUAL OR EXCEED 1000.  CHANGE DRIVER'/
+1000 format ('1THE DIMENSION OF DSTAK AND THE VALUE OF LDSTAK NEEDED'/&
+    &  ' FOR NRANDX MUST EQUAL OR EXCEED 1000.  CHANGE DRIVER'/&
      &  ' AND RECALL NRANDX.')
- 1100 FORMAT (5E15.8)
- 1120 FORMAT ('1GENERATE ', I4,
-     &  ' STANDARD NORMAL NUMBERS USING ISEED = ', I5)
- 1130 FORMAT ('1GENERATE ', I4,
-     &  ' NORMALLY DISTRIBUTED NUMBERS WITH YMEAN = ', F5.2,
-     &  ' AND SIGMA = ', F5.2, ' USING ISEED = ', I5)
- 1150 FORMAT ('1TEST RUNS FOR THE NRAND FAMILY OF ROUTINES.')
- 1160 FORMAT(' TEST 1.  GENERATE EACH OF THE POSSIBLE ',
-     &   15HERROR MESSAGES.)
- 1170 FORMAT(/22H THE VALUE OF IERR IS , I4//)
-      END
+ 1100 format (5e15.8)
+1120 format ('1GENERATE ', i4,&
+     &  ' STANDARD NORMAL NUMBERS USING ISEED = ', i5)
+1130 format ('1GENERATE ', i4,&
+    &  ' NORMALLY DISTRIBUTED NUMBERS WITH YMEAN = ', f5.2,&
+     &  ' AND SIGMA = ', f5.2, ' USING ISEED = ', i5)
+ 1150 format ('1TEST RUNS FOR THE NRAND FAMILY OF ROUTINES.')
+1160 format(' TEST 1.  GENERATE EACH OF THE POSSIBLE ',&
+     &   15herror messages.)
+ 1170 format(/22h the value of ierr is , i4//)
+      end

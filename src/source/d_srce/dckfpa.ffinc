@@ -1,7 +1,7 @@
 !DCKFPA
-      SUBROUTINE DCKFPA(J, D, PAR, NPAR, ETA, TAU, MDL, XM, N,
-     &   NROW, M, IXM, PV, PVTEMP, MSG, LMSG, FD, PARMX, STP, PVPSTP,
-     &   CURVE)
+     subroutine dckfpa(j, d, par, npar, eta, tau, mdl, xm, n,&
+    &   nrow, m, ixm, pv, pvtemp, msg, lmsg, fd, parmx, stp, pvpstp,&
+     &   curve)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,28 +18,28 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CURVE,D,ETA,FD,PARMX,PV,PVPSTP,STP,TAU
-      INTEGER
-     &   IXM,J,LMSG,M,N,NPAR,NROW
+     real(kind=wp) ::&
+     &   curve,d,eta,fd,parmx,pv,pvpstp,stp,tau
+     integer&
+     &   ixm,j,lmsg,m,n,npar,nrow
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),PVTEMP(N),XM(IXM,M)
-      INTEGER
-     &   MSG(LMSG)
+     real(kind=wp) ::&
+     &   par(npar),pvtemp(n),xm(ixm,m)
+     integer&
+     &   msg(lmsg)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL MDL
+       external mdl
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   TEMP
-      LOGICAL
-     &   LARGE
+     real(kind=wp) ::&
+     &   temp
+     logical&
+     &   large
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,SIGN
+      intrinsic abs,sign
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -106,73 +106,73 @@
 !
 !     CHECK WHETHER FINITE PRECISION COULD BE THE PROBLEM
 !
-      IF (ABS(STP*(FD-D)) .GE.
-     &   10.0_WP*ETA*(ABS(PV)+ABS(PVPSTP))) THEN
+     if (abs(stp*(fd-d)) .ge.&
+     &   10.0_wp*eta*(abs(pv)+abs(pvpstp))) then
 !
 !     DISCREPANCY BETWEEN NUMERICAL AND ANALYTICAL DERIVATIVES CANNOT
 !     BE ACCOUNTED FOR BY FINITE PRECISION ARITHMETIC
 !
-         MSG(1) = 2
-         MSG(J+1) = 2
-         RETURN
+         msg(1) = 2
+         msg(j+1) = 2
+         return
 !
-      END IF
+      end if
 !
 !     FINITE PRECISION ARITHMETIC COULD BE THE PROBLEM.
 !
 !     TRY A LARGER STEP SIZE
 !
-      STP = (ETA*(ABS(PV)+ABS(PVPSTP))*SIGN(1.0_WP,PAR(J))/
-     &   (TAU*ABS(D))+PAR(J)) - PAR(J)
+     stp = (eta*(abs(pv)+abs(pvpstp))*sign(1.0_wp,par(j))/&
+     &   (tau*abs(d))+par(j)) - par(j)
 !
-      LARGE = .FALSE.
+      large = .false.
 !
-      IF (ABS(STP).GT.PARMX) THEN
-         STP = PARMX*SIGN(1.0_WP,PAR(J))
-         LARGE = .TRUE.
-      END IF
+      if (abs(stp).gt.parmx) then
+         stp = parmx*sign(1.0_wp,par(j))
+         large = .true.
+      end if
 !
 !     CALCULATE NUMERICAL DERIVATIVE USNG NEW, LARGER, STEPSIZE
 !
-      TEMP = PAR(J)
-      PAR(J) = PAR(J) + STP
-      CALL MDL(PAR, NPAR, XM, N, M, IXM, PVTEMP)
-      PAR(J) = TEMP
+      temp = par(j)
+      par(j) = par(j) + stp
+      call mdl(par, npar, xm, n, m, ixm, pvtemp)
+      par(j) = temp
 !
-      PVPSTP = PVTEMP(NROW)
+      pvpstp = pvtemp(nrow)
 !
-      FD = (PVPSTP-PV)/STP
+      fd = (pvpstp-pv)/stp
 !
 !     CHECK FOR AGREEMENT
 !
-      IF ((ABS(FD-D)).LE.2.0_WP*TAU*ABS(D)) THEN
+      if ((abs(fd-d)).le.2.0_wp*tau*abs(d)) then
 !
 !     FORWARD DIFFERENCE QUOTIENT AND ANALYTIC DERIVATIVES AGREE FOR
 !     THIS STEP SIZE
 !
-         RETURN
-      END IF
+         return
+      end if
 !
 !     FORWARD DIFFERENCE QUOTIENT AND ANALYTIC DERIVATIVES STILL
 !     DISAGREE
 !
 !     CHECK IF CURVATURE IS THE PROBLEM
 !
-      IF (ABS(CURVE*STP) .LT. ABS(FD-D) .AND. (.NOT. LARGE)) THEN
+      if (abs(curve*stp) .lt. abs(fd-d) .and. (.not. large)) then
 !
 !        CURVATURE COULDNT BE THE CULPRIT
 !
-             MSG(1) = 2
-             MSG(J+1) = 2
-             RETURN
-      ELSE
+             msg(1) = 2
+             msg(j+1) = 2
+             return
+      else
 !
 !        CURVATURE MAY BE THE CULPRIT
 !
-             IF (MSG(1).EQ.0) MSG(1) = 1
-             IF (LARGE) MSG(J+1) = 6
-             IF (.NOT. LARGE) MSG(J+1) = 1
-             RETURN
-      END IF
+             if (msg(1).eq.0) msg(1) = 1
+             if (large) msg(j+1) = 6
+             if (.not. large) msg(j+1) = 1
+             return
+      end if
 !
-      END
+      end

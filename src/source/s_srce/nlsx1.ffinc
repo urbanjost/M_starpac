@@ -1,6 +1,6 @@
 !NLSX1
-      SUBROUTINE NLSX1(MOD, PAR, NPAR, PV, SDPV, RES, SDRES, VCV, N,
-     &   IVCV, NNZW, NPARE, RSD)
+     subroutine nlsx1(mod, par, npar, pv, sdpv, res, sdres, vcv, n,&
+     &   ivcv, nnzw, npare, rsd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,28 +16,28 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RSD
-      INTEGER
-     &   IVCV,MOD,N,NNZW,NPAR,NPARE
+     real(kind=wp) ::&
+     &   rsd
+     integer&
+     &   ivcv,mod,n,nnzw,npar,npare
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),PV(N),RES(N),SDPV(N),SDRES(N),VCV(IVCV,IVCV)
+     real(kind=wp) ::&
+     &   par(npar),pv(n),res(n),sdpv(n),sdres(n),vcv(ivcv,ivcv)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,J
+     integer&
+     &   i,j
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL SETRV
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -78,64 +78,64 @@
 !
 !
 !
-      GO TO (10, 20, 30, 40, 50, 60), MOD
+      go to (10, 20, 30, 40, 50, 60), mod
 !
-   10 PAR(1) = 0.725E0
-      PAR(2) = 4.0E0
+   10 par(1) = 0.725e0
+      par(2) = 4.0e0
 !
-      GO TO 70
-!
-!
-   20 PAR(1) = 1.0E0
-      PAR(2) = 2.0E0
-      PAR(3) = 3.0E0
-!
-      GO TO 70
+      go to 70
 !
 !
-   30 PAR(1) = 6.0E0
-      PAR(2) = 5.0E0
-      PAR(3) = 4.0E0
-      PAR(4) = 3.0E0
-      PAR(5) = 2.0E0
+   20 par(1) = 1.0e0
+      par(2) = 2.0e0
+      par(3) = 3.0e0
 !
-      GO TO 70
+      go to 70
 !
 !
-   40 CALL SETRV(PAR, NPAR, 0.0E0)
+   30 par(1) = 6.0e0
+      par(2) = 5.0e0
+      par(3) = 4.0e0
+      par(4) = 3.0e0
+      par(5) = 2.0e0
 !
-      GO TO 70
+      go to 70
 !
 !
-   50 CALL SETRV(PAR, NPAR, 0.5E0)
+   40 call setrv(par, npar, 0.0e0)
 !
-      GO TO 70
+      go to 70
 !
 !
-   60 PAR(1) = 100.0E0
-      PAR(2) = 15.0E0
+   50 call setrv(par, npar, 0.5e0)
 !
-   70 CONTINUE
+      go to 70
 !
-      DO 80 I=1,N
-         RES(I) = -1.0E0
-         PV(I) = -1.0E0
-         SDPV(I) = -1.0E0
-         SDRES(I) = -1.0E0
-   80 CONTINUE
 !
-      DO 100 I=1,IVCV
-         DO 90 J=1,IVCV
-            VCV(I,J) = -1.0E0
-   90    CONTINUE
-  100 CONTINUE
+   60 par(1) = 100.0e0
+      par(2) = 15.0e0
 !
-      NNZW = -1
-      NPARE = -1
-      RSD = -1.0E0
+   70 continue
 !
-      IERR = -1
+      do 80 i=1,n
+         res(i) = -1.0e0
+         pv(i) = -1.0e0
+         sdpv(i) = -1.0e0
+         sdres(i) = -1.0e0
+   80 continue
 !
-      RETURN
+      do 100 i=1,ivcv
+         do 90 j=1,ivcv
+            vcv(i,j) = -1.0e0
+   90    continue
+  100 continue
 !
-      END
+      nnzw = -1
+      npare = -1
+      rsd = -1.0e0
+!
+      ierr = -1
+!
+      return
+!
+      end

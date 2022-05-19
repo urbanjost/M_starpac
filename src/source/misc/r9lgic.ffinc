@@ -1,5 +1,5 @@
 !R9LGIC
-      REAL FUNCTION R9LGIC (A, X, ALX)
+      real function r9lgic (a, x, alx)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! COMPUTE THE LOG COMPLEMENTARY INCOMPLETE GAMMA FUNCTION FOR LARGE X
@@ -9,11 +9,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL A,ALX,X
+      real a,alx,x
 !
 !  LOCAL SCALARS
-      REAL EPS,FK,P,R,S,T,XMA,XPA
-      INTEGER K
+      real eps,fk,p,r,s,t,xma,xpa
+      integer k
 !
 !  EXTERNAL FUNCTIONS
 !      REAL R1MACH
@@ -23,30 +23,30 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG
+      intrinsic abs,log
 !
-      DATA EPS / 0.0 /
+      data eps / 0.0 /
 !
-      IF (EPS.EQ.0.0) EPS = 0.5*R1MACH(3)
+      if (eps.eq.0.0) eps = 0.5*r1mach(3)
 !
-      XPA = X + 1.0 - A
-      XMA = X - 1.0 - A
+      xpa = x + 1.0 - a
+      xma = x - 1.0 - a
 !
-      R = 0.0
-      P = 1.0
-      S = P
-      DO 10 K=1,200
-        FK = K
-        T = FK*(A-FK)*(1.0+R)
-        R = -T/((XMA+2.0*FK)*(XPA+2.0*FK)+T)
-        P = R*P
-        S = S + P
-        IF (ABS(P).LT.EPS*S) GO TO 20
- 10   CONTINUE
-      CALL XERROR (  'R9LGIC  NO CONVERGENCE IN 200 TERMS OF CONTINUED F
+      r = 0.0
+      p = 1.0
+      s = p
+      do 10 k=1,200
+        fk = k
+        t = fk*(a-fk)*(1.0+r)
+        r = -t/((xma+2.0*fk)*(xpa+2.0*fk)+t)
+        p = r*p
+        s = s + p
+        if (abs(p).lt.eps*s) go to 20
+ 10   continue
+     call xerror (  'R9LGIC  NO CONVERGENCE IN 200 TERMS OF CONTINUED F&
      &RACTION', 57, 1, 2)
 !
- 20   R9LGIC = A*ALX - X + LOG(S/XPA)
+ 20   r9lgic = a*alx - x + log(s/xpa)
 !
-      RETURN
-      END
+      return
+      end

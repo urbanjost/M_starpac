@@ -1,5 +1,5 @@
 !OANOVA
-      SUBROUTINE OANOVA(YSUM, RED, NPAR, RVAR, NNZW, TEMP, IPRT)
+      subroutine oanova(ysum, red, npar, rvar, nnzw, temp, iprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,24 +20,24 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RVAR,YSUM
-      INTEGER
-     &   IPRT,NNZW,NPAR
+     real(kind=wp) ::&
+     &   rvar,ysum
+     integer&
+     &   iprt,nnzw,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RED(NPAR),TEMP(NPAR)
+     real(kind=wp) ::&
+     &   red(npar),temp(npar)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ASUM,CR,F1,F2,FPLM,PF1,PF2,RESMS,RESSS,SSU,V1F2,VR
-      INTEGER
-     &   I,K,NSUA
+     real(kind=wp) ::&
+     &   asum,cr,f1,f2,fplm,pf1,pf2,resms,resss,ssu,v1f2,vr
+     integer&
+     &   i,k,nsua
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   CDFF,D1MACH
+     real(kind=wp) ::&
+     &   cdff,d1mach
 !       EXTERNAL CDFF,D1MACH
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
@@ -88,66 +88,66 @@
 !        THE SUM OF THE WEIGHTED DEPENDENT VARIABLES SQUARED.
 !
 !
-      FPLM = D1MACH(2)
+      fplm = d1mach(2)
 !
-      RESMS = YSUM/NNZW
-      NSUA = NNZW
-      WRITE (IPRT,1000)
-      ASUM = 0.0_WP
-      VR = NNZW-NPAR
-      RESSS = VR*RVAR
-      TEMP(NPAR) = RESSS
-      IF (NPAR.EQ.1) GO TO 20
-      DO 10 I=2,NPAR
-         K = NPAR + 2 - I
-         TEMP(K-1) = TEMP(K) + RED(K)
-   10 CONTINUE
-   20 V1F2 = NPAR+1
-      SSU = NNZW
-      DO 50 I=1,NPAR
-         NSUA = NSUA - 1
-         ASUM = ASUM + RED(I)
-         SSU = SSU - 1.0_WP
-         CR = ASUM/I
-         RESMS = 0.0_WP
-         IF (SSU.GT.0.0_WP) RESMS = TEMP(I)/SSU
-         V1F2 = V1F2 - 1.0_WP
+      resms = ysum/nnzw
+      nsua = nnzw
+      write (iprt,1000)
+      asum = 0.0_wp
+      vr = nnzw-npar
+      resss = vr*rvar
+      temp(npar) = resss
+      if (npar.eq.1) go to 20
+      do 10 i=2,npar
+         k = npar + 2 - i
+         temp(k-1) = temp(k) + red(k)
+   10 continue
+   20 v1f2 = npar+1
+      ssu = nnzw
+      do 50 i=1,npar
+         nsua = nsua - 1
+         asum = asum + red(i)
+         ssu = ssu - 1.0_wp
+         cr = asum/i
+         resms = 0.0_wp
+         if (ssu.gt.0.0_wp) resms = temp(i)/ssu
+         v1f2 = v1f2 - 1.0_wp
 !
 !     NEVER POOL
 !
-         IF (RVAR.GT.0.0_WP) GO TO 30
-         F1 = FPLM
-         F2 = FPLM
-         PF1 = 0.0_WP
-         PF2 = 0.0_WP
-         GO TO 40
-   30    F1 = RED(I)/RVAR
-         PF1 = 1.0_WP - CDFF(F1,1.0_WP,VR)
+         if (rvar.gt.0.0_wp) go to 30
+         f1 = fplm
+         f2 = fplm
+         pf1 = 0.0_wp
+         pf2 = 0.0_wp
+         go to 40
+   30    f1 = red(i)/rvar
+         pf1 = 1.0_wp - cdff(f1,1.0_wp,vr)
 !
 !     TEST HIGHER SUB-HYPOTHESES
 !
-         F2 = (TEMP(I)+RED(I)-RESSS)/V1F2/RVAR
-         PF2 = 1.0_WP - CDFF(F2,V1F2,VR)
-   40    CONTINUE
-         WRITE (IPRT,1010) I, RED(I), CR, I, RESMS, NSUA, F1, PF1, F2,
-     &      PF2
-   50 CONTINUE
-      WRITE (IPRT,1020) RESSS, NSUA
-      WRITE (IPRT,1030) YSUM, NNZW
-      RETURN
+         f2 = (temp(i)+red(i)-resss)/v1f2/rvar
+         pf2 = 1.0_wp - cdff(f2,v1f2,vr)
+   40    continue
+        write (iprt,1010) i, red(i), cr, i, resms, nsua, f1, pf1, f2,&
+     &      pf2
+   50 continue
+      write (iprt,1020) resss, nsua
+      write (iprt,1030) ysum, nnzw
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (////50X, 20HANALYSIS OF VARIANCE/24X, 16H-DEPENDENT ON OR,
-     &   33HDER VARIABLES ARE ENTERED, UNLESS, 21H VECTORS ARE ORTHOGON,
-     &   3HAL-//
-     &   1X, 5H PAR , 4X, 14HSUM OF SQUARES, 63X,
-     &   19H------ PAR=0 ------, 4X, 19H------ PARS=0 -----/
-     &   1X, 5HINDEX, 4X, 14HRED DUE TO PAR, 7X, 10HCUM MS RED,
-     &   6X, 9HDF(MSRED), 6X, 10HCUM RES MS, 6X, 7HDF(RMS), 5X,
-     &   'F', 8X, 7HPROB(F), 7X, 'F', 8X, 7HPROB(F)/)
- 1010 FORMAT (1X, I3, 6X, G16.9, 3X, G16.9, 1X, I6, 8X, G16.9, 1X, I5,
-     &   4X, G12.6, F7.3, 4X, G12.6, F7.3)
- 1020 FORMAT (/1X, 10HRESIDUAL  , 1X, G14.7, 20X, I6)
- 1030 FORMAT (1X, 10HTOTAL     , 1X, G14.7, 20X, I6)
-      END
+1000 format (////50x, 20hanalysis of variance/24x, 16h-dependent on or,&
+    &   33hder variables are entered, unless, 21h vectors are orthogon,&
+    &   3hal-//&
+    &   1x, 5h par , 4x, 14hsum of squares, 63x,&
+    &   19h------ par=0 ------, 4x, 19h------ pars=0 -----/&
+    &   1x, 5hindex, 4x, 14hred due to par, 7x, 10hcum ms red,&
+    &   6x, 9hdf(msred), 6x, 10hcum res ms, 6x, 7hdf(rms), 5x,&
+     &   'F', 8x, 7hprob(f), 7x, 'F', 8x, 7hprob(f)/)
+1010 format (1x, i3, 6x, g16.9, 3x, g16.9, 1x, i6, 8x, g16.9, 1x, i5,&
+     &   4x, g12.6, f7.3, 4x, g12.6, f7.3)
+ 1020 format (/1x, 10hresidual  , 1x, g14.7, 20x, i6)
+ 1030 format (1x, 10htotal     , 1x, g14.7, 20x, i6)
+      end

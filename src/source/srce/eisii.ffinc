@@ -1,6 +1,6 @@
 !EISII
-      SUBROUTINE EISII(NMSUB, NMVAR, IVAL, IVALMN, IVALMX, MSGTYP,
-     &   HEAD, ERROR, NMMIN, NMMAX)
+     subroutine eisii(nmsub, nmvar, ival, ivalmn, ivalmx, msgtyp,&
+     &   head, error, nmmin, nmmax)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,18 +18,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IVAL,IVALMN,IVALMX,MSGTYP
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   ival,ivalmn,ivalmx,msgtyp
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMMAX(8)*1,NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     character&
+     &   nmmax(8)*1,nmmin(8)*1,nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -68,47 +68,47 @@
 !     CHARACTER*1 NMVAR(8)
 !        THE CHARACTERS OF THE ARGUMENTS NAME.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (((IVALMN.LE.IVAL) .AND. (IVAL.LE.IVALMX)) .OR.
-     &   (IVALMX.LT.IVALMN)) RETURN
+     if (((ivalmn.le.ival) .and. (ival.le.ivalmx)) .or.&
+     &   (ivalmx.lt.ivalmn)) return
 !
-      ERROR = .TRUE.
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
+      error = .true.
+      call iprint(iprt)
+      call ehdr(nmsub, head)
 !
-      IF (MSGTYP.LE.2) WRITE (IPRT, 1000) (NMVAR(I),I=1,6), IVAL
+      if (msgtyp.le.2) write (iprt, 1000) (nmvar(i),i=1,6), ival
 !
 !     PRINT MESSAGE FOR VALUE OUTSIDE OF RANGE DETERMINED FROM
 !     OTHER INPUT ARGUMENTS.
 !
-      IF (MSGTYP .EQ. 1)
-     &   WRITE (IPRT, 1010) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8),
-     &      (NMMAX(I),I=1,8)
+     if (msgtyp .eq. 1)&
+    &   write (iprt, 1010) (nmvar(i),i=1,6), (nmmin(i),i=1,8),&
+     &      (nmmax(i),i=1,8)
 !
 !     PRINT MESSAGE FOR VALUE OUTSIDE OF RANGE IMPOSED BY STARPAC
 !
-      IF (MSGTYP .EQ. 2)
-     &   WRITE (IPRT, 1020) (NMVAR(I),I=1,6), IVALMN, IVALMX
+     if (msgtyp .eq. 2)&
+     &   write (iprt, 1020) (nmvar(i),i=1,6), ivalmn, ivalmx
 !
 !     PRINT MESSAGE FOR AOV ROUTINES
 !
-      IF (MSGTYP .EQ. 3)
-     &   WRITE (IPRT, 1030)
-      RETURN
+     if (msgtyp .eq. 3)&
+     &   write (iprt, 1030)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/20H THE INPUT VALUE OF , 6A1, 4H IS , I6, '.')
- 1010 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   16H MUST BE BETWEEN, 1X, 8A1,
-     &   5H AND , 8A1, 12H, INCLUSIVE.)
- 1020 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   16H MUST BE BETWEEN, 1X, I6,
-     &   5H AND , I6, 12H, INCLUSIVE.)
- 1030 FORMAT(/' THE NUMBER OF DISTINCT GROUPS (NG) MUST BE BETWEEN'/
+ 1000 format (/20h the input value of , 6a1, 4h is , i6, '.')
+1010 format(&
+    &   27h the value of the argument , 6a1,&
+    &   16h must be between, 1x, 8a1,&
+     &   5h and , 8a1, 12h, inclusive.)
+1020 format(&
+    &   27h the value of the argument , 6a1,&
+    &   16h must be between, 1x, i6,&
+     &   5h and , i6, 12h, inclusive.)
+1030 format(/' THE NUMBER OF DISTINCT GROUPS (NG) MUST BE BETWEEN'/&
      &  ' TWO AND ONE LESS THAN THE NUMBER OF POSITIVE TAG VALUES.')
 !
-      END
+      end

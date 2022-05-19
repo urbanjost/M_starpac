@@ -1,6 +1,6 @@
 !ERSGE
-      SUBROUTINE ERSGE(NMSUB, NMVAR, VAL, VALMN, MSGTYP, HEAD, ERROR,
-     &   NMMIN)
+     subroutine ersge(nmsub, nmvar, val, valmn, msgtyp, head, error,&
+     &   nmmin)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,20 +17,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   VAL,VALMN
-      INTEGER
-     &   MSGTYP
-      LOGICAL
-     &   ERROR,HEAD
+     real(kind=wp) ::&
+     &   val,valmn
+     integer&
+     &   msgtyp
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     character&
+     &   nmmin(8)*1,nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -66,35 +66,35 @@
 !     REAL(KIND=WP) :: VALMN
 !        THE MINIMUM VALUE THE ARGUMENT CAN VALIDLY HAVE.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (VAL .GE. VALMN) RETURN
+      if (val .ge. valmn) return
 !
-      ERROR = .TRUE.
-      CALL IPRINT (IPRT)
-      CALL EHDR(NMSUB, HEAD)
+      error = .true.
+      call iprint (iprt)
+      call ehdr(nmsub, head)
 !
-      WRITE (IPRT, 1000) (NMVAR(I),I=1,6), VAL
+      write (iprt, 1000) (nmvar(i),i=1,6), val
 !
-      GO TO (10, 20), MSGTYP
+      go to (10, 20), msgtyp
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL BASED ON LIMITS IMPOSED
 !     BY STARPAC.
 !
-   10 WRITE (IPRT, 1010) (NMVAR(I),I=1,6), VALMN
-      RETURN
+   10 write (iprt, 1010) (nmvar(i),i=1,6), valmn
+      return
 !
-   20 WRITE (IPRT, 1020) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8)
-      RETURN
+   20 write (iprt, 1020) (nmvar(i),i=1,6), (nmmin(i),i=1,8)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/20H THE INPUT VALUE OF , 6A1, 4H IS , G15.8, '.')
- 1010 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   34H MUST BE GREATER THAN OR EQUAL TO , G21.14, '.')
- 1020 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   34H MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
+ 1000 format (/20h the input value of , 6a1, 4h is , g15.8, '.')
+1010 format(&
+    &   27h the value of the argument , 6a1,&
+     &   34h must be greater than or equal to , g21.14, '.')
+1020 format(&
+    &   27h the value of the argument , 6a1,&
+     &   34h must be greater than or equal to , 8a1, '.')
 !
-      END
+      end

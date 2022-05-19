@@ -1,5 +1,5 @@
 !RANKO
-      SUBROUTINE RANKO(N, Y, H, R, T)
+      subroutine ranko(n, y, h, r, t)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   T
-      INTEGER
-     &   N
+     real(kind=wp) ::&
+     &   t
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   R(N),Y(N)
-      INTEGER
-     &   H(N)
+     real(kind=wp) ::&
+     &   r(n),y(n)
+     integer&
+     &   h(n)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IJ,J,K,K2
+     integer&
+     &   i,ij,j,k,k2
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL SRTIR,SRTRI
@@ -62,40 +62,40 @@
 !
 !     MOVE Y TO R AND PUT I IN H
 !
-      DO 10 I=1,N
-         H(I) = I
-         R(I) = Y(I)
-   10 CONTINUE
+      do 10 i=1,n
+         h(i) = i
+         r(i) = y(i)
+   10 continue
 !
 !     SORT Y IN R, CARRY ALONG I IN H TO OBTAIN HIERARCHY IN H.
 !
-      CALL SRTIR(H, N, R)
+      call srtir(h, n, r)
 !
 !     REPLACE R(I) BY I*.
 !     LET K BE SUCH THAT R(I)=R(I-J+1),J=1,K. THEN I* = I-(K-1)/2.
 !
-      K = 1
-      T = 0
-      DO 40 I=2,N
-         IF (R(I).EQ.R(I-1)) THEN
-            K = K + 1
-         ELSE
-            DO 30 J=1,K
-               IJ = I - J
-               R(IJ) = (I-1) - (K-1)/2.0E0
-   30       CONTINUE
-            T = T + (K-1)*K*(K+1)
-            K = 1
-         END IF
-   40 CONTINUE
-      T = T + (K-1)*K*(K+1)
-      DO 50 I=1,K
-         K2 = N + 1 - I
-         R(K2) = N - (K-1)/2.0E0
-   50 CONTINUE
+      k = 1
+      t = 0
+      do 40 i=2,n
+         if (r(i).eq.r(i-1)) then
+            k = k + 1
+         else
+            do 30 j=1,k
+               ij = i - j
+               r(ij) = (i-1) - (k-1)/2.0e0
+   30       continue
+            t = t + (k-1)*k*(k+1)
+            k = 1
+         end if
+   40 continue
+      t = t + (k-1)*k*(k+1)
+      do 50 i=1,k
+         k2 = n + 1 - i
+         r(k2) = n - (k-1)/2.0e0
+   50 continue
 !
 !     SORT H CARRY ALONG R TO OBTAIN RANKS IN R
 !
-      CALL SRTRI(R, N, H)
-      RETURN
-      END
+      call srtri(r, n, h)
+      return
+      end

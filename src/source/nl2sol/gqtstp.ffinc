@@ -10,24 +10,24 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
+     integer&
      &   ka,p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   d(p),dig(p),dihdi(1),l(1),step(p),v(21),w(1)
 !
 !  LOCAL SCALARS
-      real(kind=wp) ::
-     &   aki,akk,alphak,delta,dgxfac,dst,epsfac,epso6,four,half,kappa,
-     &   lk,negone,oldphi,one,p001,phi,phimax,phimin,psifac,rad,root,
+     real(kind=wp) ::&
+    &   aki,akk,alphak,delta,dgxfac,dst,epsfac,epso6,four,half,kappa,&
+    &   lk,negone,oldphi,one,p001,phi,phimax,phimin,psifac,rad,root,&
      &   si,six,sk,sw,t,t1,three,two,twopsi,uk,wi,zero
-      integer
-     &   dggdmx,dgnorm,diag,diag0,dst0,dstnrm,dstsav,emax,emin,
-     &   epslon,gtstep,i,im1,inc,irc,j,k,k1,kalim,lk0,nreduc,
-     &   phipin,phmnfc,phmxfc,preduc,q,q0,rad0,radius,stppar,uk0,x,
+     integer&
+    &   dggdmx,dgnorm,diag,diag0,dst0,dstnrm,dstsav,emax,emin,&
+    &   epslon,gtstep,i,im1,inc,irc,j,k,k1,kalim,lk0,nreduc,&
+    &   phipin,phmnfc,phmxfc,preduc,q,q0,rad0,radius,stppar,uk0,x,&
      &   x0
-      logical
+     logical&
      &   restrt
 !
 !  EXTERNAL FUNCTIONS
@@ -206,13 +206,13 @@
 !
 !     INTEGER DGNORM, DSTNRM, DST0, EPSLON, GTSTEP, STPPAR, NREDUC,
 !    1        PHMNFC, PHMXFC, PREDUC, RADIUS, RAD0
-      data dgnorm/1/, dstnrm/2/, dst0/3/, epslon/19/,
-     &     gtstep/4/, nreduc/6/, phmnfc/20/,
-     &     phmxfc/21/, preduc/7/, radius/8/,
+     data dgnorm/1/, dstnrm/2/, dst0/3/, epslon/19/,&
+    &     gtstep/4/, nreduc/6/, phmnfc/20/,&
+    &     phmxfc/21/, preduc/7/, radius/8/,&
      &     rad0/9/, stppar/5/
 !
-      data dgxfac/0.0_wp/, epsfac/50.0_wp/, four/4.0_wp/, half/0.5_wp/,
-     &     kappa/2.0_wp/, negone/-1.0_wp/, one/1.0_wp/, p001/1.0e-3_wp/,
+     data dgxfac/0.0_wp/, epsfac/50.0_wp/, four/4.0_wp/, half/0.5_wp/,&
+    &     kappa/2.0_wp/, negone/-1.0_wp/, one/1.0_wp/, p001/1.0e-3_wp/,&
      &     six/6.0_wp/, three/3.0_wp/, two/2.0_wp/, zero/0.0_wp/
 !
 !  ***  BODY  ***
@@ -249,7 +249,7 @@
       phimin = v(phmnfc) * rad
 !     ***  EPSO6 AND PSIFAC ARE USED IN CHECKING FOR THE SPECIAL CASE
 !     ***  OF (NEARLY) SINGULAR H + ALPHA*D**2 (SEE REF. 2).
-      psifac = two * v(epslon) / (three * (four * (v(phmnfc) + one) *
+     psifac = two * v(epslon) / (three * (four * (v(phmnfc) + one) *&
      &                       (kappa + one)  +  kappa  +  two) * rad**2)
 !     ***  OLDPHI IS USED TO DETECT LIMITS OF NUMERICAL ACCURACY.  IF
 !     ***  WE RECOMPUTE STEP AND IT DOES NOT CHANGE, THEN WE ACCEPT IT.
@@ -426,7 +426,7 @@
 !  ***  SAFEGUARD ALPHAK AND ADD ALPHAK*I TO (D**-1)*H*(D**-1)  ***
 !
  210  ka = ka + 1
-      if (-v(dst0) .ge. alphak .or. alphak .lt. lk .or. alphak .ge. uk)
+     if (-v(dst0) .ge. alphak .or. alphak .lt. lk .or. alphak .ge. uk)&
      &                      alphak = uk * max(p001, sqrt(lk/uk))
       k = 0
       do 220 i = 1, p

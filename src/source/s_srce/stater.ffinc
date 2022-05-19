@@ -1,5 +1,5 @@
 !STATER
-      SUBROUTINE STATER(NMSUB, WT, N, LDSTAK, WTS, NNZW, STACK, IERR)
+      subroutine stater(nmsub, wt, n, ldstak, wts, nnzw, stack, ierr)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,26 +19,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IERR,LDSTAK,N,NNZW
-      LOGICAL
-     &   STACK,WTS
+     integer&
+     &   ierr,ldstak,n,nnzw
+     logical&
+     &   stack,wts
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   WT(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   wt(*)
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   LDSMIN,NZW
-      LOGICAL
-     &   HEAD,IER1,IER2,IER3
+     integer&
+     &   ldsmin,nzw
+     logical&
+     &   head,ier1,ier2,ier3
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   LLDS(8)*1,LN(8)*1,LTHREE(8)*1,LWT(8)*1
+     character&
+     &   llds(8)*1,ln(8)*1,lthree(8)*1,lwt(8)*1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL EISGE,ERVWT,LDSCMP
@@ -90,49 +90,49 @@
 !
 !     INITIALIZE NAME VECTORS
 !
-      DATA LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
-     &  LLDS(7), LLDS(8) / 'L', 'D', 'S', 'T', 'A', 'K', ' ', ' '/
-      DATA     LN(1),    LN(2),    LN(3),    LN(4),    LN(5),    LN(6),
-     &  LN(7), LN(8)  / 'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
-      DATA LTHREE(1),LTHREE(2),LTHREE(3),LTHREE(4),LTHREE(5),LTHREE(6),
-     &  LTHREE(7), LTHREE(8) / 'T', 'H', 'R', 'E', 'E', ' ', ' ', ' '/
-      DATA    LWT(1),   LWT(2),   LWT(3),   LWT(4),   LWT(5),   LWT(6),
-     &  LWT(7), LWT(8) / 'W', 'T', ' ', ' ', ' ', ' ', ' ', ' '/
+     data llds(1), llds(2), llds(3), llds(4), llds(5), llds(6),&
+     &  llds(7), llds(8) / 'L', 'D', 'S', 'T', 'A', 'K', ' ', ' '/
+     data     ln(1),    ln(2),    ln(3),    ln(4),    ln(5),    ln(6),&
+     &  ln(7), ln(8)  / 'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
+     data lthree(1),lthree(2),lthree(3),lthree(4),lthree(5),lthree(6),&
+     &  lthree(7), lthree(8) / 'T', 'H', 'R', 'E', 'E', ' ', ' ', ' '/
+     data    lwt(1),   lwt(2),   lwt(3),   lwt(4),   lwt(5),   lwt(6),&
+     &  lwt(7), lwt(8) / 'W', 'T', ' ', ' ', ' ', ' ', ' ', ' '/
 !
 !     INITIALIZE ERROR FLAGS
 !
-      IER1 = .FALSE.
-      IER2 = .FALSE.
-      IER3 = .FALSE.
+      ier1 = .false.
+      ier2 = .false.
+      ier3 = .false.
 !
-      IERR = 0
+      ierr = 0
 !
-      HEAD = .TRUE.
+      head = .true.
 !
 !     CHECK TO SEE THAT THERE ARE AT LEAST THREE DATA POINTS.
 !
-      CALL EISGE(NMSUB, LN, N, 3, 2, HEAD, IER1, LTHREE)
+      call eisge(nmsub, ln, n, 3, 2, head, ier1, lthree)
 !
 !     CHECK TO SEE THAT AN AMOUNT OF WORK AREA EQUAL
 !     IN LENGTH TO THE REQUIREMENTS OF THE PERMUTATION
 !     VECTOR WILL BE AVAILABLE.
 !
-      IF (STACK) THEN
-         CALL LDSCMP(1, 0, N, 0, 0, 0, 'S', 0, LDSMIN)
-         CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, IER2, LLDS)
-      END IF
+      if (stack) then
+         call ldscmp(1, 0, n, 0, 0, 0, 'S', 0, ldsmin)
+         call eisge(nmsub, llds, ldstak, ldsmin, 9, head, ier2, llds)
+      end if
 !
 !     IF THERE ARE WEIGHTS
 !     CHECK TO SEE THAT AT LEAST THREE DATA ITEMS HAVE NONZERO WEIGHTS.
 !
-      NNZW = N
-      IF (WTS) THEN
-         CALL ERVWT(NMSUB, LWT, WT, N, 3, HEAD, NNZW, NZW, 1, IER3,
-     &              LTHREE)
-      END IF
+      nnzw = n
+      if (wts) then
+        call ervwt(nmsub, lwt, wt, n, 3, head, nnzw, nzw, 1, ier3,&
+     &              lthree)
+      end if
 !
 !     SEE IF ANY ERRORS WERE FOUND.
 !
-      IF (IER1 .OR. IER2 .OR. IER3) IERR = 1
-      RETURN
-      END
+      if (ier1 .or. ier2 .or. ier3) ierr = 1
+      return
+      end

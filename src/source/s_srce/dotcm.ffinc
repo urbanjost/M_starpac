@@ -1,6 +1,6 @@
 !DOTCM
-      SUBROUTINE DOTCM (Y, YMEAN, YMISS, NY, X, XMEAN, XMISS,
-     &   NX, DOTXY, NDOTXY)
+     subroutine dotcm (y, ymean, ymiss, ny, x, xmean, xmiss,&
+     &   nx, dotxy, ndotxy)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,25 +17,25 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) :: DOTXY,XMEAN,XMISS,YMEAN,YMISS
-      INTEGER
-     &   NDOTXY,NX,NY
+      real(kind=wp) :: dotxy,xmean,xmiss,ymean,ymiss
+     integer&
+     &   ndotxy,nx,ny
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(NX),Y(NY)
+     real(kind=wp) ::&
+     &   x(nx),y(ny)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,M
+     integer&
+     &   i,m
 !
 !  EXTERNAL FUNCTIONS
-      LOGICAL
-     &   MVCHK
+     logical&
+     &   mvchk
 !       EXTERNAL MVCHK
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -67,13 +67,13 @@
 !        NOT AN OBSERVATION IN THE SERIES IS MISSING.  IF Y(I) = YMISS,
 !        THE VALUE IS ASSUMED MISSING, OTHERWISE IT IS NOT.
 !
-      NDOTXY = 0
-      DOTXY = 0.0E0
-      M = MIN(NY, NX)
-      DO 10 I = 1, M
-         IF (MVCHK(Y(I), YMISS) .OR. MVCHK(X(I), XMISS)) GO TO 10
-         DOTXY = DOTXY + (Y(I) - YMEAN) * (X(I) - XMEAN)
-         NDOTXY = NDOTXY + 1
-   10 CONTINUE
-      RETURN
-      END
+      ndotxy = 0
+      dotxy = 0.0e0
+      m = min(ny, nx)
+      do 10 i = 1, m
+         if (mvchk(y(i), ymiss) .or. mvchk(x(i), xmiss)) go to 10
+         dotxy = dotxy + (y(i) - ymean) * (x(i) - xmean)
+         ndotxy = ndotxy + 1
+   10 continue
+      return
+      end

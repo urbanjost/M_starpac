@@ -1,5 +1,5 @@
 !FLTMD
-      SUBROUTINE FLTMD (X, Y, N, KMD, SYM)
+      subroutine fltmd (x, y, n, kmd, sym)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,28 +16,28 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   SYM
-      INTEGER
-     &   KMD,N
+     real(kind=wp) ::&
+     &   sym
+     integer&
+     &   kmd,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(N),Y(N)
+     real(kind=wp) ::&
+     &   x(n),y(n)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   CON
-      INTEGER
-     &   I,J,KUSED,LIM
+     real(kind=wp) ::&
+     &   con
+     integer&
+     &   i,j,kused,lim
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   EXTEND
+     real(kind=wp) ::&
+     &   extend
 !       EXTERNAL EXTEND
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -65,28 +65,28 @@
 !        ON INPUT, A WORK VECTOR.  ON OUTPUT, THE INPUT SERIES X.
 !
 !
-      DO 10 I = 1, N
-         Y(I) = X(I)
-   10 CONTINUE
+      do 10 i = 1, n
+         y(i) = x(i)
+   10 continue
 !
-      IF (KMD .LE. 0) RETURN
+      if (kmd .le. 0) return
 !
-      KUSED = KMD + MOD(KMD,2)
-      IF (KUSED .GT. N) KUSED = KUSED - 2
+      kused = kmd + mod(kmd,2)
+      if (kused .gt. n) kused = kused - 2
 !
-      LIM = KUSED-1
-      CON = 1.0E0 / (2*KUSED)
-      DO 40 I = 1, N
-         X(I) = Y(I)
-         IF (LIM .EQ. 0) GO TO 30
-         DO 20 J = 1, LIM
-            X(I) = X(I) + EXTEND(Y, I-J, N, SYM)
-     &         + EXTEND(Y, I+J, N, SYM)
-   20    CONTINUE
-   30    X(I) = (X(I) + (EXTEND(Y, I-KUSED, N, SYM)
-     &      + EXTEND(Y, I+KUSED, N, SYM)) * 0.5E0) * CON
-   40 CONTINUE
+      lim = kused-1
+      con = 1.0e0 / (2*kused)
+      do 40 i = 1, n
+         x(i) = y(i)
+         if (lim .eq. 0) go to 30
+         do 20 j = 1, lim
+           x(i) = x(i) + extend(y, i-j, n, sym)&
+     &         + extend(y, i+j, n, sym)
+   20    continue
+  30    x(i) = (x(i) + (extend(y, i-kused, n, sym)&
+     &      + extend(y, i+kused, n, sym)) * 0.5e0) * con
+   40 continue
 !
-      RETURN
+      return
 !
-      END
+      end

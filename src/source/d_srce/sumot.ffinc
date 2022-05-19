@@ -1,5 +1,5 @@
 !SUMOT
-      SUBROUTINE SUMOT(STS, N, NNZW, WTS)
+      subroutine sumot(sts, n, nnzw, wts)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -11,22 +11,22 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,NNZW
-      LOGICAL
-     &   WTS
+     integer&
+     &   n,nnzw
+     logical&
+     &   wts
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   STS(53)
+     real(kind=wp) ::&
+     &   sts(53)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ITEMP(10)
+     integer&
+     &   itemp(10)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VERSP
@@ -79,118 +79,118 @@
 !
 !     BEGIN PRINTOUT
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     PRINT HEADING
 !
-      CALL VERSP(.TRUE.)
+      call versp(.true.)
 !
 !     PRINT NUMBERS OF OBSERVATIONS, RAW AND NONZERO WEIGHTED.
 !
-      IF (.NOT.WTS) WRITE (IPRT,1000)
-      IF (WTS) WRITE (IPRT,1010)
-      IF (NNZW.NE.N) GO TO 10
-      WRITE (IPRT,1020) NNZW
-      GO TO 20
-   10 WRITE (IPRT,1030) NNZW, N
-      WRITE (IPRT,1040)
+      if (.not.wts) write (iprt,1000)
+      if (wts) write (iprt,1010)
+      if (nnzw.ne.n) go to 10
+      write (iprt,1020) nnzw
+      go to 20
+   10 write (iprt,1030) nnzw, n
+      write (iprt,1040)
 !
 !     PRINT FREQUENCY DISTRIBUTIONS
 !
-   20 DO 30 I=1,10
-         ITEMP(I) = STS(I+43)
-   30 CONTINUE
-      WRITE (IPRT,1050) (ITEMP(I),I=1,10)
+   20 do 30 i=1,10
+         itemp(i) = sts(i+43)
+   30 continue
+      write (iprt,1050) (itemp(i),i=1,10)
 !
 !     PRINT MEASURES OF LOCATION AND DISPERSION
 !
-      WRITE (IPRT,1060)
-      IF (STS(4).NE.0.0_WP)
-     &   WRITE (IPRT,1070) (STS(I+2),STS(I+8),I=1,6)
-      IF (STS(4).EQ.0.0_WP)
-     &   WRITE (IPRT,1080) (STS(I+2),STS(I+8),I=1,5), STS(8)
+      write (iprt,1060)
+     if (sts(4).ne.0.0_wp)&
+     &   write (iprt,1070) (sts(i+2),sts(i+8),i=1,6)
+     if (sts(4).eq.0.0_wp)&
+     &   write (iprt,1080) (sts(i+2),sts(i+8),i=1,5), sts(8)
 !
 !     PRINT CONFIDENCE INTERVALS
 !
-      WRITE (IPRT,1090) (STS(I),I=15,18)
+      write (iprt,1090) (sts(i),i=15,18)
 !
 !     PRINT LINEAR TREND AND OTHER STATISTICS, AND PRINT HEADING FOR
 !     TESTS FOR NONRANDOMNESS
 !
-      WRITE (IPRT,1100)
-     &   (STS(I),STS(I+15),I=19,22), (STS(I),I=38,41)
-      ITEMP(1) = STS(23)
-      ITEMP(2) = STS(28)
-      ITEMP(3) = STS(29)
-      ITEMP(4) = STS(30)
+     write (iprt,1100)&
+     &   (sts(i),sts(i+15),i=19,22), (sts(i),i=38,41)
+      itemp(1) = sts(23)
+      itemp(2) = sts(28)
+      itemp(3) = sts(29)
+      itemp(4) = sts(30)
 !
 !     PRINT TESTS FOR NONRANDOMNESS
 !
-      WRITE (IPRT,1110) ITEMP(1), STS(42), STS(24), STS(43),
-     &   (STS(I),I=25,27), (ITEMP(I),I=2,4), (STS(I),I=31,33)
+     write (iprt,1110) itemp(1), sts(42), sts(24), sts(43),&
+     &   (sts(i),i=25,27), (itemp(i),i=2,4), (sts(i),i=31,33)
 !
 !     PRINT FOOTNOTE
 !
-      WRITE (IPRT,1120)
-      RETURN
+      write (iprt,1120)
+      return
 !
- 1000 FORMAT('+STATISTICAL ANALYSIS')
- 1010 FORMAT('+WEIGHTED STATISTICAL ANALYSIS')
- 1020 FORMAT(//5X, 4HN = , I5)
- 1030 FORMAT(//5X, 4HN = , I5, 32H (NO. OF NON-ZERO WTS)    LENGTH,
-     &   2H =, I5)
- 1040 FORMAT(/5X, 45HALL COMPUTATIONS ARE BASED ON OBSERVATIONS WI,
-     &   19HTH NON-ZERO WEIGHTS)
- 1050 FORMAT(//5X, 28HFREQUENCY DISTRIBUTION (1-6), 7X, 10I6)
- 1060 FORMAT(//5X, 26HMEASURES OF LOCATION (2-2), 34X, 10HMEASURES O,
-     &   18HF DISPERSION (2-6))
- 1070 FORMAT(/10X, 26HUNWEIGHTED MEAN          =, 1PD15.7, 20X,
-     &   26HWTD STANDARD DEVIATION   =, D15.7/10X, 17HWEIGHTED MEAN    ,
-     &   9H        =, D15.7, 20X, 26HWEIGHTED S.D. OF MEAN    =,
-     &   D15.7/10X, 26HMEDIAN                   =, D15.7, 20X, 6HRANGE ,
-     &   20H                   =, D15.7/10X, 23HMID-RANGE              ,
-     &   3H  =, D15.7, 20X, 26HMEAN DEVIATION           =, D15.7/10X,
-     &   26H25 PCT UNWTD TRIMMED MEAN=, D15.7, 20X, 16HVARIANCE        ,
-     &   10H         =, D15.7/10X, 26H25 PCT WTD TRIMMED MEAN  =,
-     &   D15.7, 20X, 26HCOEF. OF. VAR. (PERCENT) =, D15.7)
- 1080 FORMAT(/10X, 26HUNWEIGHTED MEAN          =, 1PD15.7, 20X,
-     &   26HWTD STANDARD DEVIATION   =, D15.7/10X, 17HWEIGHTED MEAN    ,
-     &   9H        =, D15.7, 20X, 26HWEIGHTED S.D. OF MEAN    =,
-     &   D15.7/10X, 26HMEDIAN                   =, D15.7, 20X, 6HRANGE ,
-     &   20H                   =, D15.7/10X, 23HMID-RANGE              ,
-     &   3H  =, D15.7, 20X, 26HMEAN DEVIATION           =, D15.7/10X,
-     &   26H25 PCT UNWTD TRIMMED MEAN=, D15.7, 20X, 16HVARIANCE        ,
-     &   10H         =, D15.7/10X, 26H25 PCT WTD TRIMMED MEAN  =,
-     &   D15.7, 20X, 26HCOEFFICIENT OF VARIATION =, 13H    UNDEFINED/
-     &   98X, 14H(MEAN IS ZERO))
- 1090 FORMAT(///20X, 46HA TWO-SIDED 95 PCT CONFIDENCE INTERVAL FOR MEA,
-     &   4HN IS, 1PD14.7, 4H TO , D14.7, 6H (2-2)/20X, 13HA TWO-SIDED 9,
-     &   37H5 PCT CONFIDENCE INTERVAL FOR S.D. IS, D14.7, 4H TO ,
-     &   D14.7, 6H (2-7))
- 1100 FORMAT(///5X, 30HLINEAR TREND STATISTICS (5-1) , 30X, 6HOTHER ,
-     &   10HSTATISTICS//10X, 5HSLOPE, 20X, 1H=, 1PD15.7, 20X, 7HMINIMUM,
-     &   18X, 1H=, D15.7/10X, 13HS.D. OF SLOPE, 12X, 1H=, D15.7, 20X,
-     &   7HMAXIMUM, 18X, 1H=, D15.7/10X, 26HSLOPE/S.D. OF SLOPE = T  =,
-     &   D15.7, 20X, 8HBETA ONE, 17X, 1H=, D15.7/10X, 14HPROB EXCEEDING,
-     &   21H ABS VALUE OF OBS T =, 0PF6.3, 20X, 8HBETA TWO, 17X, 1H=,
-     & 1PD15.7/71X, 17HWTD SUM OF VALUES, 8X, 1H=, D15.7/71X, 7HWTD SUM,
-     &   11H OF SQUARES, 7X, 1H=, D15.7/5X, 24HTESTS FOR NON-RANDOMNESS,
-     &   42X, 22HWTD SUM OF DEV SQUARED, 4H   =, D15.7/71X, 9HSTUDENTS ,
-     &   'T', 15X, 1H=, D15.7)
- 1110 FORMAT(10X, 26HNO. OF RUNS UP AND DOWN  =, I5, 30X, 9HWTD SUM A,
-     &   17HBSOLUTE VALUES  =, 1PD15.7/
-     &   10X, 26HEXPECTED NO. OF RUNS     =,
-     &   0PF7.1, 28X, 26HWTD AVE ABSOLUTE VALUES  =, 1PD15.7/
-     &   10X, 26HS.D. OF NO. OF RUNS      =, 0PF8.2/
-     &   10X, 26HMEAN SQ SUCCESSIVE DIFF  =, 1X, 1PD16.7/
-     &   10X, 26HMEAN SQ SUCC DIFF/VAR    =, 0PF9.3///
-     &   10X, 24HDEVIATIONS FROM WTD MEAN//
-     &   15X, 21HNO. OF + SIGNS      =, I5/
-     &   15X, 21HNO. OF - SIGNS      =, I5/
-     &   15X, 21HNO. OF RUNS         =, I5/
-     &   15X, 21HEXPECTED NO. OF RUNS=, F7.1/
-     &   15X, 12HS.D. OF RUNS, 8X, 1H=, F8.2/
-     &   15X, 21HDIFF./S.D. OF RUNS  =, F9.3)
- 1120 FORMAT(///49H NOTE - ITEMS IN PARENTHESES REFER TO PAGE NUMBER,
-     &   36H IN NBS HANDBOOK 91 (NATRELLA, 1966))
-      END
+ 1000 format('+STATISTICAL ANALYSIS')
+ 1010 format('+WEIGHTED STATISTICAL ANALYSIS')
+ 1020 format(//5x, 4hn = , i5)
+1030 format(//5x, 4hn = , i5, 32h (no. of non-zero wts)    length,&
+     &   2h =, i5)
+1040 format(/5x, 45hall computations are based on observations wi,&
+     &   19hth non-zero weights)
+ 1050 format(//5x, 28hfrequency distribution (1-6), 7x, 10i6)
+1060 format(//5x, 26hmeasures of location (2-2), 34x, 10hmeasures o,&
+     &   18hf dispersion (2-6))
+1070 format(/10x, 26hunweighted mean          =, 1pd15.7, 20x,&
+    &   26hwtd standard deviation   =, d15.7/10x, 17hweighted mean    ,&
+    &   9h        =, d15.7, 20x, 26hweighted s.d. of mean    =,&
+    &   d15.7/10x, 26hmedian                   =, d15.7, 20x, 6hrange ,&
+    &   20h                   =, d15.7/10x, 23hmid-range              ,&
+    &   3h  =, d15.7, 20x, 26hmean deviation           =, d15.7/10x,&
+    &   26h25 pct unwtd trimmed mean=, d15.7, 20x, 16hvariance        ,&
+    &   10h         =, d15.7/10x, 26h25 pct wtd trimmed mean  =,&
+     &   d15.7, 20x, 26hcoef. of. var. (percent) =, d15.7)
+1080 format(/10x, 26hunweighted mean          =, 1pd15.7, 20x,&
+    &   26hwtd standard deviation   =, d15.7/10x, 17hweighted mean    ,&
+    &   9h        =, d15.7, 20x, 26hweighted s.d. of mean    =,&
+    &   d15.7/10x, 26hmedian                   =, d15.7, 20x, 6hrange ,&
+    &   20h                   =, d15.7/10x, 23hmid-range              ,&
+    &   3h  =, d15.7, 20x, 26hmean deviation           =, d15.7/10x,&
+    &   26h25 pct unwtd trimmed mean=, d15.7, 20x, 16hvariance        ,&
+    &   10h         =, d15.7/10x, 26h25 pct wtd trimmed mean  =,&
+    &   d15.7, 20x, 26hcoefficient of variation =, 13h    undefined/&
+     &   98x, 14h(mean is zero))
+1090 format(///20x, 46ha two-sided 95 pct confidence interval for mea,&
+    &   4hn is, 1pd14.7, 4h to , d14.7, 6h (2-2)/20x, 13ha two-sided 9,&
+    &   37h5 pct confidence interval for s.d. is, d14.7, 4h to ,&
+     &   d14.7, 6h (2-7))
+1100 format(///5x, 30hlinear trend statistics (5-1) , 30x, 6hother ,&
+    &   10hstatistics//10x, 5hslope, 20x, 1h=, 1pd15.7, 20x, 7hminimum,&
+    &   18x, 1h=, d15.7/10x, 13hs.d. of slope, 12x, 1h=, d15.7, 20x,&
+    &   7hmaximum, 18x, 1h=, d15.7/10x, 26hslope/s.d. of slope = t  =,&
+    &   d15.7, 20x, 8hbeta one, 17x, 1h=, d15.7/10x, 14hprob exceeding,&
+    &   21h abs value of obs t =, 0pf6.3, 20x, 8hbeta two, 17x, 1h=,&
+    & 1pd15.7/71x, 17hwtd sum of values, 8x, 1h=, d15.7/71x, 7hwtd sum,&
+    &   11h of squares, 7x, 1h=, d15.7/5x, 24htests for non-randomness,&
+    &   42x, 22hwtd sum of dev squared, 4h   =, d15.7/71x, 9hstudents ,&
+     &   'T', 15x, 1h=, d15.7)
+1110 format(10x, 26hno. of runs up and down  =, i5, 30x, 9hwtd sum a,&
+    &   17hbsolute values  =, 1pd15.7/&
+    &   10x, 26hexpected no. of runs     =,&
+    &   0pf7.1, 28x, 26hwtd ave absolute values  =, 1pd15.7/&
+    &   10x, 26hs.d. of no. of runs      =, 0pf8.2/&
+    &   10x, 26hmean sq successive diff  =, 1x, 1pd16.7/&
+    &   10x, 26hmean sq succ diff/var    =, 0pf9.3///&
+    &   10x, 24hdeviations from wtd mean//&
+    &   15x, 21hno. of + signs      =, i5/&
+    &   15x, 21hno. of - signs      =, i5/&
+    &   15x, 21hno. of runs         =, i5/&
+    &   15x, 21hexpected no. of runs=, f7.1/&
+    &   15x, 12hs.d. of runs, 8x, 1h=, f8.2/&
+     &   15x, 21hdiff./s.d. of runs  =, f9.3)
+1120 format(///49h note - items in parentheses refer to page number,&
+     &   36h in nbs handbook 91 (natrella, 1966))
+      end

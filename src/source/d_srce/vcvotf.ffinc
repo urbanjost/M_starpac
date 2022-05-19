@@ -1,5 +1,5 @@
 !VCVOTF
-      SUBROUTINE VCVOTF(NPAR, VCV, LVCV, EST, LMASK, MASK, IVCVPT)
+      subroutine vcvotf(npar, vcv, lvcv, est, lmask, mask, ivcvpt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -24,20 +24,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IVCVPT,LMASK,LVCV,NPAR
-      LOGICAL
-     &   EST
+     integer&
+     &   ivcvpt,lmask,lvcv,npar
+     logical&
+     &   est
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   VCV(LVCV)
-      INTEGER
-     &   MASK(LMASK)
+     real(kind=wp) ::&
+     &   vcv(lvcv)
+     integer&
+     &   mask(lmask)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   CODE,I,II,IPRT,MODE
+     integer&
+     &   code,i,ii,iprt,mode
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,MATPRF
@@ -90,75 +90,75 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      CODE = 1
+      code = 1
 !
 !     DETERMINE WHETHER TO ISSUE NEGATIVE VARIANCE WARNING
 !
-      MODE = 0
-      DO 30 I=1,NPAR
-         II = I*(I-1)/2 + I
-         IF (VCV(II).GT.0.0_WP) GO TO 30
-         IF (EST) GO TO 10
-         WRITE (IPRT,1000)
-         GO TO 20
+      mode = 0
+      do 30 i=1,npar
+         ii = i*(i-1)/2 + i
+         if (vcv(ii).gt.0.0_wp) go to 30
+         if (est) go to 10
+         write (iprt,1000)
+         go to 20
 !
-   10    CONTINUE
-         WRITE (IPRT,1050)
-         IF (IVCVPT.EQ.1) WRITE (IPRT,1060)
-         IF (IVCVPT.EQ.2) WRITE (IPRT,1070)
-         IF (IVCVPT.EQ.3) WRITE (IPRT,1080)
-   20    WRITE (IPRT,1010)
-         GO TO 50
-   30 CONTINUE
+   10    continue
+         write (iprt,1050)
+         if (ivcvpt.eq.1) write (iprt,1060)
+         if (ivcvpt.eq.2) write (iprt,1070)
+         if (ivcvpt.eq.3) write (iprt,1080)
+   20    write (iprt,1010)
+         go to 50
+   30 continue
 !
-      IF (EST) GO TO 40
+      if (est) go to 40
 !
 !     PRINT HEADING FOR CORRELATION ROUTINES
 !
-      WRITE (IPRT,1040)
-      WRITE (IPRT,1030)
-      MODE = 2
-      GO TO 50
+      write (iprt,1040)
+      write (iprt,1030)
+      mode = 2
+      go to 50
 !
-   40 CONTINUE
+   40 continue
 !
 !     PRINT HEADING FOR ESTIMATION ROUTINES
 !
-      WRITE (IPRT,1050)
-      IF (IVCVPT.EQ.1) WRITE (IPRT,1060)
-      IF (IVCVPT.EQ.2) WRITE (IPRT,1070)
-      IF (IVCVPT.EQ.3) WRITE (IPRT,1080)
-      WRITE (IPRT,1020)
-      MODE = 4
+      write (iprt,1050)
+      if (ivcvpt.eq.1) write (iprt,1060)
+      if (ivcvpt.eq.2) write (iprt,1070)
+      if (ivcvpt.eq.3) write (iprt,1080)
+      write (iprt,1020)
+      mode = 4
 !
-   50 CALL MATPRF(VCV, VCV, NPAR, MODE, CODE, LVCV, MASK, LMASK)
+   50 call matprf(vcv, vcv, npar, mode, code, lvcv, mask, lmask)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (///18H COVARIANCE MATRIX)
- 1010 FORMAT (/39H     NONPOSITIVE VARIANCES ENCOUNTERED./10H     CORRE,
-     &   39HLATION COEFFICIENTS CANNOT BE COMPUTED.)
- 1020 FORMAT (4X, 36H- COVARIANCES ARE ABOVE THE DIAGONAL/4X, 7H- VARIA,
-     &   24HNCES ARE ON THE DIAGONAL/4X, 27H- CORRELATION COEFFICIENTS ,
-     &   22HARE BELOW THE DIAGONAL)
- 1030 FORMAT (4X, 41H- STANDARD DEVIATIONS ARE ON THE DIAGONAL/4X,
-     &   49H- CORRELATION COEFFICIENTS ARE BELOW THE DIAGONAL)
- 1040 FORMAT (/19H CORRELATION MATRIX)
- 1050 FORMAT (///45H VARIANCE-COVARIANCE AND CORRELATION MATRICES,
-     &   38H OF THE ESTIMATED (UNFIXED) PARAMETERS/ 1X, 82('-'))
- 1060 FORMAT (/
-     &   4X, 54H- APPROXIMATION BASED ON ASSUMPTION THAT RESIDUALS ARE,
-     &   6H SMALL)
- 1070 FORMAT (
-     &   /4X, 51H- APPROXIMATION BASED ON ASYMPTOTIC MAXIMUM LIKELIH,
-     &   10HOOD THEORY)
- 1080 FORMAT (/4X,
-     &   51H- APPROXIMATION BASED ON ASSUMPTION THAT CONDITIONS,
-     &   10H NECESSARY/
-     &   5X, 41H FOR ASYMPTOTIC MAXIMUM LIKELIHOOD THEORY,
-     &   18H MIGHT BE VIOLATED)
-      END
+ 1000 format (///18h covariance matrix)
+1010 format (/39h     nonpositive variances encountered./10h     corre,&
+     &   39hlation coefficients cannot be computed.)
+1020 format (4x, 36h- covariances are above the diagonal/4x, 7h- varia,&
+    &   24hnces are on the diagonal/4x, 27h- correlation coefficients ,&
+     &   22hare below the diagonal)
+1030 format (4x, 41h- standard deviations are on the diagonal/4x,&
+     &   49h- correlation coefficients are below the diagonal)
+ 1040 format (/19h correlation matrix)
+1050 format (///45h variance-covariance and correlation matrices,&
+     &   38h of the estimated (unfixed) parameters/ 1x, 82('-'))
+1060 format (/&
+    &   4x, 54h- approximation based on assumption that residuals are,&
+     &   6h small)
+1070 format (&
+    &   /4x, 51h- approximation based on asymptotic maximum likelih,&
+     &   10hood theory)
+1080 format (/4x,&
+    &   51h- approximation based on assumption that conditions,&
+    &   10h necessary/&
+    &   5x, 41h for asymptotic maximum likelihood theory,&
+     &   18h might be violated)
+      end

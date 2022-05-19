@@ -1,5 +1,5 @@
 !DBETAI
-      DOUBLE PRECISION FUNCTION DBETAI (X, PIN, QIN)
+      double precision function dbetai (x, pin, qin)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 ! BASED ON BOSTEN AND BATTISTE, REMARK ON ALGORITHM 179, COMM. ACM,
 ! V 17, P 156, (1974).
@@ -16,13 +16,13 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION PIN,QIN,X
+      double precision pin,qin,x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION ALNEPS,ALNSML,C,EPS,FAC1,FAC2,FINSUM,P,PS,Q,SML,
-     &   TERM,XB,Y
-      REAL P1
-      INTEGER I,IB,N
+     double precision alneps,alnsml,c,eps,fac1,fac2,finsum,p,ps,q,sml,&
+     &   term,xb,y
+      real p1
+      integer i,ib,n
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH,DLBETA
@@ -32,103 +32,103 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,DBLE,EXP,FLOAT,INT,LOG,MAX,MIN,SNGL
+      intrinsic abs,dble,exp,float,int,log,max,min,sngl
 !
-      DATA             EPS, ALNEPS, SML, ALNSML / 4*0.0D0 /
+      data             eps, alneps, sml, alnsml / 4*0.0d0 /
 !
-      IF (EPS.NE.0.0D0) GO TO 10
-      EPS = D1MACH(3)
-      ALNEPS = LOG (EPS)
-      SML = D1MACH(1)
-      ALNSML = LOG (SML)
+      if (eps.ne.0.0d0) go to 10
+      eps = d1mach(3)
+      alneps = log (eps)
+      sml = d1mach(1)
+      alnsml = log (sml)
 !
- 10   IF (X.LT.0.D0 .OR. X.GT.1.D0) CALL XERROR (
+10   if (x.lt.0.d0 .or. x.gt.1.d0) call xerror (&
      &  'DBETAI  X IS NOT IN THE RANGE (0,1)', 35, 1, 2)
-      IF (PIN.LE.0.D0 .OR. QIN.LE.0.D0) CALL XERROR (
+     if (pin.le.0.d0 .or. qin.le.0.d0) call xerror (&
      &  'DBETAI  P AND/OR Q IS LE ZERO', 29, 2, 2)
 !
-      Y = X
-      P = PIN
-      Q = QIN
-      IF (Q.LE.P .AND. X.LT.0.8D0) GO TO 20
-      IF (X.LT.0.2D0) GO TO 20
-      Y = 1.0D0 - Y
-      P = QIN
-      Q = PIN
+      y = x
+      p = pin
+      q = qin
+      if (q.le.p .and. x.lt.0.8d0) go to 20
+      if (x.lt.0.2d0) go to 20
+      y = 1.0d0 - y
+      p = qin
+      q = pin
 !
- 20   IF ((P+Q)*Y/(P+1.D0).LT.EPS) GO TO 80
+ 20   if ((p+q)*y/(p+1.d0).lt.eps) go to 80
 !
 ! EVALUATE THE INFINITE SUM FIRST.  TERM WILL EQUAL
 ! Y**P/BETA(PS,P) * (1.-PS)-SUB-I * Y**I / FAC(I) .
 !
-      PS = Q - INT(Q)
-      IF (PS.EQ.0.D0) PS = 1.0D0
-      XB = P*LOG(Y) - DLBETA(PS,P) - LOG(P)
-      DBETAI = 0.0D0
-      IF (XB.GE.ALNSML) THEN
-         DBETAI = EXP(XB)
-         FAC2 = 1.0
-         IF (PS.NE.1.0D0) THEN
-            FAC1 = 1.0
-            N = MAX(ALNEPS/LOG(Y), 4.0D0)
-            DO 30 I=1,N
-               IF ((I-PS.EQ.0.0D0) .OR. (FAC1.EQ.0.0D0)) THEN
-                  FAC1 = 0.0D0
-               ELSE
-                  IF (LOG(ABS(FAC1)) + LOG(ABS(I-PS)) + LOG(Y) -
-     &                LOG(DBLE(I)) .LT. ALNSML) THEN
-                     FAC1 = 0.0D0
-                  ELSE
-                     FAC1 = FAC1 * (I-PS)*Y/I
-                  END IF
-               END IF
-               FAC2 = FAC2 + FAC1*P/(P+I)
- 30         CONTINUE
-         END IF
-         DBETAI = DBETAI*FAC2
-      END IF
+      ps = q - int(q)
+      if (ps.eq.0.d0) ps = 1.0d0
+      xb = p*log(y) - dlbeta(ps,p) - log(p)
+      dbetai = 0.0d0
+      if (xb.ge.alnsml) then
+         dbetai = exp(xb)
+         fac2 = 1.0
+         if (ps.ne.1.0d0) then
+            fac1 = 1.0
+            n = max(alneps/log(y), 4.0d0)
+            do 30 i=1,n
+               if ((i-ps.eq.0.0d0) .or. (fac1.eq.0.0d0)) then
+                  fac1 = 0.0d0
+               else
+                 if (log(abs(fac1)) + log(abs(i-ps)) + log(y) -&
+     &                log(dble(i)) .lt. alnsml) then
+                     fac1 = 0.0d0
+                  else
+                     fac1 = fac1 * (i-ps)*y/i
+                  end if
+               end if
+               fac2 = fac2 + fac1*p/(p+i)
+ 30         continue
+         end if
+         dbetai = dbetai*fac2
+      end if
 !
 ! NOW EVALUATE THE FINITE SUM, MAYBE.
 !
-      IF (Q.LE.1.0D0) GO TO 70
+      if (q.le.1.0d0) go to 70
 !
-      XB = P*LOG(Y) + Q*LOG(1.0D0-Y) - DLBETA(P,Q) - LOG(Q)
-      IB = MAX(SNGL(XB/ALNSML), 0.0)
-      TERM = EXP (XB - DBLE(FLOAT(IB))*ALNSML )
-      C = 1.0D0/(1.D0-Y)
-      P1 = Q*C/(P+Q-1.D0)
+      xb = p*log(y) + q*log(1.0d0-y) - dlbeta(p,q) - log(q)
+      ib = max(sngl(xb/alnsml), 0.0)
+      term = exp (xb - dble(float(ib))*alnsml )
+      c = 1.0d0/(1.d0-y)
+      p1 = q*c/(p+q-1.d0)
 !
-      FINSUM = 0.0D0
-      N = Q
-      IF (Q.EQ.DBLE(FLOAT(N))) N = N - 1
-      DO 50 I=1,N
-        IF (P1.LE.1.0D0 .AND. TERM/EPS.LE.FINSUM) GO TO 60
-        IF (Q-I+1.0D0 .EQ. 0.0D0) THEN
-          TERM = 0.0D0
-        ELSE
-          IF (LOG(ABS(Q-I+1.0D0)) + LOG(ABS(C)) + LOG(ABS(TERM)) -
-     &        LOG(ABS(P+Q-I)) .LT. ALNSML) THEN
-            TERM = 0.0D0
-          ELSE
-            TERM = (Q-I+1.0D0)*C*TERM/(P+Q-I)
-          END IF
-        END IF
+      finsum = 0.0d0
+      n = q
+      if (q.eq.dble(float(n))) n = n - 1
+      do 50 i=1,n
+        if (p1.le.1.0d0 .and. term/eps.le.finsum) go to 60
+        if (q-i+1.0d0 .eq. 0.0d0) then
+          term = 0.0d0
+        else
+         if (log(abs(q-i+1.0d0)) + log(abs(c)) + log(abs(term)) -&
+     &        log(abs(p+q-i)) .lt. alnsml) then
+            term = 0.0d0
+          else
+            term = (q-i+1.0d0)*c*term/(p+q-i)
+          end if
+        end if
 !
-        IF (TERM.GT.1.0D0) IB = IB - 1
-        IF (TERM.GT.1.0D0) TERM = TERM*SML
+        if (term.gt.1.0d0) ib = ib - 1
+        if (term.gt.1.0d0) term = term*sml
 !
-        IF (IB.EQ.0) FINSUM = FINSUM + TERM
- 50   CONTINUE
+        if (ib.eq.0) finsum = finsum + term
+ 50   continue
 !
- 60   DBETAI = DBETAI + FINSUM
- 70   IF (Y.NE.X .OR. P.NE.PIN) DBETAI = 1.0D0 - DBETAI
-      DBETAI = MAX (MIN (DBETAI, 1.0D0), 0.0D0)
-      RETURN
+ 60   dbetai = dbetai + finsum
+ 70   if (y.ne.x .or. p.ne.pin) dbetai = 1.0d0 - dbetai
+      dbetai = max (min (dbetai, 1.0d0), 0.0d0)
+      return
 !
- 80   DBETAI = 0.0D0
-      XB = P*LOG(MAX(Y,SML)) - LOG(P) - DLBETA(P,Q)
-      IF (XB.GT.ALNSML .AND. Y.NE.0.0D0) DBETAI = EXP(XB)
-      IF (Y.NE.X .OR. P.NE.PIN) DBETAI = 1.0D0 - DBETAI
+ 80   dbetai = 0.0d0
+      xb = p*log(max(y,sml)) - log(p) - dlbeta(p,q)
+      if (xb.gt.alnsml .and. y.ne.0.0d0) dbetai = exp(xb)
+      if (y.ne.x .or. p.ne.pin) dbetai = 1.0d0 - dbetai
 !
-      RETURN
-      END
+      return
+      end

@@ -1,6 +1,6 @@
 !AOV1ER
-      SUBROUTINE AOV1ER(Y, TAG, N, IGSTAT, NZTAGS, NG, LDSTAK, NMSUB,
-     &   INDEX, ISAOV1, NALL0)
+     subroutine aov1er(y, tag, n, igstat, nztags, ng, ldstak, nmsub,&
+     &   index, isaov1, nall0)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,34 +18,34 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IGSTAT,INDEX,ISAOV1,LDSTAK,N,NALL0,NG,NZTAGS
+     integer&
+     &   igstat,index,isaov1,ldstak,n,nall0,ng,nztags
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   TAG(*),Y(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   tag(*),y(*)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,J,LDSMIN,NV
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   i,iprt,j,ldsmin,nv
+     logical&
+     &   error,head
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISTAK(12)
-      CHARACTER
-     &   LIGSTA(8)*1,LLDS(8)*1,LN(8)*1,LNG(8)*1,LTAG(8)*1,
-     &   LTWO(8)*1,LZERO(8)*1
+     integer&
+     &   istak(12)
+     character&
+    &   ligsta(8)*1,llds(8)*1,ln(8)*1,lng(8)*1,ltag(8)*1,&
+     &   ltwo(8)*1,lzero(8)*1
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -57,11 +57,11 @@
 !     +   STKCLR,STKSET
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
+      equivalence (dstak(1),istak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -119,119 +119,119 @@
 !     REAL Y(N)
 !        THE VECTOR OF OBSERVATIONS.
 !
-      DATA  LIGSTA(1),LIGSTA(2),LIGSTA(3),LIGSTA(4),LIGSTA(5),LIGSTA(6),
-     &      LIGSTA(7),LIGSTA(8)
+     data  ligsta(1),ligsta(2),ligsta(3),ligsta(4),ligsta(5),ligsta(6),&
+    &      ligsta(7),ligsta(8)&
      &     / 'I', 'G', 'S', 'T', 'A', 'T', ' ', ' '/
-      DATA   LLDS(1),  LLDS(2),  LLDS(3),  LLDS(4),  LLDS(5),  LLDS(6),
-     &       LLDS(7),  LLDS(8)
+     data   llds(1),  llds(2),  llds(3),  llds(4),  llds(5),  llds(6),&
+    &       llds(7),  llds(8)&
      &     / 'L', 'D', 'S', 'T', 'A', 'K', ' ', ' '/
-      DATA     LN(1),    LN(2),    LN(3),    LN(4),    LN(5),    LN(6),
-     &         LN(7),    LN(8)
+     data     ln(1),    ln(2),    ln(3),    ln(4),    ln(5),    ln(6),&
+    &         ln(7),    ln(8)&
      &     / 'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
-      DATA    LNG(1),   LNG(2),   LNG(3),   LNG(4),   LNG(5),   LNG(6),
-     &        LNG(7),   LNG(8)
+     data    lng(1),   lng(2),   lng(3),   lng(4),   lng(5),   lng(6),&
+    &        lng(7),   lng(8)&
      &     / 'N', 'G', ' ', ' ', ' ', ' ', ' ', ' '/
-      DATA   LTAG(1),  LTAG(2),  LTAG(3),  LTAG(4),  LTAG(5),  LTAG(6),
-     &       LTAG(7),  LTAG(8)
+     data   ltag(1),  ltag(2),  ltag(3),  ltag(4),  ltag(5),  ltag(6),&
+    &       ltag(7),  ltag(8)&
      &     / 'T', 'A', 'G', ' ', ' ', ' ', ' ', ' '/
-      DATA   LTWO(1),  LTWO(2),  LTWO(3),  LTWO(4),  LTWO(5),  LTWO(6),
-     &       LTWO(7),  LTWO(8)
+     data   ltwo(1),  ltwo(2),  ltwo(3),  ltwo(4),  ltwo(5),  ltwo(6),&
+    &       ltwo(7),  ltwo(8)&
      &     / 'T', 'W', 'O', ' ', ' ', ' ', ' ', ' '/
-      DATA  LZERO(1), LZERO(2), LZERO(3), LZERO(4), LZERO(5), LZERO(6),
-     &      LZERO(7), LZERO(8)
+     data  lzero(1), lzero(2), lzero(3), lzero(4), lzero(5), lzero(6),&
+    &      lzero(7), lzero(8)&
      &     / 'Z', 'E', 'R', 'O', ' ', ' ', ' ', ' '/
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     SET UP OUTPUT UNIT
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     BEGIN ERROR CHECKING.
 !
 !     NUMBER OF OBSERVATIONS LESS THAN 2
 !
-      CALL EISGE(NMSUB, LN, N, 2, 2, HEAD, ERROR, LTWO)
-      IF (ERROR) GO TO 50
+      call eisge(nmsub, ln, n, 2, 2, head, error, ltwo)
+      if (error) go to 50
 !
 !     NUMBER OF NON-ZERO TAGS LESS THAN 2
 !
-      CALL ERVGT(NMSUB, LTAG, TAG, N, 0.0E0, (N-2), HEAD, 7, NV, ERROR,
-     &   LZERO)
-      IF (ERROR) GO TO 50
+     call ervgt(nmsub, ltag, tag, n, 0.0e0, (n-2), head, 7, nv, error,&
+     &   lzero)
+      if (error) go to 50
 !
-      NZTAGS = N - NV
+      nztags = n - nv
 !
 !     STACK MUST BE LARGE ENOUGH FOR A VECTOR OF LENGTH N TO CONTINUE
 !
-      CALL LDSCMP(1, 0, N, 0, 0, 0, 'S', 0, LDSMIN)
-      CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERROR, LLDS)
-      IF (ERROR) WRITE(IPRT, 1000)
-      IF (ERROR) GO TO 50
+      call ldscmp(1, 0, n, 0, 0, 0, 'S', 0, ldsmin)
+      call eisge(nmsub, llds, ldstak, ldsmin, 9, head, error, llds)
+      if (error) write(iprt, 1000)
+      if (error) go to 50
 !
 !     INITIALIZE STACK AND NALL0
 !
-      CALL STKSET(LDSTAK, 4)
-      NALL0 = STKST(1)
+      call stkset(ldstak, 4)
+      nall0 = stkst(1)
 !
-      INDEX = STKGET(N,2)
+      index = stkget(n,2)
 !
 !     SORT TAG VECTOR CARRYING ALONG INDEX TO ORIGINAL ORDER AND THE
 !     VECTOR OF OBSERVATIONS
 !
-      CALL GENI(ISTAK(INDEX), N, 1, 1)
-      CALL SRTIRR(ISTAK(INDEX), Y, N, TAG)
+      call geni(istak(index), n, 1, 1)
+      call srtirr(istak(index), y, n, tag)
 !
 !     COUNT THE NUMBER OF DIFFERENT TAG VALUES
 !
-      J = N - NZTAGS + 2
-      NG = 1
-      DO 10 I=J,N
-         IF (TAG(I).GT.TAG(I-1)) NG = NG + 1
-   10 CONTINUE
+      j = n - nztags + 2
+      ng = 1
+      do 10 i=j,n
+         if (tag(i).gt.tag(i-1)) ng = ng + 1
+   10 continue
 !
 !     LESS THAN 2 DIFFERENT TAG GROUPS
 !
-      CALL EISII(NMSUB, LNG, NG, 2, NZTAGS-1, 3, HEAD, ERROR,
-     &  LTWO, LN)
-      IF (ERROR) GO TO 40
+     call eisii(nmsub, lng, ng, 2, nztags-1, 3, head, error,&
+     &  ltwo, ln)
+      if (error) go to 40
 !
 !     CHECK THAT DIMENSION OF STATISTICS MATRIX IS SUFFICIENT
 !
-      CALL EISGE(NMSUB, LIGSTA, IGSTAT, NG, 3, HEAD, ERROR, LNG)
-      IF (ERROR) GO TO 40
+      call eisge(nmsub, ligsta, igstat, ng, 3, head, error, lng)
+      if (error) go to 40
 !
 !     COMPUTE AND CHECK FOR SUFFICIENT STACK
 !
-      CALL LDSCMP(11, 0, N+NZTAGS, 0, 0, 0,
-     &            'S', ISAOV1*4*NG+4*NG+NZTAGS, LDSMIN)
+     call ldscmp(11, 0, n+nztags, 0, 0, 0,&
+     &            'S', isaov1*4*ng+4*ng+nztags, ldsmin)
 !
-      CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERROR, LLDS)
-      IF (.NOT.ERROR) RETURN
+      call eisge(nmsub, llds, ldstak, ldsmin, 9, head, error, llds)
+      if (.not.error) return
 !
-   40 CONTINUE
+   40 continue
 !
 !     REORDER DATA
 !
-      CALL SRTRRI(TAG, Y, N, ISTAK(INDEX))
+      call srtrri(tag, y, n, istak(index))
 !
 !     CLEAR STACK, IN CASE WHERE ERROR FOLLOWS ALLOCATION OF STACK.
 !
-      CALL STKCLR (NALL0)
+      call stkclr (nall0)
 !
-   50 CONTINUE
-      IERR = 1
-      RETURN
+   50 continue
+      ierr = 1
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(/' NOTE.  THE VALUE OF LDSTAK MENTIONED ABOVE IS THE',
-     &  ' MINIMUM NECESSARY'/
-     &  ' TO CONTINUE CHECKING FOR ERRORS AND',
-     &  ' TO CALCULATE THE CORRECT VALUE'/
-     &  ' OF LDSTAK.  THE CORRECT',
-     &  ' VALUE WILL BE LARGER.  CONSULT THE DOCUMENTATION'/
+1000 format(/' NOTE.  THE VALUE OF LDSTAK MENTIONED ABOVE IS THE',&
+    &  ' MINIMUM NECESSARY'/&
+    &  ' TO CONTINUE CHECKING FOR ERRORS AND',&
+    &  ' TO CALCULATE THE CORRECT VALUE'/&
+    &  ' OF LDSTAK.  THE CORRECT',&
+    &  ' VALUE WILL BE LARGER.  CONSULT THE DOCUMENTATION'/&
      &  ' FOR THE FORMULAS USED TO CALCULATE LDSTAK.')
-      END
+      end

@@ -1,6 +1,6 @@
 !NLDRVA
-      SUBROUTINE NLDRVA (MDL, DRV, DONE, IFIXD, PAR, NPAR, XM, N, M,
-     &   IXM, PV, D, WEIGHT, WT, LWT, STP, LSTP, SCL, LSCL)
+     subroutine nldrva (mdl, drv, done, ifixd, par, npar, xm, n, m,&
+     &   ixm, pv, d, weight, wt, lwt, stp, lstp, scl, lscl)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,36 +17,36 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,LSCL,LSTP,LWT,M,N,NPAR
-      LOGICAL
-     &   DONE,WEIGHT
+     integer&
+     &   ixm,lscl,lstp,lwt,m,n,npar
+     logical&
+     &   done,weight
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   D(N,NPAR),PAR(NPAR),PV(N),SCL(LSCL),STP(LSTP),WT(LWT),
-     &   XM(IXM,M)
-      INTEGER
-     &   IFIXD(NPAR)
+     real(kind=wp) ::&
+    &   d(n,npar),par(npar),pv(n),scl(lscl),stp(lstp),wt(lwt),&
+     &   xm(ixm,m)
+     integer&
+     &   ifixd(npar)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL DRV,MDL
+       external drv,mdl
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   WTSQRT
-      INTEGER
-     &   I,J,JPK
+     real(kind=wp) ::&
+     &   wtsqrt
+     integer&
+     &   i,j,jpk
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -115,20 +115,20 @@
 !
 !     COMPUTE JACOBIAN
 !
-      CALL DRV(PAR, NPAR, XM, N, M, IXM, D)
+      call drv(par, npar, xm, n, m, ixm, d)
 !
-      JPK = 0
+      jpk = 0
 !
-      DO 20 J=1,NPAR
-         IF (IFIXD(J).NE.0) GO TO 20
-         JPK = JPK + 1
-         DO 10 I=1,N
-            WTSQRT = 1.0_WP
-            IF (WEIGHT .AND. (.NOT.DONE)) WTSQRT = SQRT(WT(I))
-            D(I,JPK) = -WTSQRT*D(I,J)
-   10    CONTINUE
-   20 CONTINUE
+      do 20 j=1,npar
+         if (ifixd(j).ne.0) go to 20
+         jpk = jpk + 1
+         do 10 i=1,n
+            wtsqrt = 1.0_wp
+            if (weight .and. (.not.done)) wtsqrt = sqrt(wt(i))
+            d(i,jpk) = -wtsqrt*d(i,j)
+   10    continue
+   20 continue
 !
-      RETURN
+      return
 !
-      END
+      end

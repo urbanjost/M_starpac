@@ -1,7 +1,7 @@
 !LLCNT
-      SUBROUTINE LLCNT(Y, WT, LWT, XM, N, M, IXM, NPAR, RES, LDSTAK,
-     &   NPRT, PAR, LPAR, RSD, PV, LPV, SDPV, LSDPV, SDRES, LSDRES, VCV,
-     &   IVCV, LLHDR, IFIT, NMSUB, WEIGHT, SAVE)
+     subroutine llcnt(y, wt, lwt, xm, n, m, ixm, npar, res, ldstak,&
+    &   nprt, par, lpar, rsd, pv, lpv, sdpv, lsdpv, sdres, lsdres, vcv,&
+     &   ivcv, llhdr, ifit, nmsub, weight, save)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,58 +18,58 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RSD
-      INTEGER
-     &   IFIT,IVCV,IXM,LDSTAK,LPAR,LPV,LSDPV,LSDRES,LWT,M,N,NPAR,
-     &   NPRT
-      LOGICAL
-     &   SAVE,WEIGHT
+     real(kind=wp) ::&
+     &   rsd
+     integer&
+    &   ifit,ivcv,ixm,ldstak,lpar,lpv,lsdpv,lsdres,lwt,m,n,npar,&
+     &   nprt
+     logical&
+     &   save,weight
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),PV(*),RES(*),SDPV(*),SDRES(*),VCV(*),WT(*),XM(*),Y(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   par(*),pv(*),res(*),sdpv(*),sdres(*),vcv(*),wt(*),xm(*),y(*)
+     character&
+     &   nmsub(6)*1
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL LLHDR
+       external llhdr
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   ACC,C,FC,IFP,NALL0,NDIGIT,NNZW,PAR1,PARI,PVI,RED,RESI,
-     &   RSDI,SDPVI,SDRESI,T,VCVI,WTI,WY,XMW
-      LOGICAL
-     &   PAGE,WIDE
+     integer&
+    &   acc,c,fc,ifp,nall0,ndigit,nnzw,par1,pari,pvi,red,resi,&
+     &   rsdi,sdpvi,sdresi,t,vcvi,wti,wy,xmw
+     logical&
+     &   page,wide
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSTAK(12)
-      INTEGER
-     &   IPTOUT(4),ISTAK(12)
+     real(kind=wp) ::&
+     &   rstak(12)
+     integer&
+     &   iptout(4),istak(12)
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     &   STKST
+     integer&
+     &   stkst
 !       EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL CPYMSS,LLER,LLSMN,PRTCNT,DCOPY,SETRV,STKCLR,STKSET
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
+      equivalence (dstak(1),rstak(1))
+      equivalence (dstak(1),istak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -210,77 +210,77 @@
 !        THE DEPENDENT VARIABLE.
 !
 !
-      WIDE = .TRUE.
-      PAGE = .FALSE.
-      NDIGIT = 4
+      wide = .true.
+      page = .false.
+      ndigit = 4
 !
-      IFP = 4
+      ifp = 4
 !
 !     SET PRINT CONTROL VALUES
 !
-      CALL PRTCNT(NPRT, NDIGIT, IPTOUT)
+      call prtcnt(nprt, ndigit, iptout)
 !
 !     CHECK FOR ERRORS
 !
-      CALL LLER(NMSUB, IXM, IVCV, N, NPAR, LPAR, LDSTAK, WT, LWT,
-     &   WEIGHT, NNZW, IFIT, SAVE)
-      IF (IERR.NE.0) RETURN
+     call ller(nmsub, ixm, ivcv, n, npar, lpar, ldstak, wt, lwt,&
+     &   weight, nnzw, ifit, save)
+      if (ierr.ne.0) return
 !
-      CALL STKSET(LDSTAK, 4)
-      NALL0 = STKST(1)
+      call stkset(ldstak, 4)
+      nall0 = stkst(1)
 !
 !     SET UP SUBDIVISION OF WORK AREAS
 !
-      WTI = STKGET(N,IFP)
-      RESI = STKGET(N,IFP)
-      RSDI = STKGET(1,IFP)
-      PARI = STKGET(NPAR,IFP)
-      PVI = STKGET(N,IFP)
-      SDPVI = STKGET(N,IFP)
-      SDRESI = STKGET(N,IFP)
-      VCVI = STKGET(NPAR*NPAR,IFP)
+      wti = stkget(n,ifp)
+      resi = stkget(n,ifp)
+      rsdi = stkget(1,ifp)
+      pari = stkget(npar,ifp)
+      pvi = stkget(n,ifp)
+      sdpvi = stkget(n,ifp)
+      sdresi = stkget(n,ifp)
+      vcvi = stkget(npar*npar,ifp)
 !
-      WY = STKGET(N,IFP)
-      XMW = STKGET(N*NPAR,IFP)
-      RED = STKGET(NPAR,IFP)
-      T = STKGET(NPAR*NPAR,IFP)
-      PAR1 = STKGET(NPAR,IFP)
-      ACC = STKGET(NPAR,IFP)
-      C = STKGET(NPAR,IFP)
+      wy = stkget(n,ifp)
+      xmw = stkget(n*npar,ifp)
+      red = stkget(npar,ifp)
+      t = stkget(npar*npar,ifp)
+      par1 = stkget(npar,ifp)
+      acc = stkget(npar,ifp)
+      c = stkget(npar,ifp)
 !
 !     EQUIVALENCED LOCATIONS WITHIN SCRAT
 !
-      FC = XMW
+      fc = xmw
 !
 !     SET UP WEIGHTS VECTOR
 !
-      IF (WEIGHT) THEN
-         CALL DCOPY(N, WT, 1, RSTAK(WTI), 1)
-      ELSE
-         CALL SETRV(RSTAK(WTI), N, 1.0_WP)
-      END IF
+      if (weight) then
+         call dcopy(n, wt, 1, rstak(wti), 1)
+      else
+         call setrv(rstak(wti), n, 1.0_wp)
+      end if
 !
-      CALL LLSMN(Y, XM, RSTAK(WTI), N, M, NPAR, IXM, RSTAK(RESI),
-     &   RSTAK(PARI), NNZW, RSTAK(RSDI), RSTAK(PVI), RSTAK(SDPVI),
-     &   RSTAK(SDRESI), IPTOUT, RSTAK(WY), RSTAK(XMW), RSTAK(VCVI),
-     &   RSTAK(FC), RSTAK(RED), RSTAK(T), RSTAK(PAR1), RSTAK(ACC), IFIT,
-     &   WEIGHT, RSTAK(C), LLHDR, PAGE, WIDE)
+     call llsmn(y, xm, rstak(wti), n, m, npar, ixm, rstak(resi),&
+    &   rstak(pari), nnzw, rstak(rsdi), rstak(pvi), rstak(sdpvi),&
+    &   rstak(sdresi), iptout, rstak(wy), rstak(xmw), rstak(vcvi),&
+    &   rstak(fc), rstak(red), rstak(t), rstak(par1), rstak(acc), ifit,&
+     &   weight, rstak(c), llhdr, page, wide)
 !
-      CALL DCOPY(N, RSTAK(RESI), 1, RES, 1)
+      call dcopy(n, rstak(resi), 1, res, 1)
 !
-      IF (SAVE) THEN
-         RSD = RSTAK(RSDI)
-         CALL DCOPY(NPAR, RSTAK(PARI), 1, PAR, 1)
-         CALL DCOPY(N, RSTAK(PVI), 1, PV, 1)
-         CALL DCOPY(N, RSTAK(SDPVI), 1, SDPV, 1)
-         CALL DCOPY(N, RSTAK(SDRESI), 1, SDRES, 1)
-         CALL CPYMSS(NPAR, NPAR, RSTAK(VCVI), NPAR, VCV, IVCV)
-      END IF
-      CALL STKCLR(NALL0)
+      if (save) then
+         rsd = rstak(rsdi)
+         call dcopy(npar, rstak(pari), 1, par, 1)
+         call dcopy(n, rstak(pvi), 1, pv, 1)
+         call dcopy(n, rstak(sdpvi), 1, sdpv, 1)
+         call dcopy(n, rstak(sdresi), 1, sdres, 1)
+         call cpymss(npar, npar, rstak(vcvi), npar, vcv, ivcv)
+      end if
+      call stkclr(nall0)
 !
-      IF (IERR.EQ.3) IERR = 2
-      IF (IERR.EQ.4) IERR = 3
+      if (ierr.eq.3) ierr = 2
+      if (ierr.eq.4) ierr = 3
 !
-      RETURN
+      return
 !
-      END
+      end

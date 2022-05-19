@@ -1,5 +1,5 @@
 !SMPLY
-      SUBROUTINE SMPLY (Y, N, NS, YS, NYS)
+      subroutine smply (y, n, ns, ys, nys)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,16 +16,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,NS,NYS
+     integer&
+     &   n,ns,nys
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(N),YS(N)
+     real(kind=wp) ::&
+     &   y(n),ys(n)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,I1
+     integer&
+     &   i,i1
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -42,15 +42,15 @@
 !     REAL YS(N)
 !        THE VECTOR IN WHICH THE SAMPLED SERIES IS RETURNED.
 !
-      NYS = 0
-      DO 30 I = 1, N, NS
-         NYS = NYS + 1
-         YS(NYS) = Y(I)
-   30 CONTINUE
-      I1 = NYS + 1
-      DO 40 I = I1, N
-         YS(I) = 0.0E0
-   40 CONTINUE
+      nys = 0
+      do 30 i = 1, n, ns
+         nys = nys + 1
+         ys(nys) = y(i)
+   30 continue
+      i1 = nys + 1
+      do 40 i = i1, n
+         ys(i) = 0.0e0
+   40 continue
 !
-      RETURN
-      END
+      return
+      end

@@ -1,5 +1,5 @@
 !XXCH1
-      SUBROUTINE XXCH1(LDSTAK,typ)
+      subroutine xxch1(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -19,30 +19,30 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,N
+     integer&
+     &   i,iprt,n
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   X(100),Y(100)
+     real(kind=wp) ::&
+     &   x(100),y(100)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,PP,STAT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -64,87 +64,87 @@
 !        DATA VECTOR FOR TESTS.
 !
 !
-      DATA N /84/
+      data n /84/
 !
-      DATA Y( 1), Y( 2), Y( 3), Y( 4)
-     &    / 0.6067E0, 0.6087E0, 0.6086E0, 0.6134E0/
-      DATA Y( 5), Y( 6), Y( 7)
-     &    / 0.6108E0, 0.6138E0, 0.6125E0/
-      DATA Y( 8), Y( 9), Y(10), Y(11)
-     &    / 0.6122E0, 0.6110E0, 0.6104E0, 0.7213E0/
-      DATA Y(12), Y(13), Y(14)
-     &    / 0.7078E0, 0.7021E0, 0.7004E0/
-      DATA Y(15), Y(16), Y(17), Y(18)
-     &    / 0.6981E0, 0.7242E0, 0.7268E0, 0.7418E0/
-      DATA Y(19), Y(20), Y(21)
-     &    / 0.7407E0, 0.7199E0, 0.6225E0/
-      DATA Y(22), Y(23), Y(24), Y(25)
-     &    / 0.6254E0, 0.6252E0, 0.6267E0, 0.6218E0/
-      DATA Y(26), Y(27), Y(28)
-     &    / 0.6178E0, 0.6216E0, 0.6192E0/
-      DATA Y(29), Y(30), Y(31), Y(32)
-     &    / 0.6191E0, 0.6250E0, 0.6188E0, 0.6233E0/
-      DATA Y(33), Y(34), Y(35)
-     &    / 0.6225E0, 0.6204E0, 0.6207E0/
-      DATA Y(36), Y(37), Y(38), Y(39)
-     &    / 0.6168E0, 0.6141E0, 0.6291E0, 0.6231E0/
-      DATA Y(40), Y(41), Y(42)
-     &    / 0.6222E0, 0.6252E0, 0.6308E0/
-      DATA Y(43), Y(44), Y(45), Y(46)
-     &    / 0.6376E0, 0.6330E0, 0.6303E0, 0.6301E0/
-      DATA Y(47), Y(48), Y(49)
-     &    / 0.6390E0, 0.6423E0, 0.6300E0/
-      DATA Y(50), Y(51), Y(52), Y(53)
-     &    / 0.6260E0, 0.6292E0, 0.6298E0, 0.6290E0/
-      DATA Y(54), Y(55), Y(56)
-     &    / 0.6262E0, 0.5952E0, 0.5951E0/
-      DATA Y(57), Y(58), Y(59), Y(60)
-     &    / 0.6314E0, 0.6440E0, 0.6439E0, 0.6326E0/
-      DATA Y(61), Y(62), Y(63)
-     &    / 0.6392E0, 0.6417E0, 0.6412E0/
-      DATA Y(64), Y(65), Y(66), Y(67)
-     &    / 0.6530E0, 0.6411E0, 0.6355E0, 0.6344E0/
-      DATA Y(68), Y(69), Y(70)
-     &    / 0.6623E0, 0.6276E0, 0.6307E0/
-      DATA Y(71), Y(72), Y(73), Y(74)
-     &    / 0.6354E0, 0.6197E0, 0.6153E0, 0.6340E0/
-      DATA Y(75), Y(76), Y(77)
-     &    / 0.6338E0, 0.6284E0, 0.6162E0/
-      DATA Y(78), Y(79), Y(80), Y(81)
-     &    / 0.6252E0, 0.6349E0, 0.6344E0, 0.6361E0/
-      DATA Y(82), Y(83), Y(84)
-     &    / 0.6373E0, 0.6337E0, 0.6383E0/
+     data y( 1), y( 2), y( 3), y( 4)&
+     &    / 0.6067e0, 0.6087e0, 0.6086e0, 0.6134e0/
+     data y( 5), y( 6), y( 7)&
+     &    / 0.6108e0, 0.6138e0, 0.6125e0/
+     data y( 8), y( 9), y(10), y(11)&
+     &    / 0.6122e0, 0.6110e0, 0.6104e0, 0.7213e0/
+     data y(12), y(13), y(14)&
+     &    / 0.7078e0, 0.7021e0, 0.7004e0/
+     data y(15), y(16), y(17), y(18)&
+     &    / 0.6981e0, 0.7242e0, 0.7268e0, 0.7418e0/
+     data y(19), y(20), y(21)&
+     &    / 0.7407e0, 0.7199e0, 0.6225e0/
+     data y(22), y(23), y(24), y(25)&
+     &    / 0.6254e0, 0.6252e0, 0.6267e0, 0.6218e0/
+     data y(26), y(27), y(28)&
+     &    / 0.6178e0, 0.6216e0, 0.6192e0/
+     data y(29), y(30), y(31), y(32)&
+     &    / 0.6191e0, 0.6250e0, 0.6188e0, 0.6233e0/
+     data y(33), y(34), y(35)&
+     &    / 0.6225e0, 0.6204e0, 0.6207e0/
+     data y(36), y(37), y(38), y(39)&
+     &    / 0.6168e0, 0.6141e0, 0.6291e0, 0.6231e0/
+     data y(40), y(41), y(42)&
+     &    / 0.6222e0, 0.6252e0, 0.6308e0/
+     data y(43), y(44), y(45), y(46)&
+     &    / 0.6376e0, 0.6330e0, 0.6303e0, 0.6301e0/
+     data y(47), y(48), y(49)&
+     &    / 0.6390e0, 0.6423e0, 0.6300e0/
+     data y(50), y(51), y(52), y(53)&
+     &    / 0.6260e0, 0.6292e0, 0.6298e0, 0.6290e0/
+     data y(54), y(55), y(56)&
+     &    / 0.6262e0, 0.5952e0, 0.5951e0/
+     data y(57), y(58), y(59), y(60)&
+     &    / 0.6314e0, 0.6440e0, 0.6439e0, 0.6326e0/
+     data y(61), y(62), y(63)&
+     &    / 0.6392e0, 0.6417e0, 0.6412e0/
+     data y(64), y(65), y(66), y(67)&
+     &    / 0.6530e0, 0.6411e0, 0.6355e0, 0.6344e0/
+     data y(68), y(69), y(70)&
+     &    / 0.6623e0, 0.6276e0, 0.6307e0/
+     data y(71), y(72), y(73), y(74)&
+     &    / 0.6354e0, 0.6197e0, 0.6153e0, 0.6340e0/
+     data y(75), y(76), y(77)&
+     &    / 0.6338e0, 0.6284e0, 0.6162e0/
+     data y(78), y(79), y(80), y(81)&
+     &    / 0.6252e0, 0.6349e0, 0.6344e0, 0.6361e0/
+     data y(82), y(83), y(84)&
+     &    / 0.6373e0, 0.6337e0, 0.6383e0/
 !
 !     DEFINE IPRT, THE CURRENT OUTPUT UNIT.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      DO 10 I=1,N
-         X(I) = I
-   10 CONTINUE
+      do 10 i=1,n
+         x(i) = i
+   10 continue
 !
 !     PRINT HEADING
 !
-      WRITE (IPRT,1000)
+      write (iprt,1000)
 !
 !     PERFORM SIMPLE TEST OF PP
 !
-      WRITE (IPRT,1100)
-      CALL PP(Y, X, N)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1100)
+      call pp(y, x, n)
+      write (iprt,2000) ierr
 !
 !     PERFORM SIMPLE TEST OF STAT
 !
-      WRITE (IPRT,1200)
-      CALL STAT(Y, N, LDSTAK)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1200)
+      call stat(y, n, ldstak)
+      write (iprt,2000) ierr
 !
-      RETURN
+      return
 !
 !     FORMATS
 !
- 1000 FORMAT ('1*CH1')
- 1100 FORMAT (' SIMPLE TEST OF PP')
- 1200 FORMAT ('1SIMPLE TEST OF STAT')
- 2000 FORMAT (/' THE VALUE OF IERR IS ', I4)
-      END
+ 1000 format ('1*CH1')
+ 1100 format (' SIMPLE TEST OF PP')
+ 1200 format ('1SIMPLE TEST OF STAT')
+ 2000 format (/' THE VALUE OF IERR IS ', i4)
+      end

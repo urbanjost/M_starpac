@@ -1,6 +1,6 @@
 !ERVII
-      SUBROUTINE ERVII (NMSUB, NMVAR, Y, N, YLB, YUB, NVMX,
-     &   HEAD, MSGTYP, NV, ERROR)
+     subroutine ervii (nmsub, nmvar, y, n, ylb, yub, nvmx,&
+     &   head, msgtyp, nv, error)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -26,22 +26,22 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YLB,YUB
-      INTEGER
-     &   MSGTYP,N,NV,NVMX
-      LOGICAL
-     &   ERROR,HEAD
+     real(kind=wp) ::&
+     &   ylb,yub
+     integer&
+     &   msgtyp,n,nv,nvmx
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*)
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR(8)*1
+     real(kind=wp) ::&
+     &   y(*)
+     character&
+     &   nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,NNV,NNVMN
+     integer&
+     &   i,iprt,nnv,nnvmn
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -85,61 +85,61 @@
 !        THE (INCLUSIVE) RANGE THAT THE VECTOR IS BEING TESTED
 !        AGAINST.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (N .LE. 0) RETURN
+      if (n .le. 0) return
 !
 !     TEST WHETHER TESTING IS NECESSRY
 !
-      IF ((MSGTYP .EQ. 2) .AND.
-     &    (Y(1) .LT. YLB) .OR. (Y(1) .GT. YUB)) RETURN
+     if ((msgtyp .eq. 2) .and.&
+     &    (y(1) .lt. ylb) .or. (y(1) .gt. yub)) return
 !
 !     CHECK FOR VIOLATIONS
 !
-      NV = 0
-      DO 10 I = 1, N
-         IF ((Y(I).LT.YLB) .OR. (Y(I).GT.YUB)) NV = NV + 1
-   10 CONTINUE
+      nv = 0
+      do 10 i = 1, n
+         if ((y(i).lt.ylb) .or. (y(i).gt.yub)) nv = nv + 1
+   10 continue
 !
-      IF (NV .LE. NVMX) RETURN
+      if (nv .le. nvmx) return
 !
 !     VIOLATIONS FOUND
 !
-      ERROR = .TRUE.
-      CALL IPRINT(IPRT)
+      error = .true.
+      call iprint(iprt)
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      NNV = N - NV
-      NNVMN = N - NVMX
+      nnv = n - nv
+      nnvmn = n - nvmx
 !
-      IF (MSGTYP .EQ. 0)
-     &   WRITE(IPRT, 1010) (NMVAR(I), I = 1, 6), YLB, YUB, NV
-      IF (MSGTYP .EQ. 1)
-     &   WRITE(IPRT, 1020) (NMVAR(I), I = 1, 6), YLB, YUB,
-     &   NNVMN, NNV
-      IF (MSGTYP .EQ. 2)
-     &   WRITE(IPRT, 1030) (NMVAR(I), I = 1, 6), YLB, YUB
+     if (msgtyp .eq. 0)&
+     &   write(iprt, 1010) (nmvar(i), i = 1, 6), ylb, yub, nv
+     if (msgtyp .eq. 1)&
+    &   write(iprt, 1020) (nmvar(i), i = 1, 6), ylb, yub,&
+     &   nnvmn, nnv
+     if (msgtyp .eq. 2)&
+     &   write(iprt, 1030) (nmvar(i), i = 1, 6), ylb, yub
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT(/
-     &   26H THE VALUES IN THE VECTOR , 6A1,
-     &   26H MUST ALL BE IN THE RANGE , 1PE14.7, 3H TO/
-     &   1X, 1PE14.7,
-     &      52H, INCLUSIVE. THE NUMBER OF VALUES OUTSIDE THIS RANGE,
-     &   4H IS , I5, '.')
- 1020 FORMAT(/
-     &   36H THE NUMBER OF VALUES IN THE VECTOR , 6A1,
-     &   14H IN THE RANGE , 1PE14.7, 3H TO/
-     &   1X, 1PE14.7, 34H, INCLUSIVE, MUST EQUAL OR EXCEED , I5, '.'/
-     &   ' THE NUMBER OF VALUES IN THIS RANGE IS ', I5, '.')
- 1030 FORMAT(/
-     &   34H IF THE FIRST VALUE OF THE VECTOR , 6A1,
-     &   16H IS IN THE RANGE, 1PE14.7, 3H TO/
-     &   1X, 1PE14.7,
-     &      52H INCLUSIVE, ALL OF THE VALUES MUST BE IN THIS RANGE.)
+1010 format(/&
+    &   26h the values in the vector , 6a1,&
+    &   26h must all be in the range , 1pe14.7, 3h to/&
+    &   1x, 1pe14.7,&
+    &      52h, inclusive. the number of values outside this range,&
+     &   4h is , i5, '.')
+1020 format(/&
+    &   36h the number of values in the vector , 6a1,&
+    &   14h in the range , 1pe14.7, 3h to/&
+    &   1x, 1pe14.7, 34h, inclusive, must equal or exceed , i5, '.'/&
+     &   ' THE NUMBER OF VALUES IN THIS RANGE IS ', i5, '.')
+1030 format(/&
+    &   34h if the first value of the vector , 6a1,&
+    &   16h is in the range, 1pe14.7, 3h to/&
+    &   1x, 1pe14.7,&
+     &      52h inclusive, all of the values must be in this range.)
 !
-      END
+      end

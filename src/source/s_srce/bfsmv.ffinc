@@ -1,6 +1,6 @@
 !BFSMV
-      SUBROUTINE BFSMV(CCOV, NLPPC, INDEX1, INDEX2, N, LAGMAX, ICCOV,
-     &  JCCOV, INLPPC, JNLPPC)
+     subroutine bfsmv(ccov, nlppc, index1, index2, n, lagmax, iccov,&
+     &  jccov, inlppc, jnlppc)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,46 +19,46 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ICCOV,INDEX1,INDEX2,INLPPC,JCCOV,JNLPPC,LAGMAX,N
+     integer&
+     &   iccov,index1,index2,inlppc,jccov,jnlppc,lagmax,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CCOV(*)
-      INTEGER
-     &   NLPPC(*)
+     real(kind=wp) ::&
+     &   ccov(*)
+     integer&
+     &   nlppc(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ALPHA,DELTA,FMAX,FMIN,YMISS1,YMISS2
-      INTEGER
-     &   ICSPC2,IPHAS,IPRT,LAGMX1,LAGMXU,LDSMIN,LDSTAK,LPCV,LW,LY,
-     &   M,NF,NPRT,NW
+     real(kind=wp) ::&
+     &   alpha,delta,fmax,fmin,ymiss1,ymiss2
+     integer&
+    &   icspc2,iphas,iprt,lagmx1,lagmxu,ldsmin,ldstak,lpcv,lw,ly,&
+     &   m,nf,nprt,nw
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   CEVEN(101),CODD(101),CSPC2(101,4),FREQ(101),PHAS(101,4),
-     &   SPCF1(101),SPCF2(101),W(101),XAXIS(404),Y1(1),Y2(1),
-     &   YAXIS(404)
-      INTEGER
-     &   ISYM(404),LAGS(4)
-      LOGICAL
-     &   OPTION(4)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+    &   ceven(101),codd(101),cspc2(101,4),freq(101),phas(101,4),&
+    &   spcf1(101),spcf2(101),w(101),xaxis(404),y1(1),y2(1),&
+     &   yaxis(404)
+     integer&
+     &   isym(404),lags(4)
+     logical&
+     &   option(4)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL BFSDRV,ECVF,IPRINT,PARZEN,SETLAG
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -165,57 +165,57 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
+     data nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6) /&
      &   'B','F','S','M','V',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      OPTION(1) = .FALSE.
-      OPTION(2) = .TRUE.
-      OPTION(3) = .TRUE.
-      OPTION(4) = .FALSE.
+      option(1) = .false.
+      option(2) = .true.
+      option(3) = .true.
+      option(4) = .false.
 !
-      M = 2
+      m = 2
 !
-      ICSPC2 = 101
-      IPHAS = 101
+      icspc2 = 101
+      iphas = 101
 !
-      LDSTAK = 0
-      LDSMIN = 0
+      ldstak = 0
+      ldsmin = 0
 !
-      NF = 101
-      LW = 101
-      LY = N
-      LPCV = 404
+      nf = 101
+      lw = 101
+      ly = n
+      lpcv = 404
 !
 !     SET MAXIMUM LAG VALUE USED (LAGMXU)
 !     SET NUMBER OF LAG WINDOW TRUCCATION POINTS (NW)
 !
-      CALL SETLAG(N, LAGMXU)
-      LAGMXU = MIN(LAGMXU,LAGMAX)
-      NW = 4
+      call setlag(n, lagmxu)
+      lagmxu = min(lagmxu,lagmax)
+      nw = 4
 !
 !     CALL THE CONTROLING ROUTINE FOR THE BIVARIATE SPECTRUM ROUTINES
 !
-      CALL BFSDRV(Y1, Y2, YMISS1, YMISS2, CCOV, NLPPC, SPCF1, SPCF2,
-     &   NF, FMIN, FMAX, FREQ, N, NW, LAGMXU, LAGS, LAGMX1, W, LW,
-     &   DELTA, ISYM, XAXIS, YAXIS, LPCV, ALPHA, NPRT, PARZEN, ICCOV,
-     &   JCCOV, M, INDEX1, INDEX2, CSPC2, PHAS, ICSPC2, IPHAS, CODD,
-     &   CEVEN, W, LW, NMSUB, LDSMIN, LDSTAK, OPTION, N, INLPPC,
-     &   JNLPPC, LY)
+     call bfsdrv(y1, y2, ymiss1, ymiss2, ccov, nlppc, spcf1, spcf2,&
+    &   nf, fmin, fmax, freq, n, nw, lagmxu, lags, lagmx1, w, lw,&
+    &   delta, isym, xaxis, yaxis, lpcv, alpha, nprt, parzen, iccov,&
+    &   jccov, m, index1, index2, cspc2, phas, icspc2, iphas, codd,&
+    &   ceven, w, lw, nmsub, ldsmin, ldstak, option, n, inlppc,&
+     &   jnlppc, ly)
 !
-      IF (IERR.NE.0) THEN
-        IF (IERR.EQ.2) CALL ECVF(NMSUB)
-        IERR = 1
-        CALL IPRINT(IPRT)
-        WRITE (IPRT,1000)
-      END IF
+      if (ierr.ne.0) then
+        if (ierr.eq.2) call ecvf(nmsub)
+        ierr = 1
+        call iprint(iprt)
+        write (iprt,1000)
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   '       CALL BFSMV (CCOV, NLPPC, INDEX1, INDEX2, N, LAGMAX,'/
+1000 format (/42h the correct form of the call statement is//&
+    &   '       CALL BFSMV (CCOV, NLPPC, INDEX1, INDEX2, N, LAGMAX,'/&
      &   '      +            ICCOV, JCCOV, INLPPC, JNLPPC)')
-      END
+      end

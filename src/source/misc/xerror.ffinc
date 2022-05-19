@@ -1,5 +1,5 @@
 !XERROR
-      SUBROUTINE XERROR(MESSG,NMESSG,NERR,LEVEL)
+      subroutine xerror(messg,nmessg,nerr,level)
 !
 !     ABSTRACT
 !        XERROR PROCESSES A DIAGNOSTIC MESSAGE, IN A MANNER
@@ -38,14 +38,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER LEVEL,NERR,NMESSG
+      integer level,nerr,nmessg
 !
 !  ARRAY ARGUMENTS
-      CHARACTER MESSG(NMESSG)*4
+      character messg(nmessg)*4
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL XERRWV
 !
-      CALL XERRWV(MESSG,NMESSG,NERR,LEVEL,0,0,0,0,0.,0.)
-      RETURN
-      END
+      call xerrwv(messg,nmessg,nerr,level,0,0,0,0,0.,0.)
+      return
+      end

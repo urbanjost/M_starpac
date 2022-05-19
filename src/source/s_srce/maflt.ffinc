@@ -1,5 +1,5 @@
 !MAFLT
-      SUBROUTINE MAFLT (Y, N, K, YF, NYF)
+      subroutine maflt (y, n, k, yf, nyf)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,34 +17,34 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   K,N,NYF
+     integer&
+     &   k,n,nyf
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*),YF(*)
+     real(kind=wp) ::&
+     &   y(*),yf(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   HMA
-      INTEGER
-     &   IPRT
-      LOGICAL
-     &   ERR01,ERR02,ERR03,HEAD
+     real(kind=wp) ::&
+     &   hma
+     integer&
+     &   iprt
+     logical&
+     &   err01,err02,err03,head
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   LK(8)*1,LN(8)*1,LONE(8)*1,NMSUB(6)*1
+     character&
+     &   lk(8)*1,ln(8)*1,lone(8)*1,nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EISGE,EISII,ERIODD,FLTMA,IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -82,54 +82,54 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'M',       'A',       'F',       'L',       'T',       ' '/
-      DATA
-     &  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
+     data&
+    &  lk(1), lk(2), lk(3), lk(4), lk(5), lk(6), lk(7), lk(8)&
      & /  'K', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
-      DATA
-     &  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     data&
+    &  ln(1), ln(2), ln(3), ln(4), ln(5), ln(6), ln(7), ln(8)&
      & /  'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
-      DATA
-     &  LONE(1), LONE(2), LONE(3), LONE(4), LONE(5), LONE(6), LONE(7),
-     &  LONE(8)  /  ' ', ' ', 'O', 'N', 'E', ' ', ' ', ' '/
+     data&
+    &  lone(1), lone(2), lone(3), lone(4), lone(5), lone(6), lone(7),&
+     &  lone(8)  /  ' ', ' ', 'O', 'N', 'E', ' ', ' ', ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 3, 1, HEAD, ERR01, LN)
+      call eisge(nmsub, ln, n, 3, 1, head, err01, ln)
 !
-      CALL EISII(NMSUB, LK, K, 1, N, 1, HEAD, ERR02, LONE, LN)
+      call eisii(nmsub, lk, k, 1, n, 1, head, err02, lone, ln)
 !
-      CALL ERIODD(NMSUB, LK, K, 1, HEAD, ERR03)
+      call eriodd(nmsub, lk, k, 1, head, err03)
 !
-      IF (ERR01 .OR. ERR02 .OR. ERR03) GO TO 10
-      GO TO 20
+      if (err01 .or. err02 .or. err03) go to 10
+      go to 20
 !
-   10 CONTINUE
-      IERR = 1
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+   10 continue
+      ierr = 1
+      call iprint (iprt)
+      write (iprt, 1000)
+      return
 !
-   20 CONTINUE
+   20 continue
 !
 !     COMPUTE THE SIMPLE MOVING AVERAGE COEFFICIENTS
 !
-      HMA = K
-      HMA = 1.0E0/HMA
+      hma = k
+      hma = 1.0e0/hma
 !
-      CALL FLTMA (Y, N, K, HMA, YF, NYF)
+      call fltma (y, n, k, hma, yf, nyf)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &   '       CALL MAFLT (Y, N, K, YF, NYF)')
-      END
+      end

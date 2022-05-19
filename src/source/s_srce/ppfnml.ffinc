@@ -1,5 +1,5 @@
 !PPFNML
-      REAL(KIND=WP) FUNCTION PPFNML(P)
+      real(kind=wp) function ppfnml(p)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -79,15 +79,15 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   P
+     real(kind=wp) ::&
+     &   p
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ADEN,ANUM,P0,P1,P2,P3,P4,Q0,Q1,Q2,Q3,Q4,R,T
+     real(kind=wp) ::&
+     &   aden,anum,p0,p1,p2,p3,p4,q0,q1,q2,q3,q4,r,t
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC LOG,SQRT
+      intrinsic log,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -104,27 +104,27 @@
 !     REAL T
 !        *
 !
-      DATA P0, P1, P2, P3, P4
-     &  /-.322232431088E0, -1.0E0, -.342242088547E0,
-     &   -.204231210245E-1,-.453642210148E-4/
-      DATA Q0, Q1, Q2, Q3, Q4
-     &  /.993484626060E-1, .588581570495E0,
-     &   .531103462366E0, .103537752850E0, .38560700634E-2/
+     data p0, p1, p2, p3, p4&
+    &  /-.322232431088e0, -1.0e0, -.342242088547e0,&
+     &   -.204231210245e-1,-.453642210148e-4/
+     data q0, q1, q2, q3, q4&
+    &  /.993484626060e-1, .588581570495e0,&
+     &   .531103462366e0, .103537752850e0, .38560700634e-2/
 !
 !
-      IF (P.NE.0.5E0) GO TO 30
-      PPFNML = 0.0E0
-      RETURN
+      if (p.ne.0.5e0) go to 30
+      ppfnml = 0.0e0
+      return
 !
-   30 R = P
-      IF (P.GT.0.5E0) R = 1.0E0 - R
-      T = SQRT(-2.0E0*LOG(R))
-      ANUM = ((((T*P4+P3)*T+P2)*T+P1)*T+P0)
-      ADEN = ((((T*Q4+Q3)*T+Q2)*T+Q1)*T+Q0)
-      PPFNML = T + (ANUM/ADEN)
+   30 r = p
+      if (p.gt.0.5e0) r = 1.0e0 - r
+      t = sqrt(-2.0e0*log(r))
+      anum = ((((t*p4+p3)*t+p2)*t+p1)*t+p0)
+      aden = ((((t*q4+q3)*t+q2)*t+q1)*t+q0)
+      ppfnml = t + (anum/aden)
 !
-      IF (P.LT.0.5E0) PPFNML = -PPFNML
+      if (p.lt.0.5e0) ppfnml = -ppfnml
 !
-      RETURN
+      return
 !
-      END
+      end

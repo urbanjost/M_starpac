@@ -1,5 +1,5 @@
 !DCOEF
-      SUBROUTINE DCOEF (NDF, ND, IOD, NPARDF, PARDF, MBO, WORK)
+      subroutine dcoef (ndf, nd, iod, npardf, pardf, mbo, work)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,22 +16,22 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   MBO,NDF,NPARDF
+     integer&
+     &   mbo,ndf,npardf
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PARDF(*),WORK(*)
-      INTEGER
-     &   IOD(*),ND(*)
+     real(kind=wp) ::&
+     &   pardf(*),work(*)
+     integer&
+     &   iod(*),nd(*)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   K,KK,L,NTIMES,NWORK1,NWORK2
+     integer&
+     &   k,kk,l,ntimes,nwork1,nwork2
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     &   NCHOSE
+     integer&
+     &   nchose
 !       EXTERNAL NCHOSE
 !
 !  EXTERNAL SUBROUTINES
@@ -66,22 +66,22 @@
 !     REAL WORK(MBO,2)
 !        A WORK ARRAY NECESSARY TO EXPAND THE DIFFERENCE FILTER.
 !
-      NPARDF = 0
+      npardf = 0
 !
-      DO 30 L = 1, NDF
-         IF (ND(L).EQ.0) GO TO 30
-         NTIMES = ND(L)
-         NWORK1 = IOD(L) * ND(L)
-         DO 10 K = 1, NWORK1
-            WORK(K) = 0.0E0
-   10    CONTINUE
-         DO 20 K = 1, NTIMES
-            KK = K * IOD(L)
-            WORK(KK) = ((-1)**(K+1)) * NCHOSE(NTIMES, K)
-   20    CONTINUE
-         NWORK2 = NWORK1 + NPARDF
-         CALL MULTBP (WORK(1), NWORK1, PARDF, NPARDF, WORK(MBO+1),
-     &      NWORK2, MBO)
-   30 CONTINUE
-      RETURN
-      END
+      do 30 l = 1, ndf
+         if (nd(l).eq.0) go to 30
+         ntimes = nd(l)
+         nwork1 = iod(l) * nd(l)
+         do 10 k = 1, nwork1
+            work(k) = 0.0e0
+   10    continue
+         do 20 k = 1, ntimes
+            kk = k * iod(l)
+            work(kk) = ((-1)**(k+1)) * nchose(ntimes, k)
+   20    continue
+         nwork2 = nwork1 + npardf
+        call multbp (work(1), nwork1, pardf, npardf, work(mbo+1),&
+     &      nwork2, mbo)
+   30 continue
+      return
+      end

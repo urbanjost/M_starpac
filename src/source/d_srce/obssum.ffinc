@@ -1,6 +1,6 @@
 !OBSSUM
-      SUBROUTINE OBSSUM(N, M, XM, Y, PV, SDPV, RES, SDRES, WT, IXM,
-     &   WEIGHT, K, IFIRST, ILAST, JCOL1, JCOLM)
+     subroutine obssum(n, m, xm, y, pv, sdpv, res, sdres, wt, ixm,&
+     &   weight, k, ifirst, ilast, jcol1, jcolm)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,26 +17,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IFIRST,ILAST,IXM,JCOL1,JCOLM,K,M,N
-      LOGICAL
-     &   WEIGHT
+     integer&
+     &   ifirst,ilast,ixm,jcol1,jcolm,k,m,n
+     logical&
+     &   weight
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PV(N),RES(N),SDPV(N),SDRES(N),WT(N),XM(IXM,M),Y(N)
+     real(kind=wp) ::&
+     &   pv(n),res(n),sdpv(n),sdres(n),wt(n),xm(ixm,m),y(n)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM
-      INTEGER
-     &   I,IPRT,J
-      CHARACTER
-     &   STRING*20,FMT1*160,FMT2*160,FMT3*160
+     real(kind=wp) ::&
+     &   fplm
+     integer&
+     &   i,iprt,j
+     character&
+     &   string*20,fmt1*160,fmt2*160,fmt3*160
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -49,7 +49,7 @@
 !      EXTERNAL IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -101,60 +101,60 @@
 !     REAL(KIND=WP) :: Y(N)
 !        THE ARRAY OF THE DEPENDENT VARIABLE.
 !
-      FPLM = D1MACH(2)
+      fplm = d1mach(2)
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     CONSTRUCT FORMAT
 !
-      IF (K.EQ.1) THEN
-         STRING = '1X,I4,15X,G15.8,15X,'
-      ELSE IF (K.EQ.2) THEN
-         STRING = '1X,I4,7X,2G15.8,8X, '
-      ELSE
-         STRING = '1X,I4,3G15.8,       '
-      END IF
-      WRITE (FMT1,1020) STRING
-      WRITE (FMT2,1030) STRING
-      WRITE (FMT3,1040) STRING
+      if (k.eq.1) then
+         string = '1X,I4,15X,G15.8,15X,'
+      else if (k.eq.2) then
+         string = '1X,I4,7X,2G15.8,8X, '
+      else
+         string = '1X,I4,3G15.8,       '
+      end if
+      write (fmt1,1020) string
+      write (fmt2,1030) string
+      write (fmt3,1040) string
 !
-      DO 140 I=IFIRST, ILAST
-         IF (MVCHK(SDPV(I),FPLM)) THEN
-            IF (WEIGHT) THEN
-               WRITE (IPRT, FMT1) I, (XM(I,J),J=JCOL1,JCOLM),
-     &                            Y(I), PV(I), RES(I), WT(I)
-            ELSE
-               WRITE (IPRT, FMT1) I, (XM(I,J),J=JCOL1,JCOLM),
-     &                            Y(I), PV(I), RES(I)
-            END IF
-         ELSE
-            IF (MVCHK(SDRES(I),FPLM)) THEN
-               IF (WEIGHT) THEN
-                  WRITE (IPRT, FMT2) I, (XM(I,J),J=JCOL1,JCOLM),
-     &                               Y(I), PV(I), SDPV(I), RES(I), WT(I)
-               ELSE
-                  WRITE (IPRT, FMT2) I, (XM(I,J),J=JCOL1,JCOLM),
-     &                               Y(I), PV(I), SDPV(I), RES(I)
-               END IF
-            ELSE
-               IF (WEIGHT) THEN
-                  WRITE (IPRT, FMT3) I, (XM(I,J),J=JCOL1,JCOLM),
-     &                               Y(I), PV(I), SDPV(I), RES(I),
-     &                               SDRES(I), WT(I)
-               ELSE
-                  WRITE (IPRT, FMT3) I, (XM(I,J),J=JCOL1,JCOLM),
-     &                               Y(I), PV(I), SDPV(I), RES(I),
-     &                               SDRES(I)
-               END IF
-            END IF
-         END IF
-  140 CONTINUE
+      do 140 i=ifirst, ilast
+         if (mvchk(sdpv(i),fplm)) then
+            if (weight) then
+              write (iprt, fmt1) i, (xm(i,j),j=jcol1,jcolm),&
+     &                            y(i), pv(i), res(i), wt(i)
+            else
+              write (iprt, fmt1) i, (xm(i,j),j=jcol1,jcolm),&
+     &                            y(i), pv(i), res(i)
+            end if
+         else
+            if (mvchk(sdres(i),fplm)) then
+               if (weight) then
+                 write (iprt, fmt2) i, (xm(i,j),j=jcol1,jcolm),&
+     &                               y(i), pv(i), sdpv(i), res(i), wt(i)
+               else
+                 write (iprt, fmt2) i, (xm(i,j),j=jcol1,jcolm),&
+     &                               y(i), pv(i), sdpv(i), res(i)
+               end if
+            else
+               if (weight) then
+                 write (iprt, fmt3) i, (xm(i,j),j=jcol1,jcolm),&
+    &                               y(i), pv(i), sdpv(i), res(i),&
+     &                               sdres(i), wt(i)
+               else
+                 write (iprt, fmt3) i, (xm(i,j),j=jcol1,jcolm),&
+    &                               y(i), pv(i), sdpv(i), res(i),&
+     &                               sdres(i)
+               end if
+            end if
+         end if
+  140 continue
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1020 FORMAT ('(',A20,'2G16.8,8X,4HNC *,4X,G16.8,4X,4HNC *,1X,E9.3)')
- 1030 FORMAT ('(',A20,'4G16.8,4X,4HNC *,1X,E9.3)')
- 1040 FORMAT ('(',A20,'4G16.8,1X,F7.2,1X,E9.3)')
-      END
+ 1020 format ('(',a20,'2G16.8,8X,4HNC *,4X,G16.8,4X,4HNC *,1X,E9.3)')
+ 1030 format ('(',a20,'4G16.8,4X,4HNC *,1X,E9.3)')
+ 1040 format ('(',a20,'4G16.8,1X,F7.2,1X,E9.3)')
+      end

@@ -1,5 +1,5 @@
 !R9GMIT
-      REAL FUNCTION R9GMIT (A, X, ALGAP1, SGNGAM, ALX)
+      real function r9gmit (a, x, algap1, sgngam, alx)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! COMPUTE TRICOMI-S INCOMPLETE GAMMA FUNCTION FOR SMALL X.
@@ -8,11 +8,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL A,ALGAP1,ALX,SGNGAM,X
+      real a,algap1,alx,sgngam,x
 !
 !  LOCAL SCALARS
-      REAL AE,AEPS,ALG2,ALGS,BOT,EPS,FK,S,SGNG2,T,TE
-      INTEGER K,M,MA
+      real ae,aeps,alg2,algs,bot,eps,fk,s,sgng2,t,te
+      integer k,m,ma
 !
 !  EXTERNAL FUNCTIONS
 !      REAL ALNGAM,R1MACH
@@ -22,62 +22,62 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,EXP,FLOAT,LOG,SIGN
+      intrinsic abs,exp,float,log,sign
 !
-      DATA EPS, BOT / 2*0.0 /
+      data eps, bot / 2*0.0 /
 !
-      IF (EPS.EQ.0.0) EPS = 0.5*R1MACH(3)
-      IF (BOT.EQ.0.0) BOT = LOG(R1MACH(1))
+      if (eps.eq.0.0) eps = 0.5*r1mach(3)
+      if (bot.eq.0.0) bot = log(r1mach(1))
 !
-      IF (X.LE.0.0) CALL XERROR ('R9GMIT  X SHOULD BE GT 0', 24, 1, 2)
+      if (x.le.0.0) call xerror ('R9GMIT  X SHOULD BE GT 0', 24, 1, 2)
 !
-      MA = A + 0.5
-      IF (A.LT.0.0) MA = A - 0.5
-      AEPS = A - FLOAT(MA)
+      ma = a + 0.5
+      if (a.lt.0.0) ma = a - 0.5
+      aeps = a - float(ma)
 !
-      AE = A
-      IF (A.LT.(-0.5)) AE = AEPS
+      ae = a
+      if (a.lt.(-0.5)) ae = aeps
 !
-      T = 1.0
-      TE = AE
-      S = T
-      DO 20 K=1,200
-        FK = K
-        TE = -X*TE/FK
-        T = TE/(AE+FK)
-        S = S + T
-        IF (ABS(T).LT.EPS*ABS(S)) GO TO 30
- 20   CONTINUE
-      CALL XERROR (  'R9GMIT  NO CONVERGENCE IN 200 TERMS OF TAYLOR-S SE
+      t = 1.0
+      te = ae
+      s = t
+      do 20 k=1,200
+        fk = k
+        te = -x*te/fk
+        t = te/(ae+fk)
+        s = s + t
+        if (abs(t).lt.eps*abs(s)) go to 30
+ 20   continue
+     call xerror (  'R9GMIT  NO CONVERGENCE IN 200 TERMS OF TAYLOR-S SE&
      &RIES', 54, 2, 2)
 !
- 30   IF (A.GE.(-0.5)) THEN
-         ALGS = -ALGAP1 + LOG(S)
-      ELSE
+ 30   if (a.ge.(-0.5)) then
+         algs = -algap1 + log(s)
+      else
 !
-         ALGS = -ALNGAM(1.0+AEPS) + LOG(S)
-         S = 1.0
-         M = -MA - 1
-         IF (M.EQ.0) GO TO 50
-         T = 1.0
-         DO 40 K=1,M
-            T = X*T/(AEPS-FLOAT(M+1-K))
-            S = S + T
-            IF (ABS(T).LT.EPS*ABS(S)) GO TO 50
- 40      CONTINUE
+         algs = -alngam(1.0+aeps) + log(s)
+         s = 1.0
+         m = -ma - 1
+         if (m.eq.0) go to 50
+         t = 1.0
+         do 40 k=1,m
+            t = x*t/(aeps-float(m+1-k))
+            s = s + t
+            if (abs(t).lt.eps*abs(s)) go to 50
+ 40      continue
 !
- 50      R9GMIT = 0.0
-         ALGS = -FLOAT(MA)*LOG(X) + ALGS
-         IF (S.NE.0.0 .AND. AEPS.NE.0.0) THEN
-            SGNG2 = SGNGAM*SIGN(1.0,S)
-            ALG2 = -X - ALGAP1 + LOG(ABS(S))
+ 50      r9gmit = 0.0
+         algs = -float(ma)*log(x) + algs
+         if (s.ne.0.0 .and. aeps.ne.0.0) then
+            sgng2 = sgngam*sign(1.0,s)
+            alg2 = -x - algap1 + log(abs(s))
 !
-            IF (ALG2.GT.BOT) R9GMIT = SGNG2*EXP(ALG2)
-            IF (ALGS.GT.BOT) R9GMIT = R9GMIT + EXP(ALGS)
-            RETURN
-         END IF
-      END IF
-      R9GMIT = EXP(ALGS)
-      RETURN
+            if (alg2.gt.bot) r9gmit = sgng2*exp(alg2)
+            if (algs.gt.bot) r9gmit = r9gmit + exp(algs)
+            return
+         end if
+      end if
+      r9gmit = exp(algs)
+      return
 !
-      END
+      end

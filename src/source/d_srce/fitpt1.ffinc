@@ -1,6 +1,6 @@
 !FITPT1
-      SUBROUTINE FITPT1(N, M, XM, Y, PV, SDPV, RES, SDRES, WT, IXM,
-     &   NNZW, WEIGHT, IPTOUT)
+     subroutine fitpt1(n, m, xm, y, pv, sdpv, res, sdres, wt, ixm,&
+     &   nnzw, weight, iptout)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,24 +17,24 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IPTOUT,IXM,M,N,NNZW
-      LOGICAL
-     &   WEIGHT
+     integer&
+     &   iptout,ixm,m,n,nnzw
+     logical&
+     &   weight
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PV(N),RES(N),SDPV(N),SDRES(N),WT(N),XM(IXM,M),Y(N)
+     real(kind=wp) ::&
+     &   pv(n),res(n),sdpv(n),sdres(n),wt(n),xm(ixm,m),y(n)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM
-      INTEGER
-     &   I,IPRT,JCOL1,JCOLM,K,NMAX
+     real(kind=wp) ::&
+     &   fplm
+     integer&
+     &   i,iprt,jcol1,jcolm,k,nmax
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -45,10 +45,10 @@
 !      EXTERNAL IPRINT,OBSSUM
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -98,103 +98,103 @@
 !     REAL(KIND=WP) :: Y(N)
 !        THE ARRAY OF THE DEPENDENT VARIABLE.
 !
-      FPLM = D1MACH(2)
+      fplm = d1mach(2)
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      WRITE (IPRT,1100)
+      write (iprt,1100)
 !
-      IF (WEIGHT) THEN
-         WRITE (IPRT,1010)
-      ELSE
-         WRITE (IPRT,1000)
-      END IF
-      WRITE (IPRT, 1110)
+      if (weight) then
+         write (iprt,1010)
+      else
+         write (iprt,1000)
+      end if
+      write (iprt, 1110)
 !
 !     TEST WHETHER COLUMN VECTOR XM(*, 1) = VECTOR 1.0_WP
 !
-      DO 10 I=1,N
-         IF (XM(I,1).NE.1.0_WP) GO TO 20
-   10 CONTINUE
-      GO TO 30
+      do 10 i=1,n
+         if (xm(i,1).ne.1.0_wp) go to 20
+   10 continue
+      go to 30
 !
 !     NOT A UNIT VECTOR
 !
-   20 JCOL1 = 1
-      JCOLM = MIN(M,3)
-      GO TO 40
+   20 jcol1 = 1
+      jcolm = min(m,3)
+      go to 40
 !
 !     UNIT VECTOR
 !
-   30 JCOLM = MIN(M,4)
-      JCOL1 = MIN(2,JCOLM)
-   40 K = JCOLM - JCOL1 + 1
+   30 jcolm = min(m,4)
+      jcol1 = min(2,jcolm)
+   40 k = jcolm - jcol1 + 1
 !
-      NMAX = N
-      IF ((IPTOUT.EQ.1) .AND. (N.GE.45)) NMAX = MIN(N,40)
+      nmax = n
+      if ((iptout.eq.1) .and. (n.ge.45)) nmax = min(n,40)
 !
 !     PRINT OBSERVATION SUMMARY
 !
-      CALL OBSSUM(N, M, XM, Y, PV, SDPV, RES, SDRES, WT, IXM,
-     &   WEIGHT, K, 1, NMAX, JCOL1, JCOLM)
+     call obssum(n, m, xm, y, pv, sdpv, res, sdres, wt, ixm,&
+     &   weight, k, 1, nmax, jcol1, jcolm)
 !
-      IF (NMAX.GE.N) GO TO 200
+      if (nmax.ge.n) go to 200
 !
-      DO 195 I = 1, 3
+      do 195 i = 1, 3
 !
-         GO TO (160, 170, 180), K
-  160    WRITE (IPRT,1120)
-         GO TO 190
-  170    WRITE (IPRT,1130)
-         GO TO 190
-  180    WRITE (IPRT,1140)
+         go to (160, 170, 180), k
+  160    write (iprt,1120)
+         go to 190
+  170    write (iprt,1130)
+         go to 190
+  180    write (iprt,1140)
 !
-  190    CONTINUE
-         WRITE (IPRT, 1150)
-         IF (WEIGHT) WRITE (IPRT, 1160)
+  190    continue
+         write (iprt, 1150)
+         if (weight) write (iprt, 1160)
 !
-  195 CONTINUE
+  195 continue
 !
 !     PRINT LAST LINE OF OUTPUT
 !
-      CALL OBSSUM(N, M, XM, Y, PV, SDPV, RES, SDRES, WT, IXM,
-     &   WEIGHT, K, N, N, JCOL1, JCOLM)
+     call obssum(n, m, xm, y, pv, sdpv, res, sdres, wt, ixm,&
+     &   weight, k, n, n, jcol1, jcolm)
 !
-  200 CONTINUE
+  200 continue
 !
-      IF ((NNZW.LT.N) .AND. (IERR.EQ.0)) WRITE (IPRT, 1060)
-      IF ((NNZW.LT.N) .AND. (IERR.EQ.4)) WRITE (IPRT, 1070)
-      IF ((NNZW.EQ.N) .AND. (IERR.EQ.4)) WRITE (IPRT, 1080)
-      IF ((IERR.GT.0) .AND. (IERR.NE.4)) WRITE (IPRT, 1090)
+      if ((nnzw.lt.n) .and. (ierr.eq.0)) write (iprt, 1060)
+      if ((nnzw.lt.n) .and. (ierr.eq.4)) write (iprt, 1070)
+      if ((nnzw.eq.n) .and. (ierr.eq.4)) write (iprt, 1080)
+      if ((ierr.gt.0) .and. (ierr.ne.4)) write (iprt, 1090)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/53X, 9HDEPENDENT, 7X, 9HPREDICTED, 5X, 12H STD DEV OF ,
-     &   24X, 4HSTD /
-     &   2X, 3HROW, 13X, 16HPREDICTOR VALUES, 20X, 8HVARIABLE, 8X,
-     &   6H VALUE, 8X, 12HPRED VALUE  , 6X, 9HRESIDUAL , 8X, 3HRES)
- 1010 FORMAT (/53X, 9HDEPENDENT, 7X, 9HPREDICTED, 5X, 12H STD DEV OF ,
-     &   24X, 4HSTD /
-     &   2X, 3HROW, 13X, 16HPREDICTOR VALUES, 20X, 8HVARIABLE, 8X,
-     &   6H VALUE, 8X, 12HPRED VALUE  , 6X, 9HRESIDUAL , 8X, 3HRES,
-     &   4X, 6HWEIGHT)
- 1060 FORMAT (// 37H *  NC  -  VALUE NOT COMPUTED BECAUSE,
-     &   20H THE WEIGHT IS ZERO.)
- 1070 FORMAT (// 44H *  NC  -  VALUE NOT COMPUTED BECAUSE EITHER,
-     &   53H THE WEIGHT OR THE STANDARD DEVIATION OF THE RESIDUAL,
-     &   9H IS ZERO.)
- 1080 FORMAT (// 37H *  NC  -  VALUE NOT COMPUTED BECAUSE,
-     &   48H THE STANDARD DEVIATION OF THE RESIDUAL IS ZERO.)
- 1090 FORMAT (// 29H *  NC  -  VALUE NOT COMPUTED,
-     &   54H BECAUSE CONVERGENCE PROBLEMS PREVENTED THE COVARIANCE,
-     &   28H MATRIX FROM BEING COMPUTED.)
- 1100 FORMAT (//31H RESULTS FROM LEAST SQUARES FIT/ 1X, 31('-'))
- 1110 FORMAT (' ')
- 1120 FORMAT (4X, '.', 25X, '.')
- 1130 FORMAT (4X, '.', 3X, 2(14X, '.'))
- 1140 FORMAT (4X, '.', 10X, '.', 2(14X, '.'))
- 1150 FORMAT ('+', 49X, 11X, '.', 3(15X, '.'), 11X, '.')
- 1160 FORMAT ('+', 130X, '.')
-      END
+1000 format (/53x, 9hdependent, 7x, 9hpredicted, 5x, 12h std dev of ,&
+    &   24x, 4hstd /&
+    &   2x, 3hrow, 13x, 16hpredictor values, 20x, 8hvariable, 8x,&
+     &   6h value, 8x, 12hpred value  , 6x, 9hresidual , 8x, 3hres)
+1010 format (/53x, 9hdependent, 7x, 9hpredicted, 5x, 12h std dev of ,&
+    &   24x, 4hstd /&
+    &   2x, 3hrow, 13x, 16hpredictor values, 20x, 8hvariable, 8x,&
+    &   6h value, 8x, 12hpred value  , 6x, 9hresidual , 8x, 3hres,&
+     &   4x, 6hweight)
+1060 format (// 37h *  nc  -  value not computed because,&
+     &   20h the weight is zero.)
+1070 format (// 44h *  nc  -  value not computed because either,&
+    &   53h the weight or the standard deviation of the residual,&
+     &   9h is zero.)
+1080 format (// 37h *  nc  -  value not computed because,&
+     &   48h the standard deviation of the residual is zero.)
+1090 format (// 29h *  nc  -  value not computed,&
+    &   54h because convergence problems prevented the covariance,&
+     &   28h matrix from being computed.)
+ 1100 format (//31h results from least squares fit/ 1x, 31('-'))
+ 1110 format (' ')
+ 1120 format (4x, '.', 25x, '.')
+ 1130 format (4x, '.', 3x, 2(14x, '.'))
+ 1140 format (4x, '.', 10x, '.', 2(14x, '.'))
+ 1150 format ('+', 49x, 11x, '.', 3(15x, '.'), 11x, '.')
+ 1160 format ('+', 130x, '.')
+      end

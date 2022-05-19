@@ -1,6 +1,6 @@
 !UFSEST
-      SUBROUTINE UFSEST(ACOV, W, LAG, SPCF, ISPCF, LACOV, LW, NF, FREQ,
-     &   DELTA)
+     subroutine ufsest(acov, w, lag, spcf, ispcf, lacov, lw, nf, freq,&
+     &   delta)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,26 +18,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   DELTA
-      INTEGER
-     &   ISPCF,LACOV,LAG,LW,NF
+     real(kind=wp) ::&
+     &   delta
+     integer&
+     &   ispcf,lacov,lag,lw,nf
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV(LACOV),FREQ(NF),SPCF(ISPCF),W(LW)
+     real(kind=wp) ::&
+     &   acov(lacov),freq(nf),spcf(ispcf),w(lw)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   C,PI,V0,V1,V2
-      INTEGER
-     &   I,K,KK
+     real(kind=wp) ::&
+     &   c,pi,v0,v1,v2
+     integer&
+     &   i,k,kk
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC COS
+      intrinsic cos
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -74,22 +74,22 @@
 !     REAL(KIND=WP) :: W(LW)
 !        THE VECTOR OF LAG WINDOWS.
 !
-      CALL GETPI(PI)
+      call getpi(pi)
 !
 !        COMPUTE THE SPECTRUM AND ITS CONFIDENCE LIMITS.
 !
-      DO 20 I=1,NF
-         C = COS(2.0_WP*PI*FREQ(I))
-         V0 = 0.0_WP
-         V1 = 0.0_WP
-         DO 10 K=1,LAG
-            KK = LAG + 1 - K
-            V2 = 2.0_WP*C*V1 - V0 + W(KK+1)*ACOV(KK+1)
-            V0 = V1
-            V1 = V2
-   10    CONTINUE
-         SPCF(I) = DELTA*(ACOV(1)*W(1)+2.0_WP*(V1*C-V0))
-         IF (SPCF(I).LT.0.0_WP) SPCF(I) = 0.0_WP
-   20 CONTINUE
-      RETURN
-      END
+      do 20 i=1,nf
+         c = cos(2.0_wp*pi*freq(i))
+         v0 = 0.0_wp
+         v1 = 0.0_wp
+         do 10 k=1,lag
+            kk = lag + 1 - k
+            v2 = 2.0_wp*c*v1 - v0 + w(kk+1)*acov(kk+1)
+            v0 = v1
+            v1 = v2
+   10    continue
+         spcf(i) = delta*(acov(1)*w(1)+2.0_wp*(v1*c-v0))
+         if (spcf(i).lt.0.0_wp) spcf(i) = 0.0_wp
+   20 continue
+      return
+      end

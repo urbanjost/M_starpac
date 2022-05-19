@@ -1,5 +1,5 @@
 !STAT
-      SUBROUTINE STAT(Y, N, LDSTAK)
+      subroutine stat(y, n, ldstak)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,35 +18,35 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK,N
+     integer&
+     &   ldstak,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*)
+     real(kind=wp) ::&
+     &   y(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ALPHA,SUMD2,SUMD3,SUMD4,SUMDA,SUMDI,SUMT1
-      INTEGER
-     &   IDP,IINT,IPRT,LSORT,MID,NALL0,NNZW
-      LOGICAL
-     &   STACK,WTS
+     real(kind=wp) ::&
+     &   alpha,sumd2,sumd3,sumd4,sumda,sumdi,sumt1
+     integer&
+     &   idp,iint,iprt,lsort,mid,nall0,nnzw
+     logical&
+     &   stack,wts
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   STS(53),WT(1)
-      INTEGER
-     &   ISTAK(12)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   sts(53),wt(1)
+     integer&
+     &   istak(12)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -58,11 +58,11 @@
 !     +   SUMBS,SUMDS,SUMID,SUMOT,SUMSS,SUMTS
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
+      equivalence (dstak(1),istak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -131,73 +131,73 @@
 !
 !     INITIALIZE NAME VECTORS
 !
-      DATA  NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6)
+     data  nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6)&
      &   /       'S',      'T',      'A',      'T',      ' ',      ' '/
 !
-      DATA ALPHA /0.25E0/
-      DATA IDP /4/
-      DATA IINT /2/
-      DATA WTS /.FALSE./
-      DATA STACK /.TRUE./
+      data alpha /0.25e0/
+      data idp /4/
+      data iint /2/
+      data wts /.false./
+      data stack /.true./
 !
 !     CHECK FOR ERRORS IN THE INPUT PARAMETERS
 !
-      CALL STATER(NMSUB, WT, N, LDSTAK, WTS, NNZW, STACK, IERR)
-      IF (IERR.NE.0) THEN
+      call stater(nmsub, wt, n, ldstak, wts, nnzw, stack, ierr)
+      if (ierr.ne.0) then
 !
 !     PRINT ERROR MESSAGE.
 !
-         CALL IPRINT(IPRT)
-         WRITE (IPRT,1000)
-         RETURN
-      END IF
+         call iprint(iprt)
+         write (iprt,1000)
+         return
+      end if
 !
 !     SET UP FRAMEWORK AREA.
 !
-      CALL STKSET (LDSTAK, IDP)
-      NALL0 = STKST(1)
+      call stkset (ldstak, idp)
+      nall0 = stkst(1)
 !
 !     SET UP LSORT, THE PERMUTATION VECTOR.
 !
-      LSORT = STKGET(N,IINT)
-      CALL GENI(ISTAK(LSORT), N, 1, 1)
+      lsort = stkget(n,iint)
+      call geni(istak(lsort), n, 1, 1)
 !
 !     SORT THE VECTOR Y.
 !
-      CALL SRTIR(ISTAK(LSORT), N, Y)
+      call srtir(istak(lsort), n, y)
 !
 !     COMPUTE THE STATISTICS WHICH USE A SORTED ARRAY.
 !
-      CALL STAT1(Y, N, STS(5), STS(34), STS(35), STS(6),
-     &   STS(11), 10, 0.0E0, 0.0E0, STS(44))
+     call stat1(y, n, sts(5), sts(34), sts(35), sts(6),&
+     &   sts(11), 10, 0.0e0, 0.0e0, sts(44))
 !
 !     CALCULATE SUMS OF THE SORTED ARRAY.
 !
-      CALL SUMBS(Y, N, 1, MID, N)
-      CALL SUMSS(Y, N, 1, MID, N, STS(38), STS(39), STS(42),
-     &   STS(3))
-      STS(4) = STS(3)
-      CALL SUMTS(Y, N, ALPHA, SUMT1, STS(7))
-      STS(8) = STS(7)
-      CALL SUMDS(Y, N, 1, MID, N, STS(3), SUMDA, SUMD2, SUMD3, SUMD4)
+      call sumbs(y, n, 1, mid, n)
+     call sumss(y, n, 1, mid, n, sts(38), sts(39), sts(42),&
+     &   sts(3))
+      sts(4) = sts(3)
+      call sumts(y, n, alpha, sumt1, sts(7))
+      sts(8) = sts(7)
+      call sumds(y, n, 1, mid, n, sts(3), sumda, sumd2, sumd3, sumd4)
 !
 !     RESTORE THE VECTOR Y TO ITS ORIGINAL ORDER.
 !
-      CALL SRTRI(Y, N, ISTAK(LSORT))
+      call srtri(y, n, istak(lsort))
 !
 !     COMPUTE REST OF STATISTICS.
 !
-      CALL SUMID(Y, N, STS(3), SUMDI)
-      CALL STAT2(Y, N, STS, SUMDA, SUMDI, SUMD2, SUMD3, SUMD4)
-      CALL SUMOT(STS, N, N, WTS)
+      call sumid(y, n, sts(3), sumdi)
+      call stat2(y, n, sts, sumda, sumdi, sumd2, sumd3, sumd4)
+      call sumot(sts, n, n, wts)
 !
 !     RETURN THE VECTOR LSORT.
 !
-      CALL STKCLR(NALL0)
-      RETURN
+      call stkclr(nall0)
+      return
 !
 !     FORMAT STATEMENTS.
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &   '       CALL STAT (Y, N, LDSTAK)')
-      END
+      end

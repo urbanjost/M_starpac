@@ -1,5 +1,5 @@
 !CCFSD
-      SUBROUTINE CCFSD (CCOV11, CCOV22, SDRHOC, LAGMAX, NCC, N, ICCOV)
+      subroutine ccfsd (ccov11, ccov22, sdrhoc, lagmax, ncc, n, iccov)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,21 +16,21 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ICCOV,LAGMAX,N,NCC
+     integer&
+     &   iccov,lagmax,n,ncc
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CCOV11(ICCOV),CCOV22(ICCOV),SDRHOC(NCC)
+     real(kind=wp) ::&
+     &   ccov11(iccov),ccov22(iccov),sdrhoc(ncc)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DIV,SUM
-      INTEGER
-     &   I,ILAST,K,K0,KM,KP
+     real(kind=wp) ::&
+     &   div,sum
+     integer&
+     &   i,ilast,k,k0,km,kp
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN,SQRT
+      intrinsic min,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -62,31 +62,31 @@
 !     REAL SUM
 !         A SUMMING VARIABLE.
 !
-      K0 = LAGMAX + 1
+      k0 = lagmax + 1
 !
-      DIV = CCOV11(1) * CCOV22(1)
+      div = ccov11(1) * ccov22(1)
 !
-      SUM = 0.0E0
-      DO 10 I = 1, LAGMAX
-         SUM = SUM + CCOV11(I+1) * CCOV22(I+1)
-   10 CONTINUE
-      SUM = SUM / DIV
-      SDRHOC(K0) = SQRT(N + 2.0E0 * SUM) / N
+      sum = 0.0e0
+      do 10 i = 1, lagmax
+         sum = sum + ccov11(i+1) * ccov22(i+1)
+   10 continue
+      sum = sum / div
+      sdrhoc(k0) = sqrt(n + 2.0e0 * sum) / n
 !
-      DO 30 K = 1, LAGMAX
-         SUM = 0.0E0
-         ILAST = MIN(LAGMAX, N-LAGMAX)
-         DO 20 I = 1, ILAST
-            SUM = SUM + (N-K-I)*CCOV11(I+1)*CCOV22(I+1)
-   20    CONTINUE
-         SUM = SUM / DIV
-         KM = K0 - K
-         SDRHOC(KM) = SQRT((N - K) + 2.0E0 * SUM) / N
+      do 30 k = 1, lagmax
+         sum = 0.0e0
+         ilast = min(lagmax, n-lagmax)
+         do 20 i = 1, ilast
+            sum = sum + (n-k-i)*ccov11(i+1)*ccov22(i+1)
+   20    continue
+         sum = sum / div
+         km = k0 - k
+         sdrhoc(km) = sqrt((n - k) + 2.0e0 * sum) / n
 !
-         KP = K0 + K
-         SDRHOC(KP) = SDRHOC(KM)
+         kp = k0 + k
+         sdrhoc(kp) = sdrhoc(km)
 !
-   30 CONTINUE
+   30 continue
 !
-      RETURN
-      END
+      return
+      end

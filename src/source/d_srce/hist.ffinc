@@ -1,5 +1,5 @@
 !HIST
-      SUBROUTINE HIST(Y, N, LDSTAK)
+      subroutine hist(y, n, ldstak)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,33 +16,33 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK,N
+     integer&
+     &   ldstak,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*)
+     real(kind=wp) ::&
+     &   y(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   YLB,YUB
-      INTEGER
-     &   IDP,IFP,IINT,IPRT,LSORT,NALL0,NCELLS,YDIST
+     real(kind=wp) ::&
+     &   ylb,yub
+     integer&
+     &   idp,ifp,iint,iprt,lsort,nall0,ncells,ydist
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSTAK(12)
-      INTEGER
-     &   ISTAK(12)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   rstak(12)
+     integer&
+     &   istak(12)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -53,15 +53,15 @@
 !      EXTERNAL HSTER,HSTMN,IPRINT,STKCLR,STKSET
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ANINT,LOG10,MIN,NINT,DBLE
+      intrinsic anint,log10,min,nint,dble
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
+      equivalence (dstak(1),istak(1))
+      equivalence (dstak(1),rstak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -112,55 +112,55 @@
 !
 !     INITIALIZE NAME VECTORS
 !
-      DATA  NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6)
+     data  nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6)&
      &   /       'H',      'I',      'S',      'T',      ' ',      ' '/
 !
-      DATA IDP /4/
-      DATA IINT /2/
-      DATA YLB/0.0_WP/, YUB/0.0_WP/
+      data idp /4/
+      data iint /2/
+      data ylb/0.0_wp/, yub/0.0_wp/
 !
 !     COMPUTE NCELLS
 !
-      IF (N.GE.1) THEN
-         NCELLS = MIN(NINT(5.5_WP+1.5_WP*ANINT(LOG10(DBLE(N)))),25)
-      ELSE
-         NCELLS = 1
-      END IF
+      if (n.ge.1) then
+         ncells = min(nint(5.5_wp+1.5_wp*anint(log10(dble(n)))),25)
+      else
+         ncells = 1
+      end if
 !
 !     CHECK FOR ERRORS IN THE INPUT PARAMETERS
 !
-      CALL HSTER(NMSUB, Y, N, NCELLS, LDSTAK, YLB, YUB, IERR)
-      IF (IERR.EQ.0) GO TO 10
+      call hster(nmsub, y, n, ncells, ldstak, ylb, yub, ierr)
+      if (ierr.eq.0) go to 10
 !
 !     PRINT ERROR MESSAGE.
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
-      RETURN
+      call iprint(iprt)
+      write (iprt,1000)
+      return
 !
 !     SET UP FRAMEWORK AREA.
 !
-   10 CALL STKSET (LDSTAK, IDP)
-      NALL0 = STKST(1)
+   10 call stkset (ldstak, idp)
+      nall0 = stkst(1)
 !
 !     SET UP WORK VECTORS
 !
-      IFP = 4
+      ifp = 4
 !
-      LSORT = STKGET(N,IINT)
-      YDIST = STKGET(NCELLS,IFP)
+      lsort = stkget(n,iint)
+      ydist = stkget(ncells,ifp)
 !
 !     COMPUTE THE HISTOGRAM.
 !
-      CALL HSTMN(Y, N, NCELLS, YLB, YUB, ISTAK(LSORT), RSTAK(YDIST))
+      call hstmn(y, n, ncells, ylb, yub, istak(lsort), rstak(ydist))
 !
 !     RETURN THE WORK VECTORS.
 !
-      CALL STKCLR(NALL0)
-      RETURN
+      call stkclr(nall0)
+      return
 !
 !     FORMAT STATEMENTS.
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &   '       CALL HIST (Y, N, LDSTAK)')
-      END
+      end

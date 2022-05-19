@@ -1,5 +1,5 @@
 !VERSP
-      SUBROUTINE VERSP (WIDE)
+      subroutine versp (wide)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,12 +15,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      LOGICAL
-     &   WIDE
+     logical&
+     &   wide
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
@@ -32,18 +32,18 @@
 !     LOGICAL WIDE
 !        THE MAXIMUM NUMBER OF COLUMNS THE PRINTED OUTPUT CAN USE.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      IF (WIDE) THEN
-         WRITE(IPRT, 1000)
-      ELSE
-         WRITE(IPRT, 1010)
-      END IF
+      if (wide) then
+         write(iprt, 1000)
+      else
+         write(iprt, 1010)
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (105X, 'STARPAC 3.00 (05/15/2022)')
- 1010 FORMAT (54X, 'STARPAC 3.00 (05/15/2022)')
-      END
+ 1000 format (105x, 'STARPAC 3.00 (05/15/2022)')
+ 1010 format (54x, 'STARPAC 3.00 (05/15/2022)')
+      end

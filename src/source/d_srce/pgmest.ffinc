@@ -1,5 +1,5 @@
 !PGMEST
-      SUBROUTINE PGMEST (YFFT, NFFT, NF, CNST, PER, LPER)
+      subroutine pgmest (yfft, nfft, nf, cnst, per, lper)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,20 +15,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CNST
-      INTEGER
-     &   LPER,NF,NFFT
+     real(kind=wp) ::&
+     &   cnst
+     integer&
+     &   lper,nf,nfft
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PER(LPER),YFFT(NFFT)
+     real(kind=wp) ::&
+     &   per(lper),yfft(nfft)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FAC
-      INTEGER
-     &   I,ISN,NFFT2
+     real(kind=wp) ::&
+     &   fac
+     integer&
+     &   i,isn,nfft2
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL FFT,REALTR
@@ -62,19 +62,19 @@
 !
 !     COMPUTE THE FOURIER COEFFICIENTS
 !
-      NFFT2 = (NFFT-2) / 2
-      ISN = 2
+      nfft2 = (nfft-2) / 2
+      isn = 2
 !
-      CALL FFT (YFFT(1), YFFT(2), NFFT2, NFFT2, NFFT2, ISN)
-      CALL REALTR (YFFT(1), YFFT(2), NFFT2, ISN)
+      call fft (yfft(1), yfft(2), nfft2, nfft2, nfft2, isn)
+      call realtr (yfft(1), yfft(2), nfft2, isn)
 !
-      FAC = 0.5_WP / (CNST * (NFFT-2))
+      fac = 0.5_wp / (cnst * (nfft-2))
 !
-      NF = NFFT2 + 1
+      nf = nfft2 + 1
 !
-      DO 10 I = 1, NF
-         PER(I) = (YFFT(2*I-1)*YFFT(2*I-1) + YFFT(2*I)*YFFT(2*I)) * FAC
-   10 CONTINUE
+      do 10 i = 1, nf
+         per(i) = (yfft(2*i-1)*yfft(2*i-1) + yfft(2*i)*yfft(2*i)) * fac
+   10 continue
 !
-      RETURN
-      END
+      return
+      end

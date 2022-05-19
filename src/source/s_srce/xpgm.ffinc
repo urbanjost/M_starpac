@@ -1,5 +1,5 @@
 !XPGM
-      SUBROUTINE XPGM(LDSTAK,typ)
+      subroutine xpgm(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -26,37 +26,37 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   TAPERP
-      INTEGER
-     &   I,IEXTND,IPRT,ITEST,LAB,LFREQ,LPER,LPERI,LZFFT,NF,NFFT,NK,
-     &   NPRT,NTEMP,NY,NZ
+     real(kind=wp) ::&
+     &   taperp
+     integer&
+    &   i,iextnd,iprt,itest,lab,lfreq,lper,lperi,lzfft,nf,nfft,nk,&
+     &   nprt,ntemp,ny,nz
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   AB(600),FREQ(300),PER(300),PERF(300),PERI(300),Y(150),
-     &   YFFT(400),Z(275),ZFFT(600),ZT(275)
-      INTEGER
-     &   K(10)
+     real(kind=wp) ::&
+    &   ab(600),freq(300),per(300),perf(300),peri(300),y(150),&
+     &   yfft(400),z(275),zfft(600),zt(275)
+     integer&
+     &   k(10)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL CENTER,FFTLEN,FFTR,IPGM,IPGMP,IPGMPS,IPGMS,IPRINT,MDFLT,
 !     +   PGM,PGMS,PPL,TAPER
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -146,391 +146,391 @@
 !     REAL ZT(275)
 !        THE ARRAY OF THE TAPERED SUNSPOT NUMBERS.
 !
-      DATA   Y(  1),  Y(  2),  Y(  3),  Y(  4),  Y(  5),  Y(  6)
-     &    / -.88_WP,  -.12_WP,  -.89_WP, -1.38_WP,  -.07_WP,  1.03_WP/
-      DATA   Y(  7),  Y(  8),  Y(  9),  Y( 10),  Y( 11),  Y( 12)
-     &    / 2.14_WP,   .35_WP, -1.10_WP, -1.78_WP, -2.76_WP, -1.77_WP/
-      DATA   Y( 13),  Y( 14),  Y( 15),  Y( 16),  Y( 17),  Y( 18)
-     &    /  .98_WP,  1.00_WP,  -.70_WP, -1.01_WP, -1.30_WP,  -.85_WP/
-      DATA   Y( 19),  Y( 20),  Y( 21),  Y( 22),  Y( 23),  Y( 24)
-     &    / -.46_WP,  1.63_WP,   .06_WP,  -.17_WP, -1.01_WP, -1.04_WP/
-      DATA   Y( 25),  Y( 26),  Y( 27),  Y( 28),  Y( 29),  Y( 30)
-     &    / -.66_WP, -1.12_WP,  -.51_WP,  -.71_WP,  -.20_WP,  -.13_WP/
-      DATA   Y( 31),  Y( 32),  Y( 33),  Y( 34),  Y( 35),  Y( 36)
-     &    /  .14_WP,  1.59_WP,  -.76_WP, -1.08_WP, -1.77_WP, -1.20_WP/
-      DATA   Y( 37),  Y( 38),  Y( 39),  Y( 40),  Y( 41),  Y( 42)
-     &    /  .45_WP,  -.07_WP,  -.63_WP,  -.35_WP,  -.87_WP,  -.62_WP/
-      DATA   Y( 43),  Y( 44),  Y( 45),  Y( 46),  Y( 47),  Y( 48)
-     &    /  .28_WP,  1.90_WP,  2.14_WP,  1.05_WP,   .31_WP,  1.07_WP/
-      DATA   Y( 49),  Y( 50)
-     &    / 2.67_WP,  2.44_WP/
+     data   y(  1),  y(  2),  y(  3),  y(  4),  y(  5),  y(  6)&
+     &    / -.88_wp,  -.12_wp,  -.89_wp, -1.38_wp,  -.07_wp,  1.03_wp/
+     data   y(  7),  y(  8),  y(  9),  y( 10),  y( 11),  y( 12)&
+     &    / 2.14_wp,   .35_wp, -1.10_wp, -1.78_wp, -2.76_wp, -1.77_wp/
+     data   y( 13),  y( 14),  y( 15),  y( 16),  y( 17),  y( 18)&
+     &    /  .98_wp,  1.00_wp,  -.70_wp, -1.01_wp, -1.30_wp,  -.85_wp/
+     data   y( 19),  y( 20),  y( 21),  y( 22),  y( 23),  y( 24)&
+     &    / -.46_wp,  1.63_wp,   .06_wp,  -.17_wp, -1.01_wp, -1.04_wp/
+     data   y( 25),  y( 26),  y( 27),  y( 28),  y( 29),  y( 30)&
+     &    / -.66_wp, -1.12_wp,  -.51_wp,  -.71_wp,  -.20_wp,  -.13_wp/
+     data   y( 31),  y( 32),  y( 33),  y( 34),  y( 35),  y( 36)&
+     &    /  .14_wp,  1.59_wp,  -.76_wp, -1.08_wp, -1.77_wp, -1.20_wp/
+     data   y( 37),  y( 38),  y( 39),  y( 40),  y( 41),  y( 42)&
+     &    /  .45_wp,  -.07_wp,  -.63_wp,  -.35_wp,  -.87_wp,  -.62_wp/
+     data   y( 43),  y( 44),  y( 45),  y( 46),  y( 47),  y( 48)&
+     &    /  .28_wp,  1.90_wp,  2.14_wp,  1.05_wp,   .31_wp,  1.07_wp/
+     data   y( 49),  y( 50)&
+     &    / 2.67_wp,  2.44_wp/
 !
-      DATA   Z(  1),  Z(  2),  Z(  3),  Z(  4),  Z(  5),  Z(  6)
-     &    /  5.0_WP,  11.0_WP,  16.0_WP,  23.0_WP,  36.0_WP,  58.0_WP/
-      DATA   Z(  7),  Z(  8),  Z(  9),  Z( 10),  Z( 11),  Z( 12)
-     &    / 29.0_WP,  20.0_WP,  10.0_WP,   8.0_WP,   3.0_WP,   0.0_WP/
-      DATA   Z( 13),  Z( 14),  Z( 15),  Z( 16),  Z( 17),  Z( 18)
-     &    /  0.0_WP,   2.0_WP,  11.0_WP,  27.0_WP,  47.0_WP,  63.0_WP/
-      DATA   Z( 19),  Z( 20),  Z( 21),  Z( 22),  Z( 23),  Z( 24)
-     &    / 60.0_WP,  39.0_WP,  28.0_WP,  26.0_WP,  22.0_WP,  11.0_WP/
-      DATA   Z( 25),  Z( 26),  Z( 27),  Z( 28),  Z( 29),  Z( 30)
-     &    / 21.0_WP,  40.0_WP,  78.0_WP, 122.0_WP, 103.0_WP,  73.0_WP/
-      DATA   Z( 31),  Z( 32),  Z( 33),  Z( 34),  Z( 35),  Z( 36)
-     &    / 47.0_WP,  35.0_WP,  11.0_WP,   5.0_WP,  16.0_WP,  34.0_WP/
-      DATA   Z( 37),  Z( 38),  Z( 39),  Z( 40),  Z( 41),  Z( 42)
-     &    / 70.0_WP,  81.0_WP, 111.0_WP, 101.0_WP,  73.0_WP,  40.0_WP/
-      DATA   Z( 43),  Z( 44),  Z( 45),  Z( 46),  Z( 47),  Z( 48)
-     &    / 20.0_WP,  16.0_WP,   5.0_WP,  11.0_WP,  22.0_WP,  40.0_WP/
-      DATA   Z( 49),  Z( 50),  Z( 51),  Z( 52),  Z( 53),  Z( 54)
-     &    / 60.0_WP,  80.9_WP,  83.4_WP,  47.7_WP,  47.8_WP,  30.7_WP/
-      DATA   Z( 55),  Z( 56),  Z( 57),  Z( 58),  Z( 59),  Z( 60)
-     &    / 12.2_WP,   9.6_WP,  10.2_WP,  32.4_WP,  47.6_WP,  54.0_WP/
-      DATA   Z( 61),  Z( 62),  Z( 63),  Z( 64),  Z( 65),  Z( 66)
-     &    / 62.9_WP,  85.9_WP,  61.2_WP,  45.1_WP,  36.4_WP,  20.9_WP/
-      DATA   Z( 67),  Z( 68),  Z( 69),  Z( 70),  Z( 71),  Z( 72)
-     &    / 11.4_WP,  37.8_WP,  69.8_WP, 106.1_WP, 100.8_WP,  81.6_WP/
-      DATA   Z( 73),  Z( 74),  Z( 75),  Z( 76),  Z( 77),  Z( 78)
-     &    / 66.5_WP,  34.8_WP,  30.6_WP,   7.0_WP,  19.8_WP,  92.5_WP/
-      DATA   Z( 79),  Z( 80),  Z( 81),  Z( 82),  Z( 83),  Z( 84)
-     &    /154.4_WP, 125.9_WP,  84.8_WP,  68.1_WP,  38.5_WP,  22.8_WP/
-      DATA   Z( 85),  Z( 86),  Z( 87),  Z( 88),  Z( 89),  Z( 90)
-     &    / 10.2_WP,  24.1_WP,  82.9_WP, 132.0_WP, 130.9_WP, 118.1_WP/
-      DATA   Z( 91),  Z( 92),  Z( 93),  Z( 94),  Z( 95),  Z( 96)
-     &    / 89.9_WP,  66.6_WP,  60.0_WP,  46.9_WP,  41.0_WP,  21.3_WP/
-      DATA   Z( 97),  Z( 98),  Z( 99),  Z(100),  Z(101),  Z(102)
-     &    / 16.0_WP,   6.4_WP,   4.1_WP,   6.8_WP,  14.5_WP,  34.0_WP/
-      DATA   Z(103),  Z(104),  Z(105),  Z(106),  Z(107),  Z(108)
-     &    / 45.0_WP,  43.1_WP,  47.5_WP,  42.2_WP,  28.1_WP,  10.1_WP/
-      DATA   Z(109),  Z(110),  Z(111),  Z(112),  Z(113),  Z(114)
-     &    /  8.1_WP,   2.5_WP,   0.0_WP,   1.4_WP,   5.0_WP,  12.2_WP/
-      DATA   Z(115),  Z(116),  Z(117),  Z(118),  Z(119),  Z(120)
-     &    / 13.9_WP,  35.4_WP,  45.8_WP,  41.1_WP,  30.1_WP,  23.9_WP/
-      DATA   Z(121),  Z(122),  Z(123),  Z(124),  Z(125),  Z(126)
-     &    / 15.6_WP,   6.6_WP,   4.0_WP,   1.8_WP,   8.5_WP,  16.6_WP/
-      DATA   Z(127),  Z(128),  Z(129),  Z(130),  Z(131),  Z(132)
-     &    / 36.3_WP,  49.6_WP,  64.2_WP,  67.0_WP,  70.9_WP,  47.8_WP/
-      DATA   Z(133),  Z(134),  Z(135),  Z(136),  Z(137),  Z(138)
-     &    / 27.5_WP,   8.5_WP,  13.2_WP,  56.9_WP, 121.5_WP, 138.3_WP/
-      DATA   Z(139),  Z(140),  Z(141),  Z(142),  Z(143),  Z(144)
-     &    /103.2_WP,  85.7_WP,  64.6_WP,  36.7_WP,  24.2_WP,  10.7_WP/
-      DATA   Z(145),  Z(146),  Z(147),  Z(148),  Z(149),  Z(150)
-     &    / 15.0_WP,  40.1_WP,  61.5_WP,  98.5_WP, 124.7_WP,  96.3_WP/
-      DATA   Z(151),  Z(152),  Z(153),  Z(154),  Z(155),  Z(156)
-     &    / 66.6_WP,  64.5_WP,  54.1_WP,  39.0_WP,  20.6_WP,   6.7_WP/
-      DATA   Z(157),  Z(158),  Z(159),  Z(160),  Z(161),  Z(162)
-     &    /  4.3_WP,  22.7_WP,  54.8_WP,  93.8_WP,  95.8_WP,  77.2_WP/
-      DATA   Z(163),  Z(164),  Z(165),  Z(166),  Z(167),  Z(168)
-     &    / 59.1_WP,  44.0_WP,  47.0_WP,  30.5_WP,  16.3_WP,   7.3_WP/
-      DATA   Z(169),  Z(170),  Z(171),  Z(172),  Z(173),  Z(174)
-     &    / 37.6_WP,  74.0_WP, 139.0_WP, 111.2_WP, 101.6_WP,  66.2_WP/
-      DATA   Z(175),  Z(176),  Z(177),  Z(178),  Z(179),  Z(180)
-     &    / 44.7_WP,  17.0_WP,  11.3_WP,  12.4_WP,   3.4_WP,   6.0_WP/
-      DATA   Z(181),  Z(182),  Z(183),  Z(184),  Z(185),  Z(186)
-     &    / 32.3_WP,  54.3_WP,  59.7_WP,  63.7_WP,  63.5_WP,  52.2_WP/
-      DATA   Z(187),  Z(188),  Z(189),  Z(190),  Z(191),  Z(192)
-     &    / 25.4_WP,  13.1_WP,   6.8_WP,   6.3_WP,   7.1_WP,  35.6_WP/
-      DATA   Z(193),  Z(194),  Z(195),  Z(196),  Z(197),  Z(198)
-     &    / 73.0_WP,  85.1_WP,  78.0_WP,  64.0_WP,  41.8_WP,  26.2_WP/
-      DATA   Z(199),  Z(200),  Z(201),  Z(202),  Z(203),  Z(204)
-     &    / 26.7_WP,  12.1_WP,   9.5_WP,   2.7_WP,   5.0_WP,  24.4_WP/
-      DATA   Z(205),  Z(206),  Z(207),  Z(208),  Z(209),  Z(210)
-     &    / 42.0_WP,  63.5_WP,  53.8_WP,  62.0_WP,  48.5_WP,  43.9_WP/
-      DATA   Z(211),  Z(212),  Z(213),  Z(214),  Z(215),  Z(216)
-     &    / 18.6_WP,   5.7_WP,   3.6_WP,   1.4_WP,   9.6_WP,  47.4_WP/
-      DATA   Z(217),  Z(218),  Z(219),  Z(220),  Z(221),  Z(222)
-     &    / 57.1_WP, 103.9_WP,  80.6_WP,  63.6_WP,  37.6_WP,  26.1_WP/
-      DATA   Z(223),  Z(224),  Z(225),  Z(226),  Z(227),  Z(228)
-     &    / 14.2_WP,   5.8_WP,  16.7_WP,  44.3_WP,  63.9_WP,  69.0_WP/
-      DATA   Z(229),  Z(230),  Z(231),  Z(232),  Z(233),  Z(234)
-     &    / 77.8_WP,  64.9_WP,  35.7_WP,  21.2_WP,  11.1_WP,   5.7_WP/
-      DATA   Z(235),  Z(236),  Z(237),  Z(238),  Z(239),  Z(240)
-     &    /  8.7_WP,  36.1_WP,  79.7_WP, 114.4_WP, 109.6_WP,  88.8_WP/
-      DATA   Z(241),  Z(242),  Z(243),  Z(244),  Z(245),  Z(246)
-     &    / 67.8_WP,  47.5_WP,  30.6_WP,  16.3_WP,   9.6_WP,  33.2_WP/
-      DATA   Z(247),  Z(248),  Z(249),  Z(250),  Z(251),  Z(252)
-     &    / 92.6_WP, 151.6_WP, 136.3_WP, 134.7_WP,  83.9_WP,  69.4_WP/
-      DATA   Z(253),  Z(254),  Z(255),  Z(256),  Z(257),  Z(258)
-     &    / 31.5_WP,  13.9_WP,   4.4_WP,  38.0_WP, 141.7_WP, 190.2_WP/
-      DATA   Z(259),  Z(260),  Z(261)
-     &    /184.8_WP, 159.0_WP, 112.3_WP/
+     data   z(  1),  z(  2),  z(  3),  z(  4),  z(  5),  z(  6)&
+     &    /  5.0_wp,  11.0_wp,  16.0_wp,  23.0_wp,  36.0_wp,  58.0_wp/
+     data   z(  7),  z(  8),  z(  9),  z( 10),  z( 11),  z( 12)&
+     &    / 29.0_wp,  20.0_wp,  10.0_wp,   8.0_wp,   3.0_wp,   0.0_wp/
+     data   z( 13),  z( 14),  z( 15),  z( 16),  z( 17),  z( 18)&
+     &    /  0.0_wp,   2.0_wp,  11.0_wp,  27.0_wp,  47.0_wp,  63.0_wp/
+     data   z( 19),  z( 20),  z( 21),  z( 22),  z( 23),  z( 24)&
+     &    / 60.0_wp,  39.0_wp,  28.0_wp,  26.0_wp,  22.0_wp,  11.0_wp/
+     data   z( 25),  z( 26),  z( 27),  z( 28),  z( 29),  z( 30)&
+     &    / 21.0_wp,  40.0_wp,  78.0_wp, 122.0_wp, 103.0_wp,  73.0_wp/
+     data   z( 31),  z( 32),  z( 33),  z( 34),  z( 35),  z( 36)&
+     &    / 47.0_wp,  35.0_wp,  11.0_wp,   5.0_wp,  16.0_wp,  34.0_wp/
+     data   z( 37),  z( 38),  z( 39),  z( 40),  z( 41),  z( 42)&
+     &    / 70.0_wp,  81.0_wp, 111.0_wp, 101.0_wp,  73.0_wp,  40.0_wp/
+     data   z( 43),  z( 44),  z( 45),  z( 46),  z( 47),  z( 48)&
+     &    / 20.0_wp,  16.0_wp,   5.0_wp,  11.0_wp,  22.0_wp,  40.0_wp/
+     data   z( 49),  z( 50),  z( 51),  z( 52),  z( 53),  z( 54)&
+     &    / 60.0_wp,  80.9_wp,  83.4_wp,  47.7_wp,  47.8_wp,  30.7_wp/
+     data   z( 55),  z( 56),  z( 57),  z( 58),  z( 59),  z( 60)&
+     &    / 12.2_wp,   9.6_wp,  10.2_wp,  32.4_wp,  47.6_wp,  54.0_wp/
+     data   z( 61),  z( 62),  z( 63),  z( 64),  z( 65),  z( 66)&
+     &    / 62.9_wp,  85.9_wp,  61.2_wp,  45.1_wp,  36.4_wp,  20.9_wp/
+     data   z( 67),  z( 68),  z( 69),  z( 70),  z( 71),  z( 72)&
+     &    / 11.4_wp,  37.8_wp,  69.8_wp, 106.1_wp, 100.8_wp,  81.6_wp/
+     data   z( 73),  z( 74),  z( 75),  z( 76),  z( 77),  z( 78)&
+     &    / 66.5_wp,  34.8_wp,  30.6_wp,   7.0_wp,  19.8_wp,  92.5_wp/
+     data   z( 79),  z( 80),  z( 81),  z( 82),  z( 83),  z( 84)&
+     &    /154.4_wp, 125.9_wp,  84.8_wp,  68.1_wp,  38.5_wp,  22.8_wp/
+     data   z( 85),  z( 86),  z( 87),  z( 88),  z( 89),  z( 90)&
+     &    / 10.2_wp,  24.1_wp,  82.9_wp, 132.0_wp, 130.9_wp, 118.1_wp/
+     data   z( 91),  z( 92),  z( 93),  z( 94),  z( 95),  z( 96)&
+     &    / 89.9_wp,  66.6_wp,  60.0_wp,  46.9_wp,  41.0_wp,  21.3_wp/
+     data   z( 97),  z( 98),  z( 99),  z(100),  z(101),  z(102)&
+     &    / 16.0_wp,   6.4_wp,   4.1_wp,   6.8_wp,  14.5_wp,  34.0_wp/
+     data   z(103),  z(104),  z(105),  z(106),  z(107),  z(108)&
+     &    / 45.0_wp,  43.1_wp,  47.5_wp,  42.2_wp,  28.1_wp,  10.1_wp/
+     data   z(109),  z(110),  z(111),  z(112),  z(113),  z(114)&
+     &    /  8.1_wp,   2.5_wp,   0.0_wp,   1.4_wp,   5.0_wp,  12.2_wp/
+     data   z(115),  z(116),  z(117),  z(118),  z(119),  z(120)&
+     &    / 13.9_wp,  35.4_wp,  45.8_wp,  41.1_wp,  30.1_wp,  23.9_wp/
+     data   z(121),  z(122),  z(123),  z(124),  z(125),  z(126)&
+     &    / 15.6_wp,   6.6_wp,   4.0_wp,   1.8_wp,   8.5_wp,  16.6_wp/
+     data   z(127),  z(128),  z(129),  z(130),  z(131),  z(132)&
+     &    / 36.3_wp,  49.6_wp,  64.2_wp,  67.0_wp,  70.9_wp,  47.8_wp/
+     data   z(133),  z(134),  z(135),  z(136),  z(137),  z(138)&
+     &    / 27.5_wp,   8.5_wp,  13.2_wp,  56.9_wp, 121.5_wp, 138.3_wp/
+     data   z(139),  z(140),  z(141),  z(142),  z(143),  z(144)&
+     &    /103.2_wp,  85.7_wp,  64.6_wp,  36.7_wp,  24.2_wp,  10.7_wp/
+     data   z(145),  z(146),  z(147),  z(148),  z(149),  z(150)&
+     &    / 15.0_wp,  40.1_wp,  61.5_wp,  98.5_wp, 124.7_wp,  96.3_wp/
+     data   z(151),  z(152),  z(153),  z(154),  z(155),  z(156)&
+     &    / 66.6_wp,  64.5_wp,  54.1_wp,  39.0_wp,  20.6_wp,   6.7_wp/
+     data   z(157),  z(158),  z(159),  z(160),  z(161),  z(162)&
+     &    /  4.3_wp,  22.7_wp,  54.8_wp,  93.8_wp,  95.8_wp,  77.2_wp/
+     data   z(163),  z(164),  z(165),  z(166),  z(167),  z(168)&
+     &    / 59.1_wp,  44.0_wp,  47.0_wp,  30.5_wp,  16.3_wp,   7.3_wp/
+     data   z(169),  z(170),  z(171),  z(172),  z(173),  z(174)&
+     &    / 37.6_wp,  74.0_wp, 139.0_wp, 111.2_wp, 101.6_wp,  66.2_wp/
+     data   z(175),  z(176),  z(177),  z(178),  z(179),  z(180)&
+     &    / 44.7_wp,  17.0_wp,  11.3_wp,  12.4_wp,   3.4_wp,   6.0_wp/
+     data   z(181),  z(182),  z(183),  z(184),  z(185),  z(186)&
+     &    / 32.3_wp,  54.3_wp,  59.7_wp,  63.7_wp,  63.5_wp,  52.2_wp/
+     data   z(187),  z(188),  z(189),  z(190),  z(191),  z(192)&
+     &    / 25.4_wp,  13.1_wp,   6.8_wp,   6.3_wp,   7.1_wp,  35.6_wp/
+     data   z(193),  z(194),  z(195),  z(196),  z(197),  z(198)&
+     &    / 73.0_wp,  85.1_wp,  78.0_wp,  64.0_wp,  41.8_wp,  26.2_wp/
+     data   z(199),  z(200),  z(201),  z(202),  z(203),  z(204)&
+     &    / 26.7_wp,  12.1_wp,   9.5_wp,   2.7_wp,   5.0_wp,  24.4_wp/
+     data   z(205),  z(206),  z(207),  z(208),  z(209),  z(210)&
+     &    / 42.0_wp,  63.5_wp,  53.8_wp,  62.0_wp,  48.5_wp,  43.9_wp/
+     data   z(211),  z(212),  z(213),  z(214),  z(215),  z(216)&
+     &    / 18.6_wp,   5.7_wp,   3.6_wp,   1.4_wp,   9.6_wp,  47.4_wp/
+     data   z(217),  z(218),  z(219),  z(220),  z(221),  z(222)&
+     &    / 57.1_wp, 103.9_wp,  80.6_wp,  63.6_wp,  37.6_wp,  26.1_wp/
+     data   z(223),  z(224),  z(225),  z(226),  z(227),  z(228)&
+     &    / 14.2_wp,   5.8_wp,  16.7_wp,  44.3_wp,  63.9_wp,  69.0_wp/
+     data   z(229),  z(230),  z(231),  z(232),  z(233),  z(234)&
+     &    / 77.8_wp,  64.9_wp,  35.7_wp,  21.2_wp,  11.1_wp,   5.7_wp/
+     data   z(235),  z(236),  z(237),  z(238),  z(239),  z(240)&
+     &    /  8.7_wp,  36.1_wp,  79.7_wp, 114.4_wp, 109.6_wp,  88.8_wp/
+     data   z(241),  z(242),  z(243),  z(244),  z(245),  z(246)&
+     &    / 67.8_wp,  47.5_wp,  30.6_wp,  16.3_wp,   9.6_wp,  33.2_wp/
+     data   z(247),  z(248),  z(249),  z(250),  z(251),  z(252)&
+     &    / 92.6_wp, 151.6_wp, 136.3_wp, 134.7_wp,  83.9_wp,  69.4_wp/
+     data   z(253),  z(254),  z(255),  z(256),  z(257),  z(258)&
+     &    / 31.5_wp,  13.9_wp,   4.4_wp,  38.0_wp, 141.7_wp, 190.2_wp/
+     data   z(259),  z(260),  z(261)&
+     &    /184.8_wp, 159.0_wp, 112.3_wp/
 !
-      ITEST = 1
+      itest = 1
 !
 !     MAKE CALLS WITH VALID DATA
 !
-      NY = 50
-      NZ = 261
-      NFFT = 514
-      NPRT = 2
-      LZFFT = 600
-      LPER = 514
-      LPERI = 514
-      TAPERP = 0.10_WP
-      LFREQ = 300
-      IEXTND = 0
-      LAB = 600
-      NK = 3
-      K(1) = 8
-      K(2) = 8
-      K(3) = 8
+      ny = 50
+      nz = 261
+      nfft = 514
+      nprt = 2
+      lzfft = 600
+      lper = 514
+      lperi = 514
+      taperp = 0.10_wp
+      lfreq = 300
+      iextnd = 0
+      lab = 600
+      nk = 3
+      k(1) = 8
+      k(2) = 8
+      k(3) = 8
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     TEST OF CENTER
 !
-    5 WRITE (IPRT, 1018)
-      CALL CENTER (Z, NZ, ZT)
-      WRITE (IPRT, 1002) IERR
+    5 write (iprt, 1018)
+      call center (z, nz, zt)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VARIABLES FROM CENTER
 !
-      IF (IERR.EQ.0) WRITE (IPRT, 1004) (ZT(I), I = 1, NZ)
+      if (ierr.eq.0) write (iprt, 1004) (zt(i), i = 1, nz)
 !
 !     TEST OF TAPER
 !
-      WRITE (IPRT, 1015)
-      CALL TAPER (Z, NZ, TAPERP, ZT)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1015)
+      call taper (z, nz, taperp, zt)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VARIABLES FROM TAPER
 !
-      IF (IERR.EQ.0) WRITE (IPRT, 1004) (ZT(I), I = 1, NZ)
+      if (ierr.eq.0) write (iprt, 1004) (zt(i), i = 1, nz)
 !
 !     TEST OF PGM
 !
-      WRITE (IPRT, 1013)
-      CALL SCOPY (NZ, ZT, 1, ZFFT, 1)
-      CALL PGM (ZFFT, NZ, LZFFT, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1013)
+      call scopy (nz, zt, 1, zfft, 1)
+      call pgm (zfft, nz, lzfft, ldstak)
+      write (iprt, 1002) ierr
 !
 !     TEST OF FFTLEN
 !
-      WRITE (IPRT, 1026)
-      CALL FFTLEN(NFFT-2, 2, NTEMP)
-      WRITE(IPRT, 1002) IERR
+      write (iprt, 1026)
+      call fftlen(nfft-2, 2, ntemp)
+      write(iprt, 1002) ierr
 !
 !     PRINT RETURNED VARIABLES FROM FFTLEN
 !
-      IF (IERR.EQ.0) WRITE (IPRT, 1027) NTEMP
+      if (ierr.eq.0) write (iprt, 1027) ntemp
 !
 !     TEST OF PGMS
 !
-      NTEMP = NFFT-1
-      WRITE (IPRT, 1025)
-      CALL SCOPY (NZ, ZT, 1, ZFFT, 1)
-      CALL PGMS (ZFFT, NZ, NTEMP, LZFFT, IEXTND, NF, PER, LPER, FREQ,
-     &   LFREQ, -2)
-      WRITE (IPRT, 1027) NTEMP
-      WRITE (IPRT, 1002) IERR
+      ntemp = nfft-1
+      write (iprt, 1025)
+      call scopy (nz, zt, 1, zfft, 1)
+     call pgms (zfft, nz, ntemp, lzfft, iextnd, nf, per, lper, freq,&
+     &   lfreq, -2)
+      write (iprt, 1027) ntemp
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VARIABLES FROM PGMS
 !
-      IF (IERR.EQ.0) THEN
-        WRITE (IPRT, 1004) (FREQ(I), I = 1, NF)
-        WRITE (IPRT, 1004) (PER(I), I = 1, NF)
-      END IF
+      if (ierr.eq.0) then
+        write (iprt, 1004) (freq(i), i = 1, nf)
+        write (iprt, 1004) (per(i), i = 1, nf)
+      end if
 !
 !     TEST OF MDFLT
 !
-      WRITE (IPRT, 1016)
-      CALL MDFLT (PER, NF, NK, K, PERF, LDSTAK)
-      WRITE (IPRT, 1002) IERR
-      IF (IERR.EQ.0) THEN
+      write (iprt, 1016)
+      call mdflt (per, nf, nk, k, perf, ldstak)
+      write (iprt, 1002) ierr
+      if (ierr.eq.0) then
 !
 !       PRINT RETURNED VARIABLES FROM MDFLT
 !
-        WRITE (IPRT, 1004) (PERF(I), I = 1, NF)
+        write (iprt, 1004) (perf(i), i = 1, nf)
 !
 !       DISPLAY SMOOTHED PERIODOGRAM ON A LOG PLOT
 !
-        WRITE (IPRT, 1028)
-        CALL PPL (PERF, FREQ, NF, 1)
-      END IF
+        write (iprt, 1028)
+        call ppl (perf, freq, nf, 1)
+      end if
 !
 !     TEST OF IPGMP
 !
-      WRITE (IPRT, 1029)
-      CALL IPGMP (PER, FREQ, NF, NZ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1029)
+      call ipgmp (per, freq, nf, nz, ldstak)
+      write (iprt, 1002) ierr
 !
 !     TEST OF IPGMPS
 !
-      WRITE (IPRT, 1030)
-      CALL IPGMPS (PER, FREQ, NF, NZ, LDSTAK, PERI, NPRT)
-      WRITE (IPRT, 1002) IERR
-      IF (IERR.EQ.0) THEN
+      write (iprt, 1030)
+      call ipgmps (per, freq, nf, nz, ldstak, peri, nprt)
+      write (iprt, 1002) ierr
+      if (ierr.eq.0) then
 !
 !     PRINT RETURNED VARIABLES FROM IPGMPS
 !
-         WRITE (IPRT, 1004) (FREQ(I), I = 1, NF)
-         WRITE (IPRT, 1004) (PERI(I), I = 1, NF)
-      END IF
+         write (iprt, 1004) (freq(i), i = 1, nf)
+         write (iprt, 1004) (peri(i), i = 1, nf)
+      end if
 !
 !     TEST OF IPGM
 !
-      WRITE (IPRT, 1017)
-      CALL SCOPY (NZ, ZT, 1, ZFFT, 1)
-      CALL IPGM (ZFFT, NZ, LZFFT, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1017)
+      call scopy (nz, zt, 1, zfft, 1)
+      call ipgm (zfft, nz, lzfft, ldstak)
+      write (iprt, 1002) ierr
 !
 !     TEST OF IPGMS
 !
-      WRITE (IPRT, 1014)
-      CALL SCOPY (NZ, ZT, 1, ZFFT, 1)
-      CALL IPGMS (ZFFT, NZ, LZFFT, LDSTAK, NF, PERI, LPERI, FREQ, LFREQ,
-     &   NPRT)
-      WRITE (IPRT, 1002) IERR
-      IF (IERR.EQ.0) THEN
+      write (iprt, 1014)
+      call scopy (nz, zt, 1, zfft, 1)
+     call ipgms (zfft, nz, lzfft, ldstak, nf, peri, lperi, freq, lfreq,&
+     &   nprt)
+      write (iprt, 1002) ierr
+      if (ierr.eq.0) then
 !
 !     PRINT RETURNED VARIABLES FROM IPGMS
 !
-         WRITE (IPRT, 1004) (FREQ(I), I = 1, NF)
-         WRITE (IPRT, 1004) (PERI(I), I = 1, NF)
-      END IF
+         write (iprt, 1004) (freq(i), i = 1, nf)
+         write (iprt, 1004) (peri(i), i = 1, nf)
+      end if
 !
 !     TEST OF FFTR (CENTERED DATA - O PERCENT TAPER)
 !
-      TAPERP = -1.0_WP
-      WRITE (IPRT, 1031)
-      IF (NY.GE.1) CALL TAPER (Y, NY, TAPERP, YFFT)
-      CALL FFTR (YFFT, NY, NFFT, IEXTND, NF, AB, LAB)
-      WRITE (IPRT, 1002) IERR
+      taperp = -1.0_wp
+      write (iprt, 1031)
+      if (ny.ge.1) call taper (y, ny, taperp, yfft)
+      call fftr (yfft, ny, nfft, iextnd, nf, ab, lab)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VARIABLES FROM FFTR
 !
-      IF (IERR.EQ.0) WRITE (IPRT, 1004) (AB(I), I = 1, NF)
+      if (ierr.eq.0) write (iprt, 1004) (ab(i), i = 1, nf)
 !
-      GO TO (10, 20, 30, 40) ITEST
+      go to (10, 20, 30, 40) itest
 !
 !     CHECK MINIMUM PROBLEM SIZE
 !
-   10 ITEST = ITEST + 1
-      NZ = 17
-      NY = 17
-      GO TO 5
+   10 itest = itest + 1
+      nz = 17
+      ny = 17
+      go to 5
 !
 !     CHECK VARIOUS OPTIONS
 !
-   20 ITEST = ITEST + 1
+   20 itest = itest + 1
 !
 !     TEST OF MDFLT (ELEMENTS OF K NOT EVEN)
 !
-      K(1) = 7
-      WRITE (IPRT, 1016)
-      CALL MDFLT (PER, NF, NK, K, PERF, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      k(1) = 7
+      write (iprt, 1016)
+      call mdflt (per, nf, nk, k, perf, ldstak)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VARIABLES FROM MDFLT
 !
-      WRITE (IPRT, 1004) (PERF(I), I = 1, NF)
+      write (iprt, 1004) (perf(i), i = 1, nf)
 !
 !     TEST OF PGMS (UNCENTERED DATA)
 !
-      IEXTND = 1
-      NPRT = 1
-      WRITE (IPRT, 1025)
-      CALL SCOPY (NZ, Z, 1, ZFFT, 1)
-      CALL PGMS (ZFFT, NZ, NFFT, LZFFT, IEXTND, NF, PER, LPER, FREQ,
-     &   LFREQ, NPRT)
-      WRITE (IPRT, 1002) IERR
+      iextnd = 1
+      nprt = 1
+      write (iprt, 1025)
+      call scopy (nz, z, 1, zfft, 1)
+     call pgms (zfft, nz, nfft, lzfft, iextnd, nf, per, lper, freq,&
+     &   lfreq, nprt)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VARIABLES FROM PGMS
 !
-      WRITE (IPRT, 1004) (FREQ(I), I = 1, NF)
-      WRITE (IPRT, 1004) (PER(I), I = 1, NF)
+      write (iprt, 1004) (freq(i), i = 1, nf)
+      write (iprt, 1004) (per(i), i = 1, nf)
 !
-      NPRT = 2
-      WRITE (IPRT, 1025)
-      CALL SCOPY (NZ, Z, 1, ZFFT, 1)
-      CALL PGMS (ZFFT, NZ, NFFT, LZFFT, IEXTND, NF, PER, LPER, FREQ,
-     &   LFREQ, NPRT)
-      WRITE (IPRT, 1002) IERR
+      nprt = 2
+      write (iprt, 1025)
+      call scopy (nz, z, 1, zfft, 1)
+     call pgms (zfft, nz, nfft, lzfft, iextnd, nf, per, lper, freq,&
+     &   lfreq, nprt)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VARIABLES FROM PGMS
 !
-      WRITE (IPRT, 1004) (FREQ(I), I = 1, NF)
-      WRITE (IPRT, 1004) (PER(I), I = 1, NF)
+      write (iprt, 1004) (freq(i), i = 1, nf)
+      write (iprt, 1004) (per(i), i = 1, nf)
 !
 !     TEST OF FFTR (CENTERED DATA - 100 PERCENT TAPER)
 !
-      TAPERP = 1.1_WP
-      WRITE (IPRT, 1031)
-      CALL TAPER (Y, NY, TAPERP, YFFT)
-      CALL FFTR (YFFT, NY, NFFT, IEXTND, NF, AB, LAB)
-      WRITE (IPRT, 1002) IERR
+      taperp = 1.1_wp
+      write (iprt, 1031)
+      call taper (y, ny, taperp, yfft)
+      call fftr (yfft, ny, nfft, iextnd, nf, ab, lab)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VARIABLES FROM FFTR
 !
-      WRITE (IPRT, 1004) (AB(I), I = 1, NF)
+      write (iprt, 1004) (ab(i), i = 1, nf)
 !
 !     TEST OF FFTR (CENTERED DATA - O PERCENT TAPER)
 !
-      TAPERP = -1.0_WP
-      WRITE (IPRT, 1031)
-      CALL TAPER (Y, NY, TAPERP, YFFT)
-      CALL FFTR (YFFT, NY, NFFT-1, IEXTND, NF, AB, NFFT-2)
-      WRITE (IPRT, 1002) IERR
+      taperp = -1.0_wp
+      write (iprt, 1031)
+      call taper (y, ny, taperp, yfft)
+      call fftr (yfft, ny, nfft-1, iextnd, nf, ab, nfft-2)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VARIABLES FROM FFTR
 !
-      WRITE (IPRT, 1004) (AB(I), I = 1, NF)
+      write (iprt, 1004) (ab(i), i = 1, nf)
 !
 !     PERFORM ERROR CHECKING
 !
-      NY = -1
-      NZ = -1
-      NFFT = 0
-      NPRT = 2
-      LZFFT = 0
-      LPER = 0
-      LPERI = 0
-      TAPERP = 0.10_WP
-      LFREQ = 0
-      IEXTND = 0
-      LAB = 0
-      NK = 0
-      K(1) = 0
-      K(2) = 0
-      K(3) = 0
-      GO TO 5
+      ny = -1
+      nz = -1
+      nfft = 0
+      nprt = 2
+      lzfft = 0
+      lper = 0
+      lperi = 0
+      taperp = 0.10_wp
+      lfreq = 0
+      iextnd = 0
+      lab = 0
+      nk = 0
+      k(1) = 0
+      k(2) = 0
+      k(3) = 0
+      go to 5
 !
 !     PERFORM MORE ERROR CHECKING
 !
-   30 ITEST = ITEST + 1
-      NY = 50
-      NZ = 261
-      NPRT = 2
-      LZFFT = 0
-      LPER = 0
-      LPERI = 0
-      TAPERP = 0.10_WP
-      LFREQ = 0
-      IEXTND = 0
-      LAB = 0
-      NK = 3
-      K(1) = 0
-      K(2) = 0
-      K(3) = 0
-      GO TO 5
+   30 itest = itest + 1
+      ny = 50
+      nz = 261
+      nprt = 2
+      lzfft = 0
+      lper = 0
+      lperi = 0
+      taperp = 0.10_wp
+      lfreq = 0
+      iextnd = 0
+      lab = 0
+      nk = 3
+      k(1) = 0
+      k(2) = 0
+      k(3) = 0
+      go to 5
 !
-   40 RETURN
+   40 return
 !
 !     FORMAT STATEMENTS
 !
- 1002 FORMAT (8H IERR IS, I5)
- 1004 FORMAT (3(1X, E16.8))
- 1013 FORMAT ('1', 11HTEST OF PGM)
- 1014 FORMAT ('1', 13HTEST OF IPGMS)
- 1015 FORMAT ('1', 13HTEST OF TAPER)
- 1016 FORMAT ('1', 13HTEST OF MDFLT)
- 1017 FORMAT ('1', 12HTEST OF IPGM)
- 1018 FORMAT ('1', 14HTEST OF CENTER)
- 1025 FORMAT ('1', 12HTEST OF PGMS)
- 1026 FORMAT ('1', 14HTEST OF FFTLEN)
- 1027 FORMAT (/8H NFFT IS, I6)
- 1028 FORMAT ('1', 45HDISPLAY OF PERIODOGRAM SMOOTHED WITH MODIFIED,
-     &   14H DANIEL FILTER)
- 1029 FORMAT ('1', 13HTEST OF IPGMP)
- 1030 FORMAT ('1', 14HTEST OF IPGMPS)
- 1031 FORMAT ('1', 12HTEST OF FFTR)
-      END
+ 1002 format (8h ierr is, i5)
+ 1004 format (3(1x, e16.8))
+ 1013 format ('1', 11htest of pgm)
+ 1014 format ('1', 13htest of ipgms)
+ 1015 format ('1', 13htest of taper)
+ 1016 format ('1', 13htest of mdflt)
+ 1017 format ('1', 12htest of ipgm)
+ 1018 format ('1', 14htest of center)
+ 1025 format ('1', 12htest of pgms)
+ 1026 format ('1', 14htest of fftlen)
+ 1027 format (/8h nfft is, i6)
+1028 format ('1', 45hdisplay of periodogram smoothed with modified,&
+     &   14h daniel filter)
+ 1029 format ('1', 13htest of ipgmp)
+ 1030 format ('1', 14htest of ipgmps)
+ 1031 format ('1', 12htest of fftr)
+      end

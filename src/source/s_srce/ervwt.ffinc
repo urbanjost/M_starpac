@@ -1,6 +1,6 @@
 !ERVWT
-      SUBROUTINE ERVWT (NMSUB, NMVAR1, WT, N, NNZWMN, HEAD, NNZW,
-     &   NZW, MSGTYP, ERROR, NMVAR2)
+     subroutine ervwt (nmsub, nmvar1, wt, n, nnzwmn, head, nnzw,&
+     &   nzw, msgtyp, error, nmvar2)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -21,20 +21,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   MSGTYP,N,NNZW,NNZWMN,NZW
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   msgtyp,n,nnzw,nnzwmn,nzw
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   WT(*)
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1
+     real(kind=wp) ::&
+     &   wt(*)
+     character&
+     &   nmsub(6)*1,nmvar1(8)*1,nmvar2(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -77,58 +77,58 @@
 !     REAL WT(N)
 !        THE WEIGHT VECTOR.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (N.LE.0) RETURN
+      if (n.le.0) return
 !
 !     CHECK FOR NEGATIVE WEIGHTS AND COUNT NUMBER OF ZERO WEIGHTS.
 !
-      NZW = 0
-      DO 10 I = 1, N
-         IF (WT(I) .LT. 0.0E0) GO TO 20
-         IF (WT(I) .EQ. 0.0E0) NZW = NZW + 1
-   10 CONTINUE
+      nzw = 0
+      do 10 i = 1, n
+         if (wt(i) .lt. 0.0e0) go to 20
+         if (wt(i) .eq. 0.0e0) nzw = nzw + 1
+   10 continue
 !
-      NNZW = N - NZW
-      IF (NNZW .GE. NNZWMN) RETURN
+      nnzw = n - nzw
+      if (nnzw .ge. nnzwmn) return
 !
 !     INSUFFICIENT NUMBER OF POSITIVE WEIGHTS FOUND
 !
-      ERROR = .TRUE.
+      error = .true.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      WRITE (IPRT, 1010) NNZW
-      IF (MSGTYP.EQ.1) WRITE(IPRT, 1030) (NMVAR1(I), I=1,6), NNZWMN
-      IF (MSGTYP.EQ.2) WRITE(IPRT,1040) (NMVAR1(I),I=1,6),
-     &   (NMVAR2(I),I=1,8)
+      write (iprt, 1010) nnzw
+      if (msgtyp.eq.1) write(iprt, 1030) (nmvar1(i), i=1,6), nnzwmn
+     if (msgtyp.eq.2) write(iprt,1040) (nmvar1(i),i=1,6),&
+     &   (nmvar2(i),i=1,8)
 !
-      RETURN
+      return
 !
 !     NEGATIVE WEIGHTS FOUND
 !
-   20 ERROR = .TRUE.
+   20 error = .true.
 !
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
-      WRITE(IPRT, 1020) (NMVAR1(I), I = 1, 6)
+      call iprint(iprt)
+      call ehdr(nmsub, head)
+      write(iprt, 1020) (nmvar1(i), i = 1, 6)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT(/
-     &   40H THE NUMBER OF NONZERO WEIGHTS FOUND IS , I6, '.')
- 1020 FORMAT(/
-     &   42H NEGATIVE VALUES WERE FOUND IN THE VECTOR , 6A1, '.'/
-     &   51H ALL WEIGHTS MUST BE GREATER THAN OR EQUAL TO ZERO.)
- 1030 FORMAT(
-     &   34H THE NUMBER OF NONZERO WEIGHTS IN , 6A1,
-     &   34H MUST BE GREATER THAN OR EQUAL TO , I6, '.')
- 1040 FORMAT(
-     &   34H THE NUMBER OF NONZERO WEIGHTS IN , 6A1,
-     &   34H MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
+1010 format(/&
+     &   40h the number of nonzero weights found is , i6, '.')
+1020 format(/&
+    &   42h negative values were found in the vector , 6a1, '.'/&
+     &   51h all weights must be greater than or equal to zero.)
+1030 format(&
+    &   34h the number of nonzero weights in , 6a1,&
+     &   34h must be greater than or equal to , i6, '.')
+1040 format(&
+    &   34h the number of nonzero weights in , 6a1,&
+     &   34h must be greater than or equal to , 8a1, '.')
 !
-      END
+      end

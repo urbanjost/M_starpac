@@ -1,5 +1,5 @@
 !REPCK
-      SUBROUTINE REPCK(D, NRESTS, NPAR, N)
+subroutine repck(d, nrests, npar, n)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -13,30 +13,23 @@
 !
 !     CREATION DATE  -  DECEMBER 2, 1985
 !
-!
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,NPAR,NRESTS
-!
+     integer :: n,npar,nrests
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   D(NRESTS*NPAR)
-!
+     real(kind=wp) :: d(nrests*npar)
 !  LOCAL SCALARS
-      INTEGER
-     &   I,I1,I2,J
+     integer i,i1,i2,j
 !
-!
-      I1 = -N
-      I2 = -N
-      DO 10 J = 1, NPAR
-        I1 = I1 + NRESTS
-        I2 = I2 + N
-        DO 5 I = 1, N
-          D(I2+I) = D(I1+I)
-    5   CONTINUE
-   10 CONTINUE
-      RETURN
-      END
+      i1 = -n
+      i2 = -n
+      do j = 1, npar
+        i1 = i1 + nrests
+        i2 = i2 + n
+        do i = 1, n
+          d(i2+i) = d(i1+i)
+        enddo
+      enddo
+
+end subroutine repck

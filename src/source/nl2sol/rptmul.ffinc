@@ -16,19 +16,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
+     integer&
      &   func,nn,p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   j(nn,p),rd(p),x(p),y(p),z(p)
-      integer
+     integer&
      &   ipivot(p)
 !
 !  LOCAL SCALARS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   zk
-      integer
+     integer&
      &   i,im1,k,km1
 !
 !  EXTERNAL FUNCTIONS

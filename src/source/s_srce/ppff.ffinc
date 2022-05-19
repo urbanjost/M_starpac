@@ -1,5 +1,5 @@
 !PPFF
-      REAL(KIND=WP) FUNCTION PPFF(P, NU1, NU2)
+      real(kind=wp) function ppff(p, nu1, nu2)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -71,17 +71,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   P
-      INTEGER
-     &   NU1,NU2
+     real(kind=wp) ::&
+     &   p
+     integer&
+     &   nu1,nu2
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ANU1,ANU2,EXPF,PCALC,SDF,TOL,X,XDEL,XLOW,XMAX,
-     &   XMID,XMIN,XN,XUP,ZN
-      INTEGER
-     &   IBUG,ICOUNT,IPRT,MAXIT
+     real(kind=wp) ::&
+    &   anu1,anu2,expf,pcalc,sdf,tol,x,xdel,xlow,xmax,&
+     &   xmid,xmin,xn,xup,zn
+     integer&
+     &   ibug,icount,iprt,maxit
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -92,7 +92,7 @@
 !      EXTERNAL IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,EXP,SQRT
+      intrinsic abs,exp,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -151,111 +151,111 @@
 !
 !     CHECK THE INPUT ARGUMENTS FOR ERRORS
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      PPFF = 0.0E0
-      IF (NU1.LE.0) GO TO 10
-      IF (NU2.LE.0) GO TO 20
-      IF (P.LT.0.0E0 .OR. P.GE.1.0E0) GO TO 30
-      GO TO 40
-   10 WRITE (IPRT,1010)
-      WRITE (IPRT,1040) NU1
-      PPFF = 0.0E0
-      RETURN
-   20 WRITE (IPRT,1020)
-      WRITE (IPRT,1040) NU2
-      PPFF = 0.0E0
-      RETURN
-   30 WRITE (IPRT,1000)
-      WRITE (IPRT,1030) P
-      PPFF = 0.0E0
-      RETURN
-   40 CONTINUE
+      ppff = 0.0e0
+      if (nu1.le.0) go to 10
+      if (nu2.le.0) go to 20
+      if (p.lt.0.0e0 .or. p.ge.1.0e0) go to 30
+      go to 40
+   10 write (iprt,1010)
+      write (iprt,1040) nu1
+      ppff = 0.0e0
+      return
+   20 write (iprt,1020)
+      write (iprt,1040) nu2
+      ppff = 0.0e0
+      return
+   30 write (iprt,1000)
+      write (iprt,1030) p
+      ppff = 0.0e0
+      return
+   40 continue
 !
 !-----START POINT-----------------------------------------------------
 !
-      IBUG = 0.0E0
+      ibug = 0.0e0
 !
-      TOL = 0.000001E0
-      MAXIT = 100
-      XMIN = 0.0E0
-      XMAX = 10.0E30
-      XLOW = XMIN
-      XUP = XMAX
+      tol = 0.000001e0
+      maxit = 100
+      xmin = 0.0e0
+      xmax = 10.0e30
+      xlow = xmin
+      xup = xmax
 !
-      ANU1 = NU1
-      ANU2 = NU2
+      anu1 = nu1
+      anu2 = nu2
 !
-      EXPF = 0.5E0*((1.0E0/ANU2)-(1.0E0/ANU1))
-      SDF = SQRT(0.5E0*((1.0E0/ANU2)+(1.0E0/ANU1)))
-      ZN = PPFNML(P)
-      XN = EXPF + ZN*SDF
-      XMID = EXP(2.0E0*XN)
-      IF (IBUG.EQ.1) WRITE (IPRT,1050) XMID
+      expf = 0.5e0*((1.0e0/anu2)-(1.0e0/anu1))
+      sdf = sqrt(0.5e0*((1.0e0/anu2)+(1.0e0/anu1)))
+      zn = ppfnml(p)
+      xn = expf + zn*sdf
+      xmid = exp(2.0e0*xn)
+      if (ibug.eq.1) write (iprt,1050) xmid
 !
-      IF (P.EQ.0.0E0) GO TO 50
-      GO TO 60
-   50 CONTINUE
-      PPFF = XMIN
-      RETURN
-   60 CONTINUE
+      if (p.eq.0.0e0) go to 50
+      go to 60
+   50 continue
+      ppff = xmin
+      return
+   60 continue
 !
-      ICOUNT = 0
+      icount = 0
 !
-   70 CONTINUE
-      X = XMID
-      PCALC = CDFF(X,ANU1,ANU2)
-      IF (PCALC.EQ.P) GO TO 130
-      IF (PCALC.GT.P) GO TO 100
+   70 continue
+      x = xmid
+      pcalc = cdff(x,anu1,anu2)
+      if (pcalc.eq.p) go to 130
+      if (pcalc.gt.p) go to 100
 !
-   80 CONTINUE
-      XLOW = XMID
-      X = XMID*2.0E0
-      IF (X.GE.XUP) GO TO 90
-      XMID = X
-      IF (IBUG.EQ.1) WRITE (IPRT,1050) XMID
-      PCALC = CDFF(X,ANU1,ANU2)
-      IF (PCALC.EQ.P) GO TO 130
-      IF (PCALC.LT.P) GO TO 80
-      XUP = X
-   90 CONTINUE
-      XMID = (XLOW+XUP)/2.0E0
-      IF (IBUG.EQ.1) WRITE (IPRT,1050) XMID
-      GO TO 120
+   80 continue
+      xlow = xmid
+      x = xmid*2.0e0
+      if (x.ge.xup) go to 90
+      xmid = x
+      if (ibug.eq.1) write (iprt,1050) xmid
+      pcalc = cdff(x,anu1,anu2)
+      if (pcalc.eq.p) go to 130
+      if (pcalc.lt.p) go to 80
+      xup = x
+   90 continue
+      xmid = (xlow+xup)/2.0e0
+      if (ibug.eq.1) write (iprt,1050) xmid
+      go to 120
 !
-  100 CONTINUE
-      XUP = XMID
-      X = XMID/2.0E0
-      IF (X.LE.XLOW) GO TO 110
-      XMID = X
-      IF (IBUG.EQ.1) WRITE (IPRT,1050) XMID
-      PCALC = CDFF(X,ANU1,ANU2)
-      IF (PCALC.EQ.P) GO TO 130
-      IF (PCALC.GT.P) GO TO 100
-      XLOW = X
-  110 CONTINUE
-      XMID = (XLOW+XUP)/2.0E0
-      IF (IBUG.EQ.1) WRITE (IPRT,1050) XMID
+  100 continue
+      xup = xmid
+      x = xmid/2.0e0
+      if (x.le.xlow) go to 110
+      xmid = x
+      if (ibug.eq.1) write (iprt,1050) xmid
+      pcalc = cdff(x,anu1,anu2)
+      if (pcalc.eq.p) go to 130
+      if (pcalc.gt.p) go to 100
+      xlow = x
+  110 continue
+      xmid = (xlow+xup)/2.0e0
+      if (ibug.eq.1) write (iprt,1050) xmid
 !
-  120 CONTINUE
-      XDEL = ABS(XMID-XLOW)
-      ICOUNT = ICOUNT + 1
-      IF (XDEL.LT.TOL .OR. ICOUNT.GT.MAXIT) GO TO 130
-      GO TO 70
+  120 continue
+      xdel = abs(xmid-xlow)
+      icount = icount + 1
+      if (xdel.lt.tol .or. icount.gt.maxit) go to 130
+      go to 70
 !
-  130 CONTINUE
-      PPFF = XMID
+  130 continue
+      ppff = xmid
 !
-      RETURN
- 1000 FORMAT (' ', 49H***** FATAL ERROR--THE FIRST  INPUT ARGUMENT TO T,
-     &   59HHE FPPF SUBROUTINE IS OUTSIDE THE ALLOWABLE (0,1) INTERVAL ,
-     &   5H*****)
- 1010 FORMAT (' ', 49H***** FATAL ERROR--THE SECOND INPUT ARGUMENT TO T,
-     &   42HHE FPPF   SUBROUTINE IS NON-POSITIVE *****)
- 1020 FORMAT (' ', 49H***** FATAL ERROR--THE THIRD  INPUT ARGUMENT TO T,
-     &   42HHE FCDF   SUBROUTINE IS NON-POSITIVE *****)
- 1030 FORMAT (' ', 35H***** THE VALUE OF THE ARGUMENT IS , E15.8,
-     &   6H *****)
- 1040 FORMAT (' ', 35H***** THE VALUE OF THE ARGUMENT IS , I8, 6H *****)
- 1050 FORMAT (' ', 7HXMID = , E15.7)
-      END
+      return
+1000 format (' ', 49h***** fatal error--the first  input argument to t,&
+    &   59hhe fppf subroutine is outside the allowable (0,1) interval ,&
+     &   5h*****)
+1010 format (' ', 49h***** fatal error--the second input argument to t,&
+     &   42hhe fppf   subroutine is non-positive *****)
+1020 format (' ', 49h***** fatal error--the third  input argument to t,&
+     &   42hhe fcdf   subroutine is non-positive *****)
+1030 format (' ', 35h***** the value of the argument is , e15.8,&
+     &   6h *****)
+ 1040 format (' ', 35h***** the value of the argument is , i8, 6h *****)
+ 1050 format (' ', 7hxmid = , e15.7)
+      end

@@ -1,15 +1,15 @@
 !ALNGAM
-      REAL FUNCTION ALNGAM (X)
+      real function alngam (x)
 ! JUNE 1977 EDITION.   W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL X
+      real x
 !
 !  LOCAL SCALARS
-      REAL DXREL,PI,SINPIY,SQ2PIL,SQPI2L,XMAX,Y
+      real dxrel,pi,sinpiy,sq2pil,sqpi2l,xmax,y
 !
 !  EXTERNAL FUNCTIONS
 !      REAL GAMMA,R1MACH,R9LGMC
@@ -19,46 +19,46 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,AINT,LOG,SIN,SQRT
+      intrinsic abs,aint,log,sin,sqrt
 !
-      DATA SQ2PIL / 0.9189385332 0467274E0/
+      data sq2pil / 0.91893853320467274e0/
 ! SQ2PIL = LOG(SQRT(2.*PI)),  SQPI2L = LOG (SQRT(PI/2.))
-      DATA SQPI2L / 0.2257913526 4472743E0/
-      DATA PI     / 3.1415926535 8979324E0/
+      data sqpi2l / 0.22579135264472743e0/
+      data pi     / 3.14159265358979324e0/
 !
-      DATA XMAX, DXREL / 0., 0. /
+      data xmax, dxrel / 0., 0. /
 !
-      IF (XMAX.NE.0.) GO TO 10
-      XMAX = R1MACH(2)/LOG(R1MACH(2))
-      DXREL = SQRT (R1MACH(4))
+      if (xmax.ne.0.) go to 10
+      xmax = r1mach(2)/log(r1mach(2))
+      dxrel = sqrt (r1mach(4))
 !
- 10   Y = ABS(X)
-      IF (Y.GT.10.0) GO TO 20
+ 10   y = abs(x)
+      if (y.gt.10.0) go to 20
 !
 ! LOG (ABS (GAMMA(X))) FOR  ABS(X) .LE. 10.0
 !
-      ALNGAM = LOG (ABS (GAMMA(X)))
-      RETURN
+      alngam = log (abs (gamma(x)))
+      return
 !
 ! LOG (ABS (GAMMA(X))) FOR ABS(X) .GT. 10.0
 !
- 20   IF (Y.GT.XMAX) CALL XERROR (
+20   if (y.gt.xmax) call xerror (&
      &  'ALNGAM  ABS(X) SO BIG ALNGAM OVERFLOWS', 38, 2, 2)
 !
-      IF (X.GT.0.0) THEN
-         ALNGAM = SQ2PIL + (X-0.5)*LOG(X) - X + R9LGMC(Y)
-         RETURN
-      END IF
+      if (x.gt.0.0) then
+         alngam = sq2pil + (x-0.5)*log(x) - x + r9lgmc(y)
+         return
+      end if
 !
-      SINPIY = ABS (SIN(PI*Y))
-      IF (SINPIY.EQ.0.) CALL XERROR ('ALNGAM  X IS A NEGATIVE INTEGER',
+      sinpiy = abs (sin(pi*y))
+     if (sinpiy.eq.0.) call xerror ('ALNGAM  X IS A NEGATIVE INTEGER',&
      &  31, 3, 2)
 !
-      IF (ABS((X-AINT(X-0.5))/X).LT.DXREL) CALL XERROR (
-     &    'ALNGAM  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR NEGATIVE
+     if (abs((x-aint(x-0.5))/x).lt.dxrel) call xerror (&
+    &    'ALNGAM  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR NEGATIVE&
      &INTEGER', 68, 1, 1)
 !
-      ALNGAM = SQPI2L + (X-0.5)*LOG(Y) - X - LOG(SINPIY) - R9LGMC(Y)
-      RETURN
+      alngam = sqpi2l + (x-0.5)*log(y) - x - log(sinpiy) - r9lgmc(y)
+      return
 !
-      END
+      end

@@ -1,5 +1,5 @@
 !UASF
-      SUBROUTINE UASF (YFFT, N, LYFFT, LDSTAK)
+      subroutine uasf (yfft, n, lyfft, ldstak)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,37 +16,37 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK,LYFFT,N
+     integer&
+     &   ldstak,lyfft,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YFFT(*)
+     real(kind=wp) ::&
+     &   yfft(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ALPHA,DELTA,FMAX,FMIN,VAR,YMEAN
-      INTEGER
-     &   IAR,IFP,IPRT,LACOV,LAG,LAGMAX,LAIC,LDSMIN,LPCV,LPHI,LSPC,
-     &   LWORK,NALL0,NF,NFFT,NPRT,WORK
+     real(kind=wp) ::&
+     &   alpha,delta,fmax,fmin,var,ymean
+     integer&
+    &   iar,ifp,iprt,lacov,lag,lagmax,laic,ldsmin,lpcv,lphi,lspc,&
+     &   lwork,nall0,nf,nfft,nprt,work
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   ACOV(101),AIC(101),FREQ(101),FTEST(2,100),PHI(100),RSTAK(12),
-     &   SPCA(101),SPCF(101),XAXIS(207),YAXIS(207)
-      INTEGER
-     &   ISORT(101),ISTAK(12),ISYM(207)
-      LOGICAL
-     &   OPTION(4)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+    &   acov(101),aic(101),freq(101),ftest(2,100),phi(100),rstak(12),&
+     &   spca(101),spcf(101),xaxis(207),yaxis(207)
+     integer&
+     &   isort(101),istak(12),isym(207)
+     logical&
+     &   option(4)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -58,13 +58,13 @@
 !     +   UASDV,UASER
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (ISYM(1),ISORT(1))
+      equivalence (dstak(1),rstak(1))
+      equivalence (dstak(1),istak(1))
+      equivalence (isym(1),isort(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -174,88 +174,88 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'U',       'A',       'S',       'F',       ' ',       ' '/
 !
-      IFP = 4
+      ifp = 4
 !
 !     SET UP FOR ERROR CHECKING
 !
-      OPTION(1) = .TRUE.
-      OPTION(2) = .FALSE.
-      OPTION(3) = .FALSE.
-      OPTION(4) = .FALSE.
+      option(1) = .true.
+      option(2) = .false.
+      option(3) = .false.
+      option(4) = .false.
 !
-      LAG = 0
-      IAR = 0
-      NF = 101
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = -1
+      lag = 0
+      iar = 0
+      nf = 101
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = -1
 !
 !     SET THE MAXIMUM NUMBER OF LAGS TO BE USED.
 !
-      CALL SETLAG(N, LAGMAX)
+      call setlag(n, lagmax)
 !
 !     SET LENGTH OF EXTENDED SERIES
 !
-      CALL SETESL(N+LAGMAX, 4, NFFT)
+      call setesl(n+lagmax, 4, nfft)
 !
-      CALL LDSCMP(1, 0, 0, 0, 0, 0, 'D', NFFT, LDSMIN)
+      call ldscmp(1, 0, 0, 0, 0, 0, 'D', nfft, ldsmin)
 !
-      CALL UASER(NMSUB, N, ACOV, IAR, PHI, LAGMAX, LAG, LACOV,
-     &   NF, LDSTAK, LDSMIN, LYFFT, NFFT, OPTION)
+     call uaser(nmsub, n, acov, iar, phi, lagmax, lag, lacov,&
+     &   nf, ldstak, ldsmin, lyfft, nfft, option)
 !
-      IF (IERR.NE.0) THEN
-         IERR = 1
-         CALL IPRINT (IPRT)
-         WRITE (IPRT, 1000)
-         RETURN
-      END IF
+      if (ierr.ne.0) then
+         ierr = 1
+         call iprint (iprt)
+         write (iprt, 1000)
+         return
+      end if
 !
 !     SET THE SIZE OF THE WORK AREA
 !
-      CALL STKSET(LDSTAK, 4)
+      call stkset(ldstak, 4)
 !
 !     SAVE NUMBER OF OUTSTANDING STACK ALLOCATIONS.
 !
-      NALL0 = STKST(1)
+      nall0 = stkst(1)
 !
 !     SET VARIOUS PROGRAM PARAMETERS.
 !
-      LPCV = 207
-      LSPC = 101
-      LPHI = 100
-      LAIC = 101
-      LACOV = 101
-      LWORK = NFFT
+      lpcv = 207
+      lspc = 101
+      lphi = 100
+      laic = 101
+      lacov = 101
+      lwork = nfft
 !
-      ALPHA = 0.95_WP
-      DELTA = 1.0_WP
+      alpha = 0.95_wp
+      delta = 1.0_wp
 !
 !     SUBDIVIDE THE WORK AREA
 !
-      WORK = STKGET(LWORK, IFP)
+      work = stkget(lwork, ifp)
 !
 !     COMPUTE AUTOCOVARIANCES
 !
-      CALL ACVFF (YFFT, N, NFFT, YMEAN, ACOV, LAGMAX, LACOV, LYFFT,
-     &   RSTAK(WORK), LWORK)
+     call acvff (yfft, n, nfft, ymean, acov, lagmax, lacov, lyfft,&
+     &   rstak(work), lwork)
 !
 !     CALL THE MAIN DRIVER FOR AUTOREGRESSIVE SPECTRUM ROUTINES.
 !
-      CALL UASDV(ACOV, SPCA, SPCF, LSPC, IAR, PHI, NF, FMIN, FMAX, FREQ,
-     &   N, LAGMAX, FTEST, AIC, RSTAK(WORK), LACOV, LWORK, DELTA, ISORT,
-     &   ISYM, XAXIS, YAXIS, LPCV, ALPHA, LAG, LAIC, LPHI, NPRT, VAR,
-     &   PARZEN, NMSUB)
+     call uasdv(acov, spca, spcf, lspc, iar, phi, nf, fmin, fmax, freq,&
+    &   n, lagmax, ftest, aic, rstak(work), lacov, lwork, delta, isort,&
+    &   isym, xaxis, yaxis, lpcv, alpha, lag, laic, lphi, nprt, var,&
+     &   parzen, nmsub)
 !
-      CALL STKCLR(NALL0)
+      call stkclr(nall0)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &  '       CALL UASF (YFFT, N, LYFFT, LDSTAK)')
-      END
+      end

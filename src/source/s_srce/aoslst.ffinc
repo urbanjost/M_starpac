@@ -1,6 +1,6 @@
 !AOSLST
-      SUBROUTINE AOSLST (PRHO, AIC, FTEST, LAGMAX, LAIC, IAR, PHI,
-     &   OSPVAR, IFPRHO, N)
+     subroutine aoslst (prho, aic, ftest, lagmax, laic, iar, phi,&
+     &   ospvar, ifprho, n)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,28 +16,28 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   OSPVAR
-      INTEGER
-     &   IAR,LAGMAX,LAIC,N
-      LOGICAL
-     &   IFPRHO
+     real(kind=wp) ::&
+     &   ospvar
+     integer&
+     &   iar,lagmax,laic,n
+     logical&
+     &   ifprho
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   AIC(*),FTEST(2,*),PHI(*),PRHO(*)
+     real(kind=wp) ::&
+     &   aic(*),ftest(2,*),phi(*),prho(*)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IMAX,IMIN,IPRT,LAG,M,NPERL
-      CHARACTER
-     &   FMT*160
+     integer&
+     &   i,imax,imin,iprt,lag,m,nperl
+     character&
+     &   fmt*160
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -84,72 +84,72 @@
 !        THE ARRAY CONTAINING THE PARTIAL AUTOCORRELATION
 !        COEFFICIENTS.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      NPERL = 12
-      DO 30 I = 1, LAGMAX, NPERL
-         IMIN = I
-         IMAX = MIN(I + NPERL - 1, LAGMAX)
-         WRITE(IPRT, 1000) (LAG, LAG = IMIN, IMAX)
-         IF (IFPRHO) WRITE (IPRT, 1001) (PRHO(LAG), LAG = IMIN, IMAX)
+      nperl = 12
+      do 30 i = 1, lagmax, nperl
+         imin = i
+         imax = min(i + nperl - 1, lagmax)
+         write(iprt, 1000) (lag, lag = imin, imax)
+         if (ifprho) write (iprt, 1001) (prho(lag), lag = imin, imax)
 !
-         IF ((IMAX.EQ.LAGMAX) .AND. (LAGMAX.EQ.(N-1))) THEN
-            IF (IMAX-IMIN.GE.1) THEN
-               WRITE(FMT, 1002) IMAX-IMIN
-            ELSE
-               WRITE(FMT, 1003)
-            END IF
-            WRITE(IPRT, FMT) ' AIC               ',
-     &                       (AIC(LAG+1), LAG = IMIN, IMAX-1)
-            WRITE(IPRT, FMT) ' F RATIO           ',
-     &                       (FTEST(1, LAG), LAG = IMIN, IMAX-1)
-            WRITE(IPRT, FMT) ' F PROBABILITY     ',
-     &                       (FTEST(2, LAG), LAG = IMIN, IMAX-1)
-         ELSE
-            WRITE(FMT, 1004) NPERL
-            WRITE(IPRT, FMT) ' AIC               ',
-     &                       (AIC(LAG+1), LAG = IMIN, IMAX)
-            WRITE(IPRT, FMT) ' F RATIO           ',
-     &                       (FTEST(1, LAG), LAG = IMIN, IMAX)
-            WRITE(IPRT, FMT) ' F PROBABILITY     ',
-     &                       (FTEST(2, LAG), LAG = IMIN, IMAX)
-         END IF
-   30 CONTINUE
+         if ((imax.eq.lagmax) .and. (lagmax.eq.(n-1))) then
+            if (imax-imin.ge.1) then
+               write(fmt, 1002) imax-imin
+            else
+               write(fmt, 1003)
+            end if
+           write(iprt, fmt) ' AIC               ',&
+     &                       (aic(lag+1), lag = imin, imax-1)
+           write(iprt, fmt) ' F RATIO           ',&
+     &                       (ftest(1, lag), lag = imin, imax-1)
+           write(iprt, fmt) ' F PROBABILITY     ',&
+     &                       (ftest(2, lag), lag = imin, imax-1)
+         else
+            write(fmt, 1004) nperl
+           write(iprt, fmt) ' AIC               ',&
+     &                       (aic(lag+1), lag = imin, imax)
+           write(iprt, fmt) ' F RATIO           ',&
+     &                       (ftest(1, lag), lag = imin, imax)
+           write(iprt, fmt) ' F PROBABILITY     ',&
+     &                       (ftest(2, lag), lag = imin, imax)
+         end if
+   30 continue
 !
-      IF (LAGMAX.EQ.N-1) WRITE(IPRT, 1009)
+      if (lagmax.eq.n-1) write(iprt, 1009)
 !
 !     PRINT INFORMATION ON ORDER SELECTED
 !
-      WRITE (IPRT, 1005) IAR, OSPVAR
+      write (iprt, 1005) iar, ospvar
 !
-      IF (IAR .EQ. 0) RETURN
+      if (iar .eq. 0) return
 !
-      WRITE(IPRT, 1008)
+      write(iprt, 1008)
 !
-      DO 40 I = 1, IAR, NPERL
-         IMIN = I
-         IMAX = MIN(I + NPERL - 1, IAR)
-         WRITE (IPRT, 1006) (M, M = IMIN, IMAX)
-         WRITE (IPRT, 1007) (PHI(M), M = IMIN, IMAX)
-   40 CONTINUE
+      do 40 i = 1, iar, nperl
+         imin = i
+         imax = min(i + nperl - 1, iar)
+         write (iprt, 1006) (m, m = imin, imax)
+         write (iprt, 1007) (phi(m), m = imin, imax)
+   40 continue
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(/19H LAG               , 12(1X, I6))
- 1001 FORMAT( 19H PACF              , 12(2X, F5.2))
- 1002 FORMAT('(A19,',I2,'(1X, F6.2), 7H ******)')
- 1003 FORMAT('(A19, 7H ******)')
- 1004 FORMAT('(A19,',I2,'(1X, F6.2))')
- 1005 FORMAT (//
-     &   49H ORDER AUTOREGRESSIVE PROCESS SELECTED =         , I6/
-     &   51H ONE STEP PREDICTION VARIANCE OF PROCESS SELECTED =, G15.8/)
- 1006 FORMAT (/19H COEFFICIENT NUMBER, 12(1X, I6))
- 1007 FORMAT ( 19H COEFFICIENT VALUE , 12(1X, F6.4))
- 1008 FORMAT (45H YULE-WALKER ESTIMATES OF THE COEFFICIENTS OF,
-     &   36H THE AUTOREGRESSIVE PROCESS SELECTED)
- 1009 FORMAT (/'****** THIS VALUE CANNOT BE COMPUTED',
+ 1000 format(/19h lag               , 12(1x, i6))
+ 1001 format( 19h pacf              , 12(2x, f5.2))
+ 1002 format('(A19,',i2,'(1X, F6.2), 7H ******)')
+ 1003 format('(A19, 7H ******)')
+ 1004 format('(A19,',i2,'(1X, F6.2))')
+1005 format (//&
+    &   49h order autoregressive process selected =         , i6/&
+     &   51h one step prediction variance of process selected =, g15.8/)
+ 1006 format (/19h coefficient number, 12(1x, i6))
+ 1007 format ( 19h coefficient value , 12(1x, f6.4))
+1008 format (45h yule-walker estimates of the coefficients of,&
+     &   36h the autoregressive process selected)
+1009 format (/'****** THIS VALUE CANNOT BE COMPUTED',&
      &         ' BECAUSE LAG = N-1'//)
 !
-      END
+      end

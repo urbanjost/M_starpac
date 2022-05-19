@@ -1,5 +1,5 @@
 !MSGX
-      SUBROUTINE MSGX(IER, IPRT)
+      subroutine msgx(ier, iprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,15 +17,15 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IER,IPRT
+     integer&
+     &   ier,iprt
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIBLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -38,15 +38,15 @@
 !
 !
 !     PRINT MESSAGE
-      WRITE (IPRT,1000) IER, IERR
+      write (iprt,1000) ier, ierr
 !
-      IF (IER.NE.IERR) WRITE (IPRT,1010)
+      if (ier.ne.ierr) write (iprt,1010)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENT
 !
- 1000 FORMAT(/28H EXPECTED VALUE FOR IERR IS , I1/15H RETURNED VALUE,
-     &   12H FOR IERR IS, I2)
- 1010 FORMAT(48H POSSIBLE ERROR, UNEXPECTED VALUE FOR ERROR FLAG)
-      END
+1000 format(/28h expected value for ierr is , i1/15h returned value,&
+     &   12h for ierr is, i2)
+ 1010 format(48h possible error, unexpected value for error flag)
+      end

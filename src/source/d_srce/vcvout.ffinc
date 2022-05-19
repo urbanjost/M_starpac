@@ -1,5 +1,5 @@
 !VCVOUT
-      SUBROUTINE VCVOUT(NP, VCV, IVCV, EST)
+      subroutine vcvout(np, vcv, ivcv, est)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -21,26 +21,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IVCV,NP
-      LOGICAL
-     &   EST
+     integer&
+     &   ivcv,np
+     logical&
+     &   est
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   VCV(IVCV,NP)
+     real(kind=wp) ::&
+     &   vcv(ivcv,np)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DEN,SVCVII,SVCVJJ
-      INTEGER
-     &   I,IPRT,J,K,MODE
+     real(kind=wp) ::&
+     &   den,svcvii,svcvjj
+     integer&
+     &   i,iprt,j,k,mode
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,MATPRT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -72,83 +72,83 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     DETERMINE WHETHER TO ISSUE NEGATIVE VARIANCE WARNING
 !
-      MODE = 2
-      DO 10 I=1,NP
-         IF (VCV(I,I).GT.0.0_WP) GO TO 10
-         WRITE (IPRT,1000)
-         IF (EST) WRITE (IPRT,1050)
-         WRITE (IPRT,1010)
-         MODE = 0
-         GO TO 70
-   10 CONTINUE
+      mode = 2
+      do 10 i=1,np
+         if (vcv(i,i).gt.0.0_wp) go to 10
+         write (iprt,1000)
+         if (est) write (iprt,1050)
+         write (iprt,1010)
+         mode = 0
+         go to 70
+   10 continue
 !
-      IF (EST) GO TO 20
+      if (est) go to 20
 !
 !     PRINT HEADING FOR CORRELATION ROUTINES
 !
-      WRITE (IPRT,1040)
-      WRITE (IPRT,1030)
-      MODE = 2
-      GO TO 30
+      write (iprt,1040)
+      write (iprt,1030)
+      mode = 2
+      go to 30
 !
-   20 CONTINUE
+   20 continue
 !
 !     PRINT HEADING FOR ESTIMATION ROUTINES
 !
-      WRITE (IPRT,1050)
-      WRITE (IPRT,1020)
-      MODE = 1
+      write (iprt,1050)
+      write (iprt,1020)
+      mode = 1
 !
-   30 CONTINUE
+   30 continue
 !
 !     COMPUTE THE CORRELATION COEFFICIENTS AND STORE IN THE BOTTOM HALF
 !     OF THE VARIANCE COVARIANCE MATRIX
 !
-      IF (NP.EQ.1) GO TO 60
-      DO 50 J=2,NP
-         K = J - 1
-         SVCVJJ = 0.0_WP
-         IF (VCV(J,J).GT.0.0_WP) SVCVJJ = SQRT(VCV(J,J))
-         DO 40 I=1,K
-            SVCVII = 0.0_WP
-            IF (VCV(I,I).GT.0.0_WP) SVCVII = SQRT(VCV(I,I))
-            DEN = SVCVII*SVCVJJ
-            IF (DEN.LE.0.0_WP) VCV(J,I) = 0.0_WP
-            IF (DEN.GT.0.0_WP) VCV(J,I) = VCV(J,I)/DEN
-   40    CONTINUE
-   50 CONTINUE
+      if (np.eq.1) go to 60
+      do 50 j=2,np
+         k = j - 1
+         svcvjj = 0.0_wp
+         if (vcv(j,j).gt.0.0_wp) svcvjj = sqrt(vcv(j,j))
+         do 40 i=1,k
+            svcvii = 0.0_wp
+            if (vcv(i,i).gt.0.0_wp) svcvii = sqrt(vcv(i,i))
+            den = svcvii*svcvjj
+            if (den.le.0.0_wp) vcv(j,i) = 0.0_wp
+            if (den.gt.0.0_wp) vcv(j,i) = vcv(j,i)/den
+   40    continue
+   50 continue
 !
-   60 CONTINUE
+   60 continue
 !
-   70 CALL MATPRT(VCV, VCV, NP, IPRT, MODE, 1, IVCV)
+   70 call matprt(vcv, vcv, np, iprt, mode, 1, ivcv)
 !
 !     RESTORE THE VCV MATRIX
 !
-      IF (NP.EQ.1) RETURN
-      DO 90 J=2,NP
-         K = J - 1
-         DO 80 I=1,K
-            VCV(J,I) = VCV(I,J)
-   80    CONTINUE
-   90 CONTINUE
+      if (np.eq.1) return
+      do 90 j=2,np
+         k = j - 1
+         do 80 i=1,k
+            vcv(j,i) = vcv(i,j)
+   80    continue
+   90 continue
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/18H COVARIANCE MATRIX)
- 1010 FORMAT (/39H     NONPOSITIVE VARIANCES ENCOUNTERED./10H     CORRE,
-     &   39HLATION COEFFICIENTS CANNOT BE COMPUTED.)
- 1020 FORMAT (4X, 36H- COVARIANCES ARE ABOVE THE DIAGONAL/4X, 7H- VARIA,
-     &   24HNCES ARE ON THE DIAGONAL/4X, 27H- CORRELATION COEFFICIENTS ,
-     &   22HARE BELOW THE DIAGONAL)
- 1030 FORMAT (4X, 41H- STANDARD DEVIATIONS ARE ON THE DIAGONAL/4X,
-     &   49H- CORRELATION COEFFICIENTS ARE BELOW THE DIAGONAL)
- 1040 FORMAT (/19H CORRELATION MATRIX)
- 1050 FORMAT (/45H VARIANCE-COVARIANCE AND CORRELATION MATRICES,
-     &   28H OF THE ESTIMATED PARAMETERS/ 1X, 72('-')/)
-      END
+ 1000 format (/18h covariance matrix)
+1010 format (/39h     nonpositive variances encountered./10h     corre,&
+     &   39hlation coefficients cannot be computed.)
+1020 format (4x, 36h- covariances are above the diagonal/4x, 7h- varia,&
+    &   24hnces are on the diagonal/4x, 27h- correlation coefficients ,&
+     &   22hare below the diagonal)
+1030 format (4x, 41h- standard deviations are on the diagonal/4x,&
+     &   49h- correlation coefficients are below the diagonal)
+ 1040 format (/19h correlation matrix)
+1050 format (/45h variance-covariance and correlation matrices,&
+     &   28h of the estimated parameters/ 1x, 72('-')/)
+      end

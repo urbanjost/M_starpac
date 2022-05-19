@@ -1,5 +1,5 @@
 !GAMLIM
-      SUBROUTINE GAMLIM (XMIN, XMAX)
+      subroutine gamlim (xmin, xmax)
 ! APRIL 1977 VERSION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! CALCULATE THE MINIMUM AND MAXIMUM LEGAL BOUNDS FOR X IN GAMMA(X).
@@ -16,11 +16,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL XMAX,XMIN
+      real xmax,xmin
 !
 !  LOCAL SCALARS
-      REAL ALNBIG,ALNSML,XLN,XOLD
-      INTEGER I
+      real alnbig,alnsml,xln,xold
+      integer i
 !
 !  EXTERNAL FUNCTIONS
 !      REAL R1MACH
@@ -30,34 +30,34 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG,MAX
+      intrinsic abs,log,max
 !
-      ALNSML = LOG(R1MACH(1))
-      XMIN = -ALNSML
-      DO 10 I=1,10
-        XOLD = XMIN
-        XLN = LOG(XMIN)
-        XMIN = XMIN - XMIN*((XMIN+0.5)*XLN - XMIN - 0.2258 + ALNSML)
-     &    / (XMIN*XLN + 0.5)
-        IF (ABS(XMIN-XOLD).LT.0.005) GO TO 20
- 10   CONTINUE
-      CALL XERROR ('GAMLIM  UNABLE TO FIND XMIN', 27, 1, 2)
+      alnsml = log(r1mach(1))
+      xmin = -alnsml
+      do 10 i=1,10
+        xold = xmin
+        xln = log(xmin)
+       xmin = xmin - xmin*((xmin+0.5)*xln - xmin - 0.2258 + alnsml)&
+     &    / (xmin*xln + 0.5)
+        if (abs(xmin-xold).lt.0.005) go to 20
+ 10   continue
+      call xerror ('GAMLIM  UNABLE TO FIND XMIN', 27, 1, 2)
 !
- 20   XMIN = -XMIN + 0.01
+ 20   xmin = -xmin + 0.01
 !
-      ALNBIG = LOG(R1MACH(2))
-      XMAX = ALNBIG
-      DO 30 I=1,10
-        XOLD = XMAX
-        XLN = LOG(XMAX)
-        XMAX = XMAX - XMAX*((XMAX-0.5)*XLN - XMAX + 0.9189 - ALNBIG)
-     &    / (XMAX*XLN - 0.5)
-        IF (ABS(XMAX-XOLD).LT.0.005) GO TO 40
- 30   CONTINUE
-      CALL XERROR ('GAMLIM  UNABLE TO FIND XMAX', 27, 2, 2)
+      alnbig = log(r1mach(2))
+      xmax = alnbig
+      do 30 i=1,10
+        xold = xmax
+        xln = log(xmax)
+       xmax = xmax - xmax*((xmax-0.5)*xln - xmax + 0.9189 - alnbig)&
+     &    / (xmax*xln - 0.5)
+        if (abs(xmax-xold).lt.0.005) go to 40
+ 30   continue
+      call xerror ('GAMLIM  UNABLE TO FIND XMAX', 27, 2, 2)
 !
- 40   XMAX = XMAX - 0.01
-      XMIN = MAX (XMIN, -XMAX+1.)
+ 40   xmax = xmax - 0.01
+      xmin = max (xmin, -xmax+1.)
 !
-      RETURN
-      END
+      return
+      end

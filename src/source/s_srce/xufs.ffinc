@@ -1,5 +1,5 @@
 !XUFS
-      SUBROUTINE XUFS(LDSTAK,typ)
+      subroutine xufs(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -25,34 +25,34 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) :: AMISS,FMAX,FMIN,YMISS
-      INTEGER
-     &   I,IAR,IPRT,ISPCF,J,LACOV,LAGMAX,LDS,LYFFT,NF,NPRT,NW,NY
+      real(kind=wp) :: amiss,fmax,fmin,ymiss
+     integer&
+     &   i,iar,iprt,ispcf,j,lacov,lagmax,lds,lyfft,nf,nprt,nw,ny
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   ACOV(101),FREQ(300),PHI(100),SPCF(101,4),Y(150),YFFT(400)
-      INTEGER
-     &   LAGS(4),NLPPA(101)
+     real(kind=wp) ::&
+     &   acov(101),freq(300),phi(100),spcf(101,4),y(150),yfft(400)
+     integer&
+     &   lags(4),nlppa(101)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL ACFMS,ACFS,IPRINT,NRAND,SETRV,UFS,UFSF,UFSFS,UFSM,
 !     +   UFSMS,UFSMV,UFSMVS,UFSS,UFSV,UFSVS
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -128,455 +128,455 @@
 !        THE VALUE IS ASSUMED MISSING, OTHERWISE IT IS NOT.
 !
 !
-      DATA   Y(  1), Y(  2), Y(  3), Y(  4), Y(  5), Y(  6)
-     &    /-0.88_WP, -0.12_WP, -0.89_WP, -1.38_WP, -0.07_WP,  1.03_WP/
-      DATA   Y(  7), Y(  8), Y(  9), Y( 10), Y( 11), Y( 12)
-     &    / 2.14_WP,  0.35_WP, -1.10_WP, -1.78_WP, -2.76_WP, -1.77_WP/
-      DATA   Y( 13), Y( 14), Y( 15), Y( 16), Y( 17), Y( 18)
-     &    / 0.98_WP,  1.00_WP, -0.70_WP, -1.01_WP, -1.30_WP, -0.85_WP/
-      DATA   Y( 19), Y( 20), Y( 21), Y( 22), Y( 23), Y( 24)
-     &    /-0.46_WP,  1.63_WP,  0.06_WP, -0.17_WP, -1.01_WP, -1.04_WP/
-      DATA   Y( 25), Y( 26), Y( 27), Y( 28), Y( 29), Y( 30)
-     &    /-0.66_WP, -1.12_WP, -0.51_WP, -0.71_WP, -0.20_WP, -0.13_WP/
-      DATA   Y( 31), Y( 32), Y( 33), Y( 34), Y( 35), Y( 36)
-     &    / 0.14_WP,  1.59_WP, -0.76_WP, -1.08_WP, -1.77_WP, -1.20_WP/
-      DATA   Y( 37), Y( 38), Y( 39), Y( 40), Y( 41), Y( 42)
-     &    / 0.45_WP, -0.07_WP, -0.63_WP, -0.35_WP, -0.87_WP, -0.62_WP/
-      DATA   Y( 43), Y( 44), Y( 45), Y( 46), Y( 47), Y( 48)
-     &    / 0.28_WP,  1.90_WP,  2.14_WP,  1.05_WP,  0.31_WP,  1.07_WP/
-      DATA   Y( 49), Y( 50)
-     &    / 2.67_WP,  2.44_WP/
+     data   y(  1), y(  2), y(  3), y(  4), y(  5), y(  6)&
+     &    /-0.88_wp, -0.12_wp, -0.89_wp, -1.38_wp, -0.07_wp,  1.03_wp/
+     data   y(  7), y(  8), y(  9), y( 10), y( 11), y( 12)&
+     &    / 2.14_wp,  0.35_wp, -1.10_wp, -1.78_wp, -2.76_wp, -1.77_wp/
+     data   y( 13), y( 14), y( 15), y( 16), y( 17), y( 18)&
+     &    / 0.98_wp,  1.00_wp, -0.70_wp, -1.01_wp, -1.30_wp, -0.85_wp/
+     data   y( 19), y( 20), y( 21), y( 22), y( 23), y( 24)&
+     &    /-0.46_wp,  1.63_wp,  0.06_wp, -0.17_wp, -1.01_wp, -1.04_wp/
+     data   y( 25), y( 26), y( 27), y( 28), y( 29), y( 30)&
+     &    /-0.66_wp, -1.12_wp, -0.51_wp, -0.71_wp, -0.20_wp, -0.13_wp/
+     data   y( 31), y( 32), y( 33), y( 34), y( 35), y( 36)&
+     &    / 0.14_wp,  1.59_wp, -0.76_wp, -1.08_wp, -1.77_wp, -1.20_wp/
+     data   y( 37), y( 38), y( 39), y( 40), y( 41), y( 42)&
+     &    / 0.45_wp, -0.07_wp, -0.63_wp, -0.35_wp, -0.87_wp, -0.62_wp/
+     data   y( 43), y( 44), y( 45), y( 46), y( 47), y( 48)&
+     &    / 0.28_wp,  1.90_wp,  2.14_wp,  1.05_wp,  0.31_wp,  1.07_wp/
+     data   y( 49), y( 50)&
+     &    / 2.67_wp,  2.44_wp/
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     CHECK ERROR HANDLING
 !
 !        TEST 1  -  MISCELANEOUS ERROR CHECKING
 !
-      WRITE (IPRT, 2000)
-      YMISS = 1.16_WP
-      LAGMAX = -1
-      NY = -10
-      LACOV = 101
-      LYFFT = -11
-      NW = -1
-      NF = -5
-      FMIN = 0.5_WP
-      FMAX = 0.0_WP
-      NPRT = -1
-      ISPCF = -20
-      LDS = 0
-      WRITE(IPRT, 1001)
-      CALL UFS (Y, NY)
-      WRITE (IPRT, 1002) IERR
-      WRITE(IPRT, 1003)
-      CALL UFSS(Y, NY, NW, LAGS, NF, FMIN, FMAX, NPRT, SPCF,
-     &   ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
-      WRITE(IPRT, 1019)
-      CALL UFSF (YFFT, NY, LYFFT, LDS)
-      WRITE (IPRT, 1002) IERR
-      WRITE(IPRT, 1020)
-      CALL UFSFS(YFFT, NY, LYFFT, LDS, NW, LAGS, NF, FMIN, FMAX, NPRT,
-     &   SPCF, ISPCF, FREQ)
-      WRITE (IPRT, 1002) IERR
-      WRITE(IPRT, 1005)
-      CALL UFSM (Y, YMISS, NY)
-      WRITE (IPRT, 1002) IERR
-      WRITE(IPRT, 1006)
-      CALL UFSMS(Y, YMISS, NY, NW, LAGS, NF, FMIN, FMAX, NPRT, SPCF,
-     &   ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
-      WRITE (IPRT, 1007)
-      CALL UFSV(ACOV, LAGMAX, NY)
-      WRITE (IPRT, 1002) IERR
-      WRITE (IPRT, 1008)
-      CALL UFSVS (ACOV, LAGMAX, NY, NW, LAGS, NF,
-     &   FMIN, FMAX, NPRT, SPCF, ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
-      WRITE (IPRT, 1021)
-      CALL UFSMV(ACOV, NLPPA, LAGMAX, NY)
-      WRITE (IPRT, 1002) IERR
-      WRITE (IPRT, 1022)
-      CALL UFSMVS (ACOV, NLPPA, LAGMAX, NY, NW, LAGS, NF,
-     &   FMIN, FMAX, NPRT, SPCF, ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 2000)
+      ymiss = 1.16_wp
+      lagmax = -1
+      ny = -10
+      lacov = 101
+      lyfft = -11
+      nw = -1
+      nf = -5
+      fmin = 0.5_wp
+      fmax = 0.0_wp
+      nprt = -1
+      ispcf = -20
+      lds = 0
+      write(iprt, 1001)
+      call ufs (y, ny)
+      write (iprt, 1002) ierr
+      write(iprt, 1003)
+     call ufss(y, ny, nw, lags, nf, fmin, fmax, nprt, spcf,&
+     &   ispcf, freq, lds)
+      write (iprt, 1002) ierr
+      write(iprt, 1019)
+      call ufsf (yfft, ny, lyfft, lds)
+      write (iprt, 1002) ierr
+      write(iprt, 1020)
+     call ufsfs(yfft, ny, lyfft, lds, nw, lags, nf, fmin, fmax, nprt,&
+     &   spcf, ispcf, freq)
+      write (iprt, 1002) ierr
+      write(iprt, 1005)
+      call ufsm (y, ymiss, ny)
+      write (iprt, 1002) ierr
+      write(iprt, 1006)
+     call ufsms(y, ymiss, ny, nw, lags, nf, fmin, fmax, nprt, spcf,&
+     &   ispcf, freq, lds)
+      write (iprt, 1002) ierr
+      write (iprt, 1007)
+      call ufsv(acov, lagmax, ny)
+      write (iprt, 1002) ierr
+      write (iprt, 1008)
+     call ufsvs (acov, lagmax, ny, nw, lags, nf,&
+     &   fmin, fmax, nprt, spcf, ispcf, freq, lds)
+      write (iprt, 1002) ierr
+      write (iprt, 1021)
+      call ufsmv(acov, nlppa, lagmax, ny)
+      write (iprt, 1002) ierr
+      write (iprt, 1022)
+     call ufsmvs (acov, nlppa, lagmax, ny, nw, lags, nf,&
+     &   fmin, fmax, nprt, spcf, ispcf, freq, lds)
+      write (iprt, 1002) ierr
 !
 !        TEST 2  -  MISCELANEOUS ERROR CHECKING (CONTINUED)
 !
-      WRITE (IPRT, 2010)
-      YMISS = 1.16_WP
-      NY = 50
-      LAGMAX = 55
-      LYFFT = -11
-      NW = 2
-      LAGS(1) = 0
-      LAGS(2) = 50
-      NF = 51
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = 3
-      ISPCF = 20
-      LDS = 0
-      WRITE(IPRT, 1003)
-      CALL UFSS(Y, NY, NW, LAGS, NF, FMIN, FMAX, NPRT, SPCF,
-     &   ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
-      WRITE(IPRT, 1019)
-      CALL UFSF (YFFT, NY, LYFFT, LDS)
-      WRITE (IPRT, 1002) IERR
-      WRITE(IPRT, 1020)
-      CALL UFSFS(YFFT, NY, LYFFT, LDS, NW, LAGS, NF, FMIN, FMAX, NPRT,
-     &   SPCF, ISPCF, FREQ)
-      WRITE (IPRT, 1002) IERR
-      WRITE(IPRT, 1006)
-      CALL UFSMS(Y, YMISS, NY, NW, LAGS, NF, FMIN, FMAX, NPRT, SPCF,
-     &   ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
-      WRITE (IPRT, 1008)
-      CALL UFSVS (ACOV, LAGMAX, NY, NW, LAGS, NF,
-     &   FMIN, FMAX, NPRT, SPCF, ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
-      WRITE (IPRT, 1022)
-      CALL UFSMVS (ACOV, NLPPA, LAGMAX, NY, NW, LAGS, NF,
-     &   FMIN, FMAX, NPRT, SPCF, ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 2010)
+      ymiss = 1.16_wp
+      ny = 50
+      lagmax = 55
+      lyfft = -11
+      nw = 2
+      lags(1) = 0
+      lags(2) = 50
+      nf = 51
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = 3
+      ispcf = 20
+      lds = 0
+      write(iprt, 1003)
+     call ufss(y, ny, nw, lags, nf, fmin, fmax, nprt, spcf,&
+     &   ispcf, freq, lds)
+      write (iprt, 1002) ierr
+      write(iprt, 1019)
+      call ufsf (yfft, ny, lyfft, lds)
+      write (iprt, 1002) ierr
+      write(iprt, 1020)
+     call ufsfs(yfft, ny, lyfft, lds, nw, lags, nf, fmin, fmax, nprt,&
+     &   spcf, ispcf, freq)
+      write (iprt, 1002) ierr
+      write(iprt, 1006)
+     call ufsms(y, ymiss, ny, nw, lags, nf, fmin, fmax, nprt, spcf,&
+     &   ispcf, freq, lds)
+      write (iprt, 1002) ierr
+      write (iprt, 1008)
+     call ufsvs (acov, lagmax, ny, nw, lags, nf,&
+     &   fmin, fmax, nprt, spcf, ispcf, freq, lds)
+      write (iprt, 1002) ierr
+      write (iprt, 1022)
+     call ufsmvs (acov, nlppa, lagmax, ny, nw, lags, nf,&
+     &   fmin, fmax, nprt, spcf, ispcf, freq, lds)
+      write (iprt, 1002) ierr
 !
 !        TEST 3  -  LDS TOO SMALL
 !
-      WRITE (IPRT, 2030)
-      YMISS = 1.16_WP
-      NY = 50
-      LAGMAX = 49
-      LYFFT = 400
-      NW = 2
-      LAGS(1) = 0
-      LAGS(2) = 50
-      NF = 51
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = 3
-      ISPCF = 101
-      LDS = 0
-      WRITE(IPRT, 1003)
-      CALL UFSS(Y, NY, NW, LAGS, NF, FMIN, FMAX, NPRT, SPCF,
-     &   ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
-      WRITE(IPRT, 1019)
-      CALL UFSF (YFFT, NY, LYFFT, LDS)
-      WRITE (IPRT, 1002) IERR
-      WRITE(IPRT, 1020)
-      CALL UFSFS(YFFT, NY, LYFFT, LDS, NW, LAGS, NF, FMIN, FMAX, NPRT,
-     &   SPCF, ISPCF, FREQ)
-      WRITE (IPRT, 1002) IERR
-      WRITE(IPRT, 1006)
-      CALL UFSMS(Y, YMISS, NY, NW, LAGS, NF, FMIN, FMAX, NPRT, SPCF,
-     &   ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
-      WRITE (IPRT, 1008)
-      CALL UFSVS (ACOV, LAGMAX, NY, NW, LAGS, NF,
-     &   FMIN, FMAX, NPRT, SPCF, ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
-      WRITE (IPRT, 1022)
-      CALL UFSMVS (ACOV, NLPPA, LAGMAX, NY, NW, LAGS, NF,
-     &   FMIN, FMAX, NPRT, SPCF, ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 2030)
+      ymiss = 1.16_wp
+      ny = 50
+      lagmax = 49
+      lyfft = 400
+      nw = 2
+      lags(1) = 0
+      lags(2) = 50
+      nf = 51
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = 3
+      ispcf = 101
+      lds = 0
+      write(iprt, 1003)
+     call ufss(y, ny, nw, lags, nf, fmin, fmax, nprt, spcf,&
+     &   ispcf, freq, lds)
+      write (iprt, 1002) ierr
+      write(iprt, 1019)
+      call ufsf (yfft, ny, lyfft, lds)
+      write (iprt, 1002) ierr
+      write(iprt, 1020)
+     call ufsfs(yfft, ny, lyfft, lds, nw, lags, nf, fmin, fmax, nprt,&
+     &   spcf, ispcf, freq)
+      write (iprt, 1002) ierr
+      write(iprt, 1006)
+     call ufsms(y, ymiss, ny, nw, lags, nf, fmin, fmax, nprt, spcf,&
+     &   ispcf, freq, lds)
+      write (iprt, 1002) ierr
+      write (iprt, 1008)
+     call ufsvs (acov, lagmax, ny, nw, lags, nf,&
+     &   fmin, fmax, nprt, spcf, ispcf, freq, lds)
+      write (iprt, 1002) ierr
+      write (iprt, 1022)
+     call ufsmvs (acov, nlppa, lagmax, ny, nw, lags, nf,&
+     &   fmin, fmax, nprt, spcf, ispcf, freq, lds)
+      write (iprt, 1002) ierr
 !
 !        TEST 4  -  ALL DATA AND COVARIANCES MISSING
 !
-      WRITE (IPRT, 2040)
-      YMISS = 1.16_WP
-      NY = 50
-      LAGMAX = 49
-      LYFFT = 400
-      NW = 2
-      LAGS(1) = 8
-      LAGS(2) = 16
-      NF = 51
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = 3
-      ISPCF = 101
-      LDS = 700
-      CALL SETRV(YFFT, NY, YMISS)
-      CALL SETRV(ACOV, LAGMAX, 0.0_WP)
-      DO 5 I = 1, LAGMAX
-         NLPPA(I) = 0
-    5 CONTINUE
-      WRITE (IPRT, 1005)
-      CALL UFSM(YFFT, YMISS, NY)
-      WRITE (IPRT, 1002) IERR
-      WRITE(IPRT, 1006)
-      CALL UFSMS(YFFT, YMISS, NY, NW, LAGS, NF, FMIN, FMAX, NPRT, SPCF,
-     &   ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
-      WRITE (IPRT, 1021)
-      CALL UFSMV (ACOV, NLPPA, LAGMAX, NY)
-      WRITE (IPRT, 1002) IERR
-      WRITE (IPRT, 1022)
-      CALL UFSMVS (ACOV, NLPPA, LAGMAX, NY, NW, LAGS, NF,
-     &   FMIN, FMAX, NPRT, SPCF, ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 2040)
+      ymiss = 1.16_wp
+      ny = 50
+      lagmax = 49
+      lyfft = 400
+      nw = 2
+      lags(1) = 8
+      lags(2) = 16
+      nf = 51
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = 3
+      ispcf = 101
+      lds = 700
+      call setrv(yfft, ny, ymiss)
+      call setrv(acov, lagmax, 0.0_wp)
+      do 5 i = 1, lagmax
+         nlppa(i) = 0
+    5 continue
+      write (iprt, 1005)
+      call ufsm(yfft, ymiss, ny)
+      write (iprt, 1002) ierr
+      write(iprt, 1006)
+     call ufsms(yfft, ymiss, ny, nw, lags, nf, fmin, fmax, nprt, spcf,&
+     &   ispcf, freq, lds)
+      write (iprt, 1002) ierr
+      write (iprt, 1021)
+      call ufsmv (acov, nlppa, lagmax, ny)
+      write (iprt, 1002) ierr
+      write (iprt, 1022)
+     call ufsmvs (acov, nlppa, lagmax, ny, nw, lags, nf,&
+     &   fmin, fmax, nprt, spcf, ispcf, freq, lds)
+      write (iprt, 1002) ierr
 !
 !        TEST 5  -  EVERY OTHER VALUE MISSING
 !
-      WRITE (IPRT, 2050)
-      YMISS = 1.16_WP
-      NY = 50
-      LAGMAX = 49
-      LYFFT = 400
-      NW = 2
-      LAGS(1) = 8
-      LAGS(2) = 16
-      NF = 51
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = 3
-      ISPCF = 101
-      LDS = 700
-      CALL SETRV(YFFT, NY, YMISS)
-      DO 10 I = 1, NY, 2
-         YFFT(I) = Y(I)
-   10 CONTINUE
-      WRITE (IPRT, 1005)
-      CALL UFSM(YFFT, YMISS, NY)
-      WRITE (IPRT, 1002) IERR
-      WRITE(IPRT, 1006)
-      CALL UFSMS(YFFT, YMISS, NY, NW, LAGS, NF, FMIN, FMAX, NPRT, SPCF,
-     &   ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 2050)
+      ymiss = 1.16_wp
+      ny = 50
+      lagmax = 49
+      lyfft = 400
+      nw = 2
+      lags(1) = 8
+      lags(2) = 16
+      nf = 51
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = 3
+      ispcf = 101
+      lds = 700
+      call setrv(yfft, ny, ymiss)
+      do 10 i = 1, ny, 2
+         yfft(i) = y(i)
+   10 continue
+      write (iprt, 1005)
+      call ufsm(yfft, ymiss, ny)
+      write (iprt, 1002) ierr
+      write(iprt, 1006)
+     call ufsms(yfft, ymiss, ny, nw, lags, nf, fmin, fmax, nprt, spcf,&
+     &   ispcf, freq, lds)
+      write (iprt, 1002) ierr
 !
 !     CHECK RESULTS FROM VALID CALL
 !
-      YMISS = 1.16_WP
-      NY = 50
-      LAGMAX = 49
-      LYFFT = 400
-      NW = 2
-      LAGS(1) = 8
-      LAGS(2) = 16
-      NF = 51
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = 2
-      ISPCF = 101
-      LDS = LDSTAK
+      ymiss = 1.16_wp
+      ny = 50
+      lagmax = 49
+      lyfft = 400
+      nw = 2
+      lags(1) = 8
+      lags(2) = 16
+      nf = 51
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = 2
+      ispcf = 101
+      lds = ldstak
 !
 !     TEST OF UFS
 !
-      WRITE(IPRT, 2020)
-      WRITE(IPRT, 1001)
-      CALL UFS (Y, NY)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write(iprt, 1001)
+      call ufs (y, ny)
+      write (iprt, 1002) ierr
 !
 !     TEST OF UFSS
 !
-      WRITE(IPRT, 2020)
-      WRITE(IPRT, 1003)
-      CALL UFSS(Y, NY, NW, LAGS, NF, FMIN, FMAX, NPRT, SPCF,
-     &   ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write(iprt, 1003)
+     call ufss(y, ny, nw, lags, nf, fmin, fmax, nprt, spcf,&
+     &   ispcf, freq, lds)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM UFSS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (SPCF(I,J),J=1,NW), I=1,NF)
+      write (iprt, 1004) (freq(i), (spcf(i,j),j=1,nw), i=1,nf)
 !
 !     TEST OF UFSF
 !
-      WRITE(IPRT, 2020)
-      WRITE(IPRT, 1019)
-      CALL SCOPY(NY, Y, 1, YFFT, 1)
-      CALL UFSF (YFFT, NY, LYFFT, LDS)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write(iprt, 1019)
+      call scopy(ny, y, 1, yfft, 1)
+      call ufsf (yfft, ny, lyfft, lds)
+      write (iprt, 1002) ierr
 !
 !     TEST OF UFSFS
 !
-      WRITE(IPRT, 2020)
-      WRITE(IPRT, 1020)
-      CALL SCOPY(NY, Y, 1, YFFT, 1)
-      CALL UFSFS(YFFT, NY, LYFFT, LDS, NW, LAGS, NF, FMIN, FMAX, NPRT,
-     &   SPCF, ISPCF, FREQ)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write(iprt, 1020)
+      call scopy(ny, y, 1, yfft, 1)
+     call ufsfs(yfft, ny, lyfft, lds, nw, lags, nf, fmin, fmax, nprt,&
+     &   spcf, ispcf, freq)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM UFSFS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (SPCF(I,J),J=1,NW), I=1,NF)
+      write (iprt, 1004) (freq(i), (spcf(i,j),j=1,nw), i=1,nf)
 !
 !     TEST OF UFSM
 !
-      WRITE(IPRT, 2020)
-      WRITE(IPRT, 1005)
-      CALL UFSM (Y, YMISS, NY)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write(iprt, 1005)
+      call ufsm (y, ymiss, ny)
+      write (iprt, 1002) ierr
 !
 !     TEST OF UFSMS
 !
-      WRITE(IPRT, 2020)
-      WRITE(IPRT, 1006)
-      CALL UFSMS(Y, YMISS, NY, NW, LAGS, NF, FMIN, FMAX, NPRT, SPCF,
-     &   ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write(iprt, 1006)
+     call ufsms(y, ymiss, ny, nw, lags, nf, fmin, fmax, nprt, spcf,&
+     &   ispcf, freq, lds)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM UFSMS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (SPCF(I,J),J=1,NW), I=1,NF)
+      write (iprt, 1004) (freq(i), (spcf(i,j),j=1,nw), i=1,nf)
 !
 !     TEST OF UFSV
 !
-      WRITE(IPRT, 2020)
-      CALL ACFS (Y, NY, LAGMAX, LACOV, ACOV, IAR, PHI, 0, LDS)
-      WRITE (IPRT, 1007)
-      CALL UFSV(ACOV, LAGMAX, NY)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      call acfs (y, ny, lagmax, lacov, acov, iar, phi, 0, lds)
+      write (iprt, 1007)
+      call ufsv(acov, lagmax, ny)
+      write (iprt, 1002) ierr
 !
 !     TEST OF UFSVS
 !
-      WRITE(IPRT, 2020)
-      WRITE (IPRT, 1008)
-      CALL UFSVS (ACOV, LAGMAX, NY, NW, LAGS, NF,
-     &   FMIN, FMAX, NPRT, SPCF, ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write (iprt, 1008)
+     call ufsvs (acov, lagmax, ny, nw, lags, nf,&
+     &   fmin, fmax, nprt, spcf, ispcf, freq, lds)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM UFSVS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (SPCF(I,J),J=1,NW), I=1,NF)
+      write (iprt, 1004) (freq(i), (spcf(i,j),j=1,nw), i=1,nf)
 !
 !     TEST OF UFSMV
 !
-      WRITE(IPRT, 2020)
-      CALL ACFMS (Y, YMISS, NY, LAGMAX, LACOV, ACOV, AMISS, NLPPA,
-     &   0, LDS)
-      WRITE (IPRT, 1021)
-      CALL UFSMV(ACOV, NLPPA, LAGMAX, NY)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+     call acfms (y, ymiss, ny, lagmax, lacov, acov, amiss, nlppa,&
+     &   0, lds)
+      write (iprt, 1021)
+      call ufsmv(acov, nlppa, lagmax, ny)
+      write (iprt, 1002) ierr
 !
 !     TEST OF UFSMVS
 !
-      WRITE(IPRT, 2020)
-      WRITE (IPRT, 1022)
-      CALL UFSMVS (ACOV, NLPPA, LAGMAX, NY, NW, LAGS, NF,
-     &   FMIN, FMAX, NPRT, SPCF, ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write (iprt, 1022)
+     call ufsmvs (acov, nlppa, lagmax, ny, nw, lags, nf,&
+     &   fmin, fmax, nprt, spcf, ispcf, freq, lds)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM UFSMVS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (SPCF(I,J),J=1,NW), I=1,NF)
+      write (iprt, 1004) (freq(i), (spcf(i,j),j=1,nw), i=1,nf)
 !
 !     MINIMUM PROBLEM SIZE
 !
-      YMISS = 1.16_WP
-      NY = 17
-      LAGMAX = 1
-      LYFFT = 400
-      NW = 2
-      LAGS(1) = 1
-      LAGS(2) = 16
-      NF = 1
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = 2
-      ISPCF = 101
-      LDS = 700
+      ymiss = 1.16_wp
+      ny = 17
+      lagmax = 1
+      lyfft = 400
+      nw = 2
+      lags(1) = 1
+      lags(2) = 16
+      nf = 1
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = 2
+      ispcf = 101
+      lds = 700
 !
 !     TEST OF UFS
 !
-      WRITE (IPRT, 2060)
-      WRITE(IPRT, 1001)
-      CALL UFS (Y, NY)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 2060)
+      write(iprt, 1001)
+      call ufs (y, ny)
+      write (iprt, 1002) ierr
 !
 !     TEST OF UFSS
 !
-      WRITE(IPRT, 2060)
-      WRITE(IPRT, 1003)
-      CALL UFSS(Y, NY, NW, LAGS, NF, FMIN, FMAX, NPRT, SPCF,
-     &   ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2060)
+      write(iprt, 1003)
+     call ufss(y, ny, nw, lags, nf, fmin, fmax, nprt, spcf,&
+     &   ispcf, freq, lds)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM UFSS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (SPCF(I,J),J=1,NW), I=1,NF)
+      write (iprt, 1004) (freq(i), (spcf(i,j),j=1,nw), i=1,nf)
 !
 !     CHECK HANDLING OF FMIN AND FMAX
 !
-      YMISS = 1.16_WP
-      NY = 50
-      LAGMAX = 49
-      LYFFT = 400
-      NW = 2
-      LAGS(1) = 8
-      LAGS(2) = 16
-      NF = 51
-      FMIN = 0.45_WP
-      FMAX = 0.5_WP
-      NPRT = 2
-      ISPCF = 101
-      LDS = 700
+      ymiss = 1.16_wp
+      ny = 50
+      lagmax = 49
+      lyfft = 400
+      nw = 2
+      lags(1) = 8
+      lags(2) = 16
+      nf = 51
+      fmin = 0.45_wp
+      fmax = 0.5_wp
+      nprt = 2
+      ispcf = 101
+      lds = 700
 !
 !     TEST OF UFSS
 !
-      WRITE(IPRT, 2070)
-      WRITE(IPRT, 1003)
-      CALL UFSS(Y, NY, NW, LAGS, NF, FMIN, FMAX, NPRT, SPCF,
-     &   ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2070)
+      write(iprt, 1003)
+     call ufss(y, ny, nw, lags, nf, fmin, fmax, nprt, spcf,&
+     &   ispcf, freq, lds)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM UFSS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (SPCF(I,J),J=1,NW), I=1,NF)
+      write (iprt, 1004) (freq(i), (spcf(i,j),j=1,nw), i=1,nf)
 !
 !     WHITE NOISE SPECTRUM
 !
-      YMISS = 1.16_WP
-      CALL NRAND(YFFT, NY, 12345)
-      NY = 50
-      LAGMAX = 49
-      LYFFT = 400
-      NW = 2
-      LAGS(1) = 8
-      LAGS(2) = 16
-      NF = 51
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = 2
-      ISPCF = 101
-      LDS = 700
+      ymiss = 1.16_wp
+      call nrand(yfft, ny, 12345)
+      ny = 50
+      lagmax = 49
+      lyfft = 400
+      nw = 2
+      lags(1) = 8
+      lags(2) = 16
+      nf = 51
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = 2
+      ispcf = 101
+      lds = 700
 !
 !     TEST OF UFSS
 !
-      WRITE(IPRT, 2080)
-      WRITE(IPRT, 1003)
-      CALL UFSS(YFFT, NY, NW, LAGS, NF, FMIN, FMAX, NPRT, SPCF,
-     &   ISPCF, FREQ, LDS)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2080)
+      write(iprt, 1003)
+     call ufss(yfft, ny, nw, lags, nf, fmin, fmax, nprt, spcf,&
+     &   ispcf, freq, lds)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM UFSS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (SPCF(I,J),J=1,NW), I=1,NF)
+      write (iprt, 1004) (freq(i), (spcf(i,j),j=1,nw), i=1,nf)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1001 FORMAT (12H TEST OF UFS)
- 1002 FORMAT (/8H IERR IS, I5/)
- 1003 FORMAT (13H TEST OF UFSS)
- 1004 FORMAT (3(1X, E16.8))
- 1005 FORMAT (13H TEST OF UFSM)
- 1006 FORMAT (14H TEST OF UFSMS)
- 1007 FORMAT (13H TEST OF UFSV)
- 1008 FORMAT (14H TEST OF UFSVS)
- 1019 FORMAT (13H TEST OF UFSF)
- 1020 FORMAT (14H TEST OF UFSFS)
- 1021 FORMAT (14H TEST OF UFSMV)
- 1022 FORMAT (15H TEST OF UFSMVS)
- 2000 FORMAT (32H1CHECK ERROR HANDLING  -  TEST 1)
- 2010 FORMAT (32H1CHECK ERROR HANDLING  -  TEST 2)
- 2020 FORMAT (14H1VALID PROBLEM)
- 2030 FORMAT (14H1LDS TOO SMALL)
- 2040 FORMAT (33H1ALL DATA AND COVARIANCES MISSING)
- 2050 FORMAT (31H1EVERY OTHER DATA VALUE MISSING)
- 2060 FORMAT (21H1MINIMUM PROBLEM SIZE)
- 2070 FORMAT (32H1CHECK HANDLING OF FMIN AND FMAX)
- 2080 FORMAT (21H1WHITE NOISE SPECTRUM)
-      END
+ 1001 format (12h test of ufs)
+ 1002 format (/8h ierr is, i5/)
+ 1003 format (13h test of ufss)
+ 1004 format (3(1x, e16.8))
+ 1005 format (13h test of ufsm)
+ 1006 format (14h test of ufsms)
+ 1007 format (13h test of ufsv)
+ 1008 format (14h test of ufsvs)
+ 1019 format (13h test of ufsf)
+ 1020 format (14h test of ufsfs)
+ 1021 format (14h test of ufsmv)
+ 1022 format (15h test of ufsmvs)
+ 2000 format (32h1check error handling  -  test 1)
+ 2010 format (32h1check error handling  -  test 2)
+ 2020 format (14h1valid problem)
+ 2030 format (14h1lds too small)
+ 2040 format (33h1all data and covariances missing)
+ 2050 format (31h1every other data value missing)
+ 2060 format (21h1minimum problem size)
+ 2070 format (32h1check handling of fmin and fmax)
+ 2080 format (21h1white noise spectrum)
+      end

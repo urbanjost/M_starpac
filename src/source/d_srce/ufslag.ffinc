@@ -1,5 +1,5 @@
 !UFSLAG
-      SUBROUTINE UFSLAG (ACOV, LAGMAX, LAGS, N, NW, NWUSED, LACOV)
+      subroutine ufslag (acov, lagmax, lags, n, nw, nwused, lacov)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,23 +16,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LACOV,LAGMAX,N,NW,NWUSED
+     integer&
+     &   lacov,lagmax,n,nw,nwused
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV(LACOV)
-      INTEGER
-     &   LAGS(NW)
+     real(kind=wp) ::&
+     &   acov(lacov)
+     integer&
+     &   lags(nw)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ACOVMX,P95LIM
-      INTEGER
-     &   I,J,K,LAG,NWM1
+     real(kind=wp) ::&
+     &   acovmx,p95lim
+     integer&
+     &   i,j,k,lag,nwm1
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,DBLE,SQRT
+      intrinsic abs,dble,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -63,62 +63,62 @@
 !     REAL(KIND=WP) :: P95LIM
 !        THE 95 PERCENT CONFIDENT LIMIT FOR WHITE NOISE.
 !
-      LAGS(NW) = LAGMAX
-      IF (LAGS(NW) .LE. 32) GO TO 30
+      lags(nw) = lagmax
+      if (lags(nw) .le. 32) go to 30
 !
 !     COMPUTE 95 PERCENT CONFIDENCE LIMITS ON AUTOCOVARIANCES,
 !     ASSUMING WHITE NOISE.
 !
-      P95LIM = 1.96_WP * ACOV(1) / SQRT(DBLE(N))
+      p95lim = 1.96_wp * acov(1) / sqrt(dble(n))
 !
 !     CHECK FOR FIRST ACVF EXCEEDING 95 PERCENT LIMIT ON WHITE NOISE
 !
-      DO 10 I = 1, LAGMAX
-         LAG = LAGMAX + 1 - I
-         IF (ABS(ACOV(LAG + 1)) .GE. P95LIM) GO TO 30
-         LAGS(NW) = LAGS(NW) - 1
-   10 CONTINUE
+      do 10 i = 1, lagmax
+         lag = lagmax + 1 - i
+         if (abs(acov(lag + 1)) .ge. p95lim) go to 30
+         lags(nw) = lags(nw) - 1
+   10 continue
 !
 !     IF NO ACVF EXCEEDS WHITE NOISE LIMITS, CHECK FOR LARGEST ACVF.
 !
-      LAGS(NW) = 1
-      ACOVMX = ABS(ACOV(2))
-      DO 20 LAG = 1, LAGMAX
-         IF (ABS(ACOV(LAG + 1)) .LE. ACOVMX) GO TO 20
-         LAGS(NW) = LAG
-         ACOVMX = ABS(ACOV(LAG + 1))
-   20 CONTINUE
+      lags(nw) = 1
+      acovmx = abs(acov(2))
+      do 20 lag = 1, lagmax
+         if (abs(acov(lag + 1)) .le. acovmx) go to 20
+         lags(nw) = lag
+         acovmx = abs(acov(lag + 1))
+   20 continue
 !
 !     COMPUTE LAG WINDOW TRUNCATION POINTS
 !
-   30 LAGS(NW) = LAGS(NW) * 3.0_WP / 2.0_WP
-      IF (LAGS(NW) .LT. 32) LAGS(NW) = 32
-      IF (LAGS(NW) .GT. LAGMAX) LAGS(NW) = LAGMAX
-      NWUSED = NW
-      IF (NW .EQ. 1) RETURN
-      NWM1 = NW - 1
-      DO 40 I = 1, NWM1
-         K = NW - I
-         LAGS(K) = LAGS(K + 1) / 2
-   40 CONTINUE
+   30 lags(nw) = lags(nw) * 3.0_wp / 2.0_wp
+      if (lags(nw) .lt. 32) lags(nw) = 32
+      if (lags(nw) .gt. lagmax) lags(nw) = lagmax
+      nwused = nw
+      if (nw .eq. 1) return
+      nwm1 = nw - 1
+      do 40 i = 1, nwm1
+         k = nw - i
+         lags(k) = lags(k + 1) / 2
+   40 continue
 !
 !     CHECK WHETHER ALL NW LAG WINDOW TRUNCATION POINTS CAN BE USED.
 !
-      NWUSED = NW
-      IF (LAGS(1) .GE. 4) RETURN
+      nwused = nw
+      if (lags(1) .ge. 4) return
 !
 !     RECONSTURCT -LAGS- VECTOR IF NOT ALL TRUNCATION POINTS ARE
 !     TO BE USED
 !
-      DO 50 I = 2, NW
-         NWUSED = NWUSED - 1
-         IF (LAGS(I) .GE. 4) GO TO 60
-   50 CONTINUE
+      do 50 i = 2, nw
+         nwused = nwused - 1
+         if (lags(i) .ge. 4) go to 60
+   50 continue
 !
-   60 DO 70 I = 1, NWUSED
-         J = NW - NWUSED + I
-         LAGS(I) = LAGS(J)
-   70 CONTINUE
+   60 do 70 i = 1, nwused
+         j = nw - nwused + i
+         lags(i) = lags(j)
+   70 continue
 !
-      RETURN
-      END
+      return
+      end

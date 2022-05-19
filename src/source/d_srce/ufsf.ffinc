@@ -1,5 +1,5 @@
 !UFSF
-      SUBROUTINE UFSF(YFFT, N, LYFFT, LDSTAK)
+      subroutine ufsf(yfft, n, lyfft, ldstak)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,36 +16,36 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK,LYFFT,N
+     integer&
+     &   ldstak,lyfft,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YFFT(*)
+     real(kind=wp) ::&
+     &   yfft(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) :: ALPHA,DELTA,FMAX,FMIN,YMISS
-      INTEGER
-     &   IFP,IPRT,ISPCF,LACOV,LAGMAX,LDSMIN,LNLPPA,LPCV,LWORK,
-     &   NALL0,NF,NFFT,NPRT,NW,WORK
+      real(kind=wp) :: alpha,delta,fmax,fmin,ymiss
+     integer&
+    &   ifp,iprt,ispcf,lacov,lagmax,ldsmin,lnlppa,lpcv,lwork,&
+     &   nall0,nf,nfft,nprt,nw,work
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   ACOV(101),FREQ(101),RSTAK(12),SPCF(101,4),XAXIS(106),
-     &   YAXIS(106)
-      INTEGER
-     &   ISORT(101),ISYM(106),LAGS(4),NLPPA(1)
-      LOGICAL
-     &   OPTION(4)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+    &   acov(101),freq(101),rstak(12),spcf(101,4),xaxis(106),&
+     &   yaxis(106)
+     integer&
+     &   isort(101),isym(106),lags(4),nlppa(1)
+     logical&
+     &   option(4)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -56,11 +56,11 @@
 !      EXTERNAL IPRINT,LDSCMP,PARZEN,SETESL,SETLAG,STKSET,UFSDRV
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
+      equivalence (dstak(1),rstak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -158,71 +158,71 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
+     data nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6) /&
      &   'U','F','S','F',' ',' '/
 !
 !     SET UP
 !
-      OPTION(4) = .FALSE.
-      OPTION(3) = .FALSE.
-      OPTION(2) = .FALSE.
-      OPTION(1) = .TRUE.
+      option(4) = .false.
+      option(3) = .false.
+      option(2) = .false.
+      option(1) = .true.
 !
 !     SET MAXIMUM LAG VALUE TO BE USED.
 !     SET EXTENDED SERIES LENGTH.
 !     SET NUMBER OF LAG WINDOW TRUNCATION POINTS TO USE.
 !
-      CALL SETLAG(N, LAGMAX)
-      CALL SETESL(N+LAGMAX, 4, NFFT)
-      NW = 4
+      call setlag(n, lagmax)
+      call setesl(n+lagmax, 4, nfft)
+      nw = 4
 !
-      ISPCF = 101
-      LACOV = 101
-      LNLPPA = 1
-      LPCV = 106
-      LWORK = NFFT
-      NF = 101
-      YMISS = 1.0_WP
+      ispcf = 101
+      lacov = 101
+      lnlppa = 1
+      lpcv = 106
+      lwork = nfft
+      nf = 101
+      ymiss = 1.0_wp
 !
 !     COMPUTE MIIMUM ALLOWABLE STACK LENGTH
 !
-      CALL LDSCMP(1, 0, 0, 0, 0, 0, 'D', NFFT, LDSMIN)
+      call ldscmp(1, 0, 0, 0, 0, 0, 'D', nfft, ldsmin)
 !
 !     SET SIZE OF WORK AREA.
 !     SET THE NUMBER OF OUTSTANDING ALLOCATIONS.
 !     SET THE STACK ALLOCATION TYPE.
 !
-      CALL STKSET(LDSTAK, 4)
-      NALL0 = STKST(1)
+      call stkset(ldstak, 4)
+      nall0 = stkst(1)
 !
-      IFP = 4
+      ifp = 4
 !
 !     SET STARTING LOCATIONS IN THE WORK AREA FOR VARIOUS ARRAYS.
 !
-      IF ((LDSMIN.LE.LDSTAK) .AND. (LDSMIN.GE.7)) THEN
-         WORK = STKGET(LWORK,IFP)
-      ELSE
-         WORK = 1
-      END IF
+      if ((ldsmin.le.ldstak) .and. (ldsmin.ge.7)) then
+         work = stkget(lwork,ifp)
+      else
+         work = 1
+      end if
 !
 !     CALL THE CONTROLLING ROUTINE FOR FOURIER SPECTRUM ROUTINES
 !     FOR SERIES WITH MISSING DATA.
 !
-      CALL UFSDRV(YFFT, LYFFT, YMISS, ACOV, NLPPA, SPCF, ISPCF, NF,
-     &   FMIN, FMAX, FREQ, N, NW, LAGMAX, LAGS, RSTAK(WORK), LACOV,
-     &   LWORK, DELTA, ISORT, ISYM, XAXIS, YAXIS, LPCV, ALPHA, NPRT,
-     &   PARZEN, NMSUB, LDSMIN, LDSTAK, OPTION, LNLPPA, NFFT)
+     call ufsdrv(yfft, lyfft, ymiss, acov, nlppa, spcf, ispcf, nf,&
+    &   fmin, fmax, freq, n, nw, lagmax, lags, rstak(work), lacov,&
+    &   lwork, delta, isort, isym, xaxis, yaxis, lpcv, alpha, nprt,&
+     &   parzen, nmsub, ldsmin, ldstak, option, lnlppa, nfft)
 !
 !     CHECK FOR ERRORS
 !
-      IF (IERR.EQ.0) RETURN
+      if (ierr.eq.0) return
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
-      RETURN
+      call iprint(iprt)
+      write (iprt,1000)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &   '       CALL UFSF (YFFT, N, LYFFT, LDSTAK)')
-      END
+      end

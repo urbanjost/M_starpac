@@ -1,5 +1,5 @@
 !DGAMLM
-      SUBROUTINE DGAMLM (XMIN, XMAX)
+      subroutine dgamlm (xmin, xmax)
 ! JUNE 1977 EDITION.   W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! CALCULATE THE MINIMUM AND MAXIMUM LEGAL BOUNDS FOR X IN GAMMA(X).
@@ -16,11 +16,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION XMAX,XMIN
+      double precision xmax,xmin
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION ALNBIG,ALNSML,XLN,XOLD
-      INTEGER I
+      double precision alnbig,alnsml,xln,xold
+      integer i
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH
@@ -30,35 +30,35 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG,MAX
+      intrinsic abs,log,max
 !
 !
-      ALNSML = LOG(D1MACH(1))
-      XMIN = -ALNSML
-      DO 10 I=1,10
-        XOLD = XMIN
-        XLN = LOG(XMIN)
-        XMIN = XMIN - XMIN*((XMIN+0.5D0)*XLN - XMIN - 0.2258D0 + ALNSML)
-     &    / (XMIN*XLN+0.5D0)
-        IF (ABS(XMIN-XOLD).LT.0.005D0) GO TO 20
- 10   CONTINUE
-      CALL XERROR ('DGAMLM  UNABLE TO FIND XMIN', 27, 1, 2)
+      alnsml = log(d1mach(1))
+      xmin = -alnsml
+      do 10 i=1,10
+        xold = xmin
+        xln = log(xmin)
+       xmin = xmin - xmin*((xmin+0.5d0)*xln - xmin - 0.2258d0 + alnsml)&
+     &    / (xmin*xln+0.5d0)
+        if (abs(xmin-xold).lt.0.005d0) go to 20
+ 10   continue
+      call xerror ('DGAMLM  UNABLE TO FIND XMIN', 27, 1, 2)
 !
- 20   XMIN = -XMIN + 0.01D0
+ 20   xmin = -xmin + 0.01d0
 !
-      ALNBIG = LOG (D1MACH(2))
-      XMAX = ALNBIG
-      DO 30 I=1,10
-        XOLD = XMAX
-        XLN = LOG(XMAX)
-        XMAX = XMAX - XMAX*((XMAX-0.5D0)*XLN - XMAX + 0.9189D0 - ALNBIG)
-     &    / (XMAX*XLN-0.5D0)
-        IF (ABS(XMAX-XOLD).LT.0.005D0) GO TO 40
- 30   CONTINUE
-      CALL XERROR ('DGAMLM  UNABLE TO FIND XMAX', 27, 2, 2)
+      alnbig = log (d1mach(2))
+      xmax = alnbig
+      do 30 i=1,10
+        xold = xmax
+        xln = log(xmax)
+       xmax = xmax - xmax*((xmax-0.5d0)*xln - xmax + 0.9189d0 - alnbig)&
+     &    / (xmax*xln-0.5d0)
+        if (abs(xmax-xold).lt.0.005d0) go to 40
+ 30   continue
+      call xerror ('DGAMLM  UNABLE TO FIND XMAX', 27, 2, 2)
 !
- 40   XMAX = XMAX - 0.01D0
-      XMIN = MAX (XMIN, -XMAX+1.D0)
+ 40   xmax = xmax - 0.01d0
+      xmin = max (xmin, -xmax+1.d0)
 !
-      RETURN
-      END
+      return
+      end

@@ -1,5 +1,5 @@
 !EIVEO
-      SUBROUTINE EIVEO (NMSUB, NMVAR, IVEC, N, EVEN, HEAD)
+      subroutine eiveo (nmsub, nmvar, ivec, n, even, head)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,26 +17,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N
-      LOGICAL
-     &   EVEN,HEAD
+     integer&
+     &   n
+     logical&
+     &   even,head
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IVEC(*)
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR(8)*1
+     integer&
+     &   ivec(*)
+     character&
+     &   nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -62,39 +62,39 @@
 !
 !     CHECK FOR VIOLATIONS
 !
-      DO 10 I = 1, N
-         IF ((EVEN .AND. (MOD(IVEC(I), 2) .EQ. 1)) .OR.
-     &       ((.NOT.EVEN) .AND. (MOD(IVEC(I), 2) .EQ. 1))) GO TO 20
-   10 CONTINUE
+      do 10 i = 1, n
+        if ((even .and. (mod(ivec(i), 2) .eq. 1)) .or.&
+     &       ((.not.even) .and. (mod(ivec(i), 2) .eq. 1))) go to 20
+   10 continue
 !
-      RETURN
+      return
 !
 !     VIOLATIONS FOUND
 !
-   20 CONTINUE
+   20 continue
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      IF (EVEN) GO TO 40
+      if (even) go to 40
 !
-      WRITE (IPRT, 1010) (NMVAR(I), I = 1, 6)
-      RETURN
+      write (iprt, 1010) (nmvar(i), i = 1, 6)
+      return
 !
-   40 CONTINUE
-      WRITE (IPRT, 1020) (NMVAR(I), I = 1, 6)
-      RETURN
+   40 continue
+      write (iprt, 1020) (nmvar(i), i = 1, 6)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT(/
-     &   26H THE VALUES IN THE VECTOR , 6A1,
-     &   27H MUST ALL BE ODD.  THE NEXT/
-     &   53H LARGER INTEGER WILL BE USED IN PLACE OF EVEN VALUES.)
- 1020 FORMAT(/
-     &   26H THE VALUES IN THE VECTOR , 6A1,
-     &   28H MUST ALL BE EVEN.  THE NEXT/
-     &   52H LARGER INTEGER WILL BE USED IN PLACE OF ODD VALUES.)
+1010 format(/&
+    &   26h the values in the vector , 6a1,&
+    &   27h must all be odd.  the next/&
+     &   53h larger integer will be used in place of even values.)
+1020 format(/&
+    &   26h the values in the vector , 6a1,&
+    &   28h must all be even.  the next/&
+     &   52h larger integer will be used in place of odd values.)
 !
-      END
+      end

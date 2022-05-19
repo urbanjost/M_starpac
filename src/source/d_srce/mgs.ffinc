@@ -1,5 +1,5 @@
 !MGS
-      SUBROUTINE MGS(A, B, N, NP, X, C, D, R, IR, IA, IER)
+      subroutine mgs(a, b, n, np, x, c, d, r, ir, ia, ier)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -24,18 +24,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IA,IER,IR,N,NP
+     integer&
+     &   ia,ier,ir,n,np
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   A(IA,NP),B(N),C(NP),D(NP),R(IR,NP),X(NP)
+     real(kind=wp) ::&
+     &   a(ia,np),b(n),c(np),d(np),r(ir,np),x(np)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   SM1,SM2
-      INTEGER
-     &   I,J,JJ,K,NPJJMJ
+     real(kind=wp) ::&
+     &   sm1,sm2
+     integer&
+     &   i,j,jj,k,npjjmj
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -78,56 +78,56 @@
 !           THE SOLUTION MATRIX
 !
 !
-      IER = 0
+      ier = 0
 !
-      SM1 = 0.0_WP
-      SM2 = 0.0_WP
-      DO 10 I=1,N
-         SM1 = A(I,1)*A(I,1) + SM1
-         SM2 = A(I,1)*B(I) + SM2
-   10 CONTINUE
-      IF (SM1.EQ.0.0_WP) GO TO 100
-      D(1) = SM1
-      C(1) = SM2/SM1
-      IF (NP.EQ.1) GO TO 70
-      DO 60 K=2,NP
-         DO 40 J=K,NP
-            SM1 = 0.0_WP
-            DO 20 I=1,N
-               SM1 = A(I,K-1)*A(I,J) + SM1
-   20       CONTINUE
-            R(K-1,J) = SM1/D(K-1)
-            DO 30 I=1,N
-               A(I,J) = A(I,J) - A(I,K-1)*R(K-1,J)
-   30       CONTINUE
-   40    CONTINUE
-         SM1 = 0.0_WP
-         SM2 = 0.0_WP
-         DO 50 I=1,N
-            B(I) = B(I) - A(I,K-1)*C(K-1)
-            SM1 = A(I,K)*A(I,K) + SM1
-            SM2 = A(I,K)*B(I) + SM2
-   50    CONTINUE
-         IF (SM1.EQ.0.0_WP) GO TO 100
-         D(K) = SM1
-         C(K) = SM2/SM1
-   60 CONTINUE
+      sm1 = 0.0_wp
+      sm2 = 0.0_wp
+      do 10 i=1,n
+         sm1 = a(i,1)*a(i,1) + sm1
+         sm2 = a(i,1)*b(i) + sm2
+   10 continue
+      if (sm1.eq.0.0_wp) go to 100
+      d(1) = sm1
+      c(1) = sm2/sm1
+      if (np.eq.1) go to 70
+      do 60 k=2,np
+         do 40 j=k,np
+            sm1 = 0.0_wp
+            do 20 i=1,n
+               sm1 = a(i,k-1)*a(i,j) + sm1
+   20       continue
+            r(k-1,j) = sm1/d(k-1)
+            do 30 i=1,n
+               a(i,j) = a(i,j) - a(i,k-1)*r(k-1,j)
+   30       continue
+   40    continue
+         sm1 = 0.0_wp
+         sm2 = 0.0_wp
+         do 50 i=1,n
+            b(i) = b(i) - a(i,k-1)*c(k-1)
+            sm1 = a(i,k)*a(i,k) + sm1
+            sm2 = a(i,k)*b(i) + sm2
+   50    continue
+         if (sm1.eq.0.0_wp) go to 100
+         d(k) = sm1
+         c(k) = sm2/sm1
+   60 continue
 !
 !     COMPLETE BACKSOLVE
 !
-   70 X(NP) = C(NP)
-      IF (NP.EQ.1) RETURN
-      DO 90 I=2,NP
-         K = NP + 1 - I
-         JJ = K + 1
-         SM1 = 0.0_WP
-         DO 80 J=JJ,NP
-            NPJJMJ = NP + JJ - J
-            SM1 = R(K,NPJJMJ)*X(NPJJMJ) + SM1
-   80    CONTINUE
-         X(K) = C(K) - SM1
-   90 CONTINUE
-      RETURN
-  100 IER = 1
-      RETURN
-      END
+   70 x(np) = c(np)
+      if (np.eq.1) return
+      do 90 i=2,np
+         k = np + 1 - i
+         jj = k + 1
+         sm1 = 0.0_wp
+         do 80 j=jj,np
+            npjjmj = np + jj - j
+            sm1 = r(k,npjjmj)*x(npjjmj) + sm1
+   80    continue
+         x(k) = c(k) - sm1
+   90 continue
+      return
+  100 ier = 1
+      return
+      end

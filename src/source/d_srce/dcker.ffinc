@@ -1,5 +1,5 @@
 !DCKER
-      SUBROUTINE DCKER(NMSUB, N, M, IXM, NPAR, LDSTAK, SCALE, LSCALE)
+      subroutine dcker(nmsub, n, m, ixm, npar, ldstak, scale, lscale)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,37 +16,37 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,LDSTAK,LSCALE,M,N,NPAR
+     integer&
+     &   ixm,ldstak,lscale,m,n,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   SCALE(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   scale(*)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,LDSMIN,NV
-      LOGICAL
-     &   HEAD
+     integer&
+     &   i,ldsmin,nv
+     logical&
+     &   head
 !
 !  LOCAL ARRAYS
-      LOGICAL
-     &   ERROR(10)
-      CHARACTER
-     &   LIXM(8)*1,LLDS(8)*1,LM(8)*1,LN(8)*1,LNPAR(8)*1,
-     &   LSCL(8)*1,LZERO(8)*1
+     logical&
+     &   error(10)
+     character&
+    &   lixm(8)*1,llds(8)*1,lm(8)*1,ln(8)*1,lnpar(8)*1,&
+     &   lscl(8)*1,lzero(8)*1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL EISGE,EISLE,ERVGT,LDSCMP
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -92,58 +92,58 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA LIXM(1), LIXM(2), LIXM(3), LIXM(4), LIXM(5), LIXM(6),
-     &   LIXM(7), LIXM(8) /'I','X','M',' ',' ',' ',' ',' '/
-      DATA LM(1), LM(2), LM(3), LM(4), LM(5), LM(6), LM(7), LM(8) /'M',
+     data lixm(1), lixm(2), lixm(3), lixm(4), lixm(5), lixm(6),&
+     &   lixm(7), lixm(8) /'I','X','M',' ',' ',' ',' ',' '/
+     data lm(1), lm(2), lm(3), lm(4), lm(5), lm(6), lm(7), lm(8) /'M',&
      &   ' ',' ',' ',' ',' ',' ',' '/
-      DATA LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
-     &   LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',
+     data llds(1), llds(2), llds(3), llds(4), llds(5),&
+    &   llds(6), llds(7), llds(8) /'L','D','S','T','A','K',' ',&
      &   ' '/
-      DATA LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8) /'N',
+     data ln(1), ln(2), ln(3), ln(4), ln(5), ln(6), ln(7), ln(8) /'N',&
      &   ' ',' ',' ',' ',' ',' ',' '/
-      DATA LNPAR(1), LNPAR(2), LNPAR(3), LNPAR(4), LNPAR(5),
-     &   LNPAR(6), LNPAR(7), LNPAR(8) /'N','P',' ',' ',' ',' ',' ',
+     data lnpar(1), lnpar(2), lnpar(3), lnpar(4), lnpar(5),&
+    &   lnpar(6), lnpar(7), lnpar(8) /'N','P',' ',' ',' ',' ',' ',&
      &   ' '/
-      DATA LSCL(1), LSCL(2), LSCL(3), LSCL(4), LSCL(5),
-     &   LSCL(6), LSCL(7), LSCL(8) /'S','C','A','L','E',' ',' ',
+     data lscl(1), lscl(2), lscl(3), lscl(4), lscl(5),&
+    &   lscl(6), lscl(7), lscl(8) /'S','C','A','L','E',' ',' ',&
      &   ' '/
-      DATA LZERO(1), LZERO(2), LZERO(3), LZERO(4), LZERO(5),
-     &   LZERO(6), LZERO(7), LZERO(8) /'Z','E','R','O',' ',' ',' ',' '/
+     data lzero(1), lzero(2), lzero(3), lzero(4), lzero(5),&
+     &   lzero(6), lzero(7), lzero(8) /'Z','E','R','O',' ',' ',' ',' '/
 !
 !     ERROR CHECKING
 !
-      DO 10 I=1,10
-         ERROR(I) = .FALSE.
-   10 CONTINUE
+      do 10 i=1,10
+         error(i) = .false.
+   10 continue
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
-      CALL EISGE(NMSUB, LN, N, 1, 1, HEAD, ERROR(1), LN)
+      call eisge(nmsub, ln, n, 1, 1, head, error(1), ln)
 !
-      CALL EISGE(NMSUB, LM, M, 1, 1, HEAD, ERROR(2), LM)
+      call eisge(nmsub, lm, m, 1, 1, head, error(2), lm)
 !
-      CALL EISGE(NMSUB, LIXM, IXM, N, 3, HEAD, ERROR(3), LN)
+      call eisge(nmsub, lixm, ixm, n, 3, head, error(3), ln)
 !
-      CALL EISLE(NMSUB, LNPAR, NPAR, N, 2, HEAD, ERROR(4), LN)
+      call eisle(nmsub, lnpar, npar, n, 2, head, error(4), ln)
 !
-      CALL LDSCMP(5, 0, 2*NPAR+1, 0, 0, 0, 'D',
-     &            N*NPAR + NPAR + N, LDSMIN)
+     call ldscmp(5, 0, 2*npar+1, 0, 0, 0, 'D',&
+     &            n*npar + npar + n, ldsmin)
 !
-      IF ((.NOT.ERROR(1)) .AND. (.NOT.ERROR(4)))
-     &   CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERROR(5),
-     &   LLDS)
+     if ((.not.error(1)) .and. (.not.error(4)))&
+    &   call eisge(nmsub, llds, ldstak, ldsmin, 9, head, error(5),&
+     &   llds)
 !
-      CALL ERVGT(NMSUB, LSCL, SCALE, LSCALE, 0.0_WP, 0, HEAD, 6, NV,
-     &   ERROR(9), LZERO)
+     call ervgt(nmsub, lscl, scale, lscale, 0.0_wp, 0, head, 6, nv,&
+     &   error(9), lzero)
 !
-      DO 20 I=1,10
-         IF (ERROR(I)) GO TO 30
-   20 CONTINUE
-      RETURN
+      do 20 i=1,10
+         if (error(i)) go to 30
+   20 continue
+      return
 !
-   30 CONTINUE
-      IERR = 1
-      RETURN
+   30 continue
+      ierr = 1
+      return
 !
-      END
+      end

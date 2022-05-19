@@ -1,5 +1,5 @@
 !DEMODU
-      SUBROUTINE DEMODU (Y, N, FD, AMPL, PHAS)
+      subroutine demodu (y, n, fd, ampl, phas)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -23,26 +23,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FD
-      INTEGER
-     &   N
+     real(kind=wp) ::&
+     &   fd
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   AMPL(N),PHAS(N),Y(N)
+     real(kind=wp) ::&
+     &   ampl(n),phas(n),y(n)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ARG,PI
-      INTEGER
-     &   I
+     real(kind=wp) ::&
+     &   arg,pi
+     integer&
+     &   i
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL GETPI
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC COS,SIN
+      intrinsic cos,sin
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -63,20 +63,20 @@
 !     REAL Y(N)
 !        THE INPUT ARRAY ARRAY CONTAINING THE OBSERVED SERIES.
 !
-      CALL GETPI(PI)
+      call getpi(pi)
 !
-      DO 10 I = 1, N
-         IF (FD.EQ.0.25E0) THEN
-            AMPL(I) = 0.0E0
-            PHAS(I) = -2.0E0*Y(I)
-         ELSE IF (FD.EQ.0.5E0) THEN
-            AMPL(I) = -2.0E0*Y(I)
-            PHAS(I) = 0.0E0
-         ELSE
-            ARG = (I-1) * FD * 2.0E0 * PI
-            AMPL(I) = Y(I)*COS(ARG)*2.0E0
-            PHAS(I) = -Y(I)*SIN(ARG)*2.0E0
-         END IF
-   10 CONTINUE
-      RETURN
-      END
+      do 10 i = 1, n
+         if (fd.eq.0.25e0) then
+            ampl(i) = 0.0e0
+            phas(i) = -2.0e0*y(i)
+         else if (fd.eq.0.5e0) then
+            ampl(i) = -2.0e0*y(i)
+            phas(i) = 0.0e0
+         else
+            arg = (i-1) * fd * 2.0e0 * pi
+            ampl(i) = y(i)*cos(arg)*2.0e0
+            phas(i) = -y(i)*sin(arg)*2.0e0
+         end if
+   10 continue
+      return
+      end

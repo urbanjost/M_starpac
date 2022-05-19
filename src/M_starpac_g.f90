@@ -44,7 +44,7 @@
       contains
 
 !SSIFA
-      SUBROUTINE SSIFA(A,LDA,N,KPVT,INFO)
+      subroutine ssifa(a,lda,n,kpvt,info)
 !
 !     LATEST REVISION  -  JANUARY 24, 1990
 !
@@ -52,17 +52,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INFO,LDA,N
+      integer info,lda,n
 !
 !  ARRAY ARGUMENTS
-      REAL A(LDA,*)
-      INTEGER KPVT(*)
+      real a(lda,*)
+      integer kpvt(*)
 !
 !  LOCAL SCALARS
-      REAL ABSAKK,AK,AKM1,ALPHA,BK,BKM1,COLMAX,DENOM,MULK,MULKM1,ROWMAX,
-     &   T
-      INTEGER IMAX,IMAXP1,J,JJ,JMAX,K,KM1,KM2,KSTEP
-      LOGICAL SWAP
+     real absakk,ak,akm1,alpha,bk,bkm1,colmax,denom,mulk,mulkm1,rowmax,&
+     &   t
+      integer imax,imaxp1,j,jj,jmax,k,km1,km2,kstep
+      logical swap
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER ISAMAX
@@ -72,7 +72,7 @@
 !       EXTERNAL SAXPY,SSWAP
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,AMAX1,SQRT
+      intrinsic abs,amax1,sqrt
 !
 !
 !     SSIFA FACTORS A REAL SYMMETRIC MATRIX BY ELIMINATION
@@ -128,25 +128,25 @@
 !     INITIALIZE
 !
 !     ALPHA IS USED IN CHOOSING PIVOT BLOCK SIZE.
-      ALPHA = (1.0E0 + SQRT(17.0E0))/8.0E0
+      alpha = (1.0e0 + sqrt(17.0e0))/8.0e0
 !
-      INFO = 0
+      info = 0
 !
 !     MAIN LOOP ON K, WHICH GOES FROM N TO 1.
 !
-      K = N
-   10 CONTINUE
+      k = n
+   10 continue
 !
 !        LEAVE THE LOOP IF K=0 OR K=1.
 !
 !     ...EXIT
-         IF (K .EQ. 0) GO TO 200
-         IF (K .GT. 1) GO TO 20
-            KPVT(1) = 1
-            IF (A(1,1) .EQ. 0.0E0) INFO = 1
+         if (k .eq. 0) go to 200
+         if (k .gt. 1) go to 20
+            kpvt(1) = 1
+            if (a(1,1) .eq. 0.0e0) info = 1
 !     ......EXIT
-            GO TO 200
-   20    CONTINUE
+            go to 200
+   20    continue
 !
 !        THIS SECTION OF CODE DETERMINES THE KIND OF
 !        ELIMINATION TO BE PERFORMED.  WHEN IT IS COMPLETED,
@@ -154,141 +154,141 @@
 !        SWAP WILL BE SET TO .TRUE. IF AN INTERCHANGE IS
 !        REQUIRED.
 !
-         KM1 = K - 1
-         ABSAKK = ABS(A(K,K))
+         km1 = k - 1
+         absakk = abs(a(k,k))
 !
 !        DETERMINE THE LARGEST OFF-DIAGONAL ELEMENT IN
 !        COLUMN K.
 !
-         IMAX = ISAMAX(K-1,A(1,K),1)
-         COLMAX = ABS(A(IMAX,K))
-         IF (ABSAKK .LT. ALPHA*COLMAX) GO TO 30
-            KSTEP = 1
-            SWAP = .FALSE.
-         GO TO 90
-   30    CONTINUE
+         imax = isamax(k-1,a(1,k),1)
+         colmax = abs(a(imax,k))
+         if (absakk .lt. alpha*colmax) go to 30
+            kstep = 1
+            swap = .false.
+         go to 90
+   30    continue
 !
 !           DETERMINE THE LARGEST OFF-DIAGONAL ELEMENT IN
 !           ROW IMAX.
 !
-            ROWMAX = 0.0E0
-            IMAXP1 = IMAX + 1
-            DO 40 J = IMAXP1, K
-               ROWMAX = AMAX1(ROWMAX,ABS(A(IMAX,J)))
-   40       CONTINUE
-            IF (IMAX .EQ. 1) GO TO 50
-               JMAX = ISAMAX(IMAX-1,A(1,IMAX),1)
-               ROWMAX = AMAX1(ROWMAX,ABS(A(JMAX,IMAX)))
-   50       CONTINUE
-            IF (ABS(A(IMAX,IMAX)) .LT. ALPHA*ROWMAX) GO TO 60
-               KSTEP = 1
-               SWAP = .TRUE.
-            GO TO 80
-   60       CONTINUE
-            IF (ABSAKK .LT. ALPHA*COLMAX*(COLMAX/ROWMAX)) GO TO 70
-               KSTEP = 1
-               SWAP = .FALSE.
-            GO TO 80
-   70       CONTINUE
-               KSTEP = 2
-               SWAP = IMAX .NE. KM1
-   80       CONTINUE
-   90    CONTINUE
-         IF (AMAX1(ABSAKK,COLMAX) .NE. 0.0E0) GO TO 100
+            rowmax = 0.0e0
+            imaxp1 = imax + 1
+            do 40 j = imaxp1, k
+               rowmax = amax1(rowmax,abs(a(imax,j)))
+   40       continue
+            if (imax .eq. 1) go to 50
+               jmax = isamax(imax-1,a(1,imax),1)
+               rowmax = amax1(rowmax,abs(a(jmax,imax)))
+   50       continue
+            if (abs(a(imax,imax)) .lt. alpha*rowmax) go to 60
+               kstep = 1
+               swap = .true.
+            go to 80
+   60       continue
+            if (absakk .lt. alpha*colmax*(colmax/rowmax)) go to 70
+               kstep = 1
+               swap = .false.
+            go to 80
+   70       continue
+               kstep = 2
+               swap = imax .ne. km1
+   80       continue
+   90    continue
+         if (amax1(absakk,colmax) .ne. 0.0e0) go to 100
 !
 !           COLUMN K IS ZERO.  SET INFO AND ITERATE THE LOOP.
 !
-            KPVT(K) = K
-            INFO = K
-         GO TO 190
-  100    CONTINUE
-         IF (KSTEP .EQ. 2) GO TO 140
+            kpvt(k) = k
+            info = k
+         go to 190
+  100    continue
+         if (kstep .eq. 2) go to 140
 !
 !           1 X 1 PIVOT BLOCK.
 !
-            IF (.NOT.SWAP) GO TO 120
+            if (.not.swap) go to 120
 !
 !              PERFORM AN INTERCHANGE.
 !
-               CALL SSWAP(IMAX,A(1,IMAX),1,A(1,K),1)
-               DO 110 JJ = IMAX, K
-                  J = K + IMAX - JJ
-                  T = A(J,K)
-                  A(J,K) = A(IMAX,J)
-                  A(IMAX,J) = T
-  110          CONTINUE
-  120       CONTINUE
+               call sswap(imax,a(1,imax),1,a(1,k),1)
+               do 110 jj = imax, k
+                  j = k + imax - jj
+                  t = a(j,k)
+                  a(j,k) = a(imax,j)
+                  a(imax,j) = t
+  110          continue
+  120       continue
 !
 !           PERFORM THE ELIMINATION.
 !
-            DO 130 JJ = 1, KM1
-               J = K - JJ
-               MULK = -A(J,K)/A(K,K)
-               T = MULK
-               CALL SAXPY(J,T,A(1,K),1,A(1,J),1)
-               A(J,K) = MULK
-  130       CONTINUE
+            do 130 jj = 1, km1
+               j = k - jj
+               mulk = -a(j,k)/a(k,k)
+               t = mulk
+               call saxpy(j,t,a(1,k),1,a(1,j),1)
+               a(j,k) = mulk
+  130       continue
 !
 !           SET THE PIVOT ARRAY.
 !
-            KPVT(K) = K
-            IF (SWAP) KPVT(K) = IMAX
-         GO TO 190
-  140    CONTINUE
+            kpvt(k) = k
+            if (swap) kpvt(k) = imax
+         go to 190
+  140    continue
 !
 !           2 X 2 PIVOT BLOCK.
 !
-            IF (.NOT.SWAP) GO TO 160
+            if (.not.swap) go to 160
 !
 !              PERFORM AN INTERCHANGE.
 !
-               CALL SSWAP(IMAX,A(1,IMAX),1,A(1,K-1),1)
-               DO 150 JJ = IMAX, KM1
-                  J = KM1 + IMAX - JJ
-                  T = A(J,K-1)
-                  A(J,K-1) = A(IMAX,J)
-                  A(IMAX,J) = T
-  150          CONTINUE
-               T = A(K-1,K)
-               A(K-1,K) = A(IMAX,K)
-               A(IMAX,K) = T
-  160       CONTINUE
+               call sswap(imax,a(1,imax),1,a(1,k-1),1)
+               do 150 jj = imax, km1
+                  j = km1 + imax - jj
+                  t = a(j,k-1)
+                  a(j,k-1) = a(imax,j)
+                  a(imax,j) = t
+  150          continue
+               t = a(k-1,k)
+               a(k-1,k) = a(imax,k)
+               a(imax,k) = t
+  160       continue
 !
 !           PERFORM THE ELIMINATION.
 !
-            KM2 = K - 2
-            IF (KM2 .EQ. 0) GO TO 180
-               AK = A(K,K)/A(K-1,K)
-               AKM1 = A(K-1,K-1)/A(K-1,K)
-               DENOM = 1.0E0 - AK*AKM1
-               DO 170 JJ = 1, KM2
-                  J = KM1 - JJ
-                  BK = A(J,K)/A(K-1,K)
-                  BKM1 = A(J,K-1)/A(K-1,K)
-                  MULK = (AKM1*BK - BKM1)/DENOM
-                  MULKM1 = (AK*BKM1 - BK)/DENOM
-                  T = MULK
-                  CALL SAXPY(J,T,A(1,K),1,A(1,J),1)
-                  T = MULKM1
-                  CALL SAXPY(J,T,A(1,K-1),1,A(1,J),1)
-                  A(J,K) = MULK
-                  A(J,K-1) = MULKM1
-  170          CONTINUE
-  180       CONTINUE
+            km2 = k - 2
+            if (km2 .eq. 0) go to 180
+               ak = a(k,k)/a(k-1,k)
+               akm1 = a(k-1,k-1)/a(k-1,k)
+               denom = 1.0e0 - ak*akm1
+               do 170 jj = 1, km2
+                  j = km1 - jj
+                  bk = a(j,k)/a(k-1,k)
+                  bkm1 = a(j,k-1)/a(k-1,k)
+                  mulk = (akm1*bk - bkm1)/denom
+                  mulkm1 = (ak*bkm1 - bk)/denom
+                  t = mulk
+                  call saxpy(j,t,a(1,k),1,a(1,j),1)
+                  t = mulkm1
+                  call saxpy(j,t,a(1,k-1),1,a(1,j),1)
+                  a(j,k) = mulk
+                  a(j,k-1) = mulkm1
+  170          continue
+  180       continue
 !
 !           SET THE PIVOT ARRAY.
 !
-            KPVT(K) = 1 - K
-            IF (SWAP) KPVT(K) = -IMAX
-            KPVT(K-1) = KPVT(K)
-  190    CONTINUE
-         K = K - KSTEP
-      GO TO 10
-  200 CONTINUE
-      RETURN
-      END
+            kpvt(k) = 1 - k
+            if (swap) kpvt(k) = -imax
+            kpvt(k-1) = kpvt(k)
+  190    continue
+         k = k - kstep
+      go to 10
+  200 continue
+      return
+      end
 !DSWAP
-      SUBROUTINE DSWAP(N,DX,INCX,DY,INCY)
+      subroutine dswap(n,dx,incx,dy,incy)
 !
 !     INTERCHANGE DOUBLE PRECISION DX AND DOUBLE PRECISION DY.
 !     FOR I = 0 TO N-1, INTERCHANGE  DX(LX+I*INCX) AND DY(LY+I*INCY),
@@ -299,77 +299,77 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INCX,INCY,N
+      integer incx,incy,n
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION DX(*),DY(*)
+      double precision dx(*),dy(*)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION DTEMP1,DTEMP2,DTEMP3
-      INTEGER I,IX,IY,M,MP1,NS
+      double precision dtemp1,dtemp2,dtemp3
+      integer i,ix,iy,m,mp1,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
-      IF(N.LE.0)RETURN
-      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
-    5 CONTINUE
+      if(n.le.0)return
+      if(incx.eq.incy) if(incx-1) 5,20,60
+    5 continue
 !
 !       CODE FOR UNEQUAL OR NONPOSITIVE INCREMENTS.
 !
-      IX = 1
-      IY = 1
-      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
-      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
-      DO 10 I = 1,N
-        DTEMP1 = DX(IX)
-        DX(IX) = DY(IY)
-        DY(IY) = DTEMP1
-        IX = IX + INCX
-        IY = IY + INCY
-   10 CONTINUE
-      RETURN
+      ix = 1
+      iy = 1
+      if(incx.lt.0)ix = (-n+1)*incx + 1
+      if(incy.lt.0)iy = (-n+1)*incy + 1
+      do 10 i = 1,n
+        dtemp1 = dx(ix)
+        dx(ix) = dy(iy)
+        dy(iy) = dtemp1
+        ix = ix + incx
+        iy = iy + incy
+   10 continue
+      return
 !
 !       CODE FOR BOTH INCREMENTS EQUAL TO 1
 !
 !
 !       CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 3.
 !
-   20 M = MOD(N,3)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-        DTEMP1 = DX(I)
-        DX(I) = DY(I)
-        DY(I) = DTEMP1
-   30 CONTINUE
-      IF( N .LT. 3 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,3
-        DTEMP1 = DX(I)
-        DTEMP2 = DX(I+1)
-        DTEMP3 = DX(I+2)
-        DX(I) = DY(I)
-        DX(I+1) = DY(I+1)
-        DX(I+2) = DY(I+2)
-        DY(I) = DTEMP1
-        DY(I+1) = DTEMP2
-        DY(I+2) = DTEMP3
-   50 CONTINUE
-      RETURN
-   60 CONTINUE
+   20 m = mod(n,3)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+        dtemp1 = dx(i)
+        dx(i) = dy(i)
+        dy(i) = dtemp1
+   30 continue
+      if( n .lt. 3 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,3
+        dtemp1 = dx(i)
+        dtemp2 = dx(i+1)
+        dtemp3 = dx(i+2)
+        dx(i) = dy(i)
+        dx(i+1) = dy(i+1)
+        dx(i+2) = dy(i+2)
+        dy(i) = dtemp1
+        dy(i+1) = dtemp2
+        dy(i+2) = dtemp3
+   50 continue
+      return
+   60 continue
 !
 !     CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
 !
-      NS = N*INCX
-        DO 70 I=1,NS,INCX
-        DTEMP1 = DX(I)
-        DX(I) = DY(I)
-        DY(I) = DTEMP1
-   70   CONTINUE
-      RETURN
-      END
+      ns = n*incx
+        do 70 i=1,ns,incx
+        dtemp1 = dx(i)
+        dx(i) = dy(i)
+        dy(i) = dtemp1
+   70   continue
+      return
+      end
 !DTRDI
-      SUBROUTINE DTRDI(T,LDT,N,DET,JOB,INFO)
+      subroutine dtrdi(t,ldt,n,det,job,info)
 !
 !     DTRDI COMPUTES THE DETERMINANT AND INVERSE OF A DOUBLE PRECISION
 !     TRIANGULAR MATRIX.
@@ -425,101 +425,101 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INFO,JOB,LDT,N
+      integer info,job,ldt,n
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION DET(2),T(LDT,*)
+      double precision det(2),t(ldt,*)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION TEMP,TEN
-      INTEGER I,J,K,KB,KM1,KP1
+      double precision temp,ten
+      integer i,j,k,kb,km1,kp1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL DAXPY,DSCAL
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC DABS,MOD
+      intrinsic dabs,mod
 !
 !
 !     BEGIN BLOCK PERMITTING ...EXITS TO 180
 !
 !        COMPUTE DETERMINANT
 !
-         IF (JOB/100 .EQ. 0) GO TO 70
-            DET(1) = 1.0D0
-            DET(2) = 0.0D0
-            TEN = 10.0D0
-            DO 50 I = 1, N
-               DET(1) = T(I,I)*DET(1)
+         if (job/100 .eq. 0) go to 70
+            det(1) = 1.0d0
+            det(2) = 0.0d0
+            ten = 10.0d0
+            do 50 i = 1, n
+               det(1) = t(i,i)*det(1)
 !           ...EXIT
-               IF (DET(1) .EQ. 0.0D0) GO TO 60
-   10          IF (DABS(DET(1)) .GE. 1.0D0) GO TO 20
-                  DET(1) = TEN*DET(1)
-                  DET(2) = DET(2) - 1.0D0
-               GO TO 10
-   20          CONTINUE
-   30          IF (DABS(DET(1)) .LT. TEN) GO TO 40
-                  DET(1) = DET(1)/TEN
-                  DET(2) = DET(2) + 1.0D0
-               GO TO 30
-   40          CONTINUE
-   50       CONTINUE
-   60       CONTINUE
-   70    CONTINUE
+               if (det(1) .eq. 0.0d0) go to 60
+   10          if (dabs(det(1)) .ge. 1.0d0) go to 20
+                  det(1) = ten*det(1)
+                  det(2) = det(2) - 1.0d0
+               go to 10
+   20          continue
+   30          if (dabs(det(1)) .lt. ten) go to 40
+                  det(1) = det(1)/ten
+                  det(2) = det(2) + 1.0d0
+               go to 30
+   40          continue
+   50       continue
+   60       continue
+   70    continue
 !
 !        COMPUTE INVERSE OF UPPER TRIANGULAR
 !
-         IF (MOD(JOB/10,10) .EQ. 0) GO TO 170
-            IF (MOD(JOB,10) .EQ. 0) GO TO 120
+         if (mod(job/10,10) .eq. 0) go to 170
+            if (mod(job,10) .eq. 0) go to 120
 !              BEGIN BLOCK PERMITTING ...EXITS TO 110
-                  DO 100 K = 1, N
-                     INFO = K
+                  do 100 k = 1, n
+                     info = k
 !              ......EXIT
-                     IF (T(K,K) .EQ. 0.0D0) GO TO 110
-                     T(K,K) = 1.0D0/T(K,K)
-                     TEMP = -T(K,K)
-                     CALL DSCAL(K-1,TEMP,T(1,K),1)
-                     KP1 = K + 1
-                     IF (N .LT. KP1) GO TO 90
-                     DO 80 J = KP1, N
-                        TEMP = T(K,J)
-                        T(K,J) = 0.0D0
-                        CALL DAXPY(K,TEMP,T(1,K),1,T(1,J),1)
-   80                CONTINUE
-   90                CONTINUE
-  100             CONTINUE
-                  INFO = 0
-  110          CONTINUE
-            GO TO 160
-  120       CONTINUE
+                     if (t(k,k) .eq. 0.0d0) go to 110
+                     t(k,k) = 1.0d0/t(k,k)
+                     temp = -t(k,k)
+                     call dscal(k-1,temp,t(1,k),1)
+                     kp1 = k + 1
+                     if (n .lt. kp1) go to 90
+                     do 80 j = kp1, n
+                        temp = t(k,j)
+                        t(k,j) = 0.0d0
+                        call daxpy(k,temp,t(1,k),1,t(1,j),1)
+   80                continue
+   90                continue
+  100             continue
+                  info = 0
+  110          continue
+            go to 160
+  120       continue
 !
 !              COMPUTE INVERSE OF LOWER TRIANGULAR
 !
-               DO 150 KB = 1, N
-                  K = N + 1 - KB
-                  INFO = K
+               do 150 kb = 1, n
+                  k = n + 1 - kb
+                  info = k
 !     ............EXIT
-                  IF (T(K,K) .EQ. 0.0D0) GO TO 180
-                  T(K,K) = 1.0D0/T(K,K)
-                  TEMP = -T(K,K)
-                  IF (K .NE. N) CALL DSCAL(N-K,TEMP,T(K+1,K),1)
-                  KM1 = K - 1
-                  IF (KM1 .LT. 1) GO TO 140
-                  DO 130 J = 1, KM1
-                     TEMP = T(K,J)
-                     T(K,J) = 0.0D0
-                     CALL DAXPY(N-K+1,TEMP,T(K,K),1,T(K,J),1)
-  130             CONTINUE
-  140             CONTINUE
-  150          CONTINUE
-               INFO = 0
-  160       CONTINUE
-  170    CONTINUE
-  180 CONTINUE
-      RETURN
-      END
+                  if (t(k,k) .eq. 0.0d0) go to 180
+                  t(k,k) = 1.0d0/t(k,k)
+                  temp = -t(k,k)
+                  if (k .ne. n) call dscal(n-k,temp,t(k+1,k),1)
+                  km1 = k - 1
+                  if (km1 .lt. 1) go to 140
+                  do 130 j = 1, km1
+                     temp = t(k,j)
+                     t(k,j) = 0.0d0
+                     call daxpy(n-k+1,temp,t(k,k),1,t(k,j),1)
+  130             continue
+  140             continue
+  150          continue
+               info = 0
+  160       continue
+  170    continue
+  180 continue
+      return
+      end
 !DSCAL
-      SUBROUTINE DSCAL(N,DA,DX,INCX)
+      subroutine dscal(n,da,dx,incx)
 !
 !     REPLACE DOUBLE PRECISION DX BY DOUBLE PRECISION DA*DX.
 !     FOR I = 0 TO N-1, REPLACE DX(1+I*INCX) WITH  DA * DX(1+I*INCX)
@@ -528,52 +528,52 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION DA
-      INTEGER INCX,N
+      double precision da
+      integer incx,n
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION DX(*)
+      double precision dx(*)
 !
 !  LOCAL SCALARS
-      INTEGER I,M,MP1,NS
+      integer i,m,mp1,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
-      IF(N.LE.0)RETURN
-      IF(INCX.EQ.1)GOTO 20
+      if(n.le.0)return
+      if(incx.eq.1)goto 20
 !
 !        CODE FOR INCREMENTS NOT EQUAL TO 1.
 !
-      NS = N*INCX
-          DO 10 I = 1,NS,INCX
-          DX(I) = DA*DX(I)
-   10     CONTINUE
-      RETURN
+      ns = n*incx
+          do 10 i = 1,ns,incx
+          dx(i) = da*dx(i)
+   10     continue
+      return
 !
 !        CODE FOR INCREMENTS EQUAL TO 1.
 !
 !
 !        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 5.
 !
-   20 M = MOD(N,5)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-        DX(I) = DA*DX(I)
-   30 CONTINUE
-      IF( N .LT. 5 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,5
-        DX(I) = DA*DX(I)
-        DX(I + 1) = DA*DX(I + 1)
-        DX(I + 2) = DA*DX(I + 2)
-        DX(I + 3) = DA*DX(I + 3)
-        DX(I + 4) = DA*DX(I + 4)
-   50 CONTINUE
-      RETURN
-      END
+   20 m = mod(n,5)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+        dx(i) = da*dx(i)
+   30 continue
+      if( n .lt. 5 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,5
+        dx(i) = da*dx(i)
+        dx(i + 1) = da*dx(i + 1)
+        dx(i + 2) = da*dx(i + 2)
+        dx(i + 3) = da*dx(i + 3)
+        dx(i + 4) = da*dx(i + 4)
+   50 continue
+      return
+      end
 !STRCO
-      SUBROUTINE STRCO(T,LDT,N,RCOND,Z,JOB)
+      subroutine strco(t,ldt,n,rcond,z,job)
 !***BEGIN PROLOGUE  STRCO
 !***DATE WRITTEN   780814   (YYMMDD)
 !***REVISION DATE  820801   (YYMMDD)
@@ -621,16 +621,16 @@
 !***END PROLOGUE  STRCO
 
 !...SCALAR ARGUMENTS
-      REAL RCOND
-      INTEGER JOB,LDT,N
+      real rcond
+      integer job,ldt,n
 
 !...ARRAY ARGUMENTS
-      REAL T(LDT,*),Z(*)
+      real t(ldt,*),z(*)
 
 !...LOCAL SCALARS
-      REAL EK,S,SM,TNORM,W,WK,WKM,YNORM
-      INTEGER I1,J,J1,J2,K,KK,L
-      LOGICAL LOWER
+      real ek,s,sm,tnorm,w,wk,wkm,ynorm
+      integer i1,j,j1,j2,k,kk,l
+      logical lower
 
 !...EXTERNAL FUNCTIONS
 !      REAL,external :: SASUM
@@ -639,23 +639,22 @@
 !       EXTERNAL SAXPY,SSCAL
 
 !...INTRINSIC FUNCTIONS
-      INTRINSIC ABS,AMAX1,SIGN
+      intrinsic abs,amax1,sign
 
 !***FIRST EXECUTABLE STATEMENT  STRCO
 
-
-      LOWER = JOB .EQ. 0
+      lower = job .eq. 0
 
 !     COMPUTE 1-NORM OF T
 
-      TNORM = 0.0E0
-      DO 10 J = 1, N
-         L = J
-         IF (LOWER) L = N + 1 - J
-         I1 = 1
-         IF (LOWER) I1 = J
-         TNORM = AMAX1(TNORM,SASUM(L,T(I1,J),1))
-   10 CONTINUE
+      tnorm = 0.0e0
+      do 10 j = 1, n
+         l = j
+         if (lower) l = n + 1 - j
+         i1 = 1
+         if (lower) i1 = j
+         tnorm = amax1(tnorm,sasum(l,t(i1,j),1))
+   10 continue
 
 !     RCOND = 1/(NORM(T)*(ESTIMATE OF NORM(INVERSE(T)))) .
 !     ESTIMATE = NORM(Z)/NORM(Y) WHERE  T*Z = Y  AND  TRANS(T)*Y = E .
@@ -666,86 +665,86 @@
 
 !     SOLVE TRANS(T)*Y = E
 
-      EK = 1.0E0
-      DO 20 J = 1, N
-         Z(J) = 0.0E0
-   20 CONTINUE
-      DO 100 KK = 1, N
-         K = KK
-         IF (LOWER) K = N + 1 - KK
-         IF (Z(K) .NE. 0.0E0) EK = SIGN(EK,-Z(K))
-         IF (ABS(EK-Z(K)) .LE. ABS(T(K,K))) GO TO 30
-            S = ABS(T(K,K))/ABS(EK-Z(K))
-            CALL SSCAL(N,S,Z,1)
-            EK = S*EK
-   30    CONTINUE
-         WK = EK - Z(K)
-         WKM = -EK - Z(K)
-         S = ABS(WK)
-         SM = ABS(WKM)
-         IF (T(K,K) .EQ. 0.0E0) GO TO 40
-            WK = WK/T(K,K)
-            WKM = WKM/T(K,K)
-         GO TO 50
-   40    CONTINUE
-            WK = 1.0E0
-            WKM = 1.0E0
-   50    CONTINUE
-         IF (KK .EQ. N) GO TO 90
-            J1 = K + 1
-            IF (LOWER) J1 = 1
-            J2 = N
-            IF (LOWER) J2 = K - 1
-            DO 60 J = J1, J2
-               SM = SM + ABS(Z(J)+WKM*T(K,J))
-               Z(J) = Z(J) + WK*T(K,J)
-               S = S + ABS(Z(J))
-   60       CONTINUE
-            IF (S .GE. SM) GO TO 80
-               W = WKM - WK
-               WK = WKM
-               DO 70 J = J1, J2
-                  Z(J) = Z(J) + W*T(K,J)
-   70          CONTINUE
-   80       CONTINUE
-   90    CONTINUE
-         Z(K) = WK
-  100 CONTINUE
-      S = 1.0E0/SASUM(N,Z,1)
-      CALL SSCAL(N,S,Z,1)
+      ek = 1.0e0
+      do 20 j = 1, n
+         z(j) = 0.0e0
+   20 continue
+      do 100 kk = 1, n
+         k = kk
+         if (lower) k = n + 1 - kk
+         if (z(k) .ne. 0.0e0) ek = sign(ek,-z(k))
+         if (abs(ek-z(k)) .le. abs(t(k,k))) go to 30
+            s = abs(t(k,k))/abs(ek-z(k))
+            call sscal(n,s,z,1)
+            ek = s*ek
+   30    continue
+         wk = ek - z(k)
+         wkm = -ek - z(k)
+         s = abs(wk)
+         sm = abs(wkm)
+         if (t(k,k) .eq. 0.0e0) go to 40
+            wk = wk/t(k,k)
+            wkm = wkm/t(k,k)
+         go to 50
+   40    continue
+            wk = 1.0e0
+            wkm = 1.0e0
+   50    continue
+         if (kk .eq. n) go to 90
+            j1 = k + 1
+            if (lower) j1 = 1
+            j2 = n
+            if (lower) j2 = k - 1
+            do 60 j = j1, j2
+               sm = sm + abs(z(j)+wkm*t(k,j))
+               z(j) = z(j) + wk*t(k,j)
+               s = s + abs(z(j))
+   60       continue
+            if (s .ge. sm) go to 80
+               w = wkm - wk
+               wk = wkm
+               do 70 j = j1, j2
+                  z(j) = z(j) + w*t(k,j)
+   70          continue
+   80       continue
+   90    continue
+         z(k) = wk
+  100 continue
+      s = 1.0e0/sasum(n,z,1)
+      call sscal(n,s,z,1)
 
-      YNORM = 1.0E0
+      ynorm = 1.0e0
 
 !     SOLVE T*Z = Y
 
-      DO 130 KK = 1, N
-         K = N + 1 - KK
-         IF (LOWER) K = KK
-         IF (ABS(Z(K)) .LE. ABS(T(K,K))) GO TO 110
-            S = ABS(T(K,K))/ABS(Z(K))
-            CALL SSCAL(N,S,Z,1)
-            YNORM = S*YNORM
-  110    CONTINUE
-         IF (T(K,K) .NE. 0.0E0) Z(K) = Z(K)/T(K,K)
-         IF (T(K,K) .EQ. 0.0E0) Z(K) = 1.0E0
-         I1 = 1
-         IF (LOWER) I1 = K + 1
-         IF (KK .GE. N) GO TO 120
-            W = -Z(K)
-            CALL SAXPY(N-KK,W,T(I1,K),1,Z(I1),1)
-  120    CONTINUE
-  130 CONTINUE
+      do 130 kk = 1, n
+         k = n + 1 - kk
+         if (lower) k = kk
+         if (abs(z(k)) .le. abs(t(k,k))) go to 110
+            s = abs(t(k,k))/abs(z(k))
+            call sscal(n,s,z,1)
+            ynorm = s*ynorm
+  110    continue
+         if (t(k,k) .ne. 0.0e0) z(k) = z(k)/t(k,k)
+         if (t(k,k) .eq. 0.0e0) z(k) = 1.0e0
+         i1 = 1
+         if (lower) i1 = k + 1
+         if (kk .ge. n) go to 120
+            w = -z(k)
+            call saxpy(n-kk,w,t(i1,k),1,z(i1),1)
+  120    continue
+  130 continue
 !     MAKE ZNORM = 1.0
-      S = 1.0E0/SASUM(N,Z,1)
-      CALL SSCAL(N,S,Z,1)
-      YNORM = S*YNORM
+      s = 1.0e0/sasum(n,z,1)
+      call sscal(n,s,z,1)
+      ynorm = s*ynorm
 
-      IF (TNORM .NE. 0.0E0) RCOND = YNORM/TNORM
-      IF (TNORM .EQ. 0.0E0) RCOND = 0.0E0
-      RETURN
-      END
+      if (tnorm .ne. 0.0e0) rcond = ynorm/tnorm
+      if (tnorm .eq. 0.0e0) rcond = 0.0e0
+      return
+      end
 !DASUM
-      DOUBLE PRECISION FUNCTION DASUM(N,DX,INCX)
+      double precision function dasum(n,dx,incx)
 !***BEGIN PROLOGUE  DASUM
 !***DATE WRITTEN   791001   (YYMMDD)
 !***REVISION DATE  820801   (YYMMDD)
@@ -776,50 +775,50 @@
 !***END PROLOGUE  DASUM
 
 !...SCALAR ARGUMENTS
-      INTEGER INCX,N
+      integer incx,n
 
 !...ARRAY ARGUMENTS
-      DOUBLE PRECISION DX(*)
+      double precision dx(*)
 
 !...LOCAL SCALARS
-      INTEGER I,M,MP1,NS
+      integer i,m,mp1,ns
 
 !...INTRINSIC FUNCTIONS
-      INTRINSIC DABS,MOD
+      intrinsic dabs,mod
 
 !***FIRST EXECUTABLE STATEMENT  DASUM
 
-      DASUM = 0.D0
-      IF(N.LE.0)RETURN
-      IF(INCX.EQ.1)GOTO 20
+      dasum = 0.d0
+      if(n.le.0)return
+      if(incx.eq.1)goto 20
 
 !        CODE FOR INCREMENTS NOT EQUAL TO 1.
 
-      NS = N*INCX
-          DO 10 I=1,NS,INCX
-          DASUM = DASUM + DABS(DX(I))
-   10     CONTINUE
-      RETURN
+      ns = n*incx
+          do 10 i=1,ns,incx
+          dasum = dasum + dabs(dx(i))
+   10     continue
+      return
 
 !        CODE FOR INCREMENTS EQUAL TO 1.
 
 !        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 6.
 
-   20 M = MOD(N,6)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-         DASUM = DASUM + DABS(DX(I))
-   30 CONTINUE
-      IF( N .LT. 6 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,6
-         DASUM = DASUM + DABS(DX(I)) + DABS(DX(I+1)) + DABS(DX(I+2))
-     &   + DABS(DX(I+3)) + DABS(DX(I+4)) + DABS(DX(I+5))
-   50 CONTINUE
-      RETURN
-      END
+   20 m = mod(n,6)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+         dasum = dasum + dabs(dx(i))
+   30 continue
+      if( n .lt. 6 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,6
+        dasum = dasum + dabs(dx(i)) + dabs(dx(i+1)) + dabs(dx(i+2))&
+     &   + dabs(dx(i+3)) + dabs(dx(i+4)) + dabs(dx(i+5))
+   50 continue
+      return
+      end
 !DNRM2
-      DOUBLE PRECISION FUNCTION DNRM2 ( N, DX, INCX)
+      double precision function dnrm2 ( n, dx, incx)
 !
 !     EUCLIDEAN NORM OF THE N-VECTOR STORED IN DX() WITH STORAGE
 !     INCREMENT INCX .
@@ -860,104 +859,104 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INCX,N
+      integer incx,n
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION DX(*)
+      double precision dx(*)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION CUTHI,CUTLO,HITEST,ONE,SUM,XMAX,ZERO
-      INTEGER I,J,NEXT,NN
+      double precision cuthi,cutlo,hitest,one,sum,xmax,zero
+      integer i,j,next,nn
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC DABS,DSQRT,FLOAT
+      intrinsic dabs,dsqrt,float
 !
 !     DATA CUTLO, CUTHI / 8.232D-11,  1.304D19 /
 !     DATA CUTLO, CUTHI / 4.441E-16,  1.304E19 /
-      DATA CUTLO, CUTHI / 8.232D-11,  1.304D19 /
-      DATA   ZERO, ONE /0.0D0, 1.0D0/
+      data cutlo, cuthi / 8.232d-11,  1.304d19 /
+      data   zero, one /0.0d0, 1.0d0/
 !
-      XMAX = ZERO
-      IF(N .GT. 0) GO TO 10
-         DNRM2  = ZERO
-         GO TO 300
+      xmax = zero
+      if(n .gt. 0) go to 10
+         dnrm2  = zero
+         go to 300
 !
-   10 ASSIGN 30 TO NEXT
-      SUM = ZERO
-      NN = N * INCX
+   10 assign 30 to next
+      sum = zero
+      nn = n * incx
 !                                                 BEGIN MAIN LOOP
-      I = 1
-   20    GO TO NEXT,(30, 50, 70, 110)
-   30 IF( DABS(DX(I)) .GT. CUTLO) GO TO 85
-      ASSIGN 50 TO NEXT
-      XMAX = ZERO
+      i = 1
+   20    go to next,(30, 50, 70, 110)
+   30 if( dabs(dx(i)) .gt. cutlo) go to 85
+      assign 50 to next
+      xmax = zero
 !
 !                        PHASE 1.  SUM IS ZERO
 !
-   50 IF( DX(I) .EQ. ZERO) GO TO 200
-      IF( DABS(DX(I)) .GT. CUTLO) GO TO 85
+   50 if( dx(i) .eq. zero) go to 200
+      if( dabs(dx(i)) .gt. cutlo) go to 85
 !
 !                                PREPARE FOR PHASE 2.
-      ASSIGN 70 TO NEXT
-      GO TO 105
+      assign 70 to next
+      go to 105
 !
 !                                PREPARE FOR PHASE 4.
 !
-  100 I = J
-      ASSIGN 110 TO NEXT
-      SUM = (SUM / DX(I)) / DX(I)
-  105 XMAX = DABS(DX(I))
-      GO TO 115
+  100 i = j
+      assign 110 to next
+      sum = (sum / dx(i)) / dx(i)
+  105 xmax = dabs(dx(i))
+      go to 115
 !
 !                   PHASE 2.  SUM IS SMALL.
 !                             SCALE TO AVOID DESTRUCTIVE UNDERFLOW.
 !
-   70 IF( DABS(DX(I)) .GT. CUTLO ) GO TO 75
+   70 if( dabs(dx(i)) .gt. cutlo ) go to 75
 !
 !                     COMMON CODE FOR PHASES 2 AND 4.
 !                     IN PHASE 4 SUM IS LARGE.  SCALE TO AVOID OVERFLOW.
 !
-  110 IF( DABS(DX(I)) .LE. XMAX ) GO TO 115
-         SUM = ONE + SUM * (XMAX / DX(I))**2
-         XMAX = DABS(DX(I))
-         GO TO 200
+  110 if( dabs(dx(i)) .le. xmax ) go to 115
+         sum = one + sum * (xmax / dx(i))**2
+         xmax = dabs(dx(i))
+         go to 200
 !
-  115 SUM = SUM + (DX(I)/XMAX)**2
-      GO TO 200
+  115 sum = sum + (dx(i)/xmax)**2
+      go to 200
 !
 !
 !                  PREPARE FOR PHASE 3.
 !
-   75 SUM = (SUM * XMAX) * XMAX
+   75 sum = (sum * xmax) * xmax
 !
 !
 !     FOR REAL OR D.P. SET HITEST = CUTHI/N
 !     FOR COMPLEX      SET HITEST = CUTHI/(2*N)
 !
-   85 HITEST = CUTHI/FLOAT( N )
+   85 hitest = cuthi/float( n )
 !
 !                   PHASE 3.  SUM IS MID-RANGE.  NO SCALING.
 !
-      DO 95 J =I,NN,INCX
-      IF(DABS(DX(J)) .GE. HITEST) GO TO 100
-   95    SUM = SUM + DX(J)**2
-      DNRM2 = DSQRT( SUM )
-      GO TO 300
+      do 95 j =i,nn,incx
+      if(dabs(dx(j)) .ge. hitest) go to 100
+   95    sum = sum + dx(j)**2
+      dnrm2 = dsqrt( sum )
+      go to 300
 !
-  200 CONTINUE
-      I = I + INCX
-      IF ( I .LE. NN ) GO TO 20
+  200 continue
+      i = i + incx
+      if ( i .le. nn ) go to 20
 !
 !              END OF MAIN LOOP.
 !
 !              COMPUTE SQUARE ROOT AND ADJUST FOR SCALING.
 !
-      DNRM2 = XMAX * DSQRT(SUM)
-  300 CONTINUE
-      RETURN
-      END
+      dnrm2 = xmax * dsqrt(sum)
+  300 continue
+      return
+      end
 !DSIFA
-      SUBROUTINE DSIFA(A,LDA,N,KPVT,INFO)
+      subroutine dsifa(a,lda,n,kpvt,info)
 !
 !     DSIFA FACTORS A DOUBLE PRECISION SYMMETRIC MATRIX BY ELIMINATION
 !     WITH SYMMETRIC PIVOTING.
@@ -1011,17 +1010,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INFO,LDA,N
+      integer info,lda,n
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION A(LDA,*)
-      INTEGER KPVT(*)
+      double precision a(lda,*)
+      integer kpvt(*)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION ABSAKK,AK,AKM1,ALPHA,BK,BKM1,COLMAX,DENOM,MULK,
-     &   MULKM1,ROWMAX,T
-      INTEGER IMAX,IMAXP1,J,JJ,JMAX,K,KM1,KM2,KSTEP
-      LOGICAL SWAP
+     double precision absakk,ak,akm1,alpha,bk,bkm1,colmax,denom,mulk,&
+     &   mulkm1,rowmax,t
+      integer imax,imaxp1,j,jj,jmax,k,km1,km2,kstep
+      logical swap
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER IDAMAX
@@ -1031,31 +1030,31 @@
 !       EXTERNAL DAXPY,DSWAP
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC DABS,DMAX1,DSQRT
+      intrinsic dabs,dmax1,dsqrt
 !
 !
 !     INITIALIZE
 !
 !     ALPHA IS USED IN CHOOSING PIVOT BLOCK SIZE.
-      ALPHA = (1.0D0 + DSQRT(17.0D0))/8.0D0
+      alpha = (1.0d0 + dsqrt(17.0d0))/8.0d0
 !
-      INFO = 0
+      info = 0
 !
 !     MAIN LOOP ON K, WHICH GOES FROM N TO 1.
 !
-      K = N
-   10 CONTINUE
+      k = n
+   10 continue
 !
 !        LEAVE THE LOOP IF K=0 OR K=1.
 !
 !     ...EXIT
-         IF (K .EQ. 0) GO TO 200
-         IF (K .GT. 1) GO TO 20
-            KPVT(1) = 1
-            IF (A(1,1) .EQ. 0.0D0) INFO = 1
+         if (k .eq. 0) go to 200
+         if (k .gt. 1) go to 20
+            kpvt(1) = 1
+            if (a(1,1) .eq. 0.0d0) info = 1
 !     ......EXIT
-            GO TO 200
-   20    CONTINUE
+            go to 200
+   20    continue
 !
 !        THIS SECTION OF CODE DETERMINES THE KIND OF
 !        ELIMINATION TO BE PERFORMED.  WHEN IT IS COMPLETED,
@@ -1063,141 +1062,141 @@
 !        SWAP WILL BE SET TO .TRUE. IF AN INTERCHANGE IS
 !        REQUIRED.
 !
-         KM1 = K - 1
-         ABSAKK = DABS(A(K,K))
+         km1 = k - 1
+         absakk = dabs(a(k,k))
 !
 !        DETERMINE THE LARGEST OFF-DIAGONAL ELEMENT IN
 !        COLUMN K.
 !
-         IMAX = IDAMAX(K-1,A(1,K),1)
-         COLMAX = DABS(A(IMAX,K))
-         IF (ABSAKK .LT. ALPHA*COLMAX) GO TO 30
-            KSTEP = 1
-            SWAP = .FALSE.
-         GO TO 90
-   30    CONTINUE
+         imax = idamax(k-1,a(1,k),1)
+         colmax = dabs(a(imax,k))
+         if (absakk .lt. alpha*colmax) go to 30
+            kstep = 1
+            swap = .false.
+         go to 90
+   30    continue
 !
 !           DETERMINE THE LARGEST OFF-DIAGONAL ELEMENT IN
 !           ROW IMAX.
 !
-            ROWMAX = 0.0D0
-            IMAXP1 = IMAX + 1
-            DO 40 J = IMAXP1, K
-               ROWMAX = DMAX1(ROWMAX,DABS(A(IMAX,J)))
-   40       CONTINUE
-            IF (IMAX .EQ. 1) GO TO 50
-               JMAX = IDAMAX(IMAX-1,A(1,IMAX),1)
-               ROWMAX = DMAX1(ROWMAX,DABS(A(JMAX,IMAX)))
-   50       CONTINUE
-            IF (DABS(A(IMAX,IMAX)) .LT. ALPHA*ROWMAX) GO TO 60
-               KSTEP = 1
-               SWAP = .TRUE.
-            GO TO 80
-   60       CONTINUE
-            IF (ABSAKK .LT. ALPHA*COLMAX*(COLMAX/ROWMAX)) GO TO 70
-               KSTEP = 1
-               SWAP = .FALSE.
-            GO TO 80
-   70       CONTINUE
-               KSTEP = 2
-               SWAP = IMAX .NE. KM1
-   80       CONTINUE
-   90    CONTINUE
-         IF (DMAX1(ABSAKK,COLMAX) .NE. 0.0D0) GO TO 100
+            rowmax = 0.0d0
+            imaxp1 = imax + 1
+            do 40 j = imaxp1, k
+               rowmax = dmax1(rowmax,dabs(a(imax,j)))
+   40       continue
+            if (imax .eq. 1) go to 50
+               jmax = idamax(imax-1,a(1,imax),1)
+               rowmax = dmax1(rowmax,dabs(a(jmax,imax)))
+   50       continue
+            if (dabs(a(imax,imax)) .lt. alpha*rowmax) go to 60
+               kstep = 1
+               swap = .true.
+            go to 80
+   60       continue
+            if (absakk .lt. alpha*colmax*(colmax/rowmax)) go to 70
+               kstep = 1
+               swap = .false.
+            go to 80
+   70       continue
+               kstep = 2
+               swap = imax .ne. km1
+   80       continue
+   90    continue
+         if (dmax1(absakk,colmax) .ne. 0.0d0) go to 100
 !
 !           COLUMN K IS ZERO.  SET INFO AND ITERATE THE LOOP.
 !
-            KPVT(K) = K
-            INFO = K
-         GO TO 190
-  100    CONTINUE
-         IF (KSTEP .EQ. 2) GO TO 140
+            kpvt(k) = k
+            info = k
+         go to 190
+  100    continue
+         if (kstep .eq. 2) go to 140
 !
 !           1 X 1 PIVOT BLOCK.
 !
-            IF (.NOT.SWAP) GO TO 120
+            if (.not.swap) go to 120
 !
 !              PERFORM AN INTERCHANGE.
 !
-               CALL DSWAP(IMAX,A(1,IMAX),1,A(1,K),1)
-               DO 110 JJ = IMAX, K
-                  J = K + IMAX - JJ
-                  T = A(J,K)
-                  A(J,K) = A(IMAX,J)
-                  A(IMAX,J) = T
-  110          CONTINUE
-  120       CONTINUE
+               call dswap(imax,a(1,imax),1,a(1,k),1)
+               do 110 jj = imax, k
+                  j = k + imax - jj
+                  t = a(j,k)
+                  a(j,k) = a(imax,j)
+                  a(imax,j) = t
+  110          continue
+  120       continue
 !
 !           PERFORM THE ELIMINATION.
 !
-            DO 130 JJ = 1, KM1
-               J = K - JJ
-               MULK = -A(J,K)/A(K,K)
-               T = MULK
-               CALL DAXPY(J,T,A(1,K),1,A(1,J),1)
-               A(J,K) = MULK
-  130       CONTINUE
+            do 130 jj = 1, km1
+               j = k - jj
+               mulk = -a(j,k)/a(k,k)
+               t = mulk
+               call daxpy(j,t,a(1,k),1,a(1,j),1)
+               a(j,k) = mulk
+  130       continue
 !
 !           SET THE PIVOT ARRAY.
 !
-            KPVT(K) = K
-            IF (SWAP) KPVT(K) = IMAX
-         GO TO 190
-  140    CONTINUE
+            kpvt(k) = k
+            if (swap) kpvt(k) = imax
+         go to 190
+  140    continue
 !
 !           2 X 2 PIVOT BLOCK.
 !
-            IF (.NOT.SWAP) GO TO 160
+            if (.not.swap) go to 160
 !
 !              PERFORM AN INTERCHANGE.
 !
-               CALL DSWAP(IMAX,A(1,IMAX),1,A(1,K-1),1)
-               DO 150 JJ = IMAX, KM1
-                  J = KM1 + IMAX - JJ
-                  T = A(J,K-1)
-                  A(J,K-1) = A(IMAX,J)
-                  A(IMAX,J) = T
-  150          CONTINUE
-               T = A(K-1,K)
-               A(K-1,K) = A(IMAX,K)
-               A(IMAX,K) = T
-  160       CONTINUE
+               call dswap(imax,a(1,imax),1,a(1,k-1),1)
+               do 150 jj = imax, km1
+                  j = km1 + imax - jj
+                  t = a(j,k-1)
+                  a(j,k-1) = a(imax,j)
+                  a(imax,j) = t
+  150          continue
+               t = a(k-1,k)
+               a(k-1,k) = a(imax,k)
+               a(imax,k) = t
+  160       continue
 !
 !           PERFORM THE ELIMINATION.
 !
-            KM2 = K - 2
-            IF (KM2 .EQ. 0) GO TO 180
-               AK = A(K,K)/A(K-1,K)
-               AKM1 = A(K-1,K-1)/A(K-1,K)
-               DENOM = 1.0D0 - AK*AKM1
-               DO 170 JJ = 1, KM2
-                  J = KM1 - JJ
-                  BK = A(J,K)/A(K-1,K)
-                  BKM1 = A(J,K-1)/A(K-1,K)
-                  MULK = (AKM1*BK - BKM1)/DENOM
-                  MULKM1 = (AK*BKM1 - BK)/DENOM
-                  T = MULK
-                  CALL DAXPY(J,T,A(1,K),1,A(1,J),1)
-                  T = MULKM1
-                  CALL DAXPY(J,T,A(1,K-1),1,A(1,J),1)
-                  A(J,K) = MULK
-                  A(J,K-1) = MULKM1
-  170          CONTINUE
-  180       CONTINUE
+            km2 = k - 2
+            if (km2 .eq. 0) go to 180
+               ak = a(k,k)/a(k-1,k)
+               akm1 = a(k-1,k-1)/a(k-1,k)
+               denom = 1.0d0 - ak*akm1
+               do 170 jj = 1, km2
+                  j = km1 - jj
+                  bk = a(j,k)/a(k-1,k)
+                  bkm1 = a(j,k-1)/a(k-1,k)
+                  mulk = (akm1*bk - bkm1)/denom
+                  mulkm1 = (ak*bkm1 - bk)/denom
+                  t = mulk
+                  call daxpy(j,t,a(1,k),1,a(1,j),1)
+                  t = mulkm1
+                  call daxpy(j,t,a(1,k-1),1,a(1,j),1)
+                  a(j,k) = mulk
+                  a(j,k-1) = mulkm1
+  170          continue
+  180       continue
 !
 !           SET THE PIVOT ARRAY.
 !
-            KPVT(K) = 1 - K
-            IF (SWAP) KPVT(K) = -IMAX
-            KPVT(K-1) = KPVT(K)
-  190    CONTINUE
-         K = K - KSTEP
-      GO TO 10
-  200 CONTINUE
-      RETURN
-      END
+            kpvt(k) = 1 - k
+            if (swap) kpvt(k) = -imax
+            kpvt(k-1) = kpvt(k)
+  190    continue
+         k = k - kstep
+      go to 10
+  200 continue
+      return
+      end
 !SSCAL
-      SUBROUTINE SSCAL(N,SA,SX,INCX)
+      subroutine sscal(n,sa,sx,incx)
 !
 !     REPLACE SINGLE PRECISION SX BY SINGLE PRECISION SA*SX.
 !     FOR I = 0 TO N-1, REPLACE SX(1+I*INCX) WITH  SA * SX(1+I*INCX)
@@ -1206,52 +1205,52 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL SA
-      INTEGER INCX,N
+      real sa
+      integer incx,n
 !
 !  ARRAY ARGUMENTS
-      REAL SX(*)
+      real sx(*)
 !
 !  LOCAL SCALARS
-      INTEGER I,M,MP1,NS
+      integer i,m,mp1,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
-      IF(N.LE.0)RETURN
-      IF(INCX.EQ.1)GOTO 20
+      if(n.le.0)return
+      if(incx.eq.1)goto 20
 !
 !        CODE FOR INCREMENTS NOT EQUAL TO 1.
 !
-      NS = N*INCX
-          DO 10 I = 1,NS,INCX
-          SX(I) = SA*SX(I)
-   10     CONTINUE
-      RETURN
+      ns = n*incx
+          do 10 i = 1,ns,incx
+          sx(i) = sa*sx(i)
+   10     continue
+      return
 !
 !        CODE FOR INCREMENTS EQUAL TO 1.
 !
 !
 !        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 5.
 !
-   20 M = MOD(N,5)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-        SX(I) = SA*SX(I)
-   30 CONTINUE
-      IF( N .LT. 5 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,5
-        SX(I) = SA*SX(I)
-        SX(I + 1) = SA*SX(I + 1)
-        SX(I + 2) = SA*SX(I + 2)
-        SX(I + 3) = SA*SX(I + 3)
-        SX(I + 4) = SA*SX(I + 4)
-   50 CONTINUE
-      RETURN
-      END
+   20 m = mod(n,5)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+        sx(i) = sa*sx(i)
+   30 continue
+      if( n .lt. 5 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,5
+        sx(i) = sa*sx(i)
+        sx(i + 1) = sa*sx(i + 1)
+        sx(i + 2) = sa*sx(i + 2)
+        sx(i + 3) = sa*sx(i + 3)
+        sx(i + 4) = sa*sx(i + 4)
+   50 continue
+      return
+      end
 !ISAMAX
-      INTEGER FUNCTION ISAMAX(N,SX,INCX)
+      integer function isamax(n,sx,incx)
 !
 !     FIND SMALLEST INDEX OF MAXIMUM MAGNITUDE OF SINGLE PRECISION SX.
 !     ISAMAX =  FIRST I, I = 1 TO N, TO MINIMIZE  ABS(SX(1-INCX+I*INCX))
@@ -1259,51 +1258,51 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INCX,N
+      integer incx,n
 !
 !  ARRAY ARGUMENTS
-      REAL SX(*)
+      real sx(*)
 !
 !  LOCAL SCALARS
-      REAL SMAX,XMAG
-      INTEGER I,II,NS
+      real smax,xmag
+      integer i,ii,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS
+      intrinsic abs
 !
-      ISAMAX = 0
-      IF(N.LE.0) RETURN
-      ISAMAX = 1
-      IF(N.LE.1)RETURN
-      IF(INCX.EQ.1)GOTO 20
+      isamax = 0
+      if(n.le.0) return
+      isamax = 1
+      if(n.le.1)return
+      if(incx.eq.1)goto 20
 !
 !        CODE FOR INCREMENTS NOT EQUAL TO 1.
 !
-      SMAX = ABS(SX(1))
-      NS = N*INCX
-      II = 1
-          DO 10 I=1,NS,INCX
-          XMAG = ABS(SX(I))
-          IF(XMAG.LE.SMAX) GO TO 5
-          ISAMAX = II
-          SMAX = XMAG
-    5     II = II + 1
-   10     CONTINUE
-      RETURN
+      smax = abs(sx(1))
+      ns = n*incx
+      ii = 1
+          do 10 i=1,ns,incx
+          xmag = abs(sx(i))
+          if(xmag.le.smax) go to 5
+          isamax = ii
+          smax = xmag
+    5     ii = ii + 1
+   10     continue
+      return
 !
 !        CODE FOR INCREMENTS EQUAL TO 1.
 !
-   20 SMAX = ABS(SX(1))
-      DO 30 I = 2,N
-         XMAG = ABS(SX(I))
-         IF(XMAG.LE.SMAX) GO TO 30
-         ISAMAX = I
-         SMAX = XMAG
-   30 CONTINUE
-      RETURN
-      END
+   20 smax = abs(sx(1))
+      do 30 i = 2,n
+         xmag = abs(sx(i))
+         if(xmag.le.smax) go to 30
+         isamax = i
+         smax = xmag
+   30 continue
+      return
+      end
 !DDOT
-      DOUBLE PRECISION FUNCTION DDOT(N,DX,INCX,DY,INCY)
+      double precision function ddot(n,dx,incx,dy,incy)
 !
 !     LATEST REVISION  -  OCTOBER 3, 1983  (JRD)
 !
@@ -1316,64 +1315,64 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INCX,INCY,N
+      integer incx,incy,n
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION DX(*),DY(*)
+      double precision dx(*),dy(*)
 !
 !  LOCAL SCALARS
-      INTEGER I,IX,IY,M,MP1,NS
+      integer i,ix,iy,m,mp1,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
-      DDOT = 0.D0
-      IF(N.LE.0)RETURN
-      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
-    5 CONTINUE
+      ddot = 0.d0
+      if(n.le.0)return
+      if(incx.eq.incy) if(incx-1) 5,20,60
+    5 continue
 !
 !         CODE FOR UNEQUAL OR NONPOSITIVE INCREMENTS.
 !
-      IX = 1
-      IY = 1
-      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
-      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
-      DO 10 I = 1,N
-         DDOT = DDOT + DX(IX)*DY(IY)
-        IX = IX + INCX
-        IY = IY + INCY
-   10 CONTINUE
-      RETURN
+      ix = 1
+      iy = 1
+      if(incx.lt.0)ix = (-n+1)*incx + 1
+      if(incy.lt.0)iy = (-n+1)*incy + 1
+      do 10 i = 1,n
+         ddot = ddot + dx(ix)*dy(iy)
+        ix = ix + incx
+        iy = iy + incy
+   10 continue
+      return
 !
 !        CODE FOR BOTH INCREMENTS EQUAL TO 1.
 !
 !
 !        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 5.
 !
-   20 M = MOD(N,5)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-         DDOT = DDOT + DX(I)*DY(I)
-   30 CONTINUE
-      IF( N .LT. 5 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,5
-         DDOT = DDOT + DX(I)*DY(I) + DX(I+1)*DY(I+1) +
-     &    DX(I+2)*DY(I+2) + DX(I+3)*DY(I+3) + DX(I+4)*DY(I+4)
-   50 CONTINUE
-      RETURN
+   20 m = mod(n,5)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+         ddot = ddot + dx(i)*dy(i)
+   30 continue
+      if( n .lt. 5 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,5
+        ddot = ddot + dx(i)*dy(i) + dx(i+1)*dy(i+1) +&
+     &    dx(i+2)*dy(i+2) + dx(i+3)*dy(i+3) + dx(i+4)*dy(i+4)
+   50 continue
+      return
 !
 !         CODE FOR POSITIVE EQUAL INCREMENTS .NE.1.
 !
-   60 CONTINUE
-      NS = N*INCX
-          DO 70 I=1,NS,INCX
-          DDOT = DDOT + DX(I)*DY(I)
-   70     CONTINUE
-      RETURN
-      END
+   60 continue
+      ns = n*incx
+          do 70 i=1,ns,incx
+          ddot = ddot + dx(i)*dy(i)
+   70     continue
+      return
+      end
 !DAXPY
-      SUBROUTINE DAXPY(N,DA,DX,INCX,DY,INCY)
+      subroutine daxpy(n,da,dx,incx,dy,incy)
 !
 !     OVERWRITE DOUBLE PRECISION DY WITH DOUBLE PRECISION DA*DX + DY.
 !     FOR I = 0 TO N-1, REPLACE  DY(LY+I*INCY) WITH DA*DX(LX+I*INCX) +
@@ -1384,66 +1383,66 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION DA
-      INTEGER INCX,INCY,N
+      double precision da
+      integer incx,incy,n
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION DX(*),DY(*)
+      double precision dx(*),dy(*)
 !
 !  LOCAL SCALARS
-      INTEGER I,IX,IY,M,MP1,NS
+      integer i,ix,iy,m,mp1,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
-      IF(N.LE.0.OR.DA.EQ.0.D0) RETURN
-      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
-    5 CONTINUE
+      if(n.le.0.or.da.eq.0.d0) return
+      if(incx.eq.incy) if(incx-1) 5,20,60
+    5 continue
 !
 !        CODE FOR NONEQUAL OR NONPOSITIVE INCREMENTS.
 !
-      IX = 1
-      IY = 1
-      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
-      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
-      DO 10 I = 1,N
-        DY(IY) = DY(IY) + DA*DX(IX)
-        IX = IX + INCX
-        IY = IY + INCY
-   10 CONTINUE
-      RETURN
+      ix = 1
+      iy = 1
+      if(incx.lt.0)ix = (-n+1)*incx + 1
+      if(incy.lt.0)iy = (-n+1)*incy + 1
+      do 10 i = 1,n
+        dy(iy) = dy(iy) + da*dx(ix)
+        ix = ix + incx
+        iy = iy + incy
+   10 continue
+      return
 !
 !        CODE FOR BOTH INCREMENTS EQUAL TO 1
 !
 !
 !        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 4.
 !
-   20 M = MOD(N,4)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-        DY(I) = DY(I) + DA*DX(I)
-   30 CONTINUE
-      IF( N .LT. 4 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,4
-        DY(I) = DY(I) + DA*DX(I)
-        DY(I + 1) = DY(I + 1) + DA*DX(I + 1)
-        DY(I + 2) = DY(I + 2) + DA*DX(I + 2)
-        DY(I + 3) = DY(I + 3) + DA*DX(I + 3)
-   50 CONTINUE
-      RETURN
+   20 m = mod(n,4)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+        dy(i) = dy(i) + da*dx(i)
+   30 continue
+      if( n .lt. 4 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,4
+        dy(i) = dy(i) + da*dx(i)
+        dy(i + 1) = dy(i + 1) + da*dx(i + 1)
+        dy(i + 2) = dy(i + 2) + da*dx(i + 2)
+        dy(i + 3) = dy(i + 3) + da*dx(i + 3)
+   50 continue
+      return
 !
 !        CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
 !
-   60 CONTINUE
-      NS = N*INCX
-          DO 70 I=1,NS,INCX
-          DY(I) = DA*DX(I) + DY(I)
-   70     CONTINUE
-      RETURN
-      END
+   60 continue
+      ns = n*incx
+          do 70 i=1,ns,incx
+          dy(i) = da*dx(i) + dy(i)
+   70     continue
+      return
+      end
 !SDOT
-      REAL FUNCTION SDOT(N,SX,INCX,SY,INCY)
+      real function sdot(n,sx,incx,sy,incy)
 !
 !     LATEST REVISION  -  OCTOBER 3, 1983  (JRD)
 !
@@ -1456,64 +1455,64 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INCX,INCY,N
+      integer incx,incy,n
 !
 !  ARRAY ARGUMENTS
-      REAL SX(*),SY(*)
+      real sx(*),sy(*)
 !
 !  LOCAL SCALARS
-      INTEGER I,IX,IY,M,MP1,NS
+      integer i,ix,iy,m,mp1,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
-      SDOT = 0.0E0
-      IF(N.LE.0)RETURN
-      IF(INCX.EQ.INCY) IF(INCX-1)5,20,60
-    5 CONTINUE
+      sdot = 0.0e0
+      if(n.le.0)return
+      if(incx.eq.incy) if(incx-1)5,20,60
+    5 continue
 !
 !        CODE FOR UNEQUAL INCREMENTS OR NONPOSITIVE INCREMENTS.
 !
-      IX = 1
-      IY = 1
-      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
-      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
-      DO 10 I = 1,N
-        SDOT = SDOT + SX(IX)*SY(IY)
-        IX = IX + INCX
-        IY = IY + INCY
-   10 CONTINUE
-      RETURN
+      ix = 1
+      iy = 1
+      if(incx.lt.0)ix = (-n+1)*incx + 1
+      if(incy.lt.0)iy = (-n+1)*incy + 1
+      do 10 i = 1,n
+        sdot = sdot + sx(ix)*sy(iy)
+        ix = ix + incx
+        iy = iy + incy
+   10 continue
+      return
 !
 !        CODE FOR BOTH INCREMENTS EQUAL TO 1
 !
 !
 !        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 5.
 !
-   20 M = MOD(N,5)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-        SDOT = SDOT + SX(I)*SY(I)
-   30 CONTINUE
-      IF( N .LT. 5 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,5
-        SDOT = SDOT + SX(I)*SY(I) + SX(I + 1)*SY(I + 1) +
-     &    SX(I+2)*SY(I+2) + SX(I+3)*SY(I+3) + SX(I+4)*SY(I+4)
-   50 CONTINUE
-      RETURN
+   20 m = mod(n,5)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+        sdot = sdot + sx(i)*sy(i)
+   30 continue
+      if( n .lt. 5 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,5
+       sdot = sdot + sx(i)*sy(i) + sx(i + 1)*sy(i + 1) +&
+     &    sx(i+2)*sy(i+2) + sx(i+3)*sy(i+3) + sx(i+4)*sy(i+4)
+   50 continue
+      return
 !
 !        CODE FOR POSITIVE EQUAL INCREMENTS .NE.1.
 !
-   60 CONTINUE
-      NS=N*INCX
-      DO 70 I=1,NS,INCX
-        SDOT = SDOT + SX(I)*SY(I)
-   70   CONTINUE
-      RETURN
-      END
+   60 continue
+      ns=n*incx
+      do 70 i=1,ns,incx
+        sdot = sdot + sx(i)*sy(i)
+   70   continue
+      return
+      end
 !IDAMAX
-      INTEGER FUNCTION IDAMAX(N,DX,INCX)
+      integer function idamax(n,dx,incx)
 !
 !     FIND SMALLEST INDEX OF MAXIMUM MAGNITUDE OF DOUBLE PRECISION DX.
 !     IDAMAX =  FIRST I, I = 1 TO N, TO MINIMIZE  ABS(DX(1-INCX+I*INCX))
@@ -1522,51 +1521,51 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INCX,N
+      integer incx,n
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION DX(*)
+      double precision dx(*)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION DMAX,XMAG
-      INTEGER I,II,NS
+      double precision dmax,xmag
+      integer i,ii,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC DABS
+      intrinsic dabs
 !
-      IDAMAX = 0
-      IF(N.LE.0) RETURN
-      IDAMAX = 1
-      IF(N.LE.1)RETURN
-      IF(INCX.EQ.1)GOTO 20
+      idamax = 0
+      if(n.le.0) return
+      idamax = 1
+      if(n.le.1)return
+      if(incx.eq.1)goto 20
 !
 !        CODE FOR INCREMENTS NOT EQUAL TO 1.
 !
-      DMAX = DABS(DX(1))
-      NS = N*INCX
-      II = 1
-          DO 10 I = 1,NS,INCX
-          XMAG = DABS(DX(I))
-          IF(XMAG.LE.DMAX) GO TO 5
-          IDAMAX = II
-          DMAX = XMAG
-    5     II = II + 1
-   10     CONTINUE
-      RETURN
+      dmax = dabs(dx(1))
+      ns = n*incx
+      ii = 1
+          do 10 i = 1,ns,incx
+          xmag = dabs(dx(i))
+          if(xmag.le.dmax) go to 5
+          idamax = ii
+          dmax = xmag
+    5     ii = ii + 1
+   10     continue
+      return
 !
 !        CODE FOR INCREMENTS EQUAL TO 1.
 !
-   20 DMAX = DABS(DX(1))
-      DO 30 I = 2,N
-          XMAG = DABS(DX(I))
-          IF(XMAG.LE.DMAX) GO TO 30
-          IDAMAX = I
-          DMAX = XMAG
-   30 CONTINUE
-      RETURN
-      END
+   20 dmax = dabs(dx(1))
+      do 30 i = 2,n
+          xmag = dabs(dx(i))
+          if(xmag.le.dmax) go to 30
+          idamax = i
+          dmax = xmag
+   30 continue
+      return
+      end
 !SSWAP
-      SUBROUTINE SSWAP (N,SX,INCX,SY,INCY)
+      subroutine sswap (n,sx,incx,sy,incy)
 !
 !     INTERCHANGE SINGLE PRECISION SX AND SINGLE PRECISION SY.
 !     FOR I = 0 TO N-1, INTERCHANGE  SX(LX+I*INCX) AND SY(LY+I*INCY),
@@ -1577,77 +1576,77 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INCX,INCY,N
+      integer incx,incy,n
 !
 !  ARRAY ARGUMENTS
-      REAL SX(*),SY(*)
+      real sx(*),sy(*)
 !
 !  LOCAL SCALARS
-      REAL STEMP1,STEMP2,STEMP3
-      INTEGER I,IX,IY,M,MP1,NS
+      real stemp1,stemp2,stemp3
+      integer i,ix,iy,m,mp1,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
-      IF(N.LE.0)RETURN
-      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
-    5 CONTINUE
+      if(n.le.0)return
+      if(incx.eq.incy) if(incx-1) 5,20,60
+    5 continue
 !
 !       CODE FOR UNEQUAL OR NONPOSITIVE INCREMENTS.
 !
-      IX = 1
-      IY = 1
-      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
-      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
-      DO 10 I = 1,N
-        STEMP1 = SX(IX)
-        SX(IX) = SY(IY)
-        SY(IY) = STEMP1
-        IX = IX + INCX
-        IY = IY + INCY
-   10 CONTINUE
-      RETURN
+      ix = 1
+      iy = 1
+      if(incx.lt.0)ix = (-n+1)*incx + 1
+      if(incy.lt.0)iy = (-n+1)*incy + 1
+      do 10 i = 1,n
+        stemp1 = sx(ix)
+        sx(ix) = sy(iy)
+        sy(iy) = stemp1
+        ix = ix + incx
+        iy = iy + incy
+   10 continue
+      return
 !
 !       CODE FOR BOTH INCREMENTS EQUAL TO 1
 !
 !
 !       CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 3.
 !
-   20 M = MOD(N,3)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-        STEMP1 = SX(I)
-        SX(I) = SY(I)
-        SY(I) = STEMP1
-   30 CONTINUE
-      IF( N .LT. 3 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,3
-        STEMP1 = SX(I)
-        STEMP2 = SX(I+1)
-        STEMP3 = SX(I+2)
-        SX(I) = SY(I)
-        SX(I+1) = SY(I+1)
-        SX(I+2) = SY(I+2)
-        SY(I) = STEMP1
-        SY(I+1) = STEMP2
-        SY(I+2) = STEMP3
-   50 CONTINUE
-      RETURN
-   60 CONTINUE
+   20 m = mod(n,3)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+        stemp1 = sx(i)
+        sx(i) = sy(i)
+        sy(i) = stemp1
+   30 continue
+      if( n .lt. 3 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,3
+        stemp1 = sx(i)
+        stemp2 = sx(i+1)
+        stemp3 = sx(i+2)
+        sx(i) = sy(i)
+        sx(i+1) = sy(i+1)
+        sx(i+2) = sy(i+2)
+        sy(i) = stemp1
+        sy(i+1) = stemp2
+        sy(i+2) = stemp3
+   50 continue
+      return
+   60 continue
 !
 !     CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
 !
-      NS = N*INCX
-        DO 70 I=1,NS,INCX
-        STEMP1 = SX(I)
-        SX(I) = SY(I)
-        SY(I) = STEMP1
-   70   CONTINUE
-      RETURN
-      END
+      ns = n*incx
+        do 70 i=1,ns,incx
+        stemp1 = sx(i)
+        sx(i) = sy(i)
+        sy(i) = stemp1
+   70   continue
+      return
+      end
 !DSIDI
-      SUBROUTINE DSIDI(A,LDA,N,KPVT,DET,INERT,WORK,JOB)
+      subroutine dsidi(a,lda,n,kpvt,det,inert,work,job)
 !
 !     DSIDI COMPUTES THE DETERMINANT, INERTIA AND INVERSE
 !     OF A DOUBLE PRECISION SYMMETRIC MATRIX USING THE FACTORS FROM
@@ -1656,16 +1655,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER JOB,LDA,N
+      integer job,lda,n
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION A(LDA,*),DET(2),WORK(*)
-      INTEGER INERT(3),KPVT(*)
+      double precision a(lda,*),det(2),work(*)
+      integer inert(3),kpvt(*)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION AK,AKKP1,AKP1,D,T,TEMP,TEN
-      INTEGER J,JB,K,KM1,KS,KSTEP
-      LOGICAL NODET,NOERT,NOINV
+      double precision ak,akkp1,akp1,d,t,temp,ten
+      integer j,jb,k,km1,ks,kstep
+      logical nodet,noert,noinv
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION DDOT
@@ -1675,7 +1674,7 @@
 !       EXTERNAL DAXPY,DCOPY,DSWAP
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC DABS,IABS,MOD
+      intrinsic dabs,iabs,mod
 !
 !
 !     ON ENTRY
@@ -1738,29 +1737,29 @@
 !     FORTRAN DABS,IABS,MOD
 !
 !
-      TEN = 10.0D0
+      ten = 10.0d0
 !
-      NOINV = MOD(JOB,10) .EQ. 0
-      NODET = MOD(JOB,100)/10 .EQ. 0
-      NOERT = MOD(JOB,1000)/100 .EQ. 0
+      noinv = mod(job,10) .eq. 0
+      nodet = mod(job,100)/10 .eq. 0
+      noert = mod(job,1000)/100 .eq. 0
 !
-      IF (NODET .AND. NOERT) GO TO 140
-         IF (NOERT) GO TO 10
-            INERT(1) = 0
-            INERT(2) = 0
-            INERT(3) = 0
-   10    CONTINUE
-         IF (NODET) GO TO 20
-            DET(1) = 1.0D0
-            DET(2) = 0.0D0
-   20    CONTINUE
-         T = 0.0D0
-         DO 130 K = 1, N
-            D = A(K,K)
+      if (nodet .and. noert) go to 140
+         if (noert) go to 10
+            inert(1) = 0
+            inert(2) = 0
+            inert(3) = 0
+   10    continue
+         if (nodet) go to 20
+            det(1) = 1.0d0
+            det(2) = 0.0d0
+   20    continue
+         t = 0.0d0
+         do 130 k = 1, n
+            d = a(k,k)
 !
 !           CHECK IF 1 BY 1
 !
-            IF (KPVT(K) .GT. 0) GO TO 50
+            if (kpvt(k) .gt. 0) go to 50
 !
 !              2 BY 2 BLOCK
 !              USE DET (D  S)  =  (D/T * C - T) * T  ,  T = DABS(S)
@@ -1768,116 +1767,116 @@
 !              TO AVOID UNDERFLOW/OVERFLOW TROUBLES.
 !              TAKE TWO PASSES THROUGH SCALING.  USE  T  FOR FLAG.
 !
-               IF (T .NE. 0.0D0) GO TO 30
-                  T = DABS(A(K,K+1))
-                  D = (D/T)*A(K+1,K+1) - T
-               GO TO 40
-   30          CONTINUE
-                  D = T
-                  T = 0.0D0
-   40          CONTINUE
-   50       CONTINUE
+               if (t .ne. 0.0d0) go to 30
+                  t = dabs(a(k,k+1))
+                  d = (d/t)*a(k+1,k+1) - t
+               go to 40
+   30          continue
+                  d = t
+                  t = 0.0d0
+   40          continue
+   50       continue
 !
-            IF (NOERT) GO TO 60
-               IF (D .GT. 0.0D0) INERT(1) = INERT(1) + 1
-               IF (D .LT. 0.0D0) INERT(2) = INERT(2) + 1
-               IF (D .EQ. 0.0D0) INERT(3) = INERT(3) + 1
-   60       CONTINUE
+            if (noert) go to 60
+               if (d .gt. 0.0d0) inert(1) = inert(1) + 1
+               if (d .lt. 0.0d0) inert(2) = inert(2) + 1
+               if (d .eq. 0.0d0) inert(3) = inert(3) + 1
+   60       continue
 !
-            IF (NODET) GO TO 120
-               DET(1) = D*DET(1)
-               IF (DET(1) .EQ. 0.0D0) GO TO 110
-   70             IF (DABS(DET(1)) .GE. 1.0D0) GO TO 80
-                     DET(1) = TEN*DET(1)
-                     DET(2) = DET(2) - 1.0D0
-                  GO TO 70
-   80             CONTINUE
-   90             IF (DABS(DET(1)) .LT. TEN) GO TO 100
-                     DET(1) = DET(1)/TEN
-                     DET(2) = DET(2) + 1.0D0
-                  GO TO 90
-  100             CONTINUE
-  110          CONTINUE
-  120       CONTINUE
-  130    CONTINUE
-  140 CONTINUE
+            if (nodet) go to 120
+               det(1) = d*det(1)
+               if (det(1) .eq. 0.0d0) go to 110
+   70             if (dabs(det(1)) .ge. 1.0d0) go to 80
+                     det(1) = ten*det(1)
+                     det(2) = det(2) - 1.0d0
+                  go to 70
+   80             continue
+   90             if (dabs(det(1)) .lt. ten) go to 100
+                     det(1) = det(1)/ten
+                     det(2) = det(2) + 1.0d0
+                  go to 90
+  100             continue
+  110          continue
+  120       continue
+  130    continue
+  140 continue
 !
 !     COMPUTE INVERSE(A)
 !
-      IF (NOINV) GO TO 270
-         K = 1
-  150    IF (K .GT. N) GO TO 260
-            KM1 = K - 1
-            IF (KPVT(K) .LT. 0) GO TO 180
+      if (noinv) go to 270
+         k = 1
+  150    if (k .gt. n) go to 260
+            km1 = k - 1
+            if (kpvt(k) .lt. 0) go to 180
 !
 !              1 BY 1
 !
-               A(K,K) = 1.0D0/A(K,K)
-               IF (KM1 .LT. 1) GO TO 170
-                  CALL DCOPY(KM1,A(1,K),1,WORK,1)
-                  DO 160 J = 1, KM1
-                     A(J,K) = DDOT(J,A(1,J),1,WORK,1)
-                     CALL DAXPY(J-1,WORK(J),A(1,J),1,A(1,K),1)
-  160             CONTINUE
-                  A(K,K) = A(K,K) + DDOT(KM1,WORK,1,A(1,K),1)
-  170          CONTINUE
-               KSTEP = 1
-            GO TO 220
-  180       CONTINUE
+               a(k,k) = 1.0d0/a(k,k)
+               if (km1 .lt. 1) go to 170
+                  call dcopy(km1,a(1,k),1,work,1)
+                  do 160 j = 1, km1
+                     a(j,k) = ddot(j,a(1,j),1,work,1)
+                     call daxpy(j-1,work(j),a(1,j),1,a(1,k),1)
+  160             continue
+                  a(k,k) = a(k,k) + ddot(km1,work,1,a(1,k),1)
+  170          continue
+               kstep = 1
+            go to 220
+  180       continue
 !
 !              2 BY 2
 !
-               T = DABS(A(K,K+1))
-               AK = A(K,K)/T
-               AKP1 = A(K+1,K+1)/T
-               AKKP1 = A(K,K+1)/T
-               D = T*(AK*AKP1 - 1.0D0)
-               A(K,K) = AKP1/D
-               A(K+1,K+1) = AK/D
-               A(K,K+1) = -AKKP1/D
-               IF (KM1 .LT. 1) GO TO 210
-                  CALL DCOPY(KM1,A(1,K+1),1,WORK,1)
-                  DO 190 J = 1, KM1
-                     A(J,K+1) = DDOT(J,A(1,J),1,WORK,1)
-                     CALL DAXPY(J-1,WORK(J),A(1,J),1,A(1,K+1),1)
-  190             CONTINUE
-                  A(K+1,K+1) = A(K+1,K+1) + DDOT(KM1,WORK,1,A(1,K+1),1)
-                  A(K,K+1) = A(K,K+1) + DDOT(KM1,A(1,K),1,A(1,K+1),1)
-                  CALL DCOPY(KM1,A(1,K),1,WORK,1)
-                  DO 200 J = 1, KM1
-                     A(J,K) = DDOT(J,A(1,J),1,WORK,1)
-                     CALL DAXPY(J-1,WORK(J),A(1,J),1,A(1,K),1)
-  200             CONTINUE
-                  A(K,K) = A(K,K) + DDOT(KM1,WORK,1,A(1,K),1)
-  210          CONTINUE
-               KSTEP = 2
-  220       CONTINUE
+               t = dabs(a(k,k+1))
+               ak = a(k,k)/t
+               akp1 = a(k+1,k+1)/t
+               akkp1 = a(k,k+1)/t
+               d = t*(ak*akp1 - 1.0d0)
+               a(k,k) = akp1/d
+               a(k+1,k+1) = ak/d
+               a(k,k+1) = -akkp1/d
+               if (km1 .lt. 1) go to 210
+                  call dcopy(km1,a(1,k+1),1,work,1)
+                  do 190 j = 1, km1
+                     a(j,k+1) = ddot(j,a(1,j),1,work,1)
+                     call daxpy(j-1,work(j),a(1,j),1,a(1,k+1),1)
+  190             continue
+                  a(k+1,k+1) = a(k+1,k+1) + ddot(km1,work,1,a(1,k+1),1)
+                  a(k,k+1) = a(k,k+1) + ddot(km1,a(1,k),1,a(1,k+1),1)
+                  call dcopy(km1,a(1,k),1,work,1)
+                  do 200 j = 1, km1
+                     a(j,k) = ddot(j,a(1,j),1,work,1)
+                     call daxpy(j-1,work(j),a(1,j),1,a(1,k),1)
+  200             continue
+                  a(k,k) = a(k,k) + ddot(km1,work,1,a(1,k),1)
+  210          continue
+               kstep = 2
+  220       continue
 !
 !           SWAP
 !
-            KS = IABS(KPVT(K))
-            IF (KS .EQ. K) GO TO 250
-               CALL DSWAP(KS,A(1,KS),1,A(1,K),1)
-               DO 230 JB = KS, K
-                  J = K + KS - JB
-                  TEMP = A(J,K)
-                  A(J,K) = A(KS,J)
-                  A(KS,J) = TEMP
-  230          CONTINUE
-               IF (KSTEP .EQ. 1) GO TO 240
-                  TEMP = A(KS,K+1)
-                  A(KS,K+1) = A(K,K+1)
-                  A(K,K+1) = TEMP
-  240          CONTINUE
-  250       CONTINUE
-            K = K + KSTEP
-         GO TO 150
-  260    CONTINUE
-  270 CONTINUE
-      RETURN
-      END
+            ks = iabs(kpvt(k))
+            if (ks .eq. k) go to 250
+               call dswap(ks,a(1,ks),1,a(1,k),1)
+               do 230 jb = ks, k
+                  j = k + ks - jb
+                  temp = a(j,k)
+                  a(j,k) = a(ks,j)
+                  a(ks,j) = temp
+  230          continue
+               if (kstep .eq. 1) go to 240
+                  temp = a(ks,k+1)
+                  a(ks,k+1) = a(k,k+1)
+                  a(k,k+1) = temp
+  240          continue
+  250       continue
+            k = k + kstep
+         go to 150
+  260    continue
+  270 continue
+      return
+      end
 !DTRCO
-      SUBROUTINE DTRCO(T,LDT,N,RCOND,Z,JOB)
+      subroutine dtrco(t,ldt,n,rcond,z,job)
 !***BEGIN PROLOGUE  DTRCO
 !***DATE WRITTEN   780814   (YYMMDD)
 !***REVISION DATE  820801   (YYMMDD)
@@ -1928,16 +1927,16 @@
 !***END PROLOGUE  DTRCO
 
 !...SCALAR ARGUMENTS
-      DOUBLE PRECISION RCOND
-      INTEGER JOB,LDT,N
+      double precision rcond
+      integer job,ldt,n
 
 !...ARRAY ARGUMENTS
-      DOUBLE PRECISION T(LDT,*),Z(*)
+      double precision t(ldt,*),z(*)
 
 !...LOCAL SCALARS
-      DOUBLE PRECISION EK,S,SM,TNORM,W,WK,WKM,YNORM
-      INTEGER I1,J,J1,J2,K,KK,L
-      LOGICAL LOWER
+      double precision ek,s,sm,tnorm,w,wk,wkm,ynorm
+      integer i1,j,j1,j2,k,kk,l
+      logical lower
 
 !...EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION DASUM
@@ -1947,24 +1946,22 @@
 !       EXTERNAL DAXPY,DSCAL
 
 !...INTRINSIC FUNCTIONS
-      INTRINSIC DABS,DMAX1,DSIGN
-
+      intrinsic dabs,dmax1,dsign
 
 !***FIRST EXECUTABLE STATEMENT  DTRCO
 
-
-      LOWER = JOB .EQ. 0
+      lower = job .eq. 0
 
 !     COMPUTE 1-NORM OF T
 
-      TNORM = 0.0D0
-      DO 10 J = 1, N
-         L = J
-         IF (LOWER) L = N + 1 - J
-         I1 = 1
-         IF (LOWER) I1 = J
-         TNORM = DMAX1(TNORM,DASUM(L,T(I1,J),1))
-   10 CONTINUE
+      tnorm = 0.0d0
+      do 10 j = 1, n
+         l = j
+         if (lower) l = n + 1 - j
+         i1 = 1
+         if (lower) i1 = j
+         tnorm = dmax1(tnorm,dasum(l,t(i1,j),1))
+   10 continue
 
 !     RCOND = 1/(NORM(T)*(ESTIMATE OF NORM(INVERSE(T)))) .
 !     ESTIMATE = NORM(Z)/NORM(Y) WHERE  T*Z = Y  AND  TRANS(T)*Y = E .
@@ -1975,86 +1972,86 @@
 
 !     SOLVE TRANS(T)*Y = E
 
-      EK = 1.0D0
-      DO 20 J = 1, N
-         Z(J) = 0.0D0
-   20 CONTINUE
-      DO 100 KK = 1, N
-         K = KK
-         IF (LOWER) K = N + 1 - KK
-         IF (Z(K) .NE. 0.0D0) EK = DSIGN(EK,-Z(K))
-         IF (DABS(EK-Z(K)) .LE. DABS(T(K,K))) GO TO 30
-            S = DABS(T(K,K))/DABS(EK-Z(K))
-            CALL DSCAL(N,S,Z,1)
-            EK = S*EK
-   30    CONTINUE
-         WK = EK - Z(K)
-         WKM = -EK - Z(K)
-         S = DABS(WK)
-         SM = DABS(WKM)
-         IF (T(K,K) .EQ. 0.0D0) GO TO 40
-            WK = WK/T(K,K)
-            WKM = WKM/T(K,K)
-         GO TO 50
-   40    CONTINUE
-            WK = 1.0D0
-            WKM = 1.0D0
-   50    CONTINUE
-         IF (KK .EQ. N) GO TO 90
-            J1 = K + 1
-            IF (LOWER) J1 = 1
-            J2 = N
-            IF (LOWER) J2 = K - 1
-            DO 60 J = J1, J2
-               SM = SM + DABS(Z(J)+WKM*T(K,J))
-               Z(J) = Z(J) + WK*T(K,J)
-               S = S + DABS(Z(J))
-   60       CONTINUE
-            IF (S .GE. SM) GO TO 80
-               W = WKM - WK
-               WK = WKM
-               DO 70 J = J1, J2
-                  Z(J) = Z(J) + W*T(K,J)
-   70          CONTINUE
-   80       CONTINUE
-   90    CONTINUE
-         Z(K) = WK
-  100 CONTINUE
-      S = 1.0D0/DASUM(N,Z,1)
-      CALL DSCAL(N,S,Z,1)
+      ek = 1.0d0
+      do 20 j = 1, n
+         z(j) = 0.0d0
+   20 continue
+      do 100 kk = 1, n
+         k = kk
+         if (lower) k = n + 1 - kk
+         if (z(k) .ne. 0.0d0) ek = dsign(ek,-z(k))
+         if (dabs(ek-z(k)) .le. dabs(t(k,k))) go to 30
+            s = dabs(t(k,k))/dabs(ek-z(k))
+            call dscal(n,s,z,1)
+            ek = s*ek
+   30    continue
+         wk = ek - z(k)
+         wkm = -ek - z(k)
+         s = dabs(wk)
+         sm = dabs(wkm)
+         if (t(k,k) .eq. 0.0d0) go to 40
+            wk = wk/t(k,k)
+            wkm = wkm/t(k,k)
+         go to 50
+   40    continue
+            wk = 1.0d0
+            wkm = 1.0d0
+   50    continue
+         if (kk .eq. n) go to 90
+            j1 = k + 1
+            if (lower) j1 = 1
+            j2 = n
+            if (lower) j2 = k - 1
+            do 60 j = j1, j2
+               sm = sm + dabs(z(j)+wkm*t(k,j))
+               z(j) = z(j) + wk*t(k,j)
+               s = s + dabs(z(j))
+   60       continue
+            if (s .ge. sm) go to 80
+               w = wkm - wk
+               wk = wkm
+               do 70 j = j1, j2
+                  z(j) = z(j) + w*t(k,j)
+   70          continue
+   80       continue
+   90    continue
+         z(k) = wk
+  100 continue
+      s = 1.0d0/dasum(n,z,1)
+      call dscal(n,s,z,1)
 
-      YNORM = 1.0D0
+      ynorm = 1.0d0
 
 !     SOLVE T*Z = Y
 
-      DO 130 KK = 1, N
-         K = N + 1 - KK
-         IF (LOWER) K = KK
-         IF (DABS(Z(K)) .LE. DABS(T(K,K))) GO TO 110
-            S = DABS(T(K,K))/DABS(Z(K))
-            CALL DSCAL(N,S,Z,1)
-            YNORM = S*YNORM
-  110    CONTINUE
-         IF (T(K,K) .NE. 0.0D0) Z(K) = Z(K)/T(K,K)
-         IF (T(K,K) .EQ. 0.0D0) Z(K) = 1.0D0
-         I1 = 1
-         IF (LOWER) I1 = K + 1
-         IF (KK .GE. N) GO TO 120
-            W = -Z(K)
-            CALL DAXPY(N-KK,W,T(I1,K),1,Z(I1),1)
-  120    CONTINUE
-  130 CONTINUE
+      do 130 kk = 1, n
+         k = n + 1 - kk
+         if (lower) k = kk
+         if (dabs(z(k)) .le. dabs(t(k,k))) go to 110
+            s = dabs(t(k,k))/dabs(z(k))
+            call dscal(n,s,z,1)
+            ynorm = s*ynorm
+  110    continue
+         if (t(k,k) .ne. 0.0d0) z(k) = z(k)/t(k,k)
+         if (t(k,k) .eq. 0.0d0) z(k) = 1.0d0
+         i1 = 1
+         if (lower) i1 = k + 1
+         if (kk .ge. n) go to 120
+            w = -z(k)
+            call daxpy(n-kk,w,t(i1,k),1,z(i1),1)
+  120    continue
+  130 continue
 !     MAKE ZNORM = 1.0
-      S = 1.0D0/DASUM(N,Z,1)
-      CALL DSCAL(N,S,Z,1)
-      YNORM = S*YNORM
+      s = 1.0d0/dasum(n,z,1)
+      call dscal(n,s,z,1)
+      ynorm = s*ynorm
 
-      IF (TNORM .NE. 0.0D0) RCOND = YNORM/TNORM
-      IF (TNORM .EQ. 0.0D0) RCOND = 0.0D0
-      RETURN
-      END
+      if (tnorm .ne. 0.0d0) rcond = ynorm/tnorm
+      if (tnorm .eq. 0.0d0) rcond = 0.0d0
+      return
+      end
 !SSIDI
-      SUBROUTINE SSIDI(A,LDA,N,KPVT,DET,INERT,WORK,JOB)
+      subroutine ssidi(a,lda,n,kpvt,det,inert,work,job)
 !
 !     LATEST REVISION  -  JANUARY 24, 1990  (JRD)
 !
@@ -2062,16 +2059,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER JOB,LDA,N
+      integer job,lda,n
 !
 !  ARRAY ARGUMENTS
-      REAL A(LDA,*),DET(2),WORK(*)
-      INTEGER INERT(3),KPVT(*)
+      real a(lda,*),det(2),work(*)
+      integer inert(3),kpvt(*)
 !
 !  LOCAL SCALARS
-      REAL AK,AKKP1,AKP1,D,T,TEMP,TEN
-      INTEGER J,JB,K,KM1,KS,KSTEP
-      LOGICAL NODET,NOERT,NOINV
+      real ak,akkp1,akp1,d,t,temp,ten
+      integer j,jb,k,km1,ks,kstep
+      logical nodet,noert,noinv
 !
 !  EXTERNAL FUNCTIONS
 !      REAL SDOT
@@ -2081,7 +2078,7 @@
 !       EXTERNAL SAXPY,SSWAP
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,IABS,MOD
+      intrinsic abs,iabs,mod
 !
 !     SSIDI COMPUTES THE DETERMINANT, INERTIA AND INVERSE
 !     OF A REAL SYMMETRIC MATRIX USING THE FACTORS FROM SSIFA.
@@ -2146,29 +2143,29 @@
 !     FORTRAN ABS,IABS,MOD
 !
 !
-      NOINV = MOD(JOB,10) .EQ. 0
-      NODET = MOD(JOB,100)/10 .EQ. 0
-      NOERT = MOD(JOB,1000)/100 .EQ. 0
+      noinv = mod(job,10) .eq. 0
+      nodet = mod(job,100)/10 .eq. 0
+      noert = mod(job,1000)/100 .eq. 0
 !
-      TEN = 10.0E0
+      ten = 10.0e0
 !
-      IF (NODET .AND. NOERT) GO TO 140
-         IF (NOERT) GO TO 10
-            INERT(1) = 0
-            INERT(2) = 0
-            INERT(3) = 0
-   10    CONTINUE
-         IF (NODET) GO TO 20
-            DET(1) = 1.0E0
-            DET(2) = 0.0E0
-   20    CONTINUE
-         T = 0.0E0
-         DO 130 K = 1, N
-            D = A(K,K)
+      if (nodet .and. noert) go to 140
+         if (noert) go to 10
+            inert(1) = 0
+            inert(2) = 0
+            inert(3) = 0
+   10    continue
+         if (nodet) go to 20
+            det(1) = 1.0e0
+            det(2) = 0.0e0
+   20    continue
+         t = 0.0e0
+         do 130 k = 1, n
+            d = a(k,k)
 !
 !           CHECK IF 1 BY 1
 !
-            IF (KPVT(K) .GT. 0) GO TO 50
+            if (kpvt(k) .gt. 0) go to 50
 !
 !              2 BY 2 BLOCK
 !              USE DET (D  S)  =  (D/T * C - T) * T  ,  T = ABS(S)
@@ -2176,134 +2173,134 @@
 !              TO AVOID UNDERFLOW/OVERFLOW TROUBLES.
 !              TAKE TWO PASSES THROUGH SCALING.  USE  T  FOR FLAG.
 !
-               IF (T .NE. 0.0E0) GO TO 30
-                  T = ABS(A(K,K+1))
-                  D = (D/T)*A(K+1,K+1) - T
-               GO TO 40
-   30          CONTINUE
-                  D = T
-                  T = 0.0E0
-   40          CONTINUE
-   50       CONTINUE
+               if (t .ne. 0.0e0) go to 30
+                  t = abs(a(k,k+1))
+                  d = (d/t)*a(k+1,k+1) - t
+               go to 40
+   30          continue
+                  d = t
+                  t = 0.0e0
+   40          continue
+   50       continue
 !
-            IF (NOERT) GO TO 60
-               IF (D .GT. 0.0E0) INERT(1) = INERT(1) + 1
-               IF (D .LT. 0.0E0) INERT(2) = INERT(2) + 1
-               IF (D .EQ. 0.0E0) INERT(3) = INERT(3) + 1
-   60       CONTINUE
+            if (noert) go to 60
+               if (d .gt. 0.0e0) inert(1) = inert(1) + 1
+               if (d .lt. 0.0e0) inert(2) = inert(2) + 1
+               if (d .eq. 0.0e0) inert(3) = inert(3) + 1
+   60       continue
 !
-            IF (NODET) GO TO 120
-               DET(1) = D*DET(1)
-               IF (DET(1) .EQ. 0.0E0) GO TO 110
-   70             IF (ABS(DET(1)) .GE. 1.0E0) GO TO 80
-                     DET(1) = TEN*DET(1)
-                     DET(2) = DET(2) - 1.0E0
-                  GO TO 70
-   80             CONTINUE
-   90             IF (ABS(DET(1)) .LT. TEN) GO TO 100
-                     DET(1) = DET(1)/TEN
-                     DET(2) = DET(2) + 1.0E0
-                  GO TO 90
-  100             CONTINUE
-  110          CONTINUE
-  120       CONTINUE
-  130    CONTINUE
-  140 CONTINUE
+            if (nodet) go to 120
+               det(1) = d*det(1)
+               if (det(1) .eq. 0.0e0) go to 110
+   70             if (abs(det(1)) .ge. 1.0e0) go to 80
+                     det(1) = ten*det(1)
+                     det(2) = det(2) - 1.0e0
+                  go to 70
+   80             continue
+   90             if (abs(det(1)) .lt. ten) go to 100
+                     det(1) = det(1)/ten
+                     det(2) = det(2) + 1.0e0
+                  go to 90
+  100             continue
+  110          continue
+  120       continue
+  130    continue
+  140 continue
 !
 !     COMPUTE INVERSE(A)
 !
-      IF (NOINV) GO TO 270
-         K = 1
-  150    IF (K .GT. N) GO TO 260
-            KM1 = K - 1
-            IF (KPVT(K) .LT. 0) GO TO 180
+      if (noinv) go to 270
+         k = 1
+  150    if (k .gt. n) go to 260
+            km1 = k - 1
+            if (kpvt(k) .lt. 0) go to 180
 !
 !              1 BY 1
 !
-               A(K,K) = 1.0E0/A(K,K)
-               IF (KM1 .LT. 1) GO TO 170
-                  CALL SCOPY(KM1,A(1,K),1,WORK,1)
-                  DO 160 J = 1, KM1
-                     A(J,K) = SDOT(J,A(1,J),1,WORK,1)
-                     CALL SAXPY(J-1,WORK(J),A(1,J),1,A(1,K),1)
-  160             CONTINUE
-                  A(K,K) = A(K,K) + SDOT(KM1,WORK,1,A(1,K),1)
-  170          CONTINUE
-               KSTEP = 1
-            GO TO 220
-  180       CONTINUE
+               a(k,k) = 1.0e0/a(k,k)
+               if (km1 .lt. 1) go to 170
+                  call scopy(km1,a(1,k),1,work,1)
+                  do 160 j = 1, km1
+                     a(j,k) = sdot(j,a(1,j),1,work,1)
+                     call saxpy(j-1,work(j),a(1,j),1,a(1,k),1)
+  160             continue
+                  a(k,k) = a(k,k) + sdot(km1,work,1,a(1,k),1)
+  170          continue
+               kstep = 1
+            go to 220
+  180       continue
 !
 !              2 BY 2
 !
-               T = ABS(A(K,K+1))
-               AK = A(K,K)/T
-               AKP1 = A(K+1,K+1)/T
-               AKKP1 = A(K,K+1)/T
-               D = T*(AK*AKP1 - 1.0E0)
-               A(K,K) = AKP1/D
-               A(K+1,K+1) = AK/D
-               A(K,K+1) = -AKKP1/D
-               IF (KM1 .LT. 1) GO TO 210
-                  CALL SCOPY(KM1,A(1,K+1),1,WORK,1)
-                  DO 190 J = 1, KM1
-                     A(J,K+1) = SDOT(J,A(1,J),1,WORK,1)
-                     CALL SAXPY(J-1,WORK(J),A(1,J),1,A(1,K+1),1)
-  190             CONTINUE
-                  A(K+1,K+1) = A(K+1,K+1) + SDOT(KM1,WORK,1,A(1,K+1),1)
-                  A(K,K+1) = A(K,K+1) + SDOT(KM1,A(1,K),1,A(1,K+1),1)
-                  CALL SCOPY(KM1,A(1,K),1,WORK,1)
-                  DO 200 J = 1, KM1
-                     A(J,K) = SDOT(J,A(1,J),1,WORK,1)
-                     CALL SAXPY(J-1,WORK(J),A(1,J),1,A(1,K),1)
-  200             CONTINUE
-                  A(K,K) = A(K,K) + SDOT(KM1,WORK,1,A(1,K),1)
-  210          CONTINUE
-               KSTEP = 2
-  220       CONTINUE
+               t = abs(a(k,k+1))
+               ak = a(k,k)/t
+               akp1 = a(k+1,k+1)/t
+               akkp1 = a(k,k+1)/t
+               d = t*(ak*akp1 - 1.0e0)
+               a(k,k) = akp1/d
+               a(k+1,k+1) = ak/d
+               a(k,k+1) = -akkp1/d
+               if (km1 .lt. 1) go to 210
+                  call scopy(km1,a(1,k+1),1,work,1)
+                  do 190 j = 1, km1
+                     a(j,k+1) = sdot(j,a(1,j),1,work,1)
+                     call saxpy(j-1,work(j),a(1,j),1,a(1,k+1),1)
+  190             continue
+                  a(k+1,k+1) = a(k+1,k+1) + sdot(km1,work,1,a(1,k+1),1)
+                  a(k,k+1) = a(k,k+1) + sdot(km1,a(1,k),1,a(1,k+1),1)
+                  call scopy(km1,a(1,k),1,work,1)
+                  do 200 j = 1, km1
+                     a(j,k) = sdot(j,a(1,j),1,work,1)
+                     call saxpy(j-1,work(j),a(1,j),1,a(1,k),1)
+  200             continue
+                  a(k,k) = a(k,k) + sdot(km1,work,1,a(1,k),1)
+  210          continue
+               kstep = 2
+  220       continue
 !
 !           SWAP
 !
-            KS = IABS(KPVT(K))
-            IF (KS .EQ. K) GO TO 250
-               CALL SSWAP(KS,A(1,KS),1,A(1,K),1)
-               DO 230 JB = KS, K
-                  J = K + KS - JB
-                  TEMP = A(J,K)
-                  A(J,K) = A(KS,J)
-                  A(KS,J) = TEMP
-  230          CONTINUE
-               IF (KSTEP .EQ. 1) GO TO 240
-                  TEMP = A(KS,K+1)
-                  A(KS,K+1) = A(K,K+1)
-                  A(K,K+1) = TEMP
-  240          CONTINUE
-  250       CONTINUE
-            K = K + KSTEP
-         GO TO 150
-  260    CONTINUE
-  270 CONTINUE
-      RETURN
-      END
+            ks = iabs(kpvt(k))
+            if (ks .eq. k) go to 250
+               call sswap(ks,a(1,ks),1,a(1,k),1)
+               do 230 jb = ks, k
+                  j = k + ks - jb
+                  temp = a(j,k)
+                  a(j,k) = a(ks,j)
+                  a(ks,j) = temp
+  230          continue
+               if (kstep .eq. 1) go to 240
+                  temp = a(ks,k+1)
+                  a(ks,k+1) = a(k,k+1)
+                  a(k,k+1) = temp
+  240          continue
+  250       continue
+            k = k + kstep
+         go to 150
+  260    continue
+  270 continue
+      return
+      end
 !STRDI
-      SUBROUTINE STRDI(T,LDT,N,DET,JOB,INFO)
+      subroutine strdi(t,ldt,n,det,job,info)
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INFO,JOB,LDT,N
+      integer info,job,ldt,n
 !
 !  ARRAY ARGUMENTS
-      REAL DET(2),T(LDT,*)
+      real det(2),t(ldt,*)
 !
 !  LOCAL SCALARS
-      REAL TEMP,TEN
-      INTEGER I,J,K,KB,KM1,KP1
+      real temp,ten
+      integer i,j,k,kb,km1,kp1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL SAXPY,SSCAL
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,MOD
+      intrinsic abs,mod
 !
 !
 !     STRDI COMPUTES THE DETERMINANT AND INVERSE OF A REAL
@@ -2361,81 +2358,81 @@
 !
 !        COMPUTE DETERMINANT
 !
-         IF (JOB/100 .EQ. 0) GO TO 70
-            DET(1) = 1.0E0
-            DET(2) = 0.0E0
-            TEN = 10.0E0
-            DO 50 I = 1, N
-               DET(1) = T(I,I)*DET(1)
+         if (job/100 .eq. 0) go to 70
+            det(1) = 1.0e0
+            det(2) = 0.0e0
+            ten = 10.0e0
+            do 50 i = 1, n
+               det(1) = t(i,i)*det(1)
 !           ...EXIT
-               IF (DET(1) .EQ. 0.0E0) GO TO 60
-   10          IF (ABS(DET(1)) .GE. 1.0E0) GO TO 20
-                  DET(1) = TEN*DET(1)
-                  DET(2) = DET(2) - 1.0E0
-               GO TO 10
-   20          CONTINUE
-   30          IF (ABS(DET(1)) .LT. TEN) GO TO 40
-                  DET(1) = DET(1)/TEN
-                  DET(2) = DET(2) + 1.0E0
-               GO TO 30
-   40          CONTINUE
-   50       CONTINUE
-   60       CONTINUE
-   70    CONTINUE
+               if (det(1) .eq. 0.0e0) go to 60
+   10          if (abs(det(1)) .ge. 1.0e0) go to 20
+                  det(1) = ten*det(1)
+                  det(2) = det(2) - 1.0e0
+               go to 10
+   20          continue
+   30          if (abs(det(1)) .lt. ten) go to 40
+                  det(1) = det(1)/ten
+                  det(2) = det(2) + 1.0e0
+               go to 30
+   40          continue
+   50       continue
+   60       continue
+   70    continue
 !
 !        COMPUTE INVERSE OF UPPER TRIANGULAR
 !
-         IF (MOD(JOB/10,10) .EQ. 0) GO TO 170
-            IF (MOD(JOB,10) .EQ. 0) GO TO 120
+         if (mod(job/10,10) .eq. 0) go to 170
+            if (mod(job,10) .eq. 0) go to 120
 !              BEGIN BLOCK PERMITTING ...EXITS TO 110
-                  DO 100 K = 1, N
-                     INFO = K
+                  do 100 k = 1, n
+                     info = k
 !              ......EXIT
-                     IF (T(K,K) .EQ. 0.0E0) GO TO 110
-                     T(K,K) = 1.0E0/T(K,K)
-                     TEMP = -T(K,K)
-                     CALL SSCAL(K-1,TEMP,T(1,K),1)
-                     KP1 = K + 1
-                     IF (N .LT. KP1) GO TO 90
-                     DO 80 J = KP1, N
-                        TEMP = T(K,J)
-                        T(K,J) = 0.0E0
-                        CALL SAXPY(K,TEMP,T(1,K),1,T(1,J),1)
-   80                CONTINUE
-   90                CONTINUE
-  100             CONTINUE
-                  INFO = 0
-  110          CONTINUE
-            GO TO 160
-  120       CONTINUE
+                     if (t(k,k) .eq. 0.0e0) go to 110
+                     t(k,k) = 1.0e0/t(k,k)
+                     temp = -t(k,k)
+                     call sscal(k-1,temp,t(1,k),1)
+                     kp1 = k + 1
+                     if (n .lt. kp1) go to 90
+                     do 80 j = kp1, n
+                        temp = t(k,j)
+                        t(k,j) = 0.0e0
+                        call saxpy(k,temp,t(1,k),1,t(1,j),1)
+   80                continue
+   90                continue
+  100             continue
+                  info = 0
+  110          continue
+            go to 160
+  120       continue
 !
 !              COMPUTE INVERSE OF LOWER TRIANGULAR
 !
-               DO 150 KB = 1, N
-                  K = N + 1 - KB
-                  INFO = K
+               do 150 kb = 1, n
+                  k = n + 1 - kb
+                  info = k
 !     ............EXIT
-                  IF (T(K,K) .EQ. 0.0E0) GO TO 180
-                  T(K,K) = 1.0E0/T(K,K)
-                  TEMP = -T(K,K)
-                  IF (K .NE. N) CALL SSCAL(N-K,TEMP,T(K+1,K),1)
-                  KM1 = K - 1
-                  IF (KM1 .LT. 1) GO TO 140
-                  DO 130 J = 1, KM1
-                     TEMP = T(K,J)
-                     T(K,J) = 0.0E0
-                     CALL SAXPY(N-K+1,TEMP,T(K,K),1,T(K,J),1)
-  130             CONTINUE
-  140             CONTINUE
-  150          CONTINUE
-               INFO = 0
-  160       CONTINUE
-  170    CONTINUE
-  180 CONTINUE
-      RETURN
-      END
+                  if (t(k,k) .eq. 0.0e0) go to 180
+                  t(k,k) = 1.0e0/t(k,k)
+                  temp = -t(k,k)
+                  if (k .ne. n) call sscal(n-k,temp,t(k+1,k),1)
+                  km1 = k - 1
+                  if (km1 .lt. 1) go to 140
+                  do 130 j = 1, km1
+                     temp = t(k,j)
+                     t(k,j) = 0.0e0
+                     call saxpy(n-k+1,temp,t(k,k),1,t(k,j),1)
+  130             continue
+  140             continue
+  150          continue
+               info = 0
+  160       continue
+  170    continue
+  180 continue
+      return
+      end
 !SCOPY
-      SUBROUTINE SCOPY(N,SX,INCX,SY,INCY)
+      subroutine scopy(n,sx,incx,sy,incy)
 !
 !     COPY SINGLE PRECISION SX TO SINGLE PRECISION SY.
 !     FOR I = 0 TO N-1, COPY  SX(LX+I*INCX) TO SY(LY+I*INCY),
@@ -2446,68 +2443,68 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INCX,INCY,N
+      integer incx,incy,n
 !
 !  ARRAY ARGUMENTS
-      REAL SX(*),SY(*)
+      real sx(*),sy(*)
 !
 !  LOCAL SCALARS
-      INTEGER I,IX,IY,M,MP1,NS
+      integer i,ix,iy,m,mp1,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
-      IF(N.LE.0)RETURN
-      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
-    5 CONTINUE
+      if(n.le.0)return
+      if(incx.eq.incy) if(incx-1) 5,20,60
+    5 continue
 !
 !        CODE FOR UNEQUAL OR NONPOSITIVE INCREMENTS.
 !
-      IX = 1
-      IY = 1
-      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
-      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
-      DO 10 I = 1,N
-        SY(IY) = SX(IX)
-        IX = IX + INCX
-        IY = IY + INCY
-   10 CONTINUE
-      RETURN
+      ix = 1
+      iy = 1
+      if(incx.lt.0)ix = (-n+1)*incx + 1
+      if(incy.lt.0)iy = (-n+1)*incy + 1
+      do 10 i = 1,n
+        sy(iy) = sx(ix)
+        ix = ix + incx
+        iy = iy + incy
+   10 continue
+      return
 !
 !        CODE FOR BOTH INCREMENTS EQUAL TO 1
 !
 !
 !        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 7.
 !
-   20 M = MOD(N,7)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-        SY(I) = SX(I)
-   30 CONTINUE
-      IF( N .LT. 7 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,7
-        SY(I) = SX(I)
-        SY(I + 1) = SX(I + 1)
-        SY(I + 2) = SX(I + 2)
-        SY(I + 3) = SX(I + 3)
-        SY(I + 4) = SX(I + 4)
-        SY(I + 5) = SX(I + 5)
-        SY(I + 6) = SX(I + 6)
-   50 CONTINUE
-      RETURN
+   20 m = mod(n,7)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+        sy(i) = sx(i)
+   30 continue
+      if( n .lt. 7 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,7
+        sy(i) = sx(i)
+        sy(i + 1) = sx(i + 1)
+        sy(i + 2) = sx(i + 2)
+        sy(i + 3) = sx(i + 3)
+        sy(i + 4) = sx(i + 4)
+        sy(i + 5) = sx(i + 5)
+        sy(i + 6) = sx(i + 6)
+   50 continue
+      return
 !
 !        CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
 !
-   60 CONTINUE
-      NS = N*INCX
-          DO 70 I=1,NS,INCX
-          SY(I) = SX(I)
-   70     CONTINUE
-      RETURN
-      END
+   60 continue
+      ns = n*incx
+          do 70 i=1,ns,incx
+          sy(i) = sx(i)
+   70     continue
+      return
+      end
 !SAXPY
-      SUBROUTINE SAXPY(N,SA,SX,INCX,SY,INCY)
+      subroutine saxpy(n,sa,sx,incx,sy,incy)
 !
 !     OVERWRITE SINGLE PRECISION SY WITH SINGLE PRECISION SA*SX +SY.
 !     FOR I = 0 TO N-1, REPLACE  SY(LY+I*INCY) WITH SA*SX(LX+I*INCX) +
@@ -2518,66 +2515,66 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL SA
-      INTEGER INCX,INCY,N
+      real sa
+      integer incx,incy,n
 !
 !  ARRAY ARGUMENTS
-      REAL SX(*),SY(*)
+      real sx(*),sy(*)
 !
 !  LOCAL SCALARS
-      INTEGER I,IX,IY,M,MP1,NS
+      integer i,ix,iy,m,mp1,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
-      IF(N.LE.0.OR.SA.EQ.0.E0) RETURN
-      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
-    5 CONTINUE
+      if(n.le.0.or.sa.eq.0.e0) return
+      if(incx.eq.incy) if(incx-1) 5,20,60
+    5 continue
 !
 !        CODE FOR NONEQUAL OR NONPOSITIVE INCREMENTS.
 !
-      IX = 1
-      IY = 1
-      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
-      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
-      DO 10 I = 1,N
-        SY(IY) = SY(IY) + SA*SX(IX)
-        IX = IX + INCX
-        IY = IY + INCY
-   10 CONTINUE
-      RETURN
+      ix = 1
+      iy = 1
+      if(incx.lt.0)ix = (-n+1)*incx + 1
+      if(incy.lt.0)iy = (-n+1)*incy + 1
+      do 10 i = 1,n
+        sy(iy) = sy(iy) + sa*sx(ix)
+        ix = ix + incx
+        iy = iy + incy
+   10 continue
+      return
 !
 !        CODE FOR BOTH INCREMENTS EQUAL TO 1
 !
 !
 !        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 4.
 !
-   20 M = MOD(N,4)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-        SY(I) = SY(I) + SA*SX(I)
-   30 CONTINUE
-      IF( N .LT. 4 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,4
-        SY(I) = SY(I) + SA*SX(I)
-        SY(I + 1) = SY(I + 1) + SA*SX(I + 1)
-        SY(I + 2) = SY(I + 2) + SA*SX(I + 2)
-        SY(I + 3) = SY(I + 3) + SA*SX(I + 3)
-   50 CONTINUE
-      RETURN
+   20 m = mod(n,4)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+        sy(i) = sy(i) + sa*sx(i)
+   30 continue
+      if( n .lt. 4 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,4
+        sy(i) = sy(i) + sa*sx(i)
+        sy(i + 1) = sy(i + 1) + sa*sx(i + 1)
+        sy(i + 2) = sy(i + 2) + sa*sx(i + 2)
+        sy(i + 3) = sy(i + 3) + sa*sx(i + 3)
+   50 continue
+      return
 !
 !        CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
 !
-   60 CONTINUE
-      NS = N*INCX
-          DO 70 I=1,NS,INCX
-          SY(I) = SA*SX(I) + SY(I)
-   70     CONTINUE
-      RETURN
-      END
+   60 continue
+      ns = n*incx
+          do 70 i=1,ns,incx
+          sy(i) = sa*sx(i) + sy(i)
+   70     continue
+      return
+      end
 !SASUM
-      REAL FUNCTION SASUM(N,SX,INCX)
+      real function sasum(n,sx,incx)
 !***BEGIN PROLOGUE  SASUM
 !***DATE WRITTEN   791001   (YYMMDD)
 !***REVISION DATE  820801   (YYMMDD)
@@ -2607,56 +2604,53 @@
 !***END PROLOGUE  SASUM
 
 !...SCALAR ARGUMENTS
-      INTEGER
-     &   INCX,N
+     integer&
+     &   incx,n
 
 !...ARRAY ARGUMENTS
-      REAL SX(*)
+      real sx(*)
 
 !...LOCAL SCALARS
-      INTEGER
-     &   I,M,MP1,NS
+     integer&
+     &   i,m,mp1,ns
 
 !...INTRINSIC FUNCTIONS
-      INTRINSIC
-     &   ABS,MOD
-
+     intrinsic&
+     &   abs,mod
 
 !***FIRST EXECUTABLE STATEMENT  SASUM
 
-
-      SASUM = 0.0E0
-      IF(N.LE.0)RETURN
-      IF(INCX.EQ.1)GOTO 20
+      sasum = 0.0e0
+      if(n.le.0)return
+      if(incx.eq.1)goto 20
 
 !        CODE FOR INCREMENTS NOT EQUAL TO 1.
 
-      NS = N*INCX
-          DO 10 I=1,NS,INCX
-          SASUM = SASUM + ABS(SX(I))
-   10     CONTINUE
-      RETURN
+      ns = n*incx
+          do 10 i=1,ns,incx
+          sasum = sasum + abs(sx(i))
+   10     continue
+      return
 
 !        CODE FOR INCREMENTS EQUAL TO 1.
 
-
 !        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 6.
 
-   20 M = MOD(N,6)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-        SASUM = SASUM + ABS(SX(I))
-   30 CONTINUE
-      IF( N .LT. 6 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,6
-        SASUM = SASUM + ABS(SX(I)) + ABS(SX(I + 1)) + ABS(SX(I + 2))
-     &  + ABS(SX(I + 3)) + ABS(SX(I + 4)) + ABS(SX(I + 5))
-   50 CONTINUE
-      RETURN
-      END
+   20 m = mod(n,6)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+        sasum = sasum + abs(sx(i))
+   30 continue
+      if( n .lt. 6 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,6
+       sasum = sasum + abs(sx(i)) + abs(sx(i + 1)) + abs(sx(i + 2))&
+     &  + abs(sx(i + 3)) + abs(sx(i + 4)) + abs(sx(i + 5))
+   50 continue
+      return
+      end
 !DCOPY
-      SUBROUTINE DCOPY(N,DX,INCX,DY,INCY)
+      subroutine dcopy(n,dx,incx,dy,incy)
 !
 !     COPY DOUBLE PRECISION DX TO DOUBLE PRECISION DY.
 !     FOR I = 0 TO N-1, COPY DX(LX+I*INCX) TO DY(LY+I*INCY),
@@ -2667,85 +2661,85 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INCX,INCY,N
+      integer incx,incy,n
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION DX(*),DY(*)
+      double precision dx(*),dy(*)
 !
 !  LOCAL SCALARS
-      INTEGER I,IX,IY,M,MP1,NS
+      integer i,ix,iy,m,mp1,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
-      IF(N.LE.0)RETURN
-      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
-    5 CONTINUE
+      if(n.le.0)return
+      if(incx.eq.incy) if(incx-1) 5,20,60
+    5 continue
 !
 !        CODE FOR UNEQUAL OR NONPOSITIVE INCREMENTS.
 !
-      IX = 1
-      IY = 1
-      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
-      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
-      DO 10 I = 1,N
-        DY(IY) = DX(IX)
-        IX = IX + INCX
-        IY = IY + INCY
-   10 CONTINUE
-      RETURN
+      ix = 1
+      iy = 1
+      if(incx.lt.0)ix = (-n+1)*incx + 1
+      if(incy.lt.0)iy = (-n+1)*incy + 1
+      do 10 i = 1,n
+        dy(iy) = dx(ix)
+        ix = ix + incx
+        iy = iy + incy
+   10 continue
+      return
 !
 !        CODE FOR BOTH INCREMENTS EQUAL TO 1
 !
 !
 !        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 7.
 !
-   20 M = MOD(N,7)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-        DY(I) = DX(I)
-   30 CONTINUE
-      IF( N .LT. 7 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,7
-        DY(I) = DX(I)
-        DY(I + 1) = DX(I + 1)
-        DY(I + 2) = DX(I + 2)
-        DY(I + 3) = DX(I + 3)
-        DY(I + 4) = DX(I + 4)
-        DY(I + 5) = DX(I + 5)
-        DY(I + 6) = DX(I + 6)
-   50 CONTINUE
-      RETURN
+   20 m = mod(n,7)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+        dy(i) = dx(i)
+   30 continue
+      if( n .lt. 7 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,7
+        dy(i) = dx(i)
+        dy(i + 1) = dx(i + 1)
+        dy(i + 2) = dx(i + 2)
+        dy(i + 3) = dx(i + 3)
+        dy(i + 4) = dx(i + 4)
+        dy(i + 5) = dx(i + 5)
+        dy(i + 6) = dx(i + 6)
+   50 continue
+      return
 !
 !        CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
 !
-   60 CONTINUE
-      NS=N*INCX
-          DO 70 I=1,NS,INCX
-          DY(I) = DX(I)
-   70     CONTINUE
-      RETURN
-      END
+   60 continue
+      ns=n*incx
+          do 70 i=1,ns,incx
+          dy(i) = dx(i)
+   70     continue
+      return
+      end
 !SNRM2
-      REAL FUNCTION SNRM2 ( N, SX, INCX)
+      real function snrm2 ( n, sx, incx)
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INCX,N
+      integer incx,n
 !
 !  ARRAY ARGUMENTS
-      REAL SX(*)
+      real sx(*)
 !
 !  LOCAL SCALARS
-      REAL CUTHI,CUTLO,HITEST,ONE,SUM,XMAX,ZERO
-      INTEGER I,J,NEXT,NN
+      real cuthi,cutlo,hitest,one,sum,xmax,zero
+      integer i,j,next,nn
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,FLOAT,SQRT
+      intrinsic abs,float,sqrt
 !
-      DATA   ZERO, ONE /0.0E0, 1.0E0/
+      data   zero, one /0.0e0, 1.0e0/
 !
 !     EUCLIDEAN NORM OF THE N-VECTOR STORED IN SX() WITH STORAGE
 !     INCREMENT INCX .
@@ -2784,90 +2778,90 @@
 !     CUTHI, D.P.   SAME AS S.P.  CUTHI = 1.30438D19
 !     DATA CUTLO, CUTHI / 8.232D-11,  1.304D19 /
 !     DATA CUTLO, CUTHI / 4.441E-16,  1.304E19 /
-      DATA CUTLO, CUTHI / 4.441E-16,  1.304E19 /
+      data cutlo, cuthi / 4.441e-16,  1.304e19 /
 !
-      XMAX = ZERO
-      IF(N .GT. 0) GO TO 10
-         SNRM2  = ZERO
-         GO TO 300
+      xmax = zero
+      if(n .gt. 0) go to 10
+         snrm2  = zero
+         go to 300
 !
-   10 ASSIGN 30 TO NEXT
-      SUM = ZERO
-      NN = N * INCX
+   10 assign 30 to next
+      sum = zero
+      nn = n * incx
 !                                                 BEGIN MAIN LOOP
-      I = 1
-   20    GO TO NEXT,(30, 50, 70, 110)
-   30 IF( ABS(SX(I)) .GT. CUTLO) GO TO 85
-      ASSIGN 50 TO NEXT
-      XMAX = ZERO
+      i = 1
+   20    go to next,(30, 50, 70, 110)
+   30 if( abs(sx(i)) .gt. cutlo) go to 85
+      assign 50 to next
+      xmax = zero
 !
 !                        PHASE 1.  SUM IS ZERO
 !
-   50 IF( SX(I) .EQ. ZERO) GO TO 200
-      IF( ABS(SX(I)) .GT. CUTLO) GO TO 85
+   50 if( sx(i) .eq. zero) go to 200
+      if( abs(sx(i)) .gt. cutlo) go to 85
 !
 !                                PREPARE FOR PHASE 2.
-      ASSIGN 70 TO NEXT
-      GO TO 105
+      assign 70 to next
+      go to 105
 !
 !                                PREPARE FOR PHASE 4.
 !
-  100 I = J
-      ASSIGN 110 TO NEXT
-      SUM = (SUM / SX(I)) / SX(I)
-  105 XMAX = ABS(SX(I))
-      GO TO 115
+  100 i = j
+      assign 110 to next
+      sum = (sum / sx(i)) / sx(i)
+  105 xmax = abs(sx(i))
+      go to 115
 !
 !                   PHASE 2.  SUM IS SMALL.
 !                             SCALE TO AVOID DESTRUCTIVE UNDERFLOW.
 !
-   70 IF( ABS(SX(I)) .GT. CUTLO ) GO TO 75
+   70 if( abs(sx(i)) .gt. cutlo ) go to 75
 !
 !                     COMMON CODE FOR PHASES 2 AND 4.
 !                     IN PHASE 4 SUM IS LARGE.  SCALE TO AVOID OVERFLOW.
 !
-  110 IF( ABS(SX(I)) .LE. XMAX ) GO TO 115
-         SUM = ONE + SUM * (XMAX / SX(I))**2
-         XMAX = ABS(SX(I))
-         GO TO 200
+  110 if( abs(sx(i)) .le. xmax ) go to 115
+         sum = one + sum * (xmax / sx(i))**2
+         xmax = abs(sx(i))
+         go to 200
 !
-  115 SUM = SUM + (SX(I)/XMAX)**2
-      GO TO 200
+  115 sum = sum + (sx(i)/xmax)**2
+      go to 200
 !
 !
 !                  PREPARE FOR PHASE 3.
 !
-   75 SUM = (SUM * XMAX) * XMAX
+   75 sum = (sum * xmax) * xmax
 !
 !
 !     FOR REAL OR D.P. SET HITEST = CUTHI/N
 !     FOR COMPLEX      SET HITEST = CUTHI/(2*N)
 !
-   85 HITEST = CUTHI/FLOAT( N )
+   85 hitest = cuthi/float( n )
 !
 !                   PHASE 3.  SUM IS MID-RANGE.  NO SCALING.
 !
-      DO 95 J =I,NN,INCX
-      IF(ABS(SX(J)) .GE. HITEST) GO TO 100
-   95    SUM = SUM + SX(J)**2
-      SNRM2 = SQRT( SUM )
-      GO TO 300
+      do 95 j =i,nn,incx
+      if(abs(sx(j)) .ge. hitest) go to 100
+   95    sum = sum + sx(j)**2
+      snrm2 = sqrt( sum )
+      go to 300
 !
-  200 CONTINUE
-      I = I + INCX
-      IF ( I .LE. NN ) GO TO 20
+  200 continue
+      i = i + incx
+      if ( i .le. nn ) go to 20
 !
 !              END OF MAIN LOOP.
 !
 !              COMPUTE SQUARE ROOT AND ADJUST FOR SCALING.
 !
-      SNRM2 = XMAX * SQRT(SUM)
-  300 CONTINUE
-      RETURN
-      END
+      snrm2 = xmax * sqrt(sum)
+  300 continue
+      return
+      end
 
 !R9LGIC
-      REAL FUNCTION R9LGIC (A, X, ALX)
+      real function r9lgic (a, x, alx)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! COMPUTE THE LOG COMPLEMENTARY INCOMPLETE GAMMA FUNCTION FOR LARGE X
@@ -2877,11 +2871,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL A,ALX,X
+      real a,alx,x
 !
 !  LOCAL SCALARS
-      REAL EPS,FK,P,R,S,T,XMA,XPA
-      INTEGER K
+      real eps,fk,p,r,s,t,xma,xpa
+      integer k
 !
 !  EXTERNAL FUNCTIONS
 !      REAL R1MACH
@@ -2891,48 +2885,48 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG
+      intrinsic abs,log
 !
-      DATA EPS / 0.0 /
+      data eps / 0.0 /
 !
-      IF (EPS.EQ.0.0) EPS = 0.5*R1MACH(3)
+      if (eps.eq.0.0) eps = 0.5*r1mach(3)
 !
-      XPA = X + 1.0 - A
-      XMA = X - 1.0 - A
+      xpa = x + 1.0 - a
+      xma = x - 1.0 - a
 !
-      R = 0.0
-      P = 1.0
-      S = P
-      DO 10 K=1,200
-        FK = K
-        T = FK*(A-FK)*(1.0+R)
-        R = -T/((XMA+2.0*FK)*(XPA+2.0*FK)+T)
-        P = R*P
-        S = S + P
-        IF (ABS(P).LT.EPS*S) GO TO 20
- 10   CONTINUE
-      CALL XERROR (  'R9LGIC  NO CONVERGENCE IN 200 TERMS OF CONTINUED F
+      r = 0.0
+      p = 1.0
+      s = p
+      do 10 k=1,200
+        fk = k
+        t = fk*(a-fk)*(1.0+r)
+        r = -t/((xma+2.0*fk)*(xpa+2.0*fk)+t)
+        p = r*p
+        s = s + p
+        if (abs(p).lt.eps*s) go to 20
+ 10   continue
+     call xerror (  'R9LGIC  NO CONVERGENCE IN 200 TERMS OF CONTINUED F&
      &RACTION', 57, 1, 2)
 !
- 20   R9LGIC = A*ALX - X + LOG(S/XPA)
+ 20   r9lgic = a*alx - x + log(s/xpa)
 !
-      RETURN
-      END
+      return
+      end
 !GAMMA
-      REAL FUNCTION GAMMA (X)
+      real function gamma (x)
 ! JUNE 1977 EDITION.   W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL X
+      real x
 !
 !  LOCAL SCALARS
-      REAL DXREL,PI,SINPIY,SQ2PIL,XMAX,XMIN,Y
-      INTEGER I,N,NGCS
+      real dxrel,pi,sinpiy,sq2pil,xmax,xmin,y
+      integer i,n,ngcs
 !
 !  LOCAL ARRAYS
-      REAL GCS(23)
+      real gcs(23)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL CSEVL,R1MACH,R9LGMC
@@ -2943,126 +2937,119 @@
 !       EXTERNAL GAMLIM,XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,AINT,EXP,FLOAT,LOG,SIN,SQRT
+      intrinsic abs,aint,exp,float,log,sin,sqrt
 !
 !
-      DATA GCS   ( 1) / .0085711955 90989331E0/
-      DATA GCS   ( 2) / .0044153813 24841007E0/
-      DATA GCS   ( 3) / .0568504368 1599363E0/
-      DATA GCS   ( 4) /-.0042198353 96418561E0/
-      DATA GCS   ( 5) / .0013268081 81212460E0/
-      DATA GCS   ( 6) /-.0001893024 529798880E0/
-      DATA GCS   ( 7) / .0000360692 532744124E0/
-      DATA GCS   ( 8) /-.0000060567 619044608E0/
-      DATA GCS   ( 9) / .0000010558 295463022E0/
-      DATA GCS   (10) /-.0000001811 967365542E0/
-      DATA GCS   (11) / .0000000311 772496471E0/
-      DATA GCS   (12) /-.0000000053 542196390E0/
-      DATA GCS   (13) / .0000000009 193275519E0/
-      DATA GCS   (14) /-.0000000001 577941280E0/
-      DATA GCS   (15) / .0000000000 270798062E0/
-      DATA GCS   (16) /-.0000000000 046468186E0/
-      DATA GCS   (17) / .0000000000 007973350E0/
-      DATA GCS   (18) /-.0000000000 001368078E0/
-      DATA GCS   (19) / .0000000000 000234731E0/
-      DATA GCS   (20) /-.0000000000 000040274E0/
-      DATA GCS   (21) / .0000000000 000006910E0/
-      DATA GCS   (22) /-.0000000000 000001185E0/
-      DATA GCS   (23) / .0000000000 000000203E0/
+      data gcs   ( 1) / .008571195590989331e0/
+      data gcs   ( 2) / .004415381324841007e0/
+      data gcs   ( 3) / .05685043681599363e0/
+      data gcs   ( 4) /-.004219835396418561e0/
+      data gcs   ( 5) / .001326808181212460e0/
+      data gcs   ( 6) /-.0001893024529798880e0/
+      data gcs   ( 7) / .0000360692532744124e0/
+      data gcs   ( 8) /-.0000060567619044608e0/
+      data gcs   ( 9) / .0000010558295463022e0/
+      data gcs   (10) /-.0000001811967365542e0/
+      data gcs   (11) / .0000000311772496471e0/
+      data gcs   (12) /-.0000000053542196390e0/
+      data gcs   (13) / .0000000009193275519e0/
+      data gcs   (14) /-.0000000001577941280e0/
+      data gcs   (15) / .0000000000270798062e0/
+      data gcs   (16) /-.0000000000046468186e0/
+      data gcs   (17) / .0000000000007973350e0/
+      data gcs   (18) /-.0000000000001368078e0/
+      data gcs   (19) / .0000000000000234731e0/
+      data gcs   (20) /-.0000000000000040274e0/
+      data gcs   (21) / .0000000000000006910e0/
+      data gcs   (22) /-.0000000000000001185e0/
+      data gcs   (23) / .0000000000000000203e0/
 !
-      DATA PI /3.14159 26535 89793 24E0/
+      data pi /3.14159265358979324e0/
 ! SQ2PIL IS LOG (SQRT (2.*PI) )
-      DATA SQ2PIL /0.91893 85332 04672 74E0/
-      DATA NGCS, XMIN, XMAX, DXREL /0, 3*0.0 /
+      data sq2pil /0.91893853320467274e0/
+      data ngcs, xmin, xmax, dxrel /0, 3*0.0 /
 !
-      IF (NGCS.NE.0) GO TO 10
+      if (ngcs.ne.0) go to 10
 !
 ! ---------------------------------------------------------------------
 ! INITIALIZE.  FIND LEGAL BOUNDS FOR X, AND DETERMINE THE NUMBER OF
 ! TERMS IN THE SERIES REQUIRED TO ATTAIN AN ACCURACY TEN TIMES BETTER
 ! THAN MACHINE PRECISION.
 !
-      NGCS = INITS (GCS, 23, 0.1*R1MACH(3))
+      ngcs = inits (gcs, 23, 0.1*r1mach(3))
 !
-      CALL GAMLIM (XMIN, XMAX)
-      DXREL = SQRT (R1MACH(4))
+      call gamlim (xmin, xmax)
+      dxrel = sqrt (r1mach(4))
 !
 ! ---------------------------------------------------------------------
 ! FINISH INITIALIZATION.  START EVALUATING GAMMA(X).
 !
- 10   Y = ABS(X)
-      IF (Y.GT.10.0) GO TO 50
+ 10   y = abs(x)
+      if (y.gt.10.0) go to 50
 !
 ! COMPUTE GAMMA(X) FOR ABS(X) .LE. 10.0.  REDUCE INTERVAL AND
 ! FIND GAMMA(1+Y) FOR 0. .LE. Y .LT. 1. FIRST OF ALL.
 !
-      N = X
-      IF (X.LT.0.) N = N - 1
-      Y = X - FLOAT(N)
-      N = N - 1
-      GAMMA = 0.9375 + CSEVL(2.*Y-1., GCS, NGCS)
-      IF (N.EQ.0) RETURN
+      n = x
+      if (x.lt.0.) n = n - 1
+      y = x - float(n)
+      n = n - 1
+      gamma = 0.9375 + csevl(2.*y-1., gcs, ngcs)
+      if (n.eq.0) return
 !
-      IF (N.GT.0) GO TO 30
+      if (n.gt.0) go to 30
 !
 ! COMPUTE GAMMA(X) FOR X .LT. 1.
 !
-      N = -N
-      IF (X.EQ.0.) CALL XERROR ('GAMMA   X IS 0', 14, 4, 2)
-      IF (X.LT.0. .AND. X+FLOAT(N-2).EQ.0.) CALL XERROR (
-     &  'GAMMA   X IS A NEGATIVE INTEGER', 31, 4, 2)
-      IF (X.LT.(-0.5) .AND. ABS((X-AINT(X-0.5))/X).LT.DXREL) CALL
-     &  XERROR (  'GAMMA   ANSWER LT HALF PRECISION BECAUSE X TOO NEAR N
-     &EGATIVE INTEGER', 68, 1, 1)
+      n = -n
+      if (x.eq.0.) call xerror ('GAMMA   X IS 0', 14, 4, 2)
+      if (x.lt.0. .and. x+float(n-2).eq.0.) call xerror ( 'GAMMA   X IS A NEGATIVE INTEGER', 31, 4, 2)
+      if (x.lt.(-0.5) .and. abs((x-aint(x-0.5))/x).lt.dxrel) &
+      & call xerror (  'GAMMA   ANSWER LT HALF PRECISION BECAUSE X TOO NEAR NEGATIVE INTEGER', 68, 1, 1)
 !
-      DO 20 I=1,N
-        GAMMA = GAMMA / (X+FLOAT(I-1))
- 20   CONTINUE
-      RETURN
+      do i=1,n
+        gamma = gamma / (x+float(i-1))
+      enddo
+      return
 !
 ! GAMMA(X) FOR X .GE. 2.
 !
- 30   DO 40 I=1,N
-        GAMMA = (Y+FLOAT(I))*GAMMA
- 40   CONTINUE
-      RETURN
+ 30   do 40 i=1,n
+        gamma = (y+float(i))*gamma
+ 40   continue
+      return
 !
 ! COMPUTE GAMMA(X) FOR ABS(X) .GT. 10.0.  RECALL Y = ABS(X).
 !
- 50   IF (X.GT.XMAX) CALL XERROR ('GAMMA   X SO BIG GAMMA OVERFLOWS',
-     &  32, 3, 2)
+ 50   if (x.gt.xmax) call xerror ('GAMMA   X SO BIG GAMMA OVERFLOWS', 32, 3, 2)
 !
-      GAMMA = 0.
-      IF (X.LT.XMIN) CALL XERROR ('GAMMA   X SO SMALL GAMMA UNDERFLOWS',
-     &  35, 2, 1)
-      IF (X.LT.XMIN) RETURN
+      gamma = 0.
+      if (x.lt.xmin) call xerror ('GAMMA   X SO SMALL GAMMA UNDERFLOWS', 35, 2, 1)
+      if (x.lt.xmin) return
 !
-      GAMMA = EXP((Y-0.5)*LOG(Y) - Y + SQ2PIL + R9LGMC(Y) )
-      IF (X.GT.0.) RETURN
+      gamma = exp((y-0.5)*log(y) - y + sq2pil + r9lgmc(y) )
+      if (x.gt.0.) return
 !
-      IF (ABS((X-AINT(X-0.5))/X).LT.DXREL) CALL XERROR (
-     &  'GAMMA   ANSWER LT HALF PRECISION, X TOO NEAR NEGATIVE INTEGER',
-     &  61, 1, 1)
+      if (abs((x-aint(x-0.5))/x).lt.dxrel) call xerror ( 'GAMMA   ANSWER LT HALF PRECISION, X TOO NEAR NEGATIVE INTEGER', 61, 1, 1)
 !
-      SINPIY = SIN (PI*Y)
-      IF (SINPIY.EQ.0.) CALL XERROR (
-     &  'GAMMA   X IS A NEGATIVE INTEGER', 31, 4, 2)
+      sinpiy = sin (pi*y)
+      if (sinpiy.eq.0.) call xerror ( 'GAMMA   X IS A NEGATIVE INTEGER', 31, 4, 2)
 !
-      GAMMA = -PI / (Y*SINPIY*GAMMA)
+      gamma = -pi / (y*sinpiy*gamma)
 !
-      RETURN
-      END
+      return
+      end
 !DLNGAM
-      DOUBLE PRECISION FUNCTION DLNGAM (X)
+      double precision function dlngam (x)
 ! JUNE 1977 EDITION.   W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION X
+      double precision x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION DXREL,PI,SINPIY,SQ2PIL,SQPI2L,XMAX,Y
+      double precision dxrel,pi,sinpiy,sq2pil,sqpi2l,xmax,y
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH,D9LGMC,DGAMMA
@@ -3072,65 +3059,65 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,DSQRT,INT,LOG,SIN
+      intrinsic abs,dsqrt,int,log,sin
 !
 !
-      DATA SQ2PIL / 0.9189385332 0467274178 0329736405 62 D0 /
+      data sq2pil / 0.91893853320467274178032973640562d0 /
 ! SQ2PIL = LOG (SQRT(2*PI)),  SQPI2L = LOG(SQRT(PI/2))
-      DATA SQPI2L / +.2257913526 4472743236 3097614947 441 D+0    /
-      DATA PI / 3.1415926535 8979323846 2643383279 50 D0 /
+      data sqpi2l / +.225791352644727432363097614947441d+0    /
+      data pi / 3.14159265358979323846264338327950d0 /
 !
-      DATA XMAX, DXREL / 2*0.D0 /
+      data xmax, dxrel / 2*0.d0 /
 !
-      IF (XMAX.NE.0.D0) GO TO 10
-      XMAX = D1MACH(2)/LOG(D1MACH(2))
-      DXREL = DSQRT (D1MACH(4))
+      if (xmax.ne.0.d0) go to 10
+      xmax = d1mach(2)/log(d1mach(2))
+      dxrel = dsqrt (d1mach(4))
 !
- 10   Y = ABS (X)
-      IF (Y.GT.10.D0) GO TO 20
+ 10   y = abs (x)
+      if (y.gt.10.d0) go to 20
 !
 ! LOG (ABS (DGAMMA(X)) ) FOR ABS(X) .LE. 10.0
 !
-      DLNGAM = LOG (ABS (DGAMMA(X)) )
-      RETURN
+      dlngam = log (abs (dgamma(x)) )
+      return
 !
 ! LOG ( ABS (DGAMMA(X)) ) FOR ABS(X) .GT. 10.0
 !
- 20   IF (Y.GT.XMAX) CALL XERROR (
+20   if (y.gt.xmax) call xerror (&
      &  'DLNGAM  ABS(X) SO BIG DLNGAM OVERFLOWS', 39, 2, 2)
 !
-      IF (X.GT.0.D0) THEN
-         DLNGAM = SQ2PIL + (X-0.5D0)*LOG(X) - X + D9LGMC(Y)
-         RETURN
-      END IF
+      if (x.gt.0.d0) then
+         dlngam = sq2pil + (x-0.5d0)*log(x) - x + d9lgmc(y)
+         return
+      end if
 !
-      SINPIY = ABS (SIN(PI*Y))
-      IF (SINPIY.EQ.0.D0) CALL XERROR (
+      sinpiy = abs (sin(pi*y))
+     if (sinpiy.eq.0.d0) call xerror (&
      &  'DLNGAM  X IS A NEGATIVE INTEGER', 31, 3, 2)
 !
-      IF (ABS ((X-INT(X-0.5D0))/X).LT.DXREL) CALL XERROR (
-     &    'DLNGAM  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR NEGATIVE
+     if (abs ((x-int(x-0.5d0))/x).lt.dxrel) call xerror (&
+    &    'DLNGAM  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR NEGATIVE&
      &INTEGER', 68, 1, 1)
 !
-      DLNGAM = SQPI2L + (X-0.5D0)*LOG(Y) - X - LOG(SINPIY) - D9LGMC(Y)
-      RETURN
+      dlngam = sqpi2l + (x-0.5d0)*log(y) - x - log(sinpiy) - d9lgmc(y)
+      return
 !
-      END
+      end
 !ERFC
-      REAL FUNCTION ERFC (X)
+      real function erfc (x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL X
+      real x
 !
 !  LOCAL SCALARS
-      REAL ETA,SQEPS,SQRTPI,XMAX,XSML,Y
-      INTEGER NTERC2,NTERF,NTERFC
+      real eta,sqeps,sqrtpi,xmax,xsml,y
+      integer nterc2,nterf,nterfc
 !
 !  LOCAL ARRAYS
-      REAL ERC2CS(23),ERFCCS(24),ERFCS(13)
+      real erc2cs(23),erfccs(24),erfcs(13)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL CSEVL,R1MACH
@@ -3141,7 +3128,7 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,EXP,LOG,SQRT
+      intrinsic abs,exp,log,sqrt
 !
 !
 ! SERIES FOR ERF        ON THE INTERVAL  0.          TO  1.00000D+00
@@ -3150,19 +3137,19 @@
 !                               SIGNIFICANT FIGURES REQUIRED  16.31
 !                                    DECIMAL PLACES REQUIRED  17.71
 !
-      DATA ERF CS( 1) /   -.0490461212 34691808E0 /
-      DATA ERF CS( 2) /   -.1422612051 0371364E0 /
-      DATA ERF CS( 3) /    .0100355821 87599796E0 /
-      DATA ERF CS( 4) /   -.0005768764 69976748E0 /
-      DATA ERF CS( 5) /    .0000274199 31252196E0 /
-      DATA ERF CS( 6) /   -.0000011043 17550734E0 /
-      DATA ERF CS( 7) /    .0000000384 88755420E0 /
-      DATA ERF CS( 8) /   -.0000000011 80858253E0 /
-      DATA ERF CS( 9) /    .0000000000 32334215E0 /
-      DATA ERF CS(10) /   -.0000000000 00799101E0 /
-      DATA ERF CS(11) /    .0000000000 00017990E0 /
-      DATA ERF CS(12) /   -.0000000000 00000371E0 /
-      DATA ERF CS(13) /    .0000000000 00000007E0 /
+      data erfcs( 1) /   -.049046121234691808e0 /
+      data erfcs( 2) /   -.14226120510371364e0 /
+      data erfcs( 3) /    .010035582187599796e0 /
+      data erfcs( 4) /   -.000576876469976748e0 /
+      data erfcs( 5) /    .000027419931252196e0 /
+      data erfcs( 6) /   -.000001104317550734e0 /
+      data erfcs( 7) /    .000000038488755420e0 /
+      data erfcs( 8) /   -.000000001180858253e0 /
+      data erfcs( 9) /    .000000000032334215e0 /
+      data erfcs(10) /   -.000000000000799101e0 /
+      data erfcs(11) /    .000000000000017990e0 /
+      data erfcs(12) /   -.000000000000000371e0 /
+      data erfcs(13) /    .000000000000000007e0 /
 !
 ! SERIES FOR ERFC       ON THE INTERVAL  0.          TO  2.50000D-01
 !                                        WITH WEIGHTED ERROR   4.81E-17
@@ -3174,112 +3161,112 @@
 !                        APPROX SIGNIFICANT FIGURES REQUIRED  15.0
 !                                    DECIMAL PLACES REQUIRED  16.96
 !
-      DATA ERC2CS( 1) /   -.0696013466 02309501E0 /
-      DATA ERC2CS( 2) /   -.0411013393 62620893E0 /
-      DATA ERC2CS( 3) /    .0039144958 66689626E0 /
-      DATA ERC2CS( 4) /   -.0004906395 65054897E0 /
-      DATA ERC2CS( 5) /    .0000715747 90013770E0 /
-      DATA ERC2CS( 6) /   -.0000115307 16341312E0 /
-      DATA ERC2CS( 7) /    .0000019946 70590201E0 /
-      DATA ERC2CS( 8) /   -.0000003642 66647159E0 /
-      DATA ERC2CS( 9) /    .0000000694 43726100E0 /
-      DATA ERC2CS(10) /   -.0000000137 12209021E0 /
-      DATA ERC2CS(11) /    .0000000027 88389661E0 /
-      DATA ERC2CS(12) /   -.0000000005 81416472E0 /
-      DATA ERC2CS(13) /    .0000000001 23892049E0 /
-      DATA ERC2CS(14) /   -.0000000000 26906391E0 /
-      DATA ERC2CS(15) /    .0000000000 05942614E0 /
-      DATA ERC2CS(16) /   -.0000000000 01332386E0 /
-      DATA ERC2CS(17) /    .0000000000 00302804E0 /
-      DATA ERC2CS(18) /   -.0000000000 00069666E0 /
-      DATA ERC2CS(19) /    .0000000000 00016208E0 /
-      DATA ERC2CS(20) /   -.0000000000 00003809E0 /
-      DATA ERC2CS(21) /    .0000000000 00000904E0 /
-      DATA ERC2CS(22) /   -.0000000000 00000216E0 /
-      DATA ERC2CS(23) /    .0000000000 00000052E0 /
+      data erc2cs( 1) /   -.069601346602309501e0 /
+      data erc2cs( 2) /   -.041101339362620893e0 /
+      data erc2cs( 3) /    .003914495866689626e0 /
+      data erc2cs( 4) /   -.000490639565054897e0 /
+      data erc2cs( 5) /    .000071574790013770e0 /
+      data erc2cs( 6) /   -.000011530716341312e0 /
+      data erc2cs( 7) /    .000001994670590201e0 /
+      data erc2cs( 8) /   -.000000364266647159e0 /
+      data erc2cs( 9) /    .000000069443726100e0 /
+      data erc2cs(10) /   -.000000013712209021e0 /
+      data erc2cs(11) /    .000000002788389661e0 /
+      data erc2cs(12) /   -.000000000581416472e0 /
+      data erc2cs(13) /    .000000000123892049e0 /
+      data erc2cs(14) /   -.000000000026906391e0 /
+      data erc2cs(15) /    .000000000005942614e0 /
+      data erc2cs(16) /   -.000000000001332386e0 /
+      data erc2cs(17) /    .000000000000302804e0 /
+      data erc2cs(18) /   -.000000000000069666e0 /
+      data erc2cs(19) /    .000000000000016208e0 /
+      data erc2cs(20) /   -.000000000000003809e0 /
+      data erc2cs(21) /    .000000000000000904e0 /
+      data erc2cs(22) /   -.000000000000000216e0 /
+      data erc2cs(23) /    .000000000000000052e0 /
 !
 !                                    DECIMAL PLACES REQUIRED  17.01
 !
-      DATA ERFCCS( 1) /   0.0715179310 202925E0 /
-      DATA ERFCCS( 2) /   -.0265324343 37606719E0 /
-      DATA ERFCCS( 3) /    .0017111539 77920853E0 /
-      DATA ERFCCS( 4) /   -.0001637516 63458512E0 /
-      DATA ERFCCS( 5) /    .0000198712 93500549E0 /
-      DATA ERFCCS( 6) /   -.0000028437 12412769E0 /
-      DATA ERFCCS( 7) /    .0000004606 16130901E0 /
-      DATA ERFCCS( 8) /   -.0000000822 77530261E0 /
-      DATA ERFCCS( 9) /    .0000000159 21418724E0 /
-      DATA ERFCCS(10) /   -.0000000032 95071356E0 /
-      DATA ERFCCS(11) /    .0000000007 22343973E0 /
-      DATA ERFCCS(12) /   -.0000000001 66485584E0 /
-      DATA ERFCCS(13) /    .0000000000 40103931E0 /
-      DATA ERFCCS(14) /   -.0000000000 10048164E0 /
-      DATA ERFCCS(15) /    .0000000000 02608272E0 /
-      DATA ERFCCS(16) /   -.0000000000 00699105E0 /
-      DATA ERFCCS(17) /    .0000000000 00192946E0 /
-      DATA ERFCCS(18) /   -.0000000000 00054704E0 /
-      DATA ERFCCS(19) /    .0000000000 00015901E0 /
-      DATA ERFCCS(20) /   -.0000000000 00004729E0 /
-      DATA ERFCCS(21) /    .0000000000 00001432E0 /
-      DATA ERFCCS(22) /   -.0000000000 00000439E0 /
-      DATA ERFCCS(23) /    .0000000000 00000138E0 /
-      DATA ERFCCS(24) /   -.0000000000 00000048E0 /
+      data erfccs( 1) /   0.0715179310202925e0 /
+      data erfccs( 2) /   -.026532434337606719e0 /
+      data erfccs( 3) /    .001711153977920853e0 /
+      data erfccs( 4) /   -.000163751663458512e0 /
+      data erfccs( 5) /    .000019871293500549e0 /
+      data erfccs( 6) /   -.000002843712412769e0 /
+      data erfccs( 7) /    .000000460616130901e0 /
+      data erfccs( 8) /   -.000000082277530261e0 /
+      data erfccs( 9) /    .000000015921418724e0 /
+      data erfccs(10) /   -.000000003295071356e0 /
+      data erfccs(11) /    .000000000722343973e0 /
+      data erfccs(12) /   -.000000000166485584e0 /
+      data erfccs(13) /    .000000000040103931e0 /
+      data erfccs(14) /   -.000000000010048164e0 /
+      data erfccs(15) /    .000000000002608272e0 /
+      data erfccs(16) /   -.000000000000699105e0 /
+      data erfccs(17) /    .000000000000192946e0 /
+      data erfccs(18) /   -.000000000000054704e0 /
+      data erfccs(19) /    .000000000000015901e0 /
+      data erfccs(20) /   -.000000000000004729e0 /
+      data erfccs(21) /    .000000000000001432e0 /
+      data erfccs(22) /   -.000000000000000439e0 /
+      data erfccs(23) /    .000000000000000138e0 /
+      data erfccs(24) /   -.000000000000000048e0 /
 !
-      DATA SQRTPI /1.772453850 9055160E0/
-      DATA NTERF, NTERFC, NTERC2, XSML, XMAX, SQEPS /3*0, 3*0./
+      data sqrtpi /1.7724538509055160e0/
+      data nterf, nterfc, nterc2, xsml, xmax, sqeps /3*0, 3*0./
 !
-      IF (NTERF.NE.0) GO TO 10
-      ETA = 0.1*R1MACH(3)
-      NTERF = INITS (ERFCS, 13, ETA)
-      NTERFC = INITS (ERFCCS, 24, ETA)
-      NTERC2 = INITS (ERC2CS, 23, ETA)
+      if (nterf.ne.0) go to 10
+      eta = 0.1*r1mach(3)
+      nterf = inits (erfcs, 13, eta)
+      nterfc = inits (erfccs, 24, eta)
+      nterc2 = inits (erc2cs, 23, eta)
 !
-      XSML = -SQRT (-LOG(SQRTPI*R1MACH(3)))
-      XMAX = SQRT (-LOG(SQRTPI*R1MACH(1)))
-      XMAX = XMAX - 0.5*LOG(XMAX)/XMAX - 0.01
-      SQEPS = SQRT (2.0*R1MACH(3))
+      xsml = -sqrt (-log(sqrtpi*r1mach(3)))
+      xmax = sqrt (-log(sqrtpi*r1mach(1)))
+      xmax = xmax - 0.5*log(xmax)/xmax - 0.01
+      sqeps = sqrt (2.0*r1mach(3))
 !
- 10   IF (X.GT.XSML) GO TO 20
+ 10   if (x.gt.xsml) go to 20
 !
 ! ERFC(X) = 1.0 - ERF(X) FOR X .LT. XSML
 !
-      ERFC = 2.0
-      RETURN
+      erfc = 2.0
+      return
 !
- 20   IF (X.GT.XMAX) GO TO 40
-      Y = ABS(X)
-      IF (Y.GT.1.0) GO TO 30
+ 20   if (x.gt.xmax) go to 40
+      y = abs(x)
+      if (y.gt.1.0) go to 30
 !
 ! ERFC(X) = 1.0 - ERF(X) FOR -1. .LE. X .LE. 1.
 !
-      IF (Y.LT.SQEPS) THEN
-         ERFC = 1.0 - 2.0*X/SQRTPI
-      ELSE
-         ERFC = 1.0 - X*(1.0 + CSEVL (2.*X*X-1., ERFCS, NTERF) )
-      END IF
+      if (y.lt.sqeps) then
+         erfc = 1.0 - 2.0*x/sqrtpi
+      else
+         erfc = 1.0 - x*(1.0 + csevl (2.*x*x-1., erfcs, nterf) )
+      end if
 !
-      RETURN
+      return
 !
 ! ERFC(X) = 1.0 - ERF(X) FOR 1. .LT. ABS(X) .LE. XMAX
 !
- 30   Y = Y*Y
-      IF (Y.LE.4.) THEN
-         ERFC = EXP(-Y)/ABS(X) *
-     &         (0.5 + CSEVL ((8.0/Y-5.0)/3.0, ERC2CS, NTERC2) )
-      ELSE
-         ERFC = EXP(-Y)/ABS(X) *
-     &          (0.5 + CSEVL (8.0/Y-1.0, ERFCCS, NTERFC) )
-      END IF
-      IF (X.LT.0.0) ERFC = 2.0 - ERFC
-      RETURN
+ 30   y = y*y
+      if (y.le.4.) then
+        erfc = exp(-y)/abs(x) *&
+     &         (0.5 + csevl ((8.0/y-5.0)/3.0, erc2cs, nterc2) )
+      else
+        erfc = exp(-y)/abs(x) *&
+     &          (0.5 + csevl (8.0/y-1.0, erfccs, nterfc) )
+      end if
+      if (x.lt.0.0) erfc = 2.0 - erfc
+      return
 !
- 40   CALL XERROR ('ERFC    X SO BIG ERFC UNDERFLOWS', 32, 1, 1)
-      ERFC = 0.0
-      RETURN
+ 40   call xerror ('ERFC    X SO BIG ERFC UNDERFLOWS', 32, 1, 1)
+      erfc = 0.0
+      return
 !
-      END
+      end
 !EPRINT
-      SUBROUTINE EPRINT
+      subroutine eprint
 !
 !  THIS SUBROUTINE PRINTS THE LAST ERROR MESSAGE, IF ANY.
 !
@@ -3287,18 +3274,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  LOCAL ARRAYS
-      CHARACTER MESSG(1)*4
+      character messg(1)*4
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL E9RINT
 !
 !
-      CALL E9RINT(MESSG,1,1,.FALSE.)
-      RETURN
+      call e9rint(messg,1,1,.false.)
+      return
 !
-      END
+      end
 !DGAMR
-      DOUBLE PRECISION FUNCTION DGAMR (X)
+      double precision function dgamr (x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 ! THIS ROUTINE, NOT DGAMMA(X), SHOULD BE THE FUNDAMENTAL ONE.
 !
@@ -3306,11 +3293,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION X
+      double precision x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION ALNGX,SGNGX
-      INTEGER IROLD
+      double precision alngx,sgngx
+      integer irold
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION DGAMMA
@@ -3320,38 +3307,38 @@
 !       EXTERNAL DLGAMS,XERCLR,XGETF,XSETF
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,EXP,INT
+      intrinsic abs,exp,int
 !
 !
-      DGAMR = 0.0D0
-      IF (X.LE.0.0D0 .AND. INT(X).EQ.X) RETURN
+      dgamr = 0.0d0
+      if (x.le.0.0d0 .and. int(x).eq.x) return
 !
-      CALL XGETF (IROLD)
-      CALL XSETF (1)
-      IF (ABS(X).GT.10.0D0) GO TO 10
-      DGAMR = 1.0D0/DGAMMA(X)
-      CALL XERCLR
-      CALL XSETF (IROLD)
-      RETURN
+      call xgetf (irold)
+      call xsetf (1)
+      if (abs(x).gt.10.0d0) go to 10
+      dgamr = 1.0d0/dgamma(x)
+      call xerclr
+      call xsetf (irold)
+      return
 !
- 10   CALL DLGAMS (X, ALNGX, SGNGX)
-      CALL XERCLR
-      CALL XSETF (IROLD)
-      DGAMR = SGNGX * EXP(-ALNGX)
-      RETURN
+ 10   call dlgams (x, alngx, sgngx)
+      call xerclr
+      call xsetf (irold)
+      dgamr = sgngx * exp(-alngx)
+      return
 !
-      END
+      end
 !DLBETA
-      DOUBLE PRECISION FUNCTION DLBETA (A, B)
+      double precision function dlbeta (a, b)
 ! JULY 1977 EDITION.   W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION A,B
+      double precision a,b
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION CORR,P,Q,SQ2PIL
+      double precision corr,p,q,sq2pil
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D9LGMC,DGAMMA,DLNGAM,DLNREL
@@ -3361,41 +3348,41 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC LOG,MAX,MIN
+      intrinsic log,max,min
 !
-      DATA SQ2PIL / 0.9189385332 0467274178 0329736405 62 D0 /
+      data sq2pil / 0.91893853320467274178032973640562d0 /
 !
-      P = MIN (A, B)
-      Q = MAX (A, B)
+      p = min (a, b)
+      q = max (a, b)
 !
-      IF (P.LE.0.D0) CALL XERROR (
+     if (p.le.0.d0) call xerror (&
      &  'DLBETA  BOTH ARGUMENTS MUST BE GT ZERO', 38, 1, 2)
 !
-      IF (P.GE.10.D0) GO TO 30
-      IF (Q.GE.10.D0) GO TO 20
+      if (p.ge.10.d0) go to 30
+      if (q.ge.10.d0) go to 20
 !
 ! P AND Q ARE SMALL.
 !
-      DLBETA = LOG (DGAMMA(P) * (DGAMMA(Q)/DGAMMA(P+Q)) )
-      RETURN
+      dlbeta = log (dgamma(p) * (dgamma(q)/dgamma(p+q)) )
+      return
 !
 ! P IS SMALL, BUT Q IS BIG.
 !
- 20   CORR = D9LGMC(Q) - D9LGMC(P+Q)
-      DLBETA = DLNGAM(P) + CORR + P - P*LOG(P+Q)
-     &  + (Q-0.5D0)*DLNREL(-P/(P+Q))
-      RETURN
+ 20   corr = d9lgmc(q) - d9lgmc(p+q)
+     dlbeta = dlngam(p) + corr + p - p*log(p+q)&
+     &  + (q-0.5d0)*dlnrel(-p/(p+q))
+      return
 !
 ! P AND Q ARE BIG.
 !
- 30   CORR = D9LGMC(P) + D9LGMC(Q) - D9LGMC(P+Q)
-      DLBETA = -0.5D0*LOG(Q) + SQ2PIL + CORR + (P-0.5D0)*LOG(P/(P+Q))
-     &  + Q*DLNREL(-P/(P+Q))
-      RETURN
+ 30   corr = d9lgmc(p) + d9lgmc(q) - d9lgmc(p+q)
+     dlbeta = -0.5d0*log(q) + sq2pil + corr + (p-0.5d0)*log(p/(p+q))&
+     &  + q*dlnrel(-p/(p+q))
+      return
 !
-      END
+      end
 !DCSEVL
-      DOUBLE PRECISION FUNCTION DCSEVL (X, A, N)
+      double precision function dcsevl (x, a, n)
 !
 !     LATEST REVISION  -  OCTOBER 3, 1983  (JRD)
 !
@@ -3412,43 +3399,43 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION X
-      INTEGER N
+      double precision x
+      integer n
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION A(N)
+      double precision a(n)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION B0,B1,B2,TWOX
-      INTEGER I,NI1
+      double precision b0,b1,b2,twox
+      integer i,ni1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL XERROR
 !
 !
-      IF (N.LT.1) CALL XERROR ('DCSEVL  NUMBER OF TERMS LE 0', 28, 2,2)
-      IF (N.GT.1000) CALL XERROR ('DCSEVL  NUMBER OF TERMS GT 1000',
+      if (n.lt.1) call xerror ('DCSEVL  NUMBER OF TERMS LE 0', 28, 2,2)
+     if (n.gt.1000) call xerror ('DCSEVL  NUMBER OF TERMS GT 1000',&
      &  31, 3, 2)
-      IF (X.LT.(-1.D0) .OR. X.GT.1.D0) CALL XERROR (
+     if (x.lt.(-1.d0) .or. x.gt.1.d0) call xerror (&
      &  'DCSEVL  X OUTSIDE (-1,+1)', 25, 1, 1)
 !
-      TWOX = 2.0D0*X
-      B0 = 0.0D0
-      B1 = 0.0D0
-      B2 = 0.0D0
-      DO 10 I=1,N
-        B2 = B1
-        B1 = B0
-        NI1 = N-I+1
-        B0 = TWOX*B1 - B2 + A(NI1)
- 10   CONTINUE
+      twox = 2.0d0*x
+      b0 = 0.0d0
+      b1 = 0.0d0
+      b2 = 0.0d0
+      do 10 i=1,n
+        b2 = b1
+        b1 = b0
+        ni1 = n-i+1
+        b0 = twox*b1 - b2 + a(ni1)
+ 10   continue
 !
-      DCSEVL = 0.5D0 * (B0-B2)
+      dcsevl = 0.5d0 * (b0-b2)
 !
-      RETURN
-      END
+      return
+      end
 !GAMLIM
-      SUBROUTINE GAMLIM (XMIN, XMAX)
+      subroutine gamlim (xmin, xmax)
 ! APRIL 1977 VERSION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! CALCULATE THE MINIMUM AND MAXIMUM LEGAL BOUNDS FOR X IN GAMMA(X).
@@ -3465,11 +3452,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL XMAX,XMIN
+      real xmax,xmin
 !
 !  LOCAL SCALARS
-      REAL ALNBIG,ALNSML,XLN,XOLD
-      INTEGER I
+      real alnbig,alnsml,xln,xold
+      integer i
 !
 !  EXTERNAL FUNCTIONS
 !      REAL R1MACH
@@ -3479,39 +3466,39 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG,MAX
+      intrinsic abs,log,max
 !
-      ALNSML = LOG(R1MACH(1))
-      XMIN = -ALNSML
-      DO 10 I=1,10
-        XOLD = XMIN
-        XLN = LOG(XMIN)
-        XMIN = XMIN - XMIN*((XMIN+0.5)*XLN - XMIN - 0.2258 + ALNSML)
-     &    / (XMIN*XLN + 0.5)
-        IF (ABS(XMIN-XOLD).LT.0.005) GO TO 20
- 10   CONTINUE
-      CALL XERROR ('GAMLIM  UNABLE TO FIND XMIN', 27, 1, 2)
+      alnsml = log(r1mach(1))
+      xmin = -alnsml
+      do 10 i=1,10
+        xold = xmin
+        xln = log(xmin)
+       xmin = xmin - xmin*((xmin+0.5)*xln - xmin - 0.2258 + alnsml)&
+     &    / (xmin*xln + 0.5)
+        if (abs(xmin-xold).lt.0.005) go to 20
+ 10   continue
+      call xerror ('GAMLIM  UNABLE TO FIND XMIN', 27, 1, 2)
 !
- 20   XMIN = -XMIN + 0.01
+ 20   xmin = -xmin + 0.01
 !
-      ALNBIG = LOG(R1MACH(2))
-      XMAX = ALNBIG
-      DO 30 I=1,10
-        XOLD = XMAX
-        XLN = LOG(XMAX)
-        XMAX = XMAX - XMAX*((XMAX-0.5)*XLN - XMAX + 0.9189 - ALNBIG)
-     &    / (XMAX*XLN - 0.5)
-        IF (ABS(XMAX-XOLD).LT.0.005) GO TO 40
- 30   CONTINUE
-      CALL XERROR ('GAMLIM  UNABLE TO FIND XMAX', 27, 2, 2)
+      alnbig = log(r1mach(2))
+      xmax = alnbig
+      do 30 i=1,10
+        xold = xmax
+        xln = log(xmax)
+       xmax = xmax - xmax*((xmax-0.5)*xln - xmax + 0.9189 - alnbig)&
+     &    / (xmax*xln - 0.5)
+        if (abs(xmax-xold).lt.0.005) go to 40
+ 30   continue
+      call xerror ('GAMLIM  UNABLE TO FIND XMAX', 27, 2, 2)
 !
- 40   XMAX = XMAX - 0.01
-      XMIN = MAX (XMIN, -XMAX+1.)
+ 40   xmax = xmax - 0.01
+      xmin = max (xmin, -xmax+1.)
 !
-      RETURN
-      END
+      return
+      end
 !R9LGMC
-      REAL FUNCTION R9LGMC (X)
+      real function r9lgmc (x)
 ! AUGUST 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! COMPUTE THE LOG GAMMA CORRECTION FACTOR FOR X .GE. 10.0 SO THAT
@@ -3521,14 +3508,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL X
+      real x
 !
 !  LOCAL SCALARS
-      REAL XBIG,XMAX
-      INTEGER NALGM
+      real xbig,xmax
+      integer nalgm
 !
 !  LOCAL ARRAYS
-      REAL ALGMCS(6)
+      real algmcs(6)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL CSEVL,R1MACH
@@ -3539,7 +3526,7 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC EXP,LOG,MIN,SQRT
+      intrinsic exp,log,min,sqrt
 !
 !
 ! SERIES FOR ALGM       ON THE INTERVAL  0.          TO  1.00000D-02
@@ -3548,44 +3535,44 @@
 !                               SIGNIFICANT FIGURES REQUIRED  14.39
 !                                    DECIMAL PLACES REQUIRED  15.86
 !
-      DATA ALGMCS( 1) /    .1666389480 45186E0 /
-      DATA ALGMCS( 2) /   -.0000138494 817606E0 /
-      DATA ALGMCS( 3) /    .0000000098 108256E0 /
-      DATA ALGMCS( 4) /   -.0000000000 180912E0 /
-      DATA ALGMCS( 5) /    .0000000000 000622E0 /
-      DATA ALGMCS( 6) /   -.0000000000 000003E0 /
+      data algmcs( 1) /    .166638948045186e0 /
+      data algmcs( 2) /   -.0000138494817606e0 /
+      data algmcs( 3) /    .0000000098108256e0 /
+      data algmcs( 4) /   -.0000000000180912e0 /
+      data algmcs( 5) /    .0000000000000622e0 /
+      data algmcs( 6) /   -.0000000000000003e0 /
 !
-      DATA NALGM, XBIG, XMAX / 0, 2*0.0 /
+      data nalgm, xbig, xmax / 0, 2*0.0 /
 !
-      IF (NALGM.NE.0) GO TO 10
-      NALGM = INITS (ALGMCS, 6, R1MACH(3))
-      XBIG = 1.0/SQRT(R1MACH(3))
-      XMAX = EXP (MIN(LOG(R1MACH(2)/12.0), -LOG(12.0*R1MACH(1))) )
+      if (nalgm.ne.0) go to 10
+      nalgm = inits (algmcs, 6, r1mach(3))
+      xbig = 1.0/sqrt(r1mach(3))
+      xmax = exp (min(log(r1mach(2)/12.0), -log(12.0*r1mach(1))) )
 !
- 10   IF (X.LT.10.0) CALL XERROR ('R9LGMC  X MUST BE GE 10', 23, 1, 2)
-      IF (X.GE.XMAX) GO TO 20
+ 10   if (x.lt.10.0) call xerror ('R9LGMC  X MUST BE GE 10', 23, 1, 2)
+      if (x.ge.xmax) go to 20
 !
-      R9LGMC = 1.0/(12.0*X)
-      IF (X.LT.XBIG) R9LGMC = CSEVL (2.0*(10./X)**2-1., ALGMCS, NALGM)/X
-      RETURN
+      r9lgmc = 1.0/(12.0*x)
+      if (x.lt.xbig) r9lgmc = csevl (2.0*(10./x)**2-1., algmcs, nalgm)/x
+      return
 !
- 20   R9LGMC = 0.0
-      CALL XERROR ('R9LGMC  X SO BIG R9LGMC UNDERFLOWS', 34, 2, 1)
-      RETURN
+ 20   r9lgmc = 0.0
+      call xerror ('R9LGMC  X SO BIG R9LGMC UNDERFLOWS', 34, 2, 1)
+      return
 !
-      END
+      end
 !ALNGAM
-      REAL FUNCTION ALNGAM (X)
+      real function alngam (x)
 ! JUNE 1977 EDITION.   W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL X
+      real x
 !
 !  LOCAL SCALARS
-      REAL DXREL,PI,SINPIY,SQ2PIL,SQPI2L,XMAX,Y
+      real dxrel,pi,sinpiy,sq2pil,sqpi2l,xmax,y
 !
 !  EXTERNAL FUNCTIONS
 !      REAL GAMMA,R1MACH,R9LGMC
@@ -3595,51 +3582,51 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,AINT,LOG,SIN,SQRT
+      intrinsic abs,aint,log,sin,sqrt
 !
-      DATA SQ2PIL / 0.9189385332 0467274E0/
+      data sq2pil / 0.91893853320467274e0/
 ! SQ2PIL = LOG(SQRT(2.*PI)),  SQPI2L = LOG (SQRT(PI/2.))
-      DATA SQPI2L / 0.2257913526 4472743E0/
-      DATA PI     / 3.1415926535 8979324E0/
+      data sqpi2l / 0.22579135264472743e0/
+      data pi     / 3.14159265358979324e0/
 !
-      DATA XMAX, DXREL / 0., 0. /
+      data xmax, dxrel / 0., 0. /
 !
-      IF (XMAX.NE.0.) GO TO 10
-      XMAX = R1MACH(2)/LOG(R1MACH(2))
-      DXREL = SQRT (R1MACH(4))
+      if (xmax.ne.0.) go to 10
+      xmax = r1mach(2)/log(r1mach(2))
+      dxrel = sqrt (r1mach(4))
 !
- 10   Y = ABS(X)
-      IF (Y.GT.10.0) GO TO 20
+ 10   y = abs(x)
+      if (y.gt.10.0) go to 20
 !
 ! LOG (ABS (GAMMA(X))) FOR  ABS(X) .LE. 10.0
 !
-      ALNGAM = LOG (ABS (GAMMA(X)))
-      RETURN
+      alngam = log (abs (gamma(x)))
+      return
 !
 ! LOG (ABS (GAMMA(X))) FOR ABS(X) .GT. 10.0
 !
- 20   IF (Y.GT.XMAX) CALL XERROR (
+20   if (y.gt.xmax) call xerror (&
      &  'ALNGAM  ABS(X) SO BIG ALNGAM OVERFLOWS', 38, 2, 2)
 !
-      IF (X.GT.0.0) THEN
-         ALNGAM = SQ2PIL + (X-0.5)*LOG(X) - X + R9LGMC(Y)
-         RETURN
-      END IF
+      if (x.gt.0.0) then
+         alngam = sq2pil + (x-0.5)*log(x) - x + r9lgmc(y)
+         return
+      end if
 !
-      SINPIY = ABS (SIN(PI*Y))
-      IF (SINPIY.EQ.0.) CALL XERROR ('ALNGAM  X IS A NEGATIVE INTEGER',
+      sinpiy = abs (sin(pi*y))
+     if (sinpiy.eq.0.) call xerror ('ALNGAM  X IS A NEGATIVE INTEGER',&
      &  31, 3, 2)
 !
-      IF (ABS((X-AINT(X-0.5))/X).LT.DXREL) CALL XERROR (
-     &    'ALNGAM  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR NEGATIVE
+     if (abs((x-aint(x-0.5))/x).lt.dxrel) call xerror (&
+    &    'ALNGAM  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR NEGATIVE&
      &INTEGER', 68, 1, 1)
 !
-      ALNGAM = SQPI2L + (X-0.5)*LOG(Y) - X - LOG(SINPIY) - R9LGMC(Y)
-      RETURN
+      alngam = sqpi2l + (x-0.5)*log(y) - x - log(sinpiy) - r9lgmc(y)
+      return
 !
-      END
+      end
 !XERPRT
-      SUBROUTINE XERPRT(MESSG,NMESSG)
+      subroutine xerprt(messg,nmessg)
 !
 !     ABSTRACT
 !        PRINT THE HOLLERITH MESSAGE IN MESSG, OF LENGTH MESSG,
@@ -3654,19 +3641,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER NMESSG
+      integer nmessg
 !
 !  ARRAY ARGUMENTS
-      CHARACTER MESSG(NMESSG)*4
+      character messg(nmessg)*4
 !
 !  LOCAL SCALARS
-      INTEGER I,IUNIT,KUNIT,NCHAR,NCHARL,NCHLST,NCHREM,NFIELD,NLINES,
-     &   NUNIT,NWORD,NWORD1,NWORD2
-      CHARACTER LA*1,LBLANK*1,LCOM*1
+     integer i,iunit,kunit,nchar,ncharl,nchlst,nchrem,nfield,nlines,&
+     &   nunit,nword,nword1,nword2
+      character la*1,lblank*1,lcom*1
 !
 !  LOCAL ARRAYS
-      INTEGER LUN(5)
-      CHARACTER F(10)*1,G(14)*1
+      integer lun(5)
+      character f(10)*1,g(14)*1
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER I1MACH
@@ -3676,58 +3663,58 @@
 !       EXTERNAL S88FMT,XGETUA
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
-      DATA F(1),F(2),F(3),F(4),F(5),F(6),F(7),F(8),F(9),F(10)
+     data f(1),f(2),f(3),f(4),f(5),f(6),f(7),f(8),f(9),f(10)&
      &   / '(' ,'1' ,'X' ,',' ,' ' ,' ' ,'A' ,' ' ,' ' ,')' /
-      DATA G(1),G(2),G(3),G(4),G(5),G(6),G(7),G(8),G(9),G(10)
+     data g(1),g(2),g(3),g(4),g(5),g(6),g(7),g(8),g(9),g(10)&
      &   / '(' ,'1' ,'X' ,' ' ,' ' ,' ' ,' ' ,' ' ,' ' ,' ' /
-      DATA G(11),G(12),G(13),G(14)
+     data g(11),g(12),g(13),g(14)&
      &   / ' '  ,' '  ,' '  ,')'  /
-      DATA LA/'A'/,LCOM/','/,LBLANK/' '/
+      data la/'A'/,lcom/','/,lblank/' '/
 !     PREPARE FORMAT FOR WHOLE LINES
-      NCHAR = I1MACH(6)
-      NFIELD = 72/NCHAR
-      CALL S88FMT(2,NFIELD,F(5))
-      CALL S88FMT(2,NCHAR,F(8))
+      nchar = i1mach(6)
+      nfield = 72/nchar
+      call s88fmt(2,nfield,f(5))
+      call s88fmt(2,nchar,f(8))
 !     PREPARE FORMAT FOR LAST, PARTIAL LINE, IF NEEDED
-      NCHARL = NFIELD*NCHAR
-      NLINES = NMESSG/NCHARL
-      NWORD  = NLINES*NFIELD
-      NCHREM = NMESSG - NLINES*NCHARL
-      IF (NCHREM.LE.0) GO TO 40
-         DO 10 I=4,13
-10          G(I) = LBLANK
-         NFIELD = NCHREM/NCHAR
-         IF (NFIELD.LE.0) GO TO 20
+      ncharl = nfield*nchar
+      nlines = nmessg/ncharl
+      nword  = nlines*nfield
+      nchrem = nmessg - nlines*ncharl
+      if (nchrem.le.0) go to 40
+         do 10 i=4,13
+10          g(i) = lblank
+         nfield = nchrem/nchar
+         if (nfield.le.0) go to 20
 !        PREPARE WHOLE WORD FIELDS
-            G(4) = LCOM
-            CALL S88FMT(2,NFIELD,G(5))
-            G(7) = LA
-            CALL S88FMT(2,NCHAR,G(8))
-20       CONTINUE
-         NCHLST = MOD(NCHREM,NCHAR)
-         IF (NCHLST.LE.0) GO TO 30
+            g(4) = lcom
+            call s88fmt(2,nfield,g(5))
+            g(7) = la
+            call s88fmt(2,nchar,g(8))
+20       continue
+         nchlst = mod(nchrem,nchar)
+         if (nchlst.le.0) go to 30
 !        PREPARE PARTIAL WORD FIELD
-            G(10) = LCOM
-            G(11) = LA
-            CALL S88FMT(2,NCHLST,G(12))
-30       CONTINUE
-40    CONTINUE
+            g(10) = lcom
+            g(11) = la
+            call s88fmt(2,nchlst,g(12))
+30       continue
+40    continue
 !     PRINT THE MESSAGE
-      NWORD1 = NWORD+1
-      NWORD2 = (NMESSG+NCHAR-1)/NCHAR
-      CALL XGETUA(LUN,NUNIT)
-      DO 50 KUNIT = 1,NUNIT
-         IUNIT = LUN(KUNIT)
-         IF (IUNIT.EQ.0) IUNIT = I1MACH(4)
-         IF (NWORD.GT.0) WRITE (IUNIT,F) (MESSG(I),I=1,NWORD)
-         IF (NCHREM.GT.0) WRITE (IUNIT,G) (MESSG(I),I=NWORD1,NWORD2)
-50    CONTINUE
-      RETURN
-      END
+      nword1 = nword+1
+      nword2 = (nmessg+nchar-1)/nchar
+      call xgetua(lun,nunit)
+      do 50 kunit = 1,nunit
+         iunit = lun(kunit)
+         if (iunit.eq.0) iunit = i1mach(4)
+         if (nword.gt.0) write (iunit,f) (messg(i),i=1,nword)
+         if (nchrem.gt.0) write (iunit,g) (messg(i),i=nword1,nword2)
+50    continue
+      return
+      end
 !INITS
-      INTEGER FUNCTION INITS (OS, NOS, ETA)
+      integer function inits (os, nos, eta)
 ! APRIL 1977 VERSION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! INITIALIZE THE ORTHOGONAL SERIES SO THAT INITS IS THE NUMBER OF TERMS
@@ -3743,41 +3730,41 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL ETA
-      INTEGER NOS
+      real eta
+      integer nos
 !
 !  ARRAY ARGUMENTS
-      REAL OS(NOS)
+      real os(nos)
 !
 !  LOCAL SCALARS
-      REAL ERR
-      INTEGER I,II
+      real err
+      integer i,ii
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS
+      intrinsic abs
 !
 !
-      IF (NOS.LT.1) CALL XERROR (
+     if (nos.lt.1) call xerror (&
      &  'INITS   NUMBER OF COEFFICIENTS LT 1', 35, 2, 2)
 !
-      ERR = 0.
-      DO 10 II=1,NOS
-        I = NOS + 1 - II
-        ERR = ERR + ABS(OS(I))
-        IF (ERR.GT.ETA) GO TO 20
- 10   CONTINUE
+      err = 0.
+      do 10 ii=1,nos
+        i = nos + 1 - ii
+        err = err + abs(os(i))
+        if (err.gt.eta) go to 20
+ 10   continue
 !
- 20   IF (I.EQ.NOS) CALL XERROR ('INITS   ETA MAY BE TOO SMALL', 28,
+20   if (i.eq.nos) call xerror ('INITS   ETA MAY BE TOO SMALL', 28,&
      &  1, 2)
-      INITS = I
+      inits = i
 !
-      RETURN
-      END
+      return
+      end
 !CSEVL
-      REAL FUNCTION CSEVL (X, CS, N)
+      real function csevl (x, cs, n)
 ! APRIL 1977 VERSION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! EVALUATE THE N-TERM CHEBYSHEV SERIES CS AT X.  ADAPTED FROM
@@ -3794,43 +3781,43 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL X
-      INTEGER N
+      real x
+      integer n
 !
 !  ARRAY ARGUMENTS
-      REAL CS(N)
+      real cs(n)
 !
 !  LOCAL SCALARS
-      REAL B0,B1,B2,TWOX
-      INTEGER I,NI
+      real b0,b1,b2,twox
+      integer i,ni
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL XERROR
 !
 !
-      IF (N.LT.1) CALL XERROR ('CSEVL   NUMBER OF TERMS LE 0', 28, 2,2)
-      IF (N.GT.1000) CALL XERROR ('CSEVL   NUMBER OF TERMS GT 1000',
+      if (n.lt.1) call xerror ('CSEVL   NUMBER OF TERMS LE 0', 28, 2,2)
+     if (n.gt.1000) call xerror ('CSEVL   NUMBER OF TERMS GT 1000',&
      &  31, 3, 2)
-      IF (X.LT.(-1.0) .OR. X.GT.1.0) CALL XERROR (
+     if (x.lt.(-1.0) .or. x.gt.1.0) call xerror (&
      &  'CSEVL   X OUTSIDE (-1,+1)', 25, 1, 1)
 !
-      B0 = 0.0
-      B1 = 0.0
-      B2 = 0.0
-      TWOX = 2.0*X
-      DO 10 I=1,N
-        B2 = B1
-        B1 = B0
-        NI = N + 1 - I
-        B0 = TWOX*B1 - B2 + CS(NI)
- 10   CONTINUE
+      b0 = 0.0
+      b1 = 0.0
+      b2 = 0.0
+      twox = 2.0*x
+      do 10 i=1,n
+        b2 = b1
+        b1 = b0
+        ni = n + 1 - i
+        b0 = twox*b1 - b2 + cs(ni)
+ 10   continue
 !
-      CSEVL = 0.5 * (B0-B2)
+      csevl = 0.5 * (b0-b2)
 !
-      RETURN
-      END
+      return
+      end
 !XGETUA
-      SUBROUTINE XGETUA(IUNIT,N)
+      subroutine xgetua(iunit,n)
 !
 !     ABSTRACT
 !        XGETUA MAY BE CALLED TO DETERMINE THE UNIT NUMBER OR NUMBERS
@@ -3857,28 +3844,28 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER N
+      integer n
 !
 !  ARRAY ARGUMENTS
-      INTEGER IUNIT(5)
+      integer iunit(5)
 !
 !  LOCAL SCALARS
-      INTEGER I,INDEX
+      integer i,index
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER J4SAVE
 !       EXTERNAL J4SAVE
 !
-      N = J4SAVE(5,0,.FALSE.)
-      DO 30 I=1,N
-         INDEX = I+4
-         IF (I.EQ.1) INDEX = 3
-         IUNIT(I) = J4SAVE(INDEX,0,.FALSE.)
-   30 CONTINUE
-      RETURN
-      END
+      n = j4save(5,0,.false.)
+      do 30 i=1,n
+         index = i+4
+         if (i.eq.1) index = 3
+         iunit(i) = j4save(index,0,.false.)
+   30 continue
+      return
+      end
 !E9RINT
-      SUBROUTINE E9RINT(MESSG,NW,NERR,SAVE)
+      subroutine e9rint(messg,nw,nerr,save)
 !
 !  THIS ROUTINE STORES THE CURRENT ERROR MESSAGE OR PRINTS THE OLD ONE,
 !  IF ANY, DEPENDING ON WHETHER OR NOT SAVE = .TRUE. .
@@ -3896,18 +3883,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER NERR,NW
-      LOGICAL SAVE
+      integer nerr,nw
+      logical save
 !
 !  ARRAY ARGUMENTS
-      CHARACTER MESSG(NW)*4
+      character messg(nw)*4
 !
 !  LOCAL SCALARS
-      INTEGER I,IWUNIT,NERRP,NWP
-      CHARACTER CCPLUS*4
+      integer i,iwunit,nerrp,nwp
+      character ccplus*4
 !
 !  LOCAL ARRAYS
-      CHARACTER FMT(14)*4,MESSGP(36)*4
+      character fmt(14)*4,messgp(36)*4
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER I1MACH,I8SAVE
@@ -3919,56 +3906,56 @@
 !
 !  START WITH NO PREVIOUS MESSAGE.
 !
-      DATA MESSGP(1)/'1'/, NWP/0/, NERRP/0/
+      data messgp(1)/'1'/, nwp/0/, nerrp/0/
 !
 !  SET UP THE FORMAT FOR PRINTING THE ERROR MESSAGE.
 !  THE FORMAT IS SIMPLY (A1,14X,72AXX) WHERE XX=I1MACH(6) IS THE
 !  NUMBER OF CHARACTERS STORED PER INTEGER WORD.
 !
-      DATA CCPLUS  / '+' /
+      data ccplus  / '+' /
 !
-      DATA FMT( 1) / '(' /
-      DATA FMT( 2) / 'A' /
-      DATA FMT( 3) / '1' /
-      DATA FMT( 4) / ',' /
-      DATA FMT( 5) / '1' /
-      DATA FMT( 6) / '4' /
-      DATA FMT( 7) / 'X' /
-      DATA FMT( 8) / ',' /
-      DATA FMT( 9) / '7' /
-      DATA FMT(10) / '2' /
-      DATA FMT(11) / 'A' /
-      DATA FMT(12) / 'X' /
-      DATA FMT(13) / 'X' /
-      DATA FMT(14) / ')' /
+      data fmt( 1) / '(' /
+      data fmt( 2) / 'A' /
+      data fmt( 3) / '1' /
+      data fmt( 4) / ',' /
+      data fmt( 5) / '1' /
+      data fmt( 6) / '4' /
+      data fmt( 7) / 'X' /
+      data fmt( 8) / ',' /
+      data fmt( 9) / '7' /
+      data fmt(10) / '2' /
+      data fmt(11) / 'A' /
+      data fmt(12) / 'X' /
+      data fmt(13) / 'X' /
+      data fmt(14) / ')' /
 !
-      IF (.NOT.SAVE) GO TO 20
+      if (.not.save) go to 20
 !
 !  SAVE THE MESSAGE.
 !
-        NWP=NW
-        NERRP=NERR
-        DO 10 I=1,NW
- 10     MESSGP(I)=MESSG(I)
+        nwp=nw
+        nerrp=nerr
+        do 10 i=1,nw
+ 10     messgp(i)=messg(i)
 !
-        GO TO 30
+        go to 30
 !
- 20   IF (I8SAVE(1,0,.FALSE.).EQ.0) GO TO 30
+ 20   if (i8save(1,0,.false.).eq.0) go to 30
 !
 !  PRINT THE MESSAGE.
 !
-        IWUNIT=I1MACH(4)
-        WRITE(IWUNIT,9000) NERRP
- 9000   FORMAT(' ERROR ',I4,' IN ')
+        iwunit=i1mach(4)
+        write(iwunit,9000) nerrp
+ 9000   format(' ERROR ',i4,' IN ')
 !
-        CALL S88FMT(2,I1MACH(6),FMT(12))
-        WRITE(IWUNIT,FMT) CCPLUS,(MESSGP(I),I=1,NWP)
+        call s88fmt(2,i1mach(6),fmt(12))
+        write(iwunit,fmt) ccplus,(messgp(i),i=1,nwp)
 !
- 30   RETURN
+ 30   return
 !
-      END
+      end
 !XERROR
-      SUBROUTINE XERROR(MESSG,NMESSG,NERR,LEVEL)
+      subroutine xerror(messg,nmessg,nerr,level)
 !
 !     ABSTRACT
 !        XERROR PROCESSES A DIAGNOSTIC MESSAGE, IN A MANNER
@@ -4007,19 +3994,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER LEVEL,NERR,NMESSG
+      integer level,nerr,nmessg
 !
 !  ARRAY ARGUMENTS
-      CHARACTER MESSG(NMESSG)*4
+      character messg(nmessg)*4
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL XERRWV
 !
-      CALL XERRWV(MESSG,NMESSG,NERR,LEVEL,0,0,0,0,0.,0.)
-      RETURN
-      END
+      call xerrwv(messg,nmessg,nerr,level,0,0,0,0,0.,0.)
+      return
+      end
 !D9GMIT
-      DOUBLE PRECISION FUNCTION D9GMIT(A,X,ALGAP1,SGNGAM,ALX)
+      double precision function d9gmit(a,x,algap1,sgngam,alx)
 !***BEGIN PROLOGUE  D9GMIT
 !***DATE WRITTEN   770701   (YYMMDD)
 !***REVISION DATE  820801   (YYMMDD)
@@ -4040,11 +4027,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION A,ALGAP1,ALX,SGNGAM,X
+      double precision a,algap1,alx,sgngam,x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION AE,AEPS,ALG2,ALGS,BOT,EPS,FK,S,SGNG2,T,TE
-      INTEGER K,M,MA
+      double precision ae,aeps,alg2,algs,bot,eps,fk,s,sgng2,t,te
+      integer k,m,ma
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH,DLNGAM
@@ -4054,68 +4041,68 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,DBLE,DSIGN,EXP,FLOAT,LOG
+      intrinsic abs,dble,dsign,exp,float,log
 !
-      DATA EPS, BOT / 2*0.D0 /
+      data eps, bot / 2*0.d0 /
 !***FIRST EXECUTABLE STATEMENT  D9GMIT
-      IF (EPS.NE.0.D0) GO TO 10
-      EPS = 0.5D0*D1MACH(3)
-      BOT = LOG (D1MACH(1))
+      if (eps.ne.0.d0) go to 10
+      eps = 0.5d0*d1mach(3)
+      bot = log (d1mach(1))
 !
- 10   IF (X.LE.0.D0) CALL XERROR ( 'D9GMIT  X SHOULD BE GT 0', 24, 1, 2)
+ 10   if (x.le.0.d0) call xerror ( 'D9GMIT  X SHOULD BE GT 0', 24, 1, 2)
 !
-      MA = A + 0.5D0
-      IF (A.LT.0.D0) MA = A - 0.5D0
-      AEPS = A - DBLE(FLOAT(MA))
+      ma = a + 0.5d0
+      if (a.lt.0.d0) ma = a - 0.5d0
+      aeps = a - dble(float(ma))
 !
-      AE = A
-      IF (A.LT.(-0.5D0)) AE = AEPS
+      ae = a
+      if (a.lt.(-0.5d0)) ae = aeps
 !
-      T = 1.D0
-      TE = AE
-      S = T
-      DO 20 K=1,200
-        FK = K
-        TE = -X*TE/FK
-        T = TE/(AE+FK)
-        S = S + T
-        IF (ABS(T).LT.EPS*ABS(S)) GO TO 30
- 20   CONTINUE
-      CALL XERROR
+      t = 1.d0
+      te = ae
+      s = t
+      do 20 k=1,200
+        fk = k
+        te = -x*te/fk
+        t = te/(ae+fk)
+        s = s + t
+        if (abs(t).lt.eps*abs(s)) go to 30
+ 20   continue
+     call xerror&
      &('D9GMIT  NO CONVERGENCE IN 200 TERMS OF TAYLOR-S SERIES',54,2,2)
 !
- 30   IF (A.GE.(-0.5D0)) THEN
-         ALGS = -ALGAP1 + LOG(S)
-      ELSE
-         ALGS = -DLNGAM(1.D0+AEPS) + LOG(S)
-         S = 1.0D0
-         M = -MA - 1
-         IF (M.EQ.0) GO TO 50
-         T = 1.0D0
-         DO 40 K=1,M
-            T = X*T/(AEPS-DBLE(FLOAT(M+1-K)))
-            S = S + T
-            IF (ABS(T).LT.EPS*ABS(S)) GO TO 50
- 40      CONTINUE
+ 30   if (a.ge.(-0.5d0)) then
+         algs = -algap1 + log(s)
+      else
+         algs = -dlngam(1.d0+aeps) + log(s)
+         s = 1.0d0
+         m = -ma - 1
+         if (m.eq.0) go to 50
+         t = 1.0d0
+         do 40 k=1,m
+            t = x*t/(aeps-dble(float(m+1-k)))
+            s = s + t
+            if (abs(t).lt.eps*abs(s)) go to 50
+ 40      continue
 !
- 50      D9GMIT = 0.0D0
-         ALGS = -DBLE(FLOAT(MA))*LOG(X) + ALGS
-         IF (S.NE.0.0D0 .AND. AEPS.NE.0.0D0) THEN
-            SGNG2 = SGNGAM * DSIGN (1.0D0, S)
-            ALG2 = -X - ALGAP1 + LOG(ABS(S))
+ 50      d9gmit = 0.0d0
+         algs = -dble(float(ma))*log(x) + algs
+         if (s.ne.0.0d0 .and. aeps.ne.0.0d0) then
+            sgng2 = sgngam * dsign (1.0d0, s)
+            alg2 = -x - algap1 + log(abs(s))
 !
-            IF (ALG2.GT.BOT) D9GMIT = SGNG2 * EXP(ALG2)
-            IF (ALGS.GT.BOT) D9GMIT = D9GMIT + EXP(ALGS)
-            RETURN
-         END IF
-      END IF
+            if (alg2.gt.bot) d9gmit = sgng2 * exp(alg2)
+            if (algs.gt.bot) d9gmit = d9gmit + exp(algs)
+            return
+         end if
+      end if
 !
-      D9GMIT = EXP (ALGS)
-      RETURN
+      d9gmit = exp (algs)
+      return
 !
-      END
+      end
 !XSETF
-      SUBROUTINE XSETF(KONTRL)
+      subroutine xsetf(kontrl)
 !
 !     ABSTRACT
 !        XSETF SETS THE ERROR CONTROL FLAG VALUE TO KONTRL.
@@ -4149,10 +4136,10 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER KONTRL
+      integer kontrl
 !
 !  LOCAL SCALARS
-      INTEGER JUNK
+      integer junk
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER J4SAVE
@@ -4161,15 +4148,15 @@
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL XERRWV
 !
-      IF ((KONTRL.GE.(-2)).AND.(KONTRL.LE.2)) GO TO 10
-         CALL XERRWV('XSETF  -- INVALID VALUE OF KONTRL (I1).',33,1,2,
-     &   1,KONTRL,0,0,0.,0.)
-         RETURN
-   10 JUNK = J4SAVE(2,KONTRL,.TRUE.)
-      RETURN
-      END
+      if ((kontrl.ge.(-2)).and.(kontrl.le.2)) go to 10
+        call xerrwv('XSETF  -- INVALID VALUE OF KONTRL (I1).',33,1,2,&
+     &   1,kontrl,0,0,0.,0.)
+         return
+   10 junk = j4save(2,kontrl,.true.)
+      return
+      end
 !R9GMIT
-      REAL FUNCTION R9GMIT (A, X, ALGAP1, SGNGAM, ALX)
+      real function r9gmit (a, x, algap1, sgngam, alx)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! COMPUTE TRICOMI-S INCOMPLETE GAMMA FUNCTION FOR SMALL X.
@@ -4178,11 +4165,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL A,ALGAP1,ALX,SGNGAM,X
+      real a,algap1,alx,sgngam,x
 !
 !  LOCAL SCALARS
-      REAL AE,AEPS,ALG2,ALGS,BOT,EPS,FK,S,SGNG2,T,TE
-      INTEGER K,M,MA
+      real ae,aeps,alg2,algs,bot,eps,fk,s,sgng2,t,te
+      integer k,m,ma
 !
 !  EXTERNAL FUNCTIONS
 !      REAL ALNGAM,R1MACH
@@ -4192,80 +4179,80 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,EXP,FLOAT,LOG,SIGN
+      intrinsic abs,exp,float,log,sign
 !
-      DATA EPS, BOT / 2*0.0 /
+      data eps, bot / 2*0.0 /
 !
-      IF (EPS.EQ.0.0) EPS = 0.5*R1MACH(3)
-      IF (BOT.EQ.0.0) BOT = LOG(R1MACH(1))
+      if (eps.eq.0.0) eps = 0.5*r1mach(3)
+      if (bot.eq.0.0) bot = log(r1mach(1))
 !
-      IF (X.LE.0.0) CALL XERROR ('R9GMIT  X SHOULD BE GT 0', 24, 1, 2)
+      if (x.le.0.0) call xerror ('R9GMIT  X SHOULD BE GT 0', 24, 1, 2)
 !
-      MA = A + 0.5
-      IF (A.LT.0.0) MA = A - 0.5
-      AEPS = A - FLOAT(MA)
+      ma = a + 0.5
+      if (a.lt.0.0) ma = a - 0.5
+      aeps = a - float(ma)
 !
-      AE = A
-      IF (A.LT.(-0.5)) AE = AEPS
+      ae = a
+      if (a.lt.(-0.5)) ae = aeps
 !
-      T = 1.0
-      TE = AE
-      S = T
-      DO 20 K=1,200
-        FK = K
-        TE = -X*TE/FK
-        T = TE/(AE+FK)
-        S = S + T
-        IF (ABS(T).LT.EPS*ABS(S)) GO TO 30
- 20   CONTINUE
-      CALL XERROR (  'R9GMIT  NO CONVERGENCE IN 200 TERMS OF TAYLOR-S SE
+      t = 1.0
+      te = ae
+      s = t
+      do 20 k=1,200
+        fk = k
+        te = -x*te/fk
+        t = te/(ae+fk)
+        s = s + t
+        if (abs(t).lt.eps*abs(s)) go to 30
+ 20   continue
+     call xerror (  'R9GMIT  NO CONVERGENCE IN 200 TERMS OF TAYLOR-S SE&
      &RIES', 54, 2, 2)
 !
- 30   IF (A.GE.(-0.5)) THEN
-         ALGS = -ALGAP1 + LOG(S)
-      ELSE
+ 30   if (a.ge.(-0.5)) then
+         algs = -algap1 + log(s)
+      else
 !
-         ALGS = -ALNGAM(1.0+AEPS) + LOG(S)
-         S = 1.0
-         M = -MA - 1
-         IF (M.EQ.0) GO TO 50
-         T = 1.0
-         DO 40 K=1,M
-            T = X*T/(AEPS-FLOAT(M+1-K))
-            S = S + T
-            IF (ABS(T).LT.EPS*ABS(S)) GO TO 50
- 40      CONTINUE
+         algs = -alngam(1.0+aeps) + log(s)
+         s = 1.0
+         m = -ma - 1
+         if (m.eq.0) go to 50
+         t = 1.0
+         do 40 k=1,m
+            t = x*t/(aeps-float(m+1-k))
+            s = s + t
+            if (abs(t).lt.eps*abs(s)) go to 50
+ 40      continue
 !
- 50      R9GMIT = 0.0
-         ALGS = -FLOAT(MA)*LOG(X) + ALGS
-         IF (S.NE.0.0 .AND. AEPS.NE.0.0) THEN
-            SGNG2 = SGNGAM*SIGN(1.0,S)
-            ALG2 = -X - ALGAP1 + LOG(ABS(S))
+ 50      r9gmit = 0.0
+         algs = -float(ma)*log(x) + algs
+         if (s.ne.0.0 .and. aeps.ne.0.0) then
+            sgng2 = sgngam*sign(1.0,s)
+            alg2 = -x - algap1 + log(abs(s))
 !
-            IF (ALG2.GT.BOT) R9GMIT = SGNG2*EXP(ALG2)
-            IF (ALGS.GT.BOT) R9GMIT = R9GMIT + EXP(ALGS)
-            RETURN
-         END IF
-      END IF
-      R9GMIT = EXP(ALGS)
-      RETURN
+            if (alg2.gt.bot) r9gmit = sgng2*exp(alg2)
+            if (algs.gt.bot) r9gmit = r9gmit + exp(algs)
+            return
+         end if
+      end if
+      r9gmit = exp(algs)
+      return
 !
-      END
+      end
 !DLNREL
-      DOUBLE PRECISION FUNCTION DLNREL (X)
+      double precision function dlnrel (x)
 ! JUNE 1977 EDITION.   W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION X
+      double precision x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION XMIN
-      INTEGER NLNREL
+      double precision xmin
+      integer nlnrel
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION ALNRCS(43)
+      double precision alnrcs(43)
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH,DCSEVL
@@ -4276,7 +4263,7 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,DSQRT,LOG,SNGL
+      intrinsic abs,dsqrt,log,sngl
 !
 !
 ! SERIES FOR ALNR       ON THE INTERVAL -3.75000E-01 TO  3.75000E-01
@@ -4285,71 +4272,71 @@
 !                               SIGNIFICANT FIGURES REQUIRED  30.93
 !                                    DECIMAL PLACES REQUIRED  32.01
 !
-      DATA ALNRCS(  1) / +.1037869356 2743769800 6862677190 98 D+1     /
-      DATA ALNRCS(  2) / -.1336430150 4908918098 7660415531 33 D+0     /
-      DATA ALNRCS(  3) / +.1940824913 5520563357 9261993747 50 D-1     /
-      DATA ALNRCS(  4) / -.3010755112 7535777690 3765377765 92 D-2     /
-      DATA ALNRCS(  5) / +.4869461479 7154850090 4563665091 37 D-3     /
-      DATA ALNRCS(  6) / -.8105488189 3175356066 8099430086 22 D-4     /
-      DATA ALNRCS(  7) / +.1377884779 9559524782 9382514960 59 D-4     /
-      DATA ALNRCS(  8) / -.2380221089 4358970251 3699929149 35 D-5     /
-      DATA ALNRCS(  9) / +.4164041621 3865183476 3918599019 89 D-6     /
-      DATA ALNRCS( 10) / -.7359582837 8075994984 2668370319 98 D-7     /
-      DATA ALNRCS( 11) / +.1311761187 6241674949 1522943450 11 D-7     /
-      DATA ALNRCS( 12) / -.2354670931 7742425136 6960923301 75 D-8     /
-      DATA ALNRCS( 13) / +.4252277327 6034997775 6380529625 67 D-9     /
-      DATA ALNRCS( 14) / -.7719089413 4840796826 1081074933 00 D-10    /
-      DATA ALNRCS( 15) / +.1407574648 1359069909 2153564721 91 D-10    /
-      DATA ALNRCS( 16) / -.2576907205 8024680627 5370786275 84 D-11    /
-      DATA ALNRCS( 17) / +.4734240666 6294421849 1543950059 38 D-12    /
-      DATA ALNRCS( 18) / -.8724901267 4742641745 3012632926 75 D-13    /
-      DATA ALNRCS( 19) / +.1612461490 2740551465 7398331191 15 D-13    /
-      DATA ALNRCS( 20) / -.2987565201 5665773006 7107924168 15 D-14    /
-      DATA ALNRCS( 21) / +.5548070120 9082887983 0413216972 79 D-15    /
-      DATA ALNRCS( 22) / -.1032461915 8271569595 1413339619 32 D-15    /
-      DATA ALNRCS( 23) / +.1925023920 3049851177 8785032448 68 D-16    /
-      DATA ALNRCS( 24) / -.3595507346 5265150011 1897078442 66 D-17    /
-      DATA ALNRCS( 25) / +.6726454253 7876857892 1945742267 73 D-18    /
-      DATA ALNRCS( 26) / -.1260262416 8735219252 0824256375 46 D-18    /
-      DATA ALNRCS( 27) / +.2364488440 8606210044 9161589555 19 D-19    /
-      DATA ALNRCS( 28) / -.4441937705 0807936898 8783891797 33 D-20    /
-      DATA ALNRCS( 29) / +.8354659446 4034259016 2412939946 66 D-21    /
-      DATA ALNRCS( 30) / -.1573155941 6479562574 8992535210 66 D-21    /
-      DATA ALNRCS( 31) / +.2965312874 0247422686 1543697066 66 D-22    /
-      DATA ALNRCS( 32) / -.5594958348 1815947292 1560132266 66 D-23    /
-      DATA ALNRCS( 33) / +.1056635426 8835681048 1872841386 66 D-23    /
-      DATA ALNRCS( 34) / -.1997248368 0670204548 3149994666 66 D-24    /
-      DATA ALNRCS( 35) / +.3778297781 8839361421 0498559999 99 D-25    /
-      DATA ALNRCS( 36) / -.7153158688 9081740345 0381653333 33 D-26    /
-      DATA ALNRCS( 37) / +.1355248846 3674213646 5020245333 33 D-26    /
-      DATA ALNRCS( 38) / -.2569467304 8487567430 0798293333 33 D-27    /
-      DATA ALNRCS( 39) / +.4874775606 6216949076 4595199999 99 D-28    /
-      DATA ALNRCS( 40) / -.9254211253 0849715321 1323733333 33 D-29    /
-      DATA ALNRCS( 41) / +.1757859784 1760239233 2697600000 00 D-29    /
-      DATA ALNRCS( 42) / -.3341002667 7731010351 3770666666 66 D-30    /
-      DATA ALNRCS( 43) / +.6353393618 0236187354 1802666666 66 D-31    /
+      data alnrcs(  1) / +.10378693562743769800686267719098d+1     /
+      data alnrcs(  2) / -.13364301504908918098766041553133d+0     /
+      data alnrcs(  3) / +.19408249135520563357926199374750d-1     /
+      data alnrcs(  4) / -.30107551127535777690376537776592d-2     /
+      data alnrcs(  5) / +.48694614797154850090456366509137d-3     /
+      data alnrcs(  6) / -.81054881893175356066809943008622d-4     /
+      data alnrcs(  7) / +.13778847799559524782938251496059d-4     /
+      data alnrcs(  8) / -.23802210894358970251369992914935d-5     /
+      data alnrcs(  9) / +.41640416213865183476391859901989d-6     /
+      data alnrcs( 10) / -.73595828378075994984266837031998d-7     /
+      data alnrcs( 11) / +.13117611876241674949152294345011d-7     /
+      data alnrcs( 12) / -.23546709317742425136696092330175d-8     /
+      data alnrcs( 13) / +.42522773276034997775638052962567d-9     /
+      data alnrcs( 14) / -.77190894134840796826108107493300d-10    /
+      data alnrcs( 15) / +.14075746481359069909215356472191d-10    /
+      data alnrcs( 16) / -.25769072058024680627537078627584d-11    /
+      data alnrcs( 17) / +.47342406666294421849154395005938d-12    /
+      data alnrcs( 18) / -.87249012674742641745301263292675d-13    /
+      data alnrcs( 19) / +.16124614902740551465739833119115d-13    /
+      data alnrcs( 20) / -.29875652015665773006710792416815d-14    /
+      data alnrcs( 21) / +.55480701209082887983041321697279d-15    /
+      data alnrcs( 22) / -.10324619158271569595141333961932d-15    /
+      data alnrcs( 23) / +.19250239203049851177878503244868d-16    /
+      data alnrcs( 24) / -.35955073465265150011189707844266d-17    /
+      data alnrcs( 25) / +.67264542537876857892194574226773d-18    /
+      data alnrcs( 26) / -.12602624168735219252082425637546d-18    /
+      data alnrcs( 27) / +.23644884408606210044916158955519d-19    /
+      data alnrcs( 28) / -.44419377050807936898878389179733d-20    /
+      data alnrcs( 29) / +.83546594464034259016241293994666d-21    /
+      data alnrcs( 30) / -.15731559416479562574899253521066d-21    /
+      data alnrcs( 31) / +.29653128740247422686154369706666d-22    /
+      data alnrcs( 32) / -.55949583481815947292156013226666d-23    /
+      data alnrcs( 33) / +.10566354268835681048187284138666d-23    /
+      data alnrcs( 34) / -.19972483680670204548314999466666d-24    /
+      data alnrcs( 35) / +.37782977818839361421049855999999d-25    /
+      data alnrcs( 36) / -.71531586889081740345038165333333d-26    /
+      data alnrcs( 37) / +.13552488463674213646502024533333d-26    /
+      data alnrcs( 38) / -.25694673048487567430079829333333d-27    /
+      data alnrcs( 39) / +.48747756066216949076459519999999d-28    /
+      data alnrcs( 40) / -.92542112530849715321132373333333d-29    /
+      data alnrcs( 41) / +.17578597841760239233269760000000d-29    /
+      data alnrcs( 42) / -.33410026677731010351377066666666d-30    /
+      data alnrcs( 43) / +.63533936180236187354180266666666d-31    /
 !
-      DATA NLNREL, XMIN / 0, 0.D0 /
+      data nlnrel, xmin / 0, 0.d0 /
 !
-      IF (NLNREL.NE.0) GO TO 10
-      NLNREL = INITDS (ALNRCS, 43, 0.1*SNGL(D1MACH(3)))
-      XMIN = -1.0D0 + DSQRT(D1MACH(4))
+      if (nlnrel.ne.0) go to 10
+      nlnrel = initds (alnrcs, 43, 0.1*sngl(d1mach(3)))
+      xmin = -1.0d0 + dsqrt(d1mach(4))
 !
- 10   IF (X.LE.(-1.D0)) CALL XERROR ('DLNREL  X IS LE -1', 18, 2, 2)
-      IF (X.LT.XMIN) CALL XERROR (
-     &  'DLNREL  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR -1', 54,
+ 10   if (x.le.(-1.d0)) call xerror ('DLNREL  X IS LE -1', 18, 2, 2)
+     if (x.lt.xmin) call xerror (&
+    &  'DLNREL  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR -1', 54,&
      &  1, 1)
 !
-      IF (ABS(X).LE.0.375D0) THEN
-         DLNREL = X*(1.0D0 - X*DCSEVL (X/0.375D0, ALNRCS, NLNREL))
-      ELSE
-         DLNREL = LOG (1.0D0+X)
-      END IF
+      if (abs(x).le.0.375d0) then
+         dlnrel = x*(1.0d0 - x*dcsevl (x/0.375d0, alnrcs, nlnrel))
+      else
+         dlnrel = log (1.0d0+x)
+      end if
 !
-      RETURN
-      END
+      return
+      end
 !GAMI
-      REAL FUNCTION GAMI (A, X)
+      real function gami (a, x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! EVALUATE THE INCOMPLETE GAMMA FUNCTION DEFINED BY
@@ -4366,10 +4353,10 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL A,X
+      real a,x
 !
 !  LOCAL SCALARS
-      REAL FACTOR
+      real factor
 !
 !  EXTERNAL FUNCTIONS
 !      REAL ALNGAM,GAMIT,R1MACH
@@ -4379,27 +4366,27 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC EXP,LOG
+      intrinsic exp,log
 !
-      IF (A.LE.0.0) CALL XERROR ('GAMI    A MUST BE GT ZERO', 25, 1, 2)
-      IF (X.LT.0.0) CALL XERROR ('GAMI    X MUST BE GE ZERO', 25, 2, 2)
+      if (a.le.0.0) call xerror ('GAMI    A MUST BE GT ZERO', 25, 1, 2)
+      if (x.lt.0.0) call xerror ('GAMI    X MUST BE GE ZERO', 25, 2, 2)
 !
-      GAMI = 0.0
-      IF (X.EQ.0.0) RETURN
+      gami = 0.0
+      if (x.eq.0.0) return
 !
 ! THE ONLY ERROR POSSIBLE IN THE EXPRESSION BELOW IS A FATAL OVERFLOW.
 !
-      FACTOR = ALNGAM(A) + A*LOG(X)
-      IF (FACTOR.GT.LOG(R1MACH(2))) THEN
-         GAMI = R1MACH(2)
-      ELSE
-         GAMI = EXP(FACTOR) * GAMIT(A,X)
-      END IF
+      factor = alngam(a) + a*log(x)
+      if (factor.gt.log(r1mach(2))) then
+         gami = r1mach(2)
+      else
+         gami = exp(factor) * gamit(a,x)
+      end if
 !
-      RETURN
-      END
+      return
+      end
 !D9LGIC
-      DOUBLE PRECISION FUNCTION D9LGIC(A,X,ALX)
+      double precision function d9lgic(a,x,alx)
 !***BEGIN PROLOGUE  D9LGIC
 !***DATE WRITTEN   770701   (YYMMDD)
 !***REVISION DATE  820801   (YYMMDD)
@@ -4420,11 +4407,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION A,ALX,X
+      double precision a,alx,x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION EPS,FK,P,R,S,T,XMA,XPA
-      INTEGER K
+      double precision eps,fk,p,r,s,t,xma,xpa
+      integer k
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH
@@ -4434,49 +4421,49 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG
+      intrinsic abs,log
 !
-      DATA EPS / 0.D0 /
+      data eps / 0.d0 /
 !***FIRST EXECUTABLE STATEMENT  D9LGIC
-      IF (EPS.EQ.0.D0) EPS = 0.5D0*D1MACH(3)
+      if (eps.eq.0.d0) eps = 0.5d0*d1mach(3)
 !
-      XPA = X + 1.0D0 - A
-      XMA = X - 1.D0 - A
+      xpa = x + 1.0d0 - a
+      xma = x - 1.d0 - a
 !
-      R = 0.D0
-      P = 1.D0
-      S = P
-      DO 10 K=1,300
-        FK = K
-        T = FK*(A-FK)*(1.D0+R)
-        R = -T/((XMA+2.D0*FK)*(XPA+2.D0*FK)+T)
-        P = R*P
-        S = S + P
-        IF (ABS(P).LT.EPS*S) GO TO 20
- 10   CONTINUE
-      CALL XERROR
-     &('D9LGIC  NO CONVERGENCE IN 300 TERMS OF CONTINUED FRACTION',
+      r = 0.d0
+      p = 1.d0
+      s = p
+      do 10 k=1,300
+        fk = k
+        t = fk*(a-fk)*(1.d0+r)
+        r = -t/((xma+2.d0*fk)*(xpa+2.d0*fk)+t)
+        p = r*p
+        s = s + p
+        if (abs(p).lt.eps*s) go to 20
+ 10   continue
+     call xerror&
+    &('D9LGIC  NO CONVERGENCE IN 300 TERMS OF CONTINUED FRACTION',&
      & 57,1,2)
 !
- 20   D9LGIC = A*ALX - X + LOG(S/XPA)
+ 20   d9lgic = a*alx - x + log(s/xpa)
 !
-      RETURN
-      END
+      return
+      end
 !DERF
-      DOUBLE PRECISION FUNCTION DERF (X)
+      double precision function derf (x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION X
+      double precision x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION SQEPS,SQRTPI,XBIG,Y
-      INTEGER NTERF
+      double precision sqeps,sqrtpi,xbig,y
+      integer nterf
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION ERFCS(21)
+      double precision erfcs(21)
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH,DCSEVL,DERFC
@@ -4484,7 +4471,7 @@
 !       EXTERNAL D1MACH,DCSEVL,DERFC,INITDS
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,DSIGN,DSQRT,LOG,SNGL
+      intrinsic abs,dsign,dsqrt,log,sngl
 !
 !
 ! SERIES FOR ERF        ON THE INTERVAL  0.          TO  1.00000E+00
@@ -4493,61 +4480,61 @@
 !                               SIGNIFICANT FIGURES REQUIRED  31.05
 !                                    DECIMAL PLACES REQUIRED  32.55
 !
-      DATA ERF CS(  1) / -.4904612123 4691808039 9845440333 76 D-1     /
-      DATA ERF CS(  2) / -.1422612051 0371364237 8247418996 31 D+0     /
-      DATA ERF CS(  3) / +.1003558218 7599795575 7546767129 33 D-1     /
-      DATA ERF CS(  4) / -.5768764699 7674847650 8270255091 67 D-3     /
-      DATA ERF CS(  5) / +.2741993125 2196061034 4221607914 71 D-4     /
-      DATA ERF CS(  6) / -.1104317550 7344507604 1353812959 05 D-5     /
-      DATA ERF CS(  7) / +.3848875542 0345036949 9613114981 74 D-7     /
-      DATA ERF CS(  8) / -.1180858253 3875466969 6317518015 81 D-8     /
-      DATA ERF CS(  9) / +.3233421582 6050909646 4029309533 54 D-10    /
-      DATA ERF CS( 10) / -.7991015947 0045487581 6073747085 95 D-12    /
-      DATA ERF CS( 11) / +.1799072511 3961455611 9672454866 34 D-13    /
-      DATA ERF CS( 12) / -.3718635487 8186926382 3168282094 93 D-15    /
-      DATA ERF CS( 13) / +.7103599003 7142529711 6899083946 66 D-17    /
-      DATA ERF CS( 14) / -.1261245511 9155225832 4954248533 33 D-18    /
-      DATA ERF CS( 15) / +.2091640694 1769294369 1705002666 66 D-20    /
-      DATA ERF CS( 16) / -.3253973102 9314072982 3641600000 00 D-22    /
-      DATA ERF CS( 17) / +.4766867209 7976748332 3733333333 33 D-24    /
-      DATA ERF CS( 18) / -.6598012078 2851343155 1999999999 99 D-26    /
-      DATA ERF CS( 19) / +.8655011469 9637626197 3333333333 33 D-28    /
-      DATA ERF CS( 20) / -.1078892517 7498064213 3333333333 33 D-29    /
-      DATA ERF CS( 21) / +.1281188399 3017002666 6666666666 66 D-31    /
+      data erfcs(  1) / -.49046121234691808039984544033376d-1     /
+      data erfcs(  2) / -.14226120510371364237824741899631d+0     /
+      data erfcs(  3) / +.10035582187599795575754676712933d-1     /
+      data erfcs(  4) / -.57687646997674847650827025509167d-3     /
+      data erfcs(  5) / +.27419931252196061034422160791471d-4     /
+      data erfcs(  6) / -.11043175507344507604135381295905d-5     /
+      data erfcs(  7) / +.38488755420345036949961311498174d-7     /
+      data erfcs(  8) / -.11808582533875466969631751801581d-8     /
+      data erfcs(  9) / +.32334215826050909646402930953354d-10    /
+      data erfcs( 10) / -.79910159470045487581607374708595d-12    /
+      data erfcs( 11) / +.17990725113961455611967245486634d-13    /
+      data erfcs( 12) / -.37186354878186926382316828209493d-15    /
+      data erfcs( 13) / +.71035990037142529711689908394666d-17    /
+      data erfcs( 14) / -.12612455119155225832495424853333d-18    /
+      data erfcs( 15) / +.20916406941769294369170500266666d-20    /
+      data erfcs( 16) / -.32539731029314072982364160000000d-22    /
+      data erfcs( 17) / +.47668672097976748332373333333333d-24    /
+      data erfcs( 18) / -.65980120782851343155199999999999d-26    /
+      data erfcs( 19) / +.86550114699637626197333333333333d-28    /
+      data erfcs( 20) / -.10788925177498064213333333333333d-29    /
+      data erfcs( 21) / +.12811883993017002666666666666666d-31    /
 !
-      DATA SQRTPI / 1.772453850 9055160272 9816748334 115D0 /
-      DATA NTERF, XBIG, SQEPS / 0, 2*0.D0 /
+      data sqrtpi / 1.77245385090551602729816748334115d0 /
+      data nterf, xbig, sqeps / 0, 2*0.d0 /
 !
-      IF (NTERF.NE.0) GO TO 10
-      NTERF = INITDS (ERFCS, 21, 0.1*SNGL(D1MACH(3)))
-      XBIG = DSQRT (-LOG(SQRTPI*D1MACH(3)))
-      SQEPS = DSQRT (2.0D0*D1MACH(3))
+      if (nterf.ne.0) go to 10
+      nterf = initds (erfcs, 21, 0.1*sngl(d1mach(3)))
+      xbig = dsqrt (-log(sqrtpi*d1mach(3)))
+      sqeps = dsqrt (2.0d0*d1mach(3))
 !
- 10   Y = ABS(X)
-      IF (Y.GT.1.D0) GO TO 20
+ 10   y = abs(x)
+      if (y.gt.1.d0) go to 20
 !
 ! ERF(X) = 1.0 - ERFC(X)  FOR  -1.0 .LE. X .LE. 1.0
 !
-      IF (Y.LE.SQEPS) THEN
-         DERF = 2.0D0*X*X/SQRTPI
-      ELSE
-         DERF = X*(1.0D0+DCSEVL(2.D0*X*X-1.D0,ERFCS,NTERF))
-      END IF
+      if (y.le.sqeps) then
+         derf = 2.0d0*x*x/sqrtpi
+      else
+         derf = x*(1.0d0+dcsevl(2.d0*x*x-1.d0,erfcs,nterf))
+      end if
 !
-      RETURN
+      return
 !
 ! ERF(X) = 1.0 - ERFC(X) FOR ABS(X) .GT. 1.0
 !
- 20   IF (Y.LE.XBIG) THEN
-         DERF = DSIGN (1.0D0-DERFC(Y), X)
-      ELSE
-         DERF = DSIGN (1.0D0, X)
-      END IF
+ 20   if (y.le.xbig) then
+         derf = dsign (1.0d0-derfc(y), x)
+      else
+         derf = dsign (1.0d0, x)
+      end if
 !
-      RETURN
-      END
+      return
+      end
 !XERRWV
-      SUBROUTINE XERRWV(MESSG,NMESSG,NERR,LEVEL,NI,I1,I2,NR,R1,R2)
+      subroutine xerrwv(messg,nmessg,nerr,level,ni,i1,i2,nr,r1,r2)
 !
 !     ABSTRACT
 !        XERRWV PROCESSES A DIAGNOSTIC MESSAGE, IN A MANNER
@@ -4591,19 +4578,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL R1,R2
-      INTEGER I1,I2,LEVEL,NERR,NI,NMESSG,NR
+      real r1,r2
+      integer i1,i2,level,nerr,ni,nmessg,nr
 !
 !  ARRAY ARGUMENTS
-      CHARACTER MESSG(NMESSG)*4
+      character messg(nmessg)*4
 !
 !  LOCAL SCALARS
-      INTEGER IFATAL,IUNIT,JUNK,KDUMMY,KOUNT,KUNIT,LERR,LKNTRL,LLEVEL,
-     &   LMESSG,MAXMES,MKNTRL,NUNIT
-      CHARACTER LFIRST*4
+     integer ifatal,iunit,junk,kdummy,kount,kunit,lerr,lkntrl,llevel,&
+     &   lmessg,maxmes,mkntrl,nunit
+      character lfirst*4
 !
 !  LOCAL ARRAYS
-      INTEGER LUN(5)
+      integer lun(5)
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER I1MACH,J4SAVE
@@ -4613,98 +4600,98 @@
 !       EXTERNAL FDUMP,XERABT,XERCTL,XERPRT,XERSAV,XGETUA
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC IABS,MAX,MIN
+      intrinsic iabs,max,min
 !
 !     GET FLAGS
-      LKNTRL = J4SAVE(2,0,.FALSE.)
-      MAXMES = J4SAVE(4,0,.FALSE.)
+      lkntrl = j4save(2,0,.false.)
+      maxmes = j4save(4,0,.false.)
 !     CHECK FOR VALID INPUT
-      IF ((NMESSG.GT.0).AND.(NERR.NE.0).AND.
-     &    (LEVEL.GE.(-1)).AND.(LEVEL.LE.2)) GO TO 10
-         IF (LKNTRL.GT.0) CALL XERPRT('FATAL ERROR IN...',17)
-         CALL XERPRT('XERROR -- INVALID INPUT',23)
-         IF (LKNTRL.GT.0) CALL FDUMP
-         IF (LKNTRL.GT.0) CALL XERPRT('JOB ABORT DUE TO FATAL ERROR.',
+     if ((nmessg.gt.0).and.(nerr.ne.0).and.&
+     &    (level.ge.(-1)).and.(level.le.2)) go to 10
+         if (lkntrl.gt.0) call xerprt('FATAL ERROR IN...',17)
+         call xerprt('XERROR -- INVALID INPUT',23)
+         if (lkntrl.gt.0) call fdump
+        if (lkntrl.gt.0) call xerprt('JOB ABORT DUE TO FATAL ERROR.',&
      &   29)
-         IF (LKNTRL.GT.0) CALL XERSAV('    ',0,0,0,KDUMMY)
-         CALL XERABT('XERROR -- INVALID INPUT',23)
-         RETURN
-   10 CONTINUE
+         if (lkntrl.gt.0) call xersav('    ',0,0,0,kdummy)
+         call xerabt('XERROR -- INVALID INPUT',23)
+         return
+   10 continue
 !     RECORD MESSAGE
-      JUNK = J4SAVE(1,NERR,.TRUE.)
-      CALL XERSAV(MESSG,NMESSG,NERR,LEVEL,KOUNT)
+      junk = j4save(1,nerr,.true.)
+      call xersav(messg,nmessg,nerr,level,kount)
 !     LET USER OVERRIDE
-      LFIRST = MESSG(1)
-      LMESSG = NMESSG
-      LERR = NERR
-      LLEVEL = LEVEL
-      CALL XERCTL(LFIRST,LMESSG,LERR,LLEVEL,LKNTRL)
+      lfirst = messg(1)
+      lmessg = nmessg
+      lerr = nerr
+      llevel = level
+      call xerctl(lfirst,lmessg,lerr,llevel,lkntrl)
 !     RESET TO ORIGINAL VALUES
-      LMESSG = NMESSG
-      LERR = NERR
-      LLEVEL = LEVEL
-      LKNTRL = MAX(-2,MIN(2,LKNTRL))
-      MKNTRL = IABS(LKNTRL)
+      lmessg = nmessg
+      lerr = nerr
+      llevel = level
+      lkntrl = max(-2,min(2,lkntrl))
+      mkntrl = iabs(lkntrl)
 !     DECIDE WHETHER TO PRINT MESSAGE
-      IF ((LLEVEL.LT.2).AND.(LKNTRL.EQ.0)) GO TO 100
-      IF (((LLEVEL.EQ.(-1)).AND.(KOUNT.GT.MIN(1,MAXMES)))
-     &.OR.((LLEVEL.EQ.0)   .AND.(KOUNT.GT.MAXMES))
-     &.OR.((LLEVEL.EQ.1)   .AND.(KOUNT.GT.MAXMES).AND.(MKNTRL.EQ.1))
-     &.OR.((LLEVEL.EQ.2)   .AND.(KOUNT.GT.MAX(1,MAXMES)))) GO TO 100
-         IF (LKNTRL.LE.0) GO TO 20
-            CALL XERPRT('    ',1)
+      if ((llevel.lt.2).and.(lkntrl.eq.0)) go to 100
+     if (((llevel.eq.(-1)).and.(kount.gt.min(1,maxmes)))&
+    &.or.((llevel.eq.0)   .and.(kount.gt.maxmes))&
+    &.or.((llevel.eq.1)   .and.(kount.gt.maxmes).and.(mkntrl.eq.1))&
+     &.or.((llevel.eq.2)   .and.(kount.gt.max(1,maxmes)))) go to 100
+         if (lkntrl.le.0) go to 20
+            call xerprt('    ',1)
 !           INTRODUCTION
-            IF (LLEVEL.EQ.(-1)) CALL XERPRT
+           if (llevel.eq.(-1)) call xerprt&
      &('WARNING MESSAGE...THIS MESSAGE WILL ONLY BE PRINTED ONCE.',57)
-            IF (LLEVEL.EQ.0) CALL XERPRT('WARNING IN...',13)
-            IF (LLEVEL.EQ.1) CALL XERPRT
+            if (llevel.eq.0) call xerprt('WARNING IN...',13)
+           if (llevel.eq.1) call xerprt&
      &      ('RECOVERABLE ERROR IN...',23)
-            IF (LLEVEL.EQ.2) CALL XERPRT('FATAL ERROR IN...',17)
-   20    CONTINUE
+            if (llevel.eq.2) call xerprt('FATAL ERROR IN...',17)
+   20    continue
 !        MESSAGE
-         CALL XERPRT(MESSG,LMESSG)
-         CALL XGETUA(LUN,NUNIT)
-         DO 50 KUNIT=1,NUNIT
-            IUNIT = LUN(KUNIT)
-            IF (IUNIT.EQ.0) IUNIT = I1MACH(4)
-            IF (NI.GE.1) WRITE (IUNIT,22) I1
-            IF (NI.GE.2) WRITE (IUNIT,23) I2
-            IF (NR.GE.1) WRITE (IUNIT,24) R1
-            IF (NR.GE.2) WRITE (IUNIT,25) R2
-   22       FORMAT (11X,'IN ABOVE MESSAGE, I1=',I10)
-   23       FORMAT (11X,'IN ABOVE MESSAGE, I2=',I10)
-   24       FORMAT (11X,'IN ABOVE MESSAGE, R1=',E20.10)
-   25       FORMAT (11X,'IN ABOVE MESSAGE, R2=',E20.10)
-            IF (LKNTRL.LE.0) GO TO 40
+         call xerprt(messg,lmessg)
+         call xgetua(lun,nunit)
+         do 50 kunit=1,nunit
+            iunit = lun(kunit)
+            if (iunit.eq.0) iunit = i1mach(4)
+            if (ni.ge.1) write (iunit,22) i1
+            if (ni.ge.2) write (iunit,23) i2
+            if (nr.ge.1) write (iunit,24) r1
+            if (nr.ge.2) write (iunit,25) r2
+   22       format (11x,'IN ABOVE MESSAGE, I1=',i10)
+   23       format (11x,'IN ABOVE MESSAGE, I2=',i10)
+   24       format (11x,'IN ABOVE MESSAGE, R1=',e20.10)
+   25       format (11x,'IN ABOVE MESSAGE, R2=',e20.10)
+            if (lkntrl.le.0) go to 40
 !              ERROR NUMBER
-               WRITE (IUNIT,30) LERR
-   30          FORMAT (' ERROR NUMBER =',I10)
-   40       CONTINUE
-   50    CONTINUE
+               write (iunit,30) lerr
+   30          format (' ERROR NUMBER =',i10)
+   40       continue
+   50    continue
 !        TRACE-BACK
-         IF (LKNTRL.GT.0) CALL FDUMP
-  100 CONTINUE
-      IFATAL = 0
-      IF ((LLEVEL.EQ.2).OR.((LLEVEL.EQ.1).AND.(MKNTRL.EQ.2)))
-     &IFATAL = 1
+         if (lkntrl.gt.0) call fdump
+  100 continue
+      ifatal = 0
+     if ((llevel.eq.2).or.((llevel.eq.1).and.(mkntrl.eq.2)))&
+     &ifatal = 1
 !     QUIT HERE IF MESSAGE IS NOT FATAL
-      IF (IFATAL.LE.0) RETURN
-      IF ((LKNTRL.LE.0).OR.(KOUNT.GT.MAX(1,MAXMES))) GO TO 120
+      if (ifatal.le.0) return
+      if ((lkntrl.le.0).or.(kount.gt.max(1,maxmes))) go to 120
 !        PRINT REASON FOR ABORT
-         IF (LLEVEL.EQ.1) CALL XERPRT
+        if (llevel.eq.1) call xerprt&
      &   ('JOB ABORT DUE TO UNRECOVERED ERROR.',35)
-         IF (LLEVEL.EQ.2) CALL XERPRT
+        if (llevel.eq.2) call xerprt&
      &   ('JOB ABORT DUE TO FATAL ERROR.',29)
 !        PRINT ERROR SUMMARY
-         CALL XERSAV('    ',-1,0,0,KDUMMY)
-  120 CONTINUE
+         call xersav('    ',-1,0,0,kdummy)
+  120 continue
 !     ABORT
-      IF ((LLEVEL.EQ.2).AND.(KOUNT.GT.MAX(1,MAXMES))) LMESSG = 0
-      CALL XERABT(MESSG,LMESSG)
-      RETURN
-      END
+      if ((llevel.eq.2).and.(kount.gt.max(1,maxmes))) lmessg = 0
+      call xerabt(messg,lmessg)
+      return
+      end
 !D9LGIT
-      DOUBLE PRECISION FUNCTION D9LGIT(A,X,ALGAP1)
+      double precision function d9lgit(a,x,algap1)
 !***BEGIN PROLOGUE  D9LGIT
 !***DATE WRITTEN   770701   (YYMMDD)
 !***REVISION DATE  820801   (YYMMDD)
@@ -4725,11 +4712,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION A,ALGAP1,X
+      double precision a,algap1,x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION A1X,AX,EPS,FK,HSTAR,P,R,S,SQEPS,T
-      INTEGER K
+      double precision a1x,ax,eps,fk,hstar,p,r,s,sqeps,t
+      integer k
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH
@@ -4739,43 +4726,43 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,DSQRT,LOG
+      intrinsic abs,dsqrt,log
 !
-      DATA EPS, SQEPS / 2*0.D0 /
+      data eps, sqeps / 2*0.d0 /
 !***FIRST EXECUTABLE STATEMENT  D9LGIT
-      IF (EPS.NE.0.D0) GO TO 10
-      EPS = 0.5D0*D1MACH(3)
-      SQEPS = DSQRT (D1MACH(4))
+      if (eps.ne.0.d0) go to 10
+      eps = 0.5d0*d1mach(3)
+      sqeps = dsqrt (d1mach(4))
 !
- 10   IF (X.LE.0.D0 .OR. A.LT.X) CALL XERROR ( 'D9LGIT  X SHOULD BE GT 0
+10   if (x.le.0.d0 .or. a.lt.x) call xerror ( 'D9LGIT  X SHOULD BE GT 0&
      &.0 AND LE A', 35, 2, 2)
 !
-      AX = A + X
-      A1X = AX + 1.0D0
-      R = 0.D0
-      P = 1.D0
-      S = P
-      DO 20 K=1,200
-        FK = K
-        T = (A+FK)*X*(1.D0+R)
-        R = T/((AX+FK)*(A1X+FK)-T)
-        P = R*P
-        S = S + P
-        IF (ABS(P).LT.EPS*S) GO TO 30
- 20   CONTINUE
-      CALL XERROR ( 'D9LGIT  NO CONVERGENCE IN 200 TERMS OF CONTINUED FR
+      ax = a + x
+      a1x = ax + 1.0d0
+      r = 0.d0
+      p = 1.d0
+      s = p
+      do 20 k=1,200
+        fk = k
+        t = (a+fk)*x*(1.d0+r)
+        r = t/((ax+fk)*(a1x+fk)-t)
+        p = r*p
+        s = s + p
+        if (abs(p).lt.eps*s) go to 30
+ 20   continue
+     call xerror ( 'D9LGIT  NO CONVERGENCE IN 200 TERMS OF CONTINUED FR&
      &ACTION', 57, 3, 2)
 !
- 30   HSTAR = 1.0D0 - X*S/A1X
-      IF (HSTAR.LT.SQEPS) CALL XERROR ( 'D9LGIT  RESULT LESS THAN HALF P
+ 30   hstar = 1.0d0 - x*s/a1x
+     if (hstar.lt.sqeps) call xerror ( 'D9LGIT  RESULT LESS THAN HALF P&
      &RECISION', 39, 1, 1)
 !
-      D9LGIT = -X - ALGAP1 - LOG(HSTAR)
-      RETURN
+      d9lgit = -x - algap1 - log(hstar)
+      return
 !
-      END
+      end
 !SETERR
-      SUBROUTINE SETERR(MESSG,NMESSG,NERR,IOPT)
+      subroutine seterr(messg,nmessg,nerr,iopt)
 !
 !  SETERR SETS LERROR = NERR, OPTIONALLY PRINTS THE MESSAGE AND DUMPS
 !  ACCORDING TO THE FOLLOWING RULES...
@@ -4809,13 +4796,13 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER IOPT,NERR,NMESSG
+      integer iopt,nerr,nmessg
 !
 !  ARRAY ARGUMENTS
-      CHARACTER MESSG(NMESSG)*4
+      character messg(nmessg)*4
 !
 !  LOCAL SCALARS
-      INTEGER ITEMP,IWUNIT,NW
+      integer itemp,iwunit,nw
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER I1MACH,I8SAVE
@@ -4825,84 +4812,84 @@
 !       EXTERNAL E9RINT,EPRINT,FDUMP
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !
 !  THE UNIT FOR ERROR MESSAGES.
 !
-      IWUNIT=I1MACH(4)
+      iwunit=i1mach(4)
 !
-      IF (NMESSG.GE.1) GO TO 10
+      if (nmessg.ge.1) go to 10
 !
 !  A MESSAGE OF NON-POSITIVE LENGTH IS FATAL.
 !
-        WRITE(IWUNIT,9000)
- 9000   FORMAT('1ERROR    1 IN SETERR - MESSAGE LENGTH NOT POSITIVE.')
-        GO TO 60
+        write(iwunit,9000)
+ 9000   format('1ERROR    1 IN SETERR - MESSAGE LENGTH NOT POSITIVE.')
+        go to 60
 !
 !  NW IS THE NUMBER OF WORDS THE MESSAGE OCCUPIES.
 !
- 10   NW=(MIN(NMESSG,72)-1)/I1MACH(6)+1
+ 10   nw=(min(nmessg,72)-1)/i1mach(6)+1
 !
-      IF (NERR.NE.0) GO TO 20
+      if (nerr.ne.0) go to 20
 !
 !  CANNOT TURN THE ERROR STATE OFF USING SETERR.
 !
-        WRITE(IWUNIT,9001)
- 9001   FORMAT('1ERROR    2 IN SETERR - CANNOT HAVE NERR=0'//
+        write(iwunit,9001)
+9001   format('1ERROR    2 IN SETERR - CANNOT HAVE NERR=0'//&
      &         ' THE CURRENT ERROR MESSAGE FOLLOWS'///)
-        CALL E9RINT(MESSG,NW,NERR,.TRUE.)
-        ITEMP=I8SAVE(1,1,.TRUE.)
-        GO TO 50
+        call e9rint(messg,nw,nerr,.true.)
+        itemp=i8save(1,1,.true.)
+        go to 50
 !
 !  SET LERROR AND TEST FOR A PREVIOUS UNRECOVERED ERROR.
 !
- 20   IF (I8SAVE(1,NERR,.TRUE.).EQ.0) GO TO 30
+ 20   if (i8save(1,nerr,.true.).eq.0) go to 30
 !
-        WRITE(IWUNIT,9002)
- 9002   FORMAT('1ERROR    3 IN SETERR -',
-     &         ' AN UNRECOVERED ERROR FOLLOWED BY ANOTHER ERROR.'//
+        write(iwunit,9002)
+9002   format('1ERROR    3 IN SETERR -',&
+    &         ' AN UNRECOVERED ERROR FOLLOWED BY ANOTHER ERROR.'//&
      &         ' THE PREVIOUS AND CURRENT ERROR MESSAGES FOLLOW.'///)
-        CALL EPRINT
-        CALL E9RINT(MESSG,NW,NERR,.TRUE.)
-        GO TO 50
+        call eprint
+        call e9rint(messg,nw,nerr,.true.)
+        go to 50
 !
 !  SAVE THIS MESSAGE IN CASE IT IS NOT RECOVERED FROM PROPERLY.
 !
- 30   CALL E9RINT(MESSG,NW,NERR,.TRUE.)
+ 30   call e9rint(messg,nw,nerr,.true.)
 !
-      IF (IOPT.EQ.1 .OR. IOPT.EQ.2) GO TO 40
+      if (iopt.eq.1 .or. iopt.eq.2) go to 40
 !
 !  MUST HAVE IOPT = 1 OR 2.
 !
-        WRITE(IWUNIT,9003)
- 9003   FORMAT('1ERROR    4 IN SETERR - BAD VALUE FOR IOPT'//
+        write(iwunit,9003)
+9003   format('1ERROR    4 IN SETERR - BAD VALUE FOR IOPT'//&
      &         ' THE CURRENT ERROR MESSAGE FOLLOWS'///)
-        GO TO 50
+        go to 50
 !
 !  TEST FOR RECOVERY.
 !
- 40   IF (IOPT.EQ.2) GO TO 50
+ 40   if (iopt.eq.2) go to 50
 !
-      IF (I8SAVE(2,0,.FALSE.).EQ.1) RETURN
+      if (i8save(2,0,.false.).eq.1) return
 !
-      CALL EPRINT
-      STOP
+      call eprint
+      stop
 !
- 50   CALL EPRINT
- 60   CALL FDUMP
-      STOP
+ 50   call eprint
+ 60   call fdump
+      stop
 !
-      END
+      end
 !FDUMP
-      SUBROUTINE FDUMP
+      subroutine fdump
 !  THIS IS A DUMMY ROUTINE TO BE SENT OUT ON
 !  THE PORT SEDIT TAPE
 !
-      RETURN
-      END
+      return
+      end
 !R9LGIT
-      REAL FUNCTION R9LGIT (A, X, ALGAP1)
+      real function r9lgit (a, x, algap1)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! COMPUTE THE LOG OF TRICOMI-S INCOMPLETE GAMMA FUNCTION WITH PERRON-S
@@ -4912,11 +4899,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL A,ALGAP1,X
+      real a,algap1,x
 !
 !  LOCAL SCALARS
-      REAL A1X,AX,EPS,FK,HSTAR,P,R,S,SQEPS,T
-      INTEGER K
+      real a1x,ax,eps,fk,hstar,p,r,s,sqeps,t
+      integer k
 !
 !  EXTERNAL FUNCTIONS
 !      REAL R1MACH
@@ -4926,42 +4913,42 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG,SQRT
+      intrinsic abs,log,sqrt
 !
-      DATA EPS, SQEPS / 2*0.0 /
+      data eps, sqeps / 2*0.0 /
 !
-      IF (EPS.EQ.0.0) EPS = 0.5*R1MACH(3)
-      IF (SQEPS.EQ.0.0) SQEPS = SQRT(R1MACH(4))
+      if (eps.eq.0.0) eps = 0.5*r1mach(3)
+      if (sqeps.eq.0.0) sqeps = sqrt(r1mach(4))
 !
-      IF (X.LE.0.0 .OR. A.LT.X) CALL XERROR (
+     if (x.le.0.0 .or. a.lt.x) call xerror (&
      &  'R9LGIT  X SHOULD BE GT 0.0 AND LE A', 35, 2, 2)
 !
-      AX = A + X
-      A1X = AX + 1.0
-      R = 0.0
-      P = 1.0
-      S = P
-      DO 20 K=1,200
-        FK = K
-        T = (A+FK)*X*(1.0+R)
-        R = T/((AX+FK)*(A1X+FK)-T)
-        P = R*P
-        S = S + P
-        IF (ABS(P).LT.EPS*S) GO TO 30
- 20   CONTINUE
-      CALL XERROR (  'R9LGIT  NO CONVERGENCE IN 200 TERMS OF CONTINUED F
+      ax = a + x
+      a1x = ax + 1.0
+      r = 0.0
+      p = 1.0
+      s = p
+      do 20 k=1,200
+        fk = k
+        t = (a+fk)*x*(1.0+r)
+        r = t/((ax+fk)*(a1x+fk)-t)
+        p = r*p
+        s = s + p
+        if (abs(p).lt.eps*s) go to 30
+ 20   continue
+     call xerror (  'R9LGIT  NO CONVERGENCE IN 200 TERMS OF CONTINUED F&
      &RACTION', 57, 3, 2)
 !
- 30   HSTAR = 1.0 - X*S/A1X
-      IF (HSTAR.LT.SQEPS) CALL XERROR (
+ 30   hstar = 1.0 - x*s/a1x
+     if (hstar.lt.sqeps) call xerror (&
      &  'R9LGIT  RESULT LESS THAN HALF PRECISION', 39, 1, 1)
 !
-      R9LGIT = -X - ALGAP1 - LOG(HSTAR)
+      r9lgit = -x - algap1 - log(hstar)
 !
-      RETURN
-      END
+      return
+      end
 !XERCTL
-      SUBROUTINE XERCTL(MESSG1,NMESSG,NERR,LEVEL,KONTRL)
+      subroutine xerctl(messg1,nmessg,nerr,level,kontrl)
 !
 !     ABSTRACT
 !        ALLOWS USER CONTROL OVER HANDLING OF INDIVIDUAL ERRORS.
@@ -4997,13 +4984,13 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER KONTRL,LEVEL,NERR,NMESSG
+      integer kontrl,level,nerr,nmessg
       character(len=4),intent(in) :: messg1
 !
-      RETURN
-      END
+      return
+      end
 !S88FMT
-      SUBROUTINE S88FMT( N, W, IFMT )
+      subroutine s88fmt( n, w, ifmt )
 !
 !     LATEST REVISION  -  OCTOBER 3, 1983  (JRD)
 !
@@ -5015,58 +5002,58 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER N,W
+      integer n,w
 !
 !  ARRAY ARGUMENTS
-      CHARACTER IFMT(N)*4
+      character ifmt(n)*4
 !
 !  LOCAL SCALARS
-      INTEGER IDIGIT,NT,WT
+      integer idigit,nt,wt
 !
 !  LOCAL ARRAYS
-      CHARACTER DIGITS(10)*4
+      character digits(10)*4
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !
-      DATA DIGITS( 1) / '0' /
-      DATA DIGITS( 2) / '1' /
-      DATA DIGITS( 3) / '2' /
-      DATA DIGITS( 4) / '3' /
-      DATA DIGITS( 5) / '4' /
-      DATA DIGITS( 6) / '5' /
-      DATA DIGITS( 7) / '6' /
-      DATA DIGITS( 8) / '7' /
-      DATA DIGITS( 9) / '8' /
-      DATA DIGITS(10) / '9' /
+      data digits( 1) / '0' /
+      data digits( 2) / '1' /
+      data digits( 3) / '2' /
+      data digits( 4) / '3' /
+      data digits( 5) / '4' /
+      data digits( 6) / '5' /
+      data digits( 7) / '6' /
+      data digits( 8) / '7' /
+      data digits( 9) / '8' /
+      data digits(10) / '9' /
 !
-      NT = N
-      WT = W
+      nt = n
+      wt = w
 !
- 10   IF (NT .LE. 0) RETURN
-        IDIGIT = MOD( WT, 10 )
-        IFMT(NT) = DIGITS(IDIGIT+1)
-        WT = WT/10
-        NT = NT - 1
-        GO TO 10
+ 10   if (nt .le. 0) return
+        idigit = mod( wt, 10 )
+        ifmt(nt) = digits(idigit+1)
+        wt = wt/10
+        nt = nt - 1
+        go to 10
 !
-      END
+      end
 !ERF
-      REAL FUNCTION ERF (X)
+      real function erf (x)
 ! APRIL 1977 VERSION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL X
+      real x
 !
 !  LOCAL SCALARS
-      REAL SQEPS,SQRTPI,XBIG,Y
-      INTEGER NTERF
+      real sqeps,sqrtpi,xbig,y
+      integer nterf
 !
 !  LOCAL ARRAYS
-      REAL ERFCS(13)
+      real erfcs(13)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL CSEVL,ERFC,R1MACH
@@ -5074,7 +5061,7 @@
 !       EXTERNAL CSEVL,ERFC,R1MACH,INITS
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG,SIGN,SQRT
+      intrinsic abs,log,sign,sqrt
 !
 !
 ! SERIES FOR ERF        ON THE INTERVAL  0.          TO  1.00000D+00
@@ -5083,53 +5070,53 @@
 !                               SIGNIFICANT FIGURES REQUIRED  16.31
 !                                    DECIMAL PLACES REQUIRED  17.71
 !
-      DATA ERF CS( 1) /   -.0490461212 34691808E0 /
-      DATA ERF CS( 2) /   -.1422612051 0371364E0 /
-      DATA ERF CS( 3) /    .0100355821 87599796E0 /
-      DATA ERF CS( 4) /   -.0005768764 69976748E0 /
-      DATA ERF CS( 5) /    .0000274199 31252196E0 /
-      DATA ERF CS( 6) /   -.0000011043 17550734E0 /
-      DATA ERF CS( 7) /    .0000000384 88755420E0 /
-      DATA ERF CS( 8) /   -.0000000011 80858253E0 /
-      DATA ERF CS( 9) /    .0000000000 32334215E0 /
-      DATA ERF CS(10) /   -.0000000000 00799101E0 /
-      DATA ERF CS(11) /    .0000000000 00017990E0 /
-      DATA ERF CS(12) /   -.0000000000 00000371E0 /
-      DATA ERF CS(13) /    .0000000000 00000007E0 /
+      data erfcs( 1) /   -.049046121234691808e0 /
+      data erfcs( 2) /   -.14226120510371364e0 /
+      data erfcs( 3) /    .010035582187599796e0 /
+      data erfcs( 4) /   -.000576876469976748e0 /
+      data erfcs( 5) /    .000027419931252196e0 /
+      data erfcs( 6) /   -.000001104317550734e0 /
+      data erfcs( 7) /    .000000038488755420e0 /
+      data erfcs( 8) /   -.000000001180858253e0 /
+      data erfcs( 9) /    .000000000032334215e0 /
+      data erfcs(10) /   -.000000000000799101e0 /
+      data erfcs(11) /    .000000000000017990e0 /
+      data erfcs(12) /   -.000000000000000371e0 /
+      data erfcs(13) /    .000000000000000007e0 /
 !
-      DATA SQRTPI /1.772453850 9055160E0/
-      DATA NTERF, XBIG, SQEPS / 0, 0., 0./
+      data sqrtpi /1.7724538509055160e0/
+      data nterf, xbig, sqeps / 0, 0., 0./
 !
-      IF (NTERF.NE.0) GO TO 10
-      NTERF = INITS (ERFCS, 13, 0.1*R1MACH(3))
-      XBIG = SQRT(-LOG(SQRTPI*R1MACH(3)))
-      SQEPS = SQRT(2.0*R1MACH(3))
+      if (nterf.ne.0) go to 10
+      nterf = inits (erfcs, 13, 0.1*r1mach(3))
+      xbig = sqrt(-log(sqrtpi*r1mach(3)))
+      sqeps = sqrt(2.0*r1mach(3))
 !
- 10   Y = ABS(X)
-      IF (Y.GT.1.) GO TO 20
+ 10   y = abs(x)
+      if (y.gt.1.) go to 20
 !
 ! ERF(X) = 1. - ERFC(X) FOR -1. .LE. X .LE. 1.
 !
-      IF (Y.LE.SQEPS) THEN
-         ERF = 2.0*X/SQRTPI
-      ELSE
-         ERF = X*(1.0 + CSEVL(2.*X**2-1., ERFCS, NTERF))
-      END IF
+      if (y.le.sqeps) then
+         erf = 2.0*x/sqrtpi
+      else
+         erf = x*(1.0 + csevl(2.*x**2-1., erfcs, nterf))
+      end if
 !
-      RETURN
+      return
 !
 ! ERF(X) = 1. - ERFC(X) FOR  ABS(X) .GT. 1.
 !
- 20   IF (Y.LE.XBIG) THEN
-         ERF = SIGN (1.0-ERFC(Y), X)
-      ELSE
-         ERF = SIGN (1.0, X)
-      END IF
+ 20   if (y.le.xbig) then
+         erf = sign (1.0-erfc(y), x)
+      else
+         erf = sign (1.0, x)
+      end if
 !
-      RETURN
-      END
+      return
+      end
 !XERABT
-      SUBROUTINE XERABT(MESSG,NMESSG)
+      subroutine xerabt(messg,nmessg)
 !
 !     LATEST REVISION  -  JANUARY 24, 1990 (JRD)
 !
@@ -5151,29 +5138,29 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER NMESSG
+      integer nmessg
 !
 !  ARRAY ARGUMENTS
-      CHARACTER MESSG(1)*4
+      character messg(1)*4
 !
-      STOP
-      END
+      stop
+      end
 !ALNREL
-      REAL FUNCTION ALNREL (X)
+      real function alnrel (x)
 ! APRIL 1977 VERSION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL X
+      real x
 !
 !  LOCAL SCALARS
-      REAL XMIN
-      INTEGER NLNREL
+      real xmin
+      integer nlnrel
 !
 !  LOCAL ARRAYS
-      REAL ALNRCS(23)
+      real alnrcs(23)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL CSEVL,R1MACH
@@ -5184,7 +5171,7 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG,SQRT
+      intrinsic abs,log,sqrt
 !
 ! SERIES FOR ALNR       ON THE INTERVAL -3.75000D-01 TO  3.75000D-01
 !                                        WITH WEIGHTED ERROR   1.93E-17
@@ -5192,52 +5179,52 @@
 !                               SIGNIFICANT FIGURES REQUIRED  16.44
 !                                    DECIMAL PLACES REQUIRED  17.40
 !
-      DATA ALNRCS( 1) /   1.0378693562 743770E0 /
-      DATA ALNRCS( 2) /   -.1336430150 4908918E0 /
-      DATA ALNRCS( 3) /    .0194082491 35520563E0 /
-      DATA ALNRCS( 4) /   -.0030107551 12753577E0 /
-      DATA ALNRCS( 5) /    .0004869461 47971548E0 /
-      DATA ALNRCS( 6) /   -.0000810548 81893175E0 /
-      DATA ALNRCS( 7) /    .0000137788 47799559E0 /
-      DATA ALNRCS( 8) /   -.0000023802 21089435E0 /
-      DATA ALNRCS( 9) /    .0000004164 04162138E0 /
-      DATA ALNRCS(10) /   -.0000000735 95828378E0 /
-      DATA ALNRCS(11) /    .0000000131 17611876E0 /
-      DATA ALNRCS(12) /   -.0000000023 54670931E0 /
-      DATA ALNRCS(13) /    .0000000004 25227732E0 /
-      DATA ALNRCS(14) /   -.0000000000 77190894E0 /
-      DATA ALNRCS(15) /    .0000000000 14075746E0 /
-      DATA ALNRCS(16) /   -.0000000000 02576907E0 /
-      DATA ALNRCS(17) /    .0000000000 00473424E0 /
-      DATA ALNRCS(18) /   -.0000000000 00087249E0 /
-      DATA ALNRCS(19) /    .0000000000 00016124E0 /
-      DATA ALNRCS(20) /   -.0000000000 00002987E0 /
-      DATA ALNRCS(21) /    .0000000000 00000554E0 /
-      DATA ALNRCS(22) /   -.0000000000 00000103E0 /
-      DATA ALNRCS(23) /    .0000000000 00000019E0 /
+      data alnrcs( 1) /   1.0378693562743770e0 /
+      data alnrcs( 2) /   -.13364301504908918e0 /
+      data alnrcs( 3) /    .019408249135520563e0 /
+      data alnrcs( 4) /   -.003010755112753577e0 /
+      data alnrcs( 5) /    .000486946147971548e0 /
+      data alnrcs( 6) /   -.000081054881893175e0 /
+      data alnrcs( 7) /    .000013778847799559e0 /
+      data alnrcs( 8) /   -.000002380221089435e0 /
+      data alnrcs( 9) /    .000000416404162138e0 /
+      data alnrcs(10) /   -.000000073595828378e0 /
+      data alnrcs(11) /    .000000013117611876e0 /
+      data alnrcs(12) /   -.000000002354670931e0 /
+      data alnrcs(13) /    .000000000425227732e0 /
+      data alnrcs(14) /   -.000000000077190894e0 /
+      data alnrcs(15) /    .000000000014075746e0 /
+      data alnrcs(16) /   -.000000000002576907e0 /
+      data alnrcs(17) /    .000000000000473424e0 /
+      data alnrcs(18) /   -.000000000000087249e0 /
+      data alnrcs(19) /    .000000000000016124e0 /
+      data alnrcs(20) /   -.000000000000002987e0 /
+      data alnrcs(21) /    .000000000000000554e0 /
+      data alnrcs(22) /   -.000000000000000103e0 /
+      data alnrcs(23) /    .000000000000000019e0 /
 !
-      DATA NLNREL, XMIN /0, 0./
+      data nlnrel, xmin /0, 0./
 !
-      IF (NLNREL.NE.0) GO TO 10
-      NLNREL = INITS (ALNRCS, 23, 0.1*R1MACH(3))
-      XMIN = -1.0 + SQRT(R1MACH(4))
+      if (nlnrel.ne.0) go to 10
+      nlnrel = inits (alnrcs, 23, 0.1*r1mach(3))
+      xmin = -1.0 + sqrt(r1mach(4))
 !
- 10   IF (X.LE.(-1.0)) CALL XERROR (
+10   if (x.le.(-1.0)) call xerror (&
      &  'ALNREL  X IS LE -1', 18, 2, 2)
-      IF (X.LT.XMIN) CALL XERROR (
-     &  'ALNREL  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR -1', 54,
+     if (x.lt.xmin) call xerror (&
+    &  'ALNREL  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR -1', 54,&
      &  1, 1)
 !
-      IF (ABS(X).LE.0.375) THEN
-         ALNREL = X*(1.0-X*CSEVL(X/0.375,ALNRCS,NLNREL))
-      ELSE
-         ALNREL = LOG (1.0+X)
-      END IF
+      if (abs(x).le.0.375) then
+         alnrel = x*(1.0-x*csevl(x/0.375,alnrcs,nlnrel))
+      else
+         alnrel = log (1.0+x)
+      end if
 !
-      RETURN
-      END
+      return
+      end
 !INITDS
-      INTEGER FUNCTION INITDS (DOS, NOS, ETA)
+      integer function initds (dos, nos, eta)
 !
 ! INITIALIZE THE DOUBLE PRECISION ORTHOGONAL SERIES DOS SO THAT INITDS
 ! IS THE NUMBER OF TERMS NEEDED TO INSURE THE ERROR IS NO LARGER THAN
@@ -5252,41 +5239,41 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL ETA
-      INTEGER NOS
+      real eta
+      integer nos
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION DOS(NOS)
+      double precision dos(nos)
 !
 !  LOCAL SCALARS
-      REAL ERR
-      INTEGER I,II
+      real err
+      integer i,ii
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,SNGL
+      intrinsic abs,sngl
 !
 !
-      IF (NOS.LT.1) CALL XERROR (
+     if (nos.lt.1) call xerror (&
      &  'INITDS  NUMBER OF COEFFICIENTS LT 1', 35, 2, 2)
 !
-      ERR = 0.0
-      DO 10 II=1,NOS
-        I = NOS + 1 - II
-        ERR = ERR + ABS(SNGL(DOS(I)))
-        IF (ERR.GT.ETA) GO TO 20
- 10   CONTINUE
+      err = 0.0
+      do 10 ii=1,nos
+        i = nos + 1 - ii
+        err = err + abs(sngl(dos(i)))
+        if (err.gt.eta) go to 20
+ 10   continue
 !
- 20   IF (I.EQ.NOS) CALL XERROR ('INITDS  ETA MAY BE TOO SMALL', 28,
+20   if (i.eq.nos) call xerror ('INITDS  ETA MAY BE TOO SMALL', 28,&
      &  1, 2)
-      INITDS = I
+      initds = i
 !
-      RETURN
-      END
+      return
+      end
 !DBETAI
-      DOUBLE PRECISION FUNCTION DBETAI (X, PIN, QIN)
+      double precision function dbetai (x, pin, qin)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 ! BASED ON BOSTEN AND BATTISTE, REMARK ON ALGORITHM 179, COMM. ACM,
 ! V 17, P 156, (1974).
@@ -5303,13 +5290,13 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION PIN,QIN,X
+      double precision pin,qin,x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION ALNEPS,ALNSML,C,EPS,FAC1,FAC2,FINSUM,P,PS,Q,SML,
-     &   TERM,XB,Y
-      REAL P1
-      INTEGER I,IB,N
+     double precision alneps,alnsml,c,eps,fac1,fac2,finsum,p,ps,q,sml,&
+     &   term,xb,y
+      real p1
+      integer i,ib,n
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH,DLBETA
@@ -5319,108 +5306,108 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,DBLE,EXP,FLOAT,INT,LOG,MAX,MIN,SNGL
+      intrinsic abs,dble,exp,float,int,log,max,min,sngl
 !
-      DATA             EPS, ALNEPS, SML, ALNSML / 4*0.0D0 /
+      data             eps, alneps, sml, alnsml / 4*0.0d0 /
 !
-      IF (EPS.NE.0.0D0) GO TO 10
-      EPS = D1MACH(3)
-      ALNEPS = LOG (EPS)
-      SML = D1MACH(1)
-      ALNSML = LOG (SML)
+      if (eps.ne.0.0d0) go to 10
+      eps = d1mach(3)
+      alneps = log (eps)
+      sml = d1mach(1)
+      alnsml = log (sml)
 !
- 10   IF (X.LT.0.D0 .OR. X.GT.1.D0) CALL XERROR (
+10   if (x.lt.0.d0 .or. x.gt.1.d0) call xerror (&
      &  'DBETAI  X IS NOT IN THE RANGE (0,1)', 35, 1, 2)
-      IF (PIN.LE.0.D0 .OR. QIN.LE.0.D0) CALL XERROR (
+     if (pin.le.0.d0 .or. qin.le.0.d0) call xerror (&
      &  'DBETAI  P AND/OR Q IS LE ZERO', 29, 2, 2)
 !
-      Y = X
-      P = PIN
-      Q = QIN
-      IF (Q.LE.P .AND. X.LT.0.8D0) GO TO 20
-      IF (X.LT.0.2D0) GO TO 20
-      Y = 1.0D0 - Y
-      P = QIN
-      Q = PIN
+      y = x
+      p = pin
+      q = qin
+      if (q.le.p .and. x.lt.0.8d0) go to 20
+      if (x.lt.0.2d0) go to 20
+      y = 1.0d0 - y
+      p = qin
+      q = pin
 !
- 20   IF ((P+Q)*Y/(P+1.D0).LT.EPS) GO TO 80
+ 20   if ((p+q)*y/(p+1.d0).lt.eps) go to 80
 !
 ! EVALUATE THE INFINITE SUM FIRST.  TERM WILL EQUAL
 ! Y**P/BETA(PS,P) * (1.-PS)-SUB-I * Y**I / FAC(I) .
 !
-      PS = Q - INT(Q)
-      IF (PS.EQ.0.D0) PS = 1.0D0
-      XB = P*LOG(Y) - DLBETA(PS,P) - LOG(P)
-      DBETAI = 0.0D0
-      IF (XB.GE.ALNSML) THEN
-         DBETAI = EXP(XB)
-         FAC2 = 1.0
-         IF (PS.NE.1.0D0) THEN
-            FAC1 = 1.0
-            N = MAX(ALNEPS/LOG(Y), 4.0D0)
-            DO 30 I=1,N
-               IF ((I-PS.EQ.0.0D0) .OR. (FAC1.EQ.0.0D0)) THEN
-                  FAC1 = 0.0D0
-               ELSE
-                  IF (LOG(ABS(FAC1)) + LOG(ABS(I-PS)) + LOG(Y) -
-     &                LOG(DBLE(I)) .LT. ALNSML) THEN
-                     FAC1 = 0.0D0
-                  ELSE
-                     FAC1 = FAC1 * (I-PS)*Y/I
-                  END IF
-               END IF
-               FAC2 = FAC2 + FAC1*P/(P+I)
- 30         CONTINUE
-         END IF
-         DBETAI = DBETAI*FAC2
-      END IF
+      ps = q - int(q)
+      if (ps.eq.0.d0) ps = 1.0d0
+      xb = p*log(y) - dlbeta(ps,p) - log(p)
+      dbetai = 0.0d0
+      if (xb.ge.alnsml) then
+         dbetai = exp(xb)
+         fac2 = 1.0
+         if (ps.ne.1.0d0) then
+            fac1 = 1.0
+            n = max(alneps/log(y), 4.0d0)
+            do 30 i=1,n
+               if ((i-ps.eq.0.0d0) .or. (fac1.eq.0.0d0)) then
+                  fac1 = 0.0d0
+               else
+                 if (log(abs(fac1)) + log(abs(i-ps)) + log(y) -&
+     &                log(dble(i)) .lt. alnsml) then
+                     fac1 = 0.0d0
+                  else
+                     fac1 = fac1 * (i-ps)*y/i
+                  end if
+               end if
+               fac2 = fac2 + fac1*p/(p+i)
+ 30         continue
+         end if
+         dbetai = dbetai*fac2
+      end if
 !
 ! NOW EVALUATE THE FINITE SUM, MAYBE.
 !
-      IF (Q.LE.1.0D0) GO TO 70
+      if (q.le.1.0d0) go to 70
 !
-      XB = P*LOG(Y) + Q*LOG(1.0D0-Y) - DLBETA(P,Q) - LOG(Q)
-      IB = MAX(SNGL(XB/ALNSML), 0.0)
-      TERM = EXP (XB - DBLE(FLOAT(IB))*ALNSML )
-      C = 1.0D0/(1.D0-Y)
-      P1 = Q*C/(P+Q-1.D0)
+      xb = p*log(y) + q*log(1.0d0-y) - dlbeta(p,q) - log(q)
+      ib = max(sngl(xb/alnsml), 0.0)
+      term = exp (xb - dble(float(ib))*alnsml )
+      c = 1.0d0/(1.d0-y)
+      p1 = q*c/(p+q-1.d0)
 !
-      FINSUM = 0.0D0
-      N = Q
-      IF (Q.EQ.DBLE(FLOAT(N))) N = N - 1
-      DO 50 I=1,N
-        IF (P1.LE.1.0D0 .AND. TERM/EPS.LE.FINSUM) GO TO 60
-        IF (Q-I+1.0D0 .EQ. 0.0D0) THEN
-          TERM = 0.0D0
-        ELSE
-          IF (LOG(ABS(Q-I+1.0D0)) + LOG(ABS(C)) + LOG(ABS(TERM)) -
-     &        LOG(ABS(P+Q-I)) .LT. ALNSML) THEN
-            TERM = 0.0D0
-          ELSE
-            TERM = (Q-I+1.0D0)*C*TERM/(P+Q-I)
-          END IF
-        END IF
+      finsum = 0.0d0
+      n = q
+      if (q.eq.dble(float(n))) n = n - 1
+      do 50 i=1,n
+        if (p1.le.1.0d0 .and. term/eps.le.finsum) go to 60
+        if (q-i+1.0d0 .eq. 0.0d0) then
+          term = 0.0d0
+        else
+         if (log(abs(q-i+1.0d0)) + log(abs(c)) + log(abs(term)) -&
+     &        log(abs(p+q-i)) .lt. alnsml) then
+            term = 0.0d0
+          else
+            term = (q-i+1.0d0)*c*term/(p+q-i)
+          end if
+        end if
 !
-        IF (TERM.GT.1.0D0) IB = IB - 1
-        IF (TERM.GT.1.0D0) TERM = TERM*SML
+        if (term.gt.1.0d0) ib = ib - 1
+        if (term.gt.1.0d0) term = term*sml
 !
-        IF (IB.EQ.0) FINSUM = FINSUM + TERM
- 50   CONTINUE
+        if (ib.eq.0) finsum = finsum + term
+ 50   continue
 !
- 60   DBETAI = DBETAI + FINSUM
- 70   IF (Y.NE.X .OR. P.NE.PIN) DBETAI = 1.0D0 - DBETAI
-      DBETAI = MAX (MIN (DBETAI, 1.0D0), 0.0D0)
-      RETURN
+ 60   dbetai = dbetai + finsum
+ 70   if (y.ne.x .or. p.ne.pin) dbetai = 1.0d0 - dbetai
+      dbetai = max (min (dbetai, 1.0d0), 0.0d0)
+      return
 !
- 80   DBETAI = 0.0D0
-      XB = P*LOG(MAX(Y,SML)) - LOG(P) - DLBETA(P,Q)
-      IF (XB.GT.ALNSML .AND. Y.NE.0.0D0) DBETAI = EXP(XB)
-      IF (Y.NE.X .OR. P.NE.PIN) DBETAI = 1.0D0 - DBETAI
+ 80   dbetai = 0.0d0
+      xb = p*log(max(y,sml)) - log(p) - dlbeta(p,q)
+      if (xb.gt.alnsml .and. y.ne.0.0d0) dbetai = exp(xb)
+      if (y.ne.x .or. p.ne.pin) dbetai = 1.0d0 - dbetai
 !
-      RETURN
-      END
+      return
+      end
 !I8SAVE
-      INTEGER FUNCTION I8SAVE(ISW,IVALUE,SET)
+      integer function i8save(isw,ivalue,set)
 !
 !  IF (ISW = 1) I8SAVE RETURNS THE CURRENT ERROR NUMBER AND
 !               SETS IT TO IVALUE IF SET = .TRUE. .
@@ -5432,43 +5419,43 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER ISW,IVALUE
-      LOGICAL SET
+      integer isw,ivalue
+      logical set
 !
 !  LOCAL SCALARS
-      INTEGER LERROR,LRECOV
+      integer lerror,lrecov
 !
 !  LOCAL ARRAYS
-      INTEGER IPARAM(2)
+      integer iparam(2)
 !
 !  EQUIVALENCES
-      EQUIVALENCE (IPARAM(1),LERROR), (IPARAM(2),LRECOV)
+      equivalence (iparam(1),lerror), (iparam(2),lrecov)
 !
 !
 !  START EXECUTION ERROR FREE AND WITH RECOVERY TURNED OFF.
 !
-      DATA LERROR/0/ , LRECOV/2/
+      data lerror/0/ , lrecov/2/
 !
-      I8SAVE=IPARAM(ISW)
-      IF (SET) IPARAM(ISW)=IVALUE
+      i8save=iparam(isw)
+      if (set) iparam(isw)=ivalue
 !
-      RETURN
+      return
 !
-      END
+      end
 !DGAMMA
-      DOUBLE PRECISION FUNCTION DGAMMA (X)
+      double precision function dgamma (x)
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION X
+      double precision x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION DXREL,PI,SINPIY,SQ2PIL,XMAX,XMIN,Y
-      INTEGER I,N,NGAM
+      double precision dxrel,pi,sinpiy,sq2pil,xmax,xmin,y
+      integer i,n,ngam
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION GAMCS(42)
+      double precision gamcs(42)
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH,D9LGMC,DCSEVL
@@ -5479,7 +5466,7 @@
 !       EXTERNAL DGAMLM,XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,DBLE,DSQRT,EXP,FLOAT,INT,LOG,SIN,SNGL
+      intrinsic abs,dble,dsqrt,exp,float,int,log,sin,sngl
 !
 !
 ! SERIES FOR GAM        ON THE INTERVAL  0.          TO  1.00000E+00
@@ -5488,138 +5475,138 @@
 !                               SIGNIFICANT FIGURES REQUIRED  30.00
 !                                    DECIMAL PLACES REQUIRED  32.05
 !
-      DATA GAM CS(  1) / +.8571195590 9893314219 2006239994 2 D-2      /
-      DATA GAM CS(  2) / +.4415381324 8410067571 9131577165 2 D-2      /
-      DATA GAM CS(  3) / +.5685043681 5993633786 3266458878 9 D-1      /
-      DATA GAM CS(  4) / -.4219835396 4185605010 1250018662 4 D-2      /
-      DATA GAM CS(  5) / +.1326808181 2124602205 8400679635 2 D-2      /
-      DATA GAM CS(  6) / -.1893024529 7988804325 2394702388 6 D-3      /
-      DATA GAM CS(  7) / +.3606925327 4412452565 7808221722 5 D-4      /
-      DATA GAM CS(  8) / -.6056761904 4608642184 8554829036 5 D-5      /
-      DATA GAM CS(  9) / +.1055829546 3022833447 3182350909 3 D-5      /
-      DATA GAM CS( 10) / -.1811967365 5423840482 9185589116 6 D-6      /
-      DATA GAM CS( 11) / +.3117724964 7153222777 9025459316 9 D-7      /
-      DATA GAM CS( 12) / -.5354219639 0196871408 7408102434 7 D-8      /
-      DATA GAM CS( 13) / +.9193275519 8595889468 8778682594 0 D-9      /
-      DATA GAM CS( 14) / -.1577941280 2883397617 6742327395 3 D-9      /
-      DATA GAM CS( 15) / +.2707980622 9349545432 6654043308 9 D-10     /
-      DATA GAM CS( 16) / -.4646818653 8257301440 8166105893 3 D-11     /
-      DATA GAM CS( 17) / +.7973350192 0074196564 6076717535 9 D-12     /
-      DATA GAM CS( 18) / -.1368078209 8309160257 9949917230 9 D-12     /
-      DATA GAM CS( 19) / +.2347319486 5638006572 3347177168 8 D-13     /
-      DATA GAM CS( 20) / -.4027432614 9490669327 6657053469 9 D-14     /
-      DATA GAM CS( 21) / +.6910051747 3721009121 3833697525 7 D-15     /
-      DATA GAM CS( 22) / -.1185584500 2219929070 5238712619 2 D-15     /
-      DATA GAM CS( 23) / +.2034148542 4963739552 0102605193 2 D-16     /
-      DATA GAM CS( 24) / -.3490054341 7174058492 7401294910 8 D-17     /
-      DATA GAM CS( 25) / +.5987993856 4853055671 3505106602 6 D-18     /
-      DATA GAM CS( 26) / -.1027378057 8722280744 9006977843 1 D-18     /
-      DATA GAM CS( 27) / +.1762702816 0605298249 4275966074 8 D-19     /
-      DATA GAM CS( 28) / -.3024320653 7353062609 5877211204 2 D-20     /
-      DATA GAM CS( 29) / +.5188914660 2183978397 1783355050 6 D-21     /
-      DATA GAM CS( 30) / -.8902770842 4565766924 4925160106 6 D-22     /
-      DATA GAM CS( 31) / +.1527474068 4933426022 7459689130 6 D-22     /
-      DATA GAM CS( 32) / -.2620731256 1873629002 5732833279 9 D-23     /
-      DATA GAM CS( 33) / +.4496464047 8305386703 3104657066 6 D-24     /
-      DATA GAM CS( 34) / -.7714712731 3368779117 0390152533 3 D-25     /
-      DATA GAM CS( 35) / +.1323635453 1260440364 8657271466 6 D-25     /
-      DATA GAM CS( 36) / -.2270999412 9429288167 0231381333 3 D-26     /
-      DATA GAM CS( 37) / +.3896418998 0039914493 2081663999 9 D-27     /
-      DATA GAM CS( 38) / -.6685198115 1259533277 9212799999 9 D-28     /
-      DATA GAM CS( 39) / +.1146998663 1400243843 4761386666 6 D-28     /
-      DATA GAM CS( 40) / -.1967938586 3451346772 9510399999 9 D-29     /
-      DATA GAM CS( 41) / +.3376448816 5853380903 3489066666 6 D-30     /
-      DATA GAM CS( 42) / -.5793070335 7821357846 2549333333 3 D-31     /
+      data gamcs(  1) / +.8571195590989331421920062399942d-2      /
+      data gamcs(  2) / +.4415381324841006757191315771652d-2      /
+      data gamcs(  3) / +.5685043681599363378632664588789d-1      /
+      data gamcs(  4) / -.4219835396418560501012500186624d-2      /
+      data gamcs(  5) / +.1326808181212460220584006796352d-2      /
+      data gamcs(  6) / -.1893024529798880432523947023886d-3      /
+      data gamcs(  7) / +.3606925327441245256578082217225d-4      /
+      data gamcs(  8) / -.6056761904460864218485548290365d-5      /
+      data gamcs(  9) / +.1055829546302283344731823509093d-5      /
+      data gamcs( 10) / -.1811967365542384048291855891166d-6      /
+      data gamcs( 11) / +.3117724964715322277790254593169d-7      /
+      data gamcs( 12) / -.5354219639019687140874081024347d-8      /
+      data gamcs( 13) / +.9193275519859588946887786825940d-9      /
+      data gamcs( 14) / -.1577941280288339761767423273953d-9      /
+      data gamcs( 15) / +.2707980622934954543266540433089d-10     /
+      data gamcs( 16) / -.4646818653825730144081661058933d-11     /
+      data gamcs( 17) / +.7973350192007419656460767175359d-12     /
+      data gamcs( 18) / -.1368078209830916025799499172309d-12     /
+      data gamcs( 19) / +.2347319486563800657233471771688d-13     /
+      data gamcs( 20) / -.4027432614949066932766570534699d-14     /
+      data gamcs( 21) / +.6910051747372100912138336975257d-15     /
+      data gamcs( 22) / -.1185584500221992907052387126192d-15     /
+      data gamcs( 23) / +.2034148542496373955201026051932d-16     /
+      data gamcs( 24) / -.3490054341717405849274012949108d-17     /
+      data gamcs( 25) / +.5987993856485305567135051066026d-18     /
+      data gamcs( 26) / -.1027378057872228074490069778431d-18     /
+      data gamcs( 27) / +.1762702816060529824942759660748d-19     /
+      data gamcs( 28) / -.3024320653735306260958772112042d-20     /
+      data gamcs( 29) / +.5188914660218397839717833550506d-21     /
+      data gamcs( 30) / -.8902770842456576692449251601066d-22     /
+      data gamcs( 31) / +.1527474068493342602274596891306d-22     /
+      data gamcs( 32) / -.2620731256187362900257328332799d-23     /
+      data gamcs( 33) / +.4496464047830538670331046570666d-24     /
+      data gamcs( 34) / -.7714712731336877911703901525333d-25     /
+      data gamcs( 35) / +.1323635453126044036486572714666d-25     /
+      data gamcs( 36) / -.2270999412942928816702313813333d-26     /
+      data gamcs( 37) / +.3896418998003991449320816639999d-27     /
+      data gamcs( 38) / -.6685198115125953327792127999999d-28     /
+      data gamcs( 39) / +.1146998663140024384347613866666d-28     /
+      data gamcs( 40) / -.1967938586345134677295103999999d-29     /
+      data gamcs( 41) / +.3376448816585338090334890666666d-30     /
+      data gamcs( 42) / -.5793070335782135784625493333333d-31     /
 !
-      DATA PI / 3.1415926535 8979323846 2643383279 50 D0 /
+      data pi / 3.14159265358979323846264338327950d0 /
 ! SQ2PIL IS 0.5*LOG(2*PI) = LOG(SQRT(2*PI))
-      DATA SQ2PIL / 0.9189385332 0467274178 0329736405 62 D0 /
-      DATA NGAM, XMIN, XMAX, DXREL / 0, 3*0.D0 /
+      data sq2pil / 0.91893853320467274178032973640562d0 /
+      data ngam, xmin, xmax, dxrel / 0, 3*0.d0 /
 !
-      IF (NGAM.NE.0) GO TO 10
-      NGAM = INITDS (GAMCS, 42, 0.1*SNGL(D1MACH(3)) )
+      if (ngam.ne.0) go to 10
+      ngam = initds (gamcs, 42, 0.1*sngl(d1mach(3)) )
 !
-      CALL DGAMLM (XMIN, XMAX)
-      DXREL = DSQRT (D1MACH(4))
+      call dgamlm (xmin, xmax)
+      dxrel = dsqrt (d1mach(4))
 !
- 10   Y = ABS(X)
-      IF (Y.GT.10.D0) GO TO 50
+ 10   y = abs(x)
+      if (y.gt.10.d0) go to 50
 !
 ! COMPUTE GAMMA(X) FOR -XBND .LE. X .LE. XBND.  REDUCE INTERVAL AND FIND
 ! GAMMA(1+Y) FOR 0.0 .LE. Y .LT. 1.0 FIRST OF ALL.
 !
-      N = X
-      IF (X.LT.0.D0) N = N - 1
-      Y = X - DBLE(FLOAT(N))
-      N = N - 1
-      DGAMMA = 0.9375D0 + DCSEVL (2.D0*Y-1.D0, GAMCS, NGAM)
-      IF (N.EQ.0) RETURN
+      n = x
+      if (x.lt.0.d0) n = n - 1
+      y = x - dble(float(n))
+      n = n - 1
+      dgamma = 0.9375d0 + dcsevl (2.d0*y-1.d0, gamcs, ngam)
+      if (n.eq.0) return
 !
-      IF (N.GT.0) GO TO 30
+      if (n.gt.0) go to 30
 !
 ! COMPUTE GAMMA(X) FOR X .LT. 1.0
 !
-      N = -N
-      IF (X.EQ.0.D0) CALL XERROR ('DGAMMA  X IS 0', 14, 4, 2)
-      IF (X.LT.0.0 .AND. X+DBLE(FLOAT(N-2)).EQ.0.D0) CALL XERROR (
+      n = -n
+      if (x.eq.0.d0) call xerror ('DGAMMA  X IS 0', 14, 4, 2)
+     if (x.lt.0.0 .and. x+dble(float(n-2)).eq.0.d0) call xerror (&
      &  'DGAMMA  X IS A NEGATIVE INTEGER', 31, 4, 2)
-      IF (X.LT.(-0.5D0) .AND. ABS((X-INT(X-0.5D0))/X).LT.DXREL) CALL
-     &  XERROR (  'DGAMMA  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR N
+     if (x.lt.(-0.5d0) .and. abs((x-int(x-0.5d0))/x).lt.dxrel) call&
+    &  xerror (  'DGAMMA  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR N&
      &EGATIVE INTEGER', 68, 1, 1)
 !
-      DO 20 I=1,N
-        DGAMMA = DGAMMA/(X+DBLE(FLOAT(I-1)) )
- 20   CONTINUE
-      RETURN
+      do 20 i=1,n
+        dgamma = dgamma/(x+dble(float(i-1)) )
+ 20   continue
+      return
 !
 ! GAMMA(X) FOR X .GE. 2.0 AND X .LE. 10.0
 !
- 30   DO 40 I=1,N
-        DGAMMA = (Y+DBLE(FLOAT(I))) * DGAMMA
- 40   CONTINUE
-      RETURN
+ 30   do 40 i=1,n
+        dgamma = (y+dble(float(i))) * dgamma
+ 40   continue
+      return
 !
 ! GAMMA(X) FOR ABS(X) .GT. 10.0.  RECALL Y = ABS(X).
 !
- 50   IF (X.GT.XMAX) CALL XERROR ('DGAMMA  X SO BIG GAMMA OVERFLOWS',
+50   if (x.gt.xmax) call xerror ('DGAMMA  X SO BIG GAMMA OVERFLOWS',&
      &  32, 3, 2)
 !
-      DGAMMA = 0.D0
-      IF (X.LT.XMIN) CALL XERROR ('DGAMMA  X SO SMALL GAMMA UNDERFLOWS',
+      dgamma = 0.d0
+     if (x.lt.xmin) call xerror ('DGAMMA  X SO SMALL GAMMA UNDERFLOWS',&
      &  35, 2, 1)
-      IF (X.LT.XMIN) RETURN
+      if (x.lt.xmin) return
 !
-      DGAMMA = EXP ((Y-0.5D0)*LOG(Y) - Y + SQ2PIL + D9LGMC(Y) )
-      IF (X.GT.0.D0) RETURN
+      dgamma = exp ((y-0.5d0)*log(y) - y + sq2pil + d9lgmc(y) )
+      if (x.gt.0.d0) return
 !
-      IF (ABS((X-INT(X-0.5D0))/X).LT.DXREL) CALL XERROR (
-     &  'DGAMMA  ANSWER LT HALF PRECISION, X TOO NEAR NEGATIVE INTEGER',
+     if (abs((x-int(x-0.5d0))/x).lt.dxrel) call xerror (&
+    &  'DGAMMA  ANSWER LT HALF PRECISION, X TOO NEAR NEGATIVE INTEGER',&
      &  61, 1, 1)
 !
-      SINPIY = SIN (PI*Y)
-      IF (SINPIY.EQ.0.D0) CALL XERROR (
+      sinpiy = sin (pi*y)
+     if (sinpiy.eq.0.d0) call xerror (&
      &  'DGAMMA  X IS A NEGATIVE INTEGER', 31, 4, 2)
 !
-      DGAMMA = -PI/(Y*SINPIY*DGAMMA)
+      dgamma = -pi/(y*sinpiy*dgamma)
 !
-      RETURN
-      END
+      return
+      end
 !DERFC
-      DOUBLE PRECISION FUNCTION DERFC (X)
+      double precision function derfc (x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION X
+      double precision x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION SQEPS,SQRTPI,XMAX,XSML,Y
-      REAL ETA
-      INTEGER NTERC2,NTERF,NTERFC
+      double precision sqeps,sqrtpi,xmax,xsml,y
+      real eta
+      integer nterc2,nterf,nterfc
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION ERC2CS(49),ERFCCS(59),ERFCS(21)
+      double precision erc2cs(49),erfccs(59),erfcs(21)
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH,DCSEVL
@@ -5630,7 +5617,7 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,DSQRT,EXP,LOG,SNGL
+      intrinsic abs,dsqrt,exp,log,sngl
 !
 !
 ! SERIES FOR ERF        ON THE INTERVAL  0.          TO  1.00000E+00
@@ -5639,27 +5626,27 @@
 !                               SIGNIFICANT FIGURES REQUIRED  31.05
 !                                    DECIMAL PLACES REQUIRED  32.55
 !
-      DATA ERF CS(  1) / -.4904612123 4691808039 9845440333 76 D-1     /
-      DATA ERF CS(  2) / -.1422612051 0371364237 8247418996 31 D+0     /
-      DATA ERF CS(  3) / +.1003558218 7599795575 7546767129 33 D-1     /
-      DATA ERF CS(  4) / -.5768764699 7674847650 8270255091 67 D-3     /
-      DATA ERF CS(  5) / +.2741993125 2196061034 4221607914 71 D-4     /
-      DATA ERF CS(  6) / -.1104317550 7344507604 1353812959 05 D-5     /
-      DATA ERF CS(  7) / +.3848875542 0345036949 9613114981 74 D-7     /
-      DATA ERF CS(  8) / -.1180858253 3875466969 6317518015 81 D-8     /
-      DATA ERF CS(  9) / +.3233421582 6050909646 4029309533 54 D-10    /
-      DATA ERF CS( 10) / -.7991015947 0045487581 6073747085 95 D-12    /
-      DATA ERF CS( 11) / +.1799072511 3961455611 9672454866 34 D-13    /
-      DATA ERF CS( 12) / -.3718635487 8186926382 3168282094 93 D-15    /
-      DATA ERF CS( 13) / +.7103599003 7142529711 6899083946 66 D-17    /
-      DATA ERF CS( 14) / -.1261245511 9155225832 4954248533 33 D-18    /
-      DATA ERF CS( 15) / +.2091640694 1769294369 1705002666 66 D-20    /
-      DATA ERF CS( 16) / -.3253973102 9314072982 3641600000 00 D-22    /
-      DATA ERF CS( 17) / +.4766867209 7976748332 3733333333 33 D-24    /
-      DATA ERF CS( 18) / -.6598012078 2851343155 1999999999 99 D-26    /
-      DATA ERF CS( 19) / +.8655011469 9637626197 3333333333 33 D-28    /
-      DATA ERF CS( 20) / -.1078892517 7498064213 3333333333 33 D-29    /
-      DATA ERF CS( 21) / +.1281188399 3017002666 6666666666 66 D-31    /
+      data erfcs(  1) / -.49046121234691808039984544033376d-1     /
+      data erfcs(  2) / -.14226120510371364237824741899631d+0     /
+      data erfcs(  3) / +.10035582187599795575754676712933d-1     /
+      data erfcs(  4) / -.57687646997674847650827025509167d-3     /
+      data erfcs(  5) / +.27419931252196061034422160791471d-4     /
+      data erfcs(  6) / -.11043175507344507604135381295905d-5     /
+      data erfcs(  7) / +.38488755420345036949961311498174d-7     /
+      data erfcs(  8) / -.11808582533875466969631751801581d-8     /
+      data erfcs(  9) / +.32334215826050909646402930953354d-10    /
+      data erfcs( 10) / -.79910159470045487581607374708595d-12    /
+      data erfcs( 11) / +.17990725113961455611967245486634d-13    /
+      data erfcs( 12) / -.37186354878186926382316828209493d-15    /
+      data erfcs( 13) / +.71035990037142529711689908394666d-17    /
+      data erfcs( 14) / -.12612455119155225832495424853333d-18    /
+      data erfcs( 15) / +.20916406941769294369170500266666d-20    /
+      data erfcs( 16) / -.32539731029314072982364160000000d-22    /
+      data erfcs( 17) / +.47668672097976748332373333333333d-24    /
+      data erfcs( 18) / -.65980120782851343155199999999999d-26    /
+      data erfcs( 19) / +.86550114699637626197333333333333d-28    /
+      data erfcs( 20) / -.10788925177498064213333333333333d-29    /
+      data erfcs( 21) / +.12811883993017002666666666666666d-31    /
 !
 ! SERIES FOR ERC2       ON THE INTERVAL  2.50000E-01 TO  1.00000E+00
 !                                        WITH WEIGHTED ERROR   2.67E-32
@@ -5667,55 +5654,55 @@
 !                               SIGNIFICANT FIGURES REQUIRED  30.31
 !                                    DECIMAL PLACES REQUIRED  32.42
 !
-      DATA ERC2CS(  1) / -.6960134660 2309501127 3915082619 7 D-1      /
-      DATA ERC2CS(  2) / -.4110133936 2620893489 8221208466 6 D-1      /
-      DATA ERC2CS(  3) / +.3914495866 6896268815 6114370524 4 D-2      /
-      DATA ERC2CS(  4) / -.4906395650 5489791612 8093545077 4 D-3      /
-      DATA ERC2CS(  5) / +.7157479001 3770363807 6089414182 5 D-4      /
-      DATA ERC2CS(  6) / -.1153071634 1312328338 0823284791 2 D-4      /
-      DATA ERC2CS(  7) / +.1994670590 2019976350 5231486770 9 D-5      /
-      DATA ERC2CS(  8) / -.3642666471 5992228739 3611843071 1 D-6      /
-      DATA ERC2CS(  9) / +.6944372610 0050125899 3127721463 3 D-7      /
-      DATA ERC2CS( 10) / -.1371220902 1043660195 3460514121 0 D-7      /
-      DATA ERC2CS( 11) / +.2788389661 0071371319 6386034808 7 D-8      /
-      DATA ERC2CS( 12) / -.5814164724 3311615518 6479105031 6 D-9      /
-      DATA ERC2CS( 13) / +.1238920491 7527531811 8016881795 0 D-9      /
-      DATA ERC2CS( 14) / -.2690639145 3067434323 9042493788 9 D-10     /
-      DATA ERC2CS( 15) / +.5942614350 8479109824 4470968384 0 D-11     /
-      DATA ERC2CS( 16) / -.1332386735 7581195792 8775442057 0 D-11     /
-      DATA ERC2CS( 17) / +.3028046806 1771320171 7369724330 4 D-12     /
-      DATA ERC2CS( 18) / -.6966648814 9410325887 9586758895 4 D-13     /
-      DATA ERC2CS( 19) / +.1620854541 0539229698 1289322762 8 D-13     /
-      DATA ERC2CS( 20) / -.3809934465 2504919998 7691305772 9 D-14     /
-      DATA ERC2CS( 21) / +.9040487815 9788311493 6897101297 5 D-15     /
-      DATA ERC2CS( 22) / -.2164006195 0896073478 0981204700 3 D-15     /
-      DATA ERC2CS( 23) / +.5222102233 9958549846 0798024417 2 D-16     /
-      DATA ERC2CS( 24) / -.1269729602 3645553363 7241552778 0 D-16     /
-      DATA ERC2CS( 25) / +.3109145504 2761975838 3622741295 1 D-17     /
-      DATA ERC2CS( 26) / -.7663762920 3203855240 0956671481 1 D-18     /
-      DATA ERC2CS( 27) / +.1900819251 3627452025 3692973329 0 D-18     /
-      DATA ERC2CS( 28) / -.4742207279 0690395452 2565599996 5 D-19     /
-      DATA ERC2CS( 29) / +.1189649200 0765283828 8068307845 1 D-19     /
-      DATA ERC2CS( 30) / -.3000035590 3257802568 4527131306 6 D-20     /
-      DATA ERC2CS( 31) / +.7602993453 0432461730 1938527709 8 D-21     /
-      DATA ERC2CS( 32) / -.1935909447 6068728815 6981104913 0 D-21     /
-      DATA ERC2CS( 33) / +.4951399124 7733378810 0004238677 3 D-22     /
-      DATA ERC2CS( 34) / -.1271807481 3363718796 0862198988 8 D-22     /
-      DATA ERC2CS( 35) / +.3280049600 4695130433 1584165205 3 D-23     /
-      DATA ERC2CS( 36) / -.8492320176 8228965689 2479242239 9 D-24     /
-      DATA ERC2CS( 37) / +.2206917892 8075602235 1987998719 9 D-24     /
-      DATA ERC2CS( 38) / -.5755617245 6965284983 1281950719 9 D-25     /
-      DATA ERC2CS( 39) / +.1506191533 6392342503 5414405119 9 D-25     /
-      DATA ERC2CS( 40) / -.3954502959 0187969531 0428569599 9 D-26     /
-      DATA ERC2CS( 41) / +.1041529704 1515009799 8464505173 3 D-26     /
-      DATA ERC2CS( 42) / -.2751487795 2787650794 5017890133 3 D-27     /
-      DATA ERC2CS( 43) / +.7290058205 4975574089 9770368000 0 D-28     /
-      DATA ERC2CS( 44) / -.1936939645 9159478040 7750109866 6 D-28     /
-      DATA ERC2CS( 45) / +.5160357112 0514872983 7005482666 6 D-29     /
-      DATA ERC2CS( 46) / -.1378419322 1930940993 8964480000 0 D-29     /
-      DATA ERC2CS( 47) / +.3691326793 1070690422 5109333333 3 D-30     /
-      DATA ERC2CS( 48) / -.9909389590 6243654206 5322666666 6 D-31     /
-      DATA ERC2CS( 49) / +.2666491705 1953884133 2394666666 6 D-31     /
+      data erc2cs(  1) / -.6960134660230950112739150826197d-1      /
+      data erc2cs(  2) / -.4110133936262089348982212084666d-1      /
+      data erc2cs(  3) / +.3914495866689626881561143705244d-2      /
+      data erc2cs(  4) / -.4906395650548979161280935450774d-3      /
+      data erc2cs(  5) / +.7157479001377036380760894141825d-4      /
+      data erc2cs(  6) / -.1153071634131232833808232847912d-4      /
+      data erc2cs(  7) / +.1994670590201997635052314867709d-5      /
+      data erc2cs(  8) / -.3642666471599222873936118430711d-6      /
+      data erc2cs(  9) / +.6944372610005012589931277214633d-7      /
+      data erc2cs( 10) / -.1371220902104366019534605141210d-7      /
+      data erc2cs( 11) / +.2788389661007137131963860348087d-8      /
+      data erc2cs( 12) / -.5814164724331161551864791050316d-9      /
+      data erc2cs( 13) / +.1238920491752753181180168817950d-9      /
+      data erc2cs( 14) / -.2690639145306743432390424937889d-10     /
+      data erc2cs( 15) / +.5942614350847910982444709683840d-11     /
+      data erc2cs( 16) / -.1332386735758119579287754420570d-11     /
+      data erc2cs( 17) / +.3028046806177132017173697243304d-12     /
+      data erc2cs( 18) / -.6966648814941032588795867588954d-13     /
+      data erc2cs( 19) / +.1620854541053922969812893227628d-13     /
+      data erc2cs( 20) / -.3809934465250491999876913057729d-14     /
+      data erc2cs( 21) / +.9040487815978831149368971012975d-15     /
+      data erc2cs( 22) / -.2164006195089607347809812047003d-15     /
+      data erc2cs( 23) / +.5222102233995854984607980244172d-16     /
+      data erc2cs( 24) / -.1269729602364555336372415527780d-16     /
+      data erc2cs( 25) / +.3109145504276197583836227412951d-17     /
+      data erc2cs( 26) / -.7663762920320385524009566714811d-18     /
+      data erc2cs( 27) / +.1900819251362745202536929733290d-18     /
+      data erc2cs( 28) / -.4742207279069039545225655999965d-19     /
+      data erc2cs( 29) / +.1189649200076528382880683078451d-19     /
+      data erc2cs( 30) / -.3000035590325780256845271313066d-20     /
+      data erc2cs( 31) / +.7602993453043246173019385277098d-21     /
+      data erc2cs( 32) / -.1935909447606872881569811049130d-21     /
+      data erc2cs( 33) / +.4951399124773337881000042386773d-22     /
+      data erc2cs( 34) / -.1271807481336371879608621989888d-22     /
+      data erc2cs( 35) / +.3280049600469513043315841652053d-23     /
+      data erc2cs( 36) / -.8492320176822896568924792422399d-24     /
+      data erc2cs( 37) / +.2206917892807560223519879987199d-24     /
+      data erc2cs( 38) / -.5755617245696528498312819507199d-25     /
+      data erc2cs( 39) / +.1506191533639234250354144051199d-25     /
+      data erc2cs( 40) / -.3954502959018796953104285695999d-26     /
+      data erc2cs( 41) / +.1041529704151500979984645051733d-26     /
+      data erc2cs( 42) / -.2751487795278765079450178901333d-27     /
+      data erc2cs( 43) / +.7290058205497557408997703680000d-28     /
+      data erc2cs( 44) / -.1936939645915947804077501098666d-28     /
+      data erc2cs( 45) / +.5160357112051487298370054826666d-29     /
+      data erc2cs( 46) / -.1378419322193094099389644800000d-29     /
+      data erc2cs( 47) / +.3691326793107069042251093333333d-30     /
+      data erc2cs( 48) / -.9909389590624365420653226666666d-31     /
+      data erc2cs( 49) / +.2666491705195388413323946666666d-31     /
 !
 ! SERIES FOR ERFC       ON THE INTERVAL  0.          TO  2.50000E-01
 !                                        WITH WEIGHTED ERROR   1.53E-31
@@ -5723,121 +5710,121 @@
 !                               SIGNIFICANT FIGURES REQUIRED  29.47
 !                                    DECIMAL PLACES REQUIRED  31.70
 !
-      DATA ERFCCS(  1) / +.7151793102 0292477450 3697709496 D-1        /
-      DATA ERFCCS(  2) / -.2653243433 7606715755 8893386681 D-1        /
-      DATA ERFCCS(  3) / +.1711153977 9208558833 2699194606 D-2        /
-      DATA ERFCCS(  4) / -.1637516634 5851788416 3746404749 D-3        /
-      DATA ERFCCS(  5) / +.1987129350 0552036499 5974806758 D-4        /
-      DATA ERFCCS(  6) / -.2843712412 7665550875 0175183152 D-5        /
-      DATA ERFCCS(  7) / +.4606161308 9631303696 9379968464 D-6        /
-      DATA ERFCCS(  8) / -.8227753025 8792084205 7766536366 D-7        /
-      DATA ERFCCS(  9) / +.1592141872 7709011298 9358340826 D-7        /
-      DATA ERFCCS( 10) / -.3295071362 2528432148 6631665072 D-8        /
-      DATA ERFCCS( 11) / +.7223439760 4005554658 1261153890 D-9        /
-      DATA ERFCCS( 12) / -.1664855813 3987295934 4695966886 D-9        /
-      DATA ERFCCS( 13) / +.4010392588 2376648207 7671768814 D-10       /
-      DATA ERFCCS( 14) / -.1004816214 4257311327 2170176283 D-10       /
-      DATA ERFCCS( 15) / +.2608275913 3003338085 9341009439 D-11       /
-      DATA ERFCCS( 16) / -.6991110560 4040248655 7697812476 D-12       /
-      DATA ERFCCS( 17) / +.1929492333 2617070862 4205749803 D-12       /
-      DATA ERFCCS( 18) / -.5470131188 7543310649 0125085271 D-13       /
-      DATA ERFCCS( 19) / +.1589663309 7626974483 9084032762 D-13       /
-      DATA ERFCCS( 20) / -.4726893980 1975548392 0369584290 D-14       /
-      DATA ERFCCS( 21) / +.1435873376 7849847867 2873997840 D-14       /
-      DATA ERFCCS( 22) / -.4449510561 8173583941 7250062829 D-15       /
-      DATA ERFCCS( 23) / +.1404810884 7682334373 7305537466 D-15       /
-      DATA ERFCCS( 24) / -.4513818387 7642108962 5963281623 D-16       /
-      DATA ERFCCS( 25) / +.1474521541 0451330778 7018713262 D-16       /
-      DATA ERFCCS( 26) / -.4892621406 9457761543 6841552532 D-17       /
-      DATA ERFCCS( 27) / +.1647612141 4106467389 5301522827 D-17       /
-      DATA ERFCCS( 28) / -.5626817176 3294080929 9928521323 D-18       /
-      DATA ERFCCS( 29) / +.1947443382 2320785142 9197867821 D-18       /
-      DATA ERFCCS( 30) / -.6826305642 9484207295 6664144723 D-19       /
-      DATA ERFCCS( 31) / +.2421988887 2986492401 8301125438 D-19       /
-      DATA ERFCCS( 32) / -.8693414133 5030704256 3800861857 D-20       /
-      DATA ERFCCS( 33) / +.3155180346 2280855712 2363401262 D-20       /
-      DATA ERFCCS( 34) / -.1157372324 0496087426 1239486742 D-20       /
-      DATA ERFCCS( 35) / +.4288947161 6056539462 3737097442 D-21       /
-      DATA ERFCCS( 36) / -.1605030742 0576168500 5737770964 D-21       /
-      DATA ERFCCS( 37) / +.6063298757 4538026449 5069923027 D-22       /
-      DATA ERFCCS( 38) / -.2311404251 6979584909 8840801367 D-22       /
-      DATA ERFCCS( 39) / +.8888778540 6618855255 4702955697 D-23       /
-      DATA ERFCCS( 40) / -.3447260576 6513765223 0718495566 D-23       /
-      DATA ERFCCS( 41) / +.1347865460 2069650682 7582774181 D-23       /
-      DATA ERFCCS( 42) / -.5311794071 1250217364 5873201807 D-24       /
-      DATA ERFCCS( 43) / +.2109341058 6197831682 8954734537 D-24       /
-      DATA ERFCCS( 44) / -.8438365587 9237891159 8133256738 D-25       /
-      DATA ERFCCS( 45) / +.3399982524 9452089062 7359576337 D-25       /
-      DATA ERFCCS( 46) / -.1379452388 0732420900 2238377110 D-25       /
-      DATA ERFCCS( 47) / +.5634490311 8332526151 3392634811 D-26       /
-      DATA ERFCCS( 48) / -.2316490434 4770654482 3427752700 D-26       /
-      DATA ERFCCS( 49) / +.9584462844 6018101526 3158381226 D-27       /
-      DATA ERFCCS( 50) / -.3990722880 3301097262 4224850193 D-27       /
-      DATA ERFCCS( 51) / +.1672129225 9444773601 7228709669 D-27       /
-      DATA ERFCCS( 52) / -.7045991522 7660138563 8803782587 D-28       /
-      DATA ERFCCS( 53) / +.2979768402 8642063541 2357989444 D-28       /
-      DATA ERFCCS( 54) / -.1262522466 4606192972 2422632994 D-28       /
-      DATA ERFCCS( 55) / +.5395438704 5424879398 5299653154 D-29       /
-      DATA ERFCCS( 56) / -.2380992882 5314591867 5346190062 D-29       /
-      DATA ERFCCS( 57) / +.1099052830 1027615735 9726683750 D-29       /
-      DATA ERFCCS( 58) / -.4867713741 6449657273 2518677435 D-30       /
-      DATA ERFCCS( 59) / +.1525877264 1103575676 3200828211 D-30       /
+      data erfccs(  1) / +.715179310202924774503697709496d-1        /
+      data erfccs(  2) / -.265324343376067157558893386681d-1        /
+      data erfccs(  3) / +.171115397792085588332699194606d-2        /
+      data erfccs(  4) / -.163751663458517884163746404749d-3        /
+      data erfccs(  5) / +.198712935005520364995974806758d-4        /
+      data erfccs(  6) / -.284371241276655508750175183152d-5        /
+      data erfccs(  7) / +.460616130896313036969379968464d-6        /
+      data erfccs(  8) / -.822775302587920842057766536366d-7        /
+      data erfccs(  9) / +.159214187277090112989358340826d-7        /
+      data erfccs( 10) / -.329507136225284321486631665072d-8        /
+      data erfccs( 11) / +.722343976040055546581261153890d-9        /
+      data erfccs( 12) / -.166485581339872959344695966886d-9        /
+      data erfccs( 13) / +.401039258823766482077671768814d-10       /
+      data erfccs( 14) / -.100481621442573113272170176283d-10       /
+      data erfccs( 15) / +.260827591330033380859341009439d-11       /
+      data erfccs( 16) / -.699111056040402486557697812476d-12       /
+      data erfccs( 17) / +.192949233326170708624205749803d-12       /
+      data erfccs( 18) / -.547013118875433106490125085271d-13       /
+      data erfccs( 19) / +.158966330976269744839084032762d-13       /
+      data erfccs( 20) / -.472689398019755483920369584290d-14       /
+      data erfccs( 21) / +.143587337678498478672873997840d-14       /
+      data erfccs( 22) / -.444951056181735839417250062829d-15       /
+      data erfccs( 23) / +.140481088476823343737305537466d-15       /
+      data erfccs( 24) / -.451381838776421089625963281623d-16       /
+      data erfccs( 25) / +.147452154104513307787018713262d-16       /
+      data erfccs( 26) / -.489262140694577615436841552532d-17       /
+      data erfccs( 27) / +.164761214141064673895301522827d-17       /
+      data erfccs( 28) / -.562681717632940809299928521323d-18       /
+      data erfccs( 29) / +.194744338223207851429197867821d-18       /
+      data erfccs( 30) / -.682630564294842072956664144723d-19       /
+      data erfccs( 31) / +.242198888729864924018301125438d-19       /
+      data erfccs( 32) / -.869341413350307042563800861857d-20       /
+      data erfccs( 33) / +.315518034622808557122363401262d-20       /
+      data erfccs( 34) / -.115737232404960874261239486742d-20       /
+      data erfccs( 35) / +.428894716160565394623737097442d-21       /
+      data erfccs( 36) / -.160503074205761685005737770964d-21       /
+      data erfccs( 37) / +.606329875745380264495069923027d-22       /
+      data erfccs( 38) / -.231140425169795849098840801367d-22       /
+      data erfccs( 39) / +.888877854066188552554702955697d-23       /
+      data erfccs( 40) / -.344726057665137652230718495566d-23       /
+      data erfccs( 41) / +.134786546020696506827582774181d-23       /
+      data erfccs( 42) / -.531179407112502173645873201807d-24       /
+      data erfccs( 43) / +.210934105861978316828954734537d-24       /
+      data erfccs( 44) / -.843836558792378911598133256738d-25       /
+      data erfccs( 45) / +.339998252494520890627359576337d-25       /
+      data erfccs( 46) / -.137945238807324209002238377110d-25       /
+      data erfccs( 47) / +.563449031183325261513392634811d-26       /
+      data erfccs( 48) / -.231649043447706544823427752700d-26       /
+      data erfccs( 49) / +.958446284460181015263158381226d-27       /
+      data erfccs( 50) / -.399072288033010972624224850193d-27       /
+      data erfccs( 51) / +.167212922594447736017228709669d-27       /
+      data erfccs( 52) / -.704599152276601385638803782587d-28       /
+      data erfccs( 53) / +.297976840286420635412357989444d-28       /
+      data erfccs( 54) / -.126252246646061929722422632994d-28       /
+      data erfccs( 55) / +.539543870454248793985299653154d-29       /
+      data erfccs( 56) / -.238099288253145918675346190062d-29       /
+      data erfccs( 57) / +.109905283010276157359726683750d-29       /
+      data erfccs( 58) / -.486771374164496572732518677435d-30       /
+      data erfccs( 59) / +.152587726411035756763200828211d-30       /
 !
-      DATA SQRTPI / 1.772453850 9055160272 9816748334 115D0 /
-      DATA NTERF, NTERFC, NTERC2, XSML, XMAX, SQEPS / 3*0, 3*0.D0 /
+      data sqrtpi / 1.77245385090551602729816748334115d0 /
+      data nterf, nterfc, nterc2, xsml, xmax, sqeps / 3*0, 3*0.d0 /
 !
-      IF (NTERF.NE.0) GO TO 10
-      ETA = 0.1*SNGL(D1MACH(3))
-      NTERF = INITDS (ERFCS, 21, ETA)
-      NTERFC = INITDS (ERFCCS, 59, ETA)
-      NTERC2 = INITDS (ERC2CS, 49, ETA)
+      if (nterf.ne.0) go to 10
+      eta = 0.1*sngl(d1mach(3))
+      nterf = initds (erfcs, 21, eta)
+      nterfc = initds (erfccs, 59, eta)
+      nterc2 = initds (erc2cs, 49, eta)
 !
-      XSML = -DSQRT (-LOG(SQRTPI*D1MACH(3)))
-      XMAX = DSQRT (-LOG(SQRTPI*D1MACH(1)) )
-      XMAX = XMAX - 0.5D0*LOG(XMAX)/XMAX - 0.01D0
-      SQEPS = DSQRT (2.0D0*D1MACH(3))
+      xsml = -dsqrt (-log(sqrtpi*d1mach(3)))
+      xmax = dsqrt (-log(sqrtpi*d1mach(1)) )
+      xmax = xmax - 0.5d0*log(xmax)/xmax - 0.01d0
+      sqeps = dsqrt (2.0d0*d1mach(3))
 !
- 10   IF (X.GT.XSML) GO TO 20
+ 10   if (x.gt.xsml) go to 20
 !
 ! ERFC(X) = 1.0 - ERF(X)  FOR  X .LT. XSML
 !
-      DERFC = 2.0D0
-      RETURN
+      derfc = 2.0d0
+      return
 !
- 20   IF (X.GT.XMAX) GO TO 40
-      Y = ABS(X)
-      IF (Y.GT.1.0D0) GO TO 30
+ 20   if (x.gt.xmax) go to 40
+      y = abs(x)
+      if (y.gt.1.0d0) go to 30
 !
 ! ERFC(X) = 1.0 - ERF(X)  FOR ABS(X) .LE. 1.0
 !
-      IF (Y.LT.SQEPS) THEN
-         DERFC = 1.0D0 - 2.0D0*X/SQRTPI
-      ELSE
-         DERFC = 1.0D0 - X*(1.0D0+DCSEVL(2.0D0*X*X-1.0D0,ERFCS,NTERF))
-      END IF
+      if (y.lt.sqeps) then
+         derfc = 1.0d0 - 2.0d0*x/sqrtpi
+      else
+         derfc = 1.0d0 - x*(1.0d0+dcsevl(2.0d0*x*x-1.0d0,erfcs,nterf))
+      end if
 !
-      RETURN
+      return
 !
 ! ERFC(X) = 1.0 - ERF(X)  FOR  1.0 .LT. ABS(X) .LE. XMAX
 !
- 30   Y = Y*Y
-      IF (Y.LE.4.0D0) THEN
-         DERFC = EXP(-Y)/ABS(X) *
-     &           (0.5D0 + DCSEVL((8.0D0/Y-5.0D0)/3.0D0,ERC2CS,NTERC2))
-      ELSE
-         DERFC = EXP(-Y)/ABS(X) *
-     &           (0.5D0 + DCSEVL(8.0D0/Y-1.0D0,ERFCCS,NTERFC))
-      END IF
-      IF (X.LT.0.D0) DERFC = 2.0D0 - DERFC
-      RETURN
+ 30   y = y*y
+      if (y.le.4.0d0) then
+        derfc = exp(-y)/abs(x) *&
+     &           (0.5d0 + dcsevl((8.0d0/y-5.0d0)/3.0d0,erc2cs,nterc2))
+      else
+        derfc = exp(-y)/abs(x) *&
+     &           (0.5d0 + dcsevl(8.0d0/y-1.0d0,erfccs,nterfc))
+      end if
+      if (x.lt.0.d0) derfc = 2.0d0 - derfc
+      return
 !
- 40   CALL XERROR ('DERFC   X SO BIG ERFC UNDERFLOWS', 32, 1, 1)
-      DERFC = 0.D0
-      RETURN
+ 40   call xerror ('DERFC   X SO BIG ERFC UNDERFLOWS', 32, 1, 1)
+      derfc = 0.d0
+      return
 !
-      END
+      end
 !DGAMLM
-      SUBROUTINE DGAMLM (XMIN, XMAX)
+      subroutine dgamlm (xmin, xmax)
 ! JUNE 1977 EDITION.   W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! CALCULATE THE MINIMUM AND MAXIMUM LEGAL BOUNDS FOR X IN GAMMA(X).
@@ -5854,11 +5841,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION XMAX,XMIN
+      double precision xmax,xmin
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION ALNBIG,ALNSML,XLN,XOLD
-      INTEGER I
+      double precision alnbig,alnsml,xln,xold
+      integer i
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH
@@ -5868,49 +5855,49 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,LOG,MAX
+      intrinsic abs,log,max
 !
 !
-      ALNSML = LOG(D1MACH(1))
-      XMIN = -ALNSML
-      DO 10 I=1,10
-        XOLD = XMIN
-        XLN = LOG(XMIN)
-        XMIN = XMIN - XMIN*((XMIN+0.5D0)*XLN - XMIN - 0.2258D0 + ALNSML)
-     &    / (XMIN*XLN+0.5D0)
-        IF (ABS(XMIN-XOLD).LT.0.005D0) GO TO 20
- 10   CONTINUE
-      CALL XERROR ('DGAMLM  UNABLE TO FIND XMIN', 27, 1, 2)
+      alnsml = log(d1mach(1))
+      xmin = -alnsml
+      do 10 i=1,10
+        xold = xmin
+        xln = log(xmin)
+       xmin = xmin - xmin*((xmin+0.5d0)*xln - xmin - 0.2258d0 + alnsml)&
+     &    / (xmin*xln+0.5d0)
+        if (abs(xmin-xold).lt.0.005d0) go to 20
+ 10   continue
+      call xerror ('DGAMLM  UNABLE TO FIND XMIN', 27, 1, 2)
 !
- 20   XMIN = -XMIN + 0.01D0
+ 20   xmin = -xmin + 0.01d0
 !
-      ALNBIG = LOG (D1MACH(2))
-      XMAX = ALNBIG
-      DO 30 I=1,10
-        XOLD = XMAX
-        XLN = LOG(XMAX)
-        XMAX = XMAX - XMAX*((XMAX-0.5D0)*XLN - XMAX + 0.9189D0 - ALNBIG)
-     &    / (XMAX*XLN-0.5D0)
-        IF (ABS(XMAX-XOLD).LT.0.005D0) GO TO 40
- 30   CONTINUE
-      CALL XERROR ('DGAMLM  UNABLE TO FIND XMAX', 27, 2, 2)
+      alnbig = log (d1mach(2))
+      xmax = alnbig
+      do 30 i=1,10
+        xold = xmax
+        xln = log(xmax)
+       xmax = xmax - xmax*((xmax-0.5d0)*xln - xmax + 0.9189d0 - alnbig)&
+     &    / (xmax*xln-0.5d0)
+        if (abs(xmax-xold).lt.0.005d0) go to 40
+ 30   continue
+      call xerror ('DGAMLM  UNABLE TO FIND XMAX', 27, 2, 2)
 !
- 40   XMAX = XMAX - 0.01D0
-      XMIN = MAX (XMIN, -XMAX+1.D0)
+ 40   xmax = xmax - 0.01d0
+      xmin = max (xmin, -xmax+1.d0)
 !
-      RETURN
-      END
+      return
+      end
 !ALBETA
-      REAL FUNCTION ALBETA (A, B)
+      real function albeta (a, b)
 ! JULY 1977 EDITION.   W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL A,B
+      real a,b
 !
 !  LOCAL SCALARS
-      REAL CORR,P,Q,SQ2PIL
+      real corr,p,q,sq2pil
 !
 !  EXTERNAL FUNCTIONS
 !      REAL ALNGAM,ALNREL,GAMMA,R9LGMC
@@ -5920,40 +5907,40 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC LOG,MAX,MIN
+      intrinsic log,max,min
 !
-      DATA SQ2PIL / 0.91893853320467274E0 /
+      data sq2pil / 0.91893853320467274e0 /
 !
-      P = MIN (A, B)
-      Q = MAX (A, B)
+      p = min (a, b)
+      q = max (a, b)
 !
-      IF (P.LE.0.0) CALL XERROR (
+     if (p.le.0.0) call xerror (&
      &  'ALBETA  BOTH ARGUMENTS MUST BE GT ZERO', 38, 1, 2)
-      IF (P.GE.10.0) GO TO 30
-      IF (Q.GE.10.0) GO TO 20
+      if (p.ge.10.0) go to 30
+      if (q.ge.10.0) go to 20
 !
 ! P AND Q ARE SMALL.
 !
-      ALBETA = LOG(GAMMA(P) * (GAMMA(Q)/GAMMA(P+Q)) )
-      RETURN
+      albeta = log(gamma(p) * (gamma(q)/gamma(p+q)) )
+      return
 !
 ! P IS SMALL, BUT Q IS BIG.
 !
- 20   CORR = R9LGMC(Q) - R9LGMC(P+Q)
-      ALBETA = ALNGAM(P) + CORR + P - P*LOG(P+Q) +
-     &  (Q-0.5)*ALNREL(-P/(P+Q))
-      RETURN
+ 20   corr = r9lgmc(q) - r9lgmc(p+q)
+     albeta = alngam(p) + corr + p - p*log(p+q) +&
+     &  (q-0.5)*alnrel(-p/(p+q))
+      return
 !
 ! P AND Q ARE BIG.
 !
- 30   CORR = R9LGMC(P) + R9LGMC(Q) - R9LGMC(P+Q)
-      ALBETA = -0.5*LOG(Q) + SQ2PIL + CORR + (P-0.5)*LOG(P/(P+Q))
-     &  + Q*ALNREL(-P/(P+Q))
-      RETURN
+ 30   corr = r9lgmc(p) + r9lgmc(q) - r9lgmc(p+q)
+     albeta = -0.5*log(q) + sq2pil + corr + (p-0.5)*log(p/(p+q))&
+     &  + q*alnrel(-p/(p+q))
+      return
 !
-      END
+      end
 !XERSAV
-      SUBROUTINE XERSAV(MESSG,NMESSG,NERR,LEVEL,ICOUNT)
+      subroutine xersav(messg,nmessg,nerr,level,icount)
 !
 !     ABSTRACT
 !        RECORD THAT THIS ERROR OCCURRED.
@@ -5977,17 +5964,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER ICOUNT,LEVEL,NERR,NMESSG
+      integer icount,level,nerr,nmessg
 !
 !  ARRAY ARGUMENTS
-      CHARACTER MESSG(NMESSG)*4
+      character messg(nmessg)*4
 !
 !  LOCAL SCALARS
-      INTEGER I,II,IUNIT,KOUNTX,KUNIT,NCHAR,NCOL,NUNIT
+      integer i,ii,iunit,kountx,kunit,nchar,ncol,nunit
 !
 !  LOCAL ARRAYS
-      INTEGER KOUNT(10),LEVTAB(10),LUN(5),NERTAB(10)
-      CHARACTER F(17)*1,MESTAB(10)*4
+      integer kount(10),levtab(10),lun(5),nertab(10)
+      character f(17)*1,mestab(10)*4
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER I1MACH
@@ -5999,92 +5986,92 @@
 !     NEXT THREE DATA STATEMENTS ARE NEEDED MERELY TO SATISFY
 !     CERTAIN CONVENTIONS FOR COMPILERS WHICH DYNAMICALLY
 !     ALLOCATE STORAGE.
-      DATA MESTAB(1),MESTAB(2),MESTAB(3),MESTAB(4),MESTAB(5),
-     &     MESTAB(6),MESTAB(7),MESTAB(8),MESTAB(9),MESTAB(10)
+     data mestab(1),mestab(2),mestab(3),mestab(4),mestab(5),&
+    &     mestab(6),mestab(7),mestab(8),mestab(9),mestab(10)&
      &     /'0','0','0','0','0','0','0','0','0','0'/
-      DATA NERTAB(1),NERTAB(2),NERTAB(3),NERTAB(4),NERTAB(5),
-     &     NERTAB(6),NERTAB(7),NERTAB(8),NERTAB(9),NERTAB(10)
+     data nertab(1),nertab(2),nertab(3),nertab(4),nertab(5),&
+    &     nertab(6),nertab(7),nertab(8),nertab(9),nertab(10)&
      &     /0,0,0,0,0,0,0,0,0,0/
-      DATA LEVTAB(1),LEVTAB(2),LEVTAB(3),LEVTAB(4),LEVTAB(5),
-     &     LEVTAB(6),LEVTAB(7),LEVTAB(8),LEVTAB(9),LEVTAB(10)
+     data levtab(1),levtab(2),levtab(3),levtab(4),levtab(5),&
+    &     levtab(6),levtab(7),levtab(8),levtab(9),levtab(10)&
      &     /0,0,0,0,0,0,0,0,0,0/
 !     NEXT TWO DATA STATEMENTS ARE NECESSARY TO PROVIDE A BLANK
 !     ERROR TABLE INITIALLY
-      DATA KOUNT(1),KOUNT(2),KOUNT(3),KOUNT(4),KOUNT(5),
-     &     KOUNT(6),KOUNT(7),KOUNT(8),KOUNT(9),KOUNT(10)
+     data kount(1),kount(2),kount(3),kount(4),kount(5),&
+    &     kount(6),kount(7),kount(8),kount(9),kount(10)&
      &     /0,0,0,0,0,0,0,0,0,0/
-      DATA KOUNTX/0/
+      data kountx/0/
 !     NEXT DATA STATEMENT SETS UP OUTPUT FORMAT
-      DATA F(1),F(2),F(3),F(4),F(5),F(6),F(7),F(8),F(9),F(10),
-     &     F(11),F(12),F(13),F(14),F(15),F(16),F(17)
-     &     /'(' ,'1' ,'X' ,',' ,'A' ,' ' ,' ' ,',' ,'I' ,' ' ,
+     data f(1),f(2),f(3),f(4),f(5),f(6),f(7),f(8),f(9),f(10),&
+    &     f(11),f(12),f(13),f(14),f(15),f(16),f(17)&
+    &     /'(' ,'1' ,'X' ,',' ,'A' ,' ' ,' ' ,',' ,'I' ,' ' ,&
      &      ' ' ,',' ,'2' ,'I' ,'1' ,'0' ,')' /
-      IF (NMESSG.GT.0) GO TO 80
+      if (nmessg.gt.0) go to 80
 !     DUMP THE TABLE
-         IF (KOUNT(1).EQ.0) RETURN
+         if (kount(1).eq.0) return
 !        PREPARE FORMAT
-         NCHAR = I1MACH(6)
-         CALL S88FMT(2,NCHAR,F(6))
-         NCOL = 20 - NCHAR
-         CALL S88FMT(2,NCOL,F(10))
+         nchar = i1mach(6)
+         call s88fmt(2,nchar,f(6))
+         ncol = 20 - nchar
+         call s88fmt(2,ncol,f(10))
 !        PRINT TO EACH UNIT
-         CALL XGETUA(LUN,NUNIT)
-         DO 60 KUNIT=1,NUNIT
-            IUNIT = LUN(KUNIT)
-            IF (IUNIT.EQ.0) IUNIT = I1MACH(4)
+         call xgetua(lun,nunit)
+         do 60 kunit=1,nunit
+            iunit = lun(kunit)
+            if (iunit.eq.0) iunit = i1mach(4)
 !           PRINT TABLE HEADER
-            WRITE (IUNIT,10)
-   10       FORMAT ('0          ERROR MESSAGE SUMMARY'/
+            write (iunit,10)
+  10       format ('0          ERROR MESSAGE SUMMARY'/&
      &              ' FIRST WORD      NERR     LEVEL     COUNT')
 !           PRINT BODY OF TABLE
-            DO 20 I=1,10
-               IF (KOUNT(I).EQ.0) GO TO 30
-               WRITE (IUNIT,F) MESTAB(I),NERTAB(I),LEVTAB(I),KOUNT(I)
-   20       CONTINUE
-   30       CONTINUE
+            do 20 i=1,10
+               if (kount(i).eq.0) go to 30
+               write (iunit,f) mestab(i),nertab(i),levtab(i),kount(i)
+   20       continue
+   30       continue
 !           PRINT NUMBER OF OTHER ERRORS
-            IF (KOUNTX.NE.0) WRITE (IUNIT,40) KOUNTX
-   40       FORMAT (/' OTHER ERRORS NOT INDIVIDUALLY TABULATED=',I10)
-            WRITE (IUNIT,50)
-   50       FORMAT (1X)
-   60    CONTINUE
-         IF (NMESSG.LT.0) RETURN
+            if (kountx.ne.0) write (iunit,40) kountx
+   40       format (/' OTHER ERRORS NOT INDIVIDUALLY TABULATED=',i10)
+            write (iunit,50)
+   50       format (1x)
+   60    continue
+         if (nmessg.lt.0) return
 !        CLEAR THE ERROR TABLES
-         DO 70 I=1,10
-   70       KOUNT(I) = 0
-         KOUNTX = 0
-         RETURN
-   80 CONTINUE
+         do 70 i=1,10
+   70       kount(i) = 0
+         kountx = 0
+         return
+   80 continue
 !     PROCESS A MESSAGE...
 !     SEARCH FOR THIS MESSG, OR ELSE AN EMPTY SLOT FOR THIS MESSG,
 !     OR ELSE DETERMINE THAT THE ERROR TABLE IS FULL.
-      DO 90 I=1,10
-         II = I
-         IF (KOUNT(I).EQ.0) GO TO 110
-         IF (MESSG(1).NE.MESTAB(I)) GO TO 90
-         IF (NERR.NE.NERTAB(I)) GO TO 90
-         IF (LEVEL.NE.LEVTAB(I)) GO TO 90
-         GO TO 100
-   90 CONTINUE
+      do 90 i=1,10
+         ii = i
+         if (kount(i).eq.0) go to 110
+         if (messg(1).ne.mestab(i)) go to 90
+         if (nerr.ne.nertab(i)) go to 90
+         if (level.ne.levtab(i)) go to 90
+         go to 100
+   90 continue
 !     THREE POSSIBLE CASES...
 !     TABLE IS FULL
-         KOUNTX = KOUNTX+1
-         ICOUNT = 1
-         RETURN
+         kountx = kountx+1
+         icount = 1
+         return
 !     MESSAGE FOUND IN TABLE
-  100    KOUNT(II) = KOUNT(II) + 1
-         ICOUNT = KOUNT(II)
-         RETURN
+  100    kount(ii) = kount(ii) + 1
+         icount = kount(ii)
+         return
 !     EMPTY SLOT FOUND FOR NEW MESSAGE
-  110    MESTAB(II) = MESSG(1)
-         NERTAB(II) = NERR
-         LEVTAB(II) = LEVEL
-         KOUNT(II)  = 1
-         ICOUNT = 1
-         RETURN
-      END
+  110    mestab(ii) = messg(1)
+         nertab(ii) = nerr
+         levtab(ii) = level
+         kount(ii)  = 1
+         icount = 1
+         return
+      end
 !DGAMIT
-      DOUBLE PRECISION FUNCTION DGAMIT (A, X)
+      double precision function dgamit (a, x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! EVALUATE TRICOMI-S INCOMPLETE GAMMA FUNCTION DEFINED BY
@@ -6111,11 +6098,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION A,X
+      double precision a,x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION AEPS,AINTA,ALGAP1,ALNEPS,ALNG,ALX,BOT,H,SGA,
-     &   SGNGAM,SQEPS,T
+     double precision aeps,ainta,algap1,alneps,alng,alx,bot,h,sga,&
+     &   sgngam,sqeps,t
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH,D9GMIT,D9LGIC,D9LGIT,DGAMR,DLNGAM
@@ -6125,71 +6112,71 @@
 !       EXTERNAL DLGAMS,XERCLR,XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,DSIGN,DSQRT,EXP,INT,LOG
+      intrinsic abs,dsign,dsqrt,exp,int,log
 !
 !
-      DATA ALNEPS, SQEPS, BOT / 3*0.D0 /
+      data alneps, sqeps, bot / 3*0.d0 /
 !
-      IF (ALNEPS.NE.0.D0) GO TO 10
-      ALNEPS = -LOG (D1MACH(3))
-      SQEPS = DSQRT (D1MACH(4))
-      BOT = LOG (D1MACH(1))
+      if (alneps.ne.0.d0) go to 10
+      alneps = -log (d1mach(3))
+      sqeps = dsqrt (d1mach(4))
+      bot = log (d1mach(1))
 !
- 10   IF (X.LT.0.D0) CALL XERROR ('DGAMIT  X IS NEGATIVE', 21, 2, 2)
+ 10   if (x.lt.0.d0) call xerror ('DGAMIT  X IS NEGATIVE', 21, 2, 2)
 !
-      IF (X.NE.0.D0) ALX = LOG (X)
-      SGA = 1.0D0
-      IF (A.NE.0.D0) SGA = DSIGN (1.0D0, A)
-      AINTA = INT (A + 0.5D0*SGA)
-      AEPS = A - AINTA
+      if (x.ne.0.d0) alx = log (x)
+      sga = 1.0d0
+      if (a.ne.0.d0) sga = dsign (1.0d0, a)
+      ainta = int (a + 0.5d0*sga)
+      aeps = a - ainta
 !
-      IF (X.GT.0.D0) GO TO 20
-      DGAMIT = 0.0D0
-      IF (AINTA.GT.0.D0 .OR. AEPS.NE.0.D0) DGAMIT = DGAMR(A+1.0D0)
-      RETURN
+      if (x.gt.0.d0) go to 20
+      dgamit = 0.0d0
+      if (ainta.gt.0.d0 .or. aeps.ne.0.d0) dgamit = dgamr(a+1.0d0)
+      return
 !
- 20   IF (X.GT.1.D0) GO TO 30
-      IF (A.GE.(-0.5D0) .OR. AEPS.NE.0.D0) CALL DLGAMS (A+1.0D0, ALGAP1,
-     &  SGNGAM)
-      DGAMIT = D9GMIT (A, X, ALGAP1, SGNGAM, ALX)
-      RETURN
+ 20   if (x.gt.1.d0) go to 30
+     if (a.ge.(-0.5d0) .or. aeps.ne.0.d0) call dlgams (a+1.0d0, algap1,&
+     &  sgngam)
+      dgamit = d9gmit (a, x, algap1, sgngam, alx)
+      return
 !
- 30   IF (A.LT.X) GO TO 40
-      T = D9LGIT (A, X, DLNGAM(A+1.0D0))
-      IF (T.LT.BOT) CALL XERCLR
-      DGAMIT = EXP (T)
-      RETURN
+ 30   if (a.lt.x) go to 40
+      t = d9lgit (a, x, dlngam(a+1.0d0))
+      if (t.lt.bot) call xerclr
+      dgamit = exp (t)
+      return
 !
- 40   ALNG = D9LGIC (A, X, ALX)
+ 40   alng = d9lgic (a, x, alx)
 !
 ! EVALUATE DGAMIT IN TERMS OF LOG (DGAMIC (A, X))
 !
-      H = 1.0D0
-      IF (AEPS.EQ.0.D0 .AND. AINTA.LE.0.D0) GO TO 50
+      h = 1.0d0
+      if (aeps.eq.0.d0 .and. ainta.le.0.d0) go to 50
 !
-      CALL DLGAMS (A+1.0D0, ALGAP1, SGNGAM)
-      T = LOG (ABS(A)) + ALNG - ALGAP1
-      IF (T.GT.ALNEPS) GO TO 60
+      call dlgams (a+1.0d0, algap1, sgngam)
+      t = log (abs(a)) + alng - algap1
+      if (t.gt.alneps) go to 60
 !
-      IF (T.GT.(-ALNEPS)) H = 1.0D0 - SGA * SGNGAM * EXP(T)
-      IF (ABS(H).GT.SQEPS) GO TO 50
+      if (t.gt.(-alneps)) h = 1.0d0 - sga * sgngam * exp(t)
+      if (abs(h).gt.sqeps) go to 50
 !
-      CALL XERCLR
-      CALL XERROR ('DGAMIT  RESULT LT HALF PRECISION', 32, 1, 1)
+      call xerclr
+      call xerror ('DGAMIT  RESULT LT HALF PRECISION', 32, 1, 1)
 !
- 50   T = -A*ALX + LOG(ABS(H))
-      IF (T.LT.BOT) CALL XERCLR
-      DGAMIT = DSIGN (EXP(T), H)
-      RETURN
+ 50   t = -a*alx + log(abs(h))
+      if (t.lt.bot) call xerclr
+      dgamit = dsign (exp(t), h)
+      return
 !
- 60   T = T - A*ALX
-      IF (T.LT.BOT) CALL XERCLR
-      DGAMIT = -SGA * SGNGAM * EXP(T)
-      RETURN
+ 60   t = t - a*alx
+      if (t.lt.bot) call xerclr
+      dgamit = -sga * sgngam * exp(t)
+      return
 !
-      END
+      end
 !GAMIT
-      REAL FUNCTION GAMIT (A, X)
+      real function gamit (a, x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! EVALUATE TRICOMI-S INCOMPLETE GAMMA FUNCTION DEFINED BY
@@ -6216,10 +6203,10 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL A,X
+      real a,x
 !
 !  LOCAL SCALARS
-      REAL AEPS,AINTA,ALGAP1,ALNEPS,ALNG,ALX,BOT,H,SGA,SGNGAM,SQEPS,T
+      real aeps,ainta,algap1,alneps,alng,alx,bot,h,sga,sgngam,sqeps,t
 !
 !  EXTERNAL FUNCTIONS
 !      REAL ALNGAM,GAMR,R1MACH,R9GMIT,R9LGIC,R9LGIT
@@ -6229,67 +6216,67 @@
 !       EXTERNAL ALGAMS,XERCLR,XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,AINT,EXP,LOG,SIGN,SQRT
+      intrinsic abs,aint,exp,log,sign,sqrt
 !
-      DATA ALNEPS, SQEPS, BOT / 3*0.0 /
+      data alneps, sqeps, bot / 3*0.0 /
 !
-      IF (ALNEPS.NE.0.0) GO TO 10
-      ALNEPS = -LOG(R1MACH(3))
-      SQEPS = SQRT(R1MACH(4))
-      BOT = LOG(R1MACH(1))
+      if (alneps.ne.0.0) go to 10
+      alneps = -log(r1mach(3))
+      sqeps = sqrt(r1mach(4))
+      bot = log(r1mach(1))
 !
- 10   IF (X.LT.0.0) CALL XERROR ('GAMIT   X IS NEGATIVE', 21, 2, 2)
+ 10   if (x.lt.0.0) call xerror ('GAMIT   X IS NEGATIVE', 21, 2, 2)
 !
-      IF (X.NE.0.0) ALX = LOG(X)
-      SGA = 1.0
-      IF (A.NE.0.0) SGA = SIGN (1.0, A)
-      AINTA = AINT (A+0.5*SGA)
-      AEPS = A - AINTA
+      if (x.ne.0.0) alx = log(x)
+      sga = 1.0
+      if (a.ne.0.0) sga = sign (1.0, a)
+      ainta = aint (a+0.5*sga)
+      aeps = a - ainta
 !
-      IF (X.GT.0.0) GO TO 20
-      GAMIT = 0.0
-      IF (AINTA.GT.0.0 .OR. AEPS.NE.0.0) GAMIT = GAMR(A+1.0)
-      RETURN
+      if (x.gt.0.0) go to 20
+      gamit = 0.0
+      if (ainta.gt.0.0 .or. aeps.ne.0.0) gamit = gamr(a+1.0)
+      return
 !
- 20   IF (X.GT.1.0) GO TO 40
-      IF (A.GE.(-0.5) .OR. AEPS.NE.0.0) CALL ALGAMS (A+1.0, ALGAP1,
-     &  SGNGAM)
-      GAMIT = R9GMIT (A, X, ALGAP1, SGNGAM, ALX)
-      RETURN
+ 20   if (x.gt.1.0) go to 40
+     if (a.ge.(-0.5) .or. aeps.ne.0.0) call algams (a+1.0, algap1,&
+     &  sgngam)
+      gamit = r9gmit (a, x, algap1, sgngam, alx)
+      return
 !
- 40   IF (A.LT.X) GO TO 50
-      T = R9LGIT (A, X, ALNGAM(A+1.0))
-      IF (T.LT.BOT) CALL XERCLR
-      GAMIT = EXP(T)
-      RETURN
+ 40   if (a.lt.x) go to 50
+      t = r9lgit (a, x, alngam(a+1.0))
+      if (t.lt.bot) call xerclr
+      gamit = exp(t)
+      return
 !
- 50   ALNG = R9LGIC (A, X, ALX)
+ 50   alng = r9lgic (a, x, alx)
 !
 ! EVALUATE GAMIT IN TERMS OF LOG(GAMIC(A,X))
 !
-      H = 1.0
-      IF (AEPS.EQ.0.0 .AND. AINTA.LE.0.0) GO TO 60
-      CALL ALGAMS (A+1.0, ALGAP1, SGNGAM)
-      T = LOG(ABS(A)) + ALNG - ALGAP1
-      IF (T.GT.ALNEPS) GO TO 70
-      IF (T.GT.(-ALNEPS)) H = 1.0 - SGA*SGNGAM*EXP(T)
-      IF (ABS(H).GT.SQEPS) GO TO 60
-      CALL XERCLR
-      CALL XERROR ('GAMIT   RESULT LT HALF PRECISION', 32, 1, 1)
+      h = 1.0
+      if (aeps.eq.0.0 .and. ainta.le.0.0) go to 60
+      call algams (a+1.0, algap1, sgngam)
+      t = log(abs(a)) + alng - algap1
+      if (t.gt.alneps) go to 70
+      if (t.gt.(-alneps)) h = 1.0 - sga*sgngam*exp(t)
+      if (abs(h).gt.sqeps) go to 60
+      call xerclr
+      call xerror ('GAMIT   RESULT LT HALF PRECISION', 32, 1, 1)
 !
- 60   T = -A*ALX + LOG(ABS(H))
-      IF (T.LT.BOT) CALL XERCLR
-      GAMIT = SIGN (EXP(T), H)
-      RETURN
+ 60   t = -a*alx + log(abs(h))
+      if (t.lt.bot) call xerclr
+      gamit = sign (exp(t), h)
+      return
 !
- 70   T = T - A*ALX
-      IF (T.LT.BOT) CALL XERCLR
-      GAMIT = -SGA*SGNGAM*EXP(T)
-      RETURN
+ 70   t = t - a*alx
+      if (t.lt.bot) call xerclr
+      gamit = -sga*sgngam*exp(t)
+      return
 !
-      END
+      end
 !DLGAMS
-      SUBROUTINE DLGAMS (X, DLGAM, SGNGAM)
+      subroutine dlgams (x, dlgam, sgngam)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! EVALUATE LOG ABS (GAMMA(X)) AND RETURN THE SIGN OF GAMMA(X) IN SGNGAM.
@@ -6299,27 +6286,27 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION DLGAM,SGNGAM,X
+      double precision dlgam,sgngam,x
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION DLNGAM
 !       EXTERNAL DLNGAM
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC INT,MOD
+      intrinsic int,mod
 !
 !
-      DLGAM = DLNGAM(X)
-      SGNGAM = 1.0D0
-      IF (X.GT.0.D0) RETURN
+      dlgam = dlngam(x)
+      sgngam = 1.0d0
+      if (x.gt.0.d0) return
 !
 !     INT = DMOD (-INT(X), 2.0D0) + 0.1D0
-      IF (INT(MOD(-INT(X),2)+0.1D0).EQ.0) SGNGAM = -1.0D0
+      if (int(mod(-int(x),2)+0.1d0).eq.0) sgngam = -1.0d0
 !
-      RETURN
-      END
+      return
+      end
 !GAMR
-      REAL FUNCTION GAMR (X)
+      real function gamr (x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 ! THIS ROUTINE, NOT GAMMA(X), SHOULD BE THE FUNDAMENTAL ONE.
 !
@@ -6327,11 +6314,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL X
+      real x
 !
 !  LOCAL SCALARS
-      REAL ALNGX,SGNGX
-      INTEGER IROLD
+      real alngx,sgngx
+      integer irold
 !
 !  EXTERNAL FUNCTIONS
 !      REAL GAMMA
@@ -6341,28 +6328,28 @@
 !       EXTERNAL ALGAMS,XERCLR,XGETF,XSETF
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,AINT,EXP
+      intrinsic abs,aint,exp
 !
-      GAMR = 0.0
-      IF (X.LE.0.0 .AND. AINT(X).EQ.X) RETURN
+      gamr = 0.0
+      if (x.le.0.0 .and. aint(x).eq.x) return
 !
-      CALL XGETF (IROLD)
-      CALL XSETF (1)
-      IF (ABS(X).GT.10.0) GO TO 10
-      GAMR = 1.0/GAMMA(X)
-      CALL XERCLR
-      CALL XSETF (IROLD)
-      RETURN
+      call xgetf (irold)
+      call xsetf (1)
+      if (abs(x).gt.10.0) go to 10
+      gamr = 1.0/gamma(x)
+      call xerclr
+      call xsetf (irold)
+      return
 !
- 10   CALL ALGAMS (X, ALNGX, SGNGX)
-      CALL XERCLR
-      CALL XSETF (IROLD)
-      GAMR = SGNGX * EXP(-ALNGX)
-      RETURN
+ 10   call algams (x, alngx, sgngx)
+      call xerclr
+      call xsetf (irold)
+      gamr = sgngx * exp(-alngx)
+      return
 !
-      END
+      end
 !XERCLR
-      SUBROUTINE XERCLR
+      subroutine xerclr
 !
 !     ABSTRACT
 !        THIS ROUTINE SIMPLY RESETS THE CURRENT ERROR NUMBER TO ZERO.
@@ -6377,17 +6364,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  LOCAL SCALARS
-      INTEGER JUNK
+      integer junk
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER J4SAVE
 !       EXTERNAL J4SAVE
 !
-      JUNK = J4SAVE(1,0,.TRUE.)
-      RETURN
-      END
+      junk = j4save(1,0,.true.)
+      return
+      end
 !BETAI
-      REAL FUNCTION BETAI (X, PIN, QIN)
+      real function betai (x, pin, qin)
 ! APRIL 1977 VERSION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 ! BASED ON BOSTEN AND BATTISTE, REMARK ON ALGORITHM 179, COMM. ACM,
 ! V 17, P 153, (1974).
@@ -6403,11 +6390,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL PIN,QIN,X
+      real pin,qin,x
 !
 !  LOCAL SCALARS
-      REAL ALNEPS,ALNSML,C,EPS,FAC1,FAC2,FINSUM,P,P1,PS,Q,SML,TERM,XB,Y
-      INTEGER I,IB,N
+      real alneps,alnsml,c,eps,fac1,fac2,finsum,p,p1,ps,q,sml,term,xb,y
+      integer i,ib,n
 !
 !  EXTERNAL FUNCTIONS
 !      REAL ALBETA,R1MACH
@@ -6417,108 +6404,108 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,AINT,EXP,FLOAT,LOG,MAX,MIN,REAL
+      intrinsic abs,aint,exp,float,log,max,min,real
 !
-      DATA             EPS, ALNEPS, SML, ALNSML / 4*0.0 /
+      data             eps, alneps, sml, alnsml / 4*0.0 /
 !
-      IF (EPS.NE.0.) GO TO 10
-      EPS = R1MACH(3)
-      ALNEPS = LOG(EPS)
-      SML = R1MACH(1)
-      ALNSML = LOG(SML)
+      if (eps.ne.0.) go to 10
+      eps = r1mach(3)
+      alneps = log(eps)
+      sml = r1mach(1)
+      alnsml = log(sml)
 !
- 10   IF (X.LT.0. .OR. X.GT.1.0) CALL XERROR (
+10   if (x.lt.0. .or. x.gt.1.0) call xerror (&
      &  'BETAI   X IS NOT IN THE RANGE (0,1)', 35, 1, 2)
-      IF (PIN.LE.0. .OR. QIN.LE.0.) CALL XERROR (
+     if (pin.le.0. .or. qin.le.0.) call xerror (&
      &  'BETAI   P AND/OR Q IS LE ZERO', 29, 2, 2)
 !
-      Y = X
-      P = PIN
-      Q = QIN
-      IF (Q.LE.P .AND. X.LT.0.8) GO TO 20
-      IF (X.LT.0.2) GO TO 20
-      Y = 1.0 - Y
-      P = QIN
-      Q = PIN
+      y = x
+      p = pin
+      q = qin
+      if (q.le.p .and. x.lt.0.8) go to 20
+      if (x.lt.0.2) go to 20
+      y = 1.0 - y
+      p = qin
+      q = pin
 !
- 20   IF ((P+Q)*Y/(P+1.).LT.EPS) GO TO 80
+ 20   if ((p+q)*y/(p+1.).lt.eps) go to 80
 !
 ! EVALUATE THE INFINITE SUM FIRST.
 ! TERM WILL EQUAL Y**P/BETA(PS,P) * (1.-PS)I * Y**I / FAC(I)
 !
-      PS = Q - AINT(Q)
-      IF (PS.EQ.0.) PS = 1.0
-      XB = P*LOG(Y) -  ALBETA(PS, P) - LOG(P)
-      BETAI = 0.0
-      IF (XB.GE.ALNSML) THEN
-         BETAI = EXP(XB)
-         FAC2 = 1.0
-         IF (PS.NE.1.0E0) THEN
-            FAC1 = 1.0
-            N = MAX(ALNEPS/LOG(Y), 4.0E0)
-            DO 30 I=1,N
-               IF ((I-PS.EQ.0.0E0) .OR. (FAC1.EQ.0.0E0)) THEN
-                  FAC1 = 0.0E0
-               ELSE
-                  IF (LOG(ABS(FAC1)) + LOG(ABS(I-PS)) + LOG(Y) -
-     &                LOG(REAL(I)) .LT. ALNSML) THEN
-                     FAC1 = 0.0E0
-                  ELSE
-                     FAC1 = FAC1 * (I-PS)*Y/I
-                  END IF
-               END IF
-               FAC2 = FAC2 + FAC1*P/(P+I)
- 30         CONTINUE
-         END IF
-         BETAI = BETAI*FAC2
-      END IF
+      ps = q - aint(q)
+      if (ps.eq.0.) ps = 1.0
+      xb = p*log(y) -  albeta(ps, p) - log(p)
+      betai = 0.0
+      if (xb.ge.alnsml) then
+         betai = exp(xb)
+         fac2 = 1.0
+         if (ps.ne.1.0e0) then
+            fac1 = 1.0
+            n = max(alneps/log(y), 4.0e0)
+            do 30 i=1,n
+               if ((i-ps.eq.0.0e0) .or. (fac1.eq.0.0e0)) then
+                  fac1 = 0.0e0
+               else
+                 if (log(abs(fac1)) + log(abs(i-ps)) + log(y) -&
+     &                log(real(i)) .lt. alnsml) then
+                     fac1 = 0.0e0
+                  else
+                     fac1 = fac1 * (i-ps)*y/i
+                  end if
+               end if
+               fac2 = fac2 + fac1*p/(p+i)
+ 30         continue
+         end if
+         betai = betai*fac2
+      end if
 !
 ! NOW EVALUATE THE FINITE SUM, MAYBE.
 !
-      IF (Q.LE.1.0) GO TO 70
+      if (q.le.1.0) go to 70
 !
-      XB = P*LOG(Y) + Q*LOG(1.0-Y) - ALBETA(P,Q) - LOG(Q)
-      IB = MAX (XB/ALNSML, 0.0)
-      TERM = EXP (XB - FLOAT(IB)*ALNSML)
-      C = 1.0/(1.0-Y)
-      P1 = Q*C/(P+Q-1.)
+      xb = p*log(y) + q*log(1.0-y) - albeta(p,q) - log(q)
+      ib = max (xb/alnsml, 0.0)
+      term = exp (xb - float(ib)*alnsml)
+      c = 1.0/(1.0-y)
+      p1 = q*c/(p+q-1.)
 !
-      FINSUM = 0.0
-      N = Q
-      IF (Q.EQ.FLOAT(N)) N = N - 1
-      DO 50 I=1,N
-        IF (P1.LE.1.0 .AND. TERM/EPS.LE.FINSUM) GO TO 60
-        IF (Q-I+1.0E0 .EQ. 0.0E0) THEN
-          TERM = 0.0E0
-        ELSE
-          IF (LOG(ABS(Q-I+1.0E0)) + LOG(ABS(C)) + LOG(ABS(TERM)) -
-     &        LOG(ABS(P+Q-I)) .LT. ALNSML) THEN
-            TERM = 0.0E0
-          ELSE
-            TERM = (Q-I+1.0E0)*C*TERM/(P+Q-I)
-          END IF
-        END IF
+      finsum = 0.0
+      n = q
+      if (q.eq.float(n)) n = n - 1
+      do 50 i=1,n
+        if (p1.le.1.0 .and. term/eps.le.finsum) go to 60
+        if (q-i+1.0e0 .eq. 0.0e0) then
+          term = 0.0e0
+        else
+         if (log(abs(q-i+1.0e0)) + log(abs(c)) + log(abs(term)) -&
+     &        log(abs(p+q-i)) .lt. alnsml) then
+            term = 0.0e0
+          else
+            term = (q-i+1.0e0)*c*term/(p+q-i)
+          end if
+        end if
 !
-        IF (TERM.GT.1.0) IB = IB - 1
-        IF (TERM.GT.1.0) TERM = TERM*SML
+        if (term.gt.1.0) ib = ib - 1
+        if (term.gt.1.0) term = term*sml
 !
-        IF (IB.EQ.0) FINSUM = FINSUM + TERM
- 50   CONTINUE
+        if (ib.eq.0) finsum = finsum + term
+ 50   continue
 !
- 60   BETAI = BETAI + FINSUM
- 70   IF (Y.NE.X .OR. P.NE.PIN) BETAI = 1.0 - BETAI
-      BETAI = MAX (MIN (BETAI, 1.0), 0.0)
-      RETURN
+ 60   betai = betai + finsum
+ 70   if (y.ne.x .or. p.ne.pin) betai = 1.0 - betai
+      betai = max (min (betai, 1.0), 0.0)
+      return
 !
- 80   BETAI = 0.0
-      XB = P*LOG(MAX(Y,SML)) - LOG(P) - ALBETA(P,Q)
-      IF (XB.GT.ALNSML .AND. Y.NE.0.) BETAI = EXP (XB)
-      IF (Y.NE.X .OR. P.NE.PIN) BETAI = 1.0 - BETAI
-      RETURN
+ 80   betai = 0.0
+      xb = p*log(max(y,sml)) - log(p) - albeta(p,q)
+      if (xb.gt.alnsml .and. y.ne.0.) betai = exp (xb)
+      if (y.ne.x .or. p.ne.pin) betai = 1.0 - betai
+      return
 !
-      END
+      end
 !J4SAVE
-      INTEGER FUNCTION J4SAVE(IWHICH,IVALUE,ISET)
+      integer function j4save(iwhich,ivalue,iset)
 !
 !     ABSTRACT
 !        J4SAVE SAVES AND RECALLS SEVERAL GLOBAL VARIABLES NEEDED
@@ -6557,21 +6544,21 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER IVALUE,IWHICH
-      LOGICAL ISET
+      integer ivalue,iwhich
+      logical iset
 !
 !  LOCAL ARRAYS
-      INTEGER IPARAM(9)
+      integer iparam(9)
 !
-      DATA IPARAM(1),IPARAM(2),IPARAM(3),IPARAM(4)/0,1,0,10/
-      DATA IPARAM(5)/1/
-      DATA IPARAM(6),IPARAM(7),IPARAM(8),IPARAM(9)/0,0,0,0/
-      J4SAVE = IPARAM(IWHICH)
-      IF (ISET) IPARAM(IWHICH) = IVALUE
-      RETURN
-      END
+      data iparam(1),iparam(2),iparam(3),iparam(4)/0,1,0,10/
+      data iparam(5)/1/
+      data iparam(6),iparam(7),iparam(8),iparam(9)/0,0,0,0/
+      j4save = iparam(iwhich)
+      if (iset) iparam(iwhich) = ivalue
+      return
+      end
 !XGETF
-      SUBROUTINE XGETF(KONTRL)
+      subroutine xgetf(kontrl)
 !
 !     ABSTRACT
 !        XGETF RETURNS THE CURRENT VALUE OF THE ERROR CONTROL FLAG
@@ -6585,17 +6572,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER KONTRL
+      integer kontrl
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER J4SAVE
 !       EXTERNAL J4SAVE
 !
-      KONTRL = J4SAVE(2,0,.FALSE.)
-      RETURN
-      END
+      kontrl = j4save(2,0,.false.)
+      return
+      end
 !D9LGMC
-      DOUBLE PRECISION FUNCTION D9LGMC (X)
+      double precision function d9lgmc (x)
 ! AUGUST 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! COMPUTE THE LOG GAMMA CORRECTION FACTOR FOR X .GE. 10. SO THAT
@@ -6605,14 +6592,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION X
+      double precision x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION XBIG,XMAX
-      INTEGER NALGM
+      double precision xbig,xmax
+      integer nalgm
 !
 !  LOCAL ARRAYS
-      DOUBLE PRECISION ALGMCS(15)
+      double precision algmcs(15)
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH,DCSEVL
@@ -6623,7 +6610,7 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC DSQRT,EXP,LOG,MIN,SNGL
+      intrinsic dsqrt,exp,log,min,sngl
 !
 !
 ! SERIES FOR ALGM       ON THE INTERVAL  0.          TO  1.00000E-02
@@ -6632,44 +6619,44 @@
 !                               SIGNIFICANT FIGURES REQUIRED  29.81
 !                                    DECIMAL PLACES REQUIRED  31.48
 !
-      DATA ALGMCS(  1) / +.1666389480 4518632472 0572965082 2 D+0      /
-      DATA ALGMCS(  2) / -.1384948176 0675638407 3298605913 5 D-4      /
-      DATA ALGMCS(  3) / +.9810825646 9247294261 5717154748 7 D-8      /
-      DATA ALGMCS(  4) / -.1809129475 5724941942 6330626671 9 D-10     /
-      DATA ALGMCS(  5) / +.6221098041 8926052271 2601554341 6 D-13     /
-      DATA ALGMCS(  6) / -.3399615005 4177219443 0333059966 6 D-15     /
-      DATA ALGMCS(  7) / +.2683181998 4826987489 5753884666 6 D-17     /
-      DATA ALGMCS(  8) / -.2868042435 3346432841 4462239999 9 D-19     /
-      DATA ALGMCS(  9) / +.3962837061 0464348036 7930666666 6 D-21     /
-      DATA ALGMCS( 10) / -.6831888753 9857668701 1199999999 9 D-23     /
-      DATA ALGMCS( 11) / +.1429227355 9424981475 7333333333 3 D-24     /
-      DATA ALGMCS( 12) / -.3547598158 1010705471 9999999999 9 D-26     /
-      DATA ALGMCS( 13) / +.1025680058 0104709120 0000000000 0 D-27     /
-      DATA ALGMCS( 14) / -.3401102254 3167487999 9999999999 9 D-29     /
-      DATA ALGMCS( 15) / +.1276642195 6300629333 3333333333 3 D-30     /
+      data algmcs(  1) / +.1666389480451863247205729650822d+0      /
+      data algmcs(  2) / -.1384948176067563840732986059135d-4      /
+      data algmcs(  3) / +.9810825646924729426157171547487d-8      /
+      data algmcs(  4) / -.1809129475572494194263306266719d-10     /
+      data algmcs(  5) / +.6221098041892605227126015543416d-13     /
+      data algmcs(  6) / -.3399615005417721944303330599666d-15     /
+      data algmcs(  7) / +.2683181998482698748957538846666d-17     /
+      data algmcs(  8) / -.2868042435334643284144622399999d-19     /
+      data algmcs(  9) / +.3962837061046434803679306666666d-21     /
+      data algmcs( 10) / -.6831888753985766870111999999999d-23     /
+      data algmcs( 11) / +.1429227355942498147573333333333d-24     /
+      data algmcs( 12) / -.3547598158101070547199999999999d-26     /
+      data algmcs( 13) / +.1025680058010470912000000000000d-27     /
+      data algmcs( 14) / -.3401102254316748799999999999999d-29     /
+      data algmcs( 15) / +.1276642195630062933333333333333d-30     /
 !
-      DATA NALGM, XBIG, XMAX / 0, 2*0.D0 /
+      data nalgm, xbig, xmax / 0, 2*0.d0 /
 !
-      IF (NALGM.NE.0) GO TO 10
-      NALGM = INITDS (ALGMCS, 15, SNGL(D1MACH(3)) )
-      XBIG = 1.0D0/DSQRT(D1MACH(3))
-      XMAX = EXP (MIN(LOG(D1MACH(2)/12.D0), -LOG(12.D0*D1MACH(1))))
+      if (nalgm.ne.0) go to 10
+      nalgm = initds (algmcs, 15, sngl(d1mach(3)) )
+      xbig = 1.0d0/dsqrt(d1mach(3))
+      xmax = exp (min(log(d1mach(2)/12.d0), -log(12.d0*d1mach(1))))
 !
- 10   IF (X.LT.10.D0) CALL XERROR ('D9LGMC  X MUST BE GE 10', 23, 1, 2)
-      IF (X.GE.XMAX) GO TO 20
+ 10   if (x.lt.10.d0) call xerror ('D9LGMC  X MUST BE GE 10', 23, 1, 2)
+      if (x.ge.xmax) go to 20
 !
-      D9LGMC = 1.D0/(12.D0*X)
-      IF (X.LT.XBIG) D9LGMC = DCSEVL (2.0D0*(10.D0/X)**2-1.D0, ALGMCS,
-     &  NALGM) / X
-      RETURN
+      d9lgmc = 1.d0/(12.d0*x)
+     if (x.lt.xbig) d9lgmc = dcsevl (2.0d0*(10.d0/x)**2-1.d0, algmcs,&
+     &  nalgm) / x
+      return
 !
- 20   D9LGMC = 0.D0
-      CALL XERROR ('D9LGMC  X SO BIG D9LGMC UNDERFLOWS', 34, 2, 1)
-      RETURN
+ 20   d9lgmc = 0.d0
+      call xerror ('D9LGMC  X SO BIG D9LGMC UNDERFLOWS', 34, 2, 1)
+      return
 !
-      END
+      end
 !ALGAMS
-      SUBROUTINE ALGAMS (X, ALGAM, SGNGAM)
+      subroutine algams (x, algam, sgngam)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! EVALUATE LOG ABS (GAMMA(X)) AND RETURN THE SIGN OF GAMMA(X) IN SGNGAM.
@@ -6679,26 +6666,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL ALGAM,SGNGAM,X
+      real algam,sgngam,x
 !
 !  EXTERNAL FUNCTIONS
 !      REAL ALNGAM
 !       EXTERNAL ALNGAM
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC INT,MOD
+      intrinsic int,mod
 !
-      ALGAM = ALNGAM(X)
-      SGNGAM = 1.0
-      IF (X.GT.0.0) RETURN
+      algam = alngam(x)
+      sgngam = 1.0
+      if (x.gt.0.0) return
 !
 !     INT = AMOD (-AINT(X), 2.0) + 0.1
-      IF (INT(MOD(-INT(X),2)+0.1).EQ.0) SGNGAM = -1.0
+      if (int(mod(-int(x),2)+0.1).eq.0) sgngam = -1.0
 !
-      RETURN
-      END
+      return
+      end
 !DGAMI
-      DOUBLE PRECISION FUNCTION DGAMI (A, X)
+      double precision function dgami (a, x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! EVALUATE THE INCOMPLETE GAMMA FUNCTION DEFINED BY
@@ -6714,10 +6701,10 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      DOUBLE PRECISION A,X
+      double precision a,x
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION FACTOR
+      double precision factor
 !
 !  EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION D1MACH,DGAMIT,DLNGAM
@@ -6727,26 +6714,26 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC EXP,LOG
+      intrinsic exp,log
 !
 !
-      IF (A.LE.0.D0) CALL XERROR ('DGAMI   A MUST BE GT ZERO', 25, 1,2)
-      IF (X.LT.0.D0) CALL XERROR ('DGAMI   X MUST BE GE ZERO', 25, 2,2)
+      if (a.le.0.d0) call xerror ('DGAMI   A MUST BE GT ZERO', 25, 1,2)
+      if (x.lt.0.d0) call xerror ('DGAMI   X MUST BE GE ZERO', 25, 2,2)
 !
-      DGAMI = 0.D0
-      IF (X.EQ.0.0D0) RETURN
+      dgami = 0.d0
+      if (x.eq.0.0d0) return
 !
 ! THE ONLY ERROR POSSIBLE IN THE EXPRESSION BELOW IS A FATAL OVERFLOW.
 !
-      FACTOR = DLNGAM(A) + A*LOG(X)
-      IF (FACTOR.GT.LOG(D1MACH(2))) THEN
-         DGAMI = D1MACH(2)
-      ELSE
-         DGAMI = EXP(FACTOR) * DGAMIT(A,X)
-      END IF
+      factor = dlngam(a) + a*log(x)
+      if (factor.gt.log(d1mach(2))) then
+         dgami = d1mach(2)
+      else
+         dgami = exp(factor) * dgamit(a,x)
+      end if
 !
-      RETURN
-      END
+      return
+      end
 
 !I1MACH
       integer function i1mach(i)
@@ -7449,33 +7436,33 @@
       integer,parameter :: dt=digits(0.0d0)
       integer,parameter :: dmine=minexponent(0.0d0)
       integer,parameter :: dmaxe=maxexponent(0.0d0)
-      data IMACH( 1)/stdin/                               ! I/O UNIT NUMBERS : THE STANDARD INPUT UNIT.
-      data IMACH( 2)/stdout/                              ! I/O UNIT NUMBERS : THE STANDARD OUTPUT UNIT.
-      data IMACH( 3)/7/                                   ! I/O UNIT NUMBERS : THE STANDARD PUNCH UNIT.
-      data IMACH( 4)/stderr/                              ! I/O UNIT NUMBERS : THE STANDARD ERROR MESSAGE UNIT.
-      data IMACH( 5)/bpi/                                 ! WORDS            : THE NUMBER OF BITS PER INTEGER STORAGE UNIT.
-      data IMACH( 6)/cpi/                                 ! WORDS            : THE NUMBER OF CHARACTERS PER INTEGER STORAGE UNIT.
+      data imach( 1)/stdin/                               ! I/O UNIT NUMBERS : THE STANDARD INPUT UNIT.
+      data imach( 2)/stdout/                              ! I/O UNIT NUMBERS : THE STANDARD OUTPUT UNIT.
+      data imach( 3)/7/                                   ! I/O UNIT NUMBERS : THE STANDARD PUNCH UNIT.
+      data imach( 4)/stderr/                              ! I/O UNIT NUMBERS : THE STANDARD ERROR MESSAGE UNIT.
+      data imach( 5)/bpi/                                 ! WORDS            : THE NUMBER OF BITS PER INTEGER STORAGE UNIT.
+      data imach( 6)/cpi/                                 ! WORDS            : THE NUMBER OF CHARACTERS PER INTEGER STORAGE UNIT.
 !  INTEGERS.
 !    ASSUME INTEGERS ARE REPRESENTED IN THE S-DIGIT, BASE-A FORM
 !               SIGN ( X(S-1)*A**(S-1) + ... + X(1)*A + X(0) )
 !               WHERE 0 .LE. X(I) .LT. A FOR I=0,...,S-1.
-      data IMACH( 7)/ia/                ! A, THE BASE.
-      data IMACH( 8)/is/                ! S, THE NUMBER OF BASE-A DIGITS.
-      data IMACH( 9)/ibig/              ! A**S - 1, THE LARGEST MAGNITUDE.
+      data imach( 7)/ia/                ! A, THE BASE.
+      data imach( 8)/is/                ! S, THE NUMBER OF BASE-A DIGITS.
+      data imach( 9)/ibig/              ! A**S - 1, THE LARGEST MAGNITUDE.
 !  FLOATING-POINT NUMBERS.
 !    ASSUME FLOATING-POINT NUMBERS ARE REPRESENTED IN THE T-DIGIT, BASE-B FORM
 !         SIGN (B**E)*( (X(1)/B) + ... + (X(T)/B**T) )
 !         WHERE 0 .LE. X(I) .LT. B FOR I=1,...,T,
 !         0 .LT. X(1), AND EMIN .LE. E .LE. EMAX.
-      data IMACH(10)/rb/                 ! B, THE BASE.
+      data imach(10)/rb/                 ! B, THE BASE.
 !  SINGLE-PRECISION
-      data IMACH(11)/rt/                 ! T, THE NUMBER OF BASE-B DIGITS.
-      data IMACH(12)/rmine/              ! EMIN, THE SMALLEST EXPONENT E.
-      data IMACH(13)/rmaxe/              ! EMAX, THE LARGEST EXPONENT E.
+      data imach(11)/rt/                 ! T, THE NUMBER OF BASE-B DIGITS.
+      data imach(12)/rmine/              ! EMIN, THE SMALLEST EXPONENT E.
+      data imach(13)/rmaxe/              ! EMAX, THE LARGEST EXPONENT E.
 !  DOUBLE-PRECISION
-      data IMACH(14)/dt/                 ! T, THE NUMBER OF BASE-B DIGITS.
-      data IMACH(15)/dmine/              ! EMIN, THE SMALLEST EXPONENT E.
-      data IMACH(16)/dmaxe/, SANITY/987/ ! EMAX, THE LARGEST EXPONENT E.
+      data imach(14)/dt/                 ! T, THE NUMBER OF BASE-B DIGITS.
+      data imach(15)/dmine/              ! EMIN, THE SMALLEST EXPONENT E.
+      data imach(16)/dmaxe/, sanity/987/ ! EMAX, THE LARGEST EXPONENT E.
 !
 !  ***  ISSUE STOP IF ALL DATA STATEMENTS ARE COMMENTED...
       if (sanity .ne. 987) then
@@ -8300,7 +8287,7 @@
       end function d1mach
 
 !SETIV
-      SUBROUTINE SETIV(VECTOR, N, VALUE)
+      subroutine setiv(vector, n, value)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -8317,16 +8304,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,VALUE
+     integer&
+     &   n,value
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   VECTOR(N)
+     integer&
+     &   vector(n)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -8339,15 +8326,15 @@
 !     INTEGER VECTOR(N)
 !        VECTOR WHOSE FIRST N ELEMENTS ARE TO BE SET.
 !
-      DO 10 I=1,N
-         VECTOR(I) = VALUE
-   10 CONTINUE
+      do 10 i=1,n
+         vector(i) = value
+   10 continue
 !
-      RETURN
+      return
 !
-      END
+      end
 !FIXPRT
-      SUBROUTINE FIXPRT(IFIX, FIXED)
+      subroutine fixprt(ifix, fixed)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -8363,20 +8350,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IFIX
+     integer&
+     &   ifix
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   FIXED(3)*1
+     character&
+     &   fixed(3)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   NO(3)*1,YES(3)*1
+     character&
+     &   no(3)*1,yes(3)*1
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -8394,31 +8381,31 @@
 !     CHARACTER*1 YES(3)
 !        THE CHARACTERS Y, E, AND S
 !
-      DATA NO(1)/' '/, NO(2)/'N'/, NO(3)/'O'/
-      DATA YES(1)/'Y'/, YES(2)/'E'/, YES(3)/'S'/
+      data no(1)/' '/, no(2)/'N'/, no(3)/'O'/
+      data yes(1)/'Y'/, yes(2)/'E'/, yes(3)/'S'/
 !
-      IF (IFIX.NE.0) THEN
+      if (ifix.ne.0) then
 !
 !     SET FIXED TO YES
 !
-         DO 10 I = 1, 3
-            FIXED(I) = YES(I)
-   10    CONTINUE
+         do 10 i = 1, 3
+            fixed(i) = yes(i)
+   10    continue
 !
-      ELSE
+      else
 !
 !     SET FIXED TO NO
 !
-         DO 20 I = 1, 3
-            FIXED(I) = NO(I)
-   20    CONTINUE
-      END IF
+         do 20 i = 1, 3
+            fixed(i) = no(i)
+   20    continue
+      end if
 !
-      RETURN
+      return
 !
-      END
+      end
 !BACKOP
-      SUBROUTINE BACKOP (MSPEC, NFAC, NPARDF, MBOL, MBO, NPARMA, NPARAR)
+      subroutine backop (mspec, nfac, npardf, mbol, mbo, nparma, nparar)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -8434,19 +8421,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   MBO,MBOL,NFAC,NPARAR,NPARDF,NPARMA
+     integer&
+     &   mbo,mbol,nfac,nparar,npardf,nparma
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   MSPEC(4,*)
+     integer&
+     &   mspec(4,*)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   J
+     integer&
+     &   j
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -8470,26 +8457,26 @@
 !     COMPUTE DEGREE OF BACK OPERATOR RESULTING FROM THE NDF
 !     DIFFERENCING FACTORS (= ND DOT IOD).
 !
-      NPARAR = 0
-      NPARDF = 0
-      NPARMA = 0
-      IF (NFAC .EQ. 0) GO TO 20
-      DO 10 J = 1, NFAC
-         NPARAR = NPARAR + MSPEC(1,J)*MSPEC(4,J)
-         NPARDF = NPARDF + MSPEC(2,J)*MSPEC(4,J)
-         NPARMA = NPARMA + MSPEC(3,J)*MSPEC(4,J)
-   10 CONTINUE
+      nparar = 0
+      npardf = 0
+      nparma = 0
+      if (nfac .eq. 0) go to 20
+      do 10 j = 1, nfac
+         nparar = nparar + mspec(1,j)*mspec(4,j)
+         npardf = npardf + mspec(2,j)*mspec(4,j)
+         nparma = nparma + mspec(3,j)*mspec(4,j)
+   10 continue
 !
-   20 CONTINUE
+   20 continue
 !
-      MBOL = NPARDF + NPARAR
-      MBO = MAX(MBOL,NPARMA)
+      mbol = npardf + nparar
+      mbo = max(mbol,nparma)
 !
-      RETURN
+      return
 !
-      END
+      end
 !IPRINT
-      SUBROUTINE IPRINT(IPRT)
+      subroutine iprint(iprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -8505,8 +8492,8 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -8518,11 +8505,11 @@
 !     INTEGER IPRT
 !        THE UNIT NUMBER FOR OUTPUT.
 !
-      IPRT = I1MACH(2)
-      RETURN
-      END
+      iprt = i1mach(2)
+      return
+      end
 !FFTLEN
-      SUBROUTINE FFTLEN(N, NDIV, NFFT)
+      subroutine fftlen(n, ndiv, nfft)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -8545,28 +8532,28 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,NDIV,NFFT
+     integer&
+     &   n,ndiv,nfft
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
-      LOGICAL
-     &   ERR01,ERR02,HEAD
+     integer&
+     &   iprt
+     logical&
+     &   err01,err02,head
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   LN(8)*1,LNDIV(8)*1,NMSUB(6)*1
+     character&
+     &   ln(8)*1,lndiv(8)*1,nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EISGE,IPRINT,SETESL
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -8599,56 +8586,56 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'F',       'F',       'T',       'L',       'E',       'N'/
-      DATA
-     &     LN(1),     LN(2),     LN(3),     LN(4),     LN(5),     LN(6)
+     data&
+    &     ln(1),     ln(2),     ln(3),     ln(4),     ln(5),     ln(6)&
      & /     'N',       ' ',       ' ',       ' ',       ' ',       ' '/
-      DATA
-     &     LN(7),     LN(8)
+     data&
+    &     ln(7),     ln(8)&
      & /     ' ',       ' '/
-      DATA
-     &  LNDIV(1),  LNDIV(2),  LNDIV(3),  LNDIV(4),  LNDIV(5),  LNDIV(6)
+     data&
+    &  lndiv(1),  lndiv(2),  lndiv(3),  lndiv(4),  lndiv(5),  lndiv(6)&
      & /     'N',       'D',       'I',       'V',       ' ',       ' '/
-      DATA
-     &  LNDIV(7),  LNDIV(8)
+     data&
+    &  lndiv(7),  lndiv(8)&
      & /     ' ',       ' '/
 !
 !     ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
-      CALL EISGE(NMSUB, LN, N, 1, 1, HEAD, ERR01, LN)
+      call eisge(nmsub, ln, n, 1, 1, head, err01, ln)
 !
-      CALL EISGE(NMSUB, LNDIV, NDIV, 1, 1, HEAD, ERR02, LNDIV)
+      call eisge(nmsub, lndiv, ndiv, 1, 1, head, err02, lndiv)
 !
 !
-      IF ((.NOT. ERR01) .AND. (.NOT. ERR02)) GO TO 10
+      if ((.not. err01) .and. (.not. err02)) go to 10
 !
 !     PRINT PROPER CALL SEQUENCE
 !
-      IERR = 1
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000)
+      ierr = 1
+      call iprint (iprt)
+      write (iprt, 1000)
 !
-      RETURN
+      return
 !
-   10 CONTINUE
+   10 continue
 !
-      CALL SETESL(N, NDIV, NFFT)
+      call setesl(n, ndiv, nfft)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   34H       CALL FFTLEN (N, NDIV, NFFT))
+1000 format (/42h the correct form of the call statement is//&
+     &   34h       call fftlen (n, ndiv, nfft))
 !
-      END
+      end
 !ECVF
-      SUBROUTINE ECVF(NMSUB)
+      subroutine ecvf(nmsub)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -8666,14 +8653,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
-      LOGICAL
-     &   HEAD
+     integer&
+     &   iprt
+     logical&
+     &   head
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -8689,26 +8676,26 @@
 !     CHARACTER*1 NMSUB(6)
 !        THE ARRAY CONTAINING THE NAME OF THIS SUBROUTINE.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      HEAD = .TRUE.
+      head = .true.
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      WRITE(IPRT, 1010)
-      RETURN
+      write(iprt, 1010)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT (/
-     &   46H THE COVARIANCES AT LAGS ZERO AND/OR ONE COULD,
-     &   16H NOT BE COMPUTED/
-     &   49H BECAUSE OF MISSING DATA.  NO FURTHER ANALYSIS IS,
-     &   10H POSSIBLE.)
+1010 format (/&
+    &   46h the covariances at lags zero and/or one could,&
+    &   16h not be computed/&
+    &   49h because of missing data.  no further analysis is,&
+     &   10h possible.)
 !
-      END
+      end
 !AMEHDR
-      SUBROUTINE AMEHDR(PAGE, WIDE, ISUBHD)
+      subroutine amehdr(page, wide, isubhd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -8726,14 +8713,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISUBHD
-      LOGICAL
-     &   PAGE,WIDE
+     integer&
+     &   isubhd
+     logical&
+     &   page,wide
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VERSP
@@ -8751,35 +8738,35 @@
 !        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
 !        BE FULL WIDTH (TRUE) OR NOT (FALSE).
 !
-      CALL IPRINT(IPRT)
-      IF (PAGE) WRITE (IPRT, 1020)
-      CALL VERSP(WIDE)
-      IF (PAGE) WRITE (IPRT,1000)
-      IF (.NOT.PAGE) WRITE (IPRT,1010)
-      PAGE = .TRUE.
+      call iprint(iprt)
+      if (page) write (iprt, 1020)
+      call versp(wide)
+      if (page) write (iprt,1000)
+      if (.not.page) write (iprt,1010)
+      page = .true.
 !
-      IF (ISUBHD.EQ.0) RETURN
+      if (isubhd.eq.0) return
 !
-      GO TO (10), ISUBHD
+      go to (10), isubhd
 !
-   10 WRITE (IPRT, 1030)
+   10 write (iprt, 1030)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS FOR PAGE HEADINGS
 !
- 1000 FORMAT ('+NONLINEAR LEAST SQUARES ESTIMATION',
+1000 format ('+NONLINEAR LEAST SQUARES ESTIMATION',&
      &   ' FOR THE PARAMETERS OF AN ARIMA MODEL, CONTINUED')
- 1010 FORMAT ('+', 77(1H*)/
-     &   1X, 37H*  NONLINEAR LEAST SQUARES ESTIMATION,
-     &   40H FOR THE PARAMETERS OF AN ARIMA MODEL  */
-     &   2H *, 16X, 45H             USING BACKFORECASTS             ,
-     &   14X, 1H*/1X, 77(1H*))
- 1020 FORMAT ('1')
- 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
-      END
+1010 format ('+', 77(1h*)/&
+    &   1x, 37h*  nonlinear least squares estimation,&
+    &   40h for the parameters of an arima model  */&
+    &   2h *, 16x, 45h             using backforecasts             ,&
+     &   14x, 1h*/1x, 77(1h*))
+ 1020 format ('1')
+ 1030 format (//30h summary of initial conditions/ 1x, 30('-'))
+      end
 !LLHDRP
-      SUBROUTINE LLHDRP(PAGE, WIDE, ISUBHD)
+      subroutine llhdrp(page, wide, isubhd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -8796,14 +8783,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISUBHD
-      LOGICAL
-     &   PAGE,WIDE
+     integer&
+     &   isubhd
+     logical&
+     &   page,wide
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VERSP
@@ -8821,35 +8808,35 @@
 !        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
 !        BE FULL WIDTH (TRUE) OR NOT (FALSE).
 !
-      CALL IPRINT(IPRT)
-      IF (PAGE) WRITE (IPRT,1020)
-      CALL VERSP(WIDE)
-      IF (PAGE) WRITE (IPRT,1000)
-      IF (.NOT.PAGE) WRITE (IPRT,1010)
-      PAGE = .TRUE.
+      call iprint(iprt)
+      if (page) write (iprt,1020)
+      call versp(wide)
+      if (page) write (iprt,1000)
+      if (.not.page) write (iprt,1010)
+      page = .true.
 !
-      IF (ISUBHD.EQ.0) RETURN
+      if (isubhd.eq.0) return
 !
-      GO TO (10), ISUBHD
+      go to (10), isubhd
 !
-   10 WRITE (IPRT,1030)
+   10 write (iprt,1030)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS FOR PAGE HEADINGS
 !
- 1000 FORMAT (32H+LINEAR LEAST SQUARES ESTIMATION,
-     &   33H WITH POLYNOMIAL MODEL, CONTINUED)
- 1010 FORMAT ('+', 59('*')/
-     &   1X, 34H*  LINEAR LEAST SQUARES ESTIMATION,
-     &   25H WITH POLYNOMIAL MODEL  */ 1X,
+1000 format (32h+linear least squares estimation,&
+     &   33h with polynomial model, continued)
+1010 format ('+', 59('*')/&
+    &   1x, 34h*  linear least squares estimation,&
+    &   25h with polynomial model  */ 1x,&
      &   59('*'))
- 1020 FORMAT ('1')
- 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
-      END
+ 1020 format ('1')
+ 1030 format (//30h summary of initial conditions/ 1x, 30('-'))
+      end
 !EIAGEP
-      SUBROUTINE EIAGEP (NMSUB, NMVAR, YMMN, NVMX, HEAD, MSGTYP, NV,
-     &   NMMIN)
+     subroutine eiagep (nmsub, nmvar, ymmn, nvmx, head, msgtyp, nv,&
+     &   nmmin)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -8865,18 +8852,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   MSGTYP,NV,NVMX,YMMN
-      LOGICAL
-     &   HEAD
+     integer&
+     &   msgtyp,nv,nvmx,ymmn
+     logical&
+     &   head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     character&
+     &   nmmin(8)*1,nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -8911,55 +8898,55 @@
 !     INTEGER YMMN
 !        THE MINIMUM ACCEPTABLE VALUE.
 !
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
+      call iprint(iprt)
+      call ehdr(nmsub, head)
 !
-      IF (MSGTYP.LE.2)
-     &   WRITE (IPRT, 1000) (NMVAR(I),I=1,6), YMMN, NV
-      IF (MSGTYP.GE.3)
-     &   WRITE (IPRT, 1005) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8), NV
+     if (msgtyp.le.2)&
+     &   write (iprt, 1000) (nmvar(i),i=1,6), ymmn, nv
+     if (msgtyp.ge.3)&
+     &   write (iprt, 1005) (nmvar(i),i=1,6), (nmmin(i),i=1,8), nv
 !
-      GO TO (10, 20, 30, 40), MSGTYP
+      go to (10, 20, 30, 40), msgtyp
 !
-   10 WRITE(IPRT, 1010) (NMVAR(I),I=1,6), YMMN
-      RETURN
+   10 write(iprt, 1010) (nmvar(i),i=1,6), ymmn
+      return
 !
-   20 WRITE(IPRT, 1020) (NMVAR(I),I=1,6), YMMN, NVMX
-      RETURN
+   20 write(iprt, 1020) (nmvar(i),i=1,6), ymmn, nvmx
+      return
 !
-   30 WRITE(IPRT, 1030) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8)
-      RETURN
+   30 write(iprt, 1030) (nmvar(i),i=1,6), (nmmin(i),i=1,8)
+      return
 !
-   40 WRITE(IPRT, 1040) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8), NVMX
-      RETURN
+   40 write(iprt, 1040) (nmvar(i),i=1,6), (nmmin(i),i=1,8), nvmx
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/
-     &   31H THE NUMBER OF VALUES IN ARRAY , 6A1,
-     &   ' LESS THAN ', I5, 4H IS , I6, '.')
- 1005 FORMAT (/
-     &   31H THE NUMBER OF VALUES IN ARRAY , 6A1,
-     &   ' LESS THAN ', 8A1, 4H IS , I6, '.')
- 1010 FORMAT(
-     &   25H THE VALUES IN THE ARRAY , 6A1,
-     &   ' MUST ALL BE GREATER THAN OR EQUAL TO ', I5, '.')
- 1020 FORMAT(
-     &   35H THE NUMBER OF VALUES IN THE ARRAY , 6A1,
-     &   ' LESS THAN ', 8A1/
-     &   19H MUST BE LESS THAN , I5, '.')
- 1030 FORMAT(
-     &   25H THE VALUES IN THE ARRAY , 6A1,
-     &   ' MUST ALL BE GREATER THAN OR EQUAL TO ', I5, '.')
- 1040 FORMAT(
-     &   35H THE NUMBER OF VALUES IN THE ARRAY , 6A1,
-     &   ' LESS THAN ', 8A1/
-     &   19H MUST BE LESS THAN , I5, '.')
+1000 format (/&
+    &   31h the number of values in array , 6a1,&
+     &   ' LESS THAN ', i5, 4h is , i6, '.')
+1005 format (/&
+    &   31h the number of values in array , 6a1,&
+     &   ' LESS THAN ', 8a1, 4h is , i6, '.')
+1010 format(&
+    &   25h the values in the array , 6a1,&
+     &   ' MUST ALL BE GREATER THAN OR EQUAL TO ', i5, '.')
+1020 format(&
+    &   35h the number of values in the array , 6a1,&
+    &   ' LESS THAN ', 8a1/&
+     &   19h must be less than , i5, '.')
+1030 format(&
+    &   25h the values in the array , 6a1,&
+     &   ' MUST ALL BE GREATER THAN OR EQUAL TO ', i5, '.')
+1040 format(&
+    &   35h the number of values in the array , 6a1,&
+    &   ' LESS THAN ', 8a1/&
+     &   19h must be less than , i5, '.')
 !
-      END
+      end
 !EIVEQ
-      SUBROUTINE EIVEQ (NMSUB, NMVAR1, IVEC, N, IVAL, NEQMN, HEAD, NEQ,
-     &                  NNE, MSGTYP, ERROR, NMVAR2, NMVAR3)
+     subroutine eiveq (nmsub, nmvar1, ivec, n, ival, neqmn, head, neq,&
+     &                  nne, msgtyp, error, nmvar2, nmvar3)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -8976,20 +8963,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IVAL,MSGTYP,N,NEQ,NEQMN,NNE
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   ival,msgtyp,n,neq,neqmn,nne
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IVEC(*)
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1,NMVAR3(8)*1
+     integer&
+     &   ivec(*)
+     character&
+     &   nmsub(6)*1,nmvar1(8)*1,nmvar2(8)*1,nmvar3(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -9033,46 +9020,46 @@
 !     INTEGER NNE
 !        THE NUMBER OF ELEMENTS NOT EQUAL TO IVAL.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (N.LE.0) RETURN
+      if (n.le.0) return
 !
 !     CHECK FOR VALUES EQUAL TO IVAL
 !
-      NEQ = 0
-      DO 10 I = 1, N
-         IF (IVEC(I) .EQ. IVAL) NEQ = NEQ + 1
-   10 CONTINUE
+      neq = 0
+      do 10 i = 1, n
+         if (ivec(i) .eq. ival) neq = neq + 1
+   10 continue
 !
-      NNE = N - NEQ
-      IF (NEQ .GE. NEQMN) RETURN
+      nne = n - neq
+      if (neq .ge. neqmn) return
 !
 !     INSUFFICIENT NUMBER OF ELEMENTS EQUAL TO IVAL.
 !
-      ERROR = .TRUE.
+      error = .true.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      IF (MSGTYP.EQ.1) WRITE(IPRT, 1000)
-     &   (NMVAR1(I),I=1,8), (NMVAR2(I),I=1,8), NEQ,
-     &   (NMVAR2(I),I=1,8), (NMVAR3(I),I=1,8)
+     if (msgtyp.eq.1) write(iprt, 1000)&
+    &   (nmvar1(i),i=1,8), (nmvar2(i),i=1,8), neq,&
+     &   (nmvar2(i),i=1,8), (nmvar3(i),i=1,8)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(
-     &   ' THE NUMBER OF ELEMENTS IN ', 8A1,
-     &   ' EQUAL TO ', 8A1, ' IS ', I6, '.'/
-     &   ' THE NUMBER OF ELEMENTS EQUAL TO ', 8A1,
-     &   ' MUST BE GREATER THAN OR EQUAL TO ', 8A1, '.')
+1000 format(&
+    &   ' THE NUMBER OF ELEMENTS IN ', 8a1,&
+    &   ' EQUAL TO ', 8a1, ' IS ', i6, '.'/&
+    &   ' THE NUMBER OF ELEMENTS EQUAL TO ', 8a1,&
+     &   ' MUST BE GREATER THAN OR EQUAL TO ', 8a1, '.')
 !
-      END
+      end
 !ACFER
-      SUBROUTINE ACFER(NMSUB, N, LAGMAX, LACOV, LDSTAK, LDSMIN,
-     &  DIFFER, NFAC, ND, IOD, ISFFT, LYFFT, NFFT)
+     subroutine acfer(nmsub, n, lagmax, lacov, ldstak, ldsmin,&
+     &  differ, nfac, nd, iod, isfft, lyfft, nfft)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -9088,40 +9075,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LACOV,LAGMAX,LDSMIN,LDSTAK,LYFFT,N,NFAC,NFFT
-      LOGICAL
-     &   DIFFER,ISFFT
+     integer&
+     &   lacov,lagmax,ldsmin,ldstak,lyfft,n,nfac,nfft
+     logical&
+     &   differ,isfft
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IOD(*),ND(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     integer&
+     &   iod(*),nd(*)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
-      LOGICAL
-     &   HEAD
+     integer&
+     &   i
+     logical&
+     &   head
 !
 !  LOCAL ARRAYS
-      LOGICAL
-     &   ERR(15)
-      CHARACTER
-     &   LLACOV(8)*1,LLAGMX(8)*1,LLDS(8)*1,LLGMX1(8)*1,
-     &   LLYFFT(8)*1,LN(8)*1,LNFFT(8)*1,LNM1(8)*1,LONE(8)*1,
-     &   LTHREE(8)*1
+     logical&
+     &   err(15)
+     character&
+    &   llacov(8)*1,llagmx(8)*1,llds(8)*1,llgmx1(8)*1,&
+    &   llyfft(8)*1,ln(8)*1,lnfft(8)*1,lnm1(8)*1,lone(8)*1,&
+     &   lthree(8)*1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL EISGE,EISII,ERDF
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -9176,78 +9163,78 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     & LLACOV(1), LLACOV(2), LLACOV(3), LLACOV(4), LLACOV(5),
-     & LLACOV(6), LLACOV(7), LLACOV(8) /'L','A','C','O','V',' ',' ',' '/
-      DATA
-     & LLAGMX(1), LLAGMX(2), LLAGMX(3), LLAGMX(4), LLAGMX(5),
-     & LLAGMX(6), LLAGMX(7), LLAGMX(8) /'L','A','G','M','A','X',' ',' '/
-      DATA
-     & LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
-     & LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
-      DATA
-     & LLGMX1(1), LLGMX1(2), LLGMX1(3), LLGMX1(4), LLGMX1(5),
-     & LLGMX1(6), LLGMX1(7), LLGMX1(8) /'L','A','G','M','A','X','+','1'/
-      DATA
-     & LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
-     & LLYFFT(6), LLYFFT(7), LLYFFT(8) /'L','Y','F','F','T',' ',' ',' '/
-      DATA
-     & LN(1), LN(2), LN(3), LN(4), LN(5),
-     & LN(6), LN(7), LN(8) /'N',' ',' ',' ',' ',' ',' ',' '/
-      DATA
-     & LNM1(1), LNM1(2), LNM1(3), LNM1(4), LNM1(5),
-     & LNM1(6), LNM1(7), LNM1(8) /'(','N','-','1',')',' ',' ',' '/
-      DATA
-     & LNFFT(1), LNFFT(2), LNFFT(3), LNFFT(4), LNFFT(5),
-     & LNFFT(6), LNFFT(7), LNFFT(8) /'N','F','F','T',' ',' ',' ',' '/
-      DATA
-     & LONE(1), LONE(2), LONE(3), LONE(4), LONE(5),
-     & LONE(6), LONE(7), LONE(8) /'O','N','E',' ',' ',' ',' ',' '/
-      DATA
-     & LTHREE(1), LTHREE(2), LTHREE(3), LTHREE(4), LTHREE(5),
-     & LTHREE(6), LTHREE(7), LTHREE(8) /'T','H','R','E','E',' ',' ',' '/
+     data&
+    & llacov(1), llacov(2), llacov(3), llacov(4), llacov(5),&
+     & llacov(6), llacov(7), llacov(8) /'L','A','C','O','V',' ',' ',' '/
+     data&
+    & llagmx(1), llagmx(2), llagmx(3), llagmx(4), llagmx(5),&
+     & llagmx(6), llagmx(7), llagmx(8) /'L','A','G','M','A','X',' ',' '/
+     data&
+    & llds(1), llds(2), llds(3), llds(4), llds(5),&
+     & llds(6), llds(7), llds(8) /'L','D','S','T','A','K',' ',' '/
+     data&
+    & llgmx1(1), llgmx1(2), llgmx1(3), llgmx1(4), llgmx1(5),&
+     & llgmx1(6), llgmx1(7), llgmx1(8) /'L','A','G','M','A','X','+','1'/
+     data&
+    & llyfft(1), llyfft(2), llyfft(3), llyfft(4), llyfft(5),&
+     & llyfft(6), llyfft(7), llyfft(8) /'L','Y','F','F','T',' ',' ',' '/
+     data&
+    & ln(1), ln(2), ln(3), ln(4), ln(5),&
+     & ln(6), ln(7), ln(8) /'N',' ',' ',' ',' ',' ',' ',' '/
+     data&
+    & lnm1(1), lnm1(2), lnm1(3), lnm1(4), lnm1(5),&
+     & lnm1(6), lnm1(7), lnm1(8) /'(','N','-','1',')',' ',' ',' '/
+     data&
+    & lnfft(1), lnfft(2), lnfft(3), lnfft(4), lnfft(5),&
+     & lnfft(6), lnfft(7), lnfft(8) /'N','F','F','T',' ',' ',' ',' '/
+     data&
+    & lone(1), lone(2), lone(3), lone(4), lone(5),&
+     & lone(6), lone(7), lone(8) /'O','N','E',' ',' ',' ',' ',' '/
+     data&
+    & lthree(1), lthree(2), lthree(3), lthree(4), lthree(5),&
+     & lthree(6), lthree(7), lthree(8) /'T','H','R','E','E',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
-      DO 10 I = 1, 15
-        ERR(I) = .FALSE.
-   10 CONTINUE
+      ierr = 0
+      head = .true.
+      do 10 i = 1, 15
+        err(i) = .false.
+   10 continue
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 3, 2, HEAD, ERR(1), LTHREE)
+      call eisge(nmsub, ln, n, 3, 2, head, err(1), lthree)
 !
-      IF (.NOT.ERR(1)) THEN
+      if (.not.err(1)) then
 !
-        CALL EISII(NMSUB, LLAGMX, LAGMAX, 1, N-1, 1, HEAD, ERR(2), LONE,
-     &    LNM1)
+       call eisii(nmsub, llagmx, lagmax, 1, n-1, 1, head, err(2), lone,&
+     &    lnm1)
 !
-        IF (DIFFER) CALL ERDF(NMSUB, NFAC, ND, IOD, N, HEAD, ERR(3))
+        if (differ) call erdf(nmsub, nfac, nd, iod, n, head, err(3))
 !
-        IF (.NOT.ERR(2)) THEN
+        if (.not.err(2)) then
 !
-          CALL EISGE(NMSUB, LLACOV, LACOV, LAGMAX+1, 2, HEAD, ERR(4),
-     &      LLGMX1)
+         call eisge(nmsub, llacov, lacov, lagmax+1, 2, head, err(4),&
+     &      llgmx1)
 !
-          CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR(5), LLDS)
+          call eisge(nmsub, llds, ldstak, ldsmin, 9, head, err(5), llds)
 !
-          IF (ISFFT)
-     &      CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 2, HEAD, ERR(6),
-     &      LNFFT)
-        END IF
-      END IF
+         if (isfft)&
+    &      call eisge(nmsub, llyfft, lyfft, nfft, 2, head, err(6),&
+     &      lnfft)
+        end if
+      end if
 !
-      DO 20 I = 1, 15
-        IF (ERR(I)) IERR = 1
-   20 CONTINUE
+      do 20 i = 1, 15
+        if (err(i)) ierr = 1
+   20 continue
 !
-      RETURN
+      return
 !
-      END
+      end
 !NCHOSE
-      INTEGER FUNCTION NCHOSE(N,K)
+      integer function nchose(n,k)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -9264,31 +9251,31 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   K,N
+     integer&
+     &   k,n
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,KK,NN
+     integer&
+     &   i,kk,nn
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !
-      IF (N .GT. K) GO TO 10
-      NCHOSE = 1
-      RETURN
+      if (n .gt. k) go to 10
+      nchose = 1
+      return
 !
-   10 KK = MIN(K, N - K)
-      NN = 1
-      DO 20 I = 1, KK
-         NN = (NN*(N - I + 1))/I
-   20 CONTINUE
-      NCHOSE = NN
-      RETURN
-      END
+   10 kk = min(k, n - k)
+      nn = 1
+      do 20 i = 1, kk
+         nn = (nn*(n - i + 1))/i
+   20 continue
+      nchose = nn
+      return
+      end
 !INPERL
-      INTEGER FUNCTION INPERL (IDUM)
+      integer function inperl (idum)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -9315,15 +9302,15 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IDUM
+     integer&
+     &   idum
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IEW,IMAXE,IMAXW,IOCPL,IWIDTH
+     integer&
+     &   iew,imaxe,imaxw,iocpl,iwidth
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -9345,18 +9332,18 @@
 !
 !     INITIALIZATIONS
 !
-      DATA IEW /15/, IMAXE /7/, IMAXW /132/, IOCPL /15/
+      data iew /15/, imaxe /7/, imaxw /132/, iocpl /15/
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      IWIDTH = 132
-      INPERL = (MIN(IWIDTH, IMAXW) - IOCPL)/IEW
-      INPERL = MIN(INPERL, IMAXE)
-      RETURN
-      END
+      iwidth = 132
+      inperl = (min(iwidth, imaxw) - iocpl)/iew
+      inperl = min(inperl, imaxe)
+      return
+      end
 !EISII
-      SUBROUTINE EISII(NMSUB, NMVAR, IVAL, IVALMN, IVALMX, MSGTYP,
-     &   HEAD, ERROR, NMMIN, NMMAX)
+     subroutine eisii(nmsub, nmvar, ival, ivalmn, ivalmx, msgtyp,&
+     &   head, error, nmmin, nmmax)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -9374,18 +9361,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IVAL,IVALMN,IVALMX,MSGTYP
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   ival,ivalmn,ivalmx,msgtyp
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMMAX(8)*1,NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     character&
+     &   nmmax(8)*1,nmmin(8)*1,nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -9424,53 +9411,53 @@
 !     CHARACTER*1 NMVAR(8)
 !        THE CHARACTERS OF THE ARGUMENTS NAME.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (((IVALMN.LE.IVAL) .AND. (IVAL.LE.IVALMX)) .OR.
-     &   (IVALMX.LT.IVALMN)) RETURN
+     if (((ivalmn.le.ival) .and. (ival.le.ivalmx)) .or.&
+     &   (ivalmx.lt.ivalmn)) return
 !
-      ERROR = .TRUE.
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
+      error = .true.
+      call iprint(iprt)
+      call ehdr(nmsub, head)
 !
-      IF (MSGTYP.LE.2) WRITE (IPRT, 1000) (NMVAR(I),I=1,6), IVAL
+      if (msgtyp.le.2) write (iprt, 1000) (nmvar(i),i=1,6), ival
 !
 !     PRINT MESSAGE FOR VALUE OUTSIDE OF RANGE DETERMINED FROM
 !     OTHER INPUT ARGUMENTS.
 !
-      IF (MSGTYP .EQ. 1)
-     &   WRITE (IPRT, 1010) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8),
-     &      (NMMAX(I),I=1,8)
+     if (msgtyp .eq. 1)&
+    &   write (iprt, 1010) (nmvar(i),i=1,6), (nmmin(i),i=1,8),&
+     &      (nmmax(i),i=1,8)
 !
 !     PRINT MESSAGE FOR VALUE OUTSIDE OF RANGE IMPOSED BY STARPAC
 !
-      IF (MSGTYP .EQ. 2)
-     &   WRITE (IPRT, 1020) (NMVAR(I),I=1,6), IVALMN, IVALMX
+     if (msgtyp .eq. 2)&
+     &   write (iprt, 1020) (nmvar(i),i=1,6), ivalmn, ivalmx
 !
 !     PRINT MESSAGE FOR AOV ROUTINES
 !
-      IF (MSGTYP .EQ. 3)
-     &   WRITE (IPRT, 1030)
-      RETURN
+     if (msgtyp .eq. 3)&
+     &   write (iprt, 1030)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/20H THE INPUT VALUE OF , 6A1, 4H IS , I6, '.')
- 1010 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   16H MUST BE BETWEEN, 1X, 8A1,
-     &   5H AND , 8A1, 12H, INCLUSIVE.)
- 1020 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   16H MUST BE BETWEEN, 1X, I6,
-     &   5H AND , I6, 12H, INCLUSIVE.)
- 1030 FORMAT(/' THE NUMBER OF DISTINCT GROUPS (NG) MUST BE BETWEEN'/
+ 1000 format (/20h the input value of , 6a1, 4h is , i6, '.')
+1010 format(&
+    &   27h the value of the argument , 6a1,&
+    &   16h must be between, 1x, 8a1,&
+     &   5h and , 8a1, 12h, inclusive.)
+1020 format(&
+    &   27h the value of the argument , 6a1,&
+    &   16h must be between, 1x, i6,&
+     &   5h and , i6, 12h, inclusive.)
+1030 format(/' THE NUMBER OF DISTINCT GROUPS (NG) MUST BE BETWEEN'/&
      &  ' TWO AND ONE LESS THAN THE NUMBER OF POSITIVE TAG VALUES.')
 !
-      END
+      end
 !EIAGE
-      SUBROUTINE EIAGE (NMSUB, NMVAR, YM, N, M, IYM, YMMN, NVMX,
-     &   HEAD, MSGTYP, NV, ERROR, NMMIN)
+     subroutine eiage (nmsub, nmvar, ym, n, m, iym, ymmn, nvmx,&
+     &   head, msgtyp, nv, error, nmmin)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -9490,20 +9477,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IYM,M,MSGTYP,N,NV,NVMX,YMMN
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   iym,m,msgtyp,n,nv,nvmx,ymmn
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   YM(*)
-      CHARACTER
-     &   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     integer&
+     &   ym(*)
+     character&
+     &   nmmin(8)*1,nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,J
+     integer&
+     &   i,j
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL EIAGEP
@@ -9549,33 +9536,33 @@
 !     INTEGER YMMN
 !        THE MINIMUM ACCEPTABLE VALUE.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF ((N.LE.0) .OR. (M.LE.0)) RETURN
+      if ((n.le.0) .or. (m.le.0)) return
 !
 !     CHECK FOR VIOLATIONS
 !
-      NV = 0
-      DO 5 I = 1, N
-         DO 1 J = 1, M
-            IF (YM(I+(J-1)*IYM) .LT. YMMN) NV = NV + 1
-    1    CONTINUE
-    5 CONTINUE
+      nv = 0
+      do 5 i = 1, n
+         do 1 j = 1, m
+            if (ym(i+(j-1)*iym) .lt. ymmn) nv = nv + 1
+    1    continue
+    5 continue
 !
-      IF (NV .LE. NVMX) RETURN
+      if (nv .le. nvmx) return
 !
 !     VIOLATIONS FOUND
 !
-      ERROR = .TRUE.
+      error = .true.
 !
-      CALL EIAGEP (NMSUB, NMVAR, YMMN, NVMX, HEAD, MSGTYP, NV,
-     &   NMMIN)
+     call eiagep (nmsub, nmvar, ymmn, nvmx, head, msgtyp, nv,&
+     &   nmmin)
 !
-      RETURN
+      return
 !
-      END
+      end
 !NLSKL
-      SUBROUTINE NLSKL(ISKULL, PAGE, WIDE, NLHDR)
+      subroutine nlskl(iskull, page, wide, nlhdr)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -9592,19 +9579,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      LOGICAL
-     &   PAGE,WIDE
+     logical&
+     &   page,wide
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   ISKULL(10)
+     integer&
+     &   iskull(10)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL NLHDR
+       external nlhdr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,ISUBHD
+     integer&
+     &   iprt,isubhd
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
@@ -9626,63 +9613,63 @@
 !        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
 !        BE FULL WIDTH (TRUE) OR NOT (FALSE).
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      ISUBHD = 0
-      CALL NLHDR(PAGE, WIDE, ISUBHD)
+      isubhd = 0
+      call nlhdr(page, wide, isubhd)
 !
-      IF (WIDE) THEN
-         WRITE (IPRT,1010)
-         WRITE (IPRT,1020)
+      if (wide) then
+         write (iprt,1010)
+         write (iprt,1020)
 !        WRITE (IPRT,1030)
 !        WRITE (IPRT,1040)
 !        WRITE (IPRT,1050)
-         WRITE (IPRT,1000)
-      END IF
-      WRITE (IPRT,1060)
+         write (iprt,1000)
+      end if
+      write (iprt,1060)
 !
 !     VCV COMPUTATION NOT COMPLETED
 !
-      IF (ISKULL(7).NE.0) WRITE (IPRT,1120)
+      if (iskull(7).ne.0) write (iprt,1120)
 !
 !     MAXIMUM NUMBER OF ITERATIONS REACHED BEFORE CONVERGENCE
 !
-      IF (ISKULL(6).NE.0) WRITE (IPRT,1100)
+      if (iskull(6).ne.0) write (iprt,1100)
 !
 !     FALSE CONVERGENCE
 !
-      IF (ISKULL(5).NE.0) WRITE (IPRT,1090)
+      if (iskull(5).ne.0) write (iprt,1090)
 !
 !     MEANINGLESS VCV MATRIX
 !
-      IF (ISKULL(4).NE.0) WRITE (IPRT,1080)
+      if (iskull(4).ne.0) write (iprt,1080)
 !
 !     PROBLEM IS COMPUTATIONALLY SINGULAR
 !
-      IF (ISKULL(3).NE.0) WRITE (IPRT,1070)
+      if (iskull(3).ne.0) write (iprt,1070)
 !
 !     INITIAL RESIDUAL SUM OF SQUARES COMPUTATION OVERFLOWED
 !
-      IF (ISKULL(2).NE.0) WRITE (IPRT,1110)
+      if (iskull(2).ne.0) write (iprt,1110)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (///)
- 1010 FORMAT (/48H  W      W     AA     RRRRRRR   N      N    IIII,
-     &   19H    N      N    GGG/31H  W      W    A  A    R     RR ,
-     &   38H NN     N     II     NN     N   G    G/12H  W      W  ,
-     &   51H  A  A    R      R  N N    N     II     N N    N  G/
-     &   59H  WW    WW   AA  AA   R     RR  N  N   N     II     N  N   ,
-     &   4HN  G/47H   W    W    AAAAAA   RRRRRRR   N  NN  N     II,
-     &   23H     N  NN  N  G  GGGGG)
- 1020 FORMAT (49H   W WW W    A    A   R R       N   N  N     II  ,
-     &   21H   N   N  N  G      G/29H   W WW W    A    A   R  R   ,
-     &   41H   N    N N     II     N    N N  G      G/9H    W  W ,
-     &   59H   AA    AA  R   R     N     NN     II     N     NN   G    ,
-     &   2HGG/49H    W  W    A      A  R    R    N      N    IIII ,
-     &   21H   N      N    GGGG G/)
+ 1000 format (///)
+1010 format (/48h  w      w     aa     rrrrrrr   n      n    iiii,&
+    &   19h    n      n    ggg/31h  w      w    a  a    r     rr ,&
+    &   38h nn     n     ii     nn     n   g    g/12h  w      w  ,&
+    &   51h  a  a    r      r  n n    n     ii     n n    n  g/&
+    &   59h  ww    ww   aa  aa   r     rr  n  n   n     ii     n  n   ,&
+    &   4hn  g/47h   w    w    aaaaaa   rrrrrrr   n  nn  n     ii,&
+     &   23h     n  nn  n  g  ggggg)
+1020 format (49h   w ww w    a    a   r r       n   n  n     ii  ,&
+    &   21h   n   n  n  g      g/29h   w ww w    a    a   r  r   ,&
+    &   41h   n    n n     ii     n    n n  g      g/9h    w  w ,&
+    &   59h   aa    aa  r   r     n     nn     ii     n     nn   g    ,&
+    &   2hgg/49h    w  w    a      a  r    r    n      n    iiii ,&
+     &   21h   n      n    gggg g/)
 !1010 FORMAT (/30X, 48H  W      W     AA     RRRRRRR   N      N    IIII,
 !    *   19H    N      N    GGG/30X, 31H  W      W    A  A    R     RR ,
 !    *   38H NN     N     II     NN     N   G    G/30X, 12H  W      W  ,
@@ -9720,31 +9707,31 @@
 !    *   4HXXXX/38X, 5('X'), 46X, 5('X')/36X, 5('X'), 50X, 5('X')/31X,
 !    *   9('X'), 52X, 9('X')/31X, 7('X'), 56X, 7('X')/31X, 6('X'), 58X,
 !    *   6('X')/1(34X, 3HXXX, 58X, 3HXXX))
- 1060 FORMAT (22H **  ERROR SUMMARY  **)
- 1070 FORMAT (/50H THIS MODEL AND DATA ARE COMPUTATIONALLY SINGULAR.,
-     &   29H CHECK YOUR INPUT FOR ERRORS.)
- 1080 FORMAT (/43H AT LEAST ONE OF THE STANDARDIZED RESIDUALS, 6H COULD,
-     &   47H NOT BE COMPUTED BECAUSE THE STANDARD DEVIATION, 8H OF THE ,
-     &   18HRESIDUAL WAS ZERO./37H THE VALIDITY OF THE COVARIANCE MATRI,
-     &   18HX IS QUESTIONABLE.)
- 1090 FORMAT (/46H THE ITERATIONS DO NOT APPEAR TO BE CONVERGING,
-     &   13H TO A MINIMUM, 41H (FALSE CONVERGENCE), INDICATING THAT THE,
-     &   12H CONVERGENCE, 16H CRITERIA STOPSS/22H AND STOPP MAY BE TOO ,
-     &   35HSMALL FOR THE ACCURACY OF THE MODEL, 17H AND DERIVATIVES,,
-     &   52H THAT THERE IS AN ERROR IN THE DERIVATIVE MATRIX, OR/
-     &   15H THAT THE MODEL, 39H IS DISCONTINUOUS NEAR THE CURRENT COEF,
-     &   18HFICIENT ESTIMATES.)
- 1100 FORMAT (/53H PROGRAM DID NOT CONVERGE IN THE NUMBER OF ITERATIONS,
-     &   13H OR NUMBER OF, 32H MODEL SUBROUTINE CALLS ALLOWED.)
- 1110 FORMAT (/50H THE RESIDUAL SUM OF SQUARES COULD NOT BE COMPUTED,
-     &   19H USING THE STARTING, 26H MODEL COEFFICIENT VALUES.)
- 1120 FORMAT (/44H THE VARIANCE-COVARIANCE MATRIX COULD NOT BE,
-     &   26H COMPUTED AT THE SOLUTION.)
-      END
+ 1060 format (22h **  error summary  **)
+1070 format (/50h this model and data are computationally singular.,&
+     &   29h check your input for errors.)
+1080 format (/43h at least one of the standardized residuals, 6h could,&
+    &   47h not be computed because the standard deviation, 8h of the ,&
+    &   18hresidual was zero./37h the validity of the covariance matri,&
+     &   18hx is questionable.)
+1090 format (/46h the iterations do not appear to be converging,&
+    &   13h to a minimum, 41h (false convergence), indicating that the,&
+    &   12h convergence, 16h criteria stopss/22h and stopp may be too ,&
+    &   35hsmall for the accuracy of the model, 17h and derivatives,,&
+    &   52h that there is an error in the derivative matrix, or/&
+    &   15h that the model, 39h is discontinuous near the current coef,&
+     &   18hficient estimates.)
+1100 format (/53h program did not converge in the number of iterations,&
+     &   13h or number of, 32h model subroutine calls allowed.)
+1110 format (/50h the residual sum of squares could not be computed,&
+     &   19h using the starting, 26h model coefficient values.)
+1120 format (/44h the variance-covariance matrix could not be,&
+     &   26h computed at the solution.)
+      end
 !BFSER
-      SUBROUTINE BFSER(NMSUB, N, LAGMAX, ICCOV, JCCOV, INLPPC, JNLPPC,
-     &   M, INDEX1, INDEX2, ICSPC2, IPHAS, NF, NW, LAGS,
-     &   LDSTAK, LDSMIN, LYFFT, NFFT, OPTION)
+     subroutine bfser(nmsub, n, lagmax, iccov, jccov, inlppc, jnlppc,&
+    &   m, index1, index2, icspc2, iphas, nf, nw, lags,&
+     &   ldstak, ldsmin, lyfft, nfft, option)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -9761,42 +9748,42 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ICCOV,ICSPC2,INDEX1,INDEX2,INLPPC,IPHAS,JCCOV,JNLPPC,
-     &   LAGMAX,LDSMIN,LDSTAK,LYFFT,M,N,NF,NFFT,NW
+     integer&
+    &   iccov,icspc2,index1,index2,inlppc,iphas,jccov,jnlppc,&
+     &   lagmax,ldsmin,ldstak,lyfft,m,n,nf,nfft,nw
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   LAGS(*)
-      LOGICAL
-     &   OPTION(4)
-      CHARACTER
-     &   NMSUB(6)*1
+     integer&
+     &   lags(*)
+     logical&
+     &   option(4)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,NV
-      LOGICAL
-     &   HEAD
+     integer&
+     &   i,nv
+     logical&
+     &   head
 !
 !  LOCAL ARRAYS
-      LOGICAL
-     &   ERROR(30)
-      CHARACTER
-     &   L1(8)*1,LICCOV(8)*1,LICSPC(8)*1,LINDX1(8)*1,LINDX2(8)*1,
-     &   LINLPP(8)*1,LIPHAS(8)*1,LJCCOV(8)*1,LJNLPP(8)*1,
-     &   LLAGMX(8)*1,LLAGS(8)*1,LLDS(8)*1,LLGMX1(8)*1,
-     &   LLYFFT(8)*1,LM(8)*1,LN(8)*1,LNF(8)*1,LNM1(8)*1,LNW(8)*1
+     logical&
+     &   error(30)
+     character&
+    &   l1(8)*1,liccov(8)*1,licspc(8)*1,lindx1(8)*1,lindx2(8)*1,&
+    &   linlpp(8)*1,liphas(8)*1,ljccov(8)*1,ljnlpp(8)*1,&
+    &   llagmx(8)*1,llags(8)*1,llds(8)*1,llgmx1(8)*1,&
+     &   llyfft(8)*1,lm(8)*1,ln(8)*1,lnf(8)*1,lnm1(8)*1,lnw(8)*1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL EISGE,EISII,EISLE,EIVII
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -9869,144 +9856,144 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA LICCOV(1), LICCOV(2), LICCOV(3), LICCOV(4), LICCOV(5),
-     &   LICCOV(6), LICCOV(7), LICCOV(8) /'I','C','C','O','V',' ',' ',
+     data liccov(1), liccov(2), liccov(3), liccov(4), liccov(5),&
+    &   liccov(6), liccov(7), liccov(8) /'I','C','C','O','V',' ',' ',&
      &   ' '/
-      DATA LICSPC(1), LICSPC(2), LICSPC(3), LICSPC(4), LICSPC(5),
-     &   LICSPC(6), LICSPC(7), LICSPC(8) /'I','C','S','P','C','2',' ',
+     data licspc(1), licspc(2), licspc(3), licspc(4), licspc(5),&
+    &   licspc(6), licspc(7), licspc(8) /'I','C','S','P','C','2',' ',&
      &   ' '/
-      DATA LINDX1(1), LINDX1(2), LINDX1(3), LINDX1(4), LINDX1(5),
-     &   LINDX1(6), LINDX1(7), LINDX1(8) /'I','N','D','E','X','1',' ',
+     data lindx1(1), lindx1(2), lindx1(3), lindx1(4), lindx1(5),&
+    &   lindx1(6), lindx1(7), lindx1(8) /'I','N','D','E','X','1',' ',&
      &   ' '/
-      DATA LINDX2(1), LINDX2(2), LINDX2(3), LINDX2(4), LINDX2(5),
-     &   LINDX2(6), LINDX2(7), LINDX2(8) /'I','N','D','E','X','2',' ',
+     data lindx2(1), lindx2(2), lindx2(3), lindx2(4), lindx2(5),&
+    &   lindx2(6), lindx2(7), lindx2(8) /'I','N','D','E','X','2',' ',&
      &   ' '/
-      DATA LIPHAS(1), LIPHAS(2), LIPHAS(3), LIPHAS(4), LIPHAS(5),
-     &   LIPHAS(6), LIPHAS(7), LIPHAS(8) /'I','P','H','A','S',' ',' ',
+     data liphas(1), liphas(2), liphas(3), liphas(4), liphas(5),&
+    &   liphas(6), liphas(7), liphas(8) /'I','P','H','A','S',' ',' ',&
      &   ' '/
-      DATA LINLPP(1), LINLPP(2), LINLPP(3), LINLPP(4), LINLPP(5),
-     &   LINLPP(6), LINLPP(7), LINLPP(8) /'I','N','L','P','P','C',' ',
+     data linlpp(1), linlpp(2), linlpp(3), linlpp(4), linlpp(5),&
+    &   linlpp(6), linlpp(7), linlpp(8) /'I','N','L','P','P','C',' ',&
      &   ' '/
-      DATA LJCCOV(1), LJCCOV(2), LJCCOV(3), LJCCOV(4), LJCCOV(5),
-     &   LJCCOV(6), LJCCOV(7), LJCCOV(8) /'J','C','C','O','V',' ',' ',
+     data ljccov(1), ljccov(2), ljccov(3), ljccov(4), ljccov(5),&
+    &   ljccov(6), ljccov(7), ljccov(8) /'J','C','C','O','V',' ',' ',&
      &   ' '/
-      DATA LJNLPP(1), LJNLPP(2), LJNLPP(3), LJNLPP(4), LJNLPP(5),
-     &   LJNLPP(6), LJNLPP(7), LJNLPP(8) /'J','N','L','P','P','C',' ',
+     data ljnlpp(1), ljnlpp(2), ljnlpp(3), ljnlpp(4), ljnlpp(5),&
+    &   ljnlpp(6), ljnlpp(7), ljnlpp(8) /'J','N','L','P','P','C',' ',&
      &   ' '/
-      DATA LLAGMX(1), LLAGMX(2), LLAGMX(3), LLAGMX(4), LLAGMX(5),
-     &   LLAGMX(6), LLAGMX(7), LLAGMX(8) /'L','A','G','M','A','X',' ',
+     data llagmx(1), llagmx(2), llagmx(3), llagmx(4), llagmx(5),&
+    &   llagmx(6), llagmx(7), llagmx(8) /'L','A','G','M','A','X',' ',&
      &   ' '/
-      DATA LLAGS(1), LLAGS(2), LLAGS(3), LLAGS(4), LLAGS(5), LLAGS(6),
-     &   LLAGS(7), LLAGS(8) /'L','A','G','S',' ',' ',' ',' '/
-      DATA LLGMX1(1), LLGMX1(2), LLGMX1(3), LLGMX1(4), LLGMX1(5),
-     &   LLGMX1(6), LLGMX1(7), LLGMX1(8) /'L','A','G','M','A','X','+',
+     data llags(1), llags(2), llags(3), llags(4), llags(5), llags(6),&
+     &   llags(7), llags(8) /'L','A','G','S',' ',' ',' ',' '/
+     data llgmx1(1), llgmx1(2), llgmx1(3), llgmx1(4), llgmx1(5),&
+    &   llgmx1(6), llgmx1(7), llgmx1(8) /'L','A','G','M','A','X','+',&
      &   '1'/
-      DATA LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
-     &   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
-      DATA LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8) /'N',
+     data llds(1), llds(2), llds(3), llds(4), llds(5), llds(6),&
+     &   llds(7), llds(8) /'L','D','S','T','A','K',' ',' '/
+     data ln(1), ln(2), ln(3), ln(4), ln(5), ln(6), ln(7), ln(8) /'N',&
      &   ' ',' ',' ',' ',' ',' ',' '/
-      DATA LM(1), LM(2), LM(3), LM(4), LM(5), LM(6), LM(7), LM(8) /'M',
+     data lm(1), lm(2), lm(3), lm(4), lm(5), lm(6), lm(7), lm(8) /'M',&
      &   ' ',' ',' ',' ',' ',' ',' '/
-      DATA LNF(1), LNF(2), LNF(3), LNF(4), LNF(5), LNF(6), LNF(7),
-     &   LNF(8) /'N','F',' ',' ',' ',' ',' ',' '/
-      DATA LNM1(1), LNM1(2), LNM1(3), LNM1(4), LNM1(5), LNM1(6),
-     &   LNM1(7), LNM1(8) /'N','-','1',' ',' ',' ',' ',' '/
-      DATA LNW(1), LNW(2), LNW(3), LNW(4), LNW(5), LNW(6), LNW(7),
-     &   LNW(8) /'N','W',' ',' ',' ',' ',' ',' '/
-      DATA LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
-     &   LLYFFT(6), LLYFFT(7), LLYFFT(8) /'L','Y','F','F','T',' ',' ',
+     data lnf(1), lnf(2), lnf(3), lnf(4), lnf(5), lnf(6), lnf(7),&
+     &   lnf(8) /'N','F',' ',' ',' ',' ',' ',' '/
+     data lnm1(1), lnm1(2), lnm1(3), lnm1(4), lnm1(5), lnm1(6),&
+     &   lnm1(7), lnm1(8) /'N','-','1',' ',' ',' ',' ',' '/
+     data lnw(1), lnw(2), lnw(3), lnw(4), lnw(5), lnw(6), lnw(7),&
+     &   lnw(8) /'N','W',' ',' ',' ',' ',' ',' '/
+     data llyfft(1), llyfft(2), llyfft(3), llyfft(4), llyfft(5),&
+    &   llyfft(6), llyfft(7), llyfft(8) /'L','Y','F','F','T',' ',' ',&
      &   ' '/
-      DATA L1(1), L1(2), L1(3), L1(4), L1(5), L1(6), L1(7), L1(8) /'1',
+     data l1(1), l1(2), l1(3), l1(4), l1(5), l1(6), l1(7), l1(8) /'1',&
      &   ' ',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
-      DO 10 I=1,30
-         ERROR(I) = .FALSE.
-   10 CONTINUE
+      do 10 i=1,30
+         error(i) = .false.
+   10 continue
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 17, 1, HEAD, ERROR(1), LN)
+      call eisge(nmsub, ln, n, 17, 1, head, error(1), ln)
 !
-      IF ((.NOT.OPTION(3))) GO TO 20
+      if ((.not.option(3))) go to 20
 !
-      CALL EISII(NMSUB, LLAGMX, LAGMAX, 1, N-1, 1, HEAD, ERROR(2), L1,
-     &   LNM1)
+     call eisii(nmsub, llagmx, lagmax, 1, n-1, 1, head, error(2), l1,&
+     &   lnm1)
 !
-      CALL EISGE(NMSUB, LM, M, 2, 1, HEAD, ERROR(3), LM)
+      call eisge(nmsub, lm, m, 2, 1, head, error(3), lm)
 !
-      CALL EISGE(NMSUB, LICCOV, ICCOV, LAGMAX+1, 3, HEAD, ERROR(4),
-     &   LLGMX1)
+     call eisge(nmsub, liccov, iccov, lagmax+1, 3, head, error(4),&
+     &   llgmx1)
 !
-      CALL EISGE(NMSUB, LJCCOV, JCCOV, M, 4, HEAD, ERROR(5), LM)
+      call eisge(nmsub, ljccov, jccov, m, 4, head, error(5), lm)
 !
-      IF (OPTION(2)) THEN
-        CALL EISGE(NMSUB, LINLPP, INLPPC, LAGMAX+1, 3, HEAD, ERROR(6),
-     &     LLGMX1)
+      if (option(2)) then
+       call eisge(nmsub, linlpp, inlppc, lagmax+1, 3, head, error(6),&
+     &     llgmx1)
 !
-        CALL EISGE(NMSUB, LJNLPP, JNLPPC, M, 4, HEAD, ERROR(7), LM)
-      END IF
+        call eisge(nmsub, ljnlpp, jnlppc, m, 4, head, error(7), lm)
+      end if
 !
-      CALL EISLE(NMSUB, LINDX1, INDEX1, M, 2, HEAD, ERROR(8), LM)
+      call eisle(nmsub, lindx1, index1, m, 2, head, error(8), lm)
 !
-      CALL EISLE(NMSUB, LINDX2, INDEX2, M, 2, HEAD, ERROR(9), LM)
+      call eisle(nmsub, lindx2, index2, m, 2, head, error(9), lm)
 !
-   20 CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 9, HEAD, ERROR(10), LLYFFT)
+   20 call eisge(nmsub, llyfft, lyfft, nfft, 9, head, error(10), llyfft)
 !
-      IF (OPTION(1) .AND. (.NOT.OPTION(4))) CALL EISGE(NMSUB, LLDS,
-     &   LDSTAK, LDSMIN, 9, HEAD, ERROR(15), LLDS)
+     if (option(1) .and. (.not.option(4))) call eisge(nmsub, llds,&
+     &   ldstak, ldsmin, 9, head, error(15), llds)
 !
-      IF (OPTION(4)) GO TO 40
+      if (option(4)) go to 40
 !
-      DO 30 I=1,15
-         IF (ERROR(I)) GO TO 70
-   30 CONTINUE
+      do 30 i=1,15
+         if (error(i)) go to 70
+   30 continue
 !
-      RETURN
+      return
 !
-   40 CONTINUE
+   40 continue
 !
-      CALL EISGE(NMSUB, LNF, NF, 1, 1, HEAD, ERROR(16), LNF)
+      call eisge(nmsub, lnf, nf, 1, 1, head, error(16), lnf)
 !
-      CALL EISGE(NMSUB, LNW, NW, 1, 1, HEAD, ERROR(18), LNW)
+      call eisge(nmsub, lnw, nw, 1, 1, head, error(18), lnw)
 !
-      IF (ERROR(18)) GO TO 50
-      IF (OPTION(3)) THEN
-         CALL EIVII(NMSUB, LLAGS, LAGS, NW, 1, LAGMAX, 0,
-     &      HEAD, 4, NV, ERROR(19), L1, LLAGMX)
-      ELSE
-         CALL EIVII(NMSUB, LLAGS, LAGS, NW, 1, N-1, 0,
-     &      HEAD, 4, NV, ERROR(19), L1, LNM1)
-      END IF
+      if (error(18)) go to 50
+      if (option(3)) then
+        call eivii(nmsub, llags, lags, nw, 1, lagmax, 0,&
+     &      head, 4, nv, error(19), l1, llagmx)
+      else
+        call eivii(nmsub, llags, lags, nw, 1, n-1, 0,&
+     &      head, 4, nv, error(19), l1, lnm1)
+      end if
 !
-   50 CONTINUE
+   50 continue
 !
-      CALL EISGE(NMSUB, LICSPC, ICSPC2, NF, 3, HEAD, ERROR(24), LNF)
+      call eisge(nmsub, licspc, icspc2, nf, 3, head, error(24), lnf)
 !
-      CALL EISGE(NMSUB, LIPHAS, IPHAS, NF, 3, HEAD, ERROR(25), LNF)
+      call eisge(nmsub, liphas, iphas, nf, 3, head, error(25), lnf)
 !
-      IF (ERROR(2) .OR. ERROR(16) .OR. ERROR(18) .OR. ERROR(19)) GO TO
+     if (error(2) .or. error(16) .or. error(18) .or. error(19)) go to&
      &   70
 !
-      CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERROR(30), LLDS)
+      call eisge(nmsub, llds, ldstak, ldsmin, 9, head, error(30), llds)
 !
-      DO 60 I=1,30
-         IF (ERROR(I)) GO TO 70
-   60 CONTINUE
+      do 60 i=1,30
+         if (error(i)) go to 70
+   60 continue
 !
-      RETURN
+      return
 !
-   70 CONTINUE
-      IERR = 1
-      RETURN
+   70 continue
+      ierr = 1
+      return
 !
-      END
+      end
 !AOV1HD
-      SUBROUTINE AOV1HD(IPRT)
+      subroutine aov1hd(iprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -10024,8 +10011,8 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL VERSP
@@ -10035,14 +10022,14 @@
 !     INTEGER IPRT
 !        THE OUTPUT LOGICAL UNIT NUMBER
 !
-      CALL VERSP(.TRUE.)
-      WRITE (IPRT,1000)
-      RETURN
- 1000 FORMAT(///48X, 20HANALYSIS OF VARIANCE//)
-      END
+      call versp(.true.)
+      write (iprt,1000)
+      return
+ 1000 format(///48x, 20hanalysis of variance//)
+      end
 !EISEQ
-      SUBROUTINE EISEQ(NMSUB, NMVAR1, NVAL, NEQ, MSGTYP, HEAD, ERROR,
-     &   NMVAR2)
+     subroutine eiseq(nmsub, nmvar1, nval, neq, msgtyp, head, error,&
+     &   nmvar2)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -10059,18 +10046,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   MSGTYP,NEQ,NVAL
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   msgtyp,neq,nval
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1
+     character&
+     &   nmsub(6)*1,nmvar1(8)*1,nmvar2(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -10105,37 +10092,37 @@
 !     INTEGER NVAL
 !        THE INPUT VALUE OF THE ARGUMENT BEING CHECKED.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (NVAL .EQ. NEQ) RETURN
+      if (nval .eq. neq) return
 !
-      ERROR = .TRUE.
+      error = .true.
 !
-      CALL IPRINT (IPRT)
+      call iprint (iprt)
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      WRITE (IPRT, 1000) (NMVAR1(I), I=1,6), NVAL
+      write (iprt, 1000) (nmvar1(i), i=1,6), nval
 !
 !     PRINT MESSAGE FOR ARIMA ROUTINES
 !
-      WRITE (IPRT, 1010) (NMVAR1(I), I=1,6), NEQ
-      RETURN
+      write (iprt, 1010) (nmvar1(i), i=1,6), neq
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/20H THE INPUT VALUE OF , 6A1, 4H IS , I5, '.')
- 1010 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   ' MUST BE GREATER THAN OR EQUAL TO'/
-     &   1X, I5, ' = ONE PLUS THE SUM OF MSPEC(1,J)+MSPEC(3,J) FOR',
-     &   ' J = 1, ..., NFAC,'/
-     &   6X, ' = ONE PLUS THE NUMBER OF AUTOREGRESSIVE PARAMETERS PLUS'/
-     &   9X, ' THE NUMBER OF MOVING AVERAGE PARAMETERS.')
+ 1000 format (/20h the input value of , 6a1, 4h is , i5, '.')
+1010 format(&
+    &   27h the value of the argument , 6a1,&
+    &   ' MUST BE GREATER THAN OR EQUAL TO'/&
+    &   1x, i5, ' = ONE PLUS THE SUM OF MSPEC(1,J)+MSPEC(3,J) FOR',&
+    &   ' J = 1, ..., NFAC,'/&
+    &   6x, ' = ONE PLUS THE NUMBER OF AUTOREGRESSIVE PARAMETERS PLUS'/&
+     &   9x, ' THE NUMBER OF MOVING AVERAGE PARAMETERS.')
 !
-      END
+      end
 !PLTSYM
-      SUBROUTINE PLTSYM(IPTSYM, I, J, ISYM, N, IPOINT, LINE, ICOUNT)
+      subroutine pltsym(iptsym, i, j, isym, n, ipoint, line, icount)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -10152,25 +10139,25 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   I,IPOINT,IPTSYM,J,N
+     integer&
+     &   i,ipoint,iptsym,j,n
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   ICOUNT(103),ISYM(N)
-      CHARACTER
-     &   LINE(103)*1
+     integer&
+     &   icount(103),isym(n)
+     character&
+     &   line(103)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   ISYMBL
+     integer&
+     &   isymbl
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   SYM(30)*1,SYM1(10)*1
+     character&
+     &   sym(30)*1,sym1(10)*1
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX,MIN
+      intrinsic max,min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -10198,42 +10185,42 @@
 !     CHARACTER*1 SYM(30), SYM1(10)
 !        THE PLOT SYMBOLS.
 !
-      DATA SYM( 1)/'+'/,SYM( 2)/'.'/,SYM( 3)/'*'/,SYM( 4)/'-'/,
-     &     SYM( 5)/'A'/,SYM( 6)/'B'/,SYM( 7)/'C'/,SYM( 8)/'D'/,
-     &     SYM( 9)/'E'/,SYM(10)/'F'/,SYM(11)/'G'/,SYM(12)/'H'/,
-     &     SYM(13)/'I'/,SYM(14)/'J'/,SYM(15)/'K'/,SYM(16)/'L'/,
-     &     SYM(17)/'M'/,SYM(18)/'N'/,SYM(19)/'O'/,SYM(20)/'P'/,
-     &     SYM(21)/'Q'/,SYM(22)/'R'/,SYM(23)/'S'/,SYM(24)/'T'/,
-     &     SYM(25)/'U'/,SYM(26)/'V'/,SYM(27)/'W'/,SYM(28)/'Y'/,
-     &     SYM(29)/'Z'/,SYM(30)/'Z'/
-      DATA SYM1(1)/'1'/,SYM1(2)/'2'/,SYM1(3)/'3'/,SYM1(4)/'4'/,
-     &     SYM1(5)/'5'/,SYM1(6)/'6'/,SYM1(7)/'7'/,SYM1(8)/'8'/,
-     &     SYM1(9)/'9'/,SYM1(10)/'X'/
+     data sym( 1)/'+'/,sym( 2)/'.'/,sym( 3)/'*'/,sym( 4)/'-'/,&
+    &     sym( 5)/'A'/,sym( 6)/'B'/,sym( 7)/'C'/,sym( 8)/'D'/,&
+    &     sym( 9)/'E'/,sym(10)/'F'/,sym(11)/'G'/,sym(12)/'H'/,&
+    &     sym(13)/'I'/,sym(14)/'J'/,sym(15)/'K'/,sym(16)/'L'/,&
+    &     sym(17)/'M'/,sym(18)/'N'/,sym(19)/'O'/,sym(20)/'P'/,&
+    &     sym(21)/'Q'/,sym(22)/'R'/,sym(23)/'S'/,sym(24)/'T'/,&
+    &     sym(25)/'U'/,sym(26)/'V'/,sym(27)/'W'/,sym(28)/'Y'/,&
+     &     sym(29)/'Z'/,sym(30)/'Z'/
+     data sym1(1)/'1'/,sym1(2)/'2'/,sym1(3)/'3'/,sym1(4)/'4'/,&
+    &     sym1(5)/'5'/,sym1(6)/'6'/,sym1(7)/'7'/,sym1(8)/'8'/,&
+     &     sym1(9)/'9'/,sym1(10)/'X'/
 !
-      ICOUNT(IPOINT) = ICOUNT(IPOINT) + 1
-      IF (ICOUNT(IPOINT) .EQ. 1) GO TO 5
+      icount(ipoint) = icount(ipoint) + 1
+      if (icount(ipoint) .eq. 1) go to 5
 !
-      ISYMBL = MIN(ICOUNT(IPOINT), 10)
-      LINE(IPOINT) = SYM1(ISYMBL)
-      RETURN
+      isymbl = min(icount(ipoint), 10)
+      line(ipoint) = sym1(isymbl)
+      return
 !
-    5 CONTINUE
-      GO TO (10, 20, 30), IPTSYM
+    5 continue
+      go to (10, 20, 30), iptsym
 !
-   10 LINE(IPOINT) = SYM(1)
-      RETURN
+   10 line(ipoint) = sym(1)
+      return
 !
-   20 ISYMBL = MIN(29, MAX(1, ISYM(I)))
-      LINE(IPOINT) = SYM(ISYMBL)
-      RETURN
+   20 isymbl = min(29, max(1, isym(i)))
+      line(ipoint) = sym(isymbl)
+      return
 !
-   30 ISYMBL = MIN(29, MAX(1, J+4))
-      LINE(IPOINT) = SYM(ISYMBL)
+   30 isymbl = min(29, max(1, j+4))
+      line(ipoint) = sym(isymbl)
 !
-      RETURN
-      END
+      return
+      end
 !PLINE
-      SUBROUTINE PLINE(IMIN, IMAX, ISYMBL, LINE)
+      subroutine pline(imin, imax, isymbl, line)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -10250,18 +10237,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IMAX,IMIN
-      CHARACTER
-     &   ISYMBL*1
+     integer&
+     &   imax,imin
+     character&
+     &   isymbl*1
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   LINE(103)*1
+     character&
+     &   line(103)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -10276,13 +10263,13 @@
 !     CHARACTER*1 LINE(103)
 !        THE VECTOR USED FOR THE PLOT STRING.
 !
-      DO 10 I = IMIN, IMAX
-         LINE(I) = ISYMBL
-   10 CONTINUE
-      RETURN
-      END
+      do 10 i = imin, imax
+         line(i) = isymbl
+   10 continue
+      return
+      end
 !MODSUM
-      SUBROUTINE MODSUM(NFAC, MSPECT)
+      subroutine modsum(nfac, mspect)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -10298,16 +10285,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   NFAC
+     integer&
+     &   nfac
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   MSPECT(NFAC,4)
+     integer&
+     &   mspect(nfac,4)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,J
+     integer&
+     &   i,iprt,j
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
@@ -10326,23 +10313,23 @@
 !        THE ARRAY CONTAINING THE VALUES OF P, D, Q, AND S FOR EACH FACT
 !
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     PRINT MODEL SPECIFICATION
 !
-      WRITE(IPRT, 1002) (I, (MSPECT(I,J),J=1,4), I=1,NFAC)
+      write(iprt, 1002) (i, (mspect(i,j),j=1,4), i=1,nfac)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1002 FORMAT(//
-     &   '    MODEL SPECIFICATION'//
-     &   '       FACTOR          (P     D     Q)    S'//
-     &   (7X, I6, 6X, 4I6))
-      END
+1002 format(//&
+    &   '    MODEL SPECIFICATION'//&
+    &   '       FACTOR          (P     D     Q)    S'//&
+     &   (7x, i6, 6x, 4i6))
+      end
 !DCKHDR
-      SUBROUTINE DCKHDR(PAGE, WIDE, ISUBHD)
+      subroutine dckhdr(page, wide, isubhd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -10359,14 +10346,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISUBHD
-      LOGICAL
-     &   PAGE,WIDE
+     integer&
+     &   isubhd
+     logical&
+     &   page,wide
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VERSP
@@ -10384,31 +10371,31 @@
 !       THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
 !        FULL WIDTH (TRUE) OR NOT (FALSE).
 !
-      CALL IPRINT(IPRT)
-      IF (PAGE) WRITE (IPRT, 1020)
-      CALL VERSP(WIDE)
-      IF (PAGE) WRITE (IPRT,1000)
-      IF (.NOT.PAGE) WRITE (IPRT,1010)
-      PAGE = .TRUE.
+      call iprint(iprt)
+      if (page) write (iprt, 1020)
+      call versp(wide)
+      if (page) write (iprt,1000)
+      if (.not.page) write (iprt,1010)
+      page = .true.
 !
-      IF (ISUBHD.EQ.0) RETURN
+      if (isubhd.eq.0) return
 !
-      GO TO (10), ISUBHD
+      go to (10), isubhd
 !
-   10 WRITE (IPRT, 1030)
+   10 write (iprt, 1030)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS FOR PAGE HEADINGS
 !
- 1000 FORMAT (21H+DERIVATIVE CHECKING,,
-     &   10H CONTINUED)
- 1010 FORMAT ('+', 23(1H*)/ 24H * DERIVATIVE CHECKING */ 1X, 23(1H*))
- 1020 FORMAT ('1')
- 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
-      END
+1000 format (21h+derivative checking,,&
+     &   10h continued)
+ 1010 format ('+', 23(1h*)/ 24h * derivative checking */ 1x, 23(1h*))
+ 1020 format ('1')
+ 1030 format (//30h summary of initial conditions/ 1x, 30('-'))
+      end
 !NLERR
-      SUBROUTINE NLERR (ICNVCD, ISKULL)
+      subroutine nlerr (icnvcd, iskull)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -10425,23 +10412,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ICNVCD
+     integer&
+     &   icnvcd
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   ISKULL(10)
+     integer&
+     &   iskull(10)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -10459,53 +10446,53 @@
 !
 !     INITIALIZE MESSAGE INDICATOR VARIABLE
 !
-      DO 5 I = 1, 10
-         ISKULL(I) = 0
-    5 CONTINUE
+      do 5 i = 1, 10
+         iskull(i) = 0
+    5 continue
 !
 !     SET ERROR FLAG
 !
-      GO TO (10, 10, 20, 20, 20, 20, 40, 50, 60, 60, 10, 30, 10, 10,
-     &   10), ICNVCD
+     go to (10, 10, 20, 20, 20, 20, 40, 50, 60, 60, 10, 30, 10, 10,&
+     &   10), icnvcd
 !
 !     BAD VALUE
 !
-   10 IERR = 1
-      RETURN
+   10 ierr = 1
+      return
 !
 !     ACCEPTABLE STOPPING CONDITION
 !
-   20 IERR = 0
-      RETURN
+   20 ierr = 0
+      return
 !
 !     INITIAL VARIANCE COMPUTATION OVERFLOWS
 !
-   30 IERR = 2
-      ISKULL(2) = 1
-      RETURN
+   30 ierr = 2
+      iskull(2) = 1
+      return
 !
 !     SINGULAR CONVERGENCE
 !
-   40 IERR = 3
-      ISKULL(3) = 1
-      RETURN
+   40 ierr = 3
+      iskull(3) = 1
+      return
 !
 !     FALSE CONVERGENCE
 !
-   50 IERR = 5
-      ISKULL(5) = 1
-      RETURN
+   50 ierr = 5
+      iskull(5) = 1
+      return
 !
 !     ITERATION OR FUNCTION EVALUATION LIMIT
 !
-   60 IERR = 6
-      ISKULL(6) = 1
-      RETURN
+   60 ierr = 6
+      iskull(6) = 1
+      return
 !
-      END
+      end
 !EIVII
-      SUBROUTINE EIVII (NMSUB, NMVAR, IVEC, N, IVECLB, IVECUB, NVMX,
-     &   HEAD, MSGTYP, NV, ERROR, NMMIN, NMMAX)
+     subroutine eivii (nmsub, nmvar, ivec, n, iveclb, ivecub, nvmx,&
+     &   head, msgtyp, nv, error, nmmin, nmmax)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -10525,26 +10512,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IVECLB,IVECUB,MSGTYP,N,NV,NVMX
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   iveclb,ivecub,msgtyp,n,nv,nvmx
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IVEC(*)
-      CHARACTER
-     &   NMMAX(8)*1,NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     integer&
+     &   ivec(*)
+     character&
+     &   nmmax(8)*1,nmmin(8)*1,nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -10587,73 +10574,73 @@
 !     INTEGER NVMX
 !        THE LARGEST NUMBER OF VIOLATIONS ALLOWED.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (N.LE.0) RETURN
-      IF (IVECUB.LT.IVECLB) RETURN
+      if (n.le.0) return
+      if (ivecub.lt.iveclb) return
 !
 !     TEST WHETHER TESTING IS NECESSRY
 !
-      IF ((MOD(MSGTYP,3) .EQ. 0) .AND.
-     &    ((IVEC(1) .LT. IVECLB) .OR. (IVEC(1) .GT. IVECUB))) RETURN
+     if ((mod(msgtyp,3) .eq. 0) .and.&
+     &    ((ivec(1) .lt. iveclb) .or. (ivec(1) .gt. ivecub))) return
 !
 !     CHECK FOR VIOLATIONS
 !
-      NV = 0
-      DO 5 I = 1, N
-         IF ((IVEC(I).LT.IVECLB) .OR. (IVEC(I).GT.IVECUB)) NV = NV + 1
-    5 CONTINUE
+      nv = 0
+      do 5 i = 1, n
+         if ((ivec(i).lt.iveclb) .or. (ivec(i).gt.ivecub)) nv = nv + 1
+    5 continue
 !
-      IF (NV .LE. NVMX) RETURN
+      if (nv .le. nvmx) return
 !
 !     VIOLATIONS FOUND
 !
-      ERROR = .TRUE.
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
+      error = .true.
+      call iprint(iprt)
+      call ehdr(nmsub, head)
 !
-      IF (MSGTYP.LE.3)
-     &   WRITE (IPRT, 1000) (NMVAR(I),I=1,6), IVECLB, IVECUB, NV
-      IF (MSGTYP.GE.4)
-     &   WRITE (IPRT, 1005) (NMVAR(I),I=1,6), (NMMIN(I),I=1,8),
-     &   (NMMAX(I),I=1,8), NV
+     if (msgtyp.le.3)&
+     &   write (iprt, 1000) (nmvar(i),i=1,6), iveclb, ivecub, nv
+     if (msgtyp.ge.4)&
+    &   write (iprt, 1005) (nmvar(i),i=1,6), (nmmin(i),i=1,8),&
+     &   (nmmax(i),i=1,8), nv
 !
-      GO TO (10, 20, 30, 10, 20, 30), MSGTYP
+      go to (10, 20, 30, 10, 20, 30), msgtyp
 !
-   10 WRITE(IPRT, 1010) (NMVAR(I),I=1,6)
-      RETURN
+   10 write(iprt, 1010) (nmvar(i),i=1,6)
+      return
 !
-   20 WRITE(IPRT, 1020) (NMVAR(I),I=1,6), NVMX
-      RETURN
+   20 write(iprt, 1020) (nmvar(i),i=1,6), nvmx
+      return
 !
-   30 WRITE(IPRT, 1030) (NMVAR(I),I=1,6)
-      RETURN
+   30 write(iprt, 1030) (nmvar(i),i=1,6)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/
-     &   32H THE NUMBER OF VALUES IN VECTOR , 6A1,
-     &   19H OUTSIDE THE RANGE , I6, 3H TO/
-     &   1X, I6, 16H, INCLUSIVE, IS , I6, '.')
- 1005 FORMAT (/
-     &   32H THE NUMBER OF VALUES IN VECTOR , 6A1,
-     &   19H OUTSIDE THE RANGE , 8A1, 3H TO/
-     &   1X, 8A1, 16H, INCLUSIVE, IS , I6, '.')
- 1010 FORMAT(
-     &   26H THE VALUES IN THE VECTOR , 6A1,
-     &   31H MUST ALL BE WITHIN THIS RANGE.)
- 1020 FORMAT(
-     &   36H THE NUMBER OF VALUES IN THE VECTOR , 6A1,
-     &   19H OUTSIDE THIS RANGE/
-     &   19H MUST BE LESS THAN , I5, '.')
- 1030 FORMAT(
-     &   34H IF THE FIRST VALUE OF THE VECTOR , 6A1,
-     &   21H IS WITHIN THIS RANGE/
-     &   45H ALL OF THE VALUES MUST BE WITHIN THIS RANGE.)
+1000 format (/&
+    &   32h the number of values in vector , 6a1,&
+    &   19h outside the range , i6, 3h to/&
+     &   1x, i6, 16h, inclusive, is , i6, '.')
+1005 format (/&
+    &   32h the number of values in vector , 6a1,&
+    &   19h outside the range , 8a1, 3h to/&
+     &   1x, 8a1, 16h, inclusive, is , i6, '.')
+1010 format(&
+    &   26h the values in the vector , 6a1,&
+     &   31h must all be within this range.)
+1020 format(&
+    &   36h the number of values in the vector , 6a1,&
+    &   19h outside this range/&
+     &   19h must be less than , i5, '.')
+1030 format(&
+    &   34h if the first value of the vector , 6a1,&
+    &   21h is within this range/&
+     &   45h all of the values must be within this range.)
 !
-      END
+      end
 !STKREL
-      SUBROUTINE STKREL(NUMBER)
+      subroutine stkrel(number)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -10679,38 +10666,38 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   NUMBER
+     integer&
+     &   number
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IN,IPRT,LBOOK,LMAX,LNOW,LOUT,LUSED
+     integer&
+     &   in,iprt,lbook,lmax,lnow,lout,lused
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISTAK(12)
+     integer&
+     &   istak(12)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (ISTAK(1),LOUT)
-      EQUIVALENCE (ISTAK(2),LNOW)
-      EQUIVALENCE (ISTAK(3),LUSED)
-      EQUIVALENCE (ISTAK(4),LMAX)
-      EQUIVALENCE (ISTAK(5),LBOOK)
+      equivalence (dstak(1),istak(1))
+      equivalence (istak(1),lout)
+      equivalence (istak(2),lnow)
+      equivalence (istak(3),lused)
+      equivalence (istak(4),lmax)
+      equivalence (istak(5),lbook)
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -10741,53 +10728,53 @@
 !        THE NUMBER OF ALLOCATIONS TO BE FREED FROM THE STACK.
 !
 !
-      IF (LNOW.LT.LBOOK.OR.LNOW.GT.LUSED.OR.LUSED.GT.LMAX) GO TO 20
+      if (lnow.lt.lbook.or.lnow.gt.lused.or.lused.gt.lmax) go to 20
 !
-      IN = NUMBER
- 10      IF (IN.EQ.0) RETURN
+      in = number
+ 10      if (in.eq.0) return
 !
-         IF (LNOW.LE.LBOOK) GO TO 30
+         if (lnow.le.lbook) go to 30
 !
 !     CHECK TO MAKE SURE THE BACK POINTERS ARE MONOTONE.
 !
-         IF (ISTAK(LNOW).LT.LBOOK.OR.ISTAK(LNOW).GE.LNOW-1) GO TO 40
+         if (istak(lnow).lt.lbook.or.istak(lnow).ge.lnow-1) go to 40
 !
-         LOUT = LOUT-1
-         LNOW = ISTAK(LNOW)
-         IN = IN-1
-         GO TO 10
+         lout = lout-1
+         lnow = istak(lnow)
+         in = in-1
+         go to 10
 !
 !     PRINT ERROR MESSAGES
 !
-   20 IERR = 1
-      CALL IPRINT(IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+   20 ierr = 1
+      call iprint(iprt)
+      write (iprt, 1000)
+      return
 !
-   30 IERR = 1
-      CALL IPRINT(IPRT)
-      WRITE (IPRT, 1010)
-      RETURN
+   30 ierr = 1
+      call iprint(iprt)
+      write (iprt, 1010)
+      return
 !
-   40 IERR = 1
-      CALL IPRINT(IPRT)
-      WRITE (IPRT, 1020) LOUT
-      RETURN
+   40 ierr = 1
+      call iprint(iprt)
+      write (iprt, 1020) lout
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (///18H ***** ERROR *****//
-     &   50H DSTAK BOOKKEEPING ELEMENTS HAVE BEEN OVERWRITTEN.)
- 1010 FORMAT (///18H ***** ERROR *****//
-     &   52H ATTEMPT HAS BEEN MADE TO DE-ALLOCATE A NON-EXISTANT,
-     &   21H ALLOCATION IN DSTAK.)
- 1020 FORMAT (///18H ***** ERROR *****//
-     &   35H THE POINTER FOR ALLOCATION NUMBER , I3, 9H HAS BEEN,
-     &   13H OVERWRITTEN.)
+1000 format (///18h ***** error *****//&
+     &   50h dstak bookkeeping elements have been overwritten.)
+1010 format (///18h ***** error *****//&
+    &   52h attempt has been made to de-allocate a non-existant,&
+     &   21h allocation in dstak.)
+1020 format (///18h ***** error *****//&
+    &   35h the pointer for allocation number , i3, 9h has been,&
+     &   13h overwritten.)
 !
-      END
+      end
 !STPHDR
-      SUBROUTINE STPHDR(PAGE, WIDE, ISUBHD)
+      subroutine stphdr(page, wide, isubhd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -10804,14 +10791,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISUBHD
-      LOGICAL
-     &   PAGE,WIDE
+     integer&
+     &   isubhd
+     logical&
+     &   page,wide
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VERSP
@@ -10829,32 +10816,32 @@
 !       THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
 !        FULL WIDTH (TRUE) OR NOT (FALSE).
 !
-      CALL IPRINT(IPRT)
-      IF (PAGE) WRITE (IPRT, 1020)
-      CALL VERSP(WIDE)
-      IF (PAGE) WRITE (IPRT,1000)
-      IF (.NOT.PAGE) WRITE (IPRT,1010)
-      PAGE = .TRUE.
+      call iprint(iprt)
+      if (page) write (iprt, 1020)
+      call versp(wide)
+      if (page) write (iprt,1000)
+      if (.not.page) write (iprt,1010)
+      page = .true.
 !
-      IF (ISUBHD.EQ.0) RETURN
+      if (isubhd.eq.0) return
 !
-      GO TO (10), ISUBHD
+      go to (10), isubhd
 !
-   10 WRITE (IPRT, 1030)
+   10 write (iprt, 1030)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS FOR PAGE HEADINGS
 !
- 1000 FORMAT (32H+DERIVATIVE STEP SIZE SELECTION,,
-     &   10H CONTINUED)
- 1010 FORMAT ('+', 34(1H*)/ 35H * DERIVATIVE STEP SIZE SELECTION */
-     &   1X, 34(1H*))
- 1020 FORMAT ('1')
- 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
-      END
+1000 format (32h+derivative step size selection,,&
+     &   10h continued)
+1010 format ('+', 34(1h*)/ 35h * derivative step size selection */&
+     &   1x, 34(1h*))
+ 1020 format ('1')
+ 1030 format (//30h summary of initial conditions/ 1x, 30('-'))
+      end
 !CORRHD
-      SUBROUTINE CORRHD(IPRT, M, N)
+      subroutine corrhd(iprt, m, n)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -10871,8 +10858,8 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IPRT,M,N
+     integer&
+     &   iprt,m,n
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL VERSP
@@ -10886,17 +10873,17 @@
 !     INTEGER N
 !        THE NUMBER OF OBSERVATIONS FOR EACH VARIABLE
 !
-      CALL VERSP(.TRUE.)
-      WRITE (IPRT,1000) M, N
-      RETURN
+      call versp(.true.)
+      write (iprt,1000) m, n
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/25H CORRELATION ANALYSIS FOR, I3, 15H VARIABLES WITH,
-     &   I5, 13H OBSERVATIONS/)
-      END
+1000 format (/25h correlation analysis for, i3, 15h variables with,&
+     &   i5, 13h observations/)
+      end
 !EIVEO
-      SUBROUTINE EIVEO (NMSUB, NMVAR, IVEC, N, EVEN, HEAD)
+      subroutine eiveo (nmsub, nmvar, ivec, n, even, head)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -10914,26 +10901,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N
-      LOGICAL
-     &   EVEN,HEAD
+     integer&
+     &   n
+     logical&
+     &   even,head
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IVEC(*)
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR(8)*1
+     integer&
+     &   ivec(*)
+     character&
+     &   nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -10959,45 +10946,45 @@
 !
 !     CHECK FOR VIOLATIONS
 !
-      DO 10 I = 1, N
-         IF ((EVEN .AND. (MOD(IVEC(I), 2) .EQ. 1)) .OR.
-     &       ((.NOT.EVEN) .AND. (MOD(IVEC(I), 2) .EQ. 1))) GO TO 20
-   10 CONTINUE
+      do 10 i = 1, n
+        if ((even .and. (mod(ivec(i), 2) .eq. 1)) .or.&
+     &       ((.not.even) .and. (mod(ivec(i), 2) .eq. 1))) go to 20
+   10 continue
 !
-      RETURN
+      return
 !
 !     VIOLATIONS FOUND
 !
-   20 CONTINUE
+   20 continue
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      IF (EVEN) GO TO 40
+      if (even) go to 40
 !
-      WRITE (IPRT, 1010) (NMVAR(I), I = 1, 6)
-      RETURN
+      write (iprt, 1010) (nmvar(i), i = 1, 6)
+      return
 !
-   40 CONTINUE
-      WRITE (IPRT, 1020) (NMVAR(I), I = 1, 6)
-      RETURN
+   40 continue
+      write (iprt, 1020) (nmvar(i), i = 1, 6)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT(/
-     &   26H THE VALUES IN THE VECTOR , 6A1,
-     &   27H MUST ALL BE ODD.  THE NEXT/
-     &   53H LARGER INTEGER WILL BE USED IN PLACE OF EVEN VALUES.)
- 1020 FORMAT(/
-     &   26H THE VALUES IN THE VECTOR , 6A1,
-     &   28H MUST ALL BE EVEN.  THE NEXT/
-     &   52H LARGER INTEGER WILL BE USED IN PLACE OF ODD VALUES.)
+1010 format(/&
+    &   26h the values in the vector , 6a1,&
+    &   27h must all be odd.  the next/&
+     &   53h larger integer will be used in place of even values.)
+1020 format(/&
+    &   26h the values in the vector , 6a1,&
+    &   28h must all be even.  the next/&
+     &   52h larger integer will be used in place of odd values.)
 !
-      END
+      end
 !CCFER
-      SUBROUTINE CCFER(NMSUB, N, LAGMAX, LDSTAK, LDSMIN, ICCOV, JCCOV,
-     &  INLPPC, JNLPPC, M, LYFFT, NFFT, IYM, IYMFFT, ISFFT, ISLONG)
+     subroutine ccfer(nmsub, n, lagmax, ldstak, ldsmin, iccov, jccov,&
+     &  inlppc, jnlppc, m, lyfft, nfft, iym, iymfft, isfft, islong)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -11013,40 +11000,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ICCOV,INLPPC,IYM,IYMFFT,JCCOV,JNLPPC,LAGMAX,LDSMIN,LDSTAK,
-     &   LYFFT,M,N,NFFT
-      LOGICAL
-     &   ISFFT,ISLONG
+     integer&
+    &   iccov,inlppc,iym,iymfft,jccov,jnlppc,lagmax,ldsmin,ldstak,&
+     &   lyfft,m,n,nfft
+     logical&
+     &   isfft,islong
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
-      LOGICAL
-     &   HEAD
+     integer&
+     &   i
+     logical&
+     &   head
 !
 !  LOCAL ARRAYS
-      LOGICAL
-     &   ERR(15)
-      CHARACTER
-     &   LICCOV(8)*1,LINLPP(8)*1,LIYM(8)*1,LIYMFF(8)*1,
-     &   LJCCOV(8)*1,LJNLPP(8)*1,LLAGMX(8)*1,LLDS(8)*1,
-     &   LLGMX1(8)*1,LLYFFT(8)*1,LM(8)*1,LN(8)*1,LNFFT(8)*1,
-     &   LNM1(8)*1,LONE(8)*1,LTHREE(8)*1
+     logical&
+     &   err(15)
+     character&
+    &   liccov(8)*1,linlpp(8)*1,liym(8)*1,liymff(8)*1,&
+    &   ljccov(8)*1,ljnlpp(8)*1,llagmx(8)*1,llds(8)*1,&
+    &   llgmx1(8)*1,llyfft(8)*1,lm(8)*1,ln(8)*1,lnfft(8)*1,&
+     &   lnm1(8)*1,lone(8)*1,lthree(8)*1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL EISGE,EISII
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -11101,113 +11088,113 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     & LICCOV(1), LICCOV(2), LICCOV(3), LICCOV(4), LICCOV(5),
-     & LICCOV(6), LICCOV(7), LICCOV(8) /'I','C','C','O','V',' ',' ',' '/
-      DATA
-     & LINLPP(1), LINLPP(2), LINLPP(3), LINLPP(4), LINLPP(5),
-     & LINLPP(6), LINLPP(7), LINLPP(8) /'I','N','L','P','P','C',' ',' '/
-      DATA
-     & LIYM(1), LIYM(2), LIYM(3), LIYM(4), LIYM(5),
-     & LIYM(6), LIYM(7), LIYM(8) /'I','Y','M',' ',' ',' ',' ',' '/
-      DATA
-     & LIYMFF(1), LIYMFF(2), LIYMFF(3), LIYMFF(4), LIYMFF(5),
-     & LIYMFF(6), LIYMFF(7), LIYMFF(8) /'I','Y','M','F','F','T',' ',' '/
-      DATA
-     & LJCCOV(1), LJCCOV(2), LJCCOV(3), LJCCOV(4), LJCCOV(5),
-     & LJCCOV(6), LJCCOV(7), LJCCOV(8) /'J','C','C','O','V',' ',' ',' '/
-      DATA
-     & LJNLPP(1), LJNLPP(2), LJNLPP(3), LJNLPP(4), LJNLPP(5),
-     & LJNLPP(6), LJNLPP(7), LJNLPP(8) /'J','N','L','P','P','C',' ',' '/
-      DATA
-     & LLAGMX(1), LLAGMX(2), LLAGMX(3), LLAGMX(4), LLAGMX(5),
-     & LLAGMX(6), LLAGMX(7), LLAGMX(8) /'L','A','G','M','A','X',' ',' '/
-      DATA
-     & LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
-     & LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
-      DATA
-     & LLGMX1(1), LLGMX1(2), LLGMX1(3), LLGMX1(4), LLGMX1(5),
-     & LLGMX1(6), LLGMX1(7), LLGMX1(8) /'L','A','G','M','A','X','+','1'/
-      DATA
-     & LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
-     & LLYFFT(6), LLYFFT(7), LLYFFT(8) /'L','Y','F','F','T',' ',' ',' '/
-      DATA
-     & LM(1), LM(2), LM(3), LM(4), LM(5),
-     & LM(6), LM(7), LM(8) /'M',' ',' ',' ',' ',' ',' ',' '/
-      DATA
-     & LN(1), LN(2), LN(3), LN(4), LN(5),
-     & LN(6), LN(7), LN(8) /'N',' ',' ',' ',' ',' ',' ',' '/
-      DATA
-     & LNM1(1), LNM1(2), LNM1(3), LNM1(4), LNM1(5),
-     & LNM1(6), LNM1(7), LNM1(8) /'(','N','-','1',')',' ',' ',' '/
-      DATA
-     & LNFFT(1), LNFFT(2), LNFFT(3), LNFFT(4), LNFFT(5),
-     & LNFFT(6), LNFFT(7), LNFFT(8) /'N','F','F','T',' ',' ',' ',' '/
-      DATA
-     & LONE(1), LONE(2), LONE(3), LONE(4), LONE(5),
-     & LONE(6), LONE(7), LONE(8) /'O','N','E',' ',' ',' ',' ',' '/
-      DATA
-     & LTHREE(1), LTHREE(2), LTHREE(3), LTHREE(4), LTHREE(5),
-     & LTHREE(6), LTHREE(7), LTHREE(8) /'T','H','R','E','E',' ',' ',' '/
+     data&
+    & liccov(1), liccov(2), liccov(3), liccov(4), liccov(5),&
+     & liccov(6), liccov(7), liccov(8) /'I','C','C','O','V',' ',' ',' '/
+     data&
+    & linlpp(1), linlpp(2), linlpp(3), linlpp(4), linlpp(5),&
+     & linlpp(6), linlpp(7), linlpp(8) /'I','N','L','P','P','C',' ',' '/
+     data&
+    & liym(1), liym(2), liym(3), liym(4), liym(5),&
+     & liym(6), liym(7), liym(8) /'I','Y','M',' ',' ',' ',' ',' '/
+     data&
+    & liymff(1), liymff(2), liymff(3), liymff(4), liymff(5),&
+     & liymff(6), liymff(7), liymff(8) /'I','Y','M','F','F','T',' ',' '/
+     data&
+    & ljccov(1), ljccov(2), ljccov(3), ljccov(4), ljccov(5),&
+     & ljccov(6), ljccov(7), ljccov(8) /'J','C','C','O','V',' ',' ',' '/
+     data&
+    & ljnlpp(1), ljnlpp(2), ljnlpp(3), ljnlpp(4), ljnlpp(5),&
+     & ljnlpp(6), ljnlpp(7), ljnlpp(8) /'J','N','L','P','P','C',' ',' '/
+     data&
+    & llagmx(1), llagmx(2), llagmx(3), llagmx(4), llagmx(5),&
+     & llagmx(6), llagmx(7), llagmx(8) /'L','A','G','M','A','X',' ',' '/
+     data&
+    & llds(1), llds(2), llds(3), llds(4), llds(5),&
+     & llds(6), llds(7), llds(8) /'L','D','S','T','A','K',' ',' '/
+     data&
+    & llgmx1(1), llgmx1(2), llgmx1(3), llgmx1(4), llgmx1(5),&
+     & llgmx1(6), llgmx1(7), llgmx1(8) /'L','A','G','M','A','X','+','1'/
+     data&
+    & llyfft(1), llyfft(2), llyfft(3), llyfft(4), llyfft(5),&
+     & llyfft(6), llyfft(7), llyfft(8) /'L','Y','F','F','T',' ',' ',' '/
+     data&
+    & lm(1), lm(2), lm(3), lm(4), lm(5),&
+     & lm(6), lm(7), lm(8) /'M',' ',' ',' ',' ',' ',' ',' '/
+     data&
+    & ln(1), ln(2), ln(3), ln(4), ln(5),&
+     & ln(6), ln(7), ln(8) /'N',' ',' ',' ',' ',' ',' ',' '/
+     data&
+    & lnm1(1), lnm1(2), lnm1(3), lnm1(4), lnm1(5),&
+     & lnm1(6), lnm1(7), lnm1(8) /'(','N','-','1',')',' ',' ',' '/
+     data&
+    & lnfft(1), lnfft(2), lnfft(3), lnfft(4), lnfft(5),&
+     & lnfft(6), lnfft(7), lnfft(8) /'N','F','F','T',' ',' ',' ',' '/
+     data&
+    & lone(1), lone(2), lone(3), lone(4), lone(5),&
+     & lone(6), lone(7), lone(8) /'O','N','E',' ',' ',' ',' ',' '/
+     data&
+    & lthree(1), lthree(2), lthree(3), lthree(4), lthree(5),&
+     & lthree(6), lthree(7), lthree(8) /'T','H','R','E','E',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
-      DO 10 I = 1, 15
-        ERR(I) = .FALSE.
-   10 CONTINUE
+      ierr = 0
+      head = .true.
+      do 10 i = 1, 15
+        err(i) = .false.
+   10 continue
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 3, 2, HEAD, ERR(1), LTHREE)
+      call eisge(nmsub, ln, n, 3, 2, head, err(1), lthree)
 !
-      CALL EISGE(NMSUB, LM, M, 1, 2, HEAD, ERR(2), LONE)
+      call eisge(nmsub, lm, m, 1, 2, head, err(2), lone)
 !
-      IF (.NOT.ERR(1)) THEN
+      if (.not.err(1)) then
 !
-        CALL EISII(NMSUB, LLAGMX, LAGMAX, 1, N-1, 1, HEAD, ERR(3), LONE,
-     &    LNM1)
+       call eisii(nmsub, llagmx, lagmax, 1, n-1, 1, head, err(3), lone,&
+     &    lnm1)
 !
-        IF (ISFFT) THEN
-          IF (ISLONG) THEN
-            CALL EISGE(NMSUB, LIYMFF, IYMFFT, NFFT, 3, HEAD, ERR(4),
-     &        LNFFT)
-          ELSE
-            CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 3, HEAD, ERR(4),
-     &        LNFFT)
-          END IF
-        ELSE
-          CALL EISGE(NMSUB, LIYM, IYM, N, 3, HEAD, ERR(4), LN)
-        END IF
+        if (isfft) then
+          if (islong) then
+           call eisge(nmsub, liymff, iymfft, nfft, 3, head, err(4),&
+     &        lnfft)
+          else
+           call eisge(nmsub, llyfft, lyfft, nfft, 3, head, err(4),&
+     &        lnfft)
+          end if
+        else
+          call eisge(nmsub, liym, iym, n, 3, head, err(4), ln)
+        end if
 !
-        IF (.NOT.ERR(3)) THEN
+        if (.not.err(3)) then
 !
-          IF (ISLONG) THEN
-            CALL EISGE(NMSUB, LICCOV, ICCOV, LAGMAX+1, 3, HEAD, ERR(5),
-     &        LLGMX1)
-            CALL EISGE(NMSUB, LJCCOV, JCCOV, M, 3, HEAD, ERR(6),
-     &        LLGMX1)
-            CALL EISGE(NMSUB, LINLPP, INLPPC, LAGMAX+1, 3, HEAD, ERR(7),
-     &        LLGMX1)
-            CALL EISGE(NMSUB, LJNLPP, JNLPPC, M, 3, HEAD, ERR(8),
-     &        LLGMX1)
-          END IF
+          if (islong) then
+           call eisge(nmsub, liccov, iccov, lagmax+1, 3, head, err(5),&
+     &        llgmx1)
+           call eisge(nmsub, ljccov, jccov, m, 3, head, err(6),&
+     &        llgmx1)
+           call eisge(nmsub, linlpp, inlppc, lagmax+1, 3, head, err(7),&
+     &        llgmx1)
+           call eisge(nmsub, ljnlpp, jnlppc, m, 3, head, err(8),&
+     &        llgmx1)
+          end if
 !
-          CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR(9), LLDS)
+          call eisge(nmsub, llds, ldstak, ldsmin, 9, head, err(9), llds)
 !
-        END IF
-      END IF
+        end if
+      end if
 !
-      DO 20 I = 1, 15
-        IF (ERR(I)) IERR = 1
-   20 CONTINUE
+      do 20 i = 1, 15
+        if (err(i)) ierr = 1
+   20 continue
 !
-      RETURN
+      return
 !
-      END
+      end
 !ACFDTL
-      SUBROUTINE ACFDTL (NDF, ND, IOD, NTIMES)
+      subroutine acfdtl (ndf, nd, iod, ntimes)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -11223,18 +11210,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   NDF,NTIMES
+     integer&
+     &   ndf,ntimes
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IOD(*),ND(*)
+     integer&
+     &   iod(*),nd(*)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,ISTOP
-      CHARACTER
-     &   ICOM*1,IPER*1,IPUNCT*1
+     integer&
+     &   i,iprt,istop
+     character&
+     &   icom*1,iper*1,ipunct*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
@@ -11264,41 +11251,41 @@
 !     INTEGER NTIMES
 !        THE NUMBER OF TIMES THE DIFFERENCING FACTOR HAS BEEN APPLIED.
 !
-      DATA ICOM/','/, IPER/'.'/
+      data icom/','/, iper/'.'/
 !
-      CALL IPRINT (IPRT)
+      call iprint (iprt)
 !
-      IF (NDF .LE. 1) GO TO 10
+      if (ndf .le. 1) go to 10
 !
-      ISTOP = NDF - 1
-      IPUNCT = IPER
-      IF (NTIMES .GE. 1) IPUNCT = ICOM
-      WRITE(IPRT, 1000)
-      IF (NDF .EQ. 2)  WRITE(IPRT, 1001) ND(2), IOD(2), IPER
-      IF (NDF .GE. 3) WRITE(IPRT, 1001)
-     &   (ND(I), IOD(I), ICOM, I = 1, ISTOP), ND(NDF), IOD(NDF), IPUNCT
-      GO TO 20
+      istop = ndf - 1
+      ipunct = iper
+      if (ntimes .ge. 1) ipunct = icom
+      write(iprt, 1000)
+      if (ndf .eq. 2)  write(iprt, 1001) nd(2), iod(2), iper
+     if (ndf .ge. 3) write(iprt, 1001)&
+     &   (nd(i), iod(i), icom, i = 1, istop), nd(ndf), iod(ndf), ipunct
+      go to 20
 !
-   10 WRITE(IPRT, 1002)
+   10 write(iprt, 1002)
 !
-   20 IF (NTIMES .EQ. 0) RETURN
+   20 if (ntimes .eq. 0) return
 !
-      IF (NDF .GE. 2) WRITE(IPRT, 1003) NTIMES, IOD(1)
-      IF (NDF .EQ. 1) WRITE(IPRT, 1004) NTIMES, IOD(1)
-      RETURN
+      if (ndf .ge. 2) write(iprt, 1003) ntimes, iod(1)
+      if (ndf .eq. 1) write(iprt, 1004) ntimes, iod(1)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(//47H SERIES ANALYZED IS INPUT SERIES DIFFERENCED BY/)
- 1001 FORMAT(3X, 3(I3, ' FACTOR(S) OF ORDER ', I3, A1, 1X)/)
- 1002 FORMAT(//' SERIES ANALYZED IS ORIGINAL INPUT SERIES'/)
- 1003 FORMAT(4X, 34H AND, IN ADDITION, DIFFERENCED BY , I3,
-     &   18H FACTORS OF ORDER , I3, '.'//)
- 1004 FORMAT(4X, 16H DIFFERENCED BY , I3, 18H FACTORS OF ORDER ,
-     &   I3, '.'//)
-      END
+ 1000 format(//47h series analyzed is input series differenced by/)
+ 1001 format(3x, 3(i3, ' FACTOR(S) OF ORDER ', i3, a1, 1x)/)
+ 1002 format(//' SERIES ANALYZED IS ORIGINAL INPUT SERIES'/)
+1003 format(4x, 34h and, in addition, differenced by , i3,&
+     &   18h factors of order , i3, '.'//)
+1004 format(4x, 16h differenced by , i3, 18h factors of order ,&
+     &   i3, '.'//)
+      end
 !ERIODD
-      SUBROUTINE ERIODD(NMSUB, NMVAR, NVAL, MSGTYP, HEAD, ERROR)
+      subroutine eriodd(nmsub, nmvar, nval, msgtyp, head, error)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -11318,24 +11305,24 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   MSGTYP,NVAL
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   msgtyp,nval
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR(8)*1
+     character&
+     &   nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -11362,47 +11349,47 @@
 !     INTEGER NVAL
 !        THE VALUE OF THE VARIABLE BEING CHECKED.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (MSGTYP .EQ. 2) GO TO 10
+      if (msgtyp .eq. 2) go to 10
 !
 !     CHECK FOR ODD
 !
-      IF (MOD(NVAL, 2) .EQ. 1) RETURN
+      if (mod(nval, 2) .eq. 1) return
 !
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
-      WRITE(IPRT, 1010) (NMVAR(I), I = 1, 6), (NMVAR(I), I = 1, 6), NVAL
-      ERROR = .TRUE.
-      RETURN
+      call iprint(iprt)
+      call ehdr(nmsub, head)
+      write(iprt, 1010) (nmvar(i), i = 1, 6), (nmvar(i), i = 1, 6), nval
+      error = .true.
+      return
 !
-   10 CONTINUE
+   10 continue
 !
 !     CHECK FOR EVEN
 !
-      IF (MOD(NVAL, 2) .EQ. 0) RETURN
+      if (mod(nval, 2) .eq. 0) return
 !
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
-      WRITE(IPRT, 1020) (NMVAR(I), I = 1, 6), (NMVAR(I), I = 1, 6), NVAL
-      ERROR = .TRUE.
-      RETURN
+      call iprint(iprt)
+      call ehdr(nmsub, head)
+      write(iprt, 1020) (nmvar(i), i = 1, 6), (nmvar(i), i = 1, 6), nval
+      error = .true.
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT(/
-     &   27H THE VALUE OF THE VARIABLE , 6A1,
-     &   34H MUST BE ODD.  THE INPUT VALUE OF , 6A1/
-     &    4H IS , I5, '.')
- 1020 FORMAT(/
-     &   27H THE VALUE OF THE VARIABLE , 6A1,
-     &   35H MUST BE EVEN.  THE INPUT VALUE OF , 6A1/
-     &    4H IS , I5, '.')
+1010 format(/&
+    &   27h the value of the variable , 6a1,&
+    &   34h must be odd.  the input value of , 6a1/&
+     &    4h is , i5, '.')
+1020 format(/&
+    &   27h the value of the variable , 6a1,&
+    &   35h must be even.  the input value of , 6a1/&
+     &    4h is , i5, '.')
 !
-      END
+      end
 !AMFER
-      SUBROUTINE AMFER(NMSUB, N, NPAR, LDSTAK, LDSMIN,
-     &  SAVE, MSPEC, NFAC, IFCST, NFCST)
+     subroutine amfer(nmsub, n, npar, ldstak, ldsmin,&
+     &  save, mspec, nfac, ifcst, nfcst)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -11419,39 +11406,39 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IFCST,LDSMIN,LDSTAK,N,NFAC,NFCST,NPAR
-      LOGICAL
-     &   SAVE
+     integer&
+     &   ifcst,ldsmin,ldstak,n,nfac,nfcst,npar
+     logical&
+     &   save
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   MSPEC(4,*)
-      CHARACTER
-     &   NMSUB(6)*1
+     integer&
+     &   mspec(4,*)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,NP,NV
-      LOGICAL
-     &   HEAD
+     integer&
+     &   i,np,nv
+     logical&
+     &   head
 !
 !  LOCAL ARRAYS
-      LOGICAL
-     &   ERROR(20)
-      CHARACTER
-     &   LIFCST(8)*1,LLDS(8)*1,LMSPEC(8)*1,LN(8)*1,LNFAC(8)*1,
-     &   LNFCST(8)*1,LNPAR(8)*1,LONE(8)*1
+     logical&
+     &   error(20)
+     character&
+    &   lifcst(8)*1,llds(8)*1,lmspec(8)*1,ln(8)*1,lnfac(8)*1,&
+     &   lnfcst(8)*1,lnpar(8)*1,lone(8)*1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL EIAGE,EISEQ,EISGE
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -11496,73 +11483,73 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA LIFCST(1), LIFCST(2), LIFCST(3), LIFCST(4), LIFCST(5),
-     &   LIFCST(6), LIFCST(7), LIFCST(8)
+     data lifcst(1), lifcst(2), lifcst(3), lifcst(4), lifcst(5),&
+    &   lifcst(6), lifcst(7), lifcst(8)&
      &  /'I','F','C','S','T',' ',' ',' '/
-      DATA LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
-     &   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
-      DATA LMSPEC(1), LMSPEC(2), LMSPEC(3), LMSPEC(4), LMSPEC(5),
-     &   LMSPEC(6), LMSPEC(7), LMSPEC(8)
+     data llds(1), llds(2), llds(3), llds(4), llds(5), llds(6),&
+     &   llds(7), llds(8) /'L','D','S','T','A','K',' ',' '/
+     data lmspec(1), lmspec(2), lmspec(3), lmspec(4), lmspec(5),&
+    &   lmspec(6), lmspec(7), lmspec(8)&
      &  /'M','S','P','C',' ',' ',' ',' '/
-      DATA LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8) /'N',
+     data ln(1), ln(2), ln(3), ln(4), ln(5), ln(6), ln(7), ln(8) /'N',&
      &   ' ',' ',' ',' ',' ',' ',' '/
-      DATA LNFAC(1), LNFAC(2), LNFAC(3), LNFAC(4), LNFAC(5),
-     &   LNFAC(6), LNFAC(7), LNFAC(8) /'N','F','A','C',' ',' ',' ',' '/
-      DATA LNFCST(1), LNFCST(2), LNFCST(3), LNFCST(4), LNFCST(5),
-     &   LNFCST(6), LNFCST(7), LNFCST(8)
+     data lnfac(1), lnfac(2), lnfac(3), lnfac(4), lnfac(5),&
+     &   lnfac(6), lnfac(7), lnfac(8) /'N','F','A','C',' ',' ',' ',' '/
+     data lnfcst(1), lnfcst(2), lnfcst(3), lnfcst(4), lnfcst(5),&
+    &   lnfcst(6), lnfcst(7), lnfcst(8)&
      &  /'N','F','C','S','T',' ',' ',' '/
-      DATA LNPAR(1), LNPAR(2), LNPAR(3), LNPAR(4), LNPAR(5),
-     &   LNPAR(6), LNPAR(7), LNPAR(8) /'N','P','A','R',' ',' ',' ',
+     data lnpar(1), lnpar(2), lnpar(3), lnpar(4), lnpar(5),&
+    &   lnpar(6), lnpar(7), lnpar(8) /'N','P','A','R',' ',' ',' ',&
      &   ' '/
-      DATA LONE(1), LONE(2), LONE(3), LONE(4), LONE(5),
-     &   LONE(6), LONE(7), LONE(8) /'1',' ',' ',' ',' ',' ',' ',' '/
+     data lone(1), lone(2), lone(3), lone(4), lone(5),&
+     &   lone(6), lone(7), lone(8) /'1',' ',' ',' ',' ',' ',' ',' '/
 !
 !     ERROR CHECKING
 !
-      DO 10 I=1,20
-         ERROR(I) = .FALSE.
-   10 CONTINUE
+      do 10 i=1,20
+         error(i) = .false.
+   10 continue
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
-      CALL EISGE(NMSUB, LN, N, 1, 2, HEAD, ERROR(1), LONE)
+      call eisge(nmsub, ln, n, 1, 2, head, error(1), lone)
 !
-      CALL EISGE(NMSUB, LNFAC, NFAC, 1, 2, HEAD, ERROR(2), LONE)
+      call eisge(nmsub, lnfac, nfac, 1, 2, head, error(2), lone)
 !
-      IF (.NOT. ERROR(2))
-     &  CALL EIAGE(NMSUB, LMSPEC, MSPEC, 4, NFAC, 4, 0, 0, HEAD, 1, NV,
-     &  ERROR(3), LMSPEC)
+     if (.not. error(2))&
+    &  call eiage(nmsub, lmspec, mspec, 4, nfac, 4, 0, 0, head, 1, nv,&
+     &  error(3), lmspec)
 !
-      IF ((.NOT. ERROR(2)) .AND. (.NOT. ERROR(3))) THEN
-        NP = 1
-         DO 15 I = 1, NFAC
-           NP = NP + MSPEC(1,I) + MSPEC(3,I)
-   15   CONTINUE
-        CALL EISEQ(NMSUB, LNPAR, NPAR, NP, 1, HEAD, ERROR(4), LNPAR)
-      END IF
+      if ((.not. error(2)) .and. (.not. error(3))) then
+        np = 1
+         do 15 i = 1, nfac
+           np = np + mspec(1,i) + mspec(3,i)
+   15   continue
+        call eiseq(nmsub, lnpar, npar, np, 1, head, error(4), lnpar)
+      end if
 !
-      IF ((.NOT.ERROR(1)) .AND. (.NOT.ERROR(2)) .AND. (.NOT.ERROR(3))
-     &   .AND. (.NOT.ERROR(4)) .AND. (.NOT.ERROR(5)))
-     &   CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERROR(6),
-     &   LLDS)
+     if ((.not.error(1)) .and. (.not.error(2)) .and. (.not.error(3))&
+    &   .and. (.not.error(4)) .and. (.not.error(5)))&
+    &   call eisge(nmsub, llds, ldstak, ldsmin, 9, head, error(6),&
+     &   llds)
 !
-      IF (SAVE)
-     &   CALL EISGE(NMSUB, LIFCST, IFCST, NFCST, 3, HEAD, ERROR(15),
-     &   LNFCST)
+     if (save)&
+    &   call eisge(nmsub, lifcst, ifcst, nfcst, 3, head, error(15),&
+     &   lnfcst)
 !
-      DO 20 I=1,20
-         IF (ERROR(I)) GO TO 30
-   20 CONTINUE
-      RETURN
+      do 20 i=1,20
+         if (error(i)) go to 30
+   20 continue
+      return
 !
-   30 CONTINUE
-      IERR = 1
-      RETURN
+   30 continue
+      ierr = 1
+      return
 !
-      END
+      end
 !NLHDRA
-      SUBROUTINE NLHDRA(PAGE, WIDE, ISUBHD)
+      subroutine nlhdra(page, wide, isubhd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -11580,14 +11567,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISUBHD
-      LOGICAL
-     &   PAGE,WIDE
+     integer&
+     &   isubhd
+     logical&
+     &   page,wide
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VERSP
@@ -11606,33 +11593,33 @@
 !        BE FULL WIDTH (TRUE) OR NOT (FALSE).
 !
 !
-      CALL IPRINT(IPRT)
-      IF (PAGE) WRITE (IPRT, 1020)
-      CALL VERSP(WIDE)
-      IF (PAGE) WRITE (IPRT,1000)
-      IF (.NOT.PAGE) WRITE (IPRT,1010)
-      PAGE = .TRUE.
+      call iprint(iprt)
+      if (page) write (iprt, 1020)
+      call versp(wide)
+      if (page) write (iprt,1000)
+      if (.not.page) write (iprt,1010)
+      page = .true.
 !
-      IF (ISUBHD.EQ.0) RETURN
+      if (isubhd.eq.0) return
 !
-      GO TO (10), ISUBHD
+      go to (10), isubhd
 !
-   10 WRITE (IPRT, 1030)
+   10 write (iprt, 1030)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS FOR PAGE HEADINGS
 !
- 1000 FORMAT (35H+NONLINEAR LEAST SQUARES ESTIMATION,
-     &   42H WITH USER-SUPPLIED DERIVATIVES, CONTINUED)
- 1010 FORMAT ('+', 71(1H*)/
-     &   1X, 37H*  NONLINEAR LEAST SQUARES ESTIMATION,
-     &   34H WITH USER-SUPPLIED DERIVATIVES  */ 1X, 71(1H*))
- 1020 FORMAT ('1')
- 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
-      END
+1000 format (35h+nonlinear least squares estimation,&
+     &   42h with user-supplied derivatives, continued)
+1010 format ('+', 71(1h*)/&
+    &   1x, 37h*  nonlinear least squares estimation,&
+     &   34h with user-supplied derivatives  */ 1x, 71(1h*))
+ 1020 format ('1')
+ 1030 format (//30h summary of initial conditions/ 1x, 30('-'))
+      end
 !EHDR
-      SUBROUTINE EHDR(NMSUB, HEAD)
+      subroutine ehdr(nmsub, head)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -11648,16 +11635,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      LOGICAL
-     &   HEAD
+     logical&
+     &   head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VERSP
@@ -11675,25 +11662,25 @@
 !     CHARACTER*1 NMSUB(6)
 !        THE CHARACTERS OF THE CALLING ROUTINES NAME.
 !
-      IF (.NOT.HEAD) RETURN
+      if (.not.head) return
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      CALL VERSP(.FALSE.)
-      WRITE(IPRT,1010)
-      WRITE (IPRT, 1000) (NMSUB(I), I=1,6)
-      HEAD = .FALSE.
+      call versp(.false.)
+      write(iprt,1010)
+      write (iprt, 1000) (nmsub(i), i=1,6)
+      head = .false.
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/31H ERROR CHECKING FOR SUBROUTINE , 6A1/ 1X, 37('-'))
- 1010 FORMAT ('+', 18(1H*)/19H * ERROR MESSAGES */1X, 18(1H*))
+ 1000 format (/31h error checking for subroutine , 6a1/ 1x, 37('-'))
+ 1010 format ('+', 18(1h*)/19h * error messages */1x, 18(1h*))
 !
-      END
+      end
 !ICNTI
-      INTEGER FUNCTION ICNTI (IV, NIV, I)
+      integer function icnti (iv, niv, i)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -11709,16 +11696,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   I,NIV
+     integer&
+     &   i,niv
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IV(NIV)
+     integer&
+     &   iv(niv)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   J
+     integer&
+     &   j
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -11733,14 +11720,14 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      ICNTI = 0
-      DO 10 J = 1, NIV
-         IF (IV(J) .EQ. I) ICNTI = ICNTI + 1
-   10 CONTINUE
-      RETURN
-      END
+      icnti = 0
+      do 10 j = 1, niv
+         if (iv(j) .eq. i) icnti = icnti + 1
+   10 continue
+      return
+      end
 !LLHDRG
-      SUBROUTINE LLHDRG(PAGE, WIDE, ISUBHD)
+      subroutine llhdrg(page, wide, isubhd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -11757,14 +11744,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISUBHD
-      LOGICAL
-     &   PAGE,WIDE
+     integer&
+     &   isubhd
+     logical&
+     &   page,wide
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VERSP
@@ -11783,33 +11770,33 @@
 !        BE FULL WIDTH (TRUE) OR NOT (FALSE).
 !
 !
-      CALL IPRINT(IPRT)
-      IF (PAGE) WRITE (IPRT,1020)
-      CALL VERSP(WIDE)
-      IF (PAGE) WRITE (IPRT,1000)
-      IF (.NOT.PAGE) WRITE (IPRT,1010)
-      PAGE = .TRUE.
+      call iprint(iprt)
+      if (page) write (iprt,1020)
+      call versp(wide)
+      if (page) write (iprt,1000)
+      if (.not.page) write (iprt,1010)
+      page = .true.
 !
-      IF (ISUBHD.EQ.0) RETURN
+      if (isubhd.eq.0) return
 !
-      GO TO (10), ISUBHD
+      go to (10), isubhd
 !
-   10 WRITE (IPRT,1030)
+   10 write (iprt,1030)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS FOR PAGE HEADINGS
 !
- 1000 FORMAT (32H+LINEAR LEAST SQUARES ESTIMATION,
+1000 format (32h+linear least squares estimation,&
      &  ' WITH USER-SPECIFIED MODEL, CONTINUED')
- 1010 FORMAT ('+', 63('*')/
-     &   1X, 34H*  LINEAR LEAST SQUARES ESTIMATION,
-     &   ' WITH USER-SPECIFIED MODEL  *'/ 1X, 63('*'))
- 1020 FORMAT ('1')
- 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
-      END
+1010 format ('+', 63('*')/&
+    &   1x, 34h*  linear least squares estimation,&
+     &   ' WITH USER-SPECIFIED MODEL  *'/ 1x, 63('*'))
+ 1020 format ('1')
+ 1030 format (//30h summary of initial conditions/ 1x, 30('-'))
+      end
 !ERDF
-      SUBROUTINE ERDF(NMSUB, NDF, IOD, ND, N, HEAD, ERROR)
+      subroutine erdf(nmsub, ndf, iod, nd, n, head, error)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -11826,20 +11813,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,NDF
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   n,ndf
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IOD(*),ND(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     integer&
+     &   iod(*),nd(*)
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IER,IPRT,MBOD
+     integer&
+     &   i,ier,iprt,mbod
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -11873,53 +11860,53 @@
 !     CHARACTER*1 NMSUB(6)
 !        THE CHARACTERS OF THE CALLING SUBROUTINE NAME.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (NDF .GE. 0) GO TO 10
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
-      WRITE (IPRT, 1001) NDF
-      ERROR = .TRUE.
-      RETURN
+      if (ndf .ge. 0) go to 10
+      call iprint(iprt)
+      call ehdr(nmsub, head)
+      write (iprt, 1001) ndf
+      error = .true.
+      return
 !
-   10 IF (NDF .EQ. 0) RETURN
+   10 if (ndf .eq. 0) return
 !
-      IER = 0
-      MBOD = 0
-      DO 30 I = 1, NDF
-         IF (IOD(I) .GE. 1 .AND. ND(I) .GE. 1) GO TO 20
-         IER = 1
-         GO TO 40
-   20    MBOD = MBOD + IOD(I) * ND(I)
-   30 CONTINUE
-      IF (MBOD .LE. N - 1) RETURN
+      ier = 0
+      mbod = 0
+      do 30 i = 1, ndf
+         if (iod(i) .ge. 1 .and. nd(i) .ge. 1) go to 20
+         ier = 1
+         go to 40
+   20    mbod = mbod + iod(i) * nd(i)
+   30 continue
+      if (mbod .le. n - 1) return
 !
-   40 CONTINUE
-      CALL IPRINT(IPRT)
-      CALL EHDR(NMSUB, HEAD)
-      IF (IER .EQ. 1)
-     &   WRITE (IPRT, 1002) (I, ND(I), IOD(I), I = 1, NDF)
-      IF (IER .EQ. 0 .AND. MBOD .GE. N) WRITE (IPRT, 1003) MBOD, N
-      ERROR = .TRUE.
-      RETURN
+   40 continue
+      call iprint(iprt)
+      call ehdr(nmsub, head)
+     if (ier .eq. 1)&
+     &   write (iprt, 1002) (i, nd(i), iod(i), i = 1, ndf)
+      if (ier .eq. 0 .and. mbod .ge. n) write (iprt, 1003) mbod, n
+      error = .true.
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1001 FORMAT(/44H THE NUMBER OF DIFFERENCE FACTORS (NDF) MUST/
-     &   54H BE GREATER THAN OR EQUAL TO ZERO.  THE INPUT VALUE OF/
-     &   8H NDF IS , I6, '.')
- 1002 FORMAT (/46H THE ORDER OF EACH DIFFERENCE FACTOR (IOD) AND/
-     &   56H NUMBER OF TIMES IT IS APPLIED (ND) MUST BE GREATER THAN/
-     &   52H EQUAL TO ONE.  THE INPUT VALUES OF THESE ARRAYS ARE/
-     &   25H    DIF. FACT.   ND   IOD/
-     &   (1X, I13, I5, I6))
- 1003 FORMAT (/50H THE MAXIMUM BACKORDER DUE TO DIFFERENCING (MBOD),
-     &  /54H THAT IS, THE SUM OF ND(I)*IOD(I), I = 1, 2, ..., NDF,/
-     &   59H MUST BE LESS THAN OR EQUAL TO N-1.  THE COMPUTED VALUE FOR/
-     &   9H MBOD IS , I6, 33H, WHILE THE INPUT VALUE FOR N IS , I6, '.')
-      END
+1001 format(/44h the number of difference factors (ndf) must/&
+    &   54h be greater than or equal to zero.  the input value of/&
+     &   8h ndf is , i6, '.')
+1002 format (/46h the order of each difference factor (iod) and/&
+    &   56h number of times it is applied (nd) must be greater than/&
+    &   52h equal to one.  the input values of these arrays are/&
+    &   25h    dif. fact.   nd   iod/&
+     &   (1x, i13, i5, i6))
+1003 format (/50h the maximum backorder due to differencing (mbod),&
+    &  /54h that is, the sum of nd(i)*iod(i), i = 1, 2, ..., ndf,/&
+    &   59h must be less than or equal to n-1.  the computed value for/&
+     &   9h mbod is , i6, 33h, while the input value for n is , i6, '.')
+      end
 !STKST
-      INTEGER FUNCTION STKST (NFACT)
+      integer function stkst (nfact)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -11942,29 +11929,29 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   NFACT
+     integer&
+     &   nfact
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISTAK(12),ISTATS(4)
+     integer&
+     &   istak(12),istats(4)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
+      common /cstak/dstak
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (ISTAK(1),ISTATS(1))
+      equivalence (dstak(1),istak(1))
+      equivalence (istak(1),istats(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -11981,29 +11968,29 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      IF (NFACT .GT. 0 .AND. NFACT .LT. 6) GO TO 10
+      if (nfact .gt. 0 .and. nfact .lt. 6) go to 10
 !
 !     REPORT ERROR STATUS
 !
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000) IPRT
-      STKST = 0
-      RETURN
+      call iprint (iprt)
+      write (iprt, 1000) iprt
+      stkst = 0
+      return
 !
 !     REPORT TRUE VALUE OF A STATISTIC, ASSUMING STACK IS
 !     DEFINED.
 !
-   10 STKST = ISTATS(NFACT)
-      RETURN
+   10 stkst = istats(nfact)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (///18H ***** ERROR *****//
-     &   24H ILLEGAL STACK STATISTIC, I5, 11H REQUESTED.)
-      END
+1000 format (///18h ***** error *****//&
+     &   24h illegal stack statistic, i5, 11h requested.)
+      end
 !EISGE
-      SUBROUTINE EISGE(NMSUB, NMVAR1, NVAL, NMIN, MSGTYP, HEAD, ERROR,
-     &   NMVAR2)
+     subroutine eisge(nmsub, nmvar1, nval, nmin, msgtyp, head, error,&
+     &   nmvar2)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -12020,18 +12007,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   MSGTYP,NMIN,NVAL
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   msgtyp,nmin,nval
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1
+     character&
+     &   nmsub(6)*1,nmvar1(8)*1,nmvar2(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -12112,121 +12099,121 @@
 !     INTEGER NVAL
 !        THE INPUT VALUE OF THE ARGUMENT BEING CHECKED.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (NVAL .GE. NMIN) RETURN
+      if (nval .ge. nmin) return
 !
-      ERROR = .TRUE.
+      error = .true.
 !
-      CALL IPRINT (IPRT)
+      call iprint (iprt)
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      WRITE (IPRT, 1000) (NMVAR1(I), I=1,6), NVAL
+      write (iprt, 1000) (nmvar1(i), i=1,6), nval
 !
-      GO TO (20, 30, 40, 50, 60, 70, 80, 90, 100), MSGTYP
+      go to (20, 30, 40, 50, 60, 70, 80, 90, 100), msgtyp
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL BASED ON LIMITS IMPOSED
 !     BY STARPAC.
 !
-   20 WRITE (IPRT, 1010) (NMVAR1(I), I=1,6), NMIN
-      RETURN
+   20 write (iprt, 1010) (nmvar1(i), i=1,6), nmin
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL BASED ON OTHER INPUT
 !     ARGUMENTS.
 !
-   30 WRITE (IPRT, 1020) (NMVAR1(I), I=1,6), (NMVAR2(I), I=1,8)
-      RETURN
+   30 write (iprt, 1020) (nmvar1(i), i=1,6), (nmvar2(i), i=1,8)
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
 !     FIRST DIMENSION OF A DIMENSIONED ARRAY.
 !
-   40 WRITE (IPRT, 1030) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6),
-     &   (NMVAR2(I), I=1,8)
-      RETURN
+  40 write (iprt, 1030) (nmvar1(i), i=2,7), (nmvar1(i), i=1,6),&
+     &   (nmvar2(i), i=1,8)
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
 !     SECOND DIMENSION OF A DIMENSIONED ARRAY.
 !
-   50 WRITE (IPRT, 1040) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6),
-     &   (NMVAR2(I), I=1,8)
-      RETURN
+  50 write (iprt, 1040) (nmvar1(i), i=2,7), (nmvar1(i), i=1,6),&
+     &   (nmvar2(i), i=1,8)
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL, WHEN ARGUMENT IS LDSTAK.
 !
-   60 WRITE(IPRT, 1050) NMIN
-      RETURN
+   60 write(iprt, 1050) nmin
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
 !     FIRST DIMENSION OF A DIMENSIONED ARRAY CHECK AGAINST THE NUMBER OF
 !     UNFIXED PARAMETERS.
 !
-   70 WRITE (IPRT, 1060) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6)
-      RETURN
+   70 write (iprt, 1060) (nmvar1(i), i=2,7), (nmvar1(i), i=1,6)
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
 !     DIMENSION OF A VECTOR.
 !
-   80 WRITE (IPRT, 1070) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6),
-     &   (NMVAR2(I), I=1,8)
-      RETURN
+  80 write (iprt, 1070) (nmvar1(i), i=2,7), (nmvar1(i), i=1,6),&
+     &   (nmvar2(i), i=1,8)
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
 !     DIMENSION OF THE VECTORS ACOV AND NLPPA.
 !
-   90 WRITE (IPRT, 1080) (NMVAR1(I), I=1,6), (NMVAR2(I), I=1,8)
-      RETURN
+   90 write (iprt, 1080) (nmvar1(i), i=1,6), (nmvar2(i), i=1,8)
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO SMALL, WHERE VALUE INDICATED THE
 !     DIMENSION OF A VECTOR.
 !
-  100 WRITE (IPRT, 1090) (NMVAR1(I), I=2,7), (NMVAR1(I), I=1,6),
-     &   NMIN
-      RETURN
+ 100 write (iprt, 1090) (nmvar1(i), i=2,7), (nmvar1(i), i=1,6),&
+     &   nmin
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/20H THE INPUT VALUE OF , 6A1, 4H IS , I5, '.')
- 1010 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   34H MUST BE GREATER THAN OR EQUAL TO , I5, '.')
- 1020 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   34H MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
- 1030 FORMAT(
-     &   24H THE FIRST DIMENSION OF , 6A1,
-     &   30H, AS INDICATED BY THE ARGUMENT/
-     &    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
- 1040 FORMAT(
-     &   25H THE SECOND DIMENSION OF , 6A1,
-     &   30H, AS INDICATED BY THE ARGUMENT/
-     &    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
- 1050 FORMAT(
-     &   55H THE DIMENSION OF THE DOUBLE PRECISION VECTOR DSTAK, AS,
-     &   13H INDICATED BY/
-     &   54H THE ARGUMENT LDSTAK, MUST BE GREATER THAN OR EQUAL TO,
-     &   I5, '.')
- 1060 FORMAT(
-     &   24H THE FIRST DIMENSION OF , 6A1,
-     &   30H, AS INDICATED BY THE ARGUMENT/
-     &    1X, 6A1, 34H, MUST BE GREATER THAN OR EQUAL TO,
-     &   34H THE NUMBER OF UNFIXED PARAMETERS.)
- 1070 FORMAT(
-     &   15H THE LENGTH OF , 6A1,
-     &   30H, AS INDICATED BY THE ARGUMENT/
-     &    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
- 1080 FORMAT(
-     &   29H THE LENGTH OF ACOV AND NLPPA,
-     &   30H, AS INDICATED BY THE ARGUMENT/
-     &    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , 8A1, '.')
- 1090 FORMAT(
-     &   15H THE LENGTH OF , 6A1,
-     &   30H, AS INDICATED BY THE ARGUMENT/
-     &    1X, 6A1, 35H, MUST BE GREATER THAN OR EQUAL TO , I6, '.')
+ 1000 format (/20h the input value of , 6a1, 4h is , i5, '.')
+1010 format(&
+    &   27h the value of the argument , 6a1,&
+     &   34h must be greater than or equal to , i5, '.')
+1020 format(&
+    &   27h the value of the argument , 6a1,&
+     &   34h must be greater than or equal to , 8a1, '.')
+1030 format(&
+    &   24h the first dimension of , 6a1,&
+    &   30h, as indicated by the argument/&
+     &    1x, 6a1, 35h, must be greater than or equal to , 8a1, '.')
+1040 format(&
+    &   25h the second dimension of , 6a1,&
+    &   30h, as indicated by the argument/&
+     &    1x, 6a1, 35h, must be greater than or equal to , 8a1, '.')
+1050 format(&
+    &   55h the dimension of the double precision vector dstak, as,&
+    &   13h indicated by/&
+    &   54h the argument ldstak, must be greater than or equal to,&
+     &   i5, '.')
+1060 format(&
+    &   24h the first dimension of , 6a1,&
+    &   30h, as indicated by the argument/&
+    &    1x, 6a1, 34h, must be greater than or equal to,&
+     &   34h the number of unfixed parameters.)
+1070 format(&
+    &   15h the length of , 6a1,&
+    &   30h, as indicated by the argument/&
+     &    1x, 6a1, 35h, must be greater than or equal to , 8a1, '.')
+1080 format(&
+    &   29h the length of acov and nlppa,&
+    &   30h, as indicated by the argument/&
+     &    1x, 6a1, 35h, must be greater than or equal to , 8a1, '.')
+1090 format(&
+    &   15h the length of , 6a1,&
+    &   30h, as indicated by the argument/&
+     &    1x, 6a1, 35h, must be greater than or equal to , i6, '.')
 !
-      END
+      end
 !GENI
-      SUBROUTINE GENI(IVECT, N, IINIT, ISTP)
+      subroutine geni(ivect, n, iinit, istp)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -12243,16 +12230,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IINIT,ISTP,N
+     integer&
+     &   iinit,istp,n
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IVECT(N)
+     integer&
+     &   ivect(n)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,J
+     integer&
+     &   i,j
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -12269,16 +12256,16 @@
 !     INTEGER N
 !        INPUT PARAMETER.  THE LENGTH OF IVECT.
 !
-      I = IINIT
-      DO 10 J=1,N
-         IVECT(J) = I
-         I = I + ISTP
-   10 CONTINUE
-      RETURN
-      END
+      i = iinit
+      do 10 j=1,n
+         ivect(j) = i
+         i = i + istp
+   10 continue
+      return
+      end
 !EISLE
-      SUBROUTINE EISLE(NMSUB, NMVAR1, NVAL, NMAX, MSGTYP, HEAD, ERROR,
-     &   NMVAR2)
+     subroutine eisle(nmsub, nmvar1, nval, nmax, msgtyp, head, error,&
+     &   nmvar2)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -12295,18 +12282,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   MSGTYP,NMAX,NVAL
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   msgtyp,nmax,nval
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1
+     character&
+     &   nmsub(6)*1,nmvar1(8)*1,nmvar2(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -12341,45 +12328,45 @@
 !     INTEGER NVAL
 !        THE INPUT VALUE OF THE ARGUMENT BEING CHECKED.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (NVAL .LE. NMAX) RETURN
+      if (nval .le. nmax) return
 !
-      ERROR = .TRUE.
+      error = .true.
 !
-      CALL IPRINT (IPRT)
+      call iprint (iprt)
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      WRITE (IPRT, 1000) (NMVAR1(I), I=1,6), NVAL
+      write (iprt, 1000) (nmvar1(i), i=1,6), nval
 !
-      GO TO (10, 20), MSGTYP
+      go to (10, 20), msgtyp
 !
 !     PRINT MESSAGE FOR VALUE TOO LARGE BASED ON LIMITS IMPOSED
 !     BY STARPAC.
 !
-   10 WRITE (IPRT, 1010) (NMVAR1(I), I=1,6), NMAX
-      RETURN
+   10 write (iprt, 1010) (nmvar1(i), i=1,6), nmax
+      return
 !
 !     PRINT MESSAGE FOR VALUE TOO LARGE BASED ON OTHER INPUT
 !     ARGUMENTS.
 !
-   20 WRITE (IPRT, 1020) (NMVAR1(I), I=1,6), (NMVAR2(I), I=1,8)
-      RETURN
+   20 write (iprt, 1020) (nmvar1(i), i=1,6), (nmvar2(i), i=1,8)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/20H THE INPUT VALUE OF , 6A1, 4H IS , I5, '.')
- 1010 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   31H MUST BE LESS THAN OR EQUAL TO , I5, '.')
- 1020 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   31H MUST BE LESS THAN OR EQUAL TO , 8A1, '.')
+ 1000 format (/20h the input value of , 6a1, 4h is , i5, '.')
+1010 format(&
+    &   27h the value of the argument , 6a1,&
+     &   31h must be less than or equal to , i5, '.')
+1020 format(&
+    &   27h the value of the argument , 6a1,&
+     &   31h must be less than or equal to , 8a1, '.')
 !
-      END
+      end
 !STKCLR
-      SUBROUTINE STKCLR (NALL0)
+      subroutine stkclr (nall0)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -12400,16 +12387,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   NALL0
+     integer&
+     &   nall0
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   NALLN
+     integer&
+     &   nalln
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     &   STKST
+     integer&
+     &   stkst
 !       EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
@@ -12426,12 +12413,12 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      NALLN = STKST(1)
-      CALL STKREL (NALLN - NALL0)
-      RETURN
-      END
+      nalln = stkst(1)
+      call stkrel (nalln - nall0)
+      return
+      end
 !LSTLAG
-      INTEGER FUNCTION LSTLAG (NLPPA, LAGMAX, LACOV)
+      integer function lstlag (nlppa, lagmax, lacov)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -12448,16 +12435,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LACOV,LAGMAX
+     integer&
+     &   lacov,lagmax
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   NLPPA(LACOV)
+     integer&
+     &   nlppa(lacov)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   LAG
+     integer&
+     &   lag
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -12473,18 +12460,18 @@
 !     FIND THE LAST AUTOCORRELATION TO BE COMPUTED BEFORE
 !     ONE COULD NOT BE COMPUTED DUE TO MISSING DATA
 !
-      LSTLAG = -1
-      IF (NLPPA(1) .LE. 0) RETURN
-      DO 20 LAG = 1, LAGMAX
-         IF (NLPPA(LAG + 1) .GE. 1) GO TO 20
-         LSTLAG = LAG - 1
-         RETURN
-   20 CONTINUE
-      LSTLAG = LAGMAX
-      RETURN
-      END
+      lstlag = -1
+      if (nlppa(1) .le. 0) return
+      do 20 lag = 1, lagmax
+         if (nlppa(lag + 1) .ge. 1) go to 20
+         lstlag = lag - 1
+         return
+   20 continue
+      lstlag = lagmax
+      return
+      end
 !EISRNG
-      SUBROUTINE EISRNG (NMSUB, ISEED, ISEEDU, HEAD)
+      subroutine eisrng (nmsub, iseed, iseedu, head)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -12508,18 +12495,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISEED,ISEEDU
-      LOGICAL
-     &   HEAD
+     integer&
+     &   iseed,iseedu
+     logical&
+     &   head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,MDIG
+     integer&
+     &   iprt,mdig
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -12530,7 +12517,7 @@
 !      EXTERNAL EHDR,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,MIN,MOD
+      intrinsic abs,min,mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -12550,41 +12537,41 @@
 !     CHARACTER*1 NMSUB(6)
 !        THE CHARACTERS OF THE CALLING SUBROUTINES NAME.
 !
-      MDIG = MIN(I1MACH(8)+1,32)
+      mdig = min(i1mach(8)+1,32)
 !
 !     CHECK FOR VIOLATIONS
 !
-      IF ((ISEED.EQ.0) .OR.
-     &    ((ISEED.GE.1) .AND.
-     &     (ISEED.LE.2**(MDIG-1)-1) .AND.
-     &     (MOD(ISEED,2).EQ.1))) THEN
+     if ((iseed.eq.0) .or.&
+    &    ((iseed.ge.1) .and.&
+    &     (iseed.le.2**(mdig-1)-1) .and.&
+     &     (mod(iseed,2).eq.1))) then
 !
 !     SUPPLIED SEED WILL BE USED
 !
-         ISEEDU = ISEED
-      ELSE
+         iseedu = iseed
+      else
 !
 !     VIOLATIONS FOUND
 !
-         ISEEDU = MIN( ABS(ISEED)+MOD(ABS(ISEED),2)-1, 2**(MDIG-1)-1)
-         CALL IPRINT(IPRT)
-         CALL EHDR(NMSUB, HEAD)
-         WRITE (IPRT, 1010) MDIG-1,ISEEDU
-      END IF
+         iseedu = min( abs(iseed)+mod(abs(iseed),2)-1, 2**(mdig-1)-1)
+         call iprint(iprt)
+         call ehdr(nmsub, head)
+         write (iprt, 1010) mdig-1,iseedu
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT(/
-     &   ' THE VALUE OF ISEED MUST BE BETWEEN 0 AND 2**',I2,' - 1,'/
-     &   ' INCLUSIVE, AND, IF ISEED IS NOT 0, ISEED MUST BE ODD.  THE'/
-     &   ' SEED ACTUALLY USED BY THE RANDOM NUMBER GENERATOR HAS BEEN'/
-     &   ' SET TO', I10,'.')
+1010 format(/&
+    &   ' THE VALUE OF ISEED MUST BE BETWEEN 0 AND 2**',i2,' - 1,'/&
+    &   ' INCLUSIVE, AND, IF ISEED IS NOT 0, ISEED MUST BE ODD.  THE'/&
+    &   ' SEED ACTUALLY USED BY THE RANDOM NUMBER GENERATOR HAS BEEN'/&
+     &   ' SET TO', i10,'.')
 !
-      END
+      end
 !SETESL
-      SUBROUTINE SETESL(N, NDIV, NFFT)
+      subroutine setesl(n, ndiv, nfft)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -12611,22 +12598,22 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,NDIV,NFFT
+     integer&
+     &   n,ndiv,nfft
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,NPF,NSFP
+     integer&
+     &   i,npf,nsfp
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   IPF(50),IPFEXP(50)
+     integer&
+     &   ipf(50),ipfexp(50)
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL FACTOR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -12648,27 +12635,27 @@
 !     INTEGER NSFP
 !        THE PRODUCT OF THE NON SQUARE FACTORS.
 !
-      NFFT = N
-      IF (NFFT.LE.0) RETURN
-      IF (MOD(NFFT, NDIV) .NE. 0) NFFT = NFFT + NDIV - MOD(NFFT, NDIV)
-      NFFT = NFFT - NDIV
-   20 NFFT = NFFT + NDIV
-      CALL FACTOR(NFFT/NDIV, NPF, IPF, IPFEXP)
-      IF ((NPF.GE.11) .OR. (IPF(NPF).GT.23)) GO TO 20
-      NSFP = 1
-      IF (NDIV.EQ.4) NSFP = 2
-      DO 30 I = 1, NPF
-         IF (MOD(IPFEXP(I), 2).EQ.1) NSFP = NSFP * IPF(I)
-   30 CONTINUE
-      IF (NSFP .GE. 210) GO TO 20
+      nfft = n
+      if (nfft.le.0) return
+      if (mod(nfft, ndiv) .ne. 0) nfft = nfft + ndiv - mod(nfft, ndiv)
+      nfft = nfft - ndiv
+   20 nfft = nfft + ndiv
+      call factor(nfft/ndiv, npf, ipf, ipfexp)
+      if ((npf.ge.11) .or. (ipf(npf).gt.23)) go to 20
+      nsfp = 1
+      if (ndiv.eq.4) nsfp = 2
+      do 30 i = 1, npf
+         if (mod(ipfexp(i), 2).eq.1) nsfp = nsfp * ipf(i)
+   30 continue
+      if (nsfp .ge. 210) go to 20
 !
-      NFFT = NFFT + 2
+      nfft = nfft + 2
 !
-      RETURN
+      return
 !
-      END
+      end
 !ENFFT
-      SUBROUTINE ENFFT(NMSUB, NFFT, NDIV, N, LYFFT, NFFT2, HEAD, ERROR)
+      subroutine enfft(nmsub, nfft, ndiv, n, lyfft, nfft2, head, error)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -12690,24 +12677,24 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LYFFT,N,NDIV,NFFT,NFFT2
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   lyfft,n,ndiv,nfft,nfft2
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,NFFT1
+     integer&
+     &   iprt,nfft1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT,SETESL
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -12735,66 +12722,66 @@
 !        EXCEEDS NFFT AND WHICH MEETS THE REQUIREMENTS OF
 !        SINGLETONS FFT CODE.
 !
-      ERROR = .FALSE.
-      CALL IPRINT (IPRT)
+      error = .false.
+      call iprint (iprt)
 !
-      IF (NFFT .GE. N+2) GO TO 20
-!
-!     PRINT WARNING
-!
-      CALL EHDR(NMSUB, HEAD)
-!
-      WRITE (IPRT, 1050) N
-!
-   20 CONTINUE
-      NFFT1 = MAX(NFFT, N+2)
-      CALL SETESL(NFFT1-2, NDIV, NFFT2)
-!
-      IF (NFFT .EQ. NFFT2) RETURN
+      if (nfft .ge. n+2) go to 20
 !
 !     PRINT WARNING
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      WRITE (IPRT, 1020) NFFT, NFFT2
+      write (iprt, 1050) n
 !
-      IF (NFFT .GT. LYFFT) GO TO 40
+   20 continue
+      nfft1 = max(nfft, n+2)
+      call setesl(nfft1-2, ndiv, nfft2)
 !
-      WRITE (IPRT, 1030) NFFT2
-      RETURN
+      if (nfft .eq. nfft2) return
 !
-   40 CONTINUE
+!     PRINT WARNING
 !
-      ERROR = .TRUE.
+      call ehdr(nmsub, head)
 !
-      WRITE (IPRT, 1040) NFFT2, LYFFT
-      RETURN
+      write (iprt, 1020) nfft, nfft2
+!
+      if (nfft .gt. lyfft) go to 40
+!
+      write (iprt, 1030) nfft2
+      return
+!
+   40 continue
+!
+      error = .true.
+!
+      write (iprt, 1040) nfft2, lyfft
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1020 FORMAT (/
-     &   40H THE INPUT VALUE OF THE PARAMETER NFFT (, I5,
-     &   15H) DOES NOT MEET/
-     &   51H THE REQUIREMENTS OF SINGLETONS FFT CODE.  THE NEXT,
-     &   13H LARGER VALUE/
-     &   15H WHICH DOES IS , I5, '.')
- 1030 FORMAT (/
-     &   11H THE VALUE , I5, 37H WILL BE USED FOR THE EXTENDED SERIES,
-     &    8H LENGTH.)
- 1040 FORMAT (/
-     &   20H HOWEVER, THE VALUE , I5, 27H EXCEEDS THE LENGTH LYFFT (,
-     &   I5, 8H) OF THE/
-     &   58H VECTOR YFFT, AND THEREFORE CANNOT BE USED AS THE EXTENDED/
-     &   43H SERIES LENGTH WITHOUT REDIMENSIONING YFFT.)
- 1050 FORMAT (/
-     &   56H THE EXTENDED SERIES LENGTH (NFFT) MUST EQUAL OR EXCEED,/
-     &   45H THE NUMBER OF OBSERVATIONS IN THE SERIES (N=, I5,
-     &    9H) PLUS 2.)
+1020 format (/&
+    &   40h the input value of the parameter nfft (, i5,&
+    &   15h) does not meet/&
+    &   51h the requirements of singletons fft code.  the next,&
+    &   13h larger value/&
+     &   15h which does is , i5, '.')
+1030 format (/&
+    &   11h the value , i5, 37h will be used for the extended series,&
+     &    8h length.)
+1040 format (/&
+    &   20h however, the value , i5, 27h exceeds the length lyfft (,&
+    &   i5, 8h) of the/&
+    &   58h vector yfft, and therefore cannot be used as the extended/&
+     &   43h series length without redimensioning yfft.)
+1050 format (/&
+    &   56h the extended series length (nfft) must equal or exceed,/&
+    &   45h the number of observations in the series (n=, i5,&
+     &    9h) plus 2.)
 !
-      END
+      end
 !UFSER
-      SUBROUTINE UFSER(NMSUB, N, LAGMAX, LACOV, NF, ISPCF, NW,
-     &    LAGS, LDSTAK, LDSMIN, LYFFT, NFFT, OPTION)
+     subroutine ufser(nmsub, n, lagmax, lacov, nf, ispcf, nw,&
+     &    lags, ldstak, ldsmin, lyfft, nfft, option)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -12811,40 +12798,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISPCF,LACOV,LAGMAX,LDSMIN,LDSTAK,LYFFT,N,NF,NFFT,NW
+     integer&
+     &   ispcf,lacov,lagmax,ldsmin,ldstak,lyfft,n,nf,nfft,nw
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   LAGS(*)
-      LOGICAL
-     &   OPTION(4)
-      CHARACTER
-     &   NMSUB(6)*1
+     integer&
+     &   lags(*)
+     logical&
+     &   option(4)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,NV
-      LOGICAL
-     &   HEAD
+     integer&
+     &   i,nv
+     logical&
+     &   head
 !
 !  LOCAL ARRAYS
-      LOGICAL
-     &   ERR(15)
-      CHARACTER
-     &   L1(8)*1,LISPCF(8)*1,LLACOV(8)*1,LLAGMX(8)*1,LLAGS(8)*1,
-     &   LLDS(8)*1,LLGMX1(8)*1,LLYFFT(8)*1,LN(8)*1,LNF(8)*1,
-     &   LNM1(8)*1,LNW(8)*1
+     logical&
+     &   err(15)
+     character&
+    &   l1(8)*1,lispcf(8)*1,llacov(8)*1,llagmx(8)*1,llags(8)*1,&
+    &   llds(8)*1,llgmx1(8)*1,llyfft(8)*1,ln(8)*1,lnf(8)*1,&
+     &   lnm1(8)*1,lnw(8)*1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL EISGE,EISII,EIVII
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -12901,100 +12888,100 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA LISPCF(1), LISPCF(2), LISPCF(3), LISPCF(4), LISPCF(5),
-     &   LISPCF(6), LISPCF(7), LISPCF(8) /'I','S','P','C','F',' ',' ',
+     data lispcf(1), lispcf(2), lispcf(3), lispcf(4), lispcf(5),&
+    &   lispcf(6), lispcf(7), lispcf(8) /'I','S','P','C','F',' ',' ',&
      &   ' '/
-      DATA LLACOV(1), LLACOV(2), LLACOV(3), LLACOV(4), LLACOV(5),
-     &   LLACOV(6), LLACOV(7), LLACOV(8) /'L','A','C','O','V',' ',' ',
+     data llacov(1), llacov(2), llacov(3), llacov(4), llacov(5),&
+    &   llacov(6), llacov(7), llacov(8) /'L','A','C','O','V',' ',' ',&
      &   ' '/
-      DATA LLAGMX(1), LLAGMX(2), LLAGMX(3), LLAGMX(4), LLAGMX(5),
-     &   LLAGMX(6), LLAGMX(7), LLAGMX(8) /'L','A','G','M','A','X',' ',
+     data llagmx(1), llagmx(2), llagmx(3), llagmx(4), llagmx(5),&
+    &   llagmx(6), llagmx(7), llagmx(8) /'L','A','G','M','A','X',' ',&
      &   ' '/
-      DATA LLAGS(1), LLAGS(2), LLAGS(3), LLAGS(4), LLAGS(5), LLAGS(6),
-     &   LLAGS(7), LLAGS(8) /'L','A','G','S',' ',' ',' ',' '/
-      DATA LLGMX1(1), LLGMX1(2), LLGMX1(3), LLGMX1(4), LLGMX1(5),
-     &   LLGMX1(6), LLGMX1(7), LLGMX1(8) /'L','A','G','M','A','X','+',
+     data llags(1), llags(2), llags(3), llags(4), llags(5), llags(6),&
+     &   llags(7), llags(8) /'L','A','G','S',' ',' ',' ',' '/
+     data llgmx1(1), llgmx1(2), llgmx1(3), llgmx1(4), llgmx1(5),&
+    &   llgmx1(6), llgmx1(7), llgmx1(8) /'L','A','G','M','A','X','+',&
      &   '1'/
-      DATA LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
-     &   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
-      DATA LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8) /'N',
+     data llds(1), llds(2), llds(3), llds(4), llds(5), llds(6),&
+     &   llds(7), llds(8) /'L','D','S','T','A','K',' ',' '/
+     data ln(1), ln(2), ln(3), ln(4), ln(5), ln(6), ln(7), ln(8) /'N',&
      &   ' ',' ',' ',' ',' ',' ',' '/
-      DATA LNF(1), LNF(2), LNF(3), LNF(4), LNF(5), LNF(6), LNF(7),
-     &   LNF(8) /'N','F',' ',' ',' ',' ',' ',' '/
-      DATA LNM1(1), LNM1(2), LNM1(3), LNM1(4), LNM1(5), LNM1(6),
-     &   LNM1(7), LNM1(8) /'N','-','1',' ',' ',' ',' ',' '/
-      DATA LNW(1), LNW(2), LNW(3), LNW(4), LNW(5), LNW(6), LNW(7),
-     &   LNW(8) /'N','W',' ',' ',' ',' ',' ',' '/
-      DATA LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
-     &   LLYFFT(6), LLYFFT(7), LLYFFT(8) /'L','Y','F','F','T',' ',' ',
+     data lnf(1), lnf(2), lnf(3), lnf(4), lnf(5), lnf(6), lnf(7),&
+     &   lnf(8) /'N','F',' ',' ',' ',' ',' ',' '/
+     data lnm1(1), lnm1(2), lnm1(3), lnm1(4), lnm1(5), lnm1(6),&
+     &   lnm1(7), lnm1(8) /'N','-','1',' ',' ',' ',' ',' '/
+     data lnw(1), lnw(2), lnw(3), lnw(4), lnw(5), lnw(6), lnw(7),&
+     &   lnw(8) /'N','W',' ',' ',' ',' ',' ',' '/
+     data llyfft(1), llyfft(2), llyfft(3), llyfft(4), llyfft(5),&
+    &   llyfft(6), llyfft(7), llyfft(8) /'L','Y','F','F','T',' ',' ',&
      &   ' '/
-      DATA L1(1), L1(2), L1(3), L1(4), L1(5), L1(6), L1(7), L1(8) /'1',
+     data l1(1), l1(2), l1(3), l1(4), l1(5), l1(6), l1(7), l1(8) /'1',&
      &   ' ',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
-      DO 10 I=1,15
-         ERR(I) = .FALSE.
-   10 CONTINUE
+      do 10 i=1,15
+         err(i) = .false.
+   10 continue
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 17, 1, HEAD, ERR(1), LN)
+      call eisge(nmsub, ln, n, 17, 1, head, err(1), ln)
 !
-      IF (OPTION(4)) THEN
-        CALL EISGE(NMSUB, LNF, NF, 1, 1, HEAD, ERR(6), LNF)
-        IF (.NOT.ERR(6))
-     &     CALL EISGE(NMSUB, LISPCF, ISPCF, NF, 3, HEAD, ERR(7), LNF)
-        CALL EISGE(NMSUB, LNW, NW, 1, 1, HEAD, ERR(8), LNW)
-      END IF
+      if (option(4)) then
+        call eisge(nmsub, lnf, nf, 1, 1, head, err(6), lnf)
+       if (.not.err(6))&
+     &     call eisge(nmsub, lispcf, ispcf, nf, 3, head, err(7), lnf)
+        call eisge(nmsub, lnw, nw, 1, 1, head, err(8), lnw)
+      end if
 !
-      IF (.NOT.ERR(1)) THEN
-        IF (OPTION(3)) THEN
-          CALL EISII(NMSUB, LLAGMX, LAGMAX, 1, N-1, 1, HEAD, ERR(2),
-     &       L1, LNM1)
-          IF (.NOT.ERR(2)) THEN
-            IF (OPTION(2)) THEN
-              CALL EISGE(NMSUB, LLACOV, LACOV, LAGMAX+1, 8, HEAD,
-     &          ERR(3), LLGMX1)
-            ELSE
-              CALL EISGE(NMSUB, LLACOV, LACOV, LAGMAX+1, 7, HEAD,
-     &          ERR(3), LLGMX1)
-            END IF
-          END IF
-        END IF
-        IF (.NOT.ERR(2)) THEN
-          IF (OPTION(1))
-     &      CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 9, HEAD, ERR(4),
-     &        LLYFFT)
+      if (.not.err(1)) then
+        if (option(3)) then
+         call eisii(nmsub, llagmx, lagmax, 1, n-1, 1, head, err(2),&
+     &       l1, lnm1)
+          if (.not.err(2)) then
+            if (option(2)) then
+             call eisge(nmsub, llacov, lacov, lagmax+1, 8, head,&
+     &          err(3), llgmx1)
+            else
+             call eisge(nmsub, llacov, lacov, lagmax+1, 7, head,&
+     &          err(3), llgmx1)
+            end if
+          end if
+        end if
+        if (.not.err(2)) then
+         if (option(1))&
+    &      call eisge(nmsub, llyfft, lyfft, nfft, 9, head, err(4),&
+     &        llyfft)
 !
-          IF (.NOT.ERR(8)) THEN
-           IF (OPTION(4)) THEN
-            IF (OPTION(3)) THEN
-             CALL EIVII(NMSUB, LLAGS, LAGS, NW, 1, LAGMAX, 0, HEAD, 3,
-     &         NV, ERR(9), L1, LLAGMX)
-            ELSE
-             CALL EIVII(NMSUB, LLAGS, LAGS, NW, 1, N-1, 0, HEAD, 3, NV,
-     &         ERR(9), L1, LNM1)
-            END IF
-           END IF
+          if (.not.err(8)) then
+           if (option(4)) then
+            if (option(3)) then
+            call eivii(nmsub, llags, lags, nw, 1, lagmax, 0, head, 3,&
+     &         nv, err(9), l1, llagmx)
+            else
+            call eivii(nmsub, llags, lags, nw, 1, n-1, 0, head, 3, nv,&
+     &         err(9), l1, lnm1)
+            end if
+           end if
 !
-            IF ((.NOT.ERR(6)) .AND. (.NOT.ERR(9)))
-     &         CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR(14),
-     &            LLDS)
-          END IF
-        END IF
-      END IF
+           if ((.not.err(6)) .and. (.not.err(9)))&
+    &         call eisge(nmsub, llds, ldstak, ldsmin, 9, head, err(14),&
+     &            llds)
+          end if
+        end if
+      end if
 !
-      DO 40 I=1,15
-         IF (ERR(I)) IERR = 1
-   40 CONTINUE
+      do 40 i=1,15
+         if (err(i)) ierr = 1
+   40 continue
 !
-      RETURN
+      return
 !
-      END
+      end
 !FACTOR
       subroutine factor(n, npf, ipf, ipfexp)
 !
@@ -13086,7 +13073,7 @@
 !
       end subroutine factor
 !MSGX
-      SUBROUTINE MSGX(IER, IPRT)
+      subroutine msgx(ier, iprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -13104,15 +13091,15 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IER,IPRT
+     integer&
+     &   ier,iprt
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIBLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -13125,20 +13112,20 @@
 !
 !
 !     PRINT MESSAGE
-      WRITE (IPRT,1000) IER, IERR
+      write (iprt,1000) ier, ierr
 !
-      IF (IER.NE.IERR) WRITE (IPRT,1010)
+      if (ier.ne.ierr) write (iprt,1010)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENT
 !
- 1000 FORMAT(/28H EXPECTED VALUE FOR IERR IS , I1/15H RETURNED VALUE,
-     &   12H FOR IERR IS, I2)
- 1010 FORMAT(48H POSSIBLE ERROR, UNEXPECTED VALUE FOR ERROR FLAG)
-      END
+1000 format(/28h expected value for ierr is , i1/15h returned value,&
+     &   12h for ierr is, i2)
+ 1010 format(48h possible error, unexpected value for error flag)
+      end
 !CPYVII
-      SUBROUTINE CPYVII(N,X,INCX,Y,INCY)
+      subroutine cpyvii(n,x,incx,y,incy)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -13159,19 +13146,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   INCX,INCY,N
+     integer&
+     &   incx,incy,n
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   X(N),Y(N)
+     integer&
+     &   x(n),y(n)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IX,IY,M,MP1,NS
+     integer&
+     &   i,ix,iy,m,mp1,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -13188,56 +13175,56 @@
 !     INTEGER Y(N)
 !        THE MATRIX TO BE COPIED TO.
 !
-      IF(N.LE.0)RETURN
-      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
-    5 CONTINUE
+      if(n.le.0)return
+      if(incx.eq.incy) if(incx-1) 5,20,60
+    5 continue
 !
 !        CODE FOR UNEQUAL OR NONPOSITIVE INCREMENTS.
 !
-      IX = 1
-      IY = 1
-      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
-      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
-      DO 10 I = 1,N
-        Y(IY) = X(IX)
-        IX = IX + INCX
-        IY = IY + INCY
-   10 CONTINUE
-      RETURN
+      ix = 1
+      iy = 1
+      if(incx.lt.0)ix = (-n+1)*incx + 1
+      if(incy.lt.0)iy = (-n+1)*incy + 1
+      do 10 i = 1,n
+        y(iy) = x(ix)
+        ix = ix + incx
+        iy = iy + incy
+   10 continue
+      return
 !
 !        CODE FOR BOTH INCREMENTS EQUAL TO 1
 !
 !        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 7.
 !
-   20 M = MOD(N,7)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-        Y(I) = X(I)
-   30 CONTINUE
-      IF( N .LT. 7 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,7
-        Y(I) = X(I)
-        Y(I + 1) = X(I + 1)
-        Y(I + 2) = X(I + 2)
-        Y(I + 3) = X(I + 3)
-        Y(I + 4) = X(I + 4)
-        Y(I + 5) = X(I + 5)
-        Y(I + 6) = X(I + 6)
-   50 CONTINUE
-      RETURN
+   20 m = mod(n,7)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+        y(i) = x(i)
+   30 continue
+      if( n .lt. 7 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,7
+        y(i) = x(i)
+        y(i + 1) = x(i + 1)
+        y(i + 2) = x(i + 2)
+        y(i + 3) = x(i + 3)
+        y(i + 4) = x(i + 4)
+        y(i + 5) = x(i + 5)
+        y(i + 6) = x(i + 6)
+   50 continue
+      return
 !
 !        CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
 !
-   60 CONTINUE
-      NS = N*INCX
-          DO 70 I=1,NS,INCX
-          Y(I) = X(I)
-   70     CONTINUE
-      RETURN
-      END
+   60 continue
+      ns = n*incx
+          do 70 i=1,ns,incx
+          y(i) = x(i)
+   70     continue
+      return
+      end
 !STKGET
-      INTEGER FUNCTION STKGET(NITEMS, ITYPE)
+      integer function stkget(nitems, itype)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -13297,42 +13284,42 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ITYPE,NITEMS
+     integer&
+     &   itype,nitems
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,LBOOK,LMAX,LNOW,LOUT,LUSED
+     integer&
+     &   i,iprt,lbook,lmax,lnow,lout,lused
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISIZE(5),ISTAK(12)
+     integer&
+     &   isize(5),istak(12)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (ISTAK(1),LOUT)
-      EQUIVALENCE (ISTAK(2),LNOW)
-      EQUIVALENCE (ISTAK(3),LUSED)
-      EQUIVALENCE (ISTAK(4),LMAX)
-      EQUIVALENCE (ISTAK(5),LBOOK)
-      EQUIVALENCE (ISTAK(6),ISIZE(1))
+      equivalence (dstak(1),istak(1))
+      equivalence (istak(1),lout)
+      equivalence (istak(2),lnow)
+      equivalence (istak(3),lused)
+      equivalence (istak(4),lmax)
+      equivalence (istak(5),lbook)
+      equivalence (istak(6),isize(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -13367,39 +13354,39 @@
 !        THE LENGTH OF THE ARRAY OF ITYPE TO BE ALLOCATED.
 !
 !
-      STKGET = (LNOW*ISIZE(2)-1)/ISIZE(ITYPE) + 2
-      I = ( (STKGET-1+NITEMS)*ISIZE(ITYPE) - 1 )/ISIZE(2) + 3
+      stkget = (lnow*isize(2)-1)/isize(itype) + 2
+      i = ( (stkget-1+nitems)*isize(itype) - 1 )/isize(2) + 3
 !
 !  STACK OVERFLOW IS AN UNRECOVERABLE ERROR.
 !
-      IF (I .LE. LMAX) GO TO 10
+      if (i .le. lmax) go to 10
 !
-      IERR = 1
-      CALL IPRINT(IPRT)
-      WRITE(IPRT, 1000)
-      RETURN
+      ierr = 1
+      call iprint(iprt)
+      write(iprt, 1000)
+      return
 !
-   10 CONTINUE
+   10 continue
 !
 !  ISTAK(I-1) CONTAINS THE TYPE FOR THIS ALLOCATION.
 !  ISTAK(I  ) CONTAINS A POINTER TO THE END OF THE PREVIOUS
 !             ALLOCATION.
 !
-      ISTAK(I-1) = ITYPE
-      ISTAK(I  ) = LNOW
-      LOUT = LOUT+1
-      LNOW = I
-      LUSED = MAX(LUSED, LNOW)
+      istak(i-1) = itype
+      istak(i  ) = lnow
+      lout = lout+1
+      lnow = i
+      lused = max(lused, lnow)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(20H DSTAK IS TOO SHORT.)
+ 1000 format(20h dstak is too short.)
 !
-      END
+      end
 !SETLAG
-      SUBROUTINE SETLAG (N, LAGMAX)
+      subroutine setlag (n, lagmax)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -13416,11 +13403,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LAGMAX,N
+     integer&
+     &   lagmax,n
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -13430,14 +13417,14 @@
 !     INTEGER N
 !        THE INTEGER NUMBER OF OBSERVATIONS IN EACH SERIES
 !
-      IF (N .GE. 96)                 LAGMAX = MIN(N / 3, 100)
-      IF (33 .LE. N .AND. N .LE. 95) LAGMAX = 32
-      IF (N .LE. 32)                 LAGMAX = N - 1
-      RETURN
-      END
+      if (n .ge. 96)                 lagmax = min(n / 3, 100)
+      if (33 .le. n .and. n .le. 95) lagmax = 32
+      if (n .le. 32)                 lagmax = n - 1
+      return
+      end
 !LDSCMP
-      SUBROUTINE LDSCMP (NARR, NLOG, NINT, NREAL, NDBL, NCMP,
-     &   FLAG, NFP, LDSMIN)
+     subroutine ldscmp (narr, nlog, nint, nreal, ndbl, ncmp,&
+     &   flag, nfp, ldsmin)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -13464,14 +13451,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSMIN,NARR,NCMP,NDBL,NFP,NINT,NLOG,NREAL
-      CHARACTER
-     &   FLAG*1
+     integer&
+     &   ldsmin,narr,ncmp,ndbl,nfp,nint,nlog,nreal
+     character&
+     &   flag*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   NOVER
+     integer&
+     &   nover
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -13510,21 +13497,21 @@
 !
 !     DEFINE CONSTANTS
 !
-      DATA NOVER /10/
+      data nover /10/
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      LDSMIN = (NLOG + NINT + NREAL + 3*NARR + NOVER + 1)/2
-     &       + NDBL + NCMP
-      IF (FLAG.EQ.'S') THEN
-         LDSMIN = LDSMIN + (NFP+1)/2
-      ELSE
-         LDSMIN = LDSMIN + NFP
-      END IF
-      RETURN
-      END
+     ldsmin = (nlog + nint + nreal + 3*narr + nover + 1)/2&
+     &       + ndbl + ncmp
+      if (flag.eq.'S') then
+         ldsmin = ldsmin + (nfp+1)/2
+      else
+         ldsmin = ldsmin + nfp
+      end if
+      return
+      end
 !PRTCNT
-      SUBROUTINE PRTCNT(NPRT, NDIGIT, IPTOUT)
+      subroutine prtcnt(nprt, ndigit, iptout)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -13540,19 +13527,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   NDIGIT,NPRT
+     integer&
+     &   ndigit,nprt
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IPTOUT(NDIGIT)
+     integer&
+     &   iptout(ndigit)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IFAC1,IFAC2
+     integer&
+     &   i,ifac1,ifac2
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -13566,26 +13553,26 @@
 !        TO BE PROVIDED.
 !
 !
-      IF (NPRT.LE.-1) GO TO 20
+      if (nprt.le.-1) go to 20
 !
-      IFAC1 = 10 ** (NDIGIT)
-      DO 10 I = 1, NDIGIT
-         IFAC2 = IFAC1/10
-         IPTOUT(I) = MOD(NPRT, IFAC1) / IFAC2
-         IFAC1 = IFAC2
-   10 CONTINUE
-      RETURN
+      ifac1 = 10 ** (ndigit)
+      do 10 i = 1, ndigit
+         ifac2 = ifac1/10
+         iptout(i) = mod(nprt, ifac1) / ifac2
+         ifac1 = ifac2
+   10 continue
+      return
 !
-   20 DO 30 I = 1, NDIGIT
-         IPTOUT(I) = 1
-   30 CONTINUE
-      IPTOUT (NDIGIT) = 2
+   20 do 30 i = 1, ndigit
+         iptout(i) = 1
+   30 continue
+      iptout (ndigit) = 2
 !
-      RETURN
+      return
 !
-      END
+      end
 !NLHDRN
-      SUBROUTINE NLHDRN(PAGE, WIDE, ISUBHD)
+      subroutine nlhdrn(page, wide, isubhd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -13603,14 +13590,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISUBHD
-      LOGICAL
-     &   PAGE,WIDE
+     integer&
+     &   isubhd
+     logical&
+     &   page,wide
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VERSP
@@ -13629,33 +13616,33 @@
 !        BE FULL WIDTH (TRUE) OR NOT (FALSE).
 !
 !
-      CALL IPRINT(IPRT)
-      IF (PAGE) WRITE (IPRT, 1020)
-      CALL VERSP(WIDE)
-      IF (PAGE) WRITE (IPRT,1000)
-      IF (.NOT.PAGE) WRITE (IPRT,1010)
-      PAGE = .TRUE.
+      call iprint(iprt)
+      if (page) write (iprt, 1020)
+      call versp(wide)
+      if (page) write (iprt,1000)
+      if (.not.page) write (iprt,1010)
+      page = .true.
 !
-      IF (ISUBHD.EQ.0) RETURN
+      if (isubhd.eq.0) return
 !
-      GO TO (10), ISUBHD
+      go to (10), isubhd
 !
-   10 WRITE (IPRT, 1030)
+   10 write (iprt, 1030)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS FOR PAGE HEADINGS
 !
- 1000 FORMAT (35H+NONLINEAR LEAST SQUARES ESTIMATION,
-     &   53H WITH NUMERICALLY APPROXIMATED DERIVATIVES, CONTINUED)
- 1010 FORMAT ('+', 82(1H*)/
-     &   1X, 37H*  NONLINEAR LEAST SQUARES ESTIMATION,
-     &   45H WITH NUMERICALLY APPROXIMATED DERIVATIVES  */ 1X, 82(1H*))
- 1020 FORMAT ('1')
- 1030 FORMAT (//30H SUMMARY OF INITIAL CONDITIONS/ 1X, 30('-'))
-      END
+1000 format (35h+nonlinear least squares estimation,&
+     &   53h with numerically approximated derivatives, continued)
+1010 format ('+', 82(1h*)/&
+    &   1x, 37h*  nonlinear least squares estimation,&
+     &   45h with numerically approximated derivatives  */ 1x, 82(1h*))
+ 1020 format ('1')
+ 1030 format (//30h summary of initial conditions/ 1x, 30('-'))
+      end
 !AMFHDR
-      SUBROUTINE AMFHDR(PAGE, WIDE, ISUBHD)
+      subroutine amfhdr(page, wide, isubhd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -13673,14 +13660,14 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISUBHD
-      LOGICAL
-     &   PAGE,WIDE
+     integer&
+     &   isubhd
+     logical&
+     &   page,wide
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VERSP
@@ -13698,30 +13685,30 @@
 !        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
 !        BE FULL WIDTH (TRUE) OR NOT (FALSE).
 !
-      CALL IPRINT(IPRT)
-      IF (PAGE) WRITE (IPRT, 1020)
-      CALL VERSP(WIDE)
-      IF (PAGE) WRITE (IPRT,1000)
-      IF (.NOT.PAGE) WRITE (IPRT,1010)
-      PAGE = .TRUE.
+      call iprint(iprt)
+      if (page) write (iprt, 1020)
+      call versp(wide)
+      if (page) write (iprt,1000)
+      if (.not.page) write (iprt,1010)
+      page = .true.
 !
-      IF (ISUBHD.EQ.0) RETURN
+      if (isubhd.eq.0) return
 !
-      GO TO (10), ISUBHD
+      go to (10), isubhd
 !
-   10 WRITE (IPRT, 1030)
+   10 write (iprt, 1030)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS FOR PAGE HEADINGS
 !
- 1000 FORMAT ('+ARIMA FORECASTING, CONTINUED')
- 1010 FORMAT ('+', 23(1H*)/ ' *  ARIMA FORECASTING  *', /1X, 23(1H*))
- 1020 FORMAT ('1')
- 1030 FORMAT (//' MODEL SUMMARY'/' -------------')
-      END
+ 1000 format ('+ARIMA FORECASTING, CONTINUED')
+ 1010 format ('+', 23(1h*)/ ' *  ARIMA FORECASTING  *', /1x, 23(1h*))
+ 1020 format ('1')
+ 1030 format (//' MODEL SUMMARY'/' -------------')
+      end
 !ICOPY
-      SUBROUTINE ICOPY(N,ISX,INCX,ISY,INCY)
+      subroutine icopy(n,isx,incx,isy,incy)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -13743,19 +13730,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   INCX,INCY,N
+     integer&
+     &   incx,incy,n
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   ISX(N),ISY(N)
+     integer&
+     &   isx(n),isy(n)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IX,IY,M,MP1,NS
+     integer&
+     &   i,ix,iy,m,mp1,ns
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -13778,57 +13765,57 @@
 !     INTEGER NS
 !        THE VALUE OF N * INCX.
 !
-      IF(N.LE.0)RETURN
-      IF(INCX.EQ.INCY) IF(INCX-1) 5,20,60
-    5 CONTINUE
+      if(n.le.0)return
+      if(incx.eq.incy) if(incx-1) 5,20,60
+    5 continue
 !
 !        CODE FOR UNEQUAL OR NONPOSITIVE INCREMENTS.
 !
-      IX = 1
-      IY = 1
-      IF(INCX.LT.0)IX = (-N+1)*INCX + 1
-      IF(INCY.LT.0)IY = (-N+1)*INCY + 1
-      DO 10 I = 1,N
-        ISY(IY) = ISX(IX)
-        IX = IX + INCX
-        IY = IY + INCY
-   10 CONTINUE
-      RETURN
+      ix = 1
+      iy = 1
+      if(incx.lt.0)ix = (-n+1)*incx + 1
+      if(incy.lt.0)iy = (-n+1)*incy + 1
+      do 10 i = 1,n
+        isy(iy) = isx(ix)
+        ix = ix + incx
+        iy = iy + incy
+   10 continue
+      return
 !
 !        CODE FOR BOTH INCREMENTS EQUAL TO 1
 !
 !
 !        CLEAN-UP LOOP SO REMAINING VECTOR LENGTH IS A MULTIPLE OF 7.
 !
-   20 M = MOD(N,7)
-      IF( M .EQ. 0 ) GO TO 40
-      DO 30 I = 1,M
-        ISY(I) = ISX(I)
-   30 CONTINUE
-      IF( N .LT. 7 ) RETURN
-   40 MP1 = M + 1
-      DO 50 I = MP1,N,7
-        ISY(I) = ISX(I)
-        ISY(I + 1) = ISX(I + 1)
-        ISY(I + 2) = ISX(I + 2)
-        ISY(I + 3) = ISX(I + 3)
-        ISY(I + 4) = ISX(I + 4)
-        ISY(I + 5) = ISX(I + 5)
-        ISY(I + 6) = ISX(I + 6)
-   50 CONTINUE
-      RETURN
+   20 m = mod(n,7)
+      if( m .eq. 0 ) go to 40
+      do 30 i = 1,m
+        isy(i) = isx(i)
+   30 continue
+      if( n .lt. 7 ) return
+   40 mp1 = m + 1
+      do 50 i = mp1,n,7
+        isy(i) = isx(i)
+        isy(i + 1) = isx(i + 1)
+        isy(i + 2) = isx(i + 2)
+        isy(i + 3) = isx(i + 3)
+        isy(i + 4) = isx(i + 4)
+        isy(i + 5) = isx(i + 5)
+        isy(i + 6) = isx(i + 6)
+   50 continue
+      return
 !
 !        CODE FOR EQUAL, POSITIVE, NONUNIT INCREMENTS.
 !
-   60 CONTINUE
-      NS = N*INCX
-      DO 70 I=1,NS,INCX
-          ISY(I) = ISX(I)
-   70 CONTINUE
-      RETURN
-      END
+   60 continue
+      ns = n*incx
+      do 70 i=1,ns,incx
+          isy(i) = isx(i)
+   70 continue
+      return
+      end
 !STKSET
-      SUBROUTINE STKSET (NITEMS, ITYPE)
+      subroutine stkset (nitems, itype)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -13846,34 +13833,34 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ITYPE,NITEMS
+     integer&
+     &   itype,nitems
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   LBOOK,LMAX,LNOW,LOUT,LUSED
+     integer&
+     &   lbook,lmax,lnow,lout,lused
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISIZE(5),ISTAK(12)
+     integer&
+     &   isize(5),istak(12)
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
+      common /cstak/dstak
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (ISTAK(1),LOUT)
-      EQUIVALENCE (ISTAK(2),LNOW)
-      EQUIVALENCE (ISTAK(3),LUSED)
-      EQUIVALENCE (ISTAK(4),LMAX)
-      EQUIVALENCE (ISTAK(5),LBOOK)
-      EQUIVALENCE (ISTAK(6),ISIZE(1))
+      equivalence (dstak(1),istak(1))
+      equivalence (istak(1),lout)
+      equivalence (istak(2),lnow)
+      equivalence (istak(3),lused)
+      equivalence (istak(4),lmax)
+      equivalence (istak(5),lbook)
+      equivalence (istak(6),isize(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -13905,27 +13892,27 @@
 !  MEASURE OF SIZE.
 !
 !  LOGICAL
-      ISIZE(1) = 1
+      isize(1) = 1
 !  INTEGER
-      ISIZE(2) = 1
+      isize(2) = 1
 !  REAL
-      ISIZE(3) = 1
+      isize(3) = 1
 !  DOUBLE PRECISION
-      ISIZE(4) = 2
+      isize(4) = 2
 !  COMPLEX
-      ISIZE(5) = 2
+      isize(5) = 2
 !
-      LBOOK = 10
-      LNOW  = LBOOK
-      LUSED = LBOOK
-      LMAX  = MAX( (NITEMS*ISIZE(ITYPE))/ISIZE(2), 12 )
-      LOUT  = 0
+      lbook = 10
+      lnow  = lbook
+      lused = lbook
+      lmax  = max( (nitems*isize(itype))/isize(2), 12 )
+      lout  = 0
 !
-      RETURN
+      return
 !
-      END
+      end
 !VERSP
-      SUBROUTINE VERSP (WIDE)
+      subroutine versp (wide)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -13941,12 +13928,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      LOGICAL
-     &   WIDE
+     logical&
+     &   wide
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
@@ -13958,21 +13945,21 @@
 !     LOGICAL WIDE
 !        THE MAXIMUM NUMBER OF COLUMNS THE PRINTED OUTPUT CAN USE.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      IF (WIDE) THEN
-         WRITE(IPRT, 1000)
-      ELSE
-         WRITE(IPRT, 1010)
-      END IF
+      if (wide) then
+         write(iprt, 1000)
+      else
+         write(iprt, 1010)
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (105X, 'STARPAC 3.00 (05/15/2022)')
- 1010 FORMAT (54X, 'STARPAC 3.00 (05/15/2022)')
-      END
+ 1000 format (105x, 'STARPAC 3.00 (05/15/2022)')
+ 1010 format (54x, 'STARPAC 3.00 (05/15/2022)')
+      end
 
 !IMDCON
       integer function imdcon(k)

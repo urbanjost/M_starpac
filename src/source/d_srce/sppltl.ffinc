@@ -1,6 +1,6 @@
 !SPPLTL
-      SUBROUTINE SPPLTL (SPCMN, SPCMX, ALOW, AUP, YPLTMN, YPLTMX,
-     &   CILOW, CIMID, CIUP)
+     subroutine sppltl (spcmn, spcmx, alow, aup, ypltmn, ypltmx,&
+     &   cilow, cimid, ciup)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,15 +17,15 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ALOW,AUP,CILOW,CIMID,CIUP,SPCMN,SPCMX,YPLTMN,YPLTMX
+     real(kind=wp) ::&
+     &   alow,aup,cilow,cimid,ciup,spcmn,spcmx,ypltmn,ypltmx
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   RNGMN,YMAX,YMIN
+     real(kind=wp) ::&
+     &   rngmn,ymax,ymin
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC LOG10
+      intrinsic log10
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -45,20 +45,20 @@
 !
 !     SET CO-ORDINATES FOR DECIBLE PLOTS
 !
-      YMAX = LOG10(SPCMX)
-      YMIN = LOG10(SPCMN)
+      ymax = log10(spcmx)
+      ymin = log10(spcmn)
 !
-      YPLTMX = SPCMX
-      YPLTMN = SPCMN
-      RNGMN = 2.0_WP * (LOG10(AUP) - LOG10(ALOW))
-      IF (YMAX - YMIN .GE. RNGMN) GO TO 10
+      ypltmx = spcmx
+      ypltmn = spcmn
+      rngmn = 2.0_wp * (log10(aup) - log10(alow))
+      if (ymax - ymin .ge. rngmn) go to 10
 !
-      YPLTMX = 10.0_WP ** (YMAX + (RNGMN - YMAX + YMIN) * 0.5_WP)
-      YPLTMN = 10.0_WP ** (YMIN - (RNGMN - YMAX + YMIN) * 0.5_WP)
+      ypltmx = 10.0_wp ** (ymax + (rngmn - ymax + ymin) * 0.5_wp)
+      ypltmn = 10.0_wp ** (ymin - (rngmn - ymax + ymin) * 0.5_wp)
 !
-   10 CIUP = YPLTMX
-      CIMID = CIUP / AUP
-      CILOW = CIMID * ALOW
+   10 ciup = ypltmx
+      cimid = ciup / aup
+      cilow = cimid * alow
 !
-      RETURN
-      END
+      return
+      end

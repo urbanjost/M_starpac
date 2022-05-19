@@ -1,7 +1,7 @@
 !STPMN
-      SUBROUTINE STPMN(J,XM,N,M,IXM,MDL,PAR,NPAR,
-     &   NEXMPT,ETA,RELTOL,SCALE,STP,NFAIL,IFAIL,CD,
-     &   ITEMP,FD,FDLAST,FDSAVE,PV,PVMCD,PVNEW,PVPCD,PVSTP,PVTEMP)
+     subroutine stpmn(j,xm,n,m,ixm,mdl,par,npar,&
+    &   nexmpt,eta,reltol,scale,stp,nfail,ifail,cd,&
+     &   itemp,fd,fdlast,fdsave,pv,pvmcd,pvnew,pvpcd,pvstp,pvtemp)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,45 +18,45 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ETA,RELTOL,SCALE,STP
-      INTEGER
-     &   IXM,J,M,N,NEXMPT,NFAIL,NPAR
+     real(kind=wp) ::&
+     &   eta,reltol,scale,stp
+     integer&
+     &   ixm,j,m,n,nexmpt,nfail,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CD(N),FD(N),FDLAST(N),FDSAVE(N),PAR(NPAR),PV(N),PVMCD(N),
-     &   PVNEW(N),PVPCD(N),PVSTP(N),PVTEMP(N),XM(IXM,M)
-      INTEGER
-     &   IFAIL(N),ITEMP(N)
+     real(kind=wp) ::&
+    &   cd(n),fd(n),fdlast(n),fdsave(n),par(npar),pv(n),pvmcd(n),&
+     &   pvnew(n),pvpcd(n),pvstp(n),pvtemp(n),xm(ixm,m)
+     integer&
+     &   ifail(n),itemp(n)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL MDL
+       external mdl
 !
 !  SCALARS IN COMMON
-      REAL(KIND=WP) ::
-     &   Q
+     real(kind=wp) ::&
+     &   q
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ABSTOL,CURVE,ETA3,FPLRS,PARMX,PVMEAN,PVTYP,STPCD,STPLOW,
-     &   STPMID,STPUP,TAUABS,TEMP,THIRD
-      INTEGER
-     &   I
+     real(kind=wp) ::&
+    &   abstol,curve,eta3,fplrs,parmx,pvmean,pvtyp,stpcd,stplow,&
+     &   stpmid,stpup,tauabs,temp,third
+     integer&
+     &   i
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   D1MACH
+     real(kind=wp) ::&
+     &   d1mach
 !       EXTERNAL D1MACH
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL CMPFD,GMEAN,RELCOM,STPADJ,STPSEL
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,MAX,SIGN,SQRT
+      intrinsic abs,max,sign,sqrt
 !
 !  COMMON BLOCKS
-      COMMON /NOTOPT/Q
+      common /notopt/q
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -168,157 +168,157 @@
 !        THE ARRAY IN WHICH ONE ROW OF THE INDEPENDENT VARIABLE ARRAY
 !        IS STORED.
 !
-      FPLRS = D1MACH(4)
+      fplrs = d1mach(4)
 !
 !     SET VARIOUS PARAMETERS NECESSARY FOR COMPUTING THE
 !     OPTIMUM STEP SIZE
 !
-      THIRD = 1.0_WP / 3.0_WP
+      third = 1.0_wp / 3.0_wp
 !
-      ETA3 = ETA ** THIRD
+      eta3 = eta ** third
 !
-      PARMX = MAX(ABS(PAR(J)), ABS(SCALE))
-      IF (PARMX .EQ. 0.0_WP) PARMX = 1.0_WP
+      parmx = max(abs(par(j)), abs(scale))
+      if (parmx .eq. 0.0_wp) parmx = 1.0_wp
 !
-      STPCD = ((3.0_WP ** THIRD) * ETA3 * PARMX * SIGN(1.0_WP, PAR(J)))
+      stpcd = ((3.0_wp ** third) * eta3 * parmx * sign(1.0_wp, par(j)))
 !
-      Q = STPCD + PAR(J)
-      STPCD = Q - PAR(J)
+      q = stpcd + par(j)
+      stpcd = q - par(j)
 !
-      TEMP = PAR(J)
+      temp = par(j)
 !
-      PAR(J) = TEMP + STPCD
-      CALL MDL(PAR, NPAR, XM, N, M, IXM, PVPCD)
+      par(j) = temp + stpcd
+      call mdl(par, npar, xm, n, m, ixm, pvpcd)
 !
-      PAR(J) = TEMP - STPCD
-      CALL MDL(PAR, NPAR, XM, N, M, IXM, PVMCD)
+      par(j) = temp - stpcd
+      call mdl(par, npar, xm, n, m, ixm, pvmcd)
 !
-      PAR(J) = TEMP
+      par(j) = temp
 !
 !     ESTIMATE CURVATURE BY SECOND DERIVATIVE OF MODEL WITH RESPECT TO
 !     PAR(J)
 !
-      DO 10 I = 1, N
-         PVTEMP(I) = ABS((PVPCD(I)+PVMCD(I)) - 2*PV(I))
-         IF (PVTEMP(I).EQ.0.0_WP) THEN
-            IF (PV(I).EQ.0.0_WP) THEN
-               PVTEMP(I) = FPLRS
-            ELSE
-               PVTEMP(I) = FPLRS*ABS(PV(I))
-            END IF
-         END IF
-   10 CONTINUE
+      do 10 i = 1, n
+         pvtemp(i) = abs((pvpcd(i)+pvmcd(i)) - 2*pv(i))
+         if (pvtemp(i).eq.0.0_wp) then
+            if (pv(i).eq.0.0_wp) then
+               pvtemp(i) = fplrs
+            else
+               pvtemp(i) = fplrs*abs(pv(i))
+            end if
+         end if
+   10 continue
 !
 !     COMPUTE THE GEOMETRIC MEAN
 !
-      CALL GMEAN(PVTEMP, N, PVMEAN)
+      call gmean(pvtemp, n, pvmean)
 !
-      CURVE = ABS(PVMEAN / STPCD / STPCD)
+      curve = abs(pvmean / stpcd / stpcd)
 !
 !     COMPUTE A TYPICAL VALUE OF THE MODEL
 !
-      DO 20 I = 1, N
-         PVTEMP(I) = ABS(PVPCD(I) + PV(I) + PVMCD(I))
-         IF (PVTEMP(I).EQ.0.0_WP) THEN
-            IF (PV(I).EQ.0.0_WP) THEN
-               PVTEMP(I) = FPLRS
-            ELSE
-               PVTEMP(I) = FPLRS*ABS(PV(I))
-            END IF
-         END IF
-   20 CONTINUE
+      do 20 i = 1, n
+         pvtemp(i) = abs(pvpcd(i) + pv(i) + pvmcd(i))
+         if (pvtemp(i).eq.0.0_wp) then
+            if (pv(i).eq.0.0_wp) then
+               pvtemp(i) = fplrs
+            else
+               pvtemp(i) = fplrs*abs(pv(i))
+            end if
+         end if
+   20 continue
 !
-      CALL GMEAN(PVTEMP, N, PVMEAN)
+      call gmean(pvtemp, n, pvmean)
 !
-      PVTYP = ABS(PVMEAN / 3.0_WP)
+      pvtyp = abs(pvmean / 3.0_wp)
 !
 !     SET VALUES REPRESENTATIVE OF THE RANGE THE STEP SIZE
 !     CAN BE EXPECTED TO TAKE
 !
-      STPUP = (ETA3) * PARMX
-      STPLOW = (ETA3) * STPUP
-      STPMID = SQRT(STPLOW) * SQRT(STPUP)
+      stpup = (eta3) * parmx
+      stplow = (eta3) * stpup
+      stpmid = sqrt(stplow) * sqrt(stpup)
 !
 !     SELECT AN OPTIMUM STARTING STEP SIZE
 !
-      IF (CURVE.EQ.0.0_WP) THEN
-         STP = PARMX * SIGN(1.0_WP, PAR(J))
-      ELSE
-         STP = (2.0_WP * SQRT(ETA) * SQRT(PVTYP) / SQRT(CURVE)) *
-     &         SIGN(1.0_WP,PAR(J))
-      END IF
+      if (curve.eq.0.0_wp) then
+         stp = parmx * sign(1.0_wp, par(j))
+      else
+        stp = (2.0_wp * sqrt(eta) * sqrt(pvtyp) / sqrt(curve)) *&
+     &         sign(1.0_wp,par(j))
+      end if
 !
-      IF (ABS(STP).GT.PARMX) STP = PARMX * SIGN(1.0_WP,PAR(J))
+      if (abs(stp).gt.parmx) stp = parmx * sign(1.0_wp,par(j))
 !
-      Q = STP + PAR(J)
-      STP = Q - PAR(J)
+      q = stp + par(j)
+      stp = q - par(j)
 !
-      IF (STP.EQ.0.0_WP) THEN
-         STP = FPLRS * PAR(J)
-         IF (STP.EQ.0.0_WP) STP = FPLRS
+      if (stp.eq.0.0_wp) then
+         stp = fplrs * par(j)
+         if (stp.eq.0.0_wp) stp = fplrs
 !
-   30    CONTINUE
-         Q = STP + PAR(J)
-         STP = Q - PAR(J)
+   30    continue
+         q = stp + par(j)
+         stp = q - par(j)
 !
-         IF (STP.EQ.0.0_WP) THEN
-            STP = 2.0_WP * STP
-            GO TO 30
-         END IF
-      END IF
+         if (stp.eq.0.0_wp) then
+            stp = 2.0_wp * stp
+            go to 30
+         end if
+      end if
 !
 !     COMPUTE THE ABSOLUTE TOLERANCES
 !
-      ABSTOL = 10.0_WP * ETA * PVTYP
+      abstol = 10.0_wp * eta * pvtyp
 !
-      TAUABS = 2.0_WP * SQRT(ETA) * SQRT(PVTYP)
-      IF (CURVE .NE. 0.0_WP) TAUABS = TAUABS * SQRT(CURVE)
+      tauabs = 2.0_wp * sqrt(eta) * sqrt(pvtyp)
+      if (curve .ne. 0.0_wp) tauabs = tauabs * sqrt(curve)
 !
-      TEMP = PAR(J)
-      PAR(J) = TEMP + STP
+      temp = par(j)
+      par(j) = temp + stp
 !
-      CALL MDL(PAR, NPAR, XM, N, M, IXM, PVSTP)
+      call mdl(par, npar, xm, n, m, ixm, pvstp)
 !
-      PAR(J) = TEMP
+      par(j) = temp
 !
 !     COMPUTE THE FORWARD AND CENTRAL DIFFERENCE QUOTIENT ESTIMATE
 !     OF THE DERIVATIVE
 !
-      CALL CMPFD(N, STP, PVSTP, PV, FD)
+      call cmpfd(n, stp, pvstp, pv, fd)
 !
-      CALL CMPFD(N, 2.0_WP*STPCD, PVPCD, PVMCD, CD)
+      call cmpfd(n, 2.0_wp*stpcd, pvpcd, pvmcd, cd)
 !
 !     COMPUTE THE NUMBER OF OBSERVATIONS FOR WHICH THE FD DOES NOT
 !     AGREE WITH THE CD WITHIN THE TOLERANCE SPECIFIED.
 !
-      CALL RELCOM(N, FD, CD, RELTOL, ABSTOL, NFAIL, IFAIL)
+      call relcom(n, fd, cd, reltol, abstol, nfail, ifail)
 !
 !     IF THE FORWARD DIFFERENCE APPROXIMATION DOES NOT AGREE WITHIN
 !     TOLERANCE FOR MORE THAN   NEXMPT   OBSERVATION, SELECT NEW
 !     VALUE OF THE STEP SIZE, ELSE ADJUST THE STEP SIZE AND RETURN.
 !
-      IF (NFAIL.GT.NEXMPT) THEN
+      if (nfail.gt.nexmpt) then
 !
 !        SELECT NEW VALUE OF THE STEP SIZE
 !
-            CALL STPSEL(XM, N, M, IXM, MDL, PAR, NPAR,
-     &         NEXMPT, STP, NFAIL, IFAIL, J, ETA3, RELTOL, ABSTOL,
-     &         TAUABS, STPLOW,
-     &         STPMID, STPUP, ITEMP, FD, FDLAST, FDSAVE, PV, PVNEW)
-      ELSE
+           call stpsel(xm, n, m, ixm, mdl, par, npar,&
+    &         nexmpt, stp, nfail, ifail, j, eta3, reltol, abstol,&
+    &         tauabs, stplow,&
+     &         stpmid, stpup, itemp, fd, fdlast, fdsave, pv, pvnew)
+      else
 !
 !        ADJUST THE CURRENT STEP SIZE VALUE
 !
-            CALL STPADJ(XM, N, M, IXM, MDL, PAR, NPAR,
-     &         NEXMPT, STP, NFAIL, IFAIL, J, RELTOL, ABSTOL, STPLOW,
-     &         STPMID, STPUP, ITEMP, FD, FDLAST, PV, PVNEW)
+           call stpadj(xm, n, m, ixm, mdl, par, npar,&
+    &         nexmpt, stp, nfail, ifail, j, reltol, abstol, stplow,&
+     &         stpmid, stpup, itemp, fd, fdlast, pv, pvnew)
 !
-      END IF
+      end if
 !
 !     CONVERT SELECTED ABSOLUTE STEP SIZE TO RELATIVE STEP SIZE
 !
-      STP = ABS(STP) / PARMX
+      stp = abs(stp) / parmx
 !
-      RETURN
+      return
 !
-      END
+      end

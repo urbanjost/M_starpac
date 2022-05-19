@@ -1,8 +1,8 @@
 !NLCNTA
-      SUBROUTINE NLCNTA(Y, WT, LWT, XM, N, M, IXM, MDL, DRV, PAR, NPAR,
-     &   RES, LDSTAK, IFIXED, LIFIXD, IDRVCK, MIT, STOPSS, STOPP,
-     &   SCALE, LSCALE, DELTA, IVCVOP, NPRT, RSD, PV, LPV, SDPV, LSDPV,
-     &   SDRES, LSDRES, VCV, IVCV, NMSUB, WEIGHT, SAVE, NNZW, NPARE)
+     subroutine nlcnta(y, wt, lwt, xm, n, m, ixm, mdl, drv, par, npar,&
+    &   res, ldstak, ifixed, lifixd, idrvck, mit, stopss, stopp,&
+    &   scale, lscale, delta, ivcvop, nprt, rsd, pv, lpv, sdpv, lsdpv,&
+     &   sdres, lsdres, vcv, ivcv, nmsub, weight, save, nnzw, npare)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,56 +19,56 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   DELTA,RSD,STOPP,STOPSS
-      INTEGER
-     &   IDRVCK,IVCV,IVCVOP,IXM,LDSTAK,LIFIXD,LPV,LSCALE,LSDPV,
-     &   LSDRES,LWT,M,MIT,N,NNZW,NPAR,NPARE,NPRT
-      LOGICAL
-     &   SAVE,WEIGHT
+     real(kind=wp) ::&
+     &   delta,rsd,stopp,stopss
+     integer&
+    &   idrvck,ivcv,ivcvop,ixm,ldstak,lifixd,lpv,lscale,lsdpv,&
+     &   lsdres,lwt,m,mit,n,nnzw,npar,npare,nprt
+     logical&
+     &   save,weight
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),PV(*),RES(*),SCALE(*),SDPV(*),SDRES(*),VCV(*),WT(*),
-     &   XM(*),Y(*)
-      INTEGER
-     &   IFIXED(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+    &   par(*),pv(*),res(*),scale(*),sdpv(*),sdres(*),vcv(*),wt(*),&
+     &   xm(*),y(*)
+     integer&
+     &   ifixed(*)
+     character&
+     &   nmsub(6)*1
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL DRV,MDL
+       external drv,mdl
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   ISUBHD,LDSMIN,LSTP,NDIGIT,NETA,NROW,NTAU
-      LOGICAL
-     &   APRXDV,HLFRPT,PAGE,PRTFXD,WIDE
+     integer&
+     &   isubhd,ldsmin,lstp,ndigit,neta,nrow,ntau
+     logical&
+     &   aprxdv,hlfrpt,page,prtfxd,wide
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   STP(1)
-      INTEGER
-     &   IPTOUT(5)
+     real(kind=wp) ::&
+     &   stp(1)
+     integer&
+     &   iptout(5)
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     &   ICNTI
+     integer&
+     &   icnti
 !       EXTERNAL ICNTI
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL DCKCNT,LDSCMP,NLCNT,NLDRVA,NLER,NLHDRA,PRTCNT,STKSET
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -245,69 +245,69 @@
 !
 !     SET VARIOUS PROGRAM VALUES
 !
-      HLFRPT = .FALSE.
-      APRXDV = .FALSE.
-      PRTFXD = .TRUE.
-      STP(1) = 0.0E0
-      LSTP = 1
-      NETA = 0
-      NTAU = 0
-      NROW = 0
+      hlfrpt = .false.
+      aprxdv = .false.
+      prtfxd = .true.
+      stp(1) = 0.0e0
+      lstp = 1
+      neta = 0
+      ntau = 0
+      nrow = 0
 !
-      WIDE = .TRUE.
-      PAGE = .FALSE.
+      wide = .true.
+      page = .false.
 !
-      NDIGIT = 5
+      ndigit = 5
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      IF ((IFIXED(1).GE.0) .AND. (NPAR.GE.1)) THEN
-         NPARE = ICNTI(IFIXED,NPAR,0)
-      ELSE
-         NPARE = NPAR
-      END IF
+      ierr = 0
+      if ((ifixed(1).ge.0) .and. (npar.ge.1)) then
+         npare = icnti(ifixed,npar,0)
+      else
+         npare = npar
+      end if
 !
-      CALL LDSCMP(6, 0, 60+2*NPAR, 0, 0, 0, 'S',
-     &            94+N*(3+NPAR)+NPARE*(3*NPARE+35)/2, LDSMIN)
+     call ldscmp(6, 0, 60+2*npar, 0, 0, 0, 'S',&
+     &            94+n*(3+npar)+npare*(3*npare+35)/2, ldsmin)
 !
-      CALL NLER (NMSUB, WEIGHT, WT, LWT, N, M, IXM,
-     &   IFIXED, LIFIXD, NPAR, NPARE,
-     &   LDSTAK, LDSMIN, STP, LSTP, SCALE, LSCALE, IVCV, SAVE, NNZW)
+     call nler (nmsub, weight, wt, lwt, n, m, ixm,&
+    &   ifixed, lifixd, npar, npare,&
+     &   ldstak, ldsmin, stp, lstp, scale, lscale, ivcv, save, nnzw)
 !
-      IF (IERR.NE.0) RETURN
+      if (ierr.ne.0) return
 !
-      CALL STKSET(LDSTAK, 4)
+      call stkset(ldstak, 4)
 !
 !     SET PRINT CONTROL VALUES
 !
-      CALL PRTCNT(NPRT, NDIGIT, IPTOUT)
+      call prtcnt(nprt, ndigit, iptout)
 !
-      IF (IDRVCK.EQ.0) GO TO 10
+      if (idrvck.eq.0) go to 10
 !
 !     CHECK DERIVATIVES, IF DESIRED
 !
-      ISUBHD = 1
-      CALL DCKCNT(XM, N, M, IXM, MDL, DRV, PAR, NPAR, NETA, NTAU,
-     &   SCALE, LSCALE, NROW, IPTOUT(1), NLHDRA, PAGE, WIDE, ISUBHD,
-     &   HLFRPT, PRTFXD, IFIXED, LIFIXD)
+      isubhd = 1
+     call dckcnt(xm, n, m, ixm, mdl, drv, par, npar, neta, ntau,&
+    &   scale, lscale, nrow, iptout(1), nlhdra, page, wide, isubhd,&
+     &   hlfrpt, prtfxd, ifixed, lifixd)
 !
 !     CHECK FOR DEFINITE ERROR IN DERIVATIVES
 !
-      IF (IERR.LE.2) GO TO 10
-      IERR = 1
-      RETURN
+      if (ierr.le.2) go to 10
+      ierr = 1
+      return
 !
-   10 CONTINUE
+   10 continue
 !
-      IERR = 0
+      ierr = 0
 !
-      CALL NLCNT(Y, WT, LWT, XM, N, M, IXM, MDL, NLDRVA, APRXDV, DRV,
-     &   PAR, NPAR, RES, IFIXED, LIFIXD, STP, LSTP, MIT, STOPSS, STOPP,
-     &   SCALE, LSCALE, DELTA, IVCVOP, RSD, PV, LPV, SDPV, LSDPV,
-     &   SDRES, LSDRES, VCV, IVCV, WEIGHT, SAVE, NNZW, NPARE, NLHDRA,
-     &   PAGE, WIDE, IPTOUT, NDIGIT, HLFRPT)
+     call nlcnt(y, wt, lwt, xm, n, m, ixm, mdl, nldrva, aprxdv, drv,&
+    &   par, npar, res, ifixed, lifixd, stp, lstp, mit, stopss, stopp,&
+    &   scale, lscale, delta, ivcvop, rsd, pv, lpv, sdpv, lsdpv,&
+    &   sdres, lsdres, vcv, ivcv, weight, save, nnzw, npare, nlhdra,&
+     &   page, wide, iptout, ndigit, hlfrpt)
 !
-      RETURN
+      return
 !
-      END
+      end

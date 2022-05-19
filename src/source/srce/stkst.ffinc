@@ -1,5 +1,5 @@
 !STKST
-      INTEGER FUNCTION STKST (NFACT)
+      integer function stkst (nfact)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -22,29 +22,29 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   NFACT
+     integer&
+     &   nfact
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISTAK(12),ISTATS(4)
+     integer&
+     &   istak(12),istats(4)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
+      common /cstak/dstak
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (ISTAK(1),ISTATS(1))
+      equivalence (dstak(1),istak(1))
+      equivalence (istak(1),istats(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -61,23 +61,23 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      IF (NFACT .GT. 0 .AND. NFACT .LT. 6) GO TO 10
+      if (nfact .gt. 0 .and. nfact .lt. 6) go to 10
 !
 !     REPORT ERROR STATUS
 !
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000) IPRT
-      STKST = 0
-      RETURN
+      call iprint (iprt)
+      write (iprt, 1000) iprt
+      stkst = 0
+      return
 !
 !     REPORT TRUE VALUE OF A STATISTIC, ASSUMING STACK IS
 !     DEFINED.
 !
-   10 STKST = ISTATS(NFACT)
-      RETURN
+   10 stkst = istats(nfact)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (///18H ***** ERROR *****//
-     &   24H ILLEGAL STACK STATISTIC, I5, 11H REQUESTED.)
-      END
+1000 format (///18h ***** error *****//&
+     &   24h illegal stack statistic, i5, 11h requested.)
+      end

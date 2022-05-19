@@ -18,25 +18,21 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
-     &   covirc,n,nn,p
+     integer covirc,n,nn,p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
-     &   d(p),j(nn,p),r(n),v(1),x(p)
-      integer
-     &   iv(1)
+     real(kind=wp) :: d(p),j(nn,p),r(n),v(1),x(p)
+     integer iv(1)
 !
 !  LOCAL SCALARS
-      real(kind=wp) ::
-     &   del,half,negpt5,one,t,two,wk,zero
-      integer
-     &   cov,covmat,covreq,delta,delta0,dltfdc,f,fx,g,g1,gp,gsave1,
-     &   h,hc,hmi,hpi,hpm,i,ierr,ip1,ipiv0,ipivi,ipivk,ipivot,irc,
-     &   k,kagqt,kalm,kind,kl,l,lmat,m,mm1,mm1o2,mode,nfgcal,pp1o2,
-     &   qtr,qtr1,rd,rd1,rsave,savei,stp0,stpi,stpm,switch,toobig,
+     real(kind=wp) :: del,half,negpt5,one,t,two,wk,zero
+     integer&
+    &   cov,covmat,covreq,delta,delta0,dltfdc,f,fx,g,g1,gp,gsave1,&
+    &   h,hc,hmi,hpi,hpm,i,ierr,ip1,ipiv0,ipivi,ipivk,ipivot,irc,&
+    &   k,kagqt,kalm,kind,kl,l,lmat,m,mm1,mm1o2,mode,nfgcal,pp1o2,&
+    &   qtr,qtr1,rd,rd1,rsave,savei,stp0,stpi,stpm,switch,toobig,&
      &   w,w0,w1,wl,xmsave
-      logical
+     logical&
      &   havej
 !
 !  EXTERNAL SUBROUTINES
@@ -80,14 +76,14 @@
 !    1        IPIVOT, IPIV0, KAGQT, KALM, LMAT, MODE, NFGCAL, QTR,
 !    2        RD, RSAVE, SAVEI, SWITCH, TOOBIG, W, XMSAVE
 !
-      data half/0.5_wp/, negpt5/-0.5_wp/, one/1.0_wp/, two/2.0_wp/,
+     data half/0.5_wp/, negpt5/-0.5_wp/, one/1.0_wp/, two/2.0_wp/,&
      &     zero/0.0_wp/
 !
-      data covmat/26/, covreq/15/, delta/50/, delta0/44/,
-     &     dltfdc/40/, f/10/, fx/46/, g/28/, h/44/, ierr/32/,
-     &     ipivot/61/, ipiv0/60/, kagqt/35/, kalm/36/,
-     &     lmat/58/, mode/38/, nfgcal/7/, qtr/49/,
-     &     rd/51/, rsave/52/, savei/54/, switch/12/,
+     data covmat/26/, covreq/15/, delta/50/, delta0/44/,&
+    &     dltfdc/40/, f/10/, fx/46/, g/28/, h/44/, ierr/32/,&
+    &     ipivot/61/, ipiv0/60/, kagqt/35/, kalm/36/,&
+    &     lmat/58/, mode/38/, nfgcal/7/, qtr/49/,&
+    &     rd/51/, rsave/52/, savei/54/, switch/12/,&
      &     toobig/2/, w/59/, xmsave/49/
 !
 !+++++++++++++++++++++++++++++++  BODY  ++++++++++++++++++++++++++++++++
@@ -141,7 +137,7 @@
       do i = g1, gp
          v(i) = (v(i) - v(gsave1)) / del
          gsave1 = gsave1 + 1
-      enddo      
+      enddo
 !
 !  ***  ADD G AS NEW COL. TO FINITE-DIFF. HESSIAN MATRIX  ***
 !
@@ -154,7 +150,7 @@
       do i = k, l
          v(i) = half * (v(i) + v(g1))
          g1 = g1 + 1
-      enddo        
+      enddo
 !
 !  ***  ADD  H(I,M) = G(I)  FOR I = M TO P  ***
 !
@@ -163,7 +159,7 @@
          v(l) = v(g1)
          l = l + i
          g1 = g1 + 1
-      enddo      
+      enddo
 !
  80   m = m + 1
       iv(mode) = m
@@ -225,7 +221,7 @@
          v(hmi) = v(fx) - (v(f) + v(hpi))
          hmi = hmi + 1
          hpi = hpi + 1
-      enddo        
+      enddo
  140  v(hmi) = v(f) - two*v(fx)
 !
 !  ***  COMPUTE FUNCTION VALUES NEEDED TO COMPLETE ROW M OF H.  ***
@@ -374,7 +370,7 @@
          qtr1 = iv(qtr)
          call vcopy(n, v(qtr1), r)
          w1 = iv(w) + p
-         call qrfact(nn, n, p, j, v(rd1), iv(ipivot), iv(ierr), 0,
+        call qrfact(nn, n, p, j, v(rd1), iv(ipivot), iv(ierr), 0,&
      &               v(w1))
          iv(kalm) = -2
  310  iv(covmat) = -1
@@ -418,12 +414,12 @@
                    m = ipiv0 + k
                    ipivk = iv(m)
                    l = kl + ipivk
-                   if (ipivk .gt. ipivi)
+                  if (ipivk .gt. ipivi)&
      &                       l = l + (ipivk-ipivi)*(ipivk+ipivi-3)/2
                    v(l) = v(hc)
                    hc = hc + 1
-              enddo          
-         enddo        
+              enddo
+         enddo
 !
  380  continue
       iv(covmat) = cov

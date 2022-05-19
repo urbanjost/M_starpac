@@ -1,9 +1,9 @@
 !AMEMN
-      SUBROUTINE AMEMN(Y, WEIGHT, NNZW, WT, LWT, XM, N, M, IXM, NRESTS,
-     & APRXDV, IFIXD, PAR, PARE, NPAR, RES, PAGE, WIDE,
-     & HLFRPT, STP, LSTP, MIT, STOPSS, STOPP, SCALE, LSCALE, DELTA,
-     & IVAPRX, IPTOUT, NDIGIT, RSD, RESTS, SDPVI, SDRESI, VCVL, LVCVL,
-     & D, IWORK, IIWORK, RWORK, IRWORK, NLHDR, NPARE, PVT)
+     subroutine amemn(y, weight, nnzw, wt, lwt, xm, n, m, ixm, nrests,&
+    & aprxdv, ifixd, par, pare, npar, res, page, wide,&
+    & hlfrpt, stp, lstp, mit, stopss, stopp, scale, lscale, delta,&
+    & ivaprx, iptout, ndigit, rsd, rests, sdpvi, sdresi, vcvl, lvcvl,&
+     & d, iwork, iiwork, rwork, irwork, nlhdr, npare, pvt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -27,38 +27,38 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) :: DELTA,RSD,STOPP,STOPSS
-      INTEGER
-     &   IIWORK,IRWORK,IVAPRX,IXM,LSCALE,LSTP,LVCVL,LWT,M,MIT,N,
-     &   NDIGIT,NNZW,NPAR,NPARE,NRESTS,SDPVI,SDRESI,VCVL
-      LOGICAL APRXDV,HLFRPT,PAGE,WEIGHT,WIDE
+      real(kind=wp) :: delta,rsd,stopp,stopss
+     integer&
+    &   iiwork,irwork,ivaprx,ixm,lscale,lstp,lvcvl,lwt,m,mit,n,&
+     &   ndigit,nnzw,npar,npare,nrests,sdpvi,sdresi,vcvl
+      logical aprxdv,hlfrpt,page,weight,wide
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   D(NRESTS,*),PAR(*),PARE(*),PVT(*),RES(*),RESTS(*),RWORK(*),
-     &   SCALE(*),STP(*),WT(*),XM(IXM,*),Y(*)
-      INTEGER IFIXD(*),IPTOUT(*),IWORK(*)
+     real(kind=wp) ::&
+    &   d(nrests,*),par(*),pare(*),pvt(*),res(*),rests(*),rwork(*),&
+     &   scale(*),stp(*),wt(*),xm(ixm,*),y(*)
+      integer ifixd(*),iptout(*),iwork(*)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL NLHDR
+       external nlhdr
 !
 !  SCALARS IN COMMON
-      INTEGER IERR
+      integer ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   CNVCOD,COVMAT,I,ICNVCD,IVCVPT,QTR,RD,RDI,RSAVE,RSSHLF,S,
-     &   SCL
-      LOGICAL CMPDRV,DONE,HEAD,NEWITR,PRTSMY
+     integer&
+    &   cnvcod,covmat,i,icnvcd,ivcvpt,qtr,rd,rdi,rsave,rsshlf,s,&
+     &   scl
+      logical cmpdrv,done,head,newitr,prtsmy
 !
 !  LOCAL ARRAYS
-      INTEGER ISKULL(10)
+      integer iskull(10)
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL AMDRV,AMEFIN,AMEISM,DRV,MDLTS3,NL2ITR,NLERR,NLINIT,NLITRP,NLSUPK,REPCK
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -273,112 +273,113 @@
 !
 !     IWORK SUBSCRIPT VALUES
 !
-      DATA CNVCOD /34/, ICNVCD /1/, COVMAT /26/, QTR /49/, RD /51/,
-     &   RSAVE /52/, S/53/
-      DATA RSSHLF /10/
+     data cnvcod /34/, icnvcd /1/, covmat /26/, qtr /49/, rd /51/,&
+     &   rsave /52/, s/53/
+      data rsshlf /10/
 !
 !+++++++++++++++++++++++++++++++  BODY  ++++++++++++++++++++++++++++++++
 !
 !     INITIALIZE CONTROL PARAMETERS
 !
-      CALL NLINIT (NRESTS, IFIXD, PAR, NPAR, PARE, NPARE, MIT, STOPSS,
-     &   STOPP, SCALE, LSCALE, DELTA, IVAPRX, APRXDV, IVCVPT, IWORK,
-     &   IIWORK, RWORK, IRWORK, SCL)
+     call nlinit (nrests, ifixd, par, npar, pare, npare, mit, stopss,&
+    &   stopp, scale, lscale, delta, ivaprx, aprxdv, ivcvpt, iwork,&
+     &   iiwork, rwork, irwork, scl)
 !
-      CMPDRV = .TRUE.
-      DONE = .FALSE.
-      HEAD = .TRUE.
-      NEWITR = .FALSE.
-      PRTSMY = (IPTOUT(1).NE.0)
+      cmpdrv = .true.
+      done = .false.
+      head = .true.
+      newitr = .false.
+      prtsmy = (iptout(1).ne.0)
 !
 !     COMPUTE RESIDUALS
 !
-   10 CALL MDLTS3(PAR, NPAR, XM, N, M, IXM, RESTS)
+   10 call mdlts3(par, npar, xm, n, m, ixm, rests)
 !
 !     PRINT INITIAL SUMMARY
 !
-      IF (.NOT.PRTSMY) GO TO 30
-      CALL AMEISM(NLHDR, PAGE, WIDE, HLFRPT, NPAR, M, N, NNZW, WEIGHT,
-     &   IFIXD, PAR, SCALE, LSCALE, IWORK, IIWORK, RWORK, IRWORK, RESTS,
-     &   APRXDV, STP, LSTP, NPARE)
-      PRTSMY = .FALSE.
+      if (.not.prtsmy) go to 30
+     call ameism(nlhdr, page, wide, hlfrpt, npar, m, n, nnzw, weight,&
+    &   ifixd, par, scale, lscale, iwork, iiwork, rwork, irwork, rests,&
+     &   aprxdv, stp, lstp, npare)
+      prtsmy = .false.
 !
-   30 CONTINUE
+   30 continue
 !
-      IF (.NOT.CMPDRV) GO TO 50
+      if (.not.cmpdrv) go to 50
 !
-      CMPDRV = .FALSE.
+      cmpdrv = .false.
 !
-   40 CONTINUE
+   40 continue
 !
 !     PRINT ITERATION REPORT IF DESIRED
 !
-      IF ((IPTOUT(2).NE.0) .AND. NEWITR) CALL NLITRP(NLHDR, HEAD, PAGE,
-     &   WIDE, IPTOUT(2), NPAR, NNZW, IWORK, IIWORK, RWORK, IRWORK,
-     &   IFIXD, PARE, NPARE)
+     if ((iptout(2).ne.0) .and. newitr) call nlitrp(nlhdr, head, page,&
+    &   wide, iptout(2), npar, nnzw, iwork, iiwork, rwork, irwork,&
+     &   ifixd, pare, npare)
 !
 !  ***  COMPUTE JACOBIAN  ***
 !
-      IF (DONE) CALL MDLTS3(PAR, NPAR, XM, N, M, IXM, RESTS)
+      if (done) call mdlts3(par, npar, xm, n, m, ixm, rests)
 !
-      CALL AMDRV(MDLTS3, DRV, DONE, IFIXD, PAR, NPAR, XM, N, M, IXM,
-     &  NRESTS, RESTS, D, WEIGHT, WT, LWT, STP, LSTP, RWORK(SCL), NPARE)
+     call amdrv(mdlts3, drv, done, ifixd, par, npar, xm, n, m, ixm,&
+     &  nrests, rests, d, weight, wt, lwt, stp, lstp, rwork(scl), npare)
 !
-      IF (DONE) GO TO 70
+      if (done) go to 70
 !
 !     COMPUTE NEXT ITERATION
 !
-   50 CALL NL2ITR(RWORK(SCL), IWORK, D, NRESTS, NRESTS, NPARE, RESTS,
-     &   RWORK, PARE)
+  50  continue
+!          nl2itr(d(p),       iv(*), j(nn,p), n,      nn,     p,     r(n),  v(*),  x(p))
+      call nl2itr(rwork(scl), iwork, d,       nrests, nrests, npare, rests, rwork, pare)
 !
 !     UNPACK PARAMETERS
 !
-      CALL NLSUPK(PARE, NPARE, PAR, IFIXD, NPAR)
+      call nlsupk(pare, npare, par, ifixd, npar)
 !
-      NEWITR = (IWORK(CNVCOD).EQ.0)
-      IF (IWORK(1)-2) 10, 40, 60
+      newitr = (iwork(cnvcod).eq.0)
+      if (iwork(1)-2) 10, 40, 60
 !
-   60 DONE = .TRUE.
-      GO TO 40
-   70 CONTINUE
+   60 done = .true.
+      go to 40
+   70 continue
 !
 !     SET ERROR FLAGS, IF NECESSARY
 !
-      CALL NLERR(IWORK(ICNVCD), ISKULL)
+      call nlerr(iwork(icnvcd), iskull)
 !
 !     FINISH COMPUTATIONS AND PRINT ANY DESIRED RESULTS
 !
-      CALL SCOPY(N, RESTS(NRESTS-N+1), 1, RES(1), 1)
-      DO 75 I = 1, N
-         PVT(I) = Y(I) - RES(I)
-   75 CONTINUE
-      SDPVI = IWORK(RSAVE)
-      SDRESI = IWORK(QTR)
-      VCVL = IWORK(COVMAT)
-      IF (VCVL.GE.1) GO TO 80
+      call scopy(n, rests(nrests-n+1), 1, res(1), 1)
+      do 75 i = 1, n
+         pvt(i) = y(i) - res(i)
+   75 continue
+      sdpvi = iwork(rsave)
+      sdresi = iwork(qtr)
+      vcvl = iwork(covmat)
+      if (vcvl.ge.1) go to 80
 !
-      VCVL = IWORK(S)
-      IF (IERR.NE.0) GO TO 80
-      ISKULL(1) = 1
-      ISKULL(7) = 1
-      IERR = 7
+      vcvl = iwork(s)
+      if (ierr.ne.0) go to 80
+      iskull(1) = 1
+      iskull(7) = 1
+      ierr = 7
 !
-   80 CONTINUE
+   80 continue
 !
-      LVCVL = NPARE*(NPARE+1)/2
+      lvcvl = npare*(npare+1)/2
 !
-      RDI = IWORK(RD)
+      rdi = iwork(rd)
 !
 !     REPCK IS CALLED TO AVOID MODIFICATION OF NLS CODE.  FUTURE
 !     REVISIONS OF NLS CODE SHOULD INCLUDE MODIFICATIONS NECESSARY
 !     TO ELIMINATE NEED TO REPACK D FOR ARIMA CODE.
 !
-      CALL REPCK(D, NRESTS, NPAR, N)
-      CALL AMEFIN(Y, WEIGHT, NNZW, WT, LWT, XM, N, M, IXM, IFIXD, PAR,
-     &   NPAR, NPARE, RES, PAGE, WIDE, IPTOUT, NDIGIT, RWORK(RSSHLF),
-     &   RSD, PVT, RWORK(SDPVI), RWORK(SDRESI), RWORK(RDI),
-     &   RWORK(VCVL), LVCVL, D, NLHDR, IVCVPT, ISKULL, NRESTS)
+      call repck(d, nrests, npar, n)
+     call amefin(y, weight, nnzw, wt, lwt, xm, n, m, ixm, ifixd, par,&
+    &   npar, npare, res, page, wide, iptout, ndigit, rwork(rsshlf),&
+    &   rsd, pvt, rwork(sdpvi), rwork(sdresi), rwork(rdi),&
+     &   rwork(vcvl), lvcvl, d, nlhdr, ivcvpt, iskull, nrests)
 !
-      RETURN
+      return
 !
-      END
+      end

@@ -1,5 +1,5 @@
 !FFTCT
-      SUBROUTINE FFTCT(X, N2, IX)
+      subroutine fftct(x, n2, ix)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -9,24 +9,24 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IX,N2
+     integer&
+     &   ix,n2
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(IX)
+     real(kind=wp) ::&
+     &   x(ix)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   A2,AA,AB,CD,CN,EX,PI,SAVE,SD,SN
-      INTEGER
-     &   I,ISN,J,K,M,M1,N1,NK
+     real(kind=wp) ::&
+     &   a2,aa,ab,cd,cn,ex,pi,save,sd,sn
+     integer&
+     &   i,isn,j,k,m,m1,n1,nk
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL FFT,GETPI,REALTR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SIN
+      intrinsic sin
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -51,50 +51,50 @@
 !        WORKSPACE.  THE COSINE TRANSFORM COEFFICIENTS ARE RETURNED
 !        IN THE FIRST N2+1 LOCATIONS OF X.
 !
-      CALL GETPI(PI)
+      call getpi(pi)
 !
-      A2 = 0.0E0
-      N1 = N2 + 1
-      DO 10 J=2,N2,2
-         A2 = A2 + X(J)
-   10 CONTINUE
-      A2 = 2.0E0*A2
-      M = N2/2
-      M1 = M + 1
-      EX = X(2)
-      X(2) = 0.0E0
-      IF (N1.LT.4) GO TO 30
-      DO 20 I=4,N1,2
-         SAVE = EX - X(I)
-         EX = X(I)
-         X(I) = SAVE
-   20 CONTINUE
-   30 X(N2+2) = 0.0E0
-      ISN = -2
-      CALL REALTR(X, X(2), M, ISN)
-      CALL FFT(X, X(2), M, M, M, ISN)
-      SD = PI / (2*N2)
-      CD = 2.0E0*SIN(SD)**2
-      SD = SIN(SD+SD)
-      SN = 0.0E0
-      CN = 1.0E0
-      NK = N2 + 2
-      DO 40 J=2,M1
-         K = NK - J
-         AA = X(J) + X(K)
-         AB = (X(J)-X(K))*0.5E0
-         EX = CN - (CD*CN+SD*SN)
-         SN = (SD*CN-CD*SN) + SN
-         CN = 0.5E0/(EX*EX+SN*SN) + 0.5E0
-         SN = CN*SN
-         CN = CN*EX
-         EX = AB/SN
-         X(J) = (AA+EX)*0.5E0
-         X(K) = (AA-EX)*0.5E0
-   40 CONTINUE
-      EX = X(1)
-      X(1) = EX + A2
-      X(N2+1) = EX - A2
-      X(N2+2) = 0.0E0
-      RETURN
-      END
+      a2 = 0.0e0
+      n1 = n2 + 1
+      do 10 j=2,n2,2
+         a2 = a2 + x(j)
+   10 continue
+      a2 = 2.0e0*a2
+      m = n2/2
+      m1 = m + 1
+      ex = x(2)
+      x(2) = 0.0e0
+      if (n1.lt.4) go to 30
+      do 20 i=4,n1,2
+         save = ex - x(i)
+         ex = x(i)
+         x(i) = save
+   20 continue
+   30 x(n2+2) = 0.0e0
+      isn = -2
+      call realtr(x, x(2), m, isn)
+      call fft(x, x(2), m, m, m, isn)
+      sd = pi / (2*n2)
+      cd = 2.0e0*sin(sd)**2
+      sd = sin(sd+sd)
+      sn = 0.0e0
+      cn = 1.0e0
+      nk = n2 + 2
+      do 40 j=2,m1
+         k = nk - j
+         aa = x(j) + x(k)
+         ab = (x(j)-x(k))*0.5e0
+         ex = cn - (cd*cn+sd*sn)
+         sn = (sd*cn-cd*sn) + sn
+         cn = 0.5e0/(ex*ex+sn*sn) + 0.5e0
+         sn = cn*sn
+         cn = cn*ex
+         ex = ab/sn
+         x(j) = (aa+ex)*0.5e0
+         x(k) = (aa-ex)*0.5e0
+   40 continue
+      ex = x(1)
+      x(1) = ex + a2
+      x(n2+1) = ex - a2
+      x(n2+2) = 0.0e0
+      return
+      end

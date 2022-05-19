@@ -1,6 +1,6 @@
 !CCVFF
-      SUBROUTINE CCVFF (YFFT1, YFFT2, N, NFFT, LAGMAX, CCOV12, CCOV21,
-     &   ICCOV, LYFFT, WORK, LWORK)
+     subroutine ccvff (yfft1, yfft2, n, nfft, lagmax, ccov12, ccov21,&
+     &   iccov, lyfft, work, lwork)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,19 +17,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ICCOV,LAGMAX,LWORK,LYFFT,N,NFFT
+     integer&
+     &   iccov,lagmax,lwork,lyfft,n,nfft
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CCOV12(ICCOV),CCOV21(ICCOV),WORK(LWORK),YFFT1(LYFFT),
-     &   YFFT2(LYFFT)
+     real(kind=wp) ::&
+    &   ccov12(iccov),ccov21(iccov),work(lwork),yfft1(lyfft),&
+     &   yfft2(lyfft)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FAC
-      INTEGER
-     &   I,ISN,J,LAG,NF,NF2,NFFT2
+     real(kind=wp) ::&
+     &   fac
+     integer&
+     &   i,isn,j,lag,nf,nf2,nfft2
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL FFT,REALTR
@@ -69,34 +69,34 @@
 !        THE VECTORS CONTAINING THE OBSERVED SERIES ALREADY PROCESSED
 !        BY ONE PASS OF A FFT.
 !
-      NFFT2 = (NFFT-2) / 2
-      NF = NFFT2 + 1
-      NF2 = NF * 2
+      nfft2 = (nfft-2) / 2
+      nf = nfft2 + 1
+      nf2 = nf * 2
 !
 !     COMPUTE THE CROSS COVARIANCES
 !
-      DO 10 I = 2, NF2, 2
-         WORK(I-1) = YFFT1(I-1)*YFFT2(I-1) + YFFT1(I)*YFFT2(I)
-         WORK(I) = YFFT1(I)*YFFT2(I-1) - YFFT1(I-1)*YFFT2(I)
-   10 CONTINUE
+      do 10 i = 2, nf2, 2
+         work(i-1) = yfft1(i-1)*yfft2(i-1) + yfft1(i)*yfft2(i)
+         work(i) = yfft1(i)*yfft2(i-1) - yfft1(i-1)*yfft2(i)
+   10 continue
 !
-      FAC = 1.0E0 / (4 * (NFFT-2) * N)
+      fac = 1.0e0 / (4 * (nfft-2) * n)
 !
-      ISN = -2
+      isn = -2
 !
-      CALL REALTR (WORK, WORK(2), NFFT2, ISN)
+      call realtr (work, work(2), nfft2, isn)
 !
-      CALL FFT (WORK, WORK(2), NFFT2, NFFT2, NFFT2, ISN)
+      call fft (work, work(2), nfft2, nfft2, nfft2, isn)
 !
-      CCOV12(1) = WORK(1) * FAC
-      CCOV21(1) = CCOV12(1)
+      ccov12(1) = work(1) * fac
+      ccov21(1) = ccov12(1)
 !
-      DO 20 LAG = 1, LAGMAX
-         CCOV21(LAG+1) = WORK(LAG+1) * FAC
+      do 20 lag = 1, lagmax
+         ccov21(lag+1) = work(lag+1) * fac
 !
-         J = NFFT - 1 - LAG
-         CCOV12(LAG+1) = WORK(J) * FAC
-   20 CONTINUE
+         j = nfft - 1 - lag
+         ccov12(lag+1) = work(j) * fac
+   20 continue
 !
-      RETURN
-      END
+      return
+      end

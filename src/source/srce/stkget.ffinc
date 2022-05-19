@@ -1,5 +1,5 @@
 !STKGET
-      INTEGER FUNCTION STKGET(NITEMS, ITYPE)
+      integer function stkget(nitems, itype)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -59,42 +59,42 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ITYPE,NITEMS
+     integer&
+     &   itype,nitems
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,LBOOK,LMAX,LNOW,LOUT,LUSED
+     integer&
+     &   i,iprt,lbook,lmax,lnow,lout,lused
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISIZE(5),ISTAK(12)
+     integer&
+     &   isize(5),istak(12)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (ISTAK(1),LOUT)
-      EQUIVALENCE (ISTAK(2),LNOW)
-      EQUIVALENCE (ISTAK(3),LUSED)
-      EQUIVALENCE (ISTAK(4),LMAX)
-      EQUIVALENCE (ISTAK(5),LBOOK)
-      EQUIVALENCE (ISTAK(6),ISIZE(1))
+      equivalence (dstak(1),istak(1))
+      equivalence (istak(1),lout)
+      equivalence (istak(2),lnow)
+      equivalence (istak(3),lused)
+      equivalence (istak(4),lmax)
+      equivalence (istak(5),lbook)
+      equivalence (istak(6),isize(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -129,34 +129,34 @@
 !        THE LENGTH OF THE ARRAY OF ITYPE TO BE ALLOCATED.
 !
 !
-      STKGET = (LNOW*ISIZE(2)-1)/ISIZE(ITYPE) + 2
-      I = ( (STKGET-1+NITEMS)*ISIZE(ITYPE) - 1 )/ISIZE(2) + 3
+      stkget = (lnow*isize(2)-1)/isize(itype) + 2
+      i = ( (stkget-1+nitems)*isize(itype) - 1 )/isize(2) + 3
 !
 !  STACK OVERFLOW IS AN UNRECOVERABLE ERROR.
 !
-      IF (I .LE. LMAX) GO TO 10
+      if (i .le. lmax) go to 10
 !
-      IERR = 1
-      CALL IPRINT(IPRT)
-      WRITE(IPRT, 1000)
-      RETURN
+      ierr = 1
+      call iprint(iprt)
+      write(iprt, 1000)
+      return
 !
-   10 CONTINUE
+   10 continue
 !
 !  ISTAK(I-1) CONTAINS THE TYPE FOR THIS ALLOCATION.
 !  ISTAK(I  ) CONTAINS A POINTER TO THE END OF THE PREVIOUS
 !             ALLOCATION.
 !
-      ISTAK(I-1) = ITYPE
-      ISTAK(I  ) = LNOW
-      LOUT = LOUT+1
-      LNOW = I
-      LUSED = MAX(LUSED, LNOW)
+      istak(i-1) = itype
+      istak(i  ) = lnow
+      lout = lout+1
+      lnow = i
+      lused = max(lused, lnow)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(20H DSTAK IS TOO SHORT.)
+ 1000 format(20h dstak is too short.)
 !
-      END
+      end

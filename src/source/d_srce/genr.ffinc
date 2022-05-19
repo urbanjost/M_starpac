@@ -1,5 +1,5 @@
 !GENR
-      SUBROUTINE GENR(RVECT, N, RINIT, RSTP)
+      subroutine genr(rvect, n, rinit, rstp)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RINIT,RSTP
-      INTEGER
-     &   N
+     real(kind=wp) ::&
+     &   rinit,rstp
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RVECT(N)
+     real(kind=wp) ::&
+     &   rvect(n)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   R
-      INTEGER
-     &   J
+     real(kind=wp) ::&
+     &   r
+     integer&
+     &   j
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -46,10 +46,10 @@
 !        OUTPUT PARAMETER.  THE VECTOR INTO WHICH TO PUT THE VALUES
 !        RINIT, RINIT + RSTP, ..., RINIT + (N - 1)*RSTP.
 !
-      R = RINIT
-      DO 10 J=1,N
-         RVECT(J) = R
-         R = R + RSTP
-   10 CONTINUE
-      RETURN
-      END
+      r = rinit
+      do 10 j=1,n
+         rvect(j) = r
+         r = r + rstp
+   10 continue
+      return
+      end

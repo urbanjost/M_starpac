@@ -1,5 +1,5 @@
 !XCORR
-      SUBROUTINE XCORR(LDSTAK,typ)
+      subroutine xcorr(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -18,33 +18,33 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,IVCV,IYM,J,LDSMIN,M,N
+     integer&
+     &   i,iprt,ivcv,iym,j,ldsmin,m,n
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   VCV(4,4),YM(10,4),Z(10,4)
+     real(kind=wp) ::&
+     &   vcv(4,4),ym(10,4),z(10,4)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL CORR,CORRS,CORRXP,GENR,IPRINT,LDSCMP,MSGX,SETRA
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -83,230 +83,230 @@
 !        DRAPER AND SMITH
 !        PAGE 216
 !
-      DATA     YM(1,1),   YM(1,2),   YM(1,3),   YM(1,4)
-     &    /      42.2_WP,  11.2_WP,  31.9_WP, 167.1_WP/
-      DATA     YM(2,1),   YM(2,2),   YM(2,3),   YM(2,4)
-     &    /      48.6_WP,  10.6_WP,  13.2_WP, 174.4_WP/
-      DATA     YM(3,1),   YM(3,2),   YM(3,3),   YM(3,4)
-     &    /      42.6_WP,  10.6_WP,  28.7_WP, 160.8_WP/
-      DATA     YM(4,1),   YM(4,2),   YM(4,3),   YM(4,4)
-     &    /      39.0_WP,  10.4_WP,  26.1_WP, 162.0_WP/
-      DATA     YM(5,1),   YM(5,2),   YM(5,3),   YM(5,4)
-     &    /      34.7_WP,   9.3_WP,  30.1_WP, 140.8_WP/
-      DATA     YM(6,1),   YM(6,2),   YM(6,3),   YM(6,4)
-     &    /      44.5_WP,  10.8_WP,   8.5_WP, 174.6_WP/
-      DATA     YM(7,1),   YM(7,2),   YM(7,3),   YM(7,4)
-     &    /      39.1_WP,  10.7_WP,  24.3_WP, 163.7_WP/
-      DATA     YM(8,1),   YM(8,2),   YM(8,3),   YM(8,4)
-     &    /      40.1_WP,  10.0_WP,  18.6_WP, 174.5_WP/
-      DATA     YM(9,1),   YM(9,2),   YM(9,3),   YM(9,4)
-     &    /      45.9_WP,  12.0_WP,  20.4_WP, 185.7_WP/
+     data     ym(1,1),   ym(1,2),   ym(1,3),   ym(1,4)&
+     &    /      42.2_wp,  11.2_wp,  31.9_wp, 167.1_wp/
+     data     ym(2,1),   ym(2,2),   ym(2,3),   ym(2,4)&
+     &    /      48.6_wp,  10.6_wp,  13.2_wp, 174.4_wp/
+     data     ym(3,1),   ym(3,2),   ym(3,3),   ym(3,4)&
+     &    /      42.6_wp,  10.6_wp,  28.7_wp, 160.8_wp/
+     data     ym(4,1),   ym(4,2),   ym(4,3),   ym(4,4)&
+     &    /      39.0_wp,  10.4_wp,  26.1_wp, 162.0_wp/
+     data     ym(5,1),   ym(5,2),   ym(5,3),   ym(5,4)&
+     &    /      34.7_wp,   9.3_wp,  30.1_wp, 140.8_wp/
+     data     ym(6,1),   ym(6,2),   ym(6,3),   ym(6,4)&
+     &    /      44.5_wp,  10.8_wp,   8.5_wp, 174.6_wp/
+     data     ym(7,1),   ym(7,2),   ym(7,3),   ym(7,4)&
+     &    /      39.1_wp,  10.7_wp,  24.3_wp, 163.7_wp/
+     data     ym(8,1),   ym(8,2),   ym(8,3),   ym(8,4)&
+     &    /      40.1_wp,  10.0_wp,  18.6_wp, 174.5_wp/
+     data     ym(9,1),   ym(9,2),   ym(9,3),   ym(9,4)&
+     &    /      45.9_wp,  12.0_wp,  20.4_wp, 185.7_wp/
 !
 !     DETERMINE OUTPUT UNIT
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      IVCV = 4
-      IYM = 10
-      M = 4
-      N = 9
-      IERR = 0
+      ivcv = 4
+      iym = 10
+      m = 4
+      n = 9
+      ierr = 0
 !
 !**** TEST ROUTINES WITH CORRECT CALL STATEMENT *****
 !
-      WRITE (IPRT,1000)
-      WRITE (IPRT,1010)
+      write (iprt,1000)
+      write (iprt,1010)
 !
 !     TEST CORR
 !
-      WRITE (IPRT,1020)
-      WRITE (IPRT,1060)
-      CALL CORR(YM, N, M, IYM, LDSTAK)
-      CALL MSGX(0, IPRT)
+      write (iprt,1020)
+      write (iprt,1060)
+      call corr(ym, n, m, iym, ldstak)
+      call msgx(0, iprt)
 !
 !     TEST CORRS
 !
 !     PRINTOUT SUPPRESSED
 !
-      WRITE (IPRT,1030)
-      WRITE (IPRT,1040)
-      WRITE (IPRT,1060)
-      CALL CORRS(YM, N, M, IYM, LDSTAK, 0, VCV, IVCV)
-      CALL MSGX(0, IPRT)
+      write (iprt,1030)
+      write (iprt,1040)
+      write (iprt,1060)
+      call corrs(ym, n, m, iym, ldstak, 0, vcv, ivcv)
+      call msgx(0, iprt)
 !
 !     PRINT STORED OUTPUT AND ZERO ARRAYS
 !
-      CALL CORRXP(M, VCV, IVCV, IPRT)
+      call corrxp(m, vcv, ivcv, iprt)
 !
 !     WITH PRINTOUT
 !
-      WRITE (IPRT,1050)
-      WRITE (IPRT,1060)
-      CALL CORRS(YM, N, M, IYM, LDSTAK, 1, VCV, IVCV)
-      CALL MSGX(0, IPRT)
+      write (iprt,1050)
+      write (iprt,1060)
+      call corrs(ym, n, m, iym, ldstak, 1, vcv, ivcv)
+      call msgx(0, iprt)
 !
 !     PRINT STORED OUTPUT
 !
-      CALL CORRXP(M, VCV, IVCV, IPRT)
+      call corrxp(m, vcv, ivcv, iprt)
 !
 !**** SPECIAL 2 COLUMN MATRIX ****
 !
-      WRITE (IPRT,1070)
-      WRITE (IPRT,1060)
-      CALL CORR(YM, N, 2, IYM, LDSTAK)
-      CALL MSGX(0, IPRT)
+      write (iprt,1070)
+      write (iprt,1060)
+      call corr(ym, n, 2, iym, ldstak)
+      call msgx(0, iprt)
 !
 !**** TEST WORK AREA REQUIREMENTS ****
 !
 !     TEST CORR
 !
-      CALL LDSCMP(12, 0, MAX(N,M), 0, 0, 0, 'D',
-     &   M*M + (MAX(N,M)+M+N*(M+3)+6*M*M), LDSMIN)
-      WRITE (IPRT,1090)
-      CALL CORR(YM, N, M, IYM, LDSMIN-1)
-      CALL MSGX(1, IPRT)
-      WRITE (IPRT,1100)
-      CALL CORR(YM, N, M, IYM, LDSMIN)
-      CALL MSGX(0, IPRT)
+     call ldscmp(12, 0, max(n,m), 0, 0, 0, 'D',&
+     &   m*m + (max(n,m)+m+n*(m+3)+6*m*m), ldsmin)
+      write (iprt,1090)
+      call corr(ym, n, m, iym, ldsmin-1)
+      call msgx(1, iprt)
+      write (iprt,1100)
+      call corr(ym, n, m, iym, ldsmin)
+      call msgx(0, iprt)
 !
 !     TEST CORRS WITH PRINTOUT
 !
-      CALL LDSCMP(12, 0, MAX(N,M), 0, 0, 0, 'D',
-     &   MAX(N,M)+M+N*(M+3)+6*M*M, LDSMIN)
-      WRITE (IPRT,1090)
-      CALL CORRS(YM, N, M, IYM, LDSMIN-1, 1, VCV, IVCV)
-      CALL MSGX(1, IPRT)
-      WRITE (IPRT,1100)
-      CALL CORRS(YM, N, M, IYM, LDSMIN, 1, VCV, IVCV)
-      CALL CORRXP(M, VCV, IVCV, IPRT)
-      CALL MSGX(0, IPRT)
+     call ldscmp(12, 0, max(n,m), 0, 0, 0, 'D',&
+     &   max(n,m)+m+n*(m+3)+6*m*m, ldsmin)
+      write (iprt,1090)
+      call corrs(ym, n, m, iym, ldsmin-1, 1, vcv, ivcv)
+      call msgx(1, iprt)
+      write (iprt,1100)
+      call corrs(ym, n, m, iym, ldsmin, 1, vcv, ivcv)
+      call corrxp(m, vcv, ivcv, iprt)
+      call msgx(0, iprt)
 !
 !     TEST CORRS WITHOUT PRINTOUT
 !
-      CALL LDSCMP(12, 0, 0, 0, 0, 0, 'D', 0, LDSMIN)
-      WRITE (IPRT,1090)
-      CALL CORRS(YM, N, M, IYM, LDSMIN-1, 0, VCV, IVCV)
-      CALL MSGX(1, IPRT)
-      WRITE (IPRT,1100)
-      CALL CORRS(YM, N, M, IYM, LDSMIN, 0, VCV, IVCV)
-      CALL CORRXP(M, VCV, IVCV, IPRT)
-      CALL MSGX(0, IPRT)
+      call ldscmp(12, 0, 0, 0, 0, 0, 'D', 0, ldsmin)
+      write (iprt,1090)
+      call corrs(ym, n, m, iym, ldsmin-1, 0, vcv, ivcv)
+      call msgx(1, iprt)
+      write (iprt,1100)
+      call corrs(ym, n, m, iym, ldsmin, 0, vcv, ivcv)
+      call corrxp(m, vcv, ivcv, iprt)
+      call msgx(0, iprt)
 !
 !**** NUMBER OF VARIABLES LESS THAN 2 ****
 !
-      WRITE (IPRT,1110)
+      write (iprt,1110)
 !
 !     TEST CORR
 !
-      CALL CORR(YM, N, 1, IYM, LDSTAK)
-      CALL MSGX(1, IPRT)
+      call corr(ym, n, 1, iym, ldstak)
+      call msgx(1, iprt)
 !
 !     TEST CORRS
 !
-      CALL CORRS(YM, N, 1, IYM, LDSTAK, 1, VCV, IVCV)
-      CALL MSGX(1, IPRT)
+      call corrs(ym, n, 1, iym, ldstak, 1, vcv, ivcv)
+      call msgx(1, iprt)
 !
 !**** NUMBER OF OBSERVATIONS LESS THAN 3 ****
 !
-      WRITE (IPRT,1120)
+      write (iprt,1120)
 !
 !     TEST CORR
 !
-      CALL CORR(YM, 2, 4, IYM, LDSTAK)
-      CALL MSGX(1, IPRT)
+      call corr(ym, 2, 4, iym, ldstak)
+      call msgx(1, iprt)
 !
 !     TEST CORRS
 !
-      CALL CORRS(YM, 2, 4, IYM, LDSTAK, 1, VCV, IVCV)
-      CALL MSGX(1, IPRT)
+      call corrs(ym, 2, 4, iym, ldstak, 1, vcv, ivcv)
+      call msgx(1, iprt)
 !
 !**** OBSERVATION MATRIX DIMENSIONED LESS THAN N ****
 !
-      WRITE (IPRT,1150)
+      write (iprt,1150)
 !
 !     TEST CORR
 !
-      CALL CORR(YM, N, M, 8, LDSTAK)
-      CALL MSGX(1, IPRT)
+      call corr(ym, n, m, 8, ldstak)
+      call msgx(1, iprt)
 !
 !     TEST CORRS
 !
-      CALL CORRS(YM, N, M, 8, LDSTAK, 1, VCV, IVCV)
-      CALL MSGX(1, IPRT)
+      call corrs(ym, n, m, 8, ldstak, 1, vcv, ivcv)
+      call msgx(1, iprt)
 !
 !**** VCV MATRIX DIMENSIONED LESS THAN M ****
 !
-      WRITE (IPRT,1130)
-      CALL CORRS(YM, N, M, IYM, LDSTAK, 1, VCV, 2)
-      CALL MSGX(1, IPRT)
+      write (iprt,1130)
+      call corrs(ym, n, m, iym, ldstak, 1, vcv, 2)
+      call msgx(1, iprt)
 !
 !**** ALL OBSERVATIONS ON A SINGLE VARIABLE EQUAL TO ZERO ****
 !
-      WRITE (IPRT,1140)
-      CALL SETRA(Z, 10, 4, 10, 0.0_WP)
-      CALL CORR(Z, 9, 4, 10, LDSTAK)
-      CALL MSGX(1, IPRT)
-      CALL CORRS(Z, 9, 4, 10, LDSTAK, 1, VCV, IVCV)
-      CALL CORRXP(M, VCV, IVCV, IPRT)
-      CALL MSGX(1, IPRT)
+      write (iprt,1140)
+      call setra(z, 10, 4, 10, 0.0_wp)
+      call corr(z, 9, 4, 10, ldstak)
+      call msgx(1, iprt)
+      call corrs(z, 9, 4, 10, ldstak, 1, vcv, ivcv)
+      call corrxp(m, vcv, ivcv, iprt)
+      call msgx(1, iprt)
 !
-      DO 10 I=1,10
-         Z(I,1) = I
-         Z(I,2) = 0.0_WP
-   10 CONTINUE
-      CALL CORR(Z, 10, 4, 10, LDSTAK)
-      CALL MSGX(1, IPRT)
+      do 10 i=1,10
+         z(i,1) = i
+         z(i,2) = 0.0_wp
+   10 continue
+      call corr(z, 10, 4, 10, ldstak)
+      call msgx(1, iprt)
 !
 !**** ARRAY FILLED WITH A SINGLE VALUE ****
 !
-      WRITE (IPRT,1160)
-      CALL SETRA(Z, 10, 4, 10, 4.0_WP)
-      CALL CORR(Z, 4, 10, 4, LDSTAK)
-      CALL MSGX(1, IPRT)
+      write (iprt,1160)
+      call setra(z, 10, 4, 10, 4.0_wp)
+      call corr(z, 4, 10, 4, ldstak)
+      call msgx(1, iprt)
 !
 !**** 2 COLUMNS THE SAME ****
 !
-      DO 20 I=1,3
-         CALL GENR(Z(1,I), 5, 5.0_WP*I, 5.0_WP*I)
-   20 CONTINUE
-      DO 30 I=1,5
-         Z(I,4) = Z(I,3)
-   30 CONTINUE
-      WRITE (IPRT,1170)
-      CALL CORR(Z, 5, 4, 10, LDSTAK)
-      CALL MSGX(1, IPRT)
+      do 20 i=1,3
+         call genr(z(1,i), 5, 5.0_wp*i, 5.0_wp*i)
+   20 continue
+      do 30 i=1,5
+         z(i,4) = z(i,3)
+   30 continue
+      write (iprt,1170)
+      call corr(z, 5, 4, 10, ldstak)
+      call msgx(1, iprt)
 !
 !**** 2 COLUMNS INVERSELY RELATED ****
 !
-      J = 5
-      DO 40 I=1,5
-         J = J - 1
-         Z(J,4) = Z(I,3)
-   40 CONTINUE
-      WRITE (IPRT,1170)
-      CALL CORR(Z, 5, 4, 10, LDSTAK)
-      CALL MSGX(1, IPRT)
+      j = 5
+      do 40 i=1,5
+         j = j - 1
+         z(j,4) = z(i,3)
+   40 continue
+      write (iprt,1170)
+      call corr(z, 5, 4, 10, ldstak)
+      call msgx(1, iprt)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT('1')
- 1010 FORMAT(' ****TEST ROUTINES WITH CORRECT CALL****')
- 1020 FORMAT(' TEST OF CORR')
- 1030 FORMAT('1TEST OF CORRS')
- 1040 FORMAT(' PRINTOUT SUPRESSED.')
- 1050 FORMAT('1PRINTOUT NOT SUPRESSED.')
- 1060 FORMAT(' DRAPER AND SMITH DATA SET (PAGE 216).')
- 1070 FORMAT('1****SPECIAL CASE 2 COLUMN MATRIX****')
- 1090 FORMAT('1****TEST WITH INSUFFICIENT WORK AREA****')
- 1100 FORMAT('1****TEST WITH EXACTLY THE RIGHT AMOUNT OF WORK AREA****')
- 1110 FORMAT('1****NUMBER OF VARIABLES LESS THAN 2****')
- 1120 FORMAT(' ****NUMBER OF OBSERVATIONS LESS THAN 3****')
- 1130 FORMAT(' ****INADEQUATE SPACE IN STORAGE ARRAYS****')
- 1140 FORMAT('1****ALL OBSERVATIONS ON A VARIABLE EQUAL TO ZERO****')
- 1150 FORMAT(' ****OBSERVATION MATRIX DIMENSIONED LESS THAN NUMBER',
+ 1000 format('1')
+ 1010 format(' ****TEST ROUTINES WITH CORRECT CALL****')
+ 1020 format(' TEST OF CORR')
+ 1030 format('1TEST OF CORRS')
+ 1040 format(' PRINTOUT SUPRESSED.')
+ 1050 format('1PRINTOUT NOT SUPRESSED.')
+ 1060 format(' DRAPER AND SMITH DATA SET (PAGE 216).')
+ 1070 format('1****SPECIAL CASE 2 COLUMN MATRIX****')
+ 1090 format('1****TEST WITH INSUFFICIENT WORK AREA****')
+ 1100 format('1****TEST WITH EXACTLY THE RIGHT AMOUNT OF WORK AREA****')
+ 1110 format('1****NUMBER OF VARIABLES LESS THAN 2****')
+ 1120 format(' ****NUMBER OF OBSERVATIONS LESS THAN 3****')
+ 1130 format(' ****INADEQUATE SPACE IN STORAGE ARRAYS****')
+ 1140 format('1****ALL OBSERVATIONS ON A VARIABLE EQUAL TO ZERO****')
+1150 format(' ****OBSERVATION MATRIX DIMENSIONED LESS THAN NUMBER',&
      &       ' OF OBSERVATIONS DESIGNATED****')
- 1160 FORMAT('1****ARRAY CONTAINING A SINGLE VALUE****')
- 1170 FORMAT('1****2 COLUMNS RELATED****')
-      END
+ 1160 format('1****ARRAY CONTAINING A SINGLE VALUE****')
+ 1170 format('1****2 COLUMNS RELATED****')
+      end

@@ -1,6 +1,6 @@
 !ACFLST
-      SUBROUTINE ACFLST (RHO, SDRHO, NLPPA, LAGMAX, IFMISS, CHIA,
-     &   NDFCHI, CHIAP)
+     subroutine acflst (rho, sdrho, nlppa, lagmax, ifmiss, chia,&
+     &   ndfchi, chiap)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,24 +17,24 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CHIA,CHIAP
-      INTEGER
-     &   LAGMAX,NDFCHI
-      LOGICAL
-     &   IFMISS
+     real(kind=wp) ::&
+     &   chia,chiap
+     integer&
+     &   lagmax,ndfchi
+     logical&
+     &   ifmiss
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RHO(*),SDRHO(*)
-      INTEGER
-     &   NLPPA(*)
+     real(kind=wp) ::&
+     &   rho(*),sdrho(*)
+     integer&
+     &   nlppa(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM
-      INTEGER
-     &   I,IMAX,IMIN,IPRT,LAG,NPERL
+     real(kind=wp) ::&
+     &   fplm
+     integer&
+     &   i,imax,imin,iprt,lag,nperl
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -45,7 +45,7 @@
 !      EXTERNAL IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -84,36 +84,36 @@
 !        ARE STORED
 !
 !
-      FPLM = R1MACH(2)
+      fplm = r1mach(2)
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      NPERL = 12
-      DO 30 I = 1, LAGMAX, NPERL
-         IMIN = I
-         IMAX = MIN(I + NPERL - 1, LAGMAX)
-         WRITE(IPRT, 1000) (LAG, LAG = IMIN, IMAX)
-         WRITE(IPRT, 1001) (RHO(LAG), LAG = IMIN, IMAX)
-         WRITE(IPRT, 1002) (SDRHO(LAG), LAG = IMIN, IMAX)
-         IF (IFMISS) WRITE(IPRT, 1003) (NLPPA(LAG), LAG = IMIN, IMAX)
-   30 CONTINUE
+      nperl = 12
+      do 30 i = 1, lagmax, nperl
+         imin = i
+         imax = min(i + nperl - 1, lagmax)
+         write(iprt, 1000) (lag, lag = imin, imax)
+         write(iprt, 1001) (rho(lag), lag = imin, imax)
+         write(iprt, 1002) (sdrho(lag), lag = imin, imax)
+         if (ifmiss) write(iprt, 1003) (nlppa(lag), lag = imin, imax)
+   30 continue
 !
-      IF (SDRHO(LAGMAX) .EQ. FPLM) WRITE(IPRT, 1004) FPLM
+      if (sdrho(lagmax) .eq. fplm) write(iprt, 1004) fplm
 !
-      WRITE (IPRT, 1005) CHIA, NDFCHI, CHIAP
+      write (iprt, 1005) chia, ndfchi, chiap
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(/19H LAG               , 12(1X, I6))
- 1001 FORMAT( 19H ACF               , 12(2X, F5.2))
- 1002 FORMAT( 19H STANDARD ERROR    , 12(2X, F5.2))
- 1003 FORMAT( 19H NO. OF OBS. USED  , 12(1X, I6))
- 1004 FORMAT(///5X, F5.2, 38H INDICATES VALUE COULD NOT BE COMPUTED,
+ 1000 format(/19h lag               , 12(1x, i6))
+ 1001 format( 19h acf               , 12(2x, f5.2))
+ 1002 format( 19h standard error    , 12(2x, f5.2))
+ 1003 format( 19h no. of obs. used  , 12(1x, i6))
+1004 format(///5x, f5.2, 38h indicates value could not be computed,&
      &   ' DUE TO MISSING DATA.')
- 1005 FORMAT(///33H THE CHI SQUARE TEST STATISTIC OF/
-     &   40H THE NULL HYPOTHESIS OF WHITE NOISE    =, G21.4/
-     &   40H DEGREES OF FREEDOM                    =, I17/
-     &   40H OBSERVED SIGNIFICANCE LEVEL           =, F17.4)
-      END
+1005 format(///33h the chi square test statistic of/&
+    &   40h the null hypothesis of white noise    =, g21.4/&
+    &   40h degrees of freedom                    =, i17/&
+     &   40h observed significance level           =, f17.4)
+      end

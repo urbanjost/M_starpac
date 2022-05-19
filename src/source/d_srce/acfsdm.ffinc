@@ -1,5 +1,5 @@
 !ACFSDM
-      SUBROUTINE ACFSDM (RHO, SDRHO, NC, N, NLPPA)
+      subroutine acfsdm (rho, sdrho, nc, n, nlppa)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,21 +16,21 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,NC
+     integer&
+     &   n,nc
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RHO(*),SDRHO(*)
-      INTEGER
-     &   NLPPA(*)
+     real(kind=wp) ::&
+     &   rho(*),sdrho(*)
+     integer&
+     &   nlppa(*)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   K,KLAST,LAG
+     integer&
+     &   k,klast,lag
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN,DBLE,SQRT
+      intrinsic min,dble,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -55,16 +55,16 @@
 !        THE ARRAY IN WHICH THE STANDARD ERRORS OF THE AUTOCORRELATIONS
 !        ARE STORED
 !
-      SDRHO(1) = SQRT(DBLE(NLPPA(1))) * (N-1) / (N * NLPPA(1))
-      IF (NC .EQ. 1) RETURN
-      DO 20 LAG = 2, NC
-         SDRHO(LAG) = 0.0_WP
-         KLAST = MIN(LAG-1, N-LAG)
-         DO 10 K = 1, KLAST
-            SDRHO(LAG) = SDRHO(LAG) + (N-LAG-K) * RHO(K) * RHO(K)
-   10    CONTINUE
-         SDRHO(LAG) = SQRT((N-LAG) + 2.0_WP * SDRHO(LAG)) *
-     &      (N-LAG) / (N*NLPPA(LAG))
-   20 CONTINUE
-      RETURN
-      END
+      sdrho(1) = sqrt(dble(nlppa(1))) * (n-1) / (n * nlppa(1))
+      if (nc .eq. 1) return
+      do 20 lag = 2, nc
+         sdrho(lag) = 0.0_wp
+         klast = min(lag-1, n-lag)
+         do 10 k = 1, klast
+            sdrho(lag) = sdrho(lag) + (n-lag-k) * rho(k) * rho(k)
+   10    continue
+        sdrho(lag) = sqrt((n-lag) + 2.0_wp * sdrho(lag)) *&
+     &      (n-lag) / (n*nlppa(lag))
+   20 continue
+      return
+      end

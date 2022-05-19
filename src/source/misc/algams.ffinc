@@ -1,5 +1,5 @@
 !ALGAMS
-      SUBROUTINE ALGAMS (X, ALGAM, SGNGAM)
+      subroutine algams (x, algam, sgngam)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! EVALUATE LOG ABS (GAMMA(X)) AND RETURN THE SIGN OF GAMMA(X) IN SGNGAM.
@@ -9,21 +9,21 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL ALGAM,SGNGAM,X
+      real algam,sgngam,x
 !
 !  EXTERNAL FUNCTIONS
 !      REAL ALNGAM
 !       EXTERNAL ALNGAM
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC INT,MOD
+      intrinsic int,mod
 !
-      ALGAM = ALNGAM(X)
-      SGNGAM = 1.0
-      IF (X.GT.0.0) RETURN
+      algam = alngam(x)
+      sgngam = 1.0
+      if (x.gt.0.0) return
 !
 !     INT = AMOD (-AINT(X), 2.0) + 0.1
-      IF (INT(MOD(-INT(X),2)+0.1).EQ.0) SGNGAM = -1.0
+      if (int(mod(-int(x),2)+0.1).eq.0) sgngam = -1.0
 !
-      RETURN
-      END
+      return
+      end

@@ -1,5 +1,5 @@
 !CORRXP
-      SUBROUTINE CORRXP(M, VCV, IVCV, IPRT)
+      subroutine corrxp(m, vcv, ivcv, iprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,12 +16,12 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IPRT,IVCV,M
+     integer&
+     &   iprt,ivcv,m
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   VCV(*)
+     real(kind=wp) ::&
+     &   vcv(*)
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL MATPRT
@@ -37,15 +37,15 @@
 !     REAL VCV(IVCV,M)
 !        ARRAYS TO BE PRINTED
 !
-      IF (IVCV.GE.M) THEN
-         WRITE (IPRT,1000)
-         WRITE (IPRT,1010)
-         CALL MATPRT(VCV, VCV, M, IPRT, 1, 1, IVCV)
-      END IF
+      if (ivcv.ge.m) then
+         write (iprt,1000)
+         write (iprt,1010)
+         call matprt(vcv, vcv, m, iprt, 1, 1, ivcv)
+      end if
 !
 !     FORMAT STATEMENTS
 !
-      RETURN
- 1000 FORMAT (/ 20H STORAGE FROM CORRS.)
- 1010 FORMAT (40H STORAGE FROM VARIANCE-COVARIANCE MATRIX)
-      END
+      return
+ 1000 format (/ 20h storage from corrs.)
+ 1010 format (40h storage from variance-covariance matrix)
+      end

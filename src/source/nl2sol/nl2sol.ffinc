@@ -1,6 +1,5 @@
 !NL2SOL
-      subroutine nl2sol(n, p, x, calcr, calcj, iv, v, uiparm, urparm,
-     &                  ufparm)
+     subroutine nl2sol(n, p, x, calcr, calcj, iv, v, uiparm, urparm, ufparm)
 !
 !  ***  MINIMIZE NONLINEAR SUM OF SQUARES USING ANALYTIC JACOBIAN  ***
 !  ***  (NL2SOL VERSION 2.2)  ***
@@ -523,7 +522,8 @@
       if (iv(nfgcal) .eq. 0) go to 50
       strted = .true.
 !
- 40   call nl2itr(v(d1), iv, v(j1), n, n, p, v(r1), v, x)
+!          nl2itr(d(p),  iv(*), j(nn,p), n, nn, p, r(n),  v(*), x(p))
+ 40   call nl2itr(v(d1), iv,    v(j1),   n, n,  p, v(r1), v,    x)
       if (iv(1) - 2) 10, 30, 999
 !
  50   iv(1) = 15

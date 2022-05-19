@@ -1,6 +1,6 @@
 !CCFFS
-      SUBROUTINE CCFFS (YMFFT, N, M, IYMFFT, LAGMAX,
-     &   CCOV, ICCOV, JCCOV, NPRT, LDSTAK)
+     subroutine ccffs (ymfft, n, m, iymfft, lagmax,&
+     &   ccov, iccov, jccov, nprt, ldstak)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,34 +18,34 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ICCOV,IYMFFT,JCCOV,LAGMAX,LDSTAK,M,N,NPRT
+     integer&
+     &   iccov,iymfft,jccov,lagmax,ldstak,m,n,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CCOV(*),YMFFT(*)
+     real(kind=wp) ::&
+     &   ccov(*),ymfft(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IFP,INLPPC,IO,IPRT,IYM,J,JNLPPC,K,LDSMIN,LYFFT,NALL0,
-     &   NFFT,RHOC,SDRHOC,WORK,YMEAN,YMEANJ,YMEANK,YSD,YSDJ,YSDK
-      LOGICAL
-     &   ISFFT,ISLONG,NEWPG
+     integer&
+    &   i,ifp,inlppc,io,iprt,iym,j,jnlppc,k,ldsmin,lyfft,nall0,&
+     &   nfft,rhoc,sdrhoc,work,ymean,ymeanj,ymeank,ysd,ysdj,ysdk
+     logical&
+     &   isfft,islong,newpg
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSTAK(12)
-      INTEGER
-     &   NDUM(1)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   rstak(12)
+     integer&
+     &   ndum(1)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -57,18 +57,18 @@
 !     +   STKSET
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  STATEMENT FUNCTIONS
-      INTEGER
-     &   I2,I3
+     integer&
+     &   i2,i3
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
+      equivalence (dstak(1),rstak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -175,125 +175,125 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'C',       'C',       'F',       'F',       'S',       ' '/
 !
-      I2(I,J) = I + (J-1)*IYMFFT
-      I3(I,J,K) = I + (J-1)*ICCOV + (K-1)*JCCOV*ICCOV
+      i2(i,j) = i + (j-1)*iymfft
+      i3(i,j,k) = i + (j-1)*iccov + (k-1)*jccov*iccov
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      INLPPC = ICCOV
-      IYM = IYMFFT
-      JNLPPC = JCCOV
-      LYFFT = IYMFFT
-      M = 2
-      ISFFT = .TRUE.
-      ISLONG = .TRUE.
+      ierr = 0
+      inlppc = iccov
+      iym = iymfft
+      jnlppc = jccov
+      lyfft = iymfft
+      m = 2
+      isfft = .true.
+      islong = .true.
 !
-      IO = 1
-      IF (NPRT .EQ. 0) IO = 0
+      io = 1
+      if (nprt .eq. 0) io = 0
 !
 !     SET LENGTH OF EXTENDED SERIES
 !
-      IF ((N.GE.3) .AND. (LAGMAX.GE.1)) THEN
-         CALL FFTLEN (N+LAGMAX, 4, NFFT)
-      ELSE
-         NFFT = N
-      END IF
+      if ((n.ge.3) .and. (lagmax.ge.1)) then
+         call fftlen (n+lagmax, 4, nfft)
+      else
+         nfft = n
+      end if
 !
-      CALL LDSCMP(3+2*IO, 0, 0, 0, 0, 0, 'S',
-     &            2*M+NFFT+IO*(4*LAGMAX+2), LDSMIN)
+     call ldscmp(3+2*io, 0, 0, 0, 0, 0, 'S',&
+     &            2*m+nfft+io*(4*lagmax+2), ldsmin)
 !
-      CALL CCFER(NMSUB, N, LAGMAX, LDSTAK, LDSMIN, ICCOV, JCCOV,
-     &  INLPPC, JNLPPC, M, LYFFT, NFFT, IYM, IYMFFT, ISFFT, ISLONG)
+     call ccfer(nmsub, n, lagmax, ldstak, ldsmin, iccov, jccov,&
+     &  inlppc, jnlppc, m, lyfft, nfft, iym, iymfft, isfft, islong)
 !
 !     CHECK WHETHER AN ERROR HAS BEEN DETECTED
 !
-      IF (IERR.EQ.0) THEN
+      if (ierr.eq.0) then
 !
 !       SET UP THE WORK AREA.
 !
-        CALL STKSET (LDSTAK, 4)
-        NALL0 = STKST(1)
+        call stkset (ldstak, 4)
+        nall0 = stkst(1)
 !
-        IFP = 3
+        ifp = 3
 !
-        YMEAN = STKGET(M, IFP)
-        YSD = STKGET(M, IFP)
-        IF (NPRT.EQ.0) THEN
-          RHOC = YSD
-          SDRHOC = YSD
-        ELSE
-          RHOC = STKGET(2*LAGMAX+1, IFP)
-          SDRHOC = STKGET(2*LAGMAX+1, IFP)
-        END IF
-        WORK = STKGET(NFFT, IFP)
+        ymean = stkget(m, ifp)
+        ysd = stkget(m, ifp)
+        if (nprt.eq.0) then
+          rhoc = ysd
+          sdrhoc = ysd
+        else
+          rhoc = stkget(2*lagmax+1, ifp)
+          sdrhoc = stkget(2*lagmax+1, ifp)
+        end if
+        work = stkget(nfft, ifp)
 !
-        IF (IERR.EQ.0) THEN
+        if (ierr.eq.0) then
 !
 !         BEGIN LOOP FOR COMPUTATIONS
 !
-          NEWPG = .FALSE.
+          newpg = .false.
 !
-          DO 40 K = 1, M
+          do 40 k = 1, m
 !
-             YMEANK = YMEAN + K - 1
-             YSDK = YSD + K - 1
+             ymeank = ymean + k - 1
+             ysdk = ysd + k - 1
 !
-             CALL ACVFF (YMFFT(I2(1,K)), N, NFFT, RSTAK(YMEANK),
-     &                   CCOV(I3(1,K,K)), LAGMAX, ICCOV, LYFFT,
-     &                   RSTAK(WORK), NFFT)
-             RSTAK(YSDK) = SQRT(CCOV(I3(1,K,K)) * N / (N - 1))
+            call acvff (ymfft(i2(1,k)), n, nfft, rstak(ymeank),&
+    &                   ccov(i3(1,k,k)), lagmax, iccov, lyfft,&
+     &                   rstak(work), nfft)
+             rstak(ysdk) = sqrt(ccov(i3(1,k,k)) * n / (n - 1))
 !
-             IF ((K-1).LE.0) GO TO 40
+             if ((k-1).le.0) go to 40
 !
-             DO 30 J = 1, (K-1)
+             do 30 j = 1, (k-1)
 !
-                YMEANJ = YMEAN + J - 1
-                YSDJ = YSD + J - 1
+                ymeanj = ymean + j - 1
+                ysdj = ysd + j - 1
 !
-                CALL CCFMNF(YMFFT(I2(1,J)), YMFFT(I2(1,K)),
-     &                      N, NFFT, LAGMAX, 2*LAGMAX+1,
-     &                      CCOV(I3(1,J,J)), CCOV(I3(1,K,K)),
-     &                      CCOV(I3(1,J,K)), CCOV(I3(1,K,J)),
-     &                      ICCOV, RSTAK(RHOC), RSTAK(SDRHOC), NPRT,
-     &                      LYFFT, RSTAK(WORK), NFFT)
+               call ccfmnf(ymfft(i2(1,j)), ymfft(i2(1,k)),&
+    &                      n, nfft, lagmax, 2*lagmax+1,&
+    &                      ccov(i3(1,j,j)), ccov(i3(1,k,k)),&
+    &                      ccov(i3(1,j,k)), ccov(i3(1,k,j)),&
+    &                      iccov, rstak(rhoc), rstak(sdrhoc), nprt,&
+     &                      lyfft, rstak(work), nfft)
 !
-                IF (NPRT .EQ. 0) GO TO 30
+                if (nprt .eq. 0) go to 30
 !
 !         CALL ROUTINE TO PRINT OUT CORRELATIONS
 !
-                CALL CCFOUT (J, RSTAK(YMEANJ), RSTAK(YSDJ), N, N, K,
-     &             RSTAK(YMEANK), RSTAK(YSDK), N, N, LAGMAX, 2*LAGMAX+1,
-     &             RSTAK(RHOC), RSTAK(SDRHOC), .FALSE., NDUM, NDUM, 1,
-     &             0.0E0, 0.0E0, NEWPG)
+               call ccfout (j, rstak(ymeanj), rstak(ysdj), n, n, k,&
+    &             rstak(ymeank), rstak(ysdk), n, n, lagmax, 2*lagmax+1,&
+    &             rstak(rhoc), rstak(sdrhoc), .false., ndum, ndum, 1,&
+     &             0.0e0, 0.0e0, newpg)
 !
-                NEWPG = .TRUE.
+                newpg = .true.
 !
-   30        CONTINUE
-   40     CONTINUE
-        END IF
+   30        continue
+   40     continue
+        end if
 !
-        CALL STKCLR(NALL0)
-      END IF
+        call stkclr(nall0)
+      end if
 !
-      IF (IERR.NE.0) THEN
+      if (ierr.ne.0) then
 !
 !     PRINT PROPER CALL SEQUENCE AND RETURN
 !
-        IERR = 1
-        CALL IPRINT (IPRT)
-        WRITE (IPRT, 1000)
-      END IF
+        ierr = 1
+        call iprint (iprt)
+        write (iprt, 1000)
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     & '       CALL CCFFS (YMFFT, N, M, IYMFFT,'/
+1000 format(/42h the correct form of the call statement is//&
+    & '       CALL CCFFS (YMFFT, N, M, IYMFFT,'/&
      & '      +            LAGMAX, CCOV, ICCOV, JCCOV, NPRT, LDSTAK)')
-      END
+      end

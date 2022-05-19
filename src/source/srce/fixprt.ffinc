@@ -1,5 +1,5 @@
 !FIXPRT
-      SUBROUTINE FIXPRT(IFIX, FIXED)
+      subroutine fixprt(ifix, fixed)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,20 +15,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IFIX
+     integer&
+     &   ifix
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   FIXED(3)*1
+     character&
+     &   fixed(3)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   NO(3)*1,YES(3)*1
+     character&
+     &   no(3)*1,yes(3)*1
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -46,26 +46,26 @@
 !     CHARACTER*1 YES(3)
 !        THE CHARACTERS Y, E, AND S
 !
-      DATA NO(1)/' '/, NO(2)/'N'/, NO(3)/'O'/
-      DATA YES(1)/'Y'/, YES(2)/'E'/, YES(3)/'S'/
+      data no(1)/' '/, no(2)/'N'/, no(3)/'O'/
+      data yes(1)/'Y'/, yes(2)/'E'/, yes(3)/'S'/
 !
-      IF (IFIX.NE.0) THEN
+      if (ifix.ne.0) then
 !
 !     SET FIXED TO YES
 !
-         DO 10 I = 1, 3
-            FIXED(I) = YES(I)
-   10    CONTINUE
+         do 10 i = 1, 3
+            fixed(i) = yes(i)
+   10    continue
 !
-      ELSE
+      else
 !
 !     SET FIXED TO NO
 !
-         DO 20 I = 1, 3
-            FIXED(I) = NO(I)
-   20    CONTINUE
-      END IF
+         do 20 i = 1, 3
+            fixed(i) = no(i)
+   20    continue
+      end if
 !
-      RETURN
+      return
 !
-      END
+      end

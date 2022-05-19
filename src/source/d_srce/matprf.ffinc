@@ -1,5 +1,5 @@
 !MATPRF
-      SUBROUTINE MATPRF(X, Y, NC, MODE, CODE, LENGTH, MASK, LMASK)
+      subroutine matprf(x, y, nc, mode, code, length, mask, lmask)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,27 +17,27 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   CODE,LENGTH,LMASK,MODE,NC
+     integer&
+     &   code,length,lmask,mode,nc
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(LENGTH),Y(LENGTH)
-      INTEGER
-     &   MASK(LMASK)
+     real(kind=wp) ::&
+     &   x(length),y(length)
+     integer&
+     &   mask(lmask)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   SQXII,SQYII
-      INTEGER
-     &   I,I0,II,IK,IMASK,IPRT,J,JMASK,K,KI,KK,KM,KMAX,KN,L,NF,
-     &   NLINE
+     real(kind=wp) ::&
+     &   sqxii,sqyii
+     integer&
+    &   i,i0,ii,ik,imask,iprt,j,jmask,k,ki,kk,km,kmax,kn,l,nf,&
+     &   nline
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   XLINE(10),YLINE(10)
-      INTEGER
-     &   INDW(10)
+     real(kind=wp) ::&
+     &   xline(10),yline(10)
+     integer&
+     &   indw(10)
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -48,7 +48,7 @@
 !      EXTERNAL IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN,SQRT
+      intrinsic min,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -128,90 +128,90 @@
 !
 !     BODY OF ROUTINE
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      NF = INPERL(0)
+      nf = inperl(0)
 !
-      L = 1
-      JMASK = 0
+      l = 1
+      jmask = 0
 !
 !     SELECT INITIAL COLUMN TO PRINT THIS PASS OF THE REPORT
 !
-      DO 90 J=1,NC,NF
-         KN = MIN(NC,J+NF-1)
-         KMAX = MIN(NC-J+1,NF)
+      do 90 j=1,nc,nf
+         kn = min(nc,j+nf-1)
+         kmax = min(nc-j+1,nf)
 !
 !     GENERATE VECTOR OF COLUMN HEAD LABELS
 !
-         DO 20 K=1,KMAX
-   10       IF (JMASK.GE.LMASK) GO TO 100
-            JMASK = JMASK + 1
-            IF (MASK(JMASK).NE.0) GO TO 10
-            INDW(K) = JMASK
-   20    CONTINUE
+         do 20 k=1,kmax
+   10       if (jmask.ge.lmask) go to 100
+            jmask = jmask + 1
+            if (mask(jmask).ne.0) go to 10
+            indw(k) = jmask
+   20    continue
 !
 !     PRINT VECTOR OF COLUMN HEAD LABELS
 !
-         WRITE (IPRT,1000) (INDW(K),K=1,KMAX)
-         WRITE (IPRT,1030)
-         IF (MODE.LE.2) L = INDW(1)
+         write (iprt,1000) (indw(k),k=1,kmax)
+         write (iprt,1030)
+         if (mode.le.2) l = indw(1)
 !
 !     PRINT ALL ROWS IN COLUMN RANGE FOR THIS PASS
 !
-         IMASK = L - 1
-         DO 80 I=L,NC
-            KM = KN
-            IF (MODE.LE.2) KM = J + MIN(I-L,NF-1)
-            NLINE = 0
-            I0 = I*(I-1)/2
-            II = I0 + I
-            SQXII = SQRT(X(II))
-            IF (CODE.EQ.2) THEN
-               SQYII = SQRT(Y(II))
-            ELSE
-               SQYII = 1.0_WP
-            END IF
-            DO 60 K=J,KM
-               NLINE = NLINE + 1
-               IF (K.GT.I) GO TO 30
-               IK = I0 + K
-               XLINE(NLINE) = X(IK)
-               IF (CODE.EQ.2) YLINE(NLINE) = Y(IK)
-               GO TO 40
-   30          KI = K*(K-1)/2 + I
-               XLINE(NLINE) = X(KI)
-               IF (CODE.EQ.2) YLINE(NLINE) = Y(KI)
-   40          IF (((MODE.NE.1) .AND. (MODE.NE.2)) .OR. (I.NE.K)) GO TO
+         imask = l - 1
+         do 80 i=l,nc
+            km = kn
+            if (mode.le.2) km = j + min(i-l,nf-1)
+            nline = 0
+            i0 = i*(i-1)/2
+            ii = i0 + i
+            sqxii = sqrt(x(ii))
+            if (code.eq.2) then
+               sqyii = sqrt(y(ii))
+            else
+               sqyii = 1.0_wp
+            end if
+            do 60 k=j,km
+               nline = nline + 1
+               if (k.gt.i) go to 30
+               ik = i0 + k
+               xline(nline) = x(ik)
+               if (code.eq.2) yline(nline) = y(ik)
+               go to 40
+   30          ki = k*(k-1)/2 + i
+               xline(nline) = x(ki)
+               if (code.eq.2) yline(nline) = y(ki)
+  40          if (((mode.ne.1) .and. (mode.ne.2)) .or. (i.ne.k)) go to&
      &            50
-               XLINE(NLINE) = SQXII
-               IF (CODE.EQ.2) YLINE(NLINE) = SQXII
-   50          IF (((MODE.NE.2) .AND. (MODE.NE.4)) .OR. (K.GE.I)) GO TO
+               xline(nline) = sqxii
+               if (code.eq.2) yline(nline) = sqxii
+  50          if (((mode.ne.2) .and. (mode.ne.4)) .or. (k.ge.i)) go to&
      &            60
-               KK = K*(K-1)/2 + K
-               XLINE(NLINE) = XLINE(NLINE)/(SQXII*SQRT(X(KK)))
-               IF (CODE.EQ.2)
-     &            YLINE(NLINE) = YLINE(NLINE)/(SQYII*SQRT(Y(KK)))
-   60       CONTINUE
-   70       IF (IMASK.GE.LMASK) GO TO 100
-            IMASK = IMASK + 1
-            IF (MASK(IMASK).NE.0) GO TO 70
-            WRITE (IPRT,1010) IMASK, (XLINE(K),K=1,NLINE)
-            IF (CODE.EQ.2) WRITE (IPRT,1020) (YLINE(K),K=1,NLINE)
-            IF (CODE.EQ.2) WRITE (IPRT,1030)
-   80    CONTINUE
-   90 CONTINUE
-      RETURN
+               kk = k*(k-1)/2 + k
+               xline(nline) = xline(nline)/(sqxii*sqrt(x(kk)))
+              if (code.eq.2)&
+     &            yline(nline) = yline(nline)/(sqyii*sqrt(y(kk)))
+   60       continue
+   70       if (imask.ge.lmask) go to 100
+            imask = imask + 1
+            if (mask(imask).ne.0) go to 70
+            write (iprt,1010) imask, (xline(k),k=1,nline)
+            if (code.eq.2) write (iprt,1020) (yline(k),k=1,nline)
+            if (code.eq.2) write (iprt,1030)
+   80    continue
+   90 continue
+      return
 !
-  100 WRITE (IPRT,1040)
-      RETURN
+  100 write (iprt,1040)
+      return
 !
 !     FORMAT STATEMENTS
 !
 !
- 1000 FORMAT (/' ', 7HCOLUMN , 7(I9, 8X))
- 1010 FORMAT (' ', I6, 1X, 7(3X, G14.7))
- 1020 FORMAT (' ', 5X, 7(3X, G14.7))
- 1030 FORMAT (' ')
- 1040 FORMAT (/47H ERROR IN STARPAC.  MATPRF TRIES TO ACCESS MORE,
-     &   29H ELEMENTS THAN EXIST IN MASK.)
-      END
+ 1000 format (/' ', 7hcolumn , 7(i9, 8x))
+ 1010 format (' ', i6, 1x, 7(3x, g14.7))
+ 1020 format (' ', 5x, 7(3x, g14.7))
+ 1030 format (' ')
+1040 format (/47h error in starpac.  matprf tries to access more,&
+     &   29h elements than exist in mask.)
+      end

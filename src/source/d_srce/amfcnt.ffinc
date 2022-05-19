@@ -1,6 +1,6 @@
 !AMFCNT
-      SUBROUTINE AMFCNT(Y, N, MSPEC, NFAC, PAR, NPAR, LDSTAK,
-     &   NFCST, NFCSTO, IFCSTO, NPRT, FCST, IFCST, FCSTSD, NMSUB, SAVE)
+     subroutine amfcnt(y, n, mspec, nfac, par, npar, ldstak,&
+     &   nfcst, nfcsto, ifcsto, nprt, fcst, ifcst, fcstsd, nmsub, save)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,56 +17,56 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IFCST,LDSTAK,N,NFAC,NFCST,NFCSTO,NPAR,NPRT
-      LOGICAL
-     &   SAVE
+     integer&
+     &   ifcst,ldstak,n,nfac,nfcst,nfcsto,npar,nprt
+     logical&
+     &   save
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FCST(*),FCSTSD(*),PAR(*),Y(*)
-      INTEGER
-     &   IFCSTO(*),MSPEC(4,*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   fcst(*),fcstsd(*),par(*),y(*)
+     integer&
+     &   ifcsto(*),mspec(4,*)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR,IFLAG,MBO,MBOL,MSPECT,NFACT,NPARAR,NPARDF,NPARMA,
-     &   NRESTS,PARAR,PARDF,PARMA,T,TEMP
+     integer&
+    &   ierr,iflag,mbo,mbol,mspect,nfact,nparar,npardf,nparma,&
+     &   nrests,parar,pardf,parma,t,temp
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   F,FSD,IFP,IS,LDSMIN,NALL0,PV
-      LOGICAL
-     &   PAGE,WIDE
+     integer&
+     &   f,fsd,ifp,is,ldsmin,nall0,pv
+     logical&
+     &   page,wide
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSTAK(12)
-      INTEGER
-     &   ISTAK(12)
+     real(kind=wp) ::&
+     &   rstak(12)
+     integer&
+     &   istak(12)
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     &   STKST
+     integer&
+     &   stkst
 !       EXTERNAL STKST
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL AMFER,AMFMN,BACKOP,CPYVII,LDSCMP,STKCLR,STKSET
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
-      COMMON /MDLTSC/MSPECT,NFACT,PARDF,NPARDF,PARAR,NPARAR,PARMA,
-     &   NPARMA,MBO,MBOL,T,TEMP,NRESTS,IFLAG
+      common /cstak/dstak
+      common /errchk/ierr
+     common /mdltsc/mspect,nfact,pardf,npardf,parar,nparar,parma,&
+     &   nparma,mbo,mbol,t,temp,nrests,iflag
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
+      equivalence (dstak(1),istak(1))
+      equivalence (dstak(1),rstak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -176,67 +176,67 @@
 !
 !     SET VARIOUS PROGRAM VALUES
 !
-      WIDE = .TRUE.
-      PAGE = .FALSE.
+      wide = .true.
+      page = .false.
 !
 !     COMPUTE BACK OPERATORS
 !
-      CALL BACKOP(MSPEC, NFAC, NPARDF, MBOL, MBO, NPARMA, NPARAR)
+      call backop(mspec, nfac, npardf, mbol, mbo, nparma, nparar)
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      IS = 0
+      ierr = 0
+      is = 0
 !
-      CALL LDSCMP(8, 0, 4*NFAC,
-     &   0, 0, 0, 'D', 5*MBO + 2*NFCST + N + MBO + 101, LDSMIN)
+     call ldscmp(8, 0, 4*nfac,&
+     &   0, 0, 0, 'D', 5*mbo + 2*nfcst + n + mbo + 101, ldsmin)
 !
-      CALL AMFER(NMSUB, N, NPAR, LDSTAK, LDSMIN, SAVE, MSPEC, NFAC,
-     &   IFCST, NFCST)
+     call amfer(nmsub, n, npar, ldstak, ldsmin, save, mspec, nfac,&
+     &   ifcst, nfcst)
 !
-      IF (IERR.EQ.0) THEN
+      if (ierr.eq.0) then
 !
-        CALL STKSET(LDSTAK, 4)
+        call stkset(ldstak, 4)
 !
 !       SUBDIVIDE WORKSPACE FOR STEP SIZES
 !
-        NALL0 = STKST(1)
+        nall0 = stkst(1)
 !
-        IFP = 4
+        ifp = 4
 !
-        PARDF = STKGET(MBO, IFP)
-        PARAR = STKGET(MBO, IFP)
-        PARMA = STKGET(MBO, IFP)
-        T = STKGET(2*MBO, IFP)
+        pardf = stkget(mbo, ifp)
+        parar = stkget(mbo, ifp)
+        parma = stkget(mbo, ifp)
+        t = stkget(2*mbo, ifp)
 !
-        TEMP = T + MBO
+        temp = t + mbo
 !
-        NFACT = NFAC
-        MSPECT = STKGET(4*NFAC, 2)
-        F = STKGET(NFCST, IFP)
-        FSD = STKGET(NFCST, IFP)
+        nfact = nfac
+        mspect = stkget(4*nfac, 2)
+        f = stkget(nfcst, ifp)
+        fsd = stkget(nfcst, ifp)
 !
 !       SET UP FOR MODEL
 !
-        NRESTS = MBO + 101 + N
-        PV = STKGET(NRESTS, IFP)
+        nrests = mbo + 101 + n
+        pv = stkget(nrests, ifp)
 !
-        CALL CPYVII(NFAC, MSPEC(1,1), 4, ISTAK(MSPECT), 1)
-        CALL CPYVII(NFAC, MSPEC(2,1), 4, ISTAK(MSPECT+NFAC), 1)
-        CALL CPYVII(NFAC, MSPEC(3,1), 4, ISTAK(MSPECT+2*NFAC), 1)
-        CALL CPYVII(NFAC, MSPEC(4,1), 4, ISTAK(MSPECT+3*NFAC), 1)
+        call cpyvii(nfac, mspec(1,1), 4, istak(mspect), 1)
+        call cpyvii(nfac, mspec(2,1), 4, istak(mspect+nfac), 1)
+        call cpyvii(nfac, mspec(3,1), 4, istak(mspect+2*nfac), 1)
+        call cpyvii(nfac, mspec(4,1), 4, istak(mspect+3*nfac), 1)
 !
 !       CALL MAIN ROUTINE FOR COMPUTING AND PRINTING FORECASTS
 !
-        CALL AMFMN (PAR, RSTAK(PV), Y, NPAR, N, NFAC, ISTAK(MSPECT),
-     &    RSTAK(PARDF), NPARDF, RSTAK(T), RSTAK(TEMP), RSTAK(PARAR),
-     &    RSTAK(PARMA), MBO, MBOL, N-NRESTS+1, N, NPRT, SAVE,
-     &    NFCST, NFCSTO, IFCSTO, FCST, IFCST, FCSTSD, RSTAK(F),
-     &    RSTAK(FSD), NPARAR, NPARMA)
-      END IF
+       call amfmn (par, rstak(pv), y, npar, n, nfac, istak(mspect),&
+    &    rstak(pardf), npardf, rstak(t), rstak(temp), rstak(parar),&
+    &    rstak(parma), mbo, mbol, n-nrests+1, n, nprt, save,&
+    &    nfcst, nfcsto, ifcsto, fcst, ifcst, fcstsd, rstak(f),&
+     &    rstak(fsd), nparar, nparma)
+      end if
 !
-      CALL STKCLR(NALL0)
+      call stkclr(nall0)
 !
-      RETURN
+      return
 !
-      END
+      end

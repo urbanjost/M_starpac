@@ -1,7 +1,7 @@
 !STPAMO
-      SUBROUTINE STPAMO(HEAD, N, EXM, NEXMPT, NETA, J, PAR, NPAR, STP,
-     &   NFAIL, IFAIL, SCALE, LSCALE, HDR, PAGE, WIDE, ISUBHD, NPRT,
-     &   PRTFXD, IFIXD)
+     subroutine stpamo(head, n, exm, nexmpt, neta, j, par, npar, stp,&
+    &   nfail, ifail, scale, lscale, hdr, page, wide, isubhd, nprt,&
+     &   prtfxd, ifixd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,21 +17,21 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   EXM
-      INTEGER
-     &   ISUBHD,J,LSCALE,N,NETA,NEXMPT,NPAR,NPRT
-      LOGICAL
-     &   HEAD,PAGE,PRTFXD,WIDE
+     real(kind=wp) ::&
+     &   exm
+     integer&
+     &   isubhd,j,lscale,n,neta,nexmpt,npar,nprt
+     logical&
+     &   head,page,prtfxd,wide
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),SCALE(LSCALE),STP(NPAR)
-      INTEGER
-     &   IFAIL(N),IFIXD(NPAR),NFAIL(NPAR)
+     real(kind=wp) ::&
+     &   par(npar),scale(lscale),stp(npar)
+     integer&
+     &   ifail(n),ifixd(npar),nfail(npar)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL HDR
+       external hdr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -94,6 +94,6 @@
 !        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
 !        BE FULL WIDTH (TRUE) OR NOT (FALSE).
 !
-      RETURN
+      return
 !
-      END
+      end

@@ -1,5 +1,5 @@
 !XAOV1
-      SUBROUTINE XAOV1(LDSTAK,typ)
+      subroutine xaov1(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -17,32 +17,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FI
-      INTEGER
-     &   I,IGSTAT,IPRT,LDSMIN,N,NG
+     real(kind=wp) ::&
+     &   fi
+     integer&
+     &   i,igstat,iprt,ldsmin,n,ng
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   GSTAT(10,4),TAG(20),Y(20),Z(10),ZTAG(10)
+     real(kind=wp) ::&
+     &   gstat(10,4),tag(20),y(20),z(10),ztag(10)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL AOV1,AOV1S,AOV1XP,IPRINT,LDSCMP,MSGX,SETRV
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (APHABETICALLY)
 !
@@ -78,218 +78,218 @@
 !     REAL ZTAG(10)
 !        TEST TAG VECTOR
 !
-      DATA   Y( 1),   Y( 2),   Y( 3),   Y( 4),   Y( 5)
-     &   /    61.0E0,    61.0E0,    67.0E0,    67.0E0,    64.0E0/
-      DATA   Y( 6),   Y( 7),   Y( 8),   Y( 9),   Y(10)
-     &   /    78.0E0,    71.0E0,    75.0E0,    72.0E0,    74.0E0/
-      DATA   Y(11),   Y(12),   Y(13),   Y(14),   Y(15)
-     &   /    83.0E0,    81.0E0,    76.0E0,    78.0E0,    79.0E0/
-      DATA   Y(16),   Y(17)
-     &   /    72.0E0,   72.0E0/
+     data   y( 1),   y( 2),   y( 3),   y( 4),   y( 5)&
+     &   /    61.0e0,    61.0e0,    67.0e0,    67.0e0,    64.0e0/
+     data   y( 6),   y( 7),   y( 8),   y( 9),   y(10)&
+     &   /    78.0e0,    71.0e0,    75.0e0,    72.0e0,    74.0e0/
+     data   y(11),   y(12),   y(13),   y(14),   y(15)&
+     &   /    83.0e0,    81.0e0,    76.0e0,    78.0e0,    79.0e0/
+     data   y(16),   y(17)&
+     &   /    72.0e0,   72.0e0/
 !
-      DATA TAG( 1), TAG( 2), TAG( 3), TAG( 4), TAG( 5)
-     &   /    11.5E0,    11.5E0,    11.5E0,    11.5E0,    11.5E0/
-      DATA TAG( 6), TAG( 7), TAG( 8), TAG( 9), TAG(10)
-     &   /    12.0E0,    12.0E0,    12.0E0,    12.0E0,    12.0E0/
-      DATA TAG(11), TAG(12), TAG(13), TAG(14), TAG(15)
-     &   /    11.0E0,    11.0E0,    11.0E0,    11.0E0,    11.0E0/
-      DATA TAG(16), TAG(17)
-     &   /   -11.0E0,   11.0E0/
+     data tag( 1), tag( 2), tag( 3), tag( 4), tag( 5)&
+     &   /    11.5e0,    11.5e0,    11.5e0,    11.5e0,    11.5e0/
+     data tag( 6), tag( 7), tag( 8), tag( 9), tag(10)&
+     &   /    12.0e0,    12.0e0,    12.0e0,    12.0e0,    12.0e0/
+     data tag(11), tag(12), tag(13), tag(14), tag(15)&
+     &   /    11.0e0,    11.0e0,    11.0e0,    11.0e0,    11.0e0/
+     data tag(16), tag(17)&
+     &   /   -11.0e0,   11.0e0/
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     SET VARIOUS DIMENSIONS AND PROGRAM VARIABLES
 !
-      N = 17
-      IGSTAT = 10
+      n = 17
+      igstat = 10
 !
 !**** TEST WITH CORRECT CALL STATEMENTS ****
 !
-      WRITE (IPRT,1060)
+      write (iprt,1060)
 !
 !     TEST AOV1
 !
-      WRITE (IPRT,1000)
-      CALL AOV1(Y, TAG, N, LDSTAK)
-      CALL MSGX(0, IPRT)
-      WRITE (IPRT,1010)
-      WRITE (IPRT,1020) (TAG(I),I=1,N)
+      write (iprt,1000)
+      call aov1(y, tag, n, ldstak)
+      call msgx(0, iprt)
+      write (iprt,1010)
+      write (iprt,1020) (tag(i),i=1,n)
 !
 !     TEST OF AOV1S
 !
 !     PRINTOUT NOT SUPRESSED
 !
-      WRITE (IPRT,1040)
-      WRITE (IPRT,1030)
-      CALL AOV1S(Y, TAG, N, LDSTAK, 1, GSTAT, IGSTAT, NG)
-      CALL MSGX(0, IPRT)
+      write (iprt,1040)
+      write (iprt,1030)
+      call aov1s(y, tag, n, ldstak, 1, gstat, igstat, ng)
+      call msgx(0, iprt)
 !
 !     PRINT STORAGE AND ZERO VECTORS BEFORE USING AGAIN
 !
-      CALL AOV1XP(GSTAT, IGSTAT, NG)
+      call aov1xp(gstat, igstat, ng)
 !
 !     PRINTOUT SUPRESSED
 !
-      WRITE (IPRT,1050)
-      CALL AOV1S(Y, TAG, N, LDSTAK, 0, GSTAT, IGSTAT, NG)
-      CALL MSGX(0, IPRT)
+      write (iprt,1050)
+      call aov1s(y, tag, n, ldstak, 0, gstat, igstat, ng)
+      call msgx(0, iprt)
 !
 !     PRINT STORAGE AND ZERO VECTORS BEFORE USING AGAIN
 !
-      CALL AOV1XP(GSTAT, IGSTAT, NG)
+      call aov1xp(gstat, igstat, ng)
 !
 !**** NUMBER OF OBSERVATIONS LESS THAN 2 ****
 !
-      WRITE (IPRT,1090)
-      CALL AOV1(Y, TAG, 1, LDSTAK)
-      CALL MSGX(1, IPRT)
+      write (iprt,1090)
+      call aov1(y, tag, 1, ldstak)
+      call msgx(1, iprt)
 !
-      CALL AOV1S(Y, TAG, -14, LDSTAK, 0, GSTAT, IGSTAT, NG)
-      CALL MSGX(1, IPRT)
+      call aov1s(y, tag, -14, ldstak, 0, gstat, igstat, ng)
+      call msgx(1, iprt)
 !
 !**** ALL OBSERVATIONS THE SAME VALUE ****
 !
-      WRITE (IPRT,1100)
-      WRITE (IPRT,1000)
-      CALL SETRV(Z, 10, 0.0E0)
-      CALL AOV1(Z, TAG, 10, LDSTAK)
-      CALL MSGX(0, IPRT)
+      write (iprt,1100)
+      write (iprt,1000)
+      call setrv(z, 10, 0.0e0)
+      call aov1(z, tag, 10, ldstak)
+      call msgx(0, iprt)
 !
-      CALL SETRV(Z, 10, 2.0E0)
-      WRITE (IPRT,1100)
-      WRITE (IPRT,1030)
-      CALL AOV1S(Z, TAG, 10, LDSTAK, 1, GSTAT, IGSTAT, NG)
-      CALL MSGX(0, IPRT)
+      call setrv(z, 10, 2.0e0)
+      write (iprt,1100)
+      write (iprt,1030)
+      call aov1s(z, tag, 10, ldstak, 1, gstat, igstat, ng)
+      call msgx(0, iprt)
 !
 !**** TEST WORK AREA SIZE HANDLING ****
 !
-      CALL LDSCMP(11, 0, 33, 0, 0, 0, 'S', 40, LDSMIN)
-      WRITE (IPRT,1070)
-      WRITE (IPRT,1000)
-      CALL AOV1(Y, TAG, N, 1)
-      CALL MSGX(1, IPRT)
-      WRITE (IPRT,1070)
-      WRITE (IPRT,1000)
-      CALL AOV1(Y, TAG, N, LDSMIN-1)
-      CALL MSGX(1, IPRT)
-      WRITE (IPRT,1010)
-      WRITE (IPRT,1020) (TAG(I),I=1,N)
-      WRITE (IPRT,1080)
-      WRITE (IPRT,1000)
-      CALL AOV1(Y, TAG, N, LDSMIN)
-      CALL MSGX(0, IPRT)
+      call ldscmp(11, 0, 33, 0, 0, 0, 'S', 40, ldsmin)
+      write (iprt,1070)
+      write (iprt,1000)
+      call aov1(y, tag, n, 1)
+      call msgx(1, iprt)
+      write (iprt,1070)
+      write (iprt,1000)
+      call aov1(y, tag, n, ldsmin-1)
+      call msgx(1, iprt)
+      write (iprt,1010)
+      write (iprt,1020) (tag(i),i=1,n)
+      write (iprt,1080)
+      write (iprt,1000)
+      call aov1(y, tag, n, ldsmin)
+      call msgx(0, iprt)
 !
-      CALL LDSCMP(11, 0, 33, 0, 0, 0, 'S', 28, LDSMIN)
-      WRITE (IPRT,1070)
-      WRITE (IPRT,1030)
-      CALL AOV1S(Y, TAG, N, 1, 0, GSTAT, IGSTAT, NG)
-      CALL MSGX(1, IPRT)
-      WRITE (IPRT,1070)
-      WRITE (IPRT,1030)
-      CALL AOV1S(Y, TAG, N, LDSMIN-1, 0, GSTAT, IGSTAT, NG)
-      CALL MSGX(1, IPRT)
-      WRITE (IPRT,1010)
-      WRITE (IPRT,1020) (TAG(I),I=1,N)
-      WRITE (IPRT,1080)
-      WRITE (IPRT,1030)
-      CALL AOV1S(Y, TAG, N, LDSMIN, 1, GSTAT, IGSTAT, NG)
-      CALL MSGX(0, IPRT)
+      call ldscmp(11, 0, 33, 0, 0, 0, 'S', 28, ldsmin)
+      write (iprt,1070)
+      write (iprt,1030)
+      call aov1s(y, tag, n, 1, 0, gstat, igstat, ng)
+      call msgx(1, iprt)
+      write (iprt,1070)
+      write (iprt,1030)
+      call aov1s(y, tag, n, ldsmin-1, 0, gstat, igstat, ng)
+      call msgx(1, iprt)
+      write (iprt,1010)
+      write (iprt,1020) (tag(i),i=1,n)
+      write (iprt,1080)
+      write (iprt,1030)
+      call aov1s(y, tag, n, ldsmin, 1, gstat, igstat, ng)
+      call msgx(0, iprt)
 !
 !**** SAME NUMBER OF GROUPS AS NON-ZERO TAGS ****
 !
-      WRITE (IPRT,1120)
-      DO 20 I=1,10
-         FI = I
-         ZTAG(I) = FI
-         Z(I) = 13.0E0 - FI
-   20 CONTINUE
-      CALL AOV1(Z, ZTAG, 10, LDSTAK)
-      CALL MSGX(1, IPRT)
-      CALL AOV1S(Z, ZTAG, 10, LDSTAK, 1, GSTAT, IGSTAT, NG)
-      CALL MSGX(1, IPRT)
+      write (iprt,1120)
+      do 20 i=1,10
+         fi = i
+         ztag(i) = fi
+         z(i) = 13.0e0 - fi
+   20 continue
+      call aov1(z, ztag, 10, ldstak)
+      call msgx(1, iprt)
+      call aov1s(z, ztag, 10, ldstak, 1, gstat, igstat, ng)
+      call msgx(1, iprt)
 !
 !**** LESS THAN 2 DIFFERENT TAG GROUPS ****
 !
-      WRITE (IPRT,1130)
-      CALL SETRV(ZTAG, 10, 1.0E0)
-      CALL AOV1(Z, ZTAG, 10, LDSTAK)
-      CALL MSGX(1, IPRT)
-      CALL AOV1S(Z, ZTAG, 10, LDSTAK, 1, GSTAT, IGSTAT, NG)
-      CALL MSGX(1, IPRT)
+      write (iprt,1130)
+      call setrv(ztag, 10, 1.0e0)
+      call aov1(z, ztag, 10, ldstak)
+      call msgx(1, iprt)
+      call aov1s(z, ztag, 10, ldstak, 1, gstat, igstat, ng)
+      call msgx(1, iprt)
 !
 !**** LESS THAN 2 TAGS ****
 !
-      CALL SETRV(ZTAG, 9, 0.0E0)
-      WRITE (IPRT,1140)
-      CALL AOV1(Z, ZTAG, 10, LDSTAK)
-      CALL MSGX(1, IPRT)
-      CALL AOV1S(Z, ZTAG, 10, LDSTAK, 1, GSTAT, IGSTAT, NG)
-      CALL MSGX(1, IPRT)
+      call setrv(ztag, 9, 0.0e0)
+      write (iprt,1140)
+      call aov1(z, ztag, 10, ldstak)
+      call msgx(1, iprt)
+      call aov1s(z, ztag, 10, ldstak, 1, gstat, igstat, ng)
+      call msgx(1, iprt)
 !
 !**** INCORRECT DIMENSION OF GSTAT ****
 !
-      WRITE (IPRT,1150)
-      CALL AOV1S(Y, TAG, N, LDSTAK, 1, GSTAT, 2, NG)
-      CALL MSGX(1, IPRT)
+      write (iprt,1150)
+      call aov1s(y, tag, n, ldstak, 1, gstat, 2, ng)
+      call msgx(1, iprt)
 !
 !**** ALL OBSERVATIONS WITHIN A GROUP SAME VALUE ****
 !
-      Z(1) = 53.0E0
-      ZTAG(1) = 1.0E0
-      Z(2) = 62.0E0
-      ZTAG(2) = 3.0E0
-      Z(3) = 53.0E0
-      ZTAG(3) = 1.0E0
-      Z(4) = 71.0E0
-      ZTAG(4) = 4.0E0
-      Z(5) = 89.0E0
-      ZTAG(5) = 2.0E0
-      Z(6) = 71.0E0
-      ZTAG(6) = 4.0E0
-      Z(7) = 89.0E0
-      ZTAG(7) = 2.0E0
-      Z(8) = 62.0E0
-      ZTAG(8) = 3.0E0
-      Z(9) = 71.0E0
-      ZTAG(9) = 4.0E0
-      Z(10) = 62.0E0
-      ZTAG(10) = 3.0E0
-      WRITE (IPRT,1160)
-      CALL AOV1(Z, ZTAG, 10, LDSTAK)
-      CALL MSGX(0, IPRT)
+      z(1) = 53.0e0
+      ztag(1) = 1.0e0
+      z(2) = 62.0e0
+      ztag(2) = 3.0e0
+      z(3) = 53.0e0
+      ztag(3) = 1.0e0
+      z(4) = 71.0e0
+      ztag(4) = 4.0e0
+      z(5) = 89.0e0
+      ztag(5) = 2.0e0
+      z(6) = 71.0e0
+      ztag(6) = 4.0e0
+      z(7) = 89.0e0
+      ztag(7) = 2.0e0
+      z(8) = 62.0e0
+      ztag(8) = 3.0e0
+      z(9) = 71.0e0
+      ztag(9) = 4.0e0
+      z(10) = 62.0e0
+      ztag(10) = 3.0e0
+      write (iprt,1160)
+      call aov1(z, ztag, 10, ldstak)
+      call msgx(0, iprt)
 !
 !**** 2 TAGS ****
 !
-      WRITE (IPRT,1170)
-      CALL AOV1(Z, ZTAG, 3, LDSTAK)
-      CALL MSGX(0, IPRT)
+      write (iprt,1170)
+      call aov1(z, ztag, 3, ldstak)
+      call msgx(0, iprt)
 !
 !**** ALL GROUPS(EXCEPT FOR 1) WITH 1 OBSERVATION ****
 !
-      WRITE (IPRT,1180)
-      CALL AOV1(Z, ZTAG, 5, LDSTAK)
-      CALL MSGX(0, IPRT)
+      write (iprt,1180)
+      call aov1(z, ztag, 5, ldstak)
+      call msgx(0, iprt)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(' TEST OF AOV1 ')
- 1010 FORMAT(' CHECK TO SEE IF TAGS HAVE BEEN CHANGED')
- 1020 FORMAT(4F12.6)
- 1030 FORMAT(' TEST OF AOV1S ')
- 1040 FORMAT('1PRINTOUT NOT SUPRESSED.')
- 1050 FORMAT(' PRINTOUT SUPRESSED.')
- 1060 FORMAT('1****TEST ROUTINES WITH CORRECT CALL****')
- 1070 FORMAT('1****TEST WITH INSUFFICIENT WORK AREA****')
- 1080 FORMAT('1****TEST WITH EXACTLY THE RIGHT AMOUNT OF WORK AREA****')
- 1090 FORMAT('1****NUMBER OF OBSERVATIONS LESS THAN 2****')
- 1100 FORMAT('1****ALL OBSERVATIONS WITH SAME VALUE****')
- 1120 FORMAT('1****SAME NUMBER OF GROUPS AS NON-ZERO TAGS****')
- 1130 FORMAT(' ****LESS THAN 2 DIFFERENT TAG GROUPS****')
- 1140 FORMAT(' ****LESS THAN 2 TAGS****')
- 1150 FORMAT('1****INCORRECT DIMENSION OF GSTAT****')
- 1160 FORMAT('1****ALL OBSERVATIONS WITHIN A GROUP SAME VALUE****')
- 1170 FORMAT('1****TEST WITH 2 TAGS****')
- 1180 FORMAT('1****ALL GROUPS EXCEPT FOR 1 WITH 1 OBSERVATION ****')
-      END
+ 1000 format(' TEST OF AOV1 ')
+ 1010 format(' CHECK TO SEE IF TAGS HAVE BEEN CHANGED')
+ 1020 format(4f12.6)
+ 1030 format(' TEST OF AOV1S ')
+ 1040 format('1PRINTOUT NOT SUPRESSED.')
+ 1050 format(' PRINTOUT SUPRESSED.')
+ 1060 format('1****TEST ROUTINES WITH CORRECT CALL****')
+ 1070 format('1****TEST WITH INSUFFICIENT WORK AREA****')
+ 1080 format('1****TEST WITH EXACTLY THE RIGHT AMOUNT OF WORK AREA****')
+ 1090 format('1****NUMBER OF OBSERVATIONS LESS THAN 2****')
+ 1100 format('1****ALL OBSERVATIONS WITH SAME VALUE****')
+ 1120 format('1****SAME NUMBER OF GROUPS AS NON-ZERO TAGS****')
+ 1130 format(' ****LESS THAN 2 DIFFERENT TAG GROUPS****')
+ 1140 format(' ****LESS THAN 2 TAGS****')
+ 1150 format('1****INCORRECT DIMENSION OF GSTAT****')
+ 1160 format('1****ALL OBSERVATIONS WITHIN A GROUP SAME VALUE****')
+ 1170 format('1****TEST WITH 2 TAGS****')
+ 1180 format('1****ALL GROUPS EXCEPT FOR 1 WITH 1 OBSERVATION ****')
+      end

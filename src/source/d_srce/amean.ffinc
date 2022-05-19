@@ -1,5 +1,5 @@
 !AMEAN
-      SUBROUTINE AMEAN(Y, N, YMEAN)
+      subroutine amean(y, n, ymean)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,20 +15,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YMEAN
-      INTEGER
-     &   N
+     real(kind=wp) ::&
+     &   ymean
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*)
+     real(kind=wp) ::&
+     &   y(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   SUMY
-      INTEGER
-     &   I
+     real(kind=wp) ::&
+     &   sumy
+     integer&
+     &   i
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -43,10 +43,10 @@
 !     REAL(KIND=WP) :: YMEAN
 !        THE MEAN OF THE OBSERVED TIME SERIES
 !
-      SUMY = 0.0_WP
-      DO 10 I = 1, N
-         SUMY = SUMY + Y(I)
-   10 CONTINUE
-      YMEAN = SUMY / N
-      RETURN
-      END
+      sumy = 0.0_wp
+      do 10 i = 1, n
+         sumy = sumy + y(i)
+   10 continue
+      ymean = sumy / n
+      return
+      end

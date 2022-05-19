@@ -1,6 +1,6 @@
 !DCKDRV
-      SUBROUTINE DCKDRV (NMSUB, LDSTAK, XM, N, M, IXM, MDL,
-     &   DRV, PAR, NPAR, NETA, NTAU, SCALE, LSCALE, NROW, NPRT)
+     subroutine dckdrv (nmsub, ldstak, xm, n, m, ixm, mdl,&
+     &   drv, par, npar, neta, ntau, scale, lscale, nrow, nprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,41 +16,41 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,LDSTAK,LSCALE,M,N,NETA,NPAR,NPRT,NROW,NTAU
+     integer&
+     &   ixm,ldstak,lscale,m,n,neta,npar,nprt,nrow,ntau
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),SCALE(*),XM(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   par(*),scale(*),xm(*)
+     character&
+     &   nmsub(6)*1
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL DRV,MDL
+       external drv,mdl
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   ISUBHD,LIFIXD
-      LOGICAL
-     &   HLFRPT,PAGE,PRTFXD,WIDE
+     integer&
+     &   isubhd,lifixd
+     logical&
+     &   hlfrpt,page,prtfxd,wide
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   IFIXED(1)
+     integer&
+     &   ifixed(1)
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL DCKCNT,DCKER,DCKHDR,STKSET
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -130,26 +130,26 @@
 !
 !     CHECK FOR ERRORS IN INPUT PARAMETERS
 !
-      CALL DCKER(NMSUB, N, M, IXM, NPAR, LDSTAK, SCALE, LSCALE)
+      call dcker(nmsub, n, m, ixm, npar, ldstak, scale, lscale)
 !
-      IF (IERR.NE.0) RETURN
+      if (ierr.ne.0) return
 !
-      PAGE = .FALSE.
-      WIDE = .TRUE.
-      ISUBHD = 0
+      page = .false.
+      wide = .true.
+      isubhd = 0
 !
-      PRTFXD = .FALSE.
-      IFIXED(1) = -1
-      LIFIXD = 1
+      prtfxd = .false.
+      ifixed(1) = -1
+      lifixd = 1
 !
-      CALL STKSET(LDSTAK, 4)
+      call stkset(ldstak, 4)
 !
 !     PASS CONTROL OF DERIVATIVE CHECKING TO DCKCNT
 !
-      CALL DCKCNT (XM, N, M, IXM, MDL, DRV, PAR, NPAR, NETA,
-     &   NTAU, SCALE, LSCALE, NROW, NPRT, DCKHDR, PAGE, WIDE, ISUBHD,
-     &   HLFRPT, PRTFXD, IFIXED, LIFIXD)
+     call dckcnt (xm, n, m, ixm, mdl, drv, par, npar, neta,&
+    &   ntau, scale, lscale, nrow, nprt, dckhdr, page, wide, isubhd,&
+     &   hlfrpt, prtfxd, ifixed, lifixd)
 !
-      RETURN
+      return
 !
-      END
+      end

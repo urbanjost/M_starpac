@@ -1,5 +1,5 @@
 !ABSCOM
-      SUBROUTINE ABSCOM(N, V, W, ABSTOL, NFAIL)
+subroutine abscom(n, v, w, abstol, nfail)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,21 +16,17 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ABSTOL
-      INTEGER
-     &   N,NFAIL
+     real(kind=wp) :: abstol
+     integer n,nfail
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   V(*),W(*)
+     real(kind=wp) :: v(*),w(*)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer i
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS
+      intrinsic abs
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -45,12 +41,10 @@
 !     REAL(KIND=WP) :: V(N), W(N)
 !        THE VALUES BEING COMPARED.
 !
-      NFAIL = 0
+      nfail = 0
 !
-      DO 10 I = 1, N
-         IF (ABS(V(I) - W(I)) .GT. ABSTOL) NFAIL = NFAIL + 1
-   10 CONTINUE
+      do i = 1, n
+         if (abs(v(i) - w(i)) .gt. abstol) nfail = nfail + 1
+      enddo
 !
-      RETURN
-!
-      END
+end subroutine abscom

@@ -1,5 +1,5 @@
 !SVP
-      SUBROUTINE SVP(YM, N, NS, ISYM)
+      subroutine svp(ym, n, ns, isym)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,36 +16,36 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N,NS
+     integer&
+     &   n,ns
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YM(*)
-      INTEGER
-     &   ISYM(*)
+     real(kind=wp) ::&
+     &   ym(*)
+     integer&
+     &   isym(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   XINC,XLB,YLB,YUB
-      INTEGER
-     &   IBAR,ILOG,IPRT,IRLIN,ISCHCK,ISIZE,IYM,LISYM,M
-      LOGICAL
-     &   MISS,MULTI
+     real(kind=wp) ::&
+     &   xinc,xlb,ylb,yub
+     integer&
+     &   ibar,ilog,iprt,irlin,ischck,isize,iym,lisym,m
+     logical&
+     &   miss,multi
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   NMSUB(6)*1
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VPCNT
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -118,45 +118,45 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      &    /  'S',       'V',       'P',       ' ',       ' ',       ' '/
 !
 !     DEFINE CONSTANTS
 !
 !     SET DEFAULT VALUES
 !
-      M = 1
-      IYM = N
-      MULTI = .FALSE.
-      ILOG = -1
-      YLB = 0.0_WP
-      YUB = 0.0_WP
-      XLB = 1.0_WP
-      XINC = 1.0_WP
-      ISCHCK = 1
-      ISIZE = -1
-      MISS = .FALSE.
-      LISYM = N
-      IRLIN = -1
-      IBAR = 0
+      m = 1
+      iym = n
+      multi = .false.
+      ilog = -1
+      ylb = 0.0_wp
+      yub = 0.0_wp
+      xlb = 1.0_wp
+      xinc = 1.0_wp
+      ischck = 1
+      isize = -1
+      miss = .false.
+      lisym = n
+      irlin = -1
+      ibar = 0
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      CALL VPCNT (YM, YM, N, M, IYM, MULTI, ILOG, YLB, YUB,
-     &  XLB, XINC, NS, IRLIN, IBAR, NMSUB, ISCHCK, ISYM, ISIZE,
-     &  MISS, LISYM)
+     call vpcnt (ym, ym, n, m, iym, multi, ilog, ylb, yub,&
+    &  xlb, xinc, ns, irlin, ibar, nmsub, ischck, isym, isize,&
+     &  miss, lisym)
 !
-      IF (IERR.NE.0) THEN
-        IERR = 1
-        CALL IPRINT(IPRT)
-        WRITE (IPRT,1000)
-      END IF
+      if (ierr.ne.0) then
+        ierr = 1
+        call iprint(iprt)
+        write (iprt,1000)
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &   '       CALL SVP (Y, N, NS, ISYM)')
-      END
+      end

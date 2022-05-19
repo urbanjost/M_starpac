@@ -1,5 +1,5 @@
 !EISRNG
-      SUBROUTINE EISRNG (NMSUB, ISEED, ISEEDU, HEAD)
+      subroutine eisrng (nmsub, iseed, iseedu, head)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -23,18 +23,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISEED,ISEEDU
-      LOGICAL
-     &   HEAD
+     integer&
+     &   iseed,iseedu
+     logical&
+     &   head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,MDIG
+     integer&
+     &   iprt,mdig
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -45,7 +45,7 @@
 !      EXTERNAL EHDR,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,MIN,MOD
+      intrinsic abs,min,mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -65,36 +65,36 @@
 !     CHARACTER*1 NMSUB(6)
 !        THE CHARACTERS OF THE CALLING SUBROUTINES NAME.
 !
-      MDIG = MIN(I1MACH(8)+1,32)
+      mdig = min(i1mach(8)+1,32)
 !
 !     CHECK FOR VIOLATIONS
 !
-      IF ((ISEED.EQ.0) .OR.
-     &    ((ISEED.GE.1) .AND.
-     &     (ISEED.LE.2**(MDIG-1)-1) .AND.
-     &     (MOD(ISEED,2).EQ.1))) THEN
+     if ((iseed.eq.0) .or.&
+    &    ((iseed.ge.1) .and.&
+    &     (iseed.le.2**(mdig-1)-1) .and.&
+     &     (mod(iseed,2).eq.1))) then
 !
 !     SUPPLIED SEED WILL BE USED
 !
-         ISEEDU = ISEED
-      ELSE
+         iseedu = iseed
+      else
 !
 !     VIOLATIONS FOUND
 !
-         ISEEDU = MIN( ABS(ISEED)+MOD(ABS(ISEED),2)-1, 2**(MDIG-1)-1)
-         CALL IPRINT(IPRT)
-         CALL EHDR(NMSUB, HEAD)
-         WRITE (IPRT, 1010) MDIG-1,ISEEDU
-      END IF
+         iseedu = min( abs(iseed)+mod(abs(iseed),2)-1, 2**(mdig-1)-1)
+         call iprint(iprt)
+         call ehdr(nmsub, head)
+         write (iprt, 1010) mdig-1,iseedu
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT(/
-     &   ' THE VALUE OF ISEED MUST BE BETWEEN 0 AND 2**',I2,' - 1,'/
-     &   ' INCLUSIVE, AND, IF ISEED IS NOT 0, ISEED MUST BE ODD.  THE'/
-     &   ' SEED ACTUALLY USED BY THE RANDOM NUMBER GENERATOR HAS BEEN'/
-     &   ' SET TO', I10,'.')
+1010 format(/&
+    &   ' THE VALUE OF ISEED MUST BE BETWEEN 0 AND 2**',i2,' - 1,'/&
+    &   ' INCLUSIVE, AND, IF ISEED IS NOT 0, ISEED MUST BE ODD.  THE'/&
+    &   ' SEED ACTUALLY USED BY THE RANDOM NUMBER GENERATOR HAS BEEN'/&
+     &   ' SET TO', i10,'.')
 !
-      END
+      end

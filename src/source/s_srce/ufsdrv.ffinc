@@ -1,8 +1,8 @@
 !UFSDRV
-      SUBROUTINE UFSDRV(Y, LY, YMISS, ACOV, NLPPA, SPCF, ISPCF, NF,
-     &   FMIN, FMAX, FREQ, N, NW, LAGMAX, LAGS, WORK, LACOV, LWORK,
-     &   DELTA, ISORT, ISYM, XAXIS, YAXIS, LPCV, ALPHA, NPRT, WINDOW,
-     &   NMSUB, LDSMIN, LDSTAK, OPTION, LNLPPA, NFFT)
+     subroutine ufsdrv(y, ly, ymiss, acov, nlppa, spcf, ispcf, nf,&
+    &   fmin, fmax, freq, n, nw, lagmax, lags, work, lacov, lwork,&
+    &   delta, isort, isym, xaxis, yaxis, lpcv, alpha, nprt, window,&
+     &   nmsub, ldsmin, ldstak, option, lnlppa, nfft)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,52 +19,52 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ALPHA,DELTA,FMAX,FMIN,YMISS
-      INTEGER
-     &   ISPCF,LACOV,LAGMAX,LDSMIN,LDSTAK,LNLPPA,LPCV,LWORK,LY,N,
-     &   NF,NFFT,NPRT,NW
+     real(kind=wp) ::&
+     &   alpha,delta,fmax,fmin,ymiss
+     integer&
+    &   ispcf,lacov,lagmax,ldsmin,ldstak,lnlppa,lpcv,lwork,ly,n,&
+     &   nf,nfft,nprt,nw
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV(*),FREQ(*),SPCF(*),WORK(*),XAXIS(*),Y(*),YAXIS(*)
-      INTEGER
-     &   ISORT(*),ISYM(*),LAGS(*),NLPPA(*)
-      LOGICAL
-     &   OPTION(4)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   acov(*),freq(*),spcf(*),work(*),xaxis(*),y(*),yaxis(*)
+     integer&
+     &   isort(*),isym(*),lags(*),nlppa(*)
+     logical&
+     &   option(4)
+     character&
+     &   nmsub(6)*1
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL WINDOW
+       external window
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ALOW,AUP,BW,DF,FMN,FMX,SPCFMN,SPCFMX,XPLTMN,XPLTMX,YMEAN,
-     &   YPLTMN,YPLTMX
-      INTEGER
-     &   I,ILOG,ISPCER,LAG,LAGLST,NFUSED,NPTS,NSPC,NWUSED
-      LOGICAL
-     &   NEWPG,UNIVAR
+     real(kind=wp) ::&
+    &   alow,aup,bw,df,fmn,fmx,spcfmn,spcfmx,xpltmn,xpltmx,ymean,&
+     &   ypltmn,ypltmx
+     integer&
+     &   i,ilog,ispcer,lag,laglst,nfused,npts,nspc,nwused
+     logical&
+     &   newpg,univar
 !
 !  EXTERNAL FUNCTIONS
-      INTEGER
-     &   LSTLAG
+     integer&
+     &   lstlag
 !       EXTERNAL LSTLAG
 !
 !  EXTERNAL SUBROUTINES
-!       EXTERNAL ACVF,ACVFF,ACVFM,SETFRQ,SPCCK,UFSER,UFSLAG,UFSMN,UFSOUT,
-     &   UFSPCV
+       external acvf,acvff,acvfm,setfrq,spcck,ufser,ufslag,ufsmn,ufsout,&
+     &   ufspcv
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX,MIN,NINT
+      intrinsic max,min,nint
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -197,123 +197,123 @@
 !     REAL YPLTMN, YPLTMX
 !        THE MINIMUM AND MAXIMUM VALUES TO BE PLOTTED FOR THE Y AXIS.
 !
-      NFUSED = NF
-      IF (OPTION(4)) THEN
-        FMN = MAX(FMIN, 0.0E0)
-        FMX = MIN(FMAX, 0.5E0)
-        IF (FMN.GE.FMX) THEN
-          FMN = 0.0E0
-          FMX = 0.5E0
-        END IF
-      ELSE
+      nfused = nf
+      if (option(4)) then
+        fmn = max(fmin, 0.0e0)
+        fmx = min(fmax, 0.5e0)
+        if (fmn.ge.fmx) then
+          fmn = 0.0e0
+          fmx = 0.5e0
+        end if
+      else
 !
 !       SET VARIOUS VALUES FOR SHORT FORMS OF CALL STATEMENT
 !
-        NPRT = -1
-        FMN = 0.0E0
-        FMX = 0.5E0
-      END IF
+        nprt = -1
+        fmn = 0.0e0
+        fmx = 0.5e0
+      end if
 !
 !     CHECK FOR ERRORS
 !
-      CALL UFSER(NMSUB, N, LAGMAX, LACOV, NFUSED, ISPCF, NW, LAGS,
-     &  LDSTAK, LDSMIN, LY, NFFT, OPTION)
+     call ufser(nmsub, n, lagmax, lacov, nfused, ispcf, nw, lags,&
+     &  ldstak, ldsmin, ly, nfft, option)
 !
-      IF (IERR.EQ.1) RETURN
+      if (ierr.eq.1) return
 !
 !     SET VARIOUS PROGRAM PARAMETERS.
 !
-      ALPHA = 0.95E0
-      DELTA = 1.0E0
+      alpha = 0.95e0
+      delta = 1.0e0
 !
 !     COMPUTE COVARIANCES
 !
-      LAGLST = LAGMAX
-      IF (OPTION(1)) THEN
-        CALL ACVFF(Y, N, NFFT, YMEAN, ACOV, LAGMAX, LACOV,
-     &   LY, WORK, NFFT)
-      ELSE
-        IF (.NOT.OPTION(3)) THEN
-          IF (OPTION(2)) THEN
-            CALL ACVFM(Y, YMISS, N, YMEAN, ACOV, LAGMAX, LAGLST,
-     &        NLPPA, LACOV)
-          ELSE
-            CALL ACVF(Y, N, YMEAN, ACOV, LAGMAX, LACOV)
-          END IF
-        END IF
-      END IF
-      IF (OPTION(2) .AND. OPTION(3)) LAGLST = LSTLAG(NLPPA,LAGMAX,LACOV)
+      laglst = lagmax
+      if (option(1)) then
+       call acvff(y, n, nfft, ymean, acov, lagmax, lacov,&
+     &   ly, work, nfft)
+      else
+        if (.not.option(3)) then
+          if (option(2)) then
+           call acvfm(y, ymiss, n, ymean, acov, lagmax, laglst,&
+     &        nlppa, lacov)
+          else
+            call acvf(y, n, ymean, acov, lagmax, lacov)
+          end if
+        end if
+      end if
+      if (option(2) .and. option(3)) laglst = lstlag(nlppa,lagmax,lacov)
 !
-      IF (LAGLST.GE.1) GO TO 20
+      if (laglst.ge.1) go to 20
 !
 !     AN ERROR HAS BEEN DETECTED
 !
-      IERR = 2
-      RETURN
+      ierr = 2
+      return
 !
-   20 CONTINUE
+   20 continue
 !
 !     COMPUTE THE VECTOR OF LAG WINDOW TRUNCATION POINTS, ORDERED
 !     SMALLEST TO LARGEST.
 !
-      NWUSED = NW
-      IF (.NOT.OPTION(4)) CALL UFSLAG(ACOV, LAGLST, LAGS, N, NW,
-     &   NWUSED, LACOV)
+      nwused = nw
+     if (.not.option(4)) call ufslag(acov, laglst, lags, n, nw,&
+     &   nwused, lacov)
 !
 !     BEGIN COMPUTING FOURIER SPECTRUM FOR SERIES
 !
-      UNIVAR = .TRUE.
+      univar = .true.
 !
-      IF (NPRT.GE.1) THEN
-        ILOG = 1
-      ELSE
-        ILOG = 0
-      END IF
+      if (nprt.ge.1) then
+        ilog = 1
+      else
+        ilog = 0
+      end if
 !
-      XPLTMN = FMN
-      XPLTMX = FMX
+      xpltmn = fmn
+      xpltmx = fmx
 !
 !     SET FREQUENCIES FOR THE SPECTRUM.
 !
-      CALL SETFRQ(FREQ, NFUSED, 2, FMN, FMX, DELTA)
+      call setfrq(freq, nfused, 2, fmn, fmx, delta)
 !
 !     COMPUTE AND PLOT SPECTRUM VALUES.
 !
-      NEWPG = .FALSE.
+      newpg = .false.
 !
-      DO 50 I=1,NWUSED
-         LAG = LAGS(I)
-         ISPCER = 0
-         IF (LAG.LE.LAGLST) GO TO 30
-         ISPCER = 2
-         DF = 0.0E0
-         GO TO 40
+      do 50 i=1,nwused
+         lag = lags(i)
+         ispcer = 0
+         if (lag.le.laglst) go to 30
+         ispcer = 2
+         df = 0.0e0
+         go to 40
 !
-   30    CALL UFSMN(ACOV, NLPPA, LAG, DF, NFUSED, FREQ, ALPHA, BW,
-     &              SPCF(1+(I-1)*ISPCF), ALOW, AUP, LACOV, ISPCF,
-     &              WINDOW, WORK, LAG, N, DELTA, OPTION(2), LNLPPA)
+  30    call ufsmn(acov, nlppa, lag, df, nfused, freq, alpha, bw,&
+    &              spcf(1+(i-1)*ispcf), alow, aup, lacov, ispcf,&
+     &              window, work, lag, n, delta, option(2), lnlppa)
 !
-         IF (NPRT.EQ.0) GO TO 50
+         if (nprt.eq.0) go to 50
 !
-         ISPCER = 0
-         CALL SPCCK(SPCF(1+(I-1)*ISPCF), ISORT, NFUSED,
-     &              SPCFMN, SPCFMX, NSPC, ISPCER)
+         ispcer = 0
+        call spcck(spcf(1+(i-1)*ispcf), isort, nfused,&
+     &              spcfmn, spcfmx, nspc, ispcer)
 !
-         IF (ISPCER.NE.0) GO TO 40
+         if (ispcer.ne.0) go to 40
 !
-         CALL UFSPCV(SPCF(1+(I-1)*ISPCF), SPCFMN, SPCFMX,
-     &               FREQ, NFUSED, XAXIS, YAXIS, ISYM, NPTS, ISPCF,
-     &               NFUSED+5, NSPC, BW, ALOW, AUP,
-     &               XPLTMN, XPLTMX, YPLTMN, YPLTMX, NPRT)
+        call ufspcv(spcf(1+(i-1)*ispcf), spcfmn, spcfmx,&
+    &               freq, nfused, xaxis, yaxis, isym, npts, ispcf,&
+    &               nfused+5, nspc, bw, alow, aup,&
+     &               xpltmn, xpltmx, ypltmn, ypltmx, nprt)
 !
-   40    CALL UFSOUT(XAXIS, YAXIS, ISYM, NPTS, BW, NINT(DF), LAG,
-     &      LAGLST, NEWPG, ISPCER, NFUSED+5, XPLTMN, XPLTMX, YPLTMN,
-     &      YPLTMX, ILOG, YAXIS, XAXIS, NPTS, UNIVAR, NMSUB)
+  40    call ufsout(xaxis, yaxis, isym, npts, bw, nint(df), lag,&
+    &      laglst, newpg, ispcer, nfused+5, xpltmn, xpltmx, ypltmn,&
+     &      ypltmx, ilog, yaxis, xaxis, npts, univar, nmsub)
 !
-         NEWPG = .TRUE.
+         newpg = .true.
 !
-   50 CONTINUE
+   50 continue
 !
-      RETURN
+      return
 !
-      END
+      end

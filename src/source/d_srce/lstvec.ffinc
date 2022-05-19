@@ -1,5 +1,5 @@
 !LSTVEC
-      SUBROUTINE LSTVEC(N, VEC)
+      subroutine lstvec(n, vec)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,16 +16,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   VEC(N)
+     real(kind=wp) ::&
+     &   vec(n)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IMAX,IMIN,INDEX,IPRT,NPERL
+     integer&
+     &   i,imax,imin,index,iprt,nperl
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -36,7 +36,7 @@
 !      EXTERNAL IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -56,22 +56,22 @@
 !     REAL(KIND=WP) :: VEC(N)
 !        THE VECTOR OF VALUES TO BE PRINTED.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      NPERL = INPERL(0)
+      nperl = inperl(0)
 !
-      DO 10 I = 1, N, NPERL
-         IMIN = I
-         IMAX = MIN(I+NPERL-1, N)
-         WRITE(IPRT, 1010) (INDEX, INDEX = IMIN, IMAX)
-         WRITE(IPRT, 1020) (VEC(INDEX), INDEX = IMIN, IMAX)
-   10 CONTINUE
+      do 10 i = 1, n, nperl
+         imin = i
+         imax = min(i+nperl-1, n)
+         write(iprt, 1010) (index, index = imin, imax)
+         write(iprt, 1020) (vec(index), index = imin, imax)
+   10 continue
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT(10X, 5HINDEX, I5, 6I15)
- 1020 FORMAT(10X, 5HVALUE, 7(1X, G14.7)/)
+ 1010 format(10x, 5hindex, i5, 6i15)
+ 1020 format(10x, 5hvalue, 7(1x, g14.7)/)
 !
-      END
+      end

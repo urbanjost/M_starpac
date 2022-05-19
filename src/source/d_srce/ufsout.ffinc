@@ -1,7 +1,7 @@
 !UFSOUT
-      SUBROUTINE UFSOUT(XAXIS, YAXIS, ISYM, NPTS, BW, IDF, LAG, LAGLST,
-     &   NEWPG, ISPCER, LPCV, XPLTMN, XPLTMX, YPLTMN, YPLTMX, ILOG,
-     &   PHAS, FREQ, NF, UNIVAR, NMSUB)
+     subroutine ufsout(xaxis, yaxis, isym, npts, bw, idf, lag, laglst,&
+    &   newpg, ispcer, lpcv, xpltmn, xpltmx, ypltmn, ypltmx, ilog,&
+     &   phas, freq, nf, univar, nmsub)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,38 +17,38 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   BW,XPLTMN,XPLTMX,YPLTMN,YPLTMX
-      INTEGER
-     &   IDF,ILOG,ISPCER,LAG,LAGLST,LPCV,NF,NPTS
-      LOGICAL
-     &   NEWPG,UNIVAR
+     real(kind=wp) ::&
+     &   bw,xpltmn,xpltmx,ypltmn,ypltmx
+     integer&
+     &   idf,ilog,ispcer,lag,laglst,lpcv,nf,npts
+     logical&
+     &   newpg,univar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FREQ(NF),PHAS(NF),XAXIS(LPCV),YAXIS(LPCV)
-      INTEGER
-     &   ISYM(LPCV)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   freq(nf),phas(nf),xaxis(lpcv),yaxis(lpcv)
+     integer&
+     &   isym(lpcv)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   PI,XMN,XMX,YMN,YMX
-      INTEGER
-     &   I,IPRT
-      LOGICAL
-     &   ERROR
+     real(kind=wp) ::&
+     &   pi,xmn,xmx,ymn,ymx
+     integer&
+     &   i,iprt
+     logical&
+     &   error
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL GETPI,IPRINT,PPLMT,PPMN,VERSP
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -115,91 +115,91 @@
 !
 !      SET LOGICAL UNIT NUMBER FOR OUTPUT AND SET OUTPUT WIDTH.
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      CALL GETPI(PI)
+      call getpi(pi)
 !
-      IF (NEWPG) WRITE (IPRT,1010)
-      IF (ISPCER.LE.1) GO TO 10
-      CALL VERSP(.TRUE.)
-      WRITE (IPRT,1060) LAGLST, LAG
-      RETURN
+      if (newpg) write (iprt,1010)
+      if (ispcer.le.1) go to 10
+      call versp(.true.)
+      write (iprt,1060) laglst, lag
+      return
 !
-   10 CONTINUE
-      CALL VERSP(.TRUE.)
-      IF (.NOT.UNIVAR) WRITE (IPRT,1070)
-      IF (UNIVAR) WRITE (IPRT,1080)
-      WRITE (IPRT,1020) LAG, BW, IDF
-      IF (ISPCER.EQ.0) GO TO 20
-      WRITE (IPRT,1050)
-      GO TO 30
+   10 continue
+      call versp(.true.)
+      if (.not.univar) write (iprt,1070)
+      if (univar) write (iprt,1080)
+      write (iprt,1020) lag, bw, idf
+      if (ispcer.eq.0) go to 20
+      write (iprt,1050)
+      go to 30
 !
-   20 CONTINUE
+   20 continue
 !
 !     PRINT PLOTS
 !
 !     PLOT SQUARED COHERENCY COMPONENT OF SPECTRUM
 !
-      CALL PPLMT(YAXIS,YAXIS,XAXIS,XAXIS(1),NPTS,1,LPCV,YPLTMN,
-     &  YPLTMX, YMN, YMX, XPLTMN, XPLTMX, XMN, XMX, ERROR, NMSUB,
-     &  .FALSE.)
-      IF (.NOT.ERROR)
-     &  CALL PPMN(YAXIS,YAXIS,XAXIS,XAXIS(1),NPTS,1,LPCV,1,ISYM,
-     &  LPCV, 0, -1, YMN, YMX, XMN, XMX, .FALSE., ILOG)
-      IF (XPLTMN.EQ.0.0_WP .AND. XPLTMX.EQ.0.5_WP) WRITE (IPRT, 1030)
+     call pplmt(yaxis,yaxis,xaxis,xaxis(1),npts,1,lpcv,ypltmn,&
+    &  ypltmx, ymn, ymx, xpltmn, xpltmx, xmn, xmx, error, nmsub,&
+     &  .false.)
+     if (.not.error)&
+    &  call ppmn(yaxis,yaxis,xaxis,xaxis(1),npts,1,lpcv,1,isym,&
+     &  lpcv, 0, -1, ymn, ymx, xmn, xmx, .false., ilog)
+      if (xpltmn.eq.0.0_wp .and. xpltmx.eq.0.5_wp) write (iprt, 1030)
 !
-   30 IF (UNIVAR) RETURN
-      DO 40 I=1,NF
-         XAXIS(I) = FREQ(I)
-         XAXIS(NF+I) = FREQ(I)
-         YAXIS(I) = PHAS(I)
-         IF (PHAS(I).GT.0.0_WP) THEN
-            YAXIS(NF+I) = PHAS(I) - 2*PI
-         ELSE IF (PHAS(I).LT.0.0_WP) THEN
-            YAXIS(NF+I) = PHAS(I) + 2*PI
-         ELSE
-            YAXIS(NF+I) = 0.0_WP
-         END IF
-   40 CONTINUE
+   30 if (univar) return
+      do 40 i=1,nf
+         xaxis(i) = freq(i)
+         xaxis(nf+i) = freq(i)
+         yaxis(i) = phas(i)
+         if (phas(i).gt.0.0_wp) then
+            yaxis(nf+i) = phas(i) - 2*pi
+         else if (phas(i).lt.0.0_wp) then
+            yaxis(nf+i) = phas(i) + 2*pi
+         else
+            yaxis(nf+i) = 0.0_wp
+         end if
+   40 continue
 !
 !     PLOT SMOOTHED PHASE COMPONENT OF SPECTRUM
 !
-      WRITE (IPRT,1010)
-      CALL VERSP(.TRUE.)
-      WRITE (IPRT,1000)
-      WRITE (IPRT,1020) LAG, BW, IDF
-      CALL PPLMT(YAXIS,YAXIS,XAXIS,XAXIS(1),2*NF,1,2*NF,-2*PI,2*PI,
-     &  YMN, YMX, XPLTMN, XPLTMX, XMN, XMX, ERROR, NMSUB, .FALSE.)
-      IF (ERROR) THEN
-        IERR = 1
-      ELSE
-        CALL PPMN(YAXIS, YAXIS, XAXIS, XAXIS(1),
-     &            2*NF, 1, 2*NF, 0, ISYM, LPCV,
-     &            0, -1, YMN, YMX, XMN, XMX, .FALSE., ILOG)
-        IF (XPLTMN.EQ.0.0_WP .AND. XPLTMX.EQ.0.5_WP) WRITE (IPRT, 1030)
-      END IF
+      write (iprt,1010)
+      call versp(.true.)
+      write (iprt,1000)
+      write (iprt,1020) lag, bw, idf
+     call pplmt(yaxis,yaxis,xaxis,xaxis(1),2*nf,1,2*nf,-2*pi,2*pi,&
+     &  ymn, ymx, xpltmn, xpltmx, xmn, xmx, error, nmsub, .false.)
+      if (error) then
+        ierr = 1
+      else
+       call ppmn(yaxis, yaxis, xaxis, xaxis(1),&
+    &            2*nf, 1, 2*nf, 0, isym, lpcv,&
+     &            0, -1, ymn, ymx, xmn, xmx, .false., ilog)
+        if (xpltmn.eq.0.0_wp .and. xpltmx.eq.0.5_wp) write (iprt, 1030)
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (50H -- SMOOTHED FOURIER SPECTRUM (PHASE COMPONENT) --)
- 1010 FORMAT ('1')
- 1020 FORMAT (45H    (PARZEN WINDOW WITH LAG WIND. TRUNC. PT.=, I5, 1X,
-     &   5H/ BW=, F6.4, 1X, 6H/ EDF=, I6, ')')
- 1030 FORMAT (5H+FREQ/7H PERIOD, 9X, 3HINF, 7X, 3H20., 7X, 3H10., 8X,
-     &   6H6.6667, 4X, 2H5., 8X, 2H4., 8X, 6H3.3333, 4X, 6H2.8571, 4X,
-     &   3H2.5, 7X, 6H2.2222, 4X, 2H2.)
+ 1000 format (50h -- smoothed fourier spectrum (phase component) --)
+ 1010 format ('1')
+1020 format (45h    (parzen window with lag wind. trunc. pt.=, i5, 1x,&
+     &   5h/ bw=, f6.4, 1x, 6h/ edf=, i6, ')')
+1030 format (5h+freq/7h period, 9x, 3hinf, 7x, 3h20., 7x, 3h10., 8x,&
+    &   6h6.6667, 4x, 2h5., 8x, 2h4., 8x, 6h3.3333, 4x, 6h2.8571, 4x,&
+     &   3h2.5, 7x, 6h2.2222, 4x, 2h2.)
 !1040 FORMAT (5H+FREQ/7H PERIOD, 9X, 3HINF, 7X, 3H10., 7X, 2H5., 8X,
 !    *   6H3.3333, 4X, 3H2.5, 7X, 2H2.)
- 1050 FORMAT (//39H THE PLOT HAS BEEN SUPRESSED BECAUSE NO/
-     &   40H POSITIVE SPECTRUM VALUES WERE COMPUTED.)
- 1060 FORMAT (//50H THE LARGEST LAG WINDOW TRUNCATION POINT WHICH CAN/
-     &   12H BE USED IS , I5, '.'/34H THE SPECTRUM FOR THE REQUESTED LA,
-     &   8HG WINDOW, 10H POINT OF , I5, ','/24H THEREFORE, CANNOT BE CO,
-     &   7HMPUTED.)
- 1070 FORMAT (48H -- SMOOTHED FOURIER SPECTRUM (SQUARED COHERENCY,
-     &   46H COMPONENT) (+), 95 PCT. CONFIDENCE LIMITS (.),
-     &   38H AND 95 PCT. SIGNIFICANCE LEVEL (-) --)
- 1080 FORMAT (32H -- SMOOTHED FOURIER SPECTRUM --)
-      END
+1050 format (//39h the plot has been supressed because no/&
+     &   40h positive spectrum values were computed.)
+1060 format (//50h the largest lag window truncation point which can/&
+    &   12h be used is , i5, '.'/34h the spectrum for the requested la,&
+    &   8hg window, 10h point of , i5, ','/24h therefore, cannot be co,&
+     &   7hmputed.)
+1070 format (48h -- smoothed fourier spectrum (squared coherency,&
+    &   46h component) (+), 95 pct. confidence limits (.),&
+     &   38h and 95 pct. significance level (-) --)
+ 1080 format (32h -- smoothed fourier spectrum --)
+      end

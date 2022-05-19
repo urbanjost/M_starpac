@@ -1,5 +1,5 @@
 !XERRWV
-      SUBROUTINE XERRWV(MESSG,NMESSG,NERR,LEVEL,NI,I1,I2,NR,R1,R2)
+      subroutine xerrwv(messg,nmessg,nerr,level,ni,i1,i2,nr,r1,r2)
 !
 !     ABSTRACT
 !        XERRWV PROCESSES A DIAGNOSTIC MESSAGE, IN A MANNER
@@ -43,19 +43,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL R1,R2
-      INTEGER I1,I2,LEVEL,NERR,NI,NMESSG,NR
+      real r1,r2
+      integer i1,i2,level,nerr,ni,nmessg,nr
 !
 !  ARRAY ARGUMENTS
-      CHARACTER MESSG(NMESSG)*4
+      character messg(nmessg)*4
 !
 !  LOCAL SCALARS
-      INTEGER IFATAL,IUNIT,JUNK,KDUMMY,KOUNT,KUNIT,LERR,LKNTRL,LLEVEL,
-     &   LMESSG,MAXMES,MKNTRL,NUNIT
-      CHARACTER LFIRST*4
+     integer ifatal,iunit,junk,kdummy,kount,kunit,lerr,lkntrl,llevel,&
+     &   lmessg,maxmes,mkntrl,nunit
+      character lfirst*4
 !
 !  LOCAL ARRAYS
-      INTEGER LUN(5)
+      integer lun(5)
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER I1MACH,J4SAVE
@@ -65,93 +65,93 @@
 !       EXTERNAL FDUMP,XERABT,XERCTL,XERPRT,XERSAV,XGETUA
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC IABS,MAX,MIN
+      intrinsic iabs,max,min
 !
 !     GET FLAGS
-      LKNTRL = J4SAVE(2,0,.FALSE.)
-      MAXMES = J4SAVE(4,0,.FALSE.)
+      lkntrl = j4save(2,0,.false.)
+      maxmes = j4save(4,0,.false.)
 !     CHECK FOR VALID INPUT
-      IF ((NMESSG.GT.0).AND.(NERR.NE.0).AND.
-     &    (LEVEL.GE.(-1)).AND.(LEVEL.LE.2)) GO TO 10
-         IF (LKNTRL.GT.0) CALL XERPRT('FATAL ERROR IN...',17)
-         CALL XERPRT('XERROR -- INVALID INPUT',23)
-         IF (LKNTRL.GT.0) CALL FDUMP
-         IF (LKNTRL.GT.0) CALL XERPRT('JOB ABORT DUE TO FATAL ERROR.',
+     if ((nmessg.gt.0).and.(nerr.ne.0).and.&
+     &    (level.ge.(-1)).and.(level.le.2)) go to 10
+         if (lkntrl.gt.0) call xerprt('FATAL ERROR IN...',17)
+         call xerprt('XERROR -- INVALID INPUT',23)
+         if (lkntrl.gt.0) call fdump
+        if (lkntrl.gt.0) call xerprt('JOB ABORT DUE TO FATAL ERROR.',&
      &   29)
-         IF (LKNTRL.GT.0) CALL XERSAV('    ',0,0,0,KDUMMY)
-         CALL XERABT('XERROR -- INVALID INPUT',23)
-         RETURN
-   10 CONTINUE
+         if (lkntrl.gt.0) call xersav('    ',0,0,0,kdummy)
+         call xerabt('XERROR -- INVALID INPUT',23)
+         return
+   10 continue
 !     RECORD MESSAGE
-      JUNK = J4SAVE(1,NERR,.TRUE.)
-      CALL XERSAV(MESSG,NMESSG,NERR,LEVEL,KOUNT)
+      junk = j4save(1,nerr,.true.)
+      call xersav(messg,nmessg,nerr,level,kount)
 !     LET USER OVERRIDE
-      LFIRST = MESSG(1)
-      LMESSG = NMESSG
-      LERR = NERR
-      LLEVEL = LEVEL
-      CALL XERCTL(LFIRST,LMESSG,LERR,LLEVEL,LKNTRL)
+      lfirst = messg(1)
+      lmessg = nmessg
+      lerr = nerr
+      llevel = level
+      call xerctl(lfirst,lmessg,lerr,llevel,lkntrl)
 !     RESET TO ORIGINAL VALUES
-      LMESSG = NMESSG
-      LERR = NERR
-      LLEVEL = LEVEL
-      LKNTRL = MAX(-2,MIN(2,LKNTRL))
-      MKNTRL = IABS(LKNTRL)
+      lmessg = nmessg
+      lerr = nerr
+      llevel = level
+      lkntrl = max(-2,min(2,lkntrl))
+      mkntrl = iabs(lkntrl)
 !     DECIDE WHETHER TO PRINT MESSAGE
-      IF ((LLEVEL.LT.2).AND.(LKNTRL.EQ.0)) GO TO 100
-      IF (((LLEVEL.EQ.(-1)).AND.(KOUNT.GT.MIN(1,MAXMES)))
-     &.OR.((LLEVEL.EQ.0)   .AND.(KOUNT.GT.MAXMES))
-     &.OR.((LLEVEL.EQ.1)   .AND.(KOUNT.GT.MAXMES).AND.(MKNTRL.EQ.1))
-     &.OR.((LLEVEL.EQ.2)   .AND.(KOUNT.GT.MAX(1,MAXMES)))) GO TO 100
-         IF (LKNTRL.LE.0) GO TO 20
-            CALL XERPRT('    ',1)
+      if ((llevel.lt.2).and.(lkntrl.eq.0)) go to 100
+     if (((llevel.eq.(-1)).and.(kount.gt.min(1,maxmes)))&
+    &.or.((llevel.eq.0)   .and.(kount.gt.maxmes))&
+    &.or.((llevel.eq.1)   .and.(kount.gt.maxmes).and.(mkntrl.eq.1))&
+     &.or.((llevel.eq.2)   .and.(kount.gt.max(1,maxmes)))) go to 100
+         if (lkntrl.le.0) go to 20
+            call xerprt('    ',1)
 !           INTRODUCTION
-            IF (LLEVEL.EQ.(-1)) CALL XERPRT
+           if (llevel.eq.(-1)) call xerprt&
      &('WARNING MESSAGE...THIS MESSAGE WILL ONLY BE PRINTED ONCE.',57)
-            IF (LLEVEL.EQ.0) CALL XERPRT('WARNING IN...',13)
-            IF (LLEVEL.EQ.1) CALL XERPRT
+            if (llevel.eq.0) call xerprt('WARNING IN...',13)
+           if (llevel.eq.1) call xerprt&
      &      ('RECOVERABLE ERROR IN...',23)
-            IF (LLEVEL.EQ.2) CALL XERPRT('FATAL ERROR IN...',17)
-   20    CONTINUE
+            if (llevel.eq.2) call xerprt('FATAL ERROR IN...',17)
+   20    continue
 !        MESSAGE
-         CALL XERPRT(MESSG,LMESSG)
-         CALL XGETUA(LUN,NUNIT)
-         DO 50 KUNIT=1,NUNIT
-            IUNIT = LUN(KUNIT)
-            IF (IUNIT.EQ.0) IUNIT = I1MACH(4)
-            IF (NI.GE.1) WRITE (IUNIT,22) I1
-            IF (NI.GE.2) WRITE (IUNIT,23) I2
-            IF (NR.GE.1) WRITE (IUNIT,24) R1
-            IF (NR.GE.2) WRITE (IUNIT,25) R2
-   22       FORMAT (11X,'IN ABOVE MESSAGE, I1=',I10)
-   23       FORMAT (11X,'IN ABOVE MESSAGE, I2=',I10)
-   24       FORMAT (11X,'IN ABOVE MESSAGE, R1=',E20.10)
-   25       FORMAT (11X,'IN ABOVE MESSAGE, R2=',E20.10)
-            IF (LKNTRL.LE.0) GO TO 40
+         call xerprt(messg,lmessg)
+         call xgetua(lun,nunit)
+         do 50 kunit=1,nunit
+            iunit = lun(kunit)
+            if (iunit.eq.0) iunit = i1mach(4)
+            if (ni.ge.1) write (iunit,22) i1
+            if (ni.ge.2) write (iunit,23) i2
+            if (nr.ge.1) write (iunit,24) r1
+            if (nr.ge.2) write (iunit,25) r2
+   22       format (11x,'IN ABOVE MESSAGE, I1=',i10)
+   23       format (11x,'IN ABOVE MESSAGE, I2=',i10)
+   24       format (11x,'IN ABOVE MESSAGE, R1=',e20.10)
+   25       format (11x,'IN ABOVE MESSAGE, R2=',e20.10)
+            if (lkntrl.le.0) go to 40
 !              ERROR NUMBER
-               WRITE (IUNIT,30) LERR
-   30          FORMAT (' ERROR NUMBER =',I10)
-   40       CONTINUE
-   50    CONTINUE
+               write (iunit,30) lerr
+   30          format (' ERROR NUMBER =',i10)
+   40       continue
+   50    continue
 !        TRACE-BACK
-         IF (LKNTRL.GT.0) CALL FDUMP
-  100 CONTINUE
-      IFATAL = 0
-      IF ((LLEVEL.EQ.2).OR.((LLEVEL.EQ.1).AND.(MKNTRL.EQ.2)))
-     &IFATAL = 1
+         if (lkntrl.gt.0) call fdump
+  100 continue
+      ifatal = 0
+     if ((llevel.eq.2).or.((llevel.eq.1).and.(mkntrl.eq.2)))&
+     &ifatal = 1
 !     QUIT HERE IF MESSAGE IS NOT FATAL
-      IF (IFATAL.LE.0) RETURN
-      IF ((LKNTRL.LE.0).OR.(KOUNT.GT.MAX(1,MAXMES))) GO TO 120
+      if (ifatal.le.0) return
+      if ((lkntrl.le.0).or.(kount.gt.max(1,maxmes))) go to 120
 !        PRINT REASON FOR ABORT
-         IF (LLEVEL.EQ.1) CALL XERPRT
+        if (llevel.eq.1) call xerprt&
      &   ('JOB ABORT DUE TO UNRECOVERED ERROR.',35)
-         IF (LLEVEL.EQ.2) CALL XERPRT
+        if (llevel.eq.2) call xerprt&
      &   ('JOB ABORT DUE TO FATAL ERROR.',29)
 !        PRINT ERROR SUMMARY
-         CALL XERSAV('    ',-1,0,0,KDUMMY)
-  120 CONTINUE
+         call xersav('    ',-1,0,0,kdummy)
+  120 continue
 !     ABORT
-      IF ((LLEVEL.EQ.2).AND.(KOUNT.GT.MAX(1,MAXMES))) LMESSG = 0
-      CALL XERABT(MESSG,LMESSG)
-      RETURN
-      END
+      if ((llevel.eq.2).and.(kount.gt.max(1,maxmes))) lmessg = 0
+      call xerabt(messg,lmessg)
+      return
+      end

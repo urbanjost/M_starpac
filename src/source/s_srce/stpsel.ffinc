@@ -1,7 +1,7 @@
 !STPSEL
-      SUBROUTINE STPSEL(XM, N, M, IXM, MDL, PAR, NPAR,
-     &   NEXMPT, STP, NFAIL, IFAIL, J, ETA3, RELTOL, ABSTOL, TAUABS,
-     &   STPLOW, STPMID, STPUP, ITEMP, FD, FDLAST, FDSAVE, PV, PVNEW)
+     subroutine stpsel(xm, n, m, ixm, mdl, par, npar,&
+    &   nexmpt, stp, nfail, ifail, j, eta3, reltol, abstol, tauabs,&
+     &   stplow, stpmid, stpup, itemp, fd, fdlast, fdsave, pv, pvnew)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,40 +20,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ABSTOL,ETA3,RELTOL,STP,STPLOW,STPMID,STPUP,TAUABS
-      INTEGER
-     &   IXM,J,M,N,NEXMPT,NFAIL,NPAR
+     real(kind=wp) ::&
+     &   abstol,eta3,reltol,stp,stplow,stpmid,stpup,tauabs
+     integer&
+     &   ixm,j,m,n,nexmpt,nfail,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FD(N),FDLAST(N),FDSAVE(N),PAR(NPAR),PV(N),PVNEW(N),XM(IXM,M)
-      INTEGER
-     &   IFAIL(N),ITEMP(N)
+     real(kind=wp) ::&
+     &   fd(n),fdlast(n),fdsave(n),par(npar),pv(n),pvnew(n),xm(ixm,m)
+     integer&
+     &   ifail(n),itemp(n)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL MDL
+       external mdl
 !
 !  SCALARS IN COMMON
-      REAL(KIND=WP) ::
-     &   Q
+     real(kind=wp) ::&
+     &   q
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FACTOR,STP1,STP2,STPNEW,TEMP
-      INTEGER
-     &   NCOUNT
-      LOGICAL
-     &   FAIL,FIRST,FORWRD,HICURV,SUCCES
+     real(kind=wp) ::&
+     &   factor,stp1,stp2,stpnew,temp
+     integer&
+     &   ncount
+     logical&
+     &   fail,first,forwrd,hicurv,succes
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL ABSCOM,CMPFD,ICOPY,RELCOM,STPADJ
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS
+      intrinsic abs
 !
 !  COMMON BLOCKS
-      COMMON /NOTOPT/Q
+      common /notopt/q
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -154,109 +154,109 @@
 !        THE ARRAY IN WHICH ONE ROW OF THE INDEPENDENT VARIABLE ARRAY
 !        IS STORED.
 !
-      CALL SCOPY(N, FD, 1, FDSAVE, 1)
+      call scopy(n, fd, 1, fdsave, 1)
 !
-      FACTOR = 10.0E0
-      IF (ABS(STP) .GT. STPMID) FACTOR = 0.1E0
+      factor = 10.0e0
+      if (abs(stp) .gt. stpmid) factor = 0.1e0
 !
-      STPNEW = STP * FACTOR
-      STP1 = STPNEW
-      STP2 = STPNEW
+      stpnew = stp * factor
+      stp1 = stpnew
+      stp2 = stpnew
 !
-      Q = STPNEW + PAR(J)
-      STPNEW = Q - PAR(J)
+      q = stpnew + par(j)
+      stpnew = q - par(j)
 !
-      FIRST = .TRUE.
-      FORWRD = .TRUE.
-      SUCCES = .FALSE.
-      FAIL = .FALSE.
+      first = .true.
+      forwrd = .true.
+      succes = .false.
+      fail = .false.
 !
-      NFAIL = N + 1
+      nfail = n + 1
 !
 !     REPEAT FOLLOWING UNTIL (SUCCES) OR (FAIL)
 !
-   10 CONTINUE
+   10 continue
 !
-      CALL SCOPY(N, FD, 1, FDLAST, 1)
+      call scopy(n, fd, 1, fdlast, 1)
 !
-      TEMP = PAR(J)
-      PAR(J) = TEMP + STPNEW
+      temp = par(j)
+      par(j) = temp + stpnew
 !
-      CALL MDL(PAR, NPAR, XM, N, M, IXM, PVNEW)
+      call mdl(par, npar, xm, n, m, ixm, pvnew)
 !
-      PAR(J) = TEMP
+      par(j) = temp
 !
-      CALL CMPFD(N, STPNEW, PVNEW, PV, FD)
+      call cmpfd(n, stpnew, pvnew, pv, fd)
 !
-      CALL RELCOM(N, FD, FDLAST, RELTOL, ABSTOL, NCOUNT, ITEMP)
+      call relcom(n, fd, fdlast, reltol, abstol, ncount, itemp)
 !
-      IF (NCOUNT.LE.NEXMPT) THEN
-            SUCCES = .TRUE.
-            NFAIL = NCOUNT
-            CALL ICOPY(N, ITEMP, 1, IFAIL, 1)
-            IF (ABS(ABS(STPNEW) - STPMID) .GT.
-     &         ABS(ABS(STPNEW/FACTOR) - STPMID)) THEN
-                  STP = STPNEW / FACTOR
-            ELSE
-                  STP = STPNEW
-            END IF
-      ELSE
-            IF (NCOUNT.LT.NFAIL) THEN
-                  NFAIL = NCOUNT
-                  STP1 = STPNEW
-                  STP2 = STPNEW / FACTOR
-                  CALL ICOPY(N, ITEMP, 1, IFAIL, 1)
-            END IF
-            IF (FIRST) THEN
-                  FIRST = .FALSE.
-                  CALL ABSCOM(N, FD, FDLAST, TAUABS, NCOUNT)
-                  IF (NCOUNT.LE.NEXMPT) THEN
-                         HICURV = .TRUE.
-                  ELSE
-                         HICURV = .FALSE.
-                  END IF
-            END IF
-            STPNEW = STPNEW * FACTOR
-            Q = STPNEW + PAR(J)
-            STPNEW = Q - PAR(J)
-            IF ((FACTOR.GT.1.0E0 .AND. ABS(STPNEW).GT.STPUP) .OR.
-     &          (FACTOR.LT.1.0E0 .AND. ABS(STPNEW).LT.STPLOW)) THEN
-                  IF (FORWRD) THEN
-                        FORWRD = .FALSE.
-                        FACTOR = 1.0E0 / FACTOR
-                        STPNEW = STP * FACTOR
-                        Q = STPNEW + PAR(J)
-                        STPNEW = Q - PAR(J)
-                        CALL SCOPY(N, FDSAVE, 1, FD, 1)
-                        STPLOW = STPLOW * (ETA3)
-                        STPUP = STPUP / (ETA3)
-                  ELSE
-                        FAIL = .TRUE.
-                  END IF
-            END IF
-      END IF
+      if (ncount.le.nexmpt) then
+            succes = .true.
+            nfail = ncount
+            call icopy(n, itemp, 1, ifail, 1)
+           if (abs(abs(stpnew) - stpmid) .gt.&
+     &         abs(abs(stpnew/factor) - stpmid)) then
+                  stp = stpnew / factor
+            else
+                  stp = stpnew
+            end if
+      else
+            if (ncount.lt.nfail) then
+                  nfail = ncount
+                  stp1 = stpnew
+                  stp2 = stpnew / factor
+                  call icopy(n, itemp, 1, ifail, 1)
+            end if
+            if (first) then
+                  first = .false.
+                  call abscom(n, fd, fdlast, tauabs, ncount)
+                  if (ncount.le.nexmpt) then
+                         hicurv = .true.
+                  else
+                         hicurv = .false.
+                  end if
+            end if
+            stpnew = stpnew * factor
+            q = stpnew + par(j)
+            stpnew = q - par(j)
+           if ((factor.gt.1.0e0 .and. abs(stpnew).gt.stpup) .or.&
+     &          (factor.lt.1.0e0 .and. abs(stpnew).lt.stplow)) then
+                  if (forwrd) then
+                        forwrd = .false.
+                        factor = 1.0e0 / factor
+                        stpnew = stp * factor
+                        q = stpnew + par(j)
+                        stpnew = q - par(j)
+                        call scopy(n, fdsave, 1, fd, 1)
+                        stplow = stplow * (eta3)
+                        stpup = stpup / (eta3)
+                  else
+                        fail = .true.
+                  end if
+            end if
+      end if
 !
-      IF (.NOT.(SUCCES.OR.FAIL)) GO TO 10
+      if (.not.(succes.or.fail)) go to 10
 !
-      IF (SUCCES .AND. FORWRD) THEN
-            CALL STPADJ(XM, N, M, IXM, MDL, PAR, NPAR,
-     &         NEXMPT, STP, NFAIL, IFAIL, J, RELTOL, ABSTOL, STPLOW,
-     &         STPMID, STPUP, ITEMP, FD, FDLAST, PV, PVNEW)
-            RETURN
-      ELSE
-            IF (SUCCES) THEN
-                  RETURN
-            ELSE
+      if (succes .and. forwrd) then
+           call stpadj(xm, n, m, ixm, mdl, par, npar,&
+    &         nexmpt, stp, nfail, ifail, j, reltol, abstol, stplow,&
+     &         stpmid, stpup, itemp, fd, fdlast, pv, pvnew)
+            return
+      else
+            if (succes) then
+                  return
+            else
 !                 IF (HICURV) NFAIL = -NFAIL
 !
-                  IF (ABS(STP1).LT.ABS(STP2)) THEN
-                        STP = STP1
-                        RETURN
-                  ELSE
-                        STP = STP2
-                        RETURN
-                  END IF
-            END IF
-      END IF
+                  if (abs(stp1).lt.abs(stp2)) then
+                        stp = stp1
+                        return
+                  else
+                        stp = stp2
+                        return
+                  end if
+            end if
+      end if
 !
-      END
+      end

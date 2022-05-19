@@ -1,5 +1,5 @@
 !ENFFT
-      SUBROUTINE ENFFT(NMSUB, NFFT, NDIV, N, LYFFT, NFFT2, HEAD, ERROR)
+      subroutine enfft(nmsub, nfft, ndiv, n, lyfft, nfft2, head, error)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -21,24 +21,24 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LYFFT,N,NDIV,NFFT,NFFT2
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   lyfft,n,ndiv,nfft,nfft2
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT,NFFT1
+     integer&
+     &   iprt,nfft1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT,SETESL
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -66,60 +66,60 @@
 !        EXCEEDS NFFT AND WHICH MEETS THE REQUIREMENTS OF
 !        SINGLETONS FFT CODE.
 !
-      ERROR = .FALSE.
-      CALL IPRINT (IPRT)
+      error = .false.
+      call iprint (iprt)
 !
-      IF (NFFT .GE. N+2) GO TO 20
-!
-!     PRINT WARNING
-!
-      CALL EHDR(NMSUB, HEAD)
-!
-      WRITE (IPRT, 1050) N
-!
-   20 CONTINUE
-      NFFT1 = MAX(NFFT, N+2)
-      CALL SETESL(NFFT1-2, NDIV, NFFT2)
-!
-      IF (NFFT .EQ. NFFT2) RETURN
+      if (nfft .ge. n+2) go to 20
 !
 !     PRINT WARNING
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      WRITE (IPRT, 1020) NFFT, NFFT2
+      write (iprt, 1050) n
 !
-      IF (NFFT .GT. LYFFT) GO TO 40
+   20 continue
+      nfft1 = max(nfft, n+2)
+      call setesl(nfft1-2, ndiv, nfft2)
 !
-      WRITE (IPRT, 1030) NFFT2
-      RETURN
+      if (nfft .eq. nfft2) return
 !
-   40 CONTINUE
+!     PRINT WARNING
 !
-      ERROR = .TRUE.
+      call ehdr(nmsub, head)
 !
-      WRITE (IPRT, 1040) NFFT2, LYFFT
-      RETURN
+      write (iprt, 1020) nfft, nfft2
+!
+      if (nfft .gt. lyfft) go to 40
+!
+      write (iprt, 1030) nfft2
+      return
+!
+   40 continue
+!
+      error = .true.
+!
+      write (iprt, 1040) nfft2, lyfft
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1020 FORMAT (/
-     &   40H THE INPUT VALUE OF THE PARAMETER NFFT (, I5,
-     &   15H) DOES NOT MEET/
-     &   51H THE REQUIREMENTS OF SINGLETONS FFT CODE.  THE NEXT,
-     &   13H LARGER VALUE/
-     &   15H WHICH DOES IS , I5, '.')
- 1030 FORMAT (/
-     &   11H THE VALUE , I5, 37H WILL BE USED FOR THE EXTENDED SERIES,
-     &    8H LENGTH.)
- 1040 FORMAT (/
-     &   20H HOWEVER, THE VALUE , I5, 27H EXCEEDS THE LENGTH LYFFT (,
-     &   I5, 8H) OF THE/
-     &   58H VECTOR YFFT, AND THEREFORE CANNOT BE USED AS THE EXTENDED/
-     &   43H SERIES LENGTH WITHOUT REDIMENSIONING YFFT.)
- 1050 FORMAT (/
-     &   56H THE EXTENDED SERIES LENGTH (NFFT) MUST EQUAL OR EXCEED,/
-     &   45H THE NUMBER OF OBSERVATIONS IN THE SERIES (N=, I5,
-     &    9H) PLUS 2.)
+1020 format (/&
+    &   40h the input value of the parameter nfft (, i5,&
+    &   15h) does not meet/&
+    &   51h the requirements of singletons fft code.  the next,&
+    &   13h larger value/&
+     &   15h which does is , i5, '.')
+1030 format (/&
+    &   11h the value , i5, 37h will be used for the extended series,&
+     &    8h length.)
+1040 format (/&
+    &   20h however, the value , i5, 27h exceeds the length lyfft (,&
+    &   i5, 8h) of the/&
+    &   58h vector yfft, and therefore cannot be used as the extended/&
+     &   43h series length without redimensioning yfft.)
+1050 format (/&
+    &   56h the extended series length (nfft) must equal or exceed,/&
+    &   45h the number of observations in the series (n=, i5,&
+     &    9h) plus 2.)
 !
-      END
+      end

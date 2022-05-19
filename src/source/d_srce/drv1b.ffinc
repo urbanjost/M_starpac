@@ -1,5 +1,5 @@
 !DRV1B
-      SUBROUTINE DRV1B(PAR, NPAR, XM, N, M, IXM, D)
+      subroutine drv1b(par, npar, xm, n, m, ixm, d)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,19 +16,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,M,N,NPAR
+     integer&
+     &   ixm,m,n,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   D(N,NPAR),PAR(NPAR),XM(IXM,M)
+     real(kind=wp) ::&
+     &   d(n,npar),par(npar),xm(ixm,m)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC LOG
+      intrinsic log
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -50,11 +50,11 @@
 !        INDEPENDENT VARIABLES
 !
 !
-      DO 10 I=1,N
-         D(I,1) = XM(I,1)*PAR(2)
-         D(I,2) = PAR(1)*(XM(I,1)**PAR(2))*LOG(XM(I,1))
-   10 CONTINUE
+      do 10 i=1,n
+         d(i,1) = xm(i,1)*par(2)
+         d(i,2) = par(1)*(xm(i,1)**par(2))*log(xm(i,1))
+   10 continue
 !
-      RETURN
+      return
 !
-      END
+      end

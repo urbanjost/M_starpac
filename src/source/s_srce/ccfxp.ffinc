@@ -1,6 +1,6 @@
 !CCFXP
-      SUBROUTINE CCFXP (STORE, LAGMAX, M, CCOV, ICCOV, JCCOV, MISS,
-     &   NLPPC,  INLPPC, JNLPPC, CMISS)
+     subroutine ccfxp (store, lagmax, m, ccov, iccov, jccov, miss,&
+     &   nlppc,  inlppc, jnlppc, cmiss)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,30 +17,30 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CMISS
-      INTEGER
-     &   ICCOV,INLPPC,JCCOV,JNLPPC,LAGMAX,M
-      LOGICAL
-     &   MISS,STORE
+     real(kind=wp) ::&
+     &   cmiss
+     integer&
+     &   iccov,inlppc,jccov,jnlppc,lagmax,m
+     logical&
+     &   miss,store
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CCOV(ICCOV,JCCOV,*)
-      INTEGER
-     &   NLPPC(INLPPC,JNLPPC,*)
+     real(kind=wp) ::&
+     &   ccov(iccov,jccov,*)
+     integer&
+     &   nlppc(inlppc,jnlppc,*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,J,K,L,L1,LAG
+     integer&
+     &   i,iprt,j,k,l,l1,lag
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   CCF(16)
+     real(kind=wp) ::&
+     &   ccf(16)
 !
 !  EXTERNAL FUNCTIONS
 !      LOGICAL
@@ -51,10 +51,10 @@
 !      EXTERNAL IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -102,88 +102,88 @@
 !        THE VALUE INDICATING WHETHER THE RESULTS WERE RETURNED
 !        TO THE USER (TRUE) OR NOT (FALSE).
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     PRINT IERR
 !
-      WRITE (IPRT, 1000) IERR
+      write (iprt, 1000) ierr
 !
-      IF (IERR.NE.0) RETURN
+      if (ierr.ne.0) return
 !
 !     CHECK FOR STORED RESULTS
 !
-      IF (.NOT.STORE) RETURN
+      if (.not.store) return
 !
 !     PRINT HEADING FOR CCVF
 !
-      WRITE (IPRT, 1010)
-      WRITE (IPRT, 1040) ((J,K, K=1,M), J=1,M)
+      write (iprt, 1010)
+      write (iprt, 1040) ((j,k, k=1,m), j=1,m)
 !
 !     PRINT CROSS COVARIANCES
 !
-      LAG = 0
-      WRITE (IPRT, 1060) LAG, ((CCOV(1,J,K), K=1,M), J=1,M)
-      DO 10 LAG = 1, LAGMAX
-         WRITE (IPRT, 1060) LAG, ((CCOV(LAG+1,J,K), K=1,M), J=1,M)
-   10 CONTINUE
+      lag = 0
+      write (iprt, 1060) lag, ((ccov(1,j,k), k=1,m), j=1,m)
+      do 10 lag = 1, lagmax
+         write (iprt, 1060) lag, ((ccov(lag+1,j,k), k=1,m), j=1,m)
+   10 continue
 !
 !     PRINT HEADING FOR CCF
 !
-      WRITE (IPRT, 1020)
-      WRITE (IPRT, 1040) ((J,K, K=1,M), J=1,M)
+      write (iprt, 1020)
+      write (iprt, 1040) ((j,k, k=1,m), j=1,m)
 !
 !     PRINT CROSS CORRELATIONS
 !
-      LAG = 0
-      I = 0
-      DO 30 J = 1, M
-         DO 20 K = 1, M
-            I = I + 1
-            CCF(I) = CCOV(1,J,K) / SQRT(CCOV(1,J,J)*CCOV(1,K,K))
-   20    CONTINUE
-   30 CONTINUE
-      WRITE (IPRT, 1060) LAG, (CCF(L), L=1,I)
+      lag = 0
+      i = 0
+      do 30 j = 1, m
+         do 20 k = 1, m
+            i = i + 1
+            ccf(i) = ccov(1,j,k) / sqrt(ccov(1,j,j)*ccov(1,k,k))
+   20    continue
+   30 continue
+      write (iprt, 1060) lag, (ccf(l), l=1,i)
 !
-      DO 60 LAG = 1, LAGMAX
-         I = 0
-         DO 50 J = 1, M
-            DO 40 K = 1, M
-               I = I + 1
-               IF (.NOT.MISS) GO TO 35
-               CCF(I) = CMISS
-               IF (MVCHK(CCOV(LAG+1,J,K),CMISS)) GO TO 40
-   35          CCF(I) = CCOV(LAG+1,J,K) / SQRT(CCOV(1,J,J)*CCOV(1,K,K))
-   40       CONTINUE
-   50    CONTINUE
-         WRITE (IPRT, 1060) LAG, (CCF(L1), L1=1,I)
-   60 CONTINUE
+      do 60 lag = 1, lagmax
+         i = 0
+         do 50 j = 1, m
+            do 40 k = 1, m
+               i = i + 1
+               if (.not.miss) go to 35
+               ccf(i) = cmiss
+               if (mvchk(ccov(lag+1,j,k),cmiss)) go to 40
+   35          ccf(i) = ccov(lag+1,j,k) / sqrt(ccov(1,j,j)*ccov(1,k,k))
+   40       continue
+   50    continue
+         write (iprt, 1060) lag, (ccf(l1), l1=1,i)
+   60 continue
 !
 !     CHECK FOR MISSING VALUES
 !
-      IF (.NOT.MISS) RETURN
+      if (.not.miss) return
 !
 !     PRINT HEADING FOR NUMBERS OF LAGGED PRODUCT PAIRS
 !
-      WRITE (IPRT, 1030)
-      WRITE (IPRT, 1040) ((J,K, K=1,M), J=1,M)
+      write (iprt, 1030)
+      write (iprt, 1040) ((j,k, k=1,m), j=1,m)
 !
 !     PRINT NUMBERS OF LAGGED PRODUCT PAIRS FOR EACH CCVF
 !
-      LAG = 0
-      WRITE (IPRT, 1070) LAG, ((NLPPC(1,J,K), K=1,M), J=1,M)
-      DO 70 LAG = 1, LAGMAX
-         WRITE (IPRT, 1070) LAG, ((NLPPC(LAG+1,J,K), K=1,M), J=1,M)
-   70 CONTINUE
+      lag = 0
+      write (iprt, 1070) lag, ((nlppc(1,j,k), k=1,m), j=1,m)
+      do 70 lag = 1, lagmax
+         write (iprt, 1070) lag, ((nlppc(lag+1,j,k), k=1,m), j=1,m)
+   70 continue
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (//8H IERR = , I5)
- 1010 FORMAT (// 6X, 6H  CCVF)
- 1020 FORMAT (// 6X, 6H   CCF)
- 1030 FORMAT (// 6X, 6H NLPPC)
- 1040 FORMAT (1X, 3HLAG, 16(5X, I1, ',', I1))
- 1060 FORMAT (1X, I3, 16F8.4)
- 1070 FORMAT (1X, I3, 16I8)
-      END
+ 1000 format (//8h ierr = , i5)
+ 1010 format (// 6x, 6h  ccvf)
+ 1020 format (// 6x, 6h   ccf)
+ 1030 format (// 6x, 6h nlppc)
+ 1040 format (1x, 3hlag, 16(5x, i1, ',', i1))
+ 1060 format (1x, i3, 16f8.4)
+ 1070 format (1x, i3, 16i8)
+      end

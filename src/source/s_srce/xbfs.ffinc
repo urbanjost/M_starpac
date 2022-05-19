@@ -1,5 +1,5 @@
 !XBFS
-      SUBROUTINE XBFS(LDS,typ)
+      subroutine xbfs(lds,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -19,40 +19,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDS
+     integer&
+     &   lds
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) :: CMISS,FMAX,FMIN,YMISS,YMISS1,YMISS2
-      INTEGER
-     &   I,ICCOV,ICSPC2,INDEX1,INDEX2,INLPPC,IPHAS,IPRT,ISPCF,J,
-     &   JCCOV,JNLPPC,LACOV,LAGMAX,LDSTAK,LYFFT,N,NF,NPRT,NW
+      real(kind=wp) :: cmiss,fmax,fmin,ymiss,ymiss1,ymiss2
+     integer&
+    &   i,iccov,icspc2,index1,index2,inlppc,iphas,iprt,ispcf,j,&
+     &   jccov,jnlppc,lacov,lagmax,ldstak,lyfft,n,nf,nprt,nw
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   CCOV(101,2,2),CSPC2(300,2),FREQ(300),PHAS(300,2),Y1(150),
-     &   Y2(150),YFFT1(400),YFFT2(400),YM(150,2),YMMISS(4)
-      INTEGER
-     &   LAGS(4),NLPPC(101,2,2)
+     real(kind=wp) ::&
+    &   ccov(101,2,2),cspc2(300,2),freq(300),phas(300,2),y1(150),&
+     &   y2(150),yfft1(400),yfft2(400),ym(150,2),ymmiss(4)
+     integer&
+     &   lags(4),nlppc(101,2,2)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL BFS,BFSF,BFSFS,BFSM,BFSMS,BFSMV,BFSMVS,BFSS,BFSV,BFSVS,
 !     +   CCFMS,CCFS,IPRINT,NRAND,SETIV,SETRV
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (YM(1,1),Y1(1))
-      EQUIVALENCE (YM(1,2),Y2(1))
+      equivalence (ym(1,1),y1(1))
+      equivalence (ym(1,2),y2(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -130,600 +130,600 @@
 !     REAL Y1(150), Y2(150)
 !         THE VECTORS CONTAINING THE TIME SERIES FROM JENKINS AND WATTS.
 !
-      DATA   Y1(  1),  Y1(  2),  Y1(  3),  Y1(  4),  Y1(  5),  Y1(  6)
-     &    /-0.88_WP, -0.16_WP, -1.87_WP, -1.12_WP,  1.38_WP,  2.13_WP/
-      DATA   Y1(  7),  Y1(  8),  Y1(  9),  Y1( 10),  Y1( 11),  Y1( 12)
-     &    / 2.76_WP,  0.56_WP, -0.69_WP, -1.79_WP, -3.82_WP, -2.38_WP/
-      DATA   Y1( 13),  Y1( 14),  Y1( 15),  Y1( 16),  Y1( 17),  Y1( 18)
-     &    / 1.00_WP,  0.70_WP, -0.15_WP,  0.98_WP,  0.11_WP, -0.35_WP/
-      DATA   Y1( 19),  Y1( 20),  Y1( 21),  Y1( 22),  Y1( 23),  Y1( 24)
-     &    /-0.73_WP,  0.89_WP, -1.63_WP, -0.44_WP, -1.37_WP, -1.71_WP/
-      DATA   Y1( 25),  Y1( 26),  Y1( 27),  Y1( 28),  Y1( 29),  Y1( 30)
-     &    /-1.22_WP, -2.00_WP, -0.22_WP,  0.38_WP,  1.31_WP,  0.71_WP/
-      DATA   Y1( 31),  Y1( 32),  Y1( 33),  Y1( 34),  Y1( 35),  Y1( 36)
-     &    / 0.32_WP,  0.48_WP, -1.88_WP, -0.94_WP, -1.54_WP, -0.13_WP/
-      DATA   Y1( 37),  Y1( 38),  Y1( 39),  Y1( 40),  Y1( 41),  Y1( 42)
-     &    / 1.02_WP,  0.02_WP, -0.77_WP,  0.11_WP, -0.60_WP, -0.52_WP/
-      DATA   Y1( 43),  Y1( 44),  Y1( 45),  Y1( 46),  Y1( 47),  Y1( 48)
-     &    /-0.09_WP,  1.23_WP,  1.46_WP,  0.61_WP,  0.42_WP,  2.16_WP/
-      DATA   Y1( 49),  Y1( 50),  Y1( 51),  Y1( 52),  Y1( 53),  Y1( 54)
-     &    / 3.18_WP,  2.10_WP,  0.37_WP, -0.24_WP,  0.57_WP, -0.53_WP/
-      DATA   Y1( 55),  Y1( 56),  Y1( 57),  Y1( 58),  Y1( 59),  Y1( 60)
-     &    / 2.44_WP,  1.02_WP, -0.53_WP, -2.49_WP, -2.12_WP, -1.04_WP/
-      DATA   Y1( 61),  Y1( 62),  Y1( 63),  Y1( 64),  Y1( 65),  Y1( 66)
-     &    /-0.12_WP, -1.88_WP, -1.50_WP,  1.54_WP,  3.33_WP,  3.08_WP/
-      DATA   Y1( 67),  Y1( 68),  Y1( 69),  Y1( 70),  Y1( 71),  Y1( 72)
-     &    / 1.71_WP,  0.79_WP,  1.55_WP,  0.89_WP, -0.89_WP, -1.18_WP/
-      DATA   Y1( 73),  Y1( 74),  Y1( 75),  Y1( 76),  Y1( 77),  Y1( 78)
-     &    / 0.89_WP,  1.71_WP,  3.05_WP,  0.15_WP, -1.04_WP,  0.12_WP/
-      DATA   Y1( 79),  Y1( 80),  Y1( 81),  Y1( 82),  Y1( 83),  Y1( 84)
-     &    / 0.08_WP,  0.11_WP, -2.62_WP, -1.28_WP,  1.07_WP,  3.20_WP/
-      DATA   Y1( 85),  Y1( 86),  Y1( 87),  Y1( 88),  Y1( 89),  Y1( 90)
-     &    / 1.92_WP,  0.53_WP, -1.08_WP,  0.49_WP, -0.58_WP,  0.17_WP/
-      DATA   Y1( 91),  Y1( 92),  Y1( 93),  Y1( 94),  Y1( 95),  Y1( 96)
-     &    / 1.15_WP, -0.97_WP, -1.63_WP,  1.14_WP, -0.67_WP, -0.88_WP/
-      DATA   Y1( 97),  Y1( 98),  Y1( 99),  Y1(100)
-     &    /-0.07_WP,  0.24_WP,  0.55_WP, -2.16_WP/
-      DATA   Y2(  1),  Y2(  2),  Y2(  3),  Y2(  4),  Y2(  5),  Y2(  6)
-     &    / 0.79_WP,  1.12_WP, -1.10_WP, -2.39_WP, -1.75_WP, -0.82_WP/
-      DATA   Y2(  7),  Y2(  8),  Y2(  9),  Y2( 10),  Y2( 11),  Y2( 12)
-     &    /-0.36_WP,  1.27_WP,  1.75_WP,  2.44_WP,  0.36_WP, -2.10_WP/
-      DATA   Y2( 13),  Y2( 14),  Y2( 15),  Y2( 16),  Y2( 17),  Y2( 18)
-     &    /-1.93_WP, -1.30_WP, -1.75_WP, -0.34_WP,  0.74_WP,  0.49_WP/
-      DATA   Y2( 19),  Y2( 20),  Y2( 21),  Y2( 22),  Y2( 23),  Y2( 24)
-     &    / 0.70_WP,  0.71_WP,  0.09_WP,  0.59_WP,  1.54_WP,  0.14_WP/
-      DATA   Y2( 25),  Y2( 26),  Y2( 27),  Y2( 28),  Y2( 29),  Y2( 30)
-     &    / 0.55_WP, -1.40_WP, -2.55_WP, -1.66_WP, -0.43_WP,  0.58_WP/
-      DATA   Y2( 31),  Y2( 32),  Y2( 33),  Y2( 34),  Y2( 35),  Y2( 36)
-     &    / 2.18_WP, -0.24_WP,  0.58_WP, -0.18_WP, -1.55_WP, -0.64_WP/
-      DATA   Y2( 37),  Y2( 38),  Y2( 39),  Y2( 40),  Y2( 41),  Y2( 42)
-     &    /-1.09_WP,  0.90_WP, -0.66_WP, -0.35_WP,  0.48_WP,  0.50_WP/
-      DATA   Y2( 43),  Y2( 44),  Y2( 45),  Y2( 46),  Y2( 47),  Y2( 48)
-     &    / 0.05_WP, -0.68_WP,  0.24_WP,  0.58_WP, -1.26_WP, -0.25_WP/
-      DATA   Y2( 49),  Y2( 50),  Y2( 51),  Y2( 52),  Y2( 53),  Y2( 54)
-     &    / 0.25_WP,  2.18_WP,  2.96_WP,  1.56_WP, -0.36_WP, -0.59_WP/
-      DATA   Y2( 55),  Y2( 56),  Y2( 57),  Y2( 58),  Y2( 59),  Y2( 60)
-     &    /-0.12_WP,  3.03_WP,  2.11_WP,  0.78_WP,  0.89_WP, -1.45_WP/
-      DATA   Y2( 61),  Y2( 62),  Y2( 63),  Y2( 64),  Y2( 65),  Y2( 66)
-     &    /-0.36_WP, -0.37_WP, -1.39_WP, -4.19_WP, -0.73_WP, -0.98_WP/
-      DATA   Y2( 67),  Y2( 68),  Y2( 69),  Y2( 70),  Y2( 71),  Y2( 72)
-     &    / 0.36_WP,  0.06_WP, -1.94_WP, -0.08_WP,  0.17_WP,  1.00_WP/
-      DATA   Y2( 73),  Y2( 74),  Y2( 75),  Y2( 76),  Y2( 77),  Y2( 78)
-     &    /-0.05_WP,  0.43_WP,  0.15_WP,  2.69_WP,  0.57_WP,  0.29_WP/
-      DATA   Y2( 79),  Y2( 80),  Y2( 81),  Y2( 82),  Y2( 83),  Y2( 84)
-     &    / 1.10_WP,  0.48_WP, -1.06_WP, -2.28_WP, -2.03_WP, -0.75_WP/
-      DATA   Y2( 85),  Y2( 86),  Y2( 87),  Y2( 88),  Y2( 89),  Y2( 90)
-     &    / 1.00_WP,  1.71_WP,  0.58_WP,  1.97_WP,  0.99_WP,  1.94_WP/
-      DATA   Y2( 91),  Y2( 92),  Y2( 93),  Y2( 94),  Y2( 95),  Y2( 96)
-     &    / 2.18_WP,  3.14_WP,  0.60_WP,  0.51_WP,  1.35_WP,  0.56_WP/
-      DATA   Y2( 97),  Y2( 98),  Y2( 99),  Y2(100)
-     &    / 0.11_WP,  0.00_WP,  2.34_WP,  1.88_WP/
+     data   y1(  1),  y1(  2),  y1(  3),  y1(  4),  y1(  5),  y1(  6)&
+     &    /-0.88_wp, -0.16_wp, -1.87_wp, -1.12_wp,  1.38_wp,  2.13_wp/
+     data   y1(  7),  y1(  8),  y1(  9),  y1( 10),  y1( 11),  y1( 12)&
+     &    / 2.76_wp,  0.56_wp, -0.69_wp, -1.79_wp, -3.82_wp, -2.38_wp/
+     data   y1( 13),  y1( 14),  y1( 15),  y1( 16),  y1( 17),  y1( 18)&
+     &    / 1.00_wp,  0.70_wp, -0.15_wp,  0.98_wp,  0.11_wp, -0.35_wp/
+     data   y1( 19),  y1( 20),  y1( 21),  y1( 22),  y1( 23),  y1( 24)&
+     &    /-0.73_wp,  0.89_wp, -1.63_wp, -0.44_wp, -1.37_wp, -1.71_wp/
+     data   y1( 25),  y1( 26),  y1( 27),  y1( 28),  y1( 29),  y1( 30)&
+     &    /-1.22_wp, -2.00_wp, -0.22_wp,  0.38_wp,  1.31_wp,  0.71_wp/
+     data   y1( 31),  y1( 32),  y1( 33),  y1( 34),  y1( 35),  y1( 36)&
+     &    / 0.32_wp,  0.48_wp, -1.88_wp, -0.94_wp, -1.54_wp, -0.13_wp/
+     data   y1( 37),  y1( 38),  y1( 39),  y1( 40),  y1( 41),  y1( 42)&
+     &    / 1.02_wp,  0.02_wp, -0.77_wp,  0.11_wp, -0.60_wp, -0.52_wp/
+     data   y1( 43),  y1( 44),  y1( 45),  y1( 46),  y1( 47),  y1( 48)&
+     &    /-0.09_wp,  1.23_wp,  1.46_wp,  0.61_wp,  0.42_wp,  2.16_wp/
+     data   y1( 49),  y1( 50),  y1( 51),  y1( 52),  y1( 53),  y1( 54)&
+     &    / 3.18_wp,  2.10_wp,  0.37_wp, -0.24_wp,  0.57_wp, -0.53_wp/
+     data   y1( 55),  y1( 56),  y1( 57),  y1( 58),  y1( 59),  y1( 60)&
+     &    / 2.44_wp,  1.02_wp, -0.53_wp, -2.49_wp, -2.12_wp, -1.04_wp/
+     data   y1( 61),  y1( 62),  y1( 63),  y1( 64),  y1( 65),  y1( 66)&
+     &    /-0.12_wp, -1.88_wp, -1.50_wp,  1.54_wp,  3.33_wp,  3.08_wp/
+     data   y1( 67),  y1( 68),  y1( 69),  y1( 70),  y1( 71),  y1( 72)&
+     &    / 1.71_wp,  0.79_wp,  1.55_wp,  0.89_wp, -0.89_wp, -1.18_wp/
+     data   y1( 73),  y1( 74),  y1( 75),  y1( 76),  y1( 77),  y1( 78)&
+     &    / 0.89_wp,  1.71_wp,  3.05_wp,  0.15_wp, -1.04_wp,  0.12_wp/
+     data   y1( 79),  y1( 80),  y1( 81),  y1( 82),  y1( 83),  y1( 84)&
+     &    / 0.08_wp,  0.11_wp, -2.62_wp, -1.28_wp,  1.07_wp,  3.20_wp/
+     data   y1( 85),  y1( 86),  y1( 87),  y1( 88),  y1( 89),  y1( 90)&
+     &    / 1.92_wp,  0.53_wp, -1.08_wp,  0.49_wp, -0.58_wp,  0.17_wp/
+     data   y1( 91),  y1( 92),  y1( 93),  y1( 94),  y1( 95),  y1( 96)&
+     &    / 1.15_wp, -0.97_wp, -1.63_wp,  1.14_wp, -0.67_wp, -0.88_wp/
+     data   y1( 97),  y1( 98),  y1( 99),  y1(100)&
+     &    /-0.07_wp,  0.24_wp,  0.55_wp, -2.16_wp/
+     data   y2(  1),  y2(  2),  y2(  3),  y2(  4),  y2(  5),  y2(  6)&
+     &    / 0.79_wp,  1.12_wp, -1.10_wp, -2.39_wp, -1.75_wp, -0.82_wp/
+     data   y2(  7),  y2(  8),  y2(  9),  y2( 10),  y2( 11),  y2( 12)&
+     &    /-0.36_wp,  1.27_wp,  1.75_wp,  2.44_wp,  0.36_wp, -2.10_wp/
+     data   y2( 13),  y2( 14),  y2( 15),  y2( 16),  y2( 17),  y2( 18)&
+     &    /-1.93_wp, -1.30_wp, -1.75_wp, -0.34_wp,  0.74_wp,  0.49_wp/
+     data   y2( 19),  y2( 20),  y2( 21),  y2( 22),  y2( 23),  y2( 24)&
+     &    / 0.70_wp,  0.71_wp,  0.09_wp,  0.59_wp,  1.54_wp,  0.14_wp/
+     data   y2( 25),  y2( 26),  y2( 27),  y2( 28),  y2( 29),  y2( 30)&
+     &    / 0.55_wp, -1.40_wp, -2.55_wp, -1.66_wp, -0.43_wp,  0.58_wp/
+     data   y2( 31),  y2( 32),  y2( 33),  y2( 34),  y2( 35),  y2( 36)&
+     &    / 2.18_wp, -0.24_wp,  0.58_wp, -0.18_wp, -1.55_wp, -0.64_wp/
+     data   y2( 37),  y2( 38),  y2( 39),  y2( 40),  y2( 41),  y2( 42)&
+     &    /-1.09_wp,  0.90_wp, -0.66_wp, -0.35_wp,  0.48_wp,  0.50_wp/
+     data   y2( 43),  y2( 44),  y2( 45),  y2( 46),  y2( 47),  y2( 48)&
+     &    / 0.05_wp, -0.68_wp,  0.24_wp,  0.58_wp, -1.26_wp, -0.25_wp/
+     data   y2( 49),  y2( 50),  y2( 51),  y2( 52),  y2( 53),  y2( 54)&
+     &    / 0.25_wp,  2.18_wp,  2.96_wp,  1.56_wp, -0.36_wp, -0.59_wp/
+     data   y2( 55),  y2( 56),  y2( 57),  y2( 58),  y2( 59),  y2( 60)&
+     &    /-0.12_wp,  3.03_wp,  2.11_wp,  0.78_wp,  0.89_wp, -1.45_wp/
+     data   y2( 61),  y2( 62),  y2( 63),  y2( 64),  y2( 65),  y2( 66)&
+     &    /-0.36_wp, -0.37_wp, -1.39_wp, -4.19_wp, -0.73_wp, -0.98_wp/
+     data   y2( 67),  y2( 68),  y2( 69),  y2( 70),  y2( 71),  y2( 72)&
+     &    / 0.36_wp,  0.06_wp, -1.94_wp, -0.08_wp,  0.17_wp,  1.00_wp/
+     data   y2( 73),  y2( 74),  y2( 75),  y2( 76),  y2( 77),  y2( 78)&
+     &    /-0.05_wp,  0.43_wp,  0.15_wp,  2.69_wp,  0.57_wp,  0.29_wp/
+     data   y2( 79),  y2( 80),  y2( 81),  y2( 82),  y2( 83),  y2( 84)&
+     &    / 1.10_wp,  0.48_wp, -1.06_wp, -2.28_wp, -2.03_wp, -0.75_wp/
+     data   y2( 85),  y2( 86),  y2( 87),  y2( 88),  y2( 89),  y2( 90)&
+     &    / 1.00_wp,  1.71_wp,  0.58_wp,  1.97_wp,  0.99_wp,  1.94_wp/
+     data   y2( 91),  y2( 92),  y2( 93),  y2( 94),  y2( 95),  y2( 96)&
+     &    / 2.18_wp,  3.14_wp,  0.60_wp,  0.51_wp,  1.35_wp,  0.56_wp/
+     data   y2( 97),  y2( 98),  y2( 99),  y2(100)&
+     &    / 0.11_wp,  0.00_wp,  2.34_wp,  1.88_wp/
 !
 !
-      CALL IPRINT(IPRT)
-      CALL SETRV(YMMISS, 4, 0.89_WP)
+      call iprint(iprt)
+      call setrv(ymmiss, 4, 0.89_wp)
 !
 !     CHECK ERROR HANDLING
 !
 !        TEST 1  -  MISCELANEOUS ERROR CHECKING
 !
-      WRITE (IPRT, 2000)
-      LAGMAX = -1
-      N = -10
-      INDEX1 = 0
-      INDEX2 = 0
-      ICCOV = 0
-      JCCOV = 0
-      INLPPC = 0
-      JNLPPC = 0
-      ICSPC2 = -10
-      IPHAS = -10
-      LACOV = -11
-      LYFFT = -11
-      NW = -1
-      NF = -5
-      FMIN = 0.5_WP
-      FMAX = 0.0_WP
-      NPRT = -1
-      ISPCF = -20
-      LDSTAK = 0
-      YMISS1 = 0.89_WP
-      YMISS2 = 0.89_WP
+      write (iprt, 2000)
+      lagmax = -1
+      n = -10
+      index1 = 0
+      index2 = 0
+      iccov = 0
+      jccov = 0
+      inlppc = 0
+      jnlppc = 0
+      icspc2 = -10
+      iphas = -10
+      lacov = -11
+      lyfft = -11
+      nw = -1
+      nf = -5
+      fmin = 0.5_wp
+      fmax = 0.0_wp
+      nprt = -1
+      ispcf = -20
+      ldstak = 0
+      ymiss1 = 0.89_wp
+      ymiss2 = 0.89_wp
 !
-      WRITE(IPRT, 1001)
-      CALL BFS (Y1, Y2, N)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1001)
+      call bfs (y1, y2, n)
+      write (iprt, 1002) ierr
 !
-      WRITE(IPRT, 1003)
-      CALL BFSS(Y1, Y2, N, NW, LAGS, NF, FMIN, FMAX, NPRT,
-     &   CSPC2, ICSPC2, PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1003)
+     call bfss(y1, y2, n, nw, lags, nf, fmin, fmax, nprt,&
+     &   cspc2, icspc2, phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
-      WRITE(IPRT, 1019)
-      CALL BFSF (YFFT1, YFFT2, N, LYFFT, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1019)
+      call bfsf (yfft1, yfft2, n, lyfft, ldstak)
+      write (iprt, 1002) ierr
 !
-      WRITE(IPRT, 1020)
-      CALL BFSFS(YFFT1, YFFT2, N, LYFFT, LDSTAK, NW, LAGS, NF, FMIN,
-     &   FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1020)
+     call bfsfs(yfft1, yfft2, n, lyfft, ldstak, nw, lags, nf, fmin,&
+     &   fmax, nprt, cspc2, icspc2, phas, iphas, freq)
+      write (iprt, 1002) ierr
 !
-      WRITE(IPRT, 1005)
-      CALL BFSM (Y1, YMISS1, Y2, YMISS2, N)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1005)
+      call bfsm (y1, ymiss1, y2, ymiss2, n)
+      write (iprt, 1002) ierr
 !
-      WRITE(IPRT, 1006)
-      CALL BFSMS(Y1, YMISS1, Y2, YMISS2, N, NW, LAGS, NF, FMIN,
-     &   FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1006)
+     call bfsms(y1, ymiss1, y2, ymiss2, n, nw, lags, nf, fmin,&
+     &   fmax, nprt, cspc2, icspc2, phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
-      WRITE (IPRT, 1007)
-      CALL BFSV(CCOV, INDEX1, INDEX2, N, LAGMAX, ICCOV, JCCOV)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1007)
+      call bfsv(ccov, index1, index2, n, lagmax, iccov, jccov)
+      write (iprt, 1002) ierr
 !
-      WRITE (IPRT, 1008)
-      CALL BFSVS (CCOV, INDEX1, INDEX2, N, ICCOV, JCCOV,
-     &   NW, LAGS, NF, FMIN, FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS,
-     &   FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1008)
+     call bfsvs (ccov, index1, index2, n, iccov, jccov,&
+    &   nw, lags, nf, fmin, fmax, nprt, cspc2, icspc2, phas, iphas,&
+     &   freq, ldstak)
+      write (iprt, 1002) ierr
 !
-      WRITE (IPRT, 1021)
-      CALL BFSMV(CCOV, NLPPC, INDEX1, INDEX2, N, LAGMAX, ICCOV, JCCOV,
-     &   INLPPC, JNLPPC)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1021)
+     call bfsmv(ccov, nlppc, index1, index2, n, lagmax, iccov, jccov,&
+     &   inlppc, jnlppc)
+      write (iprt, 1002) ierr
 !
-      WRITE (IPRT, 1022)
-      CALL BFSMVS (CCOV, NLPPC, INDEX1, INDEX2, N, ICCOV, JCCOV,
-     &   INLPPC, JNLPPC, NW, LAGS, NF, FMIN, FMAX, NPRT, CSPC2, ICSPC2,
-     &   PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1022)
+     call bfsmvs (ccov, nlppc, index1, index2, n, iccov, jccov,&
+    &   inlppc, jnlppc, nw, lags, nf, fmin, fmax, nprt, cspc2, icspc2,&
+     &   phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
 !        TEST 2  -  MISCELANEOUS ERROR CHECKING (CONTINUED)
 !
-      WRITE (IPRT, 2010)
-      N = 100
-      LAGMAX = 40
-      INDEX1 = 0
-      INDEX2 = 0
-      ICCOV = 0
-      JCCOV = 0
-      INLPPC = 0
-      JNLPPC = 0
-      ICSPC2 = 300
-      IPHAS = 300
-      LACOV = 101
-      LYFFT = -11
-      NW = 2
-      LAGS(1) = 0
-      LAGS(2) = 100
-      NF = 202
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = 3
-      ISPCF = 101
-      LDSTAK = 0
+      write (iprt, 2010)
+      n = 100
+      lagmax = 40
+      index1 = 0
+      index2 = 0
+      iccov = 0
+      jccov = 0
+      inlppc = 0
+      jnlppc = 0
+      icspc2 = 300
+      iphas = 300
+      lacov = 101
+      lyfft = -11
+      nw = 2
+      lags(1) = 0
+      lags(2) = 100
+      nf = 202
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = 3
+      ispcf = 101
+      ldstak = 0
 !
-      WRITE(IPRT, 1003)
-      CALL BFSS(Y1, Y2, N, NW, LAGS, NF, FMIN, FMAX, NPRT,
-     &   CSPC2, ICSPC2, PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1003)
+     call bfss(y1, y2, n, nw, lags, nf, fmin, fmax, nprt,&
+     &   cspc2, icspc2, phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
-      WRITE(IPRT, 1019)
-      CALL BFSF (YFFT1, YFFT2, N, LYFFT, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1019)
+      call bfsf (yfft1, yfft2, n, lyfft, ldstak)
+      write (iprt, 1002) ierr
 !
-      WRITE(IPRT, 1020)
-      CALL BFSFS(YFFT1, YFFT2, N, LYFFT, LDSTAK, NW, LAGS, NF, FMIN,
-     &   FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1020)
+     call bfsfs(yfft1, yfft2, n, lyfft, ldstak, nw, lags, nf, fmin,&
+     &   fmax, nprt, cspc2, icspc2, phas, iphas, freq)
+      write (iprt, 1002) ierr
 !
-      WRITE(IPRT, 1006)
-      CALL BFSMS(Y1, YMISS1, Y2, YMISS2, N, NW, LAGS, NF, FMIN,
-     &   FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1006)
+     call bfsms(y1, ymiss1, y2, ymiss2, n, nw, lags, nf, fmin,&
+     &   fmax, nprt, cspc2, icspc2, phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
-      WRITE (IPRT, 1008)
-      CALL BFSVS (CCOV, INDEX1, INDEX2, N, ICCOV, JCCOV,
-     &   NW, LAGS, NF, FMIN, FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS,
-     &   FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1008)
+     call bfsvs (ccov, index1, index2, n, iccov, jccov,&
+    &   nw, lags, nf, fmin, fmax, nprt, cspc2, icspc2, phas, iphas,&
+     &   freq, ldstak)
+      write (iprt, 1002) ierr
 !
-      WRITE (IPRT, 1022)
-      CALL BFSMVS (CCOV, NLPPC, INDEX1, INDEX2, N, ICCOV, JCCOV,
-     &   INLPPC, JNLPPC, NW, LAGS, NF, FMIN, FMAX, NPRT, CSPC2, ICSPC2,
-     &   PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1022)
+     call bfsmvs (ccov, nlppc, index1, index2, n, iccov, jccov,&
+    &   inlppc, jnlppc, nw, lags, nf, fmin, fmax, nprt, cspc2, icspc2,&
+     &   phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
 !        TEST 3  -  LDSTAK TOO SMALL
 !
-      WRITE (IPRT, 2030)
-      N = 100
-      INDEX1 = 2
-      INDEX2 = 1
-      ICCOV = 101
-      JCCOV = 2
-      INLPPC = 101
-      JNLPPC = 2
-      ICSPC2 = 300
-      IPHAS = 300
-      LAGMAX = 99
-      LACOV = 101
-      LYFFT = 400
-      NW = 2
-      LAGS(1) = 8
-      LAGS(2) = 16
-      NF = 26
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = 1
-      ISPCF = 101
-      LDSTAK = 0
+      write (iprt, 2030)
+      n = 100
+      index1 = 2
+      index2 = 1
+      iccov = 101
+      jccov = 2
+      inlppc = 101
+      jnlppc = 2
+      icspc2 = 300
+      iphas = 300
+      lagmax = 99
+      lacov = 101
+      lyfft = 400
+      nw = 2
+      lags(1) = 8
+      lags(2) = 16
+      nf = 26
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = 1
+      ispcf = 101
+      ldstak = 0
 !
-      WRITE(IPRT, 1003)
-      CALL BFSS(Y1, Y2, N, NW, LAGS, NF, FMIN, FMAX, NPRT,
-     &   CSPC2, ICSPC2, PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1003)
+     call bfss(y1, y2, n, nw, lags, nf, fmin, fmax, nprt,&
+     &   cspc2, icspc2, phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
-      WRITE(IPRT, 1019)
-      CALL BFSF (YFFT1, YFFT2, N, LYFFT, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1019)
+      call bfsf (yfft1, yfft2, n, lyfft, ldstak)
+      write (iprt, 1002) ierr
 !
-      WRITE(IPRT, 1020)
-      CALL BFSFS(YFFT1, YFFT2, N, LYFFT, LDSTAK, NW, LAGS, NF, FMIN,
-     &   FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1020)
+     call bfsfs(yfft1, yfft2, n, lyfft, ldstak, nw, lags, nf, fmin,&
+     &   fmax, nprt, cspc2, icspc2, phas, iphas, freq)
+      write (iprt, 1002) ierr
 !
-      WRITE(IPRT, 1006)
-      CALL BFSMS(Y1, YMISS1, Y2, YMISS2, N, NW, LAGS, NF, FMIN,
-     &   FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1006)
+     call bfsms(y1, ymiss1, y2, ymiss2, n, nw, lags, nf, fmin,&
+     &   fmax, nprt, cspc2, icspc2, phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
-      WRITE (IPRT, 1008)
-      CALL BFSVS (CCOV, INDEX1, INDEX2, N, ICCOV, JCCOV,
-     &   NW, LAGS, NF, FMIN, FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS,
-     &   FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1008)
+     call bfsvs (ccov, index1, index2, n, iccov, jccov,&
+    &   nw, lags, nf, fmin, fmax, nprt, cspc2, icspc2, phas, iphas,&
+     &   freq, ldstak)
+      write (iprt, 1002) ierr
 !
-      WRITE (IPRT, 1022)
-      CALL BFSMVS (CCOV, NLPPC, INDEX1, INDEX2, N, ICCOV, JCCOV,
-     &   INLPPC, JNLPPC, NW, LAGS, NF, FMIN, FMAX, NPRT, CSPC2, ICSPC2,
-     &   PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1022)
+     call bfsmvs (ccov, nlppc, index1, index2, n, iccov, jccov,&
+    &   inlppc, jnlppc, nw, lags, nf, fmin, fmax, nprt, cspc2, icspc2,&
+     &   phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
 !        TEST 4  -  ALL DATA AND COVARIANCES MISSING
 !
-      WRITE (IPRT, 2040)
-      N = 100
-      LAGMAX = 99
-      ICSPC2 = 300
-      IPHAS = 300
-      LACOV = 101
-      LYFFT = 400
-      NW = 2
-      LAGS(1) = 8
-      LAGS(2) = 16
-      NF = 26
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = 1
-      ISPCF = 101
-      LDSTAK = LDS
-      CALL SETRV(YFFT1, N, YMISS1)
-      CALL SETRV(YFFT2, N, YMISS2)
-      CALL SETRV(CCOV, 404, 0.0_WP)
-      CALL SETIV(NLPPC, 404, 0)
+      write (iprt, 2040)
+      n = 100
+      lagmax = 99
+      icspc2 = 300
+      iphas = 300
+      lacov = 101
+      lyfft = 400
+      nw = 2
+      lags(1) = 8
+      lags(2) = 16
+      nf = 26
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = 1
+      ispcf = 101
+      ldstak = lds
+      call setrv(yfft1, n, ymiss1)
+      call setrv(yfft2, n, ymiss2)
+      call setrv(ccov, 404, 0.0_wp)
+      call setiv(nlppc, 404, 0)
 !
-      WRITE(IPRT, 1005)
-      CALL BFSM (YFFT1, YMISS1, YFFT2, YMISS2, N)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1005)
+      call bfsm (yfft1, ymiss1, yfft2, ymiss2, n)
+      write (iprt, 1002) ierr
 !
-      WRITE(IPRT, 1006)
-      CALL BFSMS(YFFT1, YMISS1, YFFT2, YMISS2, N, NW, LAGS, NF, FMIN,
-     &   FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1006)
+     call bfsms(yfft1, ymiss1, yfft2, ymiss2, n, nw, lags, nf, fmin,&
+     &   fmax, nprt, cspc2, icspc2, phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
-      WRITE (IPRT, 1021)
-      CALL BFSMV(CCOV, NLPPC, INDEX1, INDEX2, N, LAGMAX, ICCOV, JCCOV,
-     &   INLPPC, JNLPPC)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1021)
+     call bfsmv(ccov, nlppc, index1, index2, n, lagmax, iccov, jccov,&
+     &   inlppc, jnlppc)
+      write (iprt, 1002) ierr
 !
-      WRITE (IPRT, 1022)
-      CALL BFSMVS (CCOV, NLPPC, INDEX1, INDEX2, N, ICCOV, JCCOV,
-     &   INLPPC, JNLPPC, NW, LAGS, NF, FMIN, FMAX, NPRT, CSPC2, ICSPC2,
-     &   PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1022)
+     call bfsmvs (ccov, nlppc, index1, index2, n, iccov, jccov,&
+    &   inlppc, jnlppc, nw, lags, nf, fmin, fmax, nprt, cspc2, icspc2,&
+     &   phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
 !        TEST 5  -  EVERY OTHER VALUE MISSING
 !
-      WRITE (IPRT, 2050)
-      N = 100
-      LAGMAX = 99
-      ICSPC2 = 300
-      IPHAS = 300
-      LACOV = 101
-      LYFFT = 400
-      NW = 2
-      LAGS(1) = 8
-      LAGS(2) = 16
-      NF = 26
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = 1
-      ISPCF = 101
-      LDSTAK = LDS
-      CALL SETRV(YFFT1, N, YMISS1)
-      CALL SETRV(YFFT2, N, YMISS2)
-      DO 10 I = 1, N, 2
-         YFFT1(I) = Y1(I)
-         YFFT2(I) = Y2(I)
-   10 CONTINUE
+      write (iprt, 2050)
+      n = 100
+      lagmax = 99
+      icspc2 = 300
+      iphas = 300
+      lacov = 101
+      lyfft = 400
+      nw = 2
+      lags(1) = 8
+      lags(2) = 16
+      nf = 26
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = 1
+      ispcf = 101
+      ldstak = lds
+      call setrv(yfft1, n, ymiss1)
+      call setrv(yfft2, n, ymiss2)
+      do 10 i = 1, n, 2
+         yfft1(i) = y1(i)
+         yfft2(i) = y2(i)
+   10 continue
 !
-      WRITE(IPRT, 1005)
-      CALL BFSM (YFFT1, YMISS1, YFFT2, YMISS2, N)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1005)
+      call bfsm (yfft1, ymiss1, yfft2, ymiss2, n)
+      write (iprt, 1002) ierr
 !
-      WRITE(IPRT, 1006)
-      CALL BFSMS(YFFT1, YMISS1, YFFT2, YMISS2, N, NW, LAGS, NF, FMIN,
-     &   FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1006)
+     call bfsms(yfft1, ymiss1, yfft2, ymiss2, n, nw, lags, nf, fmin,&
+     &   fmax, nprt, cspc2, icspc2, phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
 !     CHECK RESULTS FROM VALID CALL
 !
-      WRITE(IPRT, 2020)
-      YMISS = 1.16_WP
-      N = 100
-      LAGMAX = 99
-      ICSPC2 = 300
-      IPHAS = 300
-      LACOV = 101
-      LYFFT = 400
-      NW = 2
-      LAGS(1) = 8
-      LAGS(2) = 16
-      NF = 26
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = 1
-      ISPCF = 101
-      LDSTAK = LDS
+      write(iprt, 2020)
+      ymiss = 1.16_wp
+      n = 100
+      lagmax = 99
+      icspc2 = 300
+      iphas = 300
+      lacov = 101
+      lyfft = 400
+      nw = 2
+      lags(1) = 8
+      lags(2) = 16
+      nf = 26
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = 1
+      ispcf = 101
+      ldstak = lds
 !
 !     TEST OF BFS
 !
-      WRITE(IPRT, 1001)
-      CALL BFS (Y1, Y2, N)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 1001)
+      call bfs (y1, y2, n)
+      write (iprt, 1002) ierr
 !
 !     TEST OF BFSS
 !
-      WRITE(IPRT, 2020)
-      WRITE(IPRT, 1003)
-      CALL BFSS(Y1, Y2, N, NW, LAGS, NF, FMIN,
-     &   FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write(iprt, 1003)
+     call bfss(y1, y2, n, nw, lags, nf, fmin,&
+     &   fmax, nprt, cspc2, icspc2, phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM BFSS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (CSPC2(I,J), PHAS(I,J),J=1,NW),
-     &   I=1,NF)
+     write (iprt, 1004) (freq(i), (cspc2(i,j), phas(i,j),j=1,nw),&
+     &   i=1,nf)
 !
 !     TEST OF BFSF
 !
-      WRITE(IPRT, 2020)
-      WRITE(IPRT, 1019)
-      CALL SCOPY(N, Y1, 1, YFFT1, 1)
-      CALL SCOPY(N, Y2, 1, YFFT2, 1)
-      CALL BFSF (YFFT1, YFFT2, N, LYFFT, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write(iprt, 1019)
+      call scopy(n, y1, 1, yfft1, 1)
+      call scopy(n, y2, 1, yfft2, 1)
+      call bfsf (yfft1, yfft2, n, lyfft, ldstak)
+      write (iprt, 1002) ierr
 !
 !     TEST OF BFSFS
 !
-      WRITE(IPRT, 2020)
-      WRITE(IPRT, 1020)
-      CALL SCOPY(N, Y1, 1, YFFT1, 1)
-      CALL SCOPY(N, Y2, 1, YFFT2, 1)
-      CALL BFSFS(YFFT1, YFFT2, N, LYFFT, LDSTAK, NW, LAGS, NF, FMIN,
-     &   FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write(iprt, 1020)
+      call scopy(n, y1, 1, yfft1, 1)
+      call scopy(n, y2, 1, yfft2, 1)
+     call bfsfs(yfft1, yfft2, n, lyfft, ldstak, nw, lags, nf, fmin,&
+     &   fmax, nprt, cspc2, icspc2, phas, iphas, freq)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM BFSFS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (CSPC2(I,J), PHAS(I,J),J=1,NW),
-     &   I=1,NF)
+     write (iprt, 1004) (freq(i), (cspc2(i,j), phas(i,j),j=1,nw),&
+     &   i=1,nf)
 !
 !     TEST OF BFSM
 !
-      WRITE(IPRT, 2020)
-      WRITE(IPRT, 1005)
-      CALL BFSM (Y1, YMISS1, Y2, YMISS2, N)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write(iprt, 1005)
+      call bfsm (y1, ymiss1, y2, ymiss2, n)
+      write (iprt, 1002) ierr
 !
 !     TEST OF BFSMS
 !
-      WRITE(IPRT, 2020)
-      WRITE(IPRT, 1006)
-      CALL BFSMS(Y1, YMISS1, Y2, YMISS2, N, NW, LAGS, NF, FMIN,
-     &   FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write(iprt, 1006)
+     call bfsms(y1, ymiss1, y2, ymiss2, n, nw, lags, nf, fmin,&
+     &   fmax, nprt, cspc2, icspc2, phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM BFSMS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (CSPC2(I,J), PHAS(I,J),J=1,NW),
-     &   I=1,NF)
+     write (iprt, 1004) (freq(i), (cspc2(i,j), phas(i,j),j=1,nw),&
+     &   i=1,nf)
 !
 !     TEST OF BFSV
 !
-      WRITE(IPRT, 2020)
-      CALL CCFS (YM, N, 2, 150, LAGMAX, CCOV, ICCOV, JCCOV, 0,
-     &   LDSTAK)
-      WRITE (IPRT, 1007)
-      CALL BFSV(CCOV, INDEX1, INDEX2, N, LAGMAX, ICCOV, JCCOV)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+     call ccfs (ym, n, 2, 150, lagmax, ccov, iccov, jccov, 0,&
+     &   ldstak)
+      write (iprt, 1007)
+      call bfsv(ccov, index1, index2, n, lagmax, iccov, jccov)
+      write (iprt, 1002) ierr
 !
 !     TEST OF BFSVS
 !
-      WRITE(IPRT, 2020)
-      WRITE (IPRT, 1008)
-      CALL BFSVS(CCOV, INDEX1, INDEX2, N, ICCOV, JCCOV, NW, LAGS, NF,
-     &   FMIN, FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write (iprt, 1008)
+     call bfsvs(ccov, index1, index2, n, iccov, jccov, nw, lags, nf,&
+     &   fmin, fmax, nprt, cspc2, icspc2, phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM BFSVS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (CSPC2(I,J), PHAS(I,J),J=1,NW),
-     &   I=1,NF)
+     write (iprt, 1004) (freq(i), (cspc2(i,j), phas(i,j),j=1,nw),&
+     &   i=1,nf)
 !
 !     TEST OF BFSMV
 !
-      WRITE(IPRT, 2020)
-      CALL CCFMS (YM, YMMISS, N, 2, 150, LAGMAX, CCOV, CMISS, ICCOV,
-     &  JCCOV, NLPPC, INLPPC, JNLPPC, 0, LDSTAK)
-      WRITE (IPRT, 1021)
-      CALL BFSMV(CCOV, NLPPC, INDEX1, INDEX2, N, LAGMAX, ICCOV,
-     &  JCCOV, INLPPC, JNLPPC)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+     call ccfms (ym, ymmiss, n, 2, 150, lagmax, ccov, cmiss, iccov,&
+     &  jccov, nlppc, inlppc, jnlppc, 0, ldstak)
+      write (iprt, 1021)
+     call bfsmv(ccov, nlppc, index1, index2, n, lagmax, iccov,&
+     &  jccov, inlppc, jnlppc)
+      write (iprt, 1002) ierr
 !
 !     TEST OF BFSMVS
 !
-      WRITE(IPRT, 2020)
-      WRITE (IPRT, 1022)
-      CALL BFSMVS(CCOV, NLPPC, INDEX1, INDEX2, N, ICCOV,
-     &  JCCOV, INLPPC, JNLPPC, NW, LAGS, NF, FMIN, FMAX, NPRT,
-     &  CSPC2, ICSPC2, PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2020)
+      write (iprt, 1022)
+     call bfsmvs(ccov, nlppc, index1, index2, n, iccov,&
+    &  jccov, inlppc, jnlppc, nw, lags, nf, fmin, fmax, nprt,&
+     &  cspc2, icspc2, phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM BFSMVS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (CSPC2(I,J), PHAS(I,J),J=1,NW),
-     &   I=1,NF)
+     write (iprt, 1004) (freq(i), (cspc2(i,j), phas(i,j),j=1,nw),&
+     &   i=1,nf)
 !
 !     MINIMUM PROBLEM SIZE
 !
-      YMISS = 1.16_WP
-      N = 17
-      LAGMAX = 1
-      ICSPC2 = 1
-      IPHAS = 1
-      LACOV = 101
-      LYFFT = 400
-      NW = 1
-      LAGS(1) = 1
-      LAGS(2) = 16
-      NF = 1
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = 1
-      ISPCF = 101
-      LDSTAK = LDS
+      ymiss = 1.16_wp
+      n = 17
+      lagmax = 1
+      icspc2 = 1
+      iphas = 1
+      lacov = 101
+      lyfft = 400
+      nw = 1
+      lags(1) = 1
+      lags(2) = 16
+      nf = 1
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = 1
+      ispcf = 101
+      ldstak = lds
 !
 !     TEST OF BFS
 !
-      WRITE(IPRT, 2060)
-      WRITE(IPRT, 1001)
-      CALL BFS(Y1, Y2, N)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2060)
+      write(iprt, 1001)
+      call bfs(y1, y2, n)
+      write (iprt, 1002) ierr
 !
 !     TEST OF BFSS
 !
-      WRITE(IPRT, 2060)
-      WRITE(IPRT, 1003)
-      CALL BFSS(Y1, Y2, N, NW, LAGS, NF, FMIN,
-     &   FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2060)
+      write(iprt, 1003)
+     call bfss(y1, y2, n, nw, lags, nf, fmin,&
+     &   fmax, nprt, cspc2, icspc2, phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM BFSS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (CSPC2(I,J), PHAS(I,J),J=1,NW),
-     &   I=1,NF)
+     write (iprt, 1004) (freq(i), (cspc2(i,j), phas(i,j),j=1,nw),&
+     &   i=1,nf)
 !
 !     CHECK HANDLING OF FMIN AND FMAX
 !
-      YMISS = 1.16_WP
-      N = 100
-      LAGMAX = 99
-      ICSPC2 = 300
-      IPHAS = 300
-      LACOV = 101
-      LYFFT = 400
-      NW = 2
-      LAGS(1) = 8
-      LAGS(2) = 16
-      NF = 26
-      FMIN = 0.45_WP
-      FMAX = 0.5_WP
-      NPRT = 1
-      ISPCF = 101
-      LDSTAK = LDS
+      ymiss = 1.16_wp
+      n = 100
+      lagmax = 99
+      icspc2 = 300
+      iphas = 300
+      lacov = 101
+      lyfft = 400
+      nw = 2
+      lags(1) = 8
+      lags(2) = 16
+      nf = 26
+      fmin = 0.45_wp
+      fmax = 0.5_wp
+      nprt = 1
+      ispcf = 101
+      ldstak = lds
 !
 !     TEST OF BFSS
 !
-      WRITE(IPRT, 2070)
-      WRITE(IPRT, 1003)
-      CALL BFSS(Y1, Y2, N, NW, LAGS, NF, FMIN,
-     &   FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2070)
+      write(iprt, 1003)
+     call bfss(y1, y2, n, nw, lags, nf, fmin,&
+     &   fmax, nprt, cspc2, icspc2, phas, iphas, freq, ldstak)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM BFSS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (CSPC2(I,J), PHAS(I,J),J=1,NW),
-     &   I=1,NF)
+     write (iprt, 1004) (freq(i), (cspc2(i,j), phas(i,j),j=1,nw),&
+     &   i=1,nf)
 !
 !     CHECK RESULTS FOR WHITE NOISE SPECTRUM
 !
-      YMISS = 1.16_WP
-      CALL NRAND(YFFT1, N, 12343)
-      CALL NRAND(YFFT2, N, 34523)
-      N = 100
-      LAGMAX = 99
-      ICSPC2 = 300
-      IPHAS = 300
-      LACOV = 101
-      LYFFT = 400
-      NW = 2
-      LAGS(1) = 8
-      LAGS(2) = 16
-      NF = 26
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = 1
-      ISPCF = 101
-      LDSTAK = LDS
+      ymiss = 1.16_wp
+      call nrand(yfft1, n, 12343)
+      call nrand(yfft2, n, 34523)
+      n = 100
+      lagmax = 99
+      icspc2 = 300
+      iphas = 300
+      lacov = 101
+      lyfft = 400
+      nw = 2
+      lags(1) = 8
+      lags(2) = 16
+      nf = 26
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = 1
+      ispcf = 101
+      ldstak = lds
 !
 !     TEST OF BFSFS
 !
-      WRITE(IPRT, 2080)
-      WRITE(IPRT, 1003)
-      CALL BFSFS(YFFT1, YFFT2, N, LYFFT, LDSTAK, NW, LAGS, NF, FMIN,
-     &   FMAX, NPRT, CSPC2, ICSPC2, PHAS, IPHAS, FREQ)
-      WRITE (IPRT, 1002) IERR
+      write(iprt, 2080)
+      write(iprt, 1003)
+     call bfsfs(yfft1, yfft2, n, lyfft, ldstak, nw, lags, nf, fmin,&
+     &   fmax, nprt, cspc2, icspc2, phas, iphas, freq)
+      write (iprt, 1002) ierr
 !
 !     PRINT RETURNED VALUES FROM BFSS
 !
-      WRITE (IPRT, 1004) (FREQ(I), (CSPC2(I,J), PHAS(I,J),J=1,NW),
-     &   I=1,NF)
+     write (iprt, 1004) (freq(i), (cspc2(i,j), phas(i,j),j=1,nw),&
+     &   i=1,nf)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1001 FORMAT (12H TEST OF BFS)
- 1002 FORMAT (8H IERR IS, I5/)
- 1003 FORMAT (13H TEST OF BFSS)
- 1004 FORMAT (5(1X, E15.7))
- 1005 FORMAT (13H TEST OF BFSM)
- 1006 FORMAT (14H TEST OF BFSMS)
- 1007 FORMAT (13H TEST OF BFSV)
- 1008 FORMAT (14H TEST OF BFSVS)
- 1019 FORMAT (13H TEST OF BFSF)
- 1020 FORMAT (14H TEST OF BFSFS)
- 1021 FORMAT (14H TEST OF BFSMV)
- 1022 FORMAT (15H TEST OF BFSMVS)
- 2000 FORMAT (32H1CHECK ERROR HANDLING  -  TEST 1)
- 2010 FORMAT (32H1CHECK ERROR HANDLING  -  TEST 2)
- 2020 FORMAT (14H1VALID PROBLEM)
- 2030 FORMAT (14H1LDS TOO SMALL)
- 2040 FORMAT (33H1ALL DATA AND COVARIANCES MISSING)
- 2050 FORMAT (31H1EVERY OTHER DATA VALUE MISSING)
- 2060 FORMAT (21H1MINIMUM PROBLEM SIZE)
- 2070 FORMAT (32H1CHECK HANDLING OF FMIN AND FMAX)
- 2080 FORMAT (21H1WHITE NOISE SPECTRUM)
-      END
+ 1001 format (12h test of bfs)
+ 1002 format (8h ierr is, i5/)
+ 1003 format (13h test of bfss)
+ 1004 format (5(1x, e15.7))
+ 1005 format (13h test of bfsm)
+ 1006 format (14h test of bfsms)
+ 1007 format (13h test of bfsv)
+ 1008 format (14h test of bfsvs)
+ 1019 format (13h test of bfsf)
+ 1020 format (14h test of bfsfs)
+ 1021 format (14h test of bfsmv)
+ 1022 format (15h test of bfsmvs)
+ 2000 format (32h1check error handling  -  test 1)
+ 2010 format (32h1check error handling  -  test 2)
+ 2020 format (14h1valid problem)
+ 2030 format (14h1lds too small)
+ 2040 format (33h1all data and covariances missing)
+ 2050 format (31h1every other data value missing)
+ 2060 format (21h1minimum problem size)
+ 2070 format (32h1check handling of fmin and fmax)
+ 2080 format (21h1white noise spectrum)
+      end

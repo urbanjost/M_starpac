@@ -1,6 +1,6 @@
 !CDFNML
-      FUNCTION CDFNML(X)
-      REAL(KIND=WP) :: CDFNML
+      function cdfnml(x)
+      real(kind=wp) :: cdfnml
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,16 +19,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X
+     real(kind=wp) ::&
+     &   x
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   DERF
+     real(kind=wp) ::&
+     &   derf
 !       EXTERNAL DERF
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -37,7 +37,7 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      CDFNML = 0.5_WP * (1.0_WP + DERF(X/SQRT(2.0_WP)))
+      cdfnml = 0.5_wp * (1.0_wp + derf(x/sqrt(2.0_wp)))
 !
-      RETURN
-      END
+      return
+      end

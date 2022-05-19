@@ -463,7 +463,7 @@
                                                            ! calculating this by formula could cause overflow without using a larger type
       case(3); d1mach = real(b,kind=kind(0.0d0))**(-t)     ! B**(-T), the smallest relative spacing.
       case(4); d1mach = epsilon(0.0d0)                     ! B**(1-T), the largest relative spacing.
-      case(5) 
+      case(5)
       block
       intrinsic log10
       d1mach = log10(real(b,kind=kind(0.0d0)))    ! log10(B).

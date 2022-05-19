@@ -1,6 +1,6 @@
 !LOGLMT
-      SUBROUTINE LOGLMT (ILOGY, YMN, YMX, YLABEL, NUMROW, ISTEP, DELY,
-     &  YWIDTH, NLABLY, YDMN, YDMX)
+     subroutine loglmt (ilogy, ymn, ymx, ylabel, numrow, istep, dely,&
+     &  ywidth, nlably, ydmn, ydmx)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,23 +16,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   DELY,YDMN,YDMX,YMN,YMX,YWIDTH
-      INTEGER
-     &   ILOGY,ISTEP,NLABLY,NUMROW
+     real(kind=wp) ::&
+     &   dely,ydmn,ydmx,ymn,ymx,ywidth
+     integer&
+     &   ilogy,istep,nlably,numrow
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YLABEL(20)
+     real(kind=wp) ::&
+     &   ylabel(20)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   YNLOG,YXLOG
-      INTEGER
-     &   IYN,IYNLOG,IYX,IYXLOG,J,K
+     real(kind=wp) ::&
+     &   ynlog,yxlog
+     integer&
+     &   iyn,iynlog,iyx,iyxlog,j,k
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC LOG10,MIN,MOD,NINT,DBLE
+      intrinsic log10,min,mod,nint,dble
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -47,117 +47,117 @@
 !        THE Y-AXIS PLOT LIMITS ACTUALLY USED.
 !     REAL(KIND=WP) :: YNLOG, YWIDTH, YXLOG
 !
-      IF (ILOGY.EQ.0) THEN
+      if (ilogy.eq.0) then
 !
-        YDMN = YMN
-        YDMX = YMX
+        ydmn = ymn
+        ydmx = ymx
 !
 !       DETERMINE THE VALUE OF A DIVISION
 !
-        DELY=YMX-YMN
-        YWIDTH=DELY/(NUMROW-1)
+        dely=ymx-ymn
+        ywidth=dely/(numrow-1)
 !
 !       COMPUTE EVENLY SPACED LABELS FOR NON-LOG AXIS
 !
-        NLABLY = 0
-        DO 10 J = 1, NUMROW, ISTEP
-          NLABLY = NLABLY + 1
-          YLABEL(NLABLY) = YMX+(1-J)*YWIDTH
-   10   CONTINUE
-          IF (MOD(NUMROW,ISTEP).EQ.1) YLABEL(NLABLY) = YMN
-          IF (YMX.EQ.(-YMN) .AND. MOD(NLABLY,2).EQ.1) THEN
-             YLABEL(NLABLY/2+1) = 0.0
-          END IF
-      ELSE
+        nlably = 0
+        do 10 j = 1, numrow, istep
+          nlably = nlably + 1
+          ylabel(nlably) = ymx+(1-j)*ywidth
+   10   continue
+          if (mod(numrow,istep).eq.1) ylabel(nlably) = ymn
+          if (ymx.eq.(-ymn) .and. mod(nlably,2).eq.1) then
+             ylabel(nlably/2+1) = 0.0
+          end if
+      else
 !
-        YDMN = LOG10(YMN)
-        YDMX = LOG10(YMX)
+        ydmn = log10(ymn)
+        ydmx = log10(ymx)
 !
 !       ADJUST AXIS LIMITS FOR LOG AXIS IF NECESSARY
 !
-        YXLOG=LOG10(YMX)
-        IYXLOG=YXLOG
-        IF (YMX.LT.1.0_WP) IYXLOG=IYXLOG-1
-        YNLOG=LOG10(YMN)
-        IF ((YXLOG-YNLOG).LE.0.92082_WP) THEN
+        yxlog=log10(ymx)
+        iyxlog=yxlog
+        if (ymx.lt.1.0_wp) iyxlog=iyxlog-1
+        ynlog=log10(ymn)
+        if ((yxlog-ynlog).le.0.92082_wp) then
 !
 !         RANGE IS LESS THAN .9 DECADES
 !
-          IYNLOG=YNLOG
-          IF (YMN.LT.1.0_WP) IYNLOG=IYNLOG-1
-          IF (IYXLOG.LE.IYNLOG) THEN
+          iynlog=ynlog
+          if (ymn.lt.1.0_wp) iynlog=iynlog-1
+          if (iyxlog.le.iynlog) then
 !
 !           VALUES FALL IN THE SAME DECADE
 !
-            YNLOG=IYNLOG
-            YXLOG=YNLOG+1.0_WP
-            IYXLOG=YXLOG
-          ELSE
+            ynlog=iynlog
+            yxlog=ynlog+1.0_wp
+            iyxlog=yxlog
+          else
 !
 !           VALUES FALL INTO TWO DECADES
 !
-            IYN=NINT(YMN/(10.0_WP**IYNLOG))
-            YNLOG=MIN(LOG10(IYN*(10.0_WP**IYNLOG)),YNLOG)
-            YXLOG=YNLOG+1.0_WP
-            IYXLOG=YXLOG
-          END IF
-        END IF
-        YMX=YXLOG
-        YMN=YNLOG
+            iyn=nint(ymn/(10.0_wp**iynlog))
+            ynlog=min(log10(iyn*(10.0_wp**iynlog)),ynlog)
+            yxlog=ynlog+1.0_wp
+            iyxlog=yxlog
+          end if
+        end if
+        ymx=yxlog
+        ymn=ynlog
 !
 !       DETERMINE THE VALUE OF A DIVISION
 !
-        DELY=YMX-YMN
-        YWIDTH=DELY/(NUMROW-1)
+        dely=ymx-ymn
+        ywidth=dely/(numrow-1)
 !
 !       COMPUTE AXIS LABELS
 !
-        YLABEL(1)=10.0_WP**YXLOG
-        IYX=YLABEL(1)/(10.0_WP**IYXLOG)
-        K=2
-        IF (YXLOG-YNLOG.GT.3.0_WP) K=5
-        IF (YXLOG-YNLOG.GT.6.0_WP) K=10
+        ylabel(1)=10.0_wp**yxlog
+        iyx=ylabel(1)/(10.0_wp**iyxlog)
+        k=2
+        if (yxlog-ynlog.gt.3.0_wp) k=5
+        if (yxlog-ynlog.gt.6.0_wp) k=10
 !
-        NLABLY = 1
+        nlably = 1
 !
-        IF (YXLOG-YNLOG.LE.12.0_WP) THEN
+        if (yxlog-ynlog.le.12.0_wp) then
 !
 !       SET NICE LABELS
 !
-          IF (K.EQ.10) IYX=1
-          IF (IYX.NE.1.AND.(IYX-((IYX/K)*K)).NE.0) IYX=((IYX/K)*K)
-          IF (IYX.LE.1) THEN
-            IYX=10
-            IYXLOG=IYXLOG-1
-          END IF
-          IF (YLABEL(1)-IYX*(10.0_WP**IYXLOG).GT.0.0_WP .AND.
-     &     YXLOG-(YXLOG-YNLOG)/(2.0_WP*(NUMROW-1)) .GT.
-     &     LOG10(DBLE(IYX))+IYXLOG) IYX=IYX+K
-          IYX=IYX-K
-          IF (IYX.LE.0) THEN
-            IYX=10
-            IYXLOG=IYXLOG-1
-          END IF
-          DO 155 J=2,20
-             NLABLY=NLABLY+1
-             YLABEL(NLABLY)=IYX*(10.0_WP**IYXLOG)
-             IF (YLABEL(NLABLY).LE.10.0_WP**YNLOG) GO TO 156
-             IYX=IYX-K
-             IF (IYX.GT.0) GO TO 155
-             IYX=10
-             IYXLOG=IYXLOG-1
-  155     CONTINUE
-  156     YLABEL(NLABLY)=10.0_WP**YNLOG
-        ELSE
+          if (k.eq.10) iyx=1
+          if (iyx.ne.1.and.(iyx-((iyx/k)*k)).ne.0) iyx=((iyx/k)*k)
+          if (iyx.le.1) then
+            iyx=10
+            iyxlog=iyxlog-1
+          end if
+         if (ylabel(1)-iyx*(10.0_wp**iyxlog).gt.0.0_wp .and.&
+    &     yxlog-(yxlog-ynlog)/(2.0_wp*(numrow-1)) .gt.&
+     &     log10(dble(iyx))+iyxlog) iyx=iyx+k
+          iyx=iyx-k
+          if (iyx.le.0) then
+            iyx=10
+            iyxlog=iyxlog-1
+          end if
+          do 155 j=2,20
+             nlably=nlably+1
+             ylabel(nlably)=iyx*(10.0_wp**iyxlog)
+             if (ylabel(nlably).le.10.0_wp**ynlog) go to 156
+             iyx=iyx-k
+             if (iyx.gt.0) go to 155
+             iyx=10
+             iyxlog=iyxlog-1
+  155     continue
+  156     ylabel(nlably)=10.0_wp**ynlog
+        else
 !
 !         COMPUTE EVENLY SPACED LABELS
 !
-          DO 160 J = ISTEP, NUMROW, ISTEP
-            NLABLY = NLABLY + 1
-            YLABEL(NLABLY) = 10.0_WP**(YMX+(1.0_WP-J)*YWIDTH)
-  160     CONTINUE
-        END IF
-      END IF
+          do 160 j = istep, numrow, istep
+            nlably = nlably + 1
+            ylabel(nlably) = 10.0_wp**(ymx+(1.0_wp-j)*ywidth)
+  160     continue
+        end if
+      end if
 !
-      RETURN
-      END
+      return
+      end

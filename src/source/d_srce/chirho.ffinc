@@ -1,5 +1,5 @@
 !CHIRHO
-      SUBROUTINE CHIRHO (RHO, N, NC, CHI, CHIP)
+      subroutine chirho (rho, n, nc, chi, chip)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,26 +16,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   CHI,CHIP
-      INTEGER
-     &   N,NC
+     real(kind=wp) ::&
+     &   chi,chip
+     integer&
+     &   n,nc
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RHO(*)
+     real(kind=wp) ::&
+     &   rho(*)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   LAG
+     integer&
+     &   lag
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   CDFCHI
+     real(kind=wp) ::&
+     &   cdfchi
 !       EXTERNAL CDFCHI
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC DBLE
+      intrinsic dble
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -52,11 +52,11 @@
 !     REAL(KIND=WP) :: RHO(NC)
 !        THE ARRAY IN WHICH THE AUTOCORRELATIONS ARE STORED
 !
-      CHI = 0.0_WP
-      DO 10 LAG = 1, NC
-         CHI = CHI + RHO(LAG) * RHO(LAG)
-   10 CONTINUE
-      CHI = CHI * N
-      CHIP = 1.0_WP - CDFCHI(CHI, DBLE(NC))
-      RETURN
-      END
+      chi = 0.0_wp
+      do 10 lag = 1, nc
+         chi = chi + rho(lag) * rho(lag)
+   10 continue
+      chi = chi * n
+      chip = 1.0_wp - cdfchi(chi, dble(nc))
+      return
+      end

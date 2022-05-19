@@ -8,19 +8,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   v(45)
-      integer
+     integer&
      &   iv(25)
 !
 !  LOCAL SCALARS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   machep,mepcrt,one,sqteps,three
-      integer
-     &   afctol,cosmin,covprt,covreq,d0init,decfac,delta0,dfac,
-     &   dinit,dltfdc,dltfdj,dtype,epslon,fuzz,incfac,inits,jtinit,
-     &   lmax0,mxfcal,mxiter,outlev,parprt,phmnfc,phmxfc,prunit,
-     &   rdfcmn,rdfcmx,rfctol,rlimit,solprt,statpr,tuner1,tuner2,
+     integer&
+    &   afctol,cosmin,covprt,covreq,d0init,decfac,delta0,dfac,&
+    &   dinit,dltfdc,dltfdj,dtype,epslon,fuzz,incfac,inits,jtinit,&
+    &   lmax0,mxfcal,mxiter,outlev,parprt,phmnfc,phmxfc,prunit,&
+    &   rdfcmn,rdfcmx,rfctol,rlimit,solprt,statpr,tuner1,tuner2,&
      &   tuner3,tuner4,tuner5,x0prt,xctol,xftol
 !
 !  EXTERNAL FUNCTIONS
@@ -39,7 +39,7 @@
 !/+
 !     REAL(KIND=WP) :: MAX
 !/
-!     EXTERNAL IMDCON 
+!     EXTERNAL IMDCON
 !     INTEGER IMDCON
 !
 !     REAL(KIND=WP) :: MACHEP, MEPCRT, ONE, SQTEPS, THREE
@@ -57,20 +57,20 @@
 !
 !  ***  IV SUBSCRIPT VALUES  ***
 !
-      data covprt/14/, covreq/15/, dtype/16/, inits/25/,
-     &     mxfcal/17/, mxiter/18/, outlev/19/,
-     &     parprt/20/, prunit/21/, solprt/22/,
+     data covprt/14/, covreq/15/, dtype/16/, inits/25/,&
+    &     mxfcal/17/, mxiter/18/, outlev/19/,&
+    &     parprt/20/, prunit/21/, solprt/22/,&
      &     statpr/23/, x0prt/24/
 !
 !  ***  V SUBSCRIPT VALUES  ***
 !
-      data afctol/31/, cosmin/43/, decfac/22/,
-     &     delta0/44/, dfac/41/, dinit/38/, dltfdc/40/,
-     &     dltfdj/36/, d0init/37/, epslon/19/, fuzz/45/,
-     &     incfac/23/, jtinit/39/, lmax0/35/, phmnfc/20/,
-     &     phmxfc/21/, rdfcmn/24/, rdfcmx/25/,
-     &     rfctol/32/, rlimit/42/, tuner1/26/,
-     &     tuner2/27/, tuner3/28/, tuner4/29/,
+     data afctol/31/, cosmin/43/, decfac/22/,&
+    &     delta0/44/, dfac/41/, dinit/38/, dltfdc/40/,&
+    &     dltfdj/36/, d0init/37/, epslon/19/, fuzz/45/,&
+    &     incfac/23/, jtinit/39/, lmax0/35/, phmnfc/20/,&
+    &     phmxfc/21/, rdfcmn/24/, rdfcmx/25/,&
+    &     rfctol/32/, rlimit/42/, tuner1/26/,&
+    &     tuner2/27/, tuner3/28/, tuner4/29/,&
      &     tuner5/30/, xctol/33/, xftol/34/
 !
 !-----------------------------------------------------------------------
@@ -120,5 +120,5 @@
       v(tuner5) = 0.75_wp
       v(xctol) = sqteps
       v(xftol) = 1.0e2_wp * machep
- 
+
       end subroutine dfault

@@ -1,7 +1,7 @@
 !STPADJ
-      SUBROUTINE STPADJ(XM, N, M, IXM, MDL, PAR, NPAR,
-     &   NEXMPT, STP, NFAIL, IFAIL, J, RELTOL, ABSTOL, STPLOW, STPMID,
-     &   STPUP, ITEMP, FD, FDLAST, PV, PVNEW)
+     subroutine stpadj(xm, n, m, ixm, mdl, par, npar,&
+    &   nexmpt, stp, nfail, ifail, j, reltol, abstol, stplow, stpmid,&
+     &   stpup, itemp, fd, fdlast, pv, pvnew)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,40 +18,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ABSTOL,RELTOL,STP,STPLOW,STPMID,STPUP
-      INTEGER
-     &   IXM,J,M,N,NEXMPT,NFAIL,NPAR
+     real(kind=wp) ::&
+     &   abstol,reltol,stp,stplow,stpmid,stpup
+     integer&
+     &   ixm,j,m,n,nexmpt,nfail,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FD(N),FDLAST(N),PAR(NPAR),PV(N),PVNEW(N),XM(IXM,M)
-      INTEGER
-     &   IFAIL(N),ITEMP(N)
+     real(kind=wp) ::&
+     &   fd(n),fdlast(n),par(npar),pv(n),pvnew(n),xm(ixm,m)
+     integer&
+     &   ifail(n),itemp(n)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL MDL
+       external mdl
 !
 !  SCALARS IN COMMON
-      REAL(KIND=WP) ::
-     &   Q
+     real(kind=wp) ::&
+     &   q
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FACTOR,STPNEW,TEMP
-      INTEGER
-     &   NCOUNT
-      LOGICAL
-     &   DONE,FIRST
+     real(kind=wp) ::&
+     &   factor,stpnew,temp
+     integer&
+     &   ncount
+     logical&
+     &   done,first
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL CMPFD,ICOPY,RELCOM
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,SIGN
+      intrinsic abs,sign
 !
 !  COMMON BLOCKS
-      COMMON /NOTOPT/Q
+      common /notopt/q
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -132,71 +132,71 @@
 !        THE ARRAY IN WHICH ONE ROW OF THE INDEPENDENT VARIABLE ARRAY
 !        IS STORED.
 !
-      CALL ICOPY(N, IFAIL, 1, ITEMP, 1)
-      NCOUNT = NFAIL
+      call icopy(n, ifail, 1, itemp, 1)
+      ncount = nfail
 !
-      IF ((STPLOW.LE.ABS(STP)) .AND. (ABS(STP).LE.STPUP)) RETURN
+      if ((stplow.le.abs(stp)) .and. (abs(stp).le.stpup)) return
 !
-      IF (ABS(STP).GT.STPMID) THEN
+      if (abs(stp).gt.stpmid) then
 !
-            STPNEW = STPUP * SIGN(1.0E0, PAR(J))
-            FACTOR = 10.0E0
-      ELSE
+            stpnew = stpup * sign(1.0e0, par(j))
+            factor = 10.0e0
+      else
 !
-            STPNEW = STPLOW * SIGN(1.0E0, PAR(J))
-            FACTOR = 0.1E0
+            stpnew = stplow * sign(1.0e0, par(j))
+            factor = 0.1e0
 !
-      END IF
+      end if
 !
-      Q = STPNEW + PAR(J)
-      STPNEW = Q - PAR(J)
+      q = stpnew + par(j)
+      stpnew = q - par(j)
 !
-      DONE = .FALSE.
-      FIRST = .TRUE.
+      done = .false.
+      first = .true.
 !
 !     REPEAT STATEMENTS 60 TO 130 UNTIL (DONE)
 !
-   60 CONTINUE
+   60 continue
 !
-         CALL SCOPY(N, FD, 1, FDLAST, 1)
+         call scopy(n, fd, 1, fdlast, 1)
 !
-         TEMP = PAR(J)
-         PAR(J) = TEMP + STPNEW
-         CALL MDL(PAR, NPAR, XM, N, M, IXM, PVNEW)
-         PAR(J) = TEMP
+         temp = par(j)
+         par(j) = temp + stpnew
+         call mdl(par, npar, xm, n, m, ixm, pvnew)
+         par(j) = temp
 !
-         CALL CMPFD(N, STPNEW, PVNEW, PV, FD)
+         call cmpfd(n, stpnew, pvnew, pv, fd)
 !
-         CALL RELCOM(N, FD, FDLAST, RELTOL, ABSTOL, NCOUNT, ITEMP)
+         call relcom(n, fd, fdlast, reltol, abstol, ncount, itemp)
 !
-         IF (NCOUNT.LE.NEXMPT) THEN
-               DONE = .TRUE.
-               CALL ICOPY(N, ITEMP, 1, IFAIL, 1)
-               NFAIL = NCOUNT
+         if (ncount.le.nexmpt) then
+               done = .true.
+               call icopy(n, itemp, 1, ifail, 1)
+               nfail = ncount
 !
-               IF (FIRST) THEN
-                     STP = STPNEW
-               ELSE
-                     STP = STPNEW / FACTOR
-               END IF
+               if (first) then
+                     stp = stpnew
+               else
+                     stp = stpnew / factor
+               end if
 !
-         ELSE
+         else
 !
-               FIRST = .FALSE.
-               STPNEW = STPNEW * FACTOR
-               Q = STPNEW + PAR(J)
-               STPNEW = Q - PAR(J)
+               first = .false.
+               stpnew = stpnew * factor
+               q = stpnew + par(j)
+               stpnew = q - par(j)
 !
-               IF ((FACTOR.GT.1.0E0 .AND. ABS(STPNEW).GT.ABS(STP))
-     &            .OR.
-     &            (FACTOR.LT.1.0E0 .AND. ABS(STPNEW).LT.ABS(STP)))
-     &            DONE = .TRUE.
-          END IF
+              if ((factor.gt.1.0e0 .and. abs(stpnew).gt.abs(stp))&
+    &            .or.&
+    &            (factor.lt.1.0e0 .and. abs(stpnew).lt.abs(stp)))&
+     &            done = .true.
+          end if
 !
-      IF (DONE) THEN
-         RETURN
-      ELSE
-         GO TO 60
-      END IF
+      if (done) then
+         return
+      else
+         go to 60
+      end if
 !
-      END
+      end

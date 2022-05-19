@@ -1,5 +1,5 @@
 !PLINE
-      SUBROUTINE PLINE(IMIN, IMAX, ISYMBL, LINE)
+      subroutine pline(imin, imax, isymbl, line)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,18 +16,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IMAX,IMIN
-      CHARACTER
-     &   ISYMBL*1
+     integer&
+     &   imax,imin
+     character&
+     &   isymbl*1
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   LINE(103)*1
+     character&
+     &   line(103)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I
+     integer&
+     &   i
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -42,8 +42,8 @@
 !     CHARACTER*1 LINE(103)
 !        THE VECTOR USED FOR THE PLOT STRING.
 !
-      DO 10 I = IMIN, IMAX
-         LINE(I) = ISYMBL
-   10 CONTINUE
-      RETURN
-      END
+      do 10 i = imin, imax
+         line(i) = isymbl
+   10 continue
+      return
+      end

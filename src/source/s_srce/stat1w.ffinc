@@ -1,6 +1,6 @@
 !STAT1W
-      SUBROUTINE STAT1W(Y, WT, N, YMED, YMIN, YMAX, YMIDRG, YRANGE,
-     &   NCELLS, YLB, YUB, YDISTR, NNZW)
+     subroutine stat1w(y, wt, n, ymed, ymin, ymax, ymidrg, yrange,&
+     &   ncells, ylb, yub, ydistr, nnzw)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -22,23 +22,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YLB,YMAX,YMED,YMIDRG,YMIN,YRANGE,YUB
-      INTEGER
-     &   N,NCELLS,NNZW
+     real(kind=wp) ::&
+     &   ylb,ymax,ymed,ymidrg,ymin,yrange,yub
+     integer&
+     &   n,ncells,nnzw
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   WT(N),Y(N),YDISTR(NCELLS)
+     real(kind=wp) ::&
+     &   wt(n),y(n),ydistr(ncells)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DELY,YT
-      INTEGER
-     &   I,IC,IC1,KK,L,M,M1,MAX,MAXY,MINY,N2
+     real(kind=wp) ::&
+     &   dely,yt
+     integer&
+     &   i,ic,ic1,kk,l,m,m1,max,maxy,miny,n2
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -107,62 +107,62 @@
 !
 !     CALCULATE THE MEDIAN.
 !
-      N2 = (NNZW+1)/2
-      M = 1
-      DO 10 I=1,N
-         IF (I.GT.N2) GO TO 20
-         M = I
-         IF (WT(M).LE.0.0E0) N2 = N2 + 1
-   10 CONTINUE
-   20 M1 = M
-      IF (MOD(NNZW,2).NE.0) GO TO 40
-      DO 30 M1=M,N
-         IF (WT(M1).GT.0.0E0) GO TO 40
-   30 CONTINUE
-   40 YMED = (Y(I)+Y(M1))/2.0E0
+      n2 = (nnzw+1)/2
+      m = 1
+      do 10 i=1,n
+         if (i.gt.n2) go to 20
+         m = i
+         if (wt(m).le.0.0e0) n2 = n2 + 1
+   10 continue
+   20 m1 = m
+      if (mod(nnzw,2).ne.0) go to 40
+      do 30 m1=m,n
+         if (wt(m1).gt.0.0e0) go to 40
+   30 continue
+   40 ymed = (y(i)+y(m1))/2.0e0
 !
 !     CALCULATE THE MIDRANGE, RANGE, MINIMUM, AND MAXIMUM.
 !
-      MAX = N - NNZW + 1
-      DO 50 I=1,MAX
-         MINY = I
-         IF (WT(MINY).GT.0.0E0) GO TO 60
-   50 CONTINUE
-   60 DO 70 I=1,MAX
-         KK = N + 1 - I
-         MAXY = KK
-         IF (WT(MAXY).GT.0.0E0) GO TO 80
-   70 CONTINUE
-   80 YMIDRG = (Y(MINY)+Y(MAXY))/2.0E0
-      YRANGE = Y(MAXY) - Y(MINY)
-      YMIN = Y(MINY)
-      YMAX = Y(MAXY)
+      max = n - nnzw + 1
+      do 50 i=1,max
+         miny = i
+         if (wt(miny).gt.0.0e0) go to 60
+   50 continue
+   60 do 70 i=1,max
+         kk = n + 1 - i
+         maxy = kk
+         if (wt(maxy).gt.0.0e0) go to 80
+   70 continue
+   80 ymidrg = (y(miny)+y(maxy))/2.0e0
+      yrange = y(maxy) - y(miny)
+      ymin = y(miny)
+      ymax = y(maxy)
 !
 !     COMPUTE FREQUENCY DISTRIBUTION
 !
-      DELY = YRANGE
-      YT = YMIN
-      IF (YLB.GE.YUB) GO TO 5
-         DELY = YUB - YLB
-         YT = YLB
-    5 CONTINUE
-      DELY = DELY / NCELLS
-      YT = YT + DELY
-      L = 0
-      IC1 = 0
-      DO 110 I=2,NCELLS
-         IC = 0
-   90    L = L + 1
-         IF (L.GT.N) GO TO 100
-         IF (WT(L).LE.0.0E0) GO TO 90
-         IF (Y(L).GT.YT) GO TO 100
-         IC = IC + 1
-         IC1 = IC1 + 1
-         GO TO 90
-  100    YDISTR(I-1) = IC
-         L = L - 1
-         YT = YT + DELY
-  110 CONTINUE
-      YDISTR(NCELLS) = NNZW - IC1
-      RETURN
-      END
+      dely = yrange
+      yt = ymin
+      if (ylb.ge.yub) go to 5
+         dely = yub - ylb
+         yt = ylb
+    5 continue
+      dely = dely / ncells
+      yt = yt + dely
+      l = 0
+      ic1 = 0
+      do 110 i=2,ncells
+         ic = 0
+   90    l = l + 1
+         if (l.gt.n) go to 100
+         if (wt(l).le.0.0e0) go to 90
+         if (y(l).gt.yt) go to 100
+         ic = ic + 1
+         ic1 = ic1 + 1
+         go to 90
+  100    ydistr(i-1) = ic
+         l = l - 1
+         yt = yt + dely
+  110 continue
+      ydistr(ncells) = nnzw - ic1
+      return
+      end

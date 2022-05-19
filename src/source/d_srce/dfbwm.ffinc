@@ -1,5 +1,5 @@
 !DFBWM
-      SUBROUTINE DFBWM (N, LAG, W, LW, NLPPA1, NLPPA2, LNLPPA, DF, BW)
+      subroutine dfbwm (n, lag, w, lw, nlppa1, nlppa2, lnlppa, df, bw)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,20 +17,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   BW,DF
-      INTEGER
-     &   LAG,LNLPPA,LW,N
+     real(kind=wp) ::&
+     &   bw,df
+     integer&
+     &   lag,lnlppa,lw,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   W(LW)
-      INTEGER
-     &   NLPPA1(LNLPPA),NLPPA2(LNLPPA)
+     real(kind=wp) ::&
+     &   w(lw)
+     integer&
+     &   nlppa1(lnlppa),nlppa2(lnlppa)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   K
+     integer&
+     &   k
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -54,14 +54,14 @@
 !     REAL(KIND=WP) :: W(LW)
 !        THE VECTOR OF LAG WINDOWS.
 !
-      BW = (W(1)*N)**2/NLPPA1(1)
-      DO 10 K = 1, LAG
-         BW = BW + (W(K+1)*(N-K))**2 *
-     &      (1.0_WP/NLPPA1(K+1) + 1.0_WP/NLPPA2(K+1))
-   10 CONTINUE
+      bw = (w(1)*n)**2/nlppa1(1)
+      do 10 k = 1, lag
+        bw = bw + (w(k+1)*(n-k))**2 *&
+     &      (1.0_wp/nlppa1(k+1) + 1.0_wp/nlppa2(k+1))
+   10 continue
 !
 !
-      BW = N / BW
-      DF = 2.0_WP * BW * N
-      RETURN
-      END
+      bw = n / bw
+      df = 2.0_wp * bw * n
+      return
+      end

@@ -1,5 +1,5 @@
 !XXCH13
-      SUBROUTINE XXCH13(LDSTAK,typ)
+      subroutine xxch13(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -19,35 +19,35 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,N,NFAC,NPAR
+     integer&
+     &   i,iprt,n,nfac,npar
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   AIR(200),PAR(10),RES(200),Y(200)
-      INTEGER
-     &   MSPEC(4,10)
+     real(kind=wp) ::&
+     &   air(200),par(10),res(200),y(200)
+     integer&
+     &   mspec(4,10)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL AIME,AIMF,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC LOG
+      intrinsic log
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -85,93 +85,93 @@
 !
 !     DEFINE CONSTANTS
 !
-      DATA MSPEC(1,1), MSPEC(2,1), MSPEC(3,1), MSPEC(4,1)
+     data mspec(1,1), mspec(2,1), mspec(3,1), mspec(4,1)&
      &   /          0,          1,          1,          1/
-      DATA MSPEC(1,2), MSPEC(2,2), MSPEC(3,2), MSPEC(4,2)
+     data mspec(1,2), mspec(2,2), mspec(3,2), mspec(4,2)&
      &   /          0,          1,          1,         12/
 !
-      DATA  AIR(  1), AIR(  2), AIR(  3), AIR(  4), AIR(  5), AIR(  6)
-     &    / 112.0E0, 118.0E0, 132.0E0, 129.0E0, 121.0E0, 135.0E0/
-      DATA  AIR(  7), AIR(  8), AIR(  9), AIR( 10), AIR( 11), AIR( 12)
-     &    / 148.0E0, 148.0E0, 136.0E0, 119.0E0, 104.0E0, 118.0E0/
-      DATA  AIR( 13), AIR( 14), AIR( 15), AIR( 16), AIR( 17), AIR( 18)
-     &    / 115.0E0, 126.0E0, 141.0E0, 135.0E0, 125.0E0, 149.0E0/
-      DATA  AIR( 19), AIR( 20), AIR( 21), AIR( 22), AIR( 23), AIR( 24)
-     &    / 170.0E0, 170.0E0, 158.0E0, 133.0E0, 114.0E0, 140.0E0/
-      DATA  AIR( 25), AIR( 26), AIR( 27), AIR( 28), AIR( 29), AIR( 30)
-     &    / 145.0E0, 150.0E0, 178.0E0, 163.0E0, 172.0E0, 178.0E0/
-      DATA  AIR( 31), AIR( 32), AIR( 33), AIR( 34), AIR( 35), AIR( 36)
-     &    / 199.0E0, 199.0E0, 184.0E0, 162.0E0, 146.0E0, 166.0E0/
-      DATA  AIR( 37), AIR( 38), AIR( 39), AIR( 40), AIR( 41), AIR( 42)
-     &    / 171.0E0, 180.0E0, 193.0E0, 181.0E0, 183.0E0, 218.0E0/
-      DATA  AIR( 43), AIR( 44), AIR( 45), AIR( 46), AIR( 47), AIR( 48)
-     &    / 230.0E0, 242.0E0, 209.0E0, 191.0E0, 172.0E0, 194.0E0/
-      DATA  AIR( 49), AIR( 50), AIR( 51), AIR( 52), AIR( 53), AIR( 54)
-     &    / 196.0E0, 196.0E0, 236.0E0, 235.0E0, 229.0E0, 243.0E0/
-      DATA  AIR( 55), AIR( 56), AIR( 57), AIR( 58), AIR( 59), AIR( 60)
-     &    / 264.0E0, 272.0E0, 237.0E0, 211.0E0, 180.0E0, 201.0E0/
-      DATA  AIR( 61), AIR( 62), AIR( 63), AIR( 64), AIR( 65), AIR( 66)
-     &    / 204.0E0, 188.0E0, 235.0E0, 227.0E0, 234.0E0, 264.0E0/
-      DATA  AIR( 67), AIR( 68), AIR( 69), AIR( 70), AIR( 71), AIR( 72)
-     &    / 302.0E0, 293.0E0, 259.0E0, 229.0E0, 203.0E0, 229.0E0/
-      DATA  AIR( 73), AIR( 74), AIR( 75), AIR( 76), AIR( 77), AIR( 78)
-     &    / 242.0E0, 233.0E0, 267.0E0, 269.0E0, 270.0E0, 315.0E0/
-      DATA  AIR( 79), AIR( 80), AIR( 81), AIR( 82), AIR( 83), AIR( 84)
-     &    / 364.0E0, 347.0E0, 312.0E0, 274.0E0, 237.0E0, 278.0E0/
-      DATA  AIR( 85), AIR( 86), AIR( 87), AIR( 88), AIR( 89), AIR( 90)
-     &    / 284.0E0, 277.0E0, 317.0E0, 313.0E0, 318.0E0, 374.0E0/
-      DATA  AIR( 91), AIR( 92), AIR( 93), AIR( 94), AIR( 95), AIR( 96)
-     &    / 413.0E0, 405.0E0, 355.0E0, 306.0E0, 271.0E0, 306.0E0/
-      DATA  AIR( 97), AIR( 98), AIR( 99), AIR(100), AIR(101), AIR(102)
-     &    / 315.0E0, 301.0E0, 356.0E0, 348.0E0, 355.0E0, 422.0E0/
-      DATA  AIR(103), AIR(104), AIR(105), AIR(106), AIR(107), AIR(108)
-     &    / 465.0E0, 467.0E0, 404.0E0, 347.0E0, 305.0E0, 336.0E0/
-      DATA  AIR(109), AIR(110), AIR(111), AIR(112), AIR(113), AIR(114)
-     &    / 340.0E0, 318.0E0, 362.0E0, 348.0E0, 363.0E0, 435.0E0/
-      DATA  AIR(115), AIR(116), AIR(117), AIR(118), AIR(119), AIR(120)
-     &    / 491.0E0, 505.0E0, 404.0E0, 359.0E0, 310.0E0, 337.0E0/
-      DATA  AIR(121), AIR(122), AIR(123), AIR(124), AIR(125), AIR(126)
-     &    / 360.0E0, 342.0E0, 406.0E0, 396.0E0, 420.0E0, 472.0E0/
-      DATA  AIR(127), AIR(128), AIR(129), AIR(130), AIR(131), AIR(132)
-     &    / 548.0E0, 559.0E0, 463.0E0, 407.0E0, 362.0E0, 405.0E0/
-      DATA  AIR(133), AIR(134), AIR(135), AIR(136), AIR(137), AIR(138)
-     &    / 417.0E0, 391.0E0, 419.0E0, 461.0E0, 472.0E0, 535.0E0/
-      DATA  AIR(139), AIR(140), AIR(141), AIR(142), AIR(143), AIR(144)
-     &    / 622.0E0, 606.0E0, 508.0E0, 461.0E0, 390.0E0, 432.0E0/
+     data  air(  1), air(  2), air(  3), air(  4), air(  5), air(  6)&
+     &    / 112.0e0, 118.0e0, 132.0e0, 129.0e0, 121.0e0, 135.0e0/
+     data  air(  7), air(  8), air(  9), air( 10), air( 11), air( 12)&
+     &    / 148.0e0, 148.0e0, 136.0e0, 119.0e0, 104.0e0, 118.0e0/
+     data  air( 13), air( 14), air( 15), air( 16), air( 17), air( 18)&
+     &    / 115.0e0, 126.0e0, 141.0e0, 135.0e0, 125.0e0, 149.0e0/
+     data  air( 19), air( 20), air( 21), air( 22), air( 23), air( 24)&
+     &    / 170.0e0, 170.0e0, 158.0e0, 133.0e0, 114.0e0, 140.0e0/
+     data  air( 25), air( 26), air( 27), air( 28), air( 29), air( 30)&
+     &    / 145.0e0, 150.0e0, 178.0e0, 163.0e0, 172.0e0, 178.0e0/
+     data  air( 31), air( 32), air( 33), air( 34), air( 35), air( 36)&
+     &    / 199.0e0, 199.0e0, 184.0e0, 162.0e0, 146.0e0, 166.0e0/
+     data  air( 37), air( 38), air( 39), air( 40), air( 41), air( 42)&
+     &    / 171.0e0, 180.0e0, 193.0e0, 181.0e0, 183.0e0, 218.0e0/
+     data  air( 43), air( 44), air( 45), air( 46), air( 47), air( 48)&
+     &    / 230.0e0, 242.0e0, 209.0e0, 191.0e0, 172.0e0, 194.0e0/
+     data  air( 49), air( 50), air( 51), air( 52), air( 53), air( 54)&
+     &    / 196.0e0, 196.0e0, 236.0e0, 235.0e0, 229.0e0, 243.0e0/
+     data  air( 55), air( 56), air( 57), air( 58), air( 59), air( 60)&
+     &    / 264.0e0, 272.0e0, 237.0e0, 211.0e0, 180.0e0, 201.0e0/
+     data  air( 61), air( 62), air( 63), air( 64), air( 65), air( 66)&
+     &    / 204.0e0, 188.0e0, 235.0e0, 227.0e0, 234.0e0, 264.0e0/
+     data  air( 67), air( 68), air( 69), air( 70), air( 71), air( 72)&
+     &    / 302.0e0, 293.0e0, 259.0e0, 229.0e0, 203.0e0, 229.0e0/
+     data  air( 73), air( 74), air( 75), air( 76), air( 77), air( 78)&
+     &    / 242.0e0, 233.0e0, 267.0e0, 269.0e0, 270.0e0, 315.0e0/
+     data  air( 79), air( 80), air( 81), air( 82), air( 83), air( 84)&
+     &    / 364.0e0, 347.0e0, 312.0e0, 274.0e0, 237.0e0, 278.0e0/
+     data  air( 85), air( 86), air( 87), air( 88), air( 89), air( 90)&
+     &    / 284.0e0, 277.0e0, 317.0e0, 313.0e0, 318.0e0, 374.0e0/
+     data  air( 91), air( 92), air( 93), air( 94), air( 95), air( 96)&
+     &    / 413.0e0, 405.0e0, 355.0e0, 306.0e0, 271.0e0, 306.0e0/
+     data  air( 97), air( 98), air( 99), air(100), air(101), air(102)&
+     &    / 315.0e0, 301.0e0, 356.0e0, 348.0e0, 355.0e0, 422.0e0/
+     data  air(103), air(104), air(105), air(106), air(107), air(108)&
+     &    / 465.0e0, 467.0e0, 404.0e0, 347.0e0, 305.0e0, 336.0e0/
+     data  air(109), air(110), air(111), air(112), air(113), air(114)&
+     &    / 340.0e0, 318.0e0, 362.0e0, 348.0e0, 363.0e0, 435.0e0/
+     data  air(115), air(116), air(117), air(118), air(119), air(120)&
+     &    / 491.0e0, 505.0e0, 404.0e0, 359.0e0, 310.0e0, 337.0e0/
+     data  air(121), air(122), air(123), air(124), air(125), air(126)&
+     &    / 360.0e0, 342.0e0, 406.0e0, 396.0e0, 420.0e0, 472.0e0/
+     data  air(127), air(128), air(129), air(130), air(131), air(132)&
+     &    / 548.0e0, 559.0e0, 463.0e0, 407.0e0, 362.0e0, 405.0e0/
+     data  air(133), air(134), air(135), air(136), air(137), air(138)&
+     &    / 417.0e0, 391.0e0, 419.0e0, 461.0e0, 472.0e0, 535.0e0/
+     data  air(139), air(140), air(141), air(142), air(143), air(144)&
+     &    / 622.0e0, 606.0e0, 508.0e0, 461.0e0, 390.0e0, 432.0e0/
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      NFAC = 2
-      N = 144
+      nfac = 2
+      n = 144
 !
-      NPAR = 3
-      PAR(1) = 0.000
-      PAR(2) = 0.395
-      PAR(3) = 0.615
+      npar = 3
+      par(1) = 0.000
+      par(2) = 0.395
+      par(3) = 0.615
 !
-      DO 10 I = 1, N
-        Y(I) = LOG(AIR(I))
-   10 CONTINUE
+      do 10 i = 1, n
+        y(i) = log(air(i))
+   10 continue
 !
 !     RUN SIMPLE TEST OF AIME
 !
-      WRITE (IPRT,1000)
-      WRITE (IPRT,1100)
-      CALL AIME (Y, N, MSPEC, NFAC, PAR, NPAR, RES, LDSTAK)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1000)
+      write (iprt,1100)
+      call aime (y, n, mspec, nfac, par, npar, res, ldstak)
+      write (iprt,2000) ierr
 !
 !     RUN SIMPLE TEST OF AIMF
 !
-      WRITE (IPRT,1200)
-      CALL AIMF (Y, N, MSPEC, NFAC, PAR, NPAR, LDSTAK)
-      WRITE (IPRT,2000) IERR
+      write (iprt,1200)
+      call aimf (y, n, mspec, nfac, par, npar, ldstak)
+      write (iprt,2000) ierr
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT ('1*CH13')
- 1100 FORMAT (' SIMPLE TEST OF AIME')
- 1200 FORMAT ('1SIMPLE TEST OF AIMF')
- 2000 FORMAT (/' THE VALUE OF IERR IS ', I4)
-      END
+ 1000 format ('1*CH13')
+ 1100 format (' SIMPLE TEST OF AIME')
+ 1200 format ('1SIMPLE TEST OF AIMF')
+ 2000 format (/' THE VALUE OF IERR IS ', i4)
+      end

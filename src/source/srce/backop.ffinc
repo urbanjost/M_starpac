@@ -1,5 +1,5 @@
 !BACKOP
-      SUBROUTINE BACKOP (MSPEC, NFAC, NPARDF, MBOL, MBO, NPARMA, NPARAR)
+      subroutine backop (mspec, nfac, npardf, mbol, mbo, nparma, nparar)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,19 +15,19 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   MBO,MBOL,NFAC,NPARAR,NPARDF,NPARMA
+     integer&
+     &   mbo,mbol,nfac,nparar,npardf,nparma
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   MSPEC(4,*)
+     integer&
+     &   mspec(4,*)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   J
+     integer&
+     &   j
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -51,21 +51,21 @@
 !     COMPUTE DEGREE OF BACK OPERATOR RESULTING FROM THE NDF
 !     DIFFERENCING FACTORS (= ND DOT IOD).
 !
-      NPARAR = 0
-      NPARDF = 0
-      NPARMA = 0
-      IF (NFAC .EQ. 0) GO TO 20
-      DO 10 J = 1, NFAC
-         NPARAR = NPARAR + MSPEC(1,J)*MSPEC(4,J)
-         NPARDF = NPARDF + MSPEC(2,J)*MSPEC(4,J)
-         NPARMA = NPARMA + MSPEC(3,J)*MSPEC(4,J)
-   10 CONTINUE
+      nparar = 0
+      npardf = 0
+      nparma = 0
+      if (nfac .eq. 0) go to 20
+      do 10 j = 1, nfac
+         nparar = nparar + mspec(1,j)*mspec(4,j)
+         npardf = npardf + mspec(2,j)*mspec(4,j)
+         nparma = nparma + mspec(3,j)*mspec(4,j)
+   10 continue
 !
-   20 CONTINUE
+   20 continue
 !
-      MBOL = NPARDF + NPARAR
-      MBO = MAX(MBOL,NPARMA)
+      mbol = npardf + nparar
+      mbo = max(mbol,nparma)
 !
-      RETURN
+      return
 !
-      END
+      end

@@ -1,6 +1,6 @@
 !VPLMT
-      SUBROUTINE VPLMT (YM, YMMISS, N, M, IYM, YLB, YUB, YMN,
-     &  YMX, ERROR, NMSUB, MISS, NSAMPL)
+     subroutine vplmt (ym, ymmiss, n, m, iym, ylb, yub, ymn,&
+     &  ymx, error, nmsub, miss, nsampl)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,24 +16,24 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YLB,YMN,YMX,YUB
-      INTEGER
-     &   IYM,M,N,NSAMPL
-      LOGICAL
-     &   ERROR,MISS
+     real(kind=wp) ::&
+     &   ylb,ymn,ymx,yub
+     integer&
+     &   iym,m,n,nsampl
+     logical&
+     &   error,miss
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YM(IYM,M),YMMISS(M)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   ym(iym,m),ymmiss(m)
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,II,IPRT,J
-      LOGICAL
-     &   HEAD,SETLMT
+     integer&
+     &   i,ii,iprt,j
+     logical&
+     &   head,setlmt
 !
 !  EXTERNAL FUNCTIONS
 !      LOGICAL
@@ -44,7 +44,7 @@
 !      EXTERNAL ADJLMT,EHDR,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX,MIN
+      intrinsic max,min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -89,89 +89,89 @@
 !     REAL YUB
 !        THE USER SUPPLIED Y-AXIS UPPER BOUNDS.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (YLB.LT.YUB) THEN
+      if (ylb.lt.yub) then
 !
 !       SET LIMITS TO USER SPECIFIED VALUES
 !
-        YMN = YLB
-        YMX = YUB
+        ymn = ylb
+        ymx = yub
 !
-      ELSE
+      else
 !
 !       SET LIMITS TO RANGE OF VALUES WITHIN ANY USER SPECIFIED VALUES
 !
-        SETLMT = .FALSE.
-        II = 1
+        setlmt = .false.
+        ii = 1
 !
 !       FIND FIRST VALUE TO BE PLOTTED
 !
-        DO 20 I=1,N,NSAMPL
-           DO 10 J=1,M
-              IF (MISS .AND. MVCHK(YM(I,J),YMMISS(J))) GO TO 10
-              IF ((YLB.LT.YUB) .AND. ((YM(I,J).LT.YLB) .OR.
-     &           (YUB.LT.YM(I,J)))) GO TO 10
-              IF (SETLMT) THEN
-                YMN = MIN(YMN, YM(I,J))
-                YMX = MAX(YMX, YM(I,J))
-              ELSE
-                YMN = YM(I,J)
-                YMX = YM(I,J)
-                SETLMT = .TRUE.
-                II = I + NSAMPL
-              END IF
-   10      CONTINUE
-           IF (SETLMT) GO TO 30
-   20   CONTINUE
+        do 20 i=1,n,nsampl
+           do 10 j=1,m
+              if (miss .and. mvchk(ym(i,j),ymmiss(j))) go to 10
+             if ((ylb.lt.yub) .and. ((ym(i,j).lt.ylb) .or.&
+     &           (yub.lt.ym(i,j)))) go to 10
+              if (setlmt) then
+                ymn = min(ymn, ym(i,j))
+                ymx = max(ymx, ym(i,j))
+              else
+                ymn = ym(i,j)
+                ymx = ym(i,j)
+                setlmt = .true.
+                ii = i + nsampl
+              end if
+   10      continue
+           if (setlmt) go to 30
+   20   continue
 !
-   30   IF (II.LE.1) THEN
+   30   if (ii.le.1) then
 !
 !         NO VALUES TO BE PLOTTED.  PRINT ERROR MESSAGE
 !
-          ERROR = .TRUE.
-          CALL IPRINT(IPRT)
-          HEAD = .TRUE.
-          CALL EHDR(NMSUB,HEAD)
-          IF (YLB.GE.YUB) THEN
-            WRITE (IPRT, 1010)
-          ELSE
-            WRITE (IPRT, 1020)
-          END IF
-          WRITE (IPRT, 1030)
+          error = .true.
+          call iprint(iprt)
+          head = .true.
+          call ehdr(nmsub,head)
+          if (ylb.ge.yub) then
+            write (iprt, 1010)
+          else
+            write (iprt, 1020)
+          end if
+          write (iprt, 1030)
 !
-        ELSE
+        else
 !
 !         FIND LIMITS FROM REMAINING VALUES
 !
-          IF (II.LE.N) THEN
-            DO 50 I=II,N,NSAMPL
-               DO 40 J=1,M
-                  IF (MISS .AND. MVCHK(YM(I,J),YMMISS(J))) GO TO 40
-                  IF ((YLB.LT.YUB) .AND. ((YM(I,J).LT.YLB) .OR.
-     &               (YUB.LT.YM(I,J)))) GO TO 40
-                  YMN = MIN(YMN, YM(I,J))
-                  YMX = MAX(YMX, YM(I,J))
-   40          CONTINUE
-   50       CONTINUE
-          END IF
-        END IF
+          if (ii.le.n) then
+            do 50 i=ii,n,nsampl
+               do 40 j=1,m
+                  if (miss .and. mvchk(ym(i,j),ymmiss(j))) go to 40
+                 if ((ylb.lt.yub) .and. ((ym(i,j).lt.ylb) .or.&
+     &               (yub.lt.ym(i,j)))) go to 40
+                  ymn = min(ymn, ym(i,j))
+                  ymx = max(ymx, ym(i,j))
+   40          continue
+   50       continue
+          end if
+        end if
 !
 !       ADJUST Y AXIS LIMITS IF EQUAL
 !
-        IF (YMN .GE. YMX) CALL ADJLMT(YMN, YMX)
+        if (ymn .ge. ymx) call adjlmt(ymn, ymx)
 !
-      END IF
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1010 FORMAT (/
-     &   44H NO NON-MISSING PLOT COORDINATES WERE FOUND.)
- 1020 FORMAT (/
-     &   40H NO NON-MISSING VALUES WERE FOUND WITHIN,
-     &   26H THE USER SUPPLIED LIMITS.)
- 1030 FORMAT (/
-     &   30H THE PLOT HAS BEEN SUPPRESSED.)
-      END
+1010 format (/&
+     &   44h no non-missing plot coordinates were found.)
+1020 format (/&
+    &   40h no non-missing values were found within,&
+     &   26h the user supplied limits.)
+1030 format (/&
+     &   30h the plot has been suppressed.)
+      end

@@ -1,5 +1,5 @@
 !SETFRQ
-      SUBROUTINE SETFRQ (FREQ, NF, NPRT, FMIN, FMAX, H)
+      subroutine setfrq (freq, nf, nprt, fmin, fmax, h)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,23 +16,23 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FMAX,FMIN,H
-      INTEGER
-     &   NF,NPRT
+     real(kind=wp) ::&
+     &   fmax,fmin,h
+     integer&
+     &   nf,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FREQ(NF)
+     real(kind=wp) ::&
+     &   freq(nf)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DELTAF
-      INTEGER
-     &   I
+     real(kind=wp) ::&
+     &   deltaf
+     integer&
+     &   i
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC LOG10
+      intrinsic log10
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -56,38 +56,38 @@
 !        NPRT EQUALS 2 THE FREQUENCY SCALE IS LINEAR, AND IF
 !        NPRT EQUALS 3 THE FREQUENCY SCALE IS LOG.
 !
-      IF (NPRT .EQ. 3) GO TO 20
+      if (nprt .eq. 3) go to 20
 !
 !     COMPUTE FREQUENCY VALUES FOR LINEAR SCALE
 !
-      FREQ(1) = FMIN
+      freq(1) = fmin
 !
-      IF (NF .EQ. 1) RETURN
+      if (nf .eq. 1) return
 !
-      DELTAF = (FMAX - FMIN) / (H * (NF - 1))
-      DO 10 I = 2, NF
-         FREQ(I) = FREQ(I-1) + DELTAF
-   10 CONTINUE
+      deltaf = (fmax - fmin) / (h * (nf - 1))
+      do 10 i = 2, nf
+         freq(i) = freq(i-1) + deltaf
+   10 continue
 !
-      FREQ(NF) = FMAX
-      RETURN
+      freq(nf) = fmax
+      return
 !
-   20 CONTINUE
+   20 continue
 !
 !     COMPUTE FREQUENCY VALUES FOR LOG SCALE
 !
-      DELTAF = (LOG10(FMAX) - LOG10(FMIN)) / (H * (NF - 1))
+      deltaf = (log10(fmax) - log10(fmin)) / (h * (nf - 1))
 !
-      FREQ(1) = FMIN
+      freq(1) = fmin
 !
-      IF (NF .EQ. 1) RETURN
+      if (nf .eq. 1) return
 !
-      DO 30 I = 2, NF
-         FREQ(I) = 10.0_WP**(LOG10(FREQ(I-1)) + DELTAF)
-   30 CONTINUE
+      do 30 i = 2, nf
+         freq(i) = 10.0_wp**(log10(freq(i-1)) + deltaf)
+   30 continue
 !
-      FREQ(NF) = FMAX
+      freq(nf) = fmax
 !
 !
-      RETURN
-      END
+      return
+      end

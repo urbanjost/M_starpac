@@ -1,5 +1,5 @@
 !ARCOEF
-      SUBROUTINE ARCOEF (ACOV, PHI, RSS, LAG, LAGMAX, ACOV0)
+      subroutine arcoef (acov, phi, rss, lag, lagmax, acov0)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,20 +17,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV0,RSS
-      INTEGER
-     &   LAG,LAGMAX
+     real(kind=wp) ::&
+     &   acov0,rss
+     integer&
+     &   lag,lagmax
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV(*),PHI(*)
+     real(kind=wp) ::&
+     &   acov(*),phi(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   SUM1,SUM2,T
-      INTEGER
-     &   J,L1,L2,LJ
+     real(kind=wp) ::&
+     &   sum1,sum2,t
+     integer&
+     &   j,l1,l2,lj
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -55,24 +55,24 @@
 !     REAL T
 !        A TEMPORARY STORAGE LOCATION.
 !
-      L1 = LAG - 1
-      SUM1 = 0.0E0
-      SUM2 = 0.0E0
-      DO 10 J = 1, L1
-         LJ = LAG - J
-         SUM1 = SUM1 + PHI(J) * ACOV(LJ)
-         SUM2 = SUM2 + PHI(J) * ACOV(J)
-   10 CONTINUE
-      PHI(LAG) = (ACOV(LAG) - SUM1) / (ACOV0 - SUM2)
-      L2 = LAG / 2
-      DO 20 J = 1, L2
-         LJ = LAG - J
-         T = PHI(J) - PHI(LAG) * PHI(LJ)
-         PHI(LJ) = PHI(LJ) - PHI(LAG) * PHI(J)
-         PHI(J) = T
-   20 CONTINUE
+      l1 = lag - 1
+      sum1 = 0.0e0
+      sum2 = 0.0e0
+      do 10 j = 1, l1
+         lj = lag - j
+         sum1 = sum1 + phi(j) * acov(lj)
+         sum2 = sum2 + phi(j) * acov(j)
+   10 continue
+      phi(lag) = (acov(lag) - sum1) / (acov0 - sum2)
+      l2 = lag / 2
+      do 20 j = 1, l2
+         lj = lag - j
+         t = phi(j) - phi(lag) * phi(lj)
+         phi(lj) = phi(lj) - phi(lag) * phi(j)
+         phi(j) = t
+   20 continue
 !
-      RSS = RSS * (1.0E0 - PHI(LAG)*PHI(LAG))
+      rss = rss * (1.0e0 - phi(lag)*phi(lag))
 !
-      RETURN
-      END
+      return
+      end

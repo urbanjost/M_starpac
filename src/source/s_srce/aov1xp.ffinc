@@ -1,5 +1,5 @@
 !AOV1XP
-      SUBROUTINE AOV1XP(GSTAT, IGSTAT, NG)
+      subroutine aov1xp(gstat, igstat, ng)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,16 +17,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IGSTAT,NG
+     integer&
+     &   igstat,ng
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   GSTAT(IGSTAT,4)
+     real(kind=wp) ::&
+     &   gstat(igstat,4)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,J
+     integer&
+     &   i,iprt,j
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,SETRA
@@ -47,16 +47,16 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
-      WRITE (IPRT,1010) ((GSTAT(I,J),J=1,4),I=1,NG)
-      CALL SETRA(GSTAT, IGSTAT, 4, NG, 0.0E0)
+      call iprint(iprt)
+      write (iprt,1000)
+      write (iprt,1010) ((gstat(i,j),j=1,4),i=1,ng)
+      call setra(gstat, igstat, 4, ng, 0.0e0)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(//21H STORAGE FROM AOV1   //6X, 8HTAGVALUE,
-     &   11X, 10H GROUPSIZE, 11X, 10H GROUPMEAN, 13X, 8H GROUPSD/)
- 1010 FORMAT(4(1X, G20.14))
-      END
+1000 format(//21h storage from aov1   //6x, 8htagvalue,&
+     &   11x, 10h groupsize, 11x, 10h groupmean, 13x, 8h groupsd/)
+ 1010 format(4(1x, g20.14))
+      end

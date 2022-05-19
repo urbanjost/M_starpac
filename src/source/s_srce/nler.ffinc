@@ -1,7 +1,7 @@
 !NLER
-      SUBROUTINE NLER (NMSUB, WEIGHT, WT, LWT, N, M, IXM,
-     &   IFIXED, LIFIXD, NPAR, NPARE,
-     &   LDSTAK, LDSMIN, STP, LSTP, SCALE, LSCALE, IVCV, SAVE, NNZW)
+     subroutine nler (nmsub, weight, wt, lwt, n, m, ixm,&
+    &   ifixed, lifixd, npar, npare,&
+     &   ldstak, ldsmin, stp, lstp, scale, lscale, ivcv, save, nnzw)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,43 +18,43 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IVCV,IXM,LDSMIN,LDSTAK,LIFIXD,LSCALE,LSTP,LWT,M,N,NNZW,
-     &   NPAR,NPARE
-      LOGICAL
-     &   SAVE,WEIGHT
+     integer&
+    &   ivcv,ixm,ldsmin,ldstak,lifixd,lscale,lstp,lwt,m,n,nnzw,&
+     &   npar,npare
+     logical&
+     &   save,weight
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   SCALE(*),STP(*),WT(*)
-      INTEGER
-     &   IFIXED(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   scale(*),stp(*),wt(*)
+     integer&
+     &   ifixed(*)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,NFIX,NNFIX,NV,NZW
-      LOGICAL
-     &   HEAD
+     integer&
+     &   i,nfix,nnfix,nv,nzw
+     logical&
+     &   head
 !
 !  LOCAL ARRAYS
-      LOGICAL
-     &   ERROR(20)
-      CHARACTER
-     &   LIFIX(8)*1,LIVCV(8)*1,LIXM(8)*1,LLDS(8)*1,LM(8)*1,
-     &   LN(8)*1,LNPAR(8)*1,LNPARE(8)*1,LONE(8)*1,LSCL(8)*1,
-     &   LSTEP(8)*1,LWGT(8)*1,LZERO(8)*1
+     logical&
+     &   error(20)
+     character&
+    &   lifix(8)*1,livcv(8)*1,lixm(8)*1,llds(8)*1,lm(8)*1,&
+    &   ln(8)*1,lnpar(8)*1,lnpare(8)*1,lone(8)*1,lscl(8)*1,&
+     &   lstep(8)*1,lwgt(8)*1,lzero(8)*1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL EISGE,EIVEQ,ERVGT,ERVWT
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -127,99 +127,99 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA LIFIX(1), LIFIX(2), LIFIX(3), LIFIX(4), LIFIX(5),
-     &   LIFIX(6), LIFIX(7), LIFIX(8) /'I','F','I','X','E','D',' ',' '/
-      DATA LIVCV(1), LIVCV(2), LIVCV(3), LIVCV(4), LIVCV(5),
-     &   LIVCV(6), LIVCV(7), LIVCV(8) /'I','V','C','V',' ',' ',' ',' '/
-      DATA LIXM(1), LIXM(2), LIXM(3), LIXM(4), LIXM(5), LIXM(6),
-     &   LIXM(7), LIXM(8) /'I','X','M',' ',' ',' ',' ',' '/
-      DATA LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
-     &   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
-      DATA LM(1), LM(2), LM(3), LM(4), LM(5), LM(6), LM(7), LM(8) /'M',
+     data lifix(1), lifix(2), lifix(3), lifix(4), lifix(5),&
+     &   lifix(6), lifix(7), lifix(8) /'I','F','I','X','E','D',' ',' '/
+     data livcv(1), livcv(2), livcv(3), livcv(4), livcv(5),&
+     &   livcv(6), livcv(7), livcv(8) /'I','V','C','V',' ',' ',' ',' '/
+     data lixm(1), lixm(2), lixm(3), lixm(4), lixm(5), lixm(6),&
+     &   lixm(7), lixm(8) /'I','X','M',' ',' ',' ',' ',' '/
+     data llds(1), llds(2), llds(3), llds(4), llds(5), llds(6),&
+     &   llds(7), llds(8) /'L','D','S','T','A','K',' ',' '/
+     data lm(1), lm(2), lm(3), lm(4), lm(5), lm(6), lm(7), lm(8) /'M',&
      &   ' ',' ',' ',' ',' ',' ',' '/
-      DATA LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8) /'N',
+     data ln(1), ln(2), ln(3), ln(4), ln(5), ln(6), ln(7), ln(8) /'N',&
      &   ' ',' ',' ',' ',' ',' ',' '/
-      DATA LNPAR(1), LNPAR(2), LNPAR(3), LNPAR(4), LNPAR(5),
-     &   LNPAR(6), LNPAR(7), LNPAR(8) /'N','P','A','R',' ',' ',' ',
+     data lnpar(1), lnpar(2), lnpar(3), lnpar(4), lnpar(5),&
+    &   lnpar(6), lnpar(7), lnpar(8) /'N','P','A','R',' ',' ',' ',&
      &   ' '/
-      DATA LNPARE(1), LNPARE(2), LNPARE(3), LNPARE(4), LNPARE(5),
-     &   LNPARE(6), LNPARE(7), LNPARE(8) /'N','P','A','R','E',' ',' ',
+     data lnpare(1), lnpare(2), lnpare(3), lnpare(4), lnpare(5),&
+    &   lnpare(6), lnpare(7), lnpare(8) /'N','P','A','R','E',' ',' ',&
      &   ' '/
-      DATA LONE(1), LONE(2), LONE(3), LONE(4), LONE(5),
-     &   LONE(6), LONE(7), LONE(8) /'O','N','E',' ',' ',' ',' ',' '/
-      DATA LSCL(1), LSCL(2), LSCL(3), LSCL(4), LSCL(5),
-     &   LSCL(6), LSCL(7), LSCL(8) /'S','C','A','L','E',' ',' ',
+     data lone(1), lone(2), lone(3), lone(4), lone(5),&
+     &   lone(6), lone(7), lone(8) /'O','N','E',' ',' ',' ',' ',' '/
+     data lscl(1), lscl(2), lscl(3), lscl(4), lscl(5),&
+    &   lscl(6), lscl(7), lscl(8) /'S','C','A','L','E',' ',' ',&
      &   ' '/
-      DATA LSTEP(1), LSTEP(2), LSTEP(3), LSTEP(4), LSTEP(5),
-     &   LSTEP(6), LSTEP(7), LSTEP(8) /'S','T','P',' ',' ',' ',' ',' '/
-      DATA LWGT(1), LWGT(2), LWGT(3), LWGT(4), LWGT(5),
-     &   LWGT(6), LWGT(7), LWGT(8) /'W','T',' ',' ',' ',' ',' ',' '/
-      DATA LZERO(1), LZERO(2), LZERO(3), LZERO(4), LZERO(5),
-     &   LZERO(6), LZERO(7), LZERO(8) /'Z','E','R','O',' ',' ',' ',' '/
+     data lstep(1), lstep(2), lstep(3), lstep(4), lstep(5),&
+     &   lstep(6), lstep(7), lstep(8) /'S','T','P',' ',' ',' ',' ',' '/
+     data lwgt(1), lwgt(2), lwgt(3), lwgt(4), lwgt(5),&
+     &   lwgt(6), lwgt(7), lwgt(8) /'W','T',' ',' ',' ',' ',' ',' '/
+     data lzero(1), lzero(2), lzero(3), lzero(4), lzero(5),&
+     &   lzero(6), lzero(7), lzero(8) /'Z','E','R','O',' ',' ',' ',' '/
 !
 !     ERROR CHECKING
 !
-      DO 10 I=1,20
-         ERROR(I) = .FALSE.
-   10 CONTINUE
+      do 10 i=1,20
+         error(i) = .false.
+   10 continue
 !
-      IERR = 0
-      HEAD = .TRUE.
-      NNZW = N
+      ierr = 0
+      head = .true.
+      nnzw = n
 !
-      CALL EISGE(NMSUB, LNPAR, NPAR, 1, 2, HEAD, ERROR(1), LONE)
-      IF (ERROR(1)) THEN
-        ERROR(7) = .TRUE.
-      ELSE
-        IF (IFIXED(1).LT.0) THEN
-          CALL EISGE(NMSUB, LN, N, NPAR, 2, HEAD, ERROR(7), LNPAR)
-          IF (WEIGHT) THEN
-            CALL ERVWT(NMSUB, LWGT, WT, LWT, NPAR, HEAD, NNZW,
-     &                 NZW, 2, ERROR(3), LNPAR)
-          END IF
-        ELSE
-          CALL EIVEQ(NMSUB, LIFIX, IFIXED, NPAR, 0, 1, HEAD, NNFIX,
-     &               NFIX, 1, ERROR(2), LZERO, LONE)
-          IF (.NOT.ERROR(2)) THEN
-            CALL EISGE(NMSUB, LN, N, NPARE, 2, HEAD, ERROR(7), LNPARE)
-            IF (WEIGHT) THEN
-              CALL ERVWT(NMSUB, LWGT, WT, LWT, NPARE, HEAD, NNZW,
-     &                   NZW, 2, ERROR(3), LNPARE)
-            END IF
-          END IF
-        END IF
-      END IF
+      call eisge(nmsub, lnpar, npar, 1, 2, head, error(1), lone)
+      if (error(1)) then
+        error(7) = .true.
+      else
+        if (ifixed(1).lt.0) then
+          call eisge(nmsub, ln, n, npar, 2, head, error(7), lnpar)
+          if (weight) then
+           call ervwt(nmsub, lwgt, wt, lwt, npar, head, nnzw,&
+     &                 nzw, 2, error(3), lnpar)
+          end if
+        else
+         call eiveq(nmsub, lifix, ifixed, npar, 0, 1, head, nnfix,&
+     &               nfix, 1, error(2), lzero, lone)
+          if (.not.error(2)) then
+            call eisge(nmsub, ln, n, npare, 2, head, error(7), lnpare)
+            if (weight) then
+             call ervwt(nmsub, lwgt, wt, lwt, npare, head, nnzw,&
+     &                   nzw, 2, error(3), lnpare)
+            end if
+          end if
+        end if
+      end if
 !
-      CALL EISGE(NMSUB, LM, M, 1, 2, HEAD, ERROR(4), LONE)
+      call eisge(nmsub, lm, m, 1, 2, head, error(4), lone)
 !
-      IF (.NOT.ERROR(7))
-     &   CALL EISGE(NMSUB, LIXM, IXM, N, 3, HEAD, ERROR(5), LN)
-!
-!
-      IF (.NOT.ERROR(1)) THEN
-         IF ((.NOT.ERROR(2)) .AND. (.NOT.ERROR(7)))
-     &      CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERROR(6),
-     &      LLDS)
-!
-         CALL ERVGT(NMSUB, LSTEP, STP, LSTP, 0.0E0, 0, HEAD, 6, NV,
-     &      ERROR(8), LZERO)
-!
-         CALL ERVGT(NMSUB, LSCL, SCALE, LSCALE, 0.0E0, 0, HEAD, 6, NV,
-     &      ERROR(12), LZERO)
-!
-         IF (SAVE)
-     &      CALL EISGE(NMSUB, LIVCV, IVCV, NPARE, 3, HEAD, ERROR(15),
-     &      LNPARE)
-      END IF
+     if (.not.error(7))&
+     &   call eisge(nmsub, lixm, ixm, n, 3, head, error(5), ln)
 !
 !
-      DO 20 I=1,20
-         IF (ERROR(I)) GO TO 30
-   20 CONTINUE
-      RETURN
+      if (.not.error(1)) then
+        if ((.not.error(2)) .and. (.not.error(7)))&
+    &      call eisge(nmsub, llds, ldstak, ldsmin, 9, head, error(6),&
+     &      llds)
 !
-   30 CONTINUE
-      IERR = 1
-      RETURN
+        call ervgt(nmsub, lstep, stp, lstp, 0.0e0, 0, head, 6, nv,&
+     &      error(8), lzero)
 !
-      END
+        call ervgt(nmsub, lscl, scale, lscale, 0.0e0, 0, head, 6, nv,&
+     &      error(12), lzero)
+!
+        if (save)&
+    &      call eisge(nmsub, livcv, ivcv, npare, 3, head, error(15),&
+     &      lnpare)
+      end if
+!
+!
+      do 20 i=1,20
+         if (error(i)) go to 30
+   20 continue
+      return
+!
+   30 continue
+      ierr = 1
+      return
+!
+      end

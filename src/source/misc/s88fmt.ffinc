@@ -1,5 +1,5 @@
 !S88FMT
-      SUBROUTINE S88FMT( N, W, IFMT )
+      subroutine s88fmt( n, w, ifmt )
 !
 !     LATEST REVISION  -  OCTOBER 3, 1983  (JRD)
 !
@@ -11,40 +11,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER N,W
+      integer n,w
 !
 !  ARRAY ARGUMENTS
-      CHARACTER IFMT(N)*4
+      character ifmt(n)*4
 !
 !  LOCAL SCALARS
-      INTEGER IDIGIT,NT,WT
+      integer idigit,nt,wt
 !
 !  LOCAL ARRAYS
-      CHARACTER DIGITS(10)*4
+      character digits(10)*4
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MOD
+      intrinsic mod
 !
 !
-      DATA DIGITS( 1) / '0' /
-      DATA DIGITS( 2) / '1' /
-      DATA DIGITS( 3) / '2' /
-      DATA DIGITS( 4) / '3' /
-      DATA DIGITS( 5) / '4' /
-      DATA DIGITS( 6) / '5' /
-      DATA DIGITS( 7) / '6' /
-      DATA DIGITS( 8) / '7' /
-      DATA DIGITS( 9) / '8' /
-      DATA DIGITS(10) / '9' /
+      data digits( 1) / '0' /
+      data digits( 2) / '1' /
+      data digits( 3) / '2' /
+      data digits( 4) / '3' /
+      data digits( 5) / '4' /
+      data digits( 6) / '5' /
+      data digits( 7) / '6' /
+      data digits( 8) / '7' /
+      data digits( 9) / '8' /
+      data digits(10) / '9' /
 !
-      NT = N
-      WT = W
+      nt = n
+      wt = w
 !
- 10   IF (NT .LE. 0) RETURN
-        IDIGIT = MOD( WT, 10 )
-        IFMT(NT) = DIGITS(IDIGIT+1)
-        WT = WT/10
-        NT = NT - 1
-        GO TO 10
+ 10   if (nt .le. 0) return
+        idigit = mod( wt, 10 )
+        ifmt(nt) = digits(idigit+1)
+        wt = wt/10
+        nt = nt - 1
+        go to 10
 !
-      END
+      end

@@ -1,0 +1,35 @@
+!ADJLMT
+subroutine adjlmt(ymn, ymx)
+!
+!     LATEST REVISION  -  03/15/90  (JRD)
+!
+!     This routine corrects the plot limits when all
+!     observations are identically equal.
+!
+!     WRITTEN BY - Janet R. Donaldson
+!                  Statistical Engineering Division
+!                  National Bureau of Standards, Boulder, Colorado
+!
+!     CREATION DATE  -  January 21, 1982
+!
+!  VARIABLE DECLARATIONS
+!
+!  SCALAR ARGUMENTS
+     real(kind=wp),intent(inout) :: ymn,ymx
+!  INTRINSIC FUNCTIONS
+      intrinsic :: abs
+!  VARIABLE DEFINITIONS (ALPHABETICALLY)
+!     REAL(KIND=WP) :: YMN, YMX
+!        THE Y-AXIS LOWER AND UPPER LIMITS ACTUALLY USED.
+!
+      if (ymn .lt. ymx) return
+!
+!     CORRECT FOR ALL OBSERVATIONS IDENTICALLY EQUAL
+!
+      ymn = ymn - abs(ymn/2.0_wp)
+      ymx = ymx + abs(ymx/2.0_wp)
+      if (ymn .lt. ymx) return
+      ymn = -0.5_wp
+      ymx = 0.5_wp
+!
+end subroutine adjlmt

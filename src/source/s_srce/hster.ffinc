@@ -1,5 +1,5 @@
 !HSTER
-      SUBROUTINE HSTER(NMSUB, Y, N, NCELLS, LDSTAK, YLB, YUB, IERR)
+      subroutine hster(nmsub, y, n, ncells, ldstak, ylb, yub, ierr)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,26 +19,26 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YLB,YUB
-      INTEGER
-     &   IERR,LDSTAK,N,NCELLS
+     real(kind=wp) ::&
+     &   ylb,yub
+     integer&
+     &   ierr,ldstak,n,ncells
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   y(*)
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   LDSMIN,NV
-      LOGICAL
-     &   HEAD,IER1,IER2,IER3,IER4
+     integer&
+     &   ldsmin,nv
+     logical&
+     &   head,ier1,ier2,ier3,ier4
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   LLDS(8)*1,LN(8)*1,LONE(8)*1,LY(8)*1
+     character&
+     &   llds(8)*1,ln(8)*1,lone(8)*1,ly(8)*1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL EISGE,ERVII,LDSCMP
@@ -86,43 +86,43 @@
 !
 !     INITIALIZE NAME VECTORS
 !
-      DATA   LLDS(1),  LLDS(2),  LLDS(3),  LLDS(4),  LLDS(5),  LLDS(6),
-     &  LLDS(7), LLDS(8) /'L', 'D', 'S', 'T', 'A', 'K', ' ', ' '/
-      DATA     LN(1),    LN(2),    LN(3),    LN(4),    LN(5),    LN(6),
-     &    LN(7),   LN(8) /'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
-      DATA   LONE(1),  LONE(2),  LONE(3),  LONE(4),  LONE(5),  LONE(6),
-     &  LONE(7), LONE(8) /'O', 'N', 'E', ' ', ' ', ' ', ' ', ' '/
-      DATA     LY(1),    LY(2),    LY(3),    LY(4),    LY(5),    LY(6),
-     &    LY(7),   LY(8) /'Y', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
+     data   llds(1),  llds(2),  llds(3),  llds(4),  llds(5),  llds(6),&
+     &  llds(7), llds(8) /'L', 'D', 'S', 'T', 'A', 'K', ' ', ' '/
+     data     ln(1),    ln(2),    ln(3),    ln(4),    ln(5),    ln(6),&
+     &    ln(7),   ln(8) /'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
+     data   lone(1),  lone(2),  lone(3),  lone(4),  lone(5),  lone(6),&
+     &  lone(7), lone(8) /'O', 'N', 'E', ' ', ' ', ' ', ' ', ' '/
+     data     ly(1),    ly(2),    ly(3),    ly(4),    ly(5),    ly(6),&
+     &    ly(7),   ly(8) /'Y', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
 !
 !     INITIALIZE ERROR FLAGS
 !
-      IER1 = .FALSE.
-      IER2 = .FALSE.
-      IER3 = .FALSE.
-      IER4 = .FALSE.
+      ier1 = .false.
+      ier2 = .false.
+      ier3 = .false.
+      ier4 = .false.
 !
-      IERR = 0
+      ierr = 0
 !
-      HEAD = .TRUE.
+      head = .true.
 !
 !     CHECK TO SEE THAT THERE IS AT LEAST ONE DATA POINTS.
 !
-      CALL EISGE(NMSUB, LN, N, 1, 2, HEAD, IER1, LONE)
+      call eisge(nmsub, ln, n, 1, 2, head, ier1, lone)
 !
 !     CHECK FOR SUFFICIENT WORK AREA
 !
-      CALL LDSCMP(2, 0, N, 0, 0, 0, 'S', NCELLS, LDSMIN)
+      call ldscmp(2, 0, n, 0, 0, 0, 'S', ncells, ldsmin)
 !
-      CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, IER2, LLDS)
+      call eisge(nmsub, llds, ldstak, ldsmin, 9, head, ier2, llds)
 !
 !     CHECK WHETHER THERE IS ANY DATA BETWEEN USER SUPPLIED LIMITS
 !
-      IF ((YLB.LT.YUB) .AND. (N.GE.1))
-     &  CALL ERVII (NMSUB, LY, Y, N, YLB, YUB, N-1, HEAD, 1, NV, IER4)
+     if ((ylb.lt.yub) .and. (n.ge.1))&
+     &  call ervii (nmsub, ly, y, n, ylb, yub, n-1, head, 1, nv, ier4)
 !
 !     SEE IF ANY ERRORS WERE FOUND.
 !
-      IF (IER1 .OR. IER2 .OR. IER3 .OR. IER4) IERR = 1
-      RETURN
-      END
+      if (ier1 .or. ier2 .or. ier3 .or. ier4) ierr = 1
+      return
+      end

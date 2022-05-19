@@ -1,5 +1,5 @@
 !FFTR
-      SUBROUTINE FFTR (YFFT, N, NFFT, IEXTND, NF, AB, LAB)
+      subroutine fftr (yfft, n, nfft, iextnd, nf, ab, lab)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,34 +16,34 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IEXTND,LAB,N,NF,NFFT
+     integer&
+     &   iextnd,lab,n,nf,nfft
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   AB(*),YFFT(*)
+     real(kind=wp) ::&
+     &   ab(*),yfft(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   YEXTND
-      INTEGER
-     &   I,IPRT,ISN,N1,NFFT1,NFFT2
-      LOGICAL
-     &   ERR01,ERR02,ERR03,HEAD
+     real(kind=wp) ::&
+     &   yextnd
+     integer&
+     &   i,iprt,isn,n1,nfft1,nfft2
+     logical&
+     &   err01,err02,err03,head
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   LLAB(8)*1,LN(8)*1,NMSUB(6)*1
+     character&
+     &   llab(8)*1,ln(8)*1,nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL AMEAN,EISGE,ENFFT,FFT,IPRINT,REALTR
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -97,72 +97,72 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'F',       'F',       'T',       'R',       ' ',       ' '/
-      DATA
-     &   LLAB(1),   LLAB(2),   LLAB(3),   LLAB(4),   LLAB(5),   LLAB(6)
+     data&
+    &   llab(1),   llab(2),   llab(3),   llab(4),   llab(5),   llab(6)&
      & /     'L',       'A',       'B',       ' ',       ' ',       ' '/
-      DATA
-     &   LLAB(7),   LLAB(8)
+     data&
+    &   llab(7),   llab(8)&
      & /     ' ',       ' '/
-      DATA
-     &     LN(1),     LN(2),     LN(3),     LN(4),     LN(5),     LN(6)
+     data&
+    &     ln(1),     ln(2),     ln(3),     ln(4),     ln(5),     ln(6)&
      & /     'N',       ' ',       ' ',       ' ',       ' ',       ' '/
-      DATA
-     &     LN(7),     LN(8)
+     data&
+    &     ln(7),     ln(8)&
      & /     ' ',       ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 17, 1, HEAD, ERR01, LN)
-      IF (ERR01) GO TO 5
+      call eisge(nmsub, ln, n, 17, 1, head, err01, ln)
+      if (err01) go to 5
 !
-      CALL ENFFT(NMSUB, NFFT, 2, N, LAB, NFFT1, HEAD, ERR02) !LN
-      NF = NFFT1/2
+      call enfft(nmsub, nfft, 2, n, lab, nfft1, head, err02) !LN
+      nf = nfft1/2
 !
-      CALL EISGE(NMSUB, LLAB, LAB, NFFT1, 9, HEAD, ERR03, LLAB)
+      call eisge(nmsub, llab, lab, nfft1, 9, head, err03, llab)
 !
-      IF (ERR02 .OR. ERR03) GO TO 5
-      GO TO 10
+      if (err02 .or. err03) go to 5
+      go to 10
 !
-    5 CONTINUE
-      IERR = 1
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+    5 continue
+      ierr = 1
+      call iprint (iprt)
+      write (iprt, 1000)
+      return
 !
-   10 CONTINUE
+   10 continue
 !
 !     COPY THE INPUT SERIES TO AB, EXTENDING APPROPRIATELY.
 !
-      YEXTND = 0.0E0
-      IF (IEXTND .NE. 0) CALL AMEAN (YFFT, N, YEXTND)
+      yextnd = 0.0e0
+      if (iextnd .ne. 0) call amean (yfft, n, yextnd)
 !
-      DO 20 I = 1, N
-         AB(I) = YFFT(I)
-   20 CONTINUE
+      do 20 i = 1, n
+         ab(i) = yfft(i)
+   20 continue
 !
-      N1 = N+1
-      DO 30 I = N1, NFFT1
-         AB(I) = YEXTND
-   30 CONTINUE
+      n1 = n+1
+      do 30 i = n1, nfft1
+         ab(i) = yextnd
+   30 continue
 !
-      NFFT2 = (NFFT1-2) / 2
-      ISN = 2
+      nfft2 = (nfft1-2) / 2
+      isn = 2
 !
-      CALL FFT (AB(1), AB(2), NFFT2, NFFT2, NFFT2, ISN)
-      CALL REALTR (AB(1), AB(2), NFFT2, ISN)
+      call fft (ab(1), ab(2), nfft2, nfft2, nfft2, isn)
+      call realtr (ab(1), ab(2), nfft2, isn)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   53H       CALL FFTR (YFFT, N, NFFT, IEXTND, NF, AB, LAB))
-      END
+1000 format (/42h the correct form of the call statement is//&
+     &   53h       call fftr (yfft, n, nfft, iextnd, nf, ab, lab))
+      end

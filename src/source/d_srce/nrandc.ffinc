@@ -1,5 +1,5 @@
 !NRANDC
-      SUBROUTINE NRANDC(Y, N, ISEED, YMEAN, SIGMA)
+      subroutine nrandc(y, n, iseed, ymean, sigma)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -22,28 +22,28 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   SIGMA,YMEAN
-      INTEGER
-     &   ISEED,N
+     real(kind=wp) ::&
+     &   sigma,ymean
+     integer&
+     &   iseed,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*)
+     real(kind=wp) ::&
+     &   y(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,ISEEDU
-      LOGICAL
-     &   ERR01,ERR02,HEAD
+     integer&
+     &   i,iprt,iseedu
+     logical&
+     &   err01,err02,head
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   LN(8)*1,LONE(8)*1,LSIGMA(8)*1,LZERO(8)*1,NMSUB(6)*1
+     character&
+     &   ln(8)*1,lone(8)*1,lsigma(8)*1,lzero(8)*1,nmsub(6)*1
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(TYPE=WP) :: RANDN
@@ -51,7 +51,7 @@
 !      EXTERNAL EISGE,EISRNG,ERSGE,IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -91,47 +91,47 @@
 !     REAL(KIND=WP) :: YMEAN
 !        THE MEAN OF THE GENERATED VALUES.
 !
-      DATA  NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6)
+     data  nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6)&
      &   /       'N',      'R',      'A',      'N',      'D',      'C'/
-      DATA     LN(1),    LN(2),    LN(3),    LN(4),    LN(5),    LN(6),
-     &         LN(7),    LN(8)/'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
-      DATA   LONE(1),  LONE(2),  LONE(3),  LONE(4),  LONE(5),  LONE(6),
-     &       LONE(7),  LONE(8)/'O', 'N', 'E', ' ', ' ', ' ', ' ', ' '/
-      DATA LSIGMA(1),LSIGMA(2),LSIGMA(3),LSIGMA(4),LSIGMA(5),LSIGMA(6),
-     &     LSIGMA(7),LSIGMA(8)/'S', 'I', 'G', 'M', 'A', ' ', ' ', ' '/
-      DATA  LZERO(1), LZERO(2), LZERO(3), LZERO(4), LZERO(5), LZERO(6),
-     &      LZERO(7), LZERO(8)/'Z', 'E', 'R', 'O', ' ', ' ', ' ', ' '/
+     data     ln(1),    ln(2),    ln(3),    ln(4),    ln(5),    ln(6),&
+     &         ln(7),    ln(8)/'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
+     data   lone(1),  lone(2),  lone(3),  lone(4),  lone(5),  lone(6),&
+     &       lone(7),  lone(8)/'O', 'N', 'E', ' ', ' ', ' ', ' ', ' '/
+     data lsigma(1),lsigma(2),lsigma(3),lsigma(4),lsigma(5),lsigma(6),&
+     &     lsigma(7),lsigma(8)/'S', 'I', 'G', 'M', 'A', ' ', ' ', ' '/
+     data  lzero(1), lzero(2), lzero(3), lzero(4), lzero(5), lzero(6),&
+     &      lzero(7), lzero(8)/'Z', 'E', 'R', 'O', ' ', ' ', ' ', ' '/
 !
-      IERR = 0
+      ierr = 0
 !
-      HEAD = .TRUE.
+      head = .true.
 !
 !     CHECK FOR INPUT ERRORS
 !
-      CALL EISGE(NMSUB, LN, N, 1, 2, HEAD, ERR01, LONE)
-      CALL ERSGE(NMSUB, LSIGMA, SIGMA, 0.0_WP, 2, HEAD, ERR02, LZERO)
-      CALL EISRNG(NMSUB, ISEED, ISEEDU, HEAD)
+      call eisge(nmsub, ln, n, 1, 2, head, err01, lone)
+      call ersge(nmsub, lsigma, sigma, 0.0_wp, 2, head, err02, lzero)
+      call eisrng(nmsub, iseed, iseedu, head)
 !
-      IF (ERR01.OR.ERR02) THEN
+      if (err01.or.err02) then
 !
-        CALL IPRINT(IPRT)
-        WRITE (IPRT,1000)
-        IERR = 1
+        call iprint(iprt)
+        write (iprt,1000)
+        ierr = 1
 !
-      ELSE
+      else
 !
 !     GENERATE THE PSEUDO-RANDOM NUMBERS
 !
-        Y(1) = RANDN(ISEEDU,typ=0.0_wp)
-        DO 20 I=1,N
-           Y(I) = RANDN(0,typ=0.0_wp)*SIGMA + YMEAN
-   20   CONTINUE
-      END IF
+        y(1) = randn(iseedu,typ=0.0_wp)
+        do 20 i=1,n
+           y(i) = randn(0,typ=0.0_wp)*sigma + ymean
+   20   continue
+      end if
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &   '       CALL NRANDC (Y, N, ISEED, YMEAN, SIGMA)')
-      END
+      end

@@ -1,5 +1,5 @@
 !SETLAG
-      SUBROUTINE SETLAG (N, LAGMAX)
+      subroutine setlag (n, lagmax)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,11 +16,11 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LAGMAX,N
+     integer&
+     &   lagmax,n
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MIN
+      intrinsic min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -30,8 +30,8 @@
 !     INTEGER N
 !        THE INTEGER NUMBER OF OBSERVATIONS IN EACH SERIES
 !
-      IF (N .GE. 96)                 LAGMAX = MIN(N / 3, 100)
-      IF (33 .LE. N .AND. N .LE. 95) LAGMAX = 32
-      IF (N .LE. 32)                 LAGMAX = N - 1
-      RETURN
-      END
+      if (n .ge. 96)                 lagmax = min(n / 3, 100)
+      if (33 .le. n .and. n .le. 95) lagmax = 32
+      if (n .le. 32)                 lagmax = n - 1
+      return
+      end

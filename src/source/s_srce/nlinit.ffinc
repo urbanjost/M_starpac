@@ -1,7 +1,7 @@
 !NLINIT
-      SUBROUTINE NLINIT (N, IFIXD, PAR, NPAR, PARE, NPARE, MIT,
-     &   STOPSS, STOPP, SCALE, LSCALE, DELTA, IVAPRX, APRXDV, IVCVPT,
-     &   IWORK, IIWORK, RWORK, IRWORK, SCL)
+     subroutine nlinit (n, ifixd, par, npar, pare, npare, mit,&
+    &   stopss, stopp, scale, lscale, delta, ivaprx, aprxdv, ivcvpt,&
+     &   iwork, iiwork, rwork, irwork, scl)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -23,28 +23,28 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   DELTA,STOPP,STOPSS
-      INTEGER
-     &   IIWORK,IRWORK,IVAPRX,IVCVPT,LSCALE,MIT,N,NPAR,NPARE,SCL
-      LOGICAL
-     &   APRXDV
+     real(kind=wp) ::&
+     &   delta,stopp,stopss
+     integer&
+     &   iiwork,irwork,ivaprx,ivcvpt,lscale,mit,n,npar,npare,scl
+     logical&
+     &   aprxdv
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),PARE(NPAR),RWORK(IRWORK),SCALE(LSCALE)
-      INTEGER
-     &   IFIXD(NPAR),IWORK(IIWORK)
+     real(kind=wp) ::&
+     &   par(npar),pare(npar),rwork(irwork),scale(lscale)
+     integer&
+     &   ifixd(npar),iwork(iiwork)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   AFCTOL,CNVCOD,COVPRT,COVREQ,DINIT,DTYPE,ISCL,J,LMAX0,
-     &   MXFCAL,MXITER,NITER,OUTLEV,PRUNIT,RFCTOL,SCLJ,SOLPRT,
-     &   STATPR,X0PRT,XCTOL
+     integer&
+    &   afctol,cnvcod,covprt,covreq,dinit,dtype,iscl,j,lmax0,&
+    &   mxfcal,mxiter,niter,outlev,prunit,rfctol,sclj,solprt,&
+     &   statpr,x0prt,xctol
 !
 !  EXTERNAL FUNCTIONS
 !     REAL(KIND=WP) :: RMDCON
@@ -53,10 +53,10 @@
 !       EXTERNAL DFAULT,NLSPK
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,IABS,MAX
+      intrinsic abs,iabs,max
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -219,101 +219,101 @@
 !
 !     IWORK SUBSCRIPT VALUES
 !
-      DATA CNVCOD /34/, COVPRT /14/, COVREQ /15/, DINIT /38/, DTYPE
-     &   /16/, ISCL /27/, MXFCAL /17/, MXITER /18/,
-     &   NITER /31/, OUTLEV /19/, PRUNIT /21/, SOLPRT /22/, STATPR
-     &   /23/, X0PRT /24/
+     data cnvcod /34/, covprt /14/, covreq /15/, dinit /38/, dtype&
+    &   /16/, iscl /27/, mxfcal /17/, mxiter /18/,&
+    &   niter /31/, outlev /19/, prunit /21/, solprt /22/, statpr&
+     &   /23/, x0prt /24/
 !
 !     RWORK SUBSCRIPT VALUES
 !
-      DATA AFCTOL /31/, LMAX0 /35/, RFCTOL /32/, XCTOL /33/
+      data afctol /31/, lmax0 /35/, rfctol /32/, xctol /33/
 !
 !+++++++++++++++++++++++++++++++  BODY  ++++++++++++++++++++++++++++++++
 !
 !     PACK PARAMETERS INTO PARE
 !
-      CALL NLSPK(PAR, IFIXD, NPAR, PARE, NPAR)
+      call nlspk(par, ifixd, npar, pare, npar)
 !
 !     SET NL2SOL DEFAULT VALUES
 !
-      CALL DFAULT(IWORK, RWORK)
+      call dfault(iwork, rwork)
 !
 !     SET NON NL2 DEFAULT VALUES
 !
-      IWORK(MXITER) = MIT
-      IF (MIT.LE.0) IWORK(MXITER) = 21
+      iwork(mxiter) = mit
+      if (mit.le.0) iwork(mxiter) = 21
 !
-      IWORK(MXFCAL) = 2*IWORK(MXITER)
+      iwork(mxfcal) = 2*iwork(mxiter)
 !
 !     SET STOPPING CRITERION
 !
-      RWORK(AFCTOL) = RMDCON(1,typ=0.0_wp)
-      IF ((STOPSS.GE.RMDCON(3,typ=0.0_wp)) .AND. (STOPSS.LE.0.1)) 
-     & RWORK(RFCTOL) = STOPSS
+      rwork(afctol) = rmdcon(1,typ=0.0_wp)
+     if ((stopss.ge.rmdcon(3,typ=0.0_wp)) .and. (stopss.le.0.1))&
+     & rwork(rfctol) = stopss
 !
-      IF ((STOPP.GE.0.0E0) .AND. (STOPP.LE.1.0E0))
-     &   RWORK(XCTOL) = STOPP
+     if ((stopp.ge.0.0e0) .and. (stopp.le.1.0e0))&
+     &   rwork(xctol) = stopp
 !
 !     SET SCALE VALUES
 !
-      SCL = 94 + 2*N + NPARE*(3*NPARE+31)/2
-      IWORK(ISCL) = SCL
-      IF (SCALE(1).GT.0.0E0) GO TO 40
+      scl = 94 + 2*n + npare*(3*npare+31)/2
+      iwork(iscl) = scl
+      if (scale(1).gt.0.0e0) go to 40
 !
-      IWORK(DTYPE) = 1
+      iwork(dtype) = 1
 !
 !     INITIALIZE SCALE VALUES FOR FIRST ITERATION
 !
-      SCLJ = SCL - 1
-      DO 30 J=1,NPAR
-         IF (IFIXD(J).NE.0) GO TO 30
-         SCLJ = SCLJ + 1
-         IF (PAR(J).EQ.0.0E0) RWORK(SCLJ) = 1.0E0
-         IF (PAR(J).NE.0.0E0) RWORK(SCLJ) = 1.0E0/ABS(PAR(J))
-   30 CONTINUE
+      sclj = scl - 1
+      do 30 j=1,npar
+         if (ifixd(j).ne.0) go to 30
+         sclj = sclj + 1
+         if (par(j).eq.0.0e0) rwork(sclj) = 1.0e0
+         if (par(j).ne.0.0e0) rwork(sclj) = 1.0e0/abs(par(j))
+   30 continue
 !
-      GO TO 60
+      go to 60
 !
-   40 IWORK(DTYPE) = 0
-      RWORK(DINIT) = -1.0E0
-      SCLJ = SCL - 1
-      DO 50 J=1,NPAR
-         IF (IFIXD(J).NE.0) GO TO 50
-         SCLJ = SCLJ + 1
-         RWORK(SCLJ) = 1.0E0/MAX(ABS(SCALE(J)),ABS(PAR(J)))
-   50 CONTINUE
+   40 iwork(dtype) = 0
+      rwork(dinit) = -1.0e0
+      sclj = scl - 1
+      do 50 j=1,npar
+         if (ifixd(j).ne.0) go to 50
+         sclj = sclj + 1
+         rwork(sclj) = 1.0e0/max(abs(scale(j)),abs(par(j)))
+   50 continue
 !
-   60 IF (DELTA.LE.0.0E0) RWORK(LMAX0) = 100.0E0
-      IF (DELTA.GT.0.0E0) RWORK(LMAX0) = DELTA
+   60 if (delta.le.0.0e0) rwork(lmax0) = 100.0e0
+      if (delta.gt.0.0e0) rwork(lmax0) = delta
 !
 !     SET NL2 COVARIANCE COMPUTATION CONTROL PARAMETER
 !
-      IF ((IVAPRX.LE.1) .OR. (IVAPRX.EQ.4) .OR. (IVAPRX.GE.7))
-     &   IWORK(COVREQ) = 3
-      IF ((IVAPRX.EQ.2) .OR. (IVAPRX.EQ.5)) IWORK(COVREQ) = 2
-      IF ((IVAPRX.EQ.3) .OR. (IVAPRX.EQ.6)) IWORK(COVREQ) = 1
-      IF ((IVAPRX.GE.4) .AND. (IVAPRX.LE.6))
-     &   IWORK(COVREQ) = -IWORK(COVREQ)
-      IF (APRXDV) IWORK(COVREQ) = -IABS(IWORK(COVREQ))
-      IF ((IVAPRX.LE.1) .OR. (IVAPRX.EQ.4) .OR. (IVAPRX.GE.7))
-     &   IVCVPT = 1
-      IF ((IVAPRX.EQ.2) .OR. (IVAPRX.EQ.5)) IVCVPT = 2
-      IF ((IVAPRX.EQ.3) .OR. (IVAPRX.EQ.6)) IVCVPT = 3
+     if ((ivaprx.le.1) .or. (ivaprx.eq.4) .or. (ivaprx.ge.7))&
+     &   iwork(covreq) = 3
+      if ((ivaprx.eq.2) .or. (ivaprx.eq.5)) iwork(covreq) = 2
+      if ((ivaprx.eq.3) .or. (ivaprx.eq.6)) iwork(covreq) = 1
+     if ((ivaprx.ge.4) .and. (ivaprx.le.6))&
+     &   iwork(covreq) = -iwork(covreq)
+      if (aprxdv) iwork(covreq) = -iabs(iwork(covreq))
+     if ((ivaprx.le.1) .or. (ivaprx.eq.4) .or. (ivaprx.ge.7))&
+     &   ivcvpt = 1
+      if ((ivaprx.eq.2) .or. (ivaprx.eq.5)) ivcvpt = 2
+      if ((ivaprx.eq.3) .or. (ivaprx.eq.6)) ivcvpt = 3
 !
 !     INITIALIZE THE ITERATION COUNTER
 !
-      IWORK(NITER) = 0
+      iwork(niter) = 0
 !
 !     SET NL2 PRINT CONTROL PARAMETERS
 !
-      IWORK(CNVCOD) = 0
-      IWORK(COVPRT) = 0
-      IWORK(OUTLEV) = 0
-      IWORK(PRUNIT) = 0
-      IWORK(SOLPRT) = 0
-      IWORK(STATPR) = 0
-      IWORK(X0PRT) = 0
+      iwork(cnvcod) = 0
+      iwork(covprt) = 0
+      iwork(outlev) = 0
+      iwork(prunit) = 0
+      iwork(solprt) = 0
+      iwork(statpr) = 0
+      iwork(x0prt) = 0
 !
-      RETURN
+      return
 !
-      END
+      end

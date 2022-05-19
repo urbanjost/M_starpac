@@ -1,14 +1,14 @@
 !ALBETA
-      REAL FUNCTION ALBETA (A, B)
+      real function albeta (a, b)
 ! JULY 1977 EDITION.   W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL A,B
+      real a,b
 !
 !  LOCAL SCALARS
-      REAL CORR,P,Q,SQ2PIL
+      real corr,p,q,sq2pil
 !
 !  EXTERNAL FUNCTIONS
 !      REAL ALNGAM,ALNREL,GAMMA,R9LGMC
@@ -18,35 +18,35 @@
 !       EXTERNAL XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC LOG,MAX,MIN
+      intrinsic log,max,min
 !
-      DATA SQ2PIL / 0.91893853320467274E0 /
+      data sq2pil / 0.91893853320467274e0 /
 !
-      P = MIN (A, B)
-      Q = MAX (A, B)
+      p = min (a, b)
+      q = max (a, b)
 !
-      IF (P.LE.0.0) CALL XERROR (
+     if (p.le.0.0) call xerror (&
      &  'ALBETA  BOTH ARGUMENTS MUST BE GT ZERO', 38, 1, 2)
-      IF (P.GE.10.0) GO TO 30
-      IF (Q.GE.10.0) GO TO 20
+      if (p.ge.10.0) go to 30
+      if (q.ge.10.0) go to 20
 !
 ! P AND Q ARE SMALL.
 !
-      ALBETA = LOG(GAMMA(P) * (GAMMA(Q)/GAMMA(P+Q)) )
-      RETURN
+      albeta = log(gamma(p) * (gamma(q)/gamma(p+q)) )
+      return
 !
 ! P IS SMALL, BUT Q IS BIG.
 !
- 20   CORR = R9LGMC(Q) - R9LGMC(P+Q)
-      ALBETA = ALNGAM(P) + CORR + P - P*LOG(P+Q) +
-     &  (Q-0.5)*ALNREL(-P/(P+Q))
-      RETURN
+ 20   corr = r9lgmc(q) - r9lgmc(p+q)
+     albeta = alngam(p) + corr + p - p*log(p+q) +&
+     &  (q-0.5)*alnrel(-p/(p+q))
+      return
 !
 ! P AND Q ARE BIG.
 !
- 30   CORR = R9LGMC(P) + R9LGMC(Q) - R9LGMC(P+Q)
-      ALBETA = -0.5*LOG(Q) + SQ2PIL + CORR + (P-0.5)*LOG(P/(P+Q))
-     &  + Q*ALNREL(-P/(P+Q))
-      RETURN
+ 30   corr = r9lgmc(p) + r9lgmc(q) - r9lgmc(p+q)
+     albeta = -0.5*log(q) + sq2pil + corr + (p-0.5)*log(p/(p+q))&
+     &  + q*alnrel(-p/(p+q))
+      return
 !
-      END
+      end

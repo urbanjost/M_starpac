@@ -1,5 +1,5 @@
 !FITEXT
-      SUBROUTINE FITEXT(RSS, YSS, EXACT)
+      subroutine fitext(rss, yss, exact)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,22 +16,22 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RSS,YSS
-      LOGICAL
-     &   EXACT
+     real(kind=wp) ::&
+     &   rss,yss
+     logical&
+     &   exact
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLRS,RSSTST
+     real(kind=wp) ::&
+     &   fplrs,rsstst
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   D1MACH
+     real(kind=wp) ::&
+     &   d1mach
 !       EXTERNAL D1MACH
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC SQRT
+      intrinsic sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -48,16 +48,16 @@
 !     REAL(KIND=WP) :: YSS
 !        THE SUM OF SQUARES OF THE DEPENDENT VARIABLE Y.
 !
-      FPLRS = D1MACH(4)
+      fplrs = d1mach(4)
 !
 !     TEST FOR EXACT FIT
 !
-      EXACT = .FALSE.
-      RSSTST = RSS
-      IF (YSS.GT.0.0_WP) RSSTST = RSSTST / YSS
-      RSSTST = SQRT(RSSTST)
-      IF (RSSTST.LT.10.0_WP*FPLRS) EXACT = .TRUE.
+      exact = .false.
+      rsstst = rss
+      if (yss.gt.0.0_wp) rsstst = rsstst / yss
+      rsstst = sqrt(rsstst)
+      if (rsstst.lt.10.0_wp*fplrs) exact = .true.
 !
-      RETURN
+      return
 !
-      END
+      end

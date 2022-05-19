@@ -10,27 +10,27 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      integer
+     integer&
      &   n,nn,p
 !
 !  ARRAY ARGUMENTS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   v(33)
-      integer
+     integer&
      &   iv(21)
 !
 !  LOCAL SCALARS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   big,machep,tiny,vk,zero
-      integer
-     &   d0init,dtype,dtype0,epslon,i,ich,inits,iv1,jtinit,jtol0,
-     &   jtol1,jtolp,k,l,m,nvdflt,oldn,oldnn,oldp,parprt,parsv1,
+     integer&
+    &   d0init,dtype,dtype0,epslon,i,ich,inits,iv1,jtinit,jtol0,&
+    &   jtol1,jtolp,k,l,m,nvdflt,oldn,oldnn,oldp,parprt,parsv1,&
      &   prunit,pu
 !
 !  LOCAL ARRAYS
-      real(kind=wp) ::
+     real(kind=wp) ::&
      &   vm(27),vx(27)
-      character
+     character&
      &   cngd(12)*1,dflt(12)*1,vn(8,27)*1,which(12)*1
 !
 !  EXTERNAL FUNCTIONS
@@ -62,138 +62,138 @@
 !
       data big/0.0_wp/, nvdflt/27/, tiny/1.0_wp/, zero/0.0_wp/
 !
-      data dtype/16/, dtype0/29/, d0init/37/, epslon/19/,
-     &     inits/25/, jtinit/39/, jtol0/86/, jtol1/87/,
-     &     oldn/45/, oldnn/46/, oldp/47/, parprt/20/,
+     data dtype/16/, dtype0/29/, d0init/37/, epslon/19/,&
+    &     inits/25/, jtinit/39/, jtol0/86/, jtol1/87/,&
+    &     oldn/45/, oldnn/46/, oldp/47/, parprt/20/,&
      &     parsv1/51/, prunit/21/
 !
-      data
-     & vn(1,1),vn(2,1),vn(3,1),vn(4,1),vn(5,1),vn(6,1),vn(7,1),vn(8,1)
+     data&
+    & vn(1,1),vn(2,1),vn(3,1),vn(4,1),vn(5,1),vn(6,1),vn(7,1),vn(8,1)&
      &   /'E',    'P',    'S',    'L',    'O',    'N',    '.',    '.'/
-      data
-     & vn(1,2),vn(2,2),vn(3,2),vn(4,2),vn(5,2),vn(6,2),vn(7,2),vn(8,2)
+     data&
+    & vn(1,2),vn(2,2),vn(3,2),vn(4,2),vn(5,2),vn(6,2),vn(7,2),vn(8,2)&
      &   /'P',    'H',    'M',    'N',    'F',    'C',    '.',    '.'/
-      data
-     & vn(1,3),vn(2,3),vn(3,3),vn(4,3),vn(5,3),vn(6,3),vn(7,3),vn(8,3)
+     data&
+    & vn(1,3),vn(2,3),vn(3,3),vn(4,3),vn(5,3),vn(6,3),vn(7,3),vn(8,3)&
      &   /'P',    'H',    'M',    'X',    'F',    'C',    '.',    '.'/
-      data
-     & vn(1,4),vn(2,4),vn(3,4),vn(4,4),vn(5,4),vn(6,4),vn(7,4),vn(8,4)
+     data&
+    & vn(1,4),vn(2,4),vn(3,4),vn(4,4),vn(5,4),vn(6,4),vn(7,4),vn(8,4)&
      &   /'D',    'E',    'C',    'F',    'A',    'C',    '.',    '.'/
-      data
-     & vn(1,5),vn(2,5),vn(3,5),vn(4,5),vn(5,5),vn(6,5),vn(7,5),vn(8,5)
+     data&
+    & vn(1,5),vn(2,5),vn(3,5),vn(4,5),vn(5,5),vn(6,5),vn(7,5),vn(8,5)&
      &   /'I',    'N',    'C',    'F',    'A',    'C',    '.',    '.'/
-      data
-     & vn(1,6),vn(2,6),vn(3,6),vn(4,6),vn(5,6),vn(6,6),vn(7,6),vn(8,6)
+     data&
+    & vn(1,6),vn(2,6),vn(3,6),vn(4,6),vn(5,6),vn(6,6),vn(7,6),vn(8,6)&
      &   /'R',    'D',    'F',    'C',    'M',    'N',    '.',    '.'/
-      data
-     & vn(1,7),vn(2,7),vn(3,7),vn(4,7),vn(5,7),vn(6,7),vn(7,7),vn(8,7)
+     data&
+    & vn(1,7),vn(2,7),vn(3,7),vn(4,7),vn(5,7),vn(6,7),vn(7,7),vn(8,7)&
      &   /'R',    'D',    'F',    'C',    'M',    'X',    '.',    '.'/
-      data
-     & vn(1,8),vn(2,8),vn(3,8),vn(4,8),vn(5,8),vn(6,8),vn(7,8),vn(8,8)
+     data&
+    & vn(1,8),vn(2,8),vn(3,8),vn(4,8),vn(5,8),vn(6,8),vn(7,8),vn(8,8)&
      &   /'T',    'U',    'N',    'E',    'R',    '1',    '.',    '.'/
-      data
-     & vn(1,9),vn(2,9),vn(3,9),vn(4,9),vn(5,9),vn(6,9),vn(7,9),vn(8,9)
+     data&
+    & vn(1,9),vn(2,9),vn(3,9),vn(4,9),vn(5,9),vn(6,9),vn(7,9),vn(8,9)&
      &   /'T',    'U',    'N',    'E',    'R',    '2',    '.',    '.'/
-      data
-     & vn(1,10),vn(2,10),vn(3,10),vn(4,10),vn(5,10),vn(6,10),vn(7,10),
-     & vn(8,10)
+     data&
+    & vn(1,10),vn(2,10),vn(3,10),vn(4,10),vn(5,10),vn(6,10),vn(7,10),&
+    & vn(8,10)&
      &   /'T',    'U',    'N',    'E',    'R',    '3',    '.',    '.'/
-      data
-     & vn(1,11),vn(2,11),vn(3,11),vn(4,11),vn(5,11),vn(6,11),vn(7,11),
-     & vn(8,11)
+     data&
+    & vn(1,11),vn(2,11),vn(3,11),vn(4,11),vn(5,11),vn(6,11),vn(7,11),&
+    & vn(8,11)&
      &   /'T',    'U',    'N',    'E',    'R',    '4',    '.',    '.'/
-      data
-     & vn(1,12),vn(2,12),vn(3,12),vn(4,12),vn(5,12),vn(6,12),vn(7,12),
-     & vn(8,12)
+     data&
+    & vn(1,12),vn(2,12),vn(3,12),vn(4,12),vn(5,12),vn(6,12),vn(7,12),&
+    & vn(8,12)&
      &   /'T',    'U',    'N',    'E',    'R',    '5',    '.',    '.'/
-      data
-     & vn(1,13),vn(2,13),vn(3,13),vn(4,13),vn(5,13),vn(6,13),vn(7,13),
-     & vn(8,13)
+     data&
+    & vn(1,13),vn(2,13),vn(3,13),vn(4,13),vn(5,13),vn(6,13),vn(7,13),&
+    & vn(8,13)&
      &   /'A',    'F',    'C',    'T',    'O',    'L',    '.',    '.'/
-      data
-     & vn(1,14),vn(2,14),vn(3,14),vn(4,14),vn(5,14),vn(6,14),vn(7,14),
-     & vn(8,14)
+     data&
+    & vn(1,14),vn(2,14),vn(3,14),vn(4,14),vn(5,14),vn(6,14),vn(7,14),&
+    & vn(8,14)&
      &   /'R',    'F',    'C',    'T',    'O',    'L',    '.',    '.'/
-      data
-     & vn(1,15),vn(2,15),vn(3,15),vn(4,15),vn(5,15),vn(6,15),vn(7,15),
-     & vn(8,15)
+     data&
+    & vn(1,15),vn(2,15),vn(3,15),vn(4,15),vn(5,15),vn(6,15),vn(7,15),&
+    & vn(8,15)&
      &   /'X',    'C',    'T',    'O',    'L',    '.',    '.',    '.'/
-      data
-     & vn(1,16),vn(2,16),vn(3,16),vn(4,16),vn(5,16),vn(6,16),vn(7,16),
-     & vn(8,16)
+     data&
+    & vn(1,16),vn(2,16),vn(3,16),vn(4,16),vn(5,16),vn(6,16),vn(7,16),&
+    & vn(8,16)&
      &   /'X',    'F',    'T',    'O',    'L',    '.',    '.',    '.'/
-      data
-     & vn(1,17),vn(2,17),vn(3,17),vn(4,17),vn(5,17),vn(6,17),vn(7,17),
-     & vn(8,17)
+     data&
+    & vn(1,17),vn(2,17),vn(3,17),vn(4,17),vn(5,17),vn(6,17),vn(7,17),&
+    & vn(8,17)&
      &   /'L',    'M',    'A',    'X',    '0',    '.',    '.',    '.'/
-      data
-     & vn(1,18),vn(2,18),vn(3,18),vn(4,18),vn(5,18),vn(6,18),vn(7,18),
-     & vn(8,18)
+     data&
+    & vn(1,18),vn(2,18),vn(3,18),vn(4,18),vn(5,18),vn(6,18),vn(7,18),&
+    & vn(8,18)&
      &   /'D',    'L',    'T',    'F',    'D',    'J',    '.',    '.'/
-      data
-     & vn(1,19),vn(2,19),vn(3,19),vn(4,19),vn(5,19),vn(6,19),vn(7,19),
-     & vn(8,19)
+     data&
+    & vn(1,19),vn(2,19),vn(3,19),vn(4,19),vn(5,19),vn(6,19),vn(7,19),&
+    & vn(8,19)&
      &   /'D',    '0',    'I',    'N',    'I',    'T',    '.',    '.'/
-      data
-     & vn(1,20),vn(2,20),vn(3,20),vn(4,20),vn(5,20),vn(6,20),vn(7,20),
-     & vn(8,20)
+     data&
+    & vn(1,20),vn(2,20),vn(3,20),vn(4,20),vn(5,20),vn(6,20),vn(7,20),&
+    & vn(8,20)&
      &   /'D',    'I',    'N',    'I',    'T',    '.',    '.',    '.'/
-      data
-     & vn(1,21),vn(2,21),vn(3,21),vn(4,21),vn(5,21),vn(6,21),vn(7,21),
-     & vn(8,21)
+     data&
+    & vn(1,21),vn(2,21),vn(3,21),vn(4,21),vn(5,21),vn(6,21),vn(7,21),&
+    & vn(8,21)&
      &   /'J',    'T',    'I',    'N',    'I',    'T',    '.',    '.'/
-      data
-     & vn(1,22),vn(2,22),vn(3,22),vn(4,22),vn(5,22),vn(6,22),vn(7,22),
-     & vn(8,22)
+     data&
+    & vn(1,22),vn(2,22),vn(3,22),vn(4,22),vn(5,22),vn(6,22),vn(7,22),&
+    & vn(8,22)&
      &   /'D',    'L',    'T',    'F',    'D',    'C',    '.',    '.'/
-      data
-     & vn(1,23),vn(2,23),vn(3,23),vn(4,23),vn(5,23),vn(6,23),vn(7,23),
-     & vn(8,23)
+     data&
+    & vn(1,23),vn(2,23),vn(3,23),vn(4,23),vn(5,23),vn(6,23),vn(7,23),&
+    & vn(8,23)&
      &   /'D',    'F',    'A',    'C',    '.',    '.',    '.',    '.'/
-      data
-     & vn(1,24),vn(2,24),vn(3,24),vn(4,24),vn(5,24),vn(6,24),vn(7,24),
-     & vn(8,24)
+     data&
+    & vn(1,24),vn(2,24),vn(3,24),vn(4,24),vn(5,24),vn(6,24),vn(7,24),&
+    & vn(8,24)&
      &   /'R',    'L',    'I',    'M',    'I',    'T',    '.',    '.'/
-      data
-     & vn(1,25),vn(2,25),vn(3,25),vn(4,25),vn(5,25),vn(6,25),vn(7,25),
-     & vn(8,25)
+     data&
+    & vn(1,25),vn(2,25),vn(3,25),vn(4,25),vn(5,25),vn(6,25),vn(7,25),&
+    & vn(8,25)&
      &   /'C',    'O',    'S',    'M',    'I',    'N',    '.',    '.'/
-      data
-     & vn(1,26),vn(2,26),vn(3,26),vn(4,26),vn(5,26),vn(6,26),vn(7,26),
-     & vn(8,26)
+     data&
+    & vn(1,26),vn(2,26),vn(3,26),vn(4,26),vn(5,26),vn(6,26),vn(7,26),&
+    & vn(8,26)&
      &   /'D',    'E',    'L',    'T',    'A',    '0',    '.',    '.'/
-      data
-     & vn(1,27),vn(2,27),vn(3,27),vn(4,27),vn(5,27),vn(6,27),vn(7,27),
-     & vn(8,27)
+     data&
+    & vn(1,27),vn(2,27),vn(3,27),vn(4,27),vn(5,27),vn(6,27),vn(7,27),&
+    & vn(8,27)&
      &   /'F',    'U',    'Z',    'Z',    '.',    '.',    '.',    '.'/
 !
-      data vm(1)/1.0e-3_wp/, vm(2)/-0.99_wp/, vm(3)/1.0e-3_wp/, 
-     &     vm(4)/1.0e-2_wp/,
-     &     vm(5)/1.2_wp/, vm(6)/1.0e-2_wp/, vm(7)/1.2_wp/, 
-     &     vm(8)/0.0_wp/,
-     &     vm(9)/0.0_wp/, vm(10)/1.0e-3_wp/, vm(11)/-1.0_wp/,
-     &     vm(15)/0.0_wp/,
-     &     vm(16)/0.0_wp/, vm(19)/0.0_wp/, vm(20)/-10.0_wp/, 
-     &     vm(21)/0.0_wp/,
+     data vm(1)/1.0e-3_wp/, vm(2)/-0.99_wp/, vm(3)/1.0e-3_wp/,&
+    &     vm(4)/1.0e-2_wp/,&
+    &     vm(5)/1.2_wp/, vm(6)/1.0e-2_wp/, vm(7)/1.2_wp/,&
+    &     vm(8)/0.0_wp/,&
+    &     vm(9)/0.0_wp/, vm(10)/1.0e-3_wp/, vm(11)/-1.0_wp/,&
+    &     vm(15)/0.0_wp/,&
+    &     vm(16)/0.0_wp/, vm(19)/0.0_wp/, vm(20)/-10.0_wp/,&
+    &     vm(21)/0.0_wp/,&
      &     vm(23)/0.0_wp/, vm(24)/1.0e10_wp/, vm(27)/1.01_wp/
-      data vx(1)/0.9_wp/, vx(2)/-1.0e-3_wp/, vx(3)/1.0e1_wp/, 
-     &     vx(4)/0.8_wp/,
-     &     vx(5)/1.0e2_wp/, vx(6)/0.8_wp/, vx(7)/1.0e2_wp/,
-     &     vx(8)/0.5_wp/,
-     &     vx(9)/0.5_wp/, vx(10)/1.0_wp/, vx(11)/1.0_wp/,
-     &     vx(14)/0.1_wp/,
-     &     vx(15)/1.0_wp/, vx(16)/1.0_wp/, vx(18)/1.0_wp/, 
-     &     vx(22)/1.0_wp/,
-     &     vx(23)/1.0_wp/, vx(25)/1.0_wp/, vx(26)/1.0_wp/, 
+     data vx(1)/0.9_wp/, vx(2)/-1.0e-3_wp/, vx(3)/1.0e1_wp/,&
+    &     vx(4)/0.8_wp/,&
+    &     vx(5)/1.0e2_wp/, vx(6)/0.8_wp/, vx(7)/1.0e2_wp/,&
+    &     vx(8)/0.5_wp/,&
+    &     vx(9)/0.5_wp/, vx(10)/1.0_wp/, vx(11)/1.0_wp/,&
+    &     vx(14)/0.1_wp/,&
+    &     vx(15)/1.0_wp/, vx(16)/1.0_wp/, vx(18)/1.0_wp/,&
+    &     vx(22)/1.0_wp/,&
+    &     vx(23)/1.0_wp/, vx(25)/1.0_wp/, vx(26)/1.0_wp/,&
      &     vx(27)/1.0e2_wp/
 !
-      data cngd(1), cngd(2), cngd(3), cngd(4), cngd(5), cngd(6)
+     data cngd(1), cngd(2), cngd(3), cngd(4), cngd(5), cngd(6)&
      &   /     '-',     '-',     '-',     'C',     'H',     'A'/
-      data cngd(7), cngd(8), cngd(9), cngd(10), cngd(11), cngd(12)
+     data cngd(7), cngd(8), cngd(9), cngd(10), cngd(11), cngd(12)&
      &   /     'N',     'G',     'E',     'D',     ' ',     'V'/
-      data dflt(1), dflt(2), dflt(3), dflt(4), dflt(5), dflt(6)
+     data dflt(1), dflt(2), dflt(3), dflt(4), dflt(5), dflt(6)&
      &   /     'N',     'O',     'N',     'D',     'E',     'F'/
-      data dflt(7), dflt(8), dflt(9), dflt(10), dflt(11), dflt(12)
+     data dflt(7), dflt(8), dflt(9), dflt(10), dflt(11), dflt(12)&
      &   /     'A',     'U',     'L',     'T',     ' ',     'V'/
 !
 !.......................................................................
@@ -205,7 +205,7 @@
          if (nn .ge. n .and. n .ge. p .and. p .ge. 1) go to 20
               iv(1) = 16
               if (pu .ne. 0) write(pu,10) nn, n, p
- 10           format(30h0///// bad nn, n, or p... nn =,i5,5h, n =,i5,
+10           format(30h0///// bad nn, n, or p... nn =,i5,5h, n =,i5,&
      &               5h, p =,i5)
               go to 999
  20      k = iv(21)
@@ -219,12 +219,12 @@
             which(ich) = dflt(ich)
  25      continue
          go to 80
- 30   if (n .eq. iv(oldn) .and. nn .eq. iv(oldnn) .and. p .eq. iv(oldp))
+30   if (n .eq. iv(oldn) .and. nn .eq. iv(oldnn) .and. p .eq. iv(oldp))&
      &                       go to 50
          iv(1) = 17
-         if (pu .ne. 0) write(pu,40) iv(oldnn), iv(oldn), iv(oldp), nn,
+        if (pu .ne. 0) write(pu,40) iv(oldnn), iv(oldn), iv(oldp), nn,&
      &                               n, p
- 40      format('0///// (NN,N,P) CHANGED FROM (',i5,',',i5,',',i3,
+40      format('0///// (NN,N,P) CHANGED FROM (',i5,',',i5,',',i3,&
      &          ') TO (',i5,',',i5,',',i3,').')
          go to 999
 !
@@ -261,17 +261,17 @@
       if (iv(inits) .ge. 0 .and. iv(inits) .le. 2) go to 110
          m = 18
          if (pu .ne. 0) write(pu,100) iv(inits)
- 100     format(25h0/////  inits... iv(25) =,i4,20h should be between 0,
+100     format(25h0/////  inits... iv(25) =,i4,20h should be between 0,&
      &          7h and 2.)
  110  k = epslon
       do 140 i = 1, nvdflt
          vk = v(k)
          if (vk .ge. vm(i) .and. vk .le. vx(i)) go to 130
               m = k
-           if (pu .ne. 0) write(pu,120) (vn(ich, i), ich=1, 8),
-     &                                  (vn(ich, i), ich=1, 8),
+          if (pu .ne. 0) write(pu,120) (vn(ich, i), ich=1, 8),&
+    &                                  (vn(ich, i), ich=1, 8),&
      &                                  k, vk, vm(i), vx(i)
- 120          format(8h0/////  ,8a1,5h.. v(,i2,3h) =,e11.3,7h should,
+120          format(8h0/////  ,8a1,5h.. v(,i2,3h) =,e11.3,7h should,&
      &               ' BE BETWEEN',e11.3,4h and,e11.3)
  130     k = k + 1
  140     continue
@@ -285,7 +285,7 @@
          if (v(i) .gt. zero) go to 160
          k = i - jtol0
          if (pu .ne. 0) write(pu,150) k, i, v(i)
- 150     format(12h0///// jtol(,i3,6h) = v(,i3,3h) =,e11.3,
+150     format(12h0///// jtol(,i3,6h) = v(,i3,3h) =,e11.3,&
      &          20h should be positive.)
          m = i
  160     continue

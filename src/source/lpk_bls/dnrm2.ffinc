@@ -1,5 +1,5 @@
 !DNRM2
-      DOUBLE PRECISION FUNCTION DNRM2 ( N, DX, INCX)
+      double precision function dnrm2 ( n, dx, incx)
 !
 !     EUCLIDEAN NORM OF THE N-VECTOR STORED IN DX() WITH STORAGE
 !     INCREMENT INCX .
@@ -40,99 +40,99 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER INCX,N
+      integer incx,n
 !
 !  ARRAY ARGUMENTS
-      DOUBLE PRECISION DX(*)
+      double precision dx(*)
 !
 !  LOCAL SCALARS
-      DOUBLE PRECISION CUTHI,CUTLO,HITEST,ONE,SUM,XMAX,ZERO
-      INTEGER I,J,NEXT,NN
+      double precision cuthi,cutlo,hitest,one,sum,xmax,zero
+      integer i,j,next,nn
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC DABS,DSQRT,FLOAT
+      intrinsic dabs,dsqrt,float
 !
 !     DATA CUTLO, CUTHI / 8.232D-11,  1.304D19 /
 !     DATA CUTLO, CUTHI / 4.441E-16,  1.304E19 /
-      DATA CUTLO, CUTHI / 8.232D-11,  1.304D19 /
-      DATA   ZERO, ONE /0.0D0, 1.0D0/
+      data cutlo, cuthi / 8.232d-11,  1.304d19 /
+      data   zero, one /0.0d0, 1.0d0/
 !
-      XMAX = ZERO
-      IF(N .GT. 0) GO TO 10
-         DNRM2  = ZERO
-         GO TO 300
+      xmax = zero
+      if(n .gt. 0) go to 10
+         dnrm2  = zero
+         go to 300
 !
-   10 ASSIGN 30 TO NEXT
-      SUM = ZERO
-      NN = N * INCX
+   10 assign 30 to next
+      sum = zero
+      nn = n * incx
 !                                                 BEGIN MAIN LOOP
-      I = 1
-   20    GO TO NEXT,(30, 50, 70, 110)
-   30 IF( DABS(DX(I)) .GT. CUTLO) GO TO 85
-      ASSIGN 50 TO NEXT
-      XMAX = ZERO
+      i = 1
+   20    go to next,(30, 50, 70, 110)
+   30 if( dabs(dx(i)) .gt. cutlo) go to 85
+      assign 50 to next
+      xmax = zero
 !
 !                        PHASE 1.  SUM IS ZERO
 !
-   50 IF( DX(I) .EQ. ZERO) GO TO 200
-      IF( DABS(DX(I)) .GT. CUTLO) GO TO 85
+   50 if( dx(i) .eq. zero) go to 200
+      if( dabs(dx(i)) .gt. cutlo) go to 85
 !
 !                                PREPARE FOR PHASE 2.
-      ASSIGN 70 TO NEXT
-      GO TO 105
+      assign 70 to next
+      go to 105
 !
 !                                PREPARE FOR PHASE 4.
 !
-  100 I = J
-      ASSIGN 110 TO NEXT
-      SUM = (SUM / DX(I)) / DX(I)
-  105 XMAX = DABS(DX(I))
-      GO TO 115
+  100 i = j
+      assign 110 to next
+      sum = (sum / dx(i)) / dx(i)
+  105 xmax = dabs(dx(i))
+      go to 115
 !
 !                   PHASE 2.  SUM IS SMALL.
 !                             SCALE TO AVOID DESTRUCTIVE UNDERFLOW.
 !
-   70 IF( DABS(DX(I)) .GT. CUTLO ) GO TO 75
+   70 if( dabs(dx(i)) .gt. cutlo ) go to 75
 !
 !                     COMMON CODE FOR PHASES 2 AND 4.
 !                     IN PHASE 4 SUM IS LARGE.  SCALE TO AVOID OVERFLOW.
 !
-  110 IF( DABS(DX(I)) .LE. XMAX ) GO TO 115
-         SUM = ONE + SUM * (XMAX / DX(I))**2
-         XMAX = DABS(DX(I))
-         GO TO 200
+  110 if( dabs(dx(i)) .le. xmax ) go to 115
+         sum = one + sum * (xmax / dx(i))**2
+         xmax = dabs(dx(i))
+         go to 200
 !
-  115 SUM = SUM + (DX(I)/XMAX)**2
-      GO TO 200
+  115 sum = sum + (dx(i)/xmax)**2
+      go to 200
 !
 !
 !                  PREPARE FOR PHASE 3.
 !
-   75 SUM = (SUM * XMAX) * XMAX
+   75 sum = (sum * xmax) * xmax
 !
 !
 !     FOR REAL OR D.P. SET HITEST = CUTHI/N
 !     FOR COMPLEX      SET HITEST = CUTHI/(2*N)
 !
-   85 HITEST = CUTHI/FLOAT( N )
+   85 hitest = cuthi/float( n )
 !
 !                   PHASE 3.  SUM IS MID-RANGE.  NO SCALING.
 !
-      DO 95 J =I,NN,INCX
-      IF(DABS(DX(J)) .GE. HITEST) GO TO 100
-   95    SUM = SUM + DX(J)**2
-      DNRM2 = DSQRT( SUM )
-      GO TO 300
+      do 95 j =i,nn,incx
+      if(dabs(dx(j)) .ge. hitest) go to 100
+   95    sum = sum + dx(j)**2
+      dnrm2 = dsqrt( sum )
+      go to 300
 !
-  200 CONTINUE
-      I = I + INCX
-      IF ( I .LE. NN ) GO TO 20
+  200 continue
+      i = i + incx
+      if ( i .le. nn ) go to 20
 !
 !              END OF MAIN LOOP.
 !
 !              COMPUTE SQUARE ROOT AND ADJUST FOR SCALING.
 !
-      DNRM2 = XMAX * DSQRT(SUM)
-  300 CONTINUE
-      RETURN
-      END
+      dnrm2 = xmax * dsqrt(sum)
+  300 continue
+      return
+      end

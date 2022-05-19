@@ -1,5 +1,5 @@
 !DTRCO
-      SUBROUTINE DTRCO(T,LDT,N,RCOND,Z,JOB)
+      subroutine dtrco(t,ldt,n,rcond,z,job)
 !***BEGIN PROLOGUE  DTRCO
 !***DATE WRITTEN   780814   (YYMMDD)
 !***REVISION DATE  820801   (YYMMDD)
@@ -50,16 +50,16 @@
 !***END PROLOGUE  DTRCO
 
 !...SCALAR ARGUMENTS
-      DOUBLE PRECISION RCOND
-      INTEGER JOB,LDT,N
+      double precision rcond
+      integer job,ldt,n
 
 !...ARRAY ARGUMENTS
-      DOUBLE PRECISION T(LDT,*),Z(*)
+      double precision t(ldt,*),z(*)
 
 !...LOCAL SCALARS
-      DOUBLE PRECISION EK,S,SM,TNORM,W,WK,WKM,YNORM
-      INTEGER I1,J,J1,J2,K,KK,L
-      LOGICAL LOWER
+      double precision ek,s,sm,tnorm,w,wk,wkm,ynorm
+      integer i1,j,j1,j2,k,kk,l
+      logical lower
 
 !...EXTERNAL FUNCTIONS
 !      DOUBLE PRECISION DASUM
@@ -69,24 +69,22 @@
 !       EXTERNAL DAXPY,DSCAL
 
 !...INTRINSIC FUNCTIONS
-      INTRINSIC DABS,DMAX1,DSIGN
-
+      intrinsic dabs,dmax1,dsign
 
 !***FIRST EXECUTABLE STATEMENT  DTRCO
 
-
-      LOWER = JOB .EQ. 0
+      lower = job .eq. 0
 
 !     COMPUTE 1-NORM OF T
 
-      TNORM = 0.0D0
-      DO 10 J = 1, N
-         L = J
-         IF (LOWER) L = N + 1 - J
-         I1 = 1
-         IF (LOWER) I1 = J
-         TNORM = DMAX1(TNORM,DASUM(L,T(I1,J),1))
-   10 CONTINUE
+      tnorm = 0.0d0
+      do 10 j = 1, n
+         l = j
+         if (lower) l = n + 1 - j
+         i1 = 1
+         if (lower) i1 = j
+         tnorm = dmax1(tnorm,dasum(l,t(i1,j),1))
+   10 continue
 
 !     RCOND = 1/(NORM(T)*(ESTIMATE OF NORM(INVERSE(T)))) .
 !     ESTIMATE = NORM(Z)/NORM(Y) WHERE  T*Z = Y  AND  TRANS(T)*Y = E .
@@ -97,81 +95,81 @@
 
 !     SOLVE TRANS(T)*Y = E
 
-      EK = 1.0D0
-      DO 20 J = 1, N
-         Z(J) = 0.0D0
-   20 CONTINUE
-      DO 100 KK = 1, N
-         K = KK
-         IF (LOWER) K = N + 1 - KK
-         IF (Z(K) .NE. 0.0D0) EK = DSIGN(EK,-Z(K))
-         IF (DABS(EK-Z(K)) .LE. DABS(T(K,K))) GO TO 30
-            S = DABS(T(K,K))/DABS(EK-Z(K))
-            CALL DSCAL(N,S,Z,1)
-            EK = S*EK
-   30    CONTINUE
-         WK = EK - Z(K)
-         WKM = -EK - Z(K)
-         S = DABS(WK)
-         SM = DABS(WKM)
-         IF (T(K,K) .EQ. 0.0D0) GO TO 40
-            WK = WK/T(K,K)
-            WKM = WKM/T(K,K)
-         GO TO 50
-   40    CONTINUE
-            WK = 1.0D0
-            WKM = 1.0D0
-   50    CONTINUE
-         IF (KK .EQ. N) GO TO 90
-            J1 = K + 1
-            IF (LOWER) J1 = 1
-            J2 = N
-            IF (LOWER) J2 = K - 1
-            DO 60 J = J1, J2
-               SM = SM + DABS(Z(J)+WKM*T(K,J))
-               Z(J) = Z(J) + WK*T(K,J)
-               S = S + DABS(Z(J))
-   60       CONTINUE
-            IF (S .GE. SM) GO TO 80
-               W = WKM - WK
-               WK = WKM
-               DO 70 J = J1, J2
-                  Z(J) = Z(J) + W*T(K,J)
-   70          CONTINUE
-   80       CONTINUE
-   90    CONTINUE
-         Z(K) = WK
-  100 CONTINUE
-      S = 1.0D0/DASUM(N,Z,1)
-      CALL DSCAL(N,S,Z,1)
+      ek = 1.0d0
+      do 20 j = 1, n
+         z(j) = 0.0d0
+   20 continue
+      do 100 kk = 1, n
+         k = kk
+         if (lower) k = n + 1 - kk
+         if (z(k) .ne. 0.0d0) ek = dsign(ek,-z(k))
+         if (dabs(ek-z(k)) .le. dabs(t(k,k))) go to 30
+            s = dabs(t(k,k))/dabs(ek-z(k))
+            call dscal(n,s,z,1)
+            ek = s*ek
+   30    continue
+         wk = ek - z(k)
+         wkm = -ek - z(k)
+         s = dabs(wk)
+         sm = dabs(wkm)
+         if (t(k,k) .eq. 0.0d0) go to 40
+            wk = wk/t(k,k)
+            wkm = wkm/t(k,k)
+         go to 50
+   40    continue
+            wk = 1.0d0
+            wkm = 1.0d0
+   50    continue
+         if (kk .eq. n) go to 90
+            j1 = k + 1
+            if (lower) j1 = 1
+            j2 = n
+            if (lower) j2 = k - 1
+            do 60 j = j1, j2
+               sm = sm + dabs(z(j)+wkm*t(k,j))
+               z(j) = z(j) + wk*t(k,j)
+               s = s + dabs(z(j))
+   60       continue
+            if (s .ge. sm) go to 80
+               w = wkm - wk
+               wk = wkm
+               do 70 j = j1, j2
+                  z(j) = z(j) + w*t(k,j)
+   70          continue
+   80       continue
+   90    continue
+         z(k) = wk
+  100 continue
+      s = 1.0d0/dasum(n,z,1)
+      call dscal(n,s,z,1)
 
-      YNORM = 1.0D0
+      ynorm = 1.0d0
 
 !     SOLVE T*Z = Y
 
-      DO 130 KK = 1, N
-         K = N + 1 - KK
-         IF (LOWER) K = KK
-         IF (DABS(Z(K)) .LE. DABS(T(K,K))) GO TO 110
-            S = DABS(T(K,K))/DABS(Z(K))
-            CALL DSCAL(N,S,Z,1)
-            YNORM = S*YNORM
-  110    CONTINUE
-         IF (T(K,K) .NE. 0.0D0) Z(K) = Z(K)/T(K,K)
-         IF (T(K,K) .EQ. 0.0D0) Z(K) = 1.0D0
-         I1 = 1
-         IF (LOWER) I1 = K + 1
-         IF (KK .GE. N) GO TO 120
-            W = -Z(K)
-            CALL DAXPY(N-KK,W,T(I1,K),1,Z(I1),1)
-  120    CONTINUE
-  130 CONTINUE
+      do 130 kk = 1, n
+         k = n + 1 - kk
+         if (lower) k = kk
+         if (dabs(z(k)) .le. dabs(t(k,k))) go to 110
+            s = dabs(t(k,k))/dabs(z(k))
+            call dscal(n,s,z,1)
+            ynorm = s*ynorm
+  110    continue
+         if (t(k,k) .ne. 0.0d0) z(k) = z(k)/t(k,k)
+         if (t(k,k) .eq. 0.0d0) z(k) = 1.0d0
+         i1 = 1
+         if (lower) i1 = k + 1
+         if (kk .ge. n) go to 120
+            w = -z(k)
+            call daxpy(n-kk,w,t(i1,k),1,z(i1),1)
+  120    continue
+  130 continue
 !     MAKE ZNORM = 1.0
-      S = 1.0D0/DASUM(N,Z,1)
-      CALL DSCAL(N,S,Z,1)
-      YNORM = S*YNORM
+      s = 1.0d0/dasum(n,z,1)
+      call dscal(n,s,z,1)
+      ynorm = s*ynorm
 
-      IF (TNORM .NE. 0.0D0) RCOND = YNORM/TNORM
-      IF (TNORM .EQ. 0.0D0) RCOND = 0.0D0
-      RETURN
-      END
+      if (tnorm .ne. 0.0d0) rcond = ynorm/tnorm
+      if (tnorm .eq. 0.0d0) rcond = 0.0d0
+      return
+      end

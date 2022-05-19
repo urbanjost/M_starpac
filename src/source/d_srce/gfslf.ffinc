@@ -1,5 +1,5 @@
 !GFSLF
-      SUBROUTINE GFSLF (H, K)
+      subroutine gfslf (h, k)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,38 +16,38 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   K
+     integer&
+     &   k
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   H(*)
+     real(kind=wp) ::&
+     &   h(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DELTA,FMAX,FMIN,YPLTMN,YPLTMX
-      INTEGER
-     &   IGFERR,IPRT,NF,NORD,NPRT
-      LOGICAL
-     &   ERR01,ERR02,ERR03,HEAD,SYM
+     real(kind=wp) ::&
+     &   delta,fmax,fmin,ypltmn,ypltmx
+     integer&
+     &   igferr,iprt,nf,nord,nprt
+     logical&
+     &   err01,err02,err03,head,sym
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   FREQ(101),GAIN(101),XORD(101),YORD(101)
-      INTEGER
-     &   ISORT(101)
-      CHARACTER
-     &   LH(8)*1,LK(8)*1,NMSUB(6)*1
+     real(kind=wp) ::&
+     &   freq(101),gain(101),xord(101),yord(101)
+     integer&
+     &   isort(101)
+     character&
+     &   lh(8)*1,lk(8)*1,nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EISGE,ERIODD,ERSLF,GFORD,GFOUT,GFSEST,IPRINT,SETFRQ
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -111,76 +111,76 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'G',       'F',       'S',       'L',       'F',       ' '/
-      DATA
-     &  LH(1), LH(2), LH(3), LH(4), LH(5), LH(6), LH(7), LH(8)
+     data&
+    &  lh(1), lh(2), lh(3), lh(4), lh(5), lh(6), lh(7), lh(8)&
      & /  'H',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
-      DATA
-     &  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
+     data&
+    &  lk(1), lk(2), lk(3), lk(4), lk(5), lk(6), lk(7), lk(8)&
      & /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LK, K, 1, 1, HEAD, ERR01, LK)
+      call eisge(nmsub, lk, k, 1, 1, head, err01, lk)
 !
-      CALL ERIODD(NMSUB, LK, K, 1, HEAD, ERR02)
+      call eriodd(nmsub, lk, k, 1, head, err02)
 !
-      IF ((.NOT. ERR01) .AND. (.NOT. ERR02)) THEN
-         CALL ERSLF(NMSUB, LH, K, H, HEAD, ERR03)
-      ELSE
-         ERR03 = .FALSE.
-      END IF
+      if ((.not. err01) .and. (.not. err02)) then
+         call erslf(nmsub, lh, k, h, head, err03)
+      else
+         err03 = .false.
+      end if
 !
-      IF (ERR01 .OR. ERR02 .OR. ERR03) GO TO 10
-      GO TO 20
+      if (err01 .or. err02 .or. err03) go to 10
+      go to 20
 !
-   10 CONTINUE
-      IERR = 1
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+   10 continue
+      ierr = 1
+      call iprint (iprt)
+      write (iprt, 1000)
+      return
 !
-   20 CONTINUE
+   20 continue
 !
 !     SET VARIOUS PROGRAM PARAMETERS
 !
-      SYM = .TRUE.
-      NF = 101
+      sym = .true.
+      nf = 101
 !
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
+      fmin = 0.0_wp
+      fmax = 0.5_wp
 !
-      DELTA = 1.0_WP
+      delta = 1.0_wp
 !
-      NPRT = -1
+      nprt = -1
 !
 !     SET FREQUENCIES AT WHICH THE GAIN FUNCTION IS TO BE ESTIMATED
 !
-      CALL SETFRQ (FREQ, NF, NPRT, FMIN, FMAX, DELTA)
+      call setfrq (freq, nf, nprt, fmin, fmax, delta)
 !
 !     COMPUTE THE GAIN FUNCTION
 !
-      CALL GFSEST (H, K, NF, FREQ, GAIN, DELTA)
+      call gfsest (h, k, nf, freq, gain, delta)
 !
 !     PLOT THE RESULTS
 !
-      CALL GFORD (FREQ, GAIN, ISORT, NF, XORD, YORD, NORD,
-     &   YPLTMN, YPLTMX, NPRT, IGFERR)
+     call gford (freq, gain, isort, nf, xord, yord, nord,&
+     &   ypltmn, ypltmx, nprt, igferr)
 !
-      CALL GFOUT (XORD, YORD, NORD, FREQ, GAIN, NF, K,
-     &   SYM, FMIN, FMAX, YPLTMN, YPLTMX, NPRT, IGFERR, NMSUB)
+     call gfout (xord, yord, nord, freq, gain, nf, k,&
+     &   sym, fmin, fmax, ypltmn, ypltmx, nprt, igferr, nmsub)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   24H       CALL GFSLF (H, K))
-      END
+1000 format (/42h the correct form of the call statement is//&
+     &   24h       call gfslf (h, k))
+      end

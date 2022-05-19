@@ -1,6 +1,6 @@
 !PGMMN
-      SUBROUTINE PGMMN (YFFT, N, NFFT, IEXTND, NF, PER, LPER, YAXIS,
-     &   FREQ, LFREQ, NPRT, NMSUB)
+     subroutine pgmmn (yfft, n, nfft, iextnd, nf, per, lper, yaxis,&
+     &   freq, lfreq, nprt, nmsub)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IEXTND,LFREQ,LPER,N,NF,NFFT,NPRT
+     integer&
+     &   iextnd,lfreq,lper,n,nf,nfft,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FREQ(LFREQ),PER(LPER),YAXIS(LFREQ),YFFT(NFFT)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   freq(lfreq),per(lper),yaxis(lfreq),yfft(nfft)
+     character&
+     &   nmsub(6)*1
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   YEXTND
-      INTEGER
-     &   I,N1
+     real(kind=wp) ::&
+     &   yextnd
+     integer&
+     &   i,n1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL AMEAN,PGMEST,PGORD,PGOUT,SETFRQ
@@ -78,36 +78,36 @@
 !     REAL(KIND=WP) :: YFFT(NFFT)
 !        THE ARRAY CONTAINING THE OBSERVED TIME SERIES.
 !
-      YEXTND = 0.0_WP
-      IF (IEXTND .NE. 0) CALL AMEAN (YFFT, N, YEXTND)
+      yextnd = 0.0_wp
+      if (iextnd .ne. 0) call amean (yfft, n, yextnd)
 !
 !     EXTEND THE PERIODOGRAM ARRAY BY ITS MEAN  OR ZERO TO THE
 !     EXTENDED LENGTH NFFT.
 !
-      N1 = N + 1
+      n1 = n + 1
 !
-      DO 40 I = N1, NFFT
-         YFFT(I) = YEXTND
-   40 CONTINUE
+      do 40 i = n1, nfft
+         yfft(i) = yextnd
+   40 continue
 !
 !     COMPUTE THE PERIODOGRAM.
 !
-      CALL PGMEST (YFFT, NFFT, NF, 1.0_WP, PER, LPER)
+      call pgmest (yfft, nfft, nf, 1.0_wp, per, lper)
 !
 !     SET FREQUENCIES FOR PERIODOGRAM VALUES
 !
-      CALL SETFRQ (FREQ, NF, 1, 0.0_WP, 0.5_WP, 1.0_WP)
+      call setfrq (freq, nf, 1, 0.0_wp, 0.5_wp, 1.0_wp)
 !
-      IF (NPRT .EQ. 0) RETURN
+      if (nprt .eq. 0) return
 !
 !     SET Y CO-ORDINATES FOR PERIODOGRAM PLOT.
 !
-      CALL PGORD (PER, NF, YAXIS, NPRT)
+      call pgord (per, nf, yaxis, nprt)
 !
 !     PLOT PERIODOGRAM IF OUTPUT NOT SUPPRESSED
 !
-      CALL PGOUT (YAXIS, FREQ, NF, NPRT, NMSUB)
+      call pgout (yaxis, freq, nf, nprt, nmsub)
 !
-      RETURN
+      return
 !
-      END
+      end

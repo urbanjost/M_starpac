@@ -1,5 +1,5 @@
 !STPLS
-      SUBROUTINE STPLS(XM, N, M, IXM, MDL, PAR, NPAR, LDSTAK, STP)
+      subroutine stpls(xm, n, m, ixm, mdl, par, npar, ldstak, stp)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,41 +18,41 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IXM,LDSTAK,M,N,NPAR
+     integer&
+     &   ixm,ldstak,m,n,npar
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),STP(*),XM(*)
+     real(kind=wp) ::&
+     &   par(*),stp(*),xm(*)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL MDL
+       external mdl
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   EXMPT
-      INTEGER
-     &   IPRT,LSCALE,NETA,NPRT
+     real(kind=wp) ::&
+     &   exmpt
+     integer&
+     &   iprt,lscale,neta,nprt
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   SCALE(1)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   scale(1)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,STPDRV
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -106,32 +106,32 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
+     data nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6) /&
      &   'S','T','P','L','S',' '/
 !
 !     SET UP DEFAULT VALUES
 !
-      EXMPT = 0.1_WP
-      NETA = 0
-      SCALE(1) = 0.0_WP
-      LSCALE = 1
-      NPRT = 1
+      exmpt = 0.1_wp
+      neta = 0
+      scale(1) = 0.0_wp
+      lscale = 1
+      nprt = 1
 !
 !     PASS CONTROL TO STEP SIZE SELECTION DRIVER
 !
-      CALL STPDRV(NMSUB, XM, N, M, IXM, MDL, PAR, NPAR, LDSTAK, STP,
-     &   NETA, EXMPT, SCALE, LSCALE, NPRT)
+     call stpdrv(nmsub, xm, n, m, ixm, mdl, par, npar, ldstak, stp,&
+     &   neta, exmpt, scale, lscale, nprt)
 !
-      IF (IERR.NE.1) RETURN
+      if (ierr.ne.1) return
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
+      call iprint(iprt)
+      write (iprt,1000)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   '       CALL STPLS (XM, N, M, IXM, NLSMDL, PAR, NPAR, LDSTAK,',
+1000 format (/42h the correct form of the call statement is//&
+    &   '       CALL STPLS (XM, N, M, IXM, NLSMDL, PAR, NPAR, LDSTAK,',&
      &   ' STP)')
-      END
+      end

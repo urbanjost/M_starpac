@@ -1,5 +1,5 @@
 !STAT2
-      SUBROUTINE STAT2(Y, N, STS, SUMDA, SUMDI, SUMD2, SUMD3, SUMD4)
+      subroutine stat2(y, n, sts, sumda, sumdi, sumd2, sumd3, sumd4)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -22,35 +22,35 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   SUMD2,SUMD3,SUMD4,SUMDA,SUMDI
-      INTEGER
-     &   N
+     real(kind=wp) ::&
+     &   sumd2,sumd3,sumd4,sumda,sumdi
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   STS(53),Y(N)
+     real(kind=wp) ::&
+     &   sts(53),y(n)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DIF,T,TA,TK1,TK2
-      INTEGER
-     &   I,IC,ICI,IDRUNS,IMINUS,IPLUS,IRUN
+     real(kind=wp) ::&
+     &   dif,t,ta,tk1,tk2
+     integer&
+     &   i,ic,ici,idruns,iminus,iplus,irun
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   CDFF,PPFCHS,PPFT
+     real(kind=wp) ::&
+     &   cdff,ppfchs,ppft
 !       EXTERNAL CDFF,PPFCHS,PPFT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,SQRT
+      intrinsic abs,sqrt
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -130,99 +130,99 @@
 !
 !     BEGIN STORAGE OF STATISTICS.
 !
-      STS(1) = N
-      STS(2) = STS(1)
-      STS(24) = (2.0E0*STS(1)-1.0E0)/3.0E0
-      STS(25) = SQRT((16.0E0*STS(1)-29.0E0)/90.0E0)
-      STS(43) = STS(42)/STS(1)
+      sts(1) = n
+      sts(2) = sts(1)
+      sts(24) = (2.0e0*sts(1)-1.0e0)/3.0e0
+      sts(25) = sqrt((16.0e0*sts(1)-29.0e0)/90.0e0)
+      sts(43) = sts(42)/sts(1)
 !
 !     COMPUTE RESIDUALS AND STANDARD DEVIATIONS.
 !
-      ICI = 0
-      IPLUS = 0
-      IMINUS = 0
-      IDRUNS = 0
-      IC = 0
-      DO 30 I=1,N
-         T = Y(I) - STS(4)
-         IF (T.LT.0.0E0) GO TO 10
-         IPLUS = IPLUS + 1
-         ICI = +1
-         GO TO 20
-   10    IMINUS = IMINUS + 1
-         ICI = -1
-   20    IF (IC.EQ.ICI) GO TO 30
-         IC = ICI
-         IDRUNS = IDRUNS + 1
-   30 CONTINUE
-      STS(28) = IPLUS
-      STS(29) = IMINUS
-      STS(31) = 1.0E0 + (2.0E0*STS(28)*STS(29)/STS(1))
-      STS(32) = SQRT((2.0E0*STS(28)*STS(29)*
-     &                 (2.0E0*STS(28)*STS(29) -
-     &                  STS(28)-STS(29)))/
-     &            ((STS(28)+STS(29))**2*(STS(1)-1.0E0)))
-      STS(30) = IDRUNS
-      STS(33) = 0.0E0
-      IF (STS(32).NE.0.0E0)
-     &   STS(33) = (STS(30)-STS(31))/STS(32)
-      STS(13) = SUMD2/(STS(1)-1.0E0)
-      STS(9) = SQRT(STS(13))
-      STS(10) = STS(9)/SQRT(STS(1))
-      IF (STS(4).NE.0.0E0)
-     &   STS(14) = 100.0E0*ABS(STS(9)/STS(4))
-      IF (STS(4).EQ.0.0E0) STS(14) = 0.0E0
-      STS(36) = 0.0E0
-      IF (SUMD2.GT.0.0E0)
-     &   STS(36) = (SUMD3/STS(1))**2/((SUMD2/STS(1))**3)
-      STS(37) = 0.0E0
-      IF (SUMD2.GT.0.0E0)
-     &   STS(37) = (SUMD4/STS(1))/((SUMD2/STS(1))**2)
-      STS(40) = SUMD2
-      STS(19) = (12.0E0*SUMDI)/(STS(1)*(STS(1)**2-1.0E0))
-      STS(20) = (1.0E0/(STS(1)-2.0E0)*
-     &             (12.0E0*(SUMD2/(STS(1)*(STS(1)**2-1.0E0)))-
-     &              STS(19)**2))
-      IF (STS(20).LE.0.0E0) STS(20) = 0.0E0
-      STS(20) = SQRT(STS(20))
-      IF (STS(20).EQ.0.0E0) STS(21) = 0.0E0
-      IF (STS(20).GT.0.0E0) STS(21) = STS(19)/STS(20)
+      ici = 0
+      iplus = 0
+      iminus = 0
+      idruns = 0
+      ic = 0
+      do 30 i=1,n
+         t = y(i) - sts(4)
+         if (t.lt.0.0e0) go to 10
+         iplus = iplus + 1
+         ici = +1
+         go to 20
+   10    iminus = iminus + 1
+         ici = -1
+   20    if (ic.eq.ici) go to 30
+         ic = ici
+         idruns = idruns + 1
+   30 continue
+      sts(28) = iplus
+      sts(29) = iminus
+      sts(31) = 1.0e0 + (2.0e0*sts(28)*sts(29)/sts(1))
+     sts(32) = sqrt((2.0e0*sts(28)*sts(29)*&
+    &                 (2.0e0*sts(28)*sts(29) -&
+    &                  sts(28)-sts(29)))/&
+     &            ((sts(28)+sts(29))**2*(sts(1)-1.0e0)))
+      sts(30) = idruns
+      sts(33) = 0.0e0
+     if (sts(32).ne.0.0e0)&
+     &   sts(33) = (sts(30)-sts(31))/sts(32)
+      sts(13) = sumd2/(sts(1)-1.0e0)
+      sts(9) = sqrt(sts(13))
+      sts(10) = sts(9)/sqrt(sts(1))
+     if (sts(4).ne.0.0e0)&
+     &   sts(14) = 100.0e0*abs(sts(9)/sts(4))
+      if (sts(4).eq.0.0e0) sts(14) = 0.0e0
+      sts(36) = 0.0e0
+     if (sumd2.gt.0.0e0)&
+     &   sts(36) = (sumd3/sts(1))**2/((sumd2/sts(1))**3)
+      sts(37) = 0.0e0
+     if (sumd2.gt.0.0e0)&
+     &   sts(37) = (sumd4/sts(1))/((sumd2/sts(1))**2)
+      sts(40) = sumd2
+      sts(19) = (12.0e0*sumdi)/(sts(1)*(sts(1)**2-1.0e0))
+     sts(20) = (1.0e0/(sts(1)-2.0e0)*&
+    &             (12.0e0*(sumd2/(sts(1)*(sts(1)**2-1.0e0)))-&
+     &              sts(19)**2))
+      if (sts(20).le.0.0e0) sts(20) = 0.0e0
+      sts(20) = sqrt(sts(20))
+      if (sts(20).eq.0.0e0) sts(21) = 0.0e0
+      if (sts(20).gt.0.0e0) sts(21) = sts(19)/sts(20)
 !
-      STS(22) = 1.0E0 - CDFF(STS(21)*STS(21), 1.0E0, STS(1)-2.0E0)
+      sts(22) = 1.0e0 - cdff(sts(21)*sts(21), 1.0e0, sts(1)-2.0e0)
 !
 !     COMPUTE NUMBER OF RUNS IN THE DATA.
 !
-      DIF = 0.0E0
-      IRUN = 1
-      TA = 0.0E0
-      DO 40 I=1,N
-         IF (I.GE.N) GO TO 50
-         TA = Y(I+1) - Y(I)
-         IF (TA.NE.0.0E0) GO TO 50
-   40 CONTINUE
-   50 DO 60 I=1,N
-         IF (I.EQ.N) GO TO 60
-         T = Y(I+1) - Y(I)
-         DIF = DIF + T*T
-         IF (TA*T.GE.0.0E0) GO TO 60
-         TA = T
-         IRUN = IRUN + 1
-   60 CONTINUE
-      STS(23) = IRUN
-      STS(26) = DIF/(STS(1)-1.0E0)
-      STS(27) = 0.0E0
-      IF (STS(13).NE.0.0E0)
-     &   STS(27) = STS(26)/STS(13)
-      STS(41) = 0.0E0
-      IF (STS(9).NE.0.0E0)
-     &   STS(41) = (STS(4)*SQRT(STS(1)))/STS(9)
-      STS(12) = SUMDA/STS(1)
-      T = PPFT(0.975E0, N-1)
-      TK1 = PPFCHS(0.975E0, N-1)
-      TK2 = PPFCHS(0.025E0, N-1)
-      STS(15) = STS(4) - T*STS(10)
-      STS(16) = STS(4) + T*STS(10)
-      STS(17) = SQRT((STS(1)-1.0E0)/TK1)*STS(9)
-      STS(18) = SQRT((STS(1)-1.0E0)/TK2)*STS(9)
-      RETURN
-      END
+      dif = 0.0e0
+      irun = 1
+      ta = 0.0e0
+      do 40 i=1,n
+         if (i.ge.n) go to 50
+         ta = y(i+1) - y(i)
+         if (ta.ne.0.0e0) go to 50
+   40 continue
+   50 do 60 i=1,n
+         if (i.eq.n) go to 60
+         t = y(i+1) - y(i)
+         dif = dif + t*t
+         if (ta*t.ge.0.0e0) go to 60
+         ta = t
+         irun = irun + 1
+   60 continue
+      sts(23) = irun
+      sts(26) = dif/(sts(1)-1.0e0)
+      sts(27) = 0.0e0
+     if (sts(13).ne.0.0e0)&
+     &   sts(27) = sts(26)/sts(13)
+      sts(41) = 0.0e0
+     if (sts(9).ne.0.0e0)&
+     &   sts(41) = (sts(4)*sqrt(sts(1)))/sts(9)
+      sts(12) = sumda/sts(1)
+      t = ppft(0.975e0, n-1)
+      tk1 = ppfchs(0.975e0, n-1)
+      tk2 = ppfchs(0.025e0, n-1)
+      sts(15) = sts(4) - t*sts(10)
+      sts(16) = sts(4) + t*sts(10)
+      sts(17) = sqrt((sts(1)-1.0e0)/tk1)*sts(9)
+      sts(18) = sqrt((sts(1)-1.0e0)/tk2)*sts(9)
+      return
+      end

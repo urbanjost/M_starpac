@@ -1,5 +1,5 @@
 !XNLSD
-      SUBROUTINE XNLSD(LDSTAK,typ)
+      subroutine xnlsd(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -17,29 +17,29 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DELTA,RSD,STOPP,STOPSS
-      INTEGER
-     &   IDRVCK,IPRT,IVAPRX,IVCV,IXM1,LDSA1,LDSMIN,LDSN1A,LDSN1B,
-     &   M1,MIT,N1,NNZW,NPAR1,NPARE,NPRT,NTEST
+     real(kind=wp) ::&
+     &   delta,rsd,stopp,stopss
+     integer&
+    &   idrvck,iprt,ivaprx,ivcv,ixm1,ldsa1,ldsmin,ldsn1a,ldsn1b,&
+     &   m1,mit,n1,nnzw,npar1,npare,nprt,ntest
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   PAR1(10),PV(100),RES(100),SCALE(10),SDPV(100),SDRES(100),
-     &   STP(10),VCV(6,6),WT(100),XM1(10,2),Y1(10)
-      INTEGER
-     &   IFIXED(10)
+     real(kind=wp) ::&
+    &   par1(10),pv(100),res(100),scale(10),sdpv(100),sdres(100),&
+     &   stp(10),vcv(6,6),wt(100),xm1(10,2),y1(10)
+     integer&
+     &   ifixed(10)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL DRV1A,FITXSP,IPRINT,LDSCMP,MDL1,NL2X,NLS,NLSC,NLSD,NLSDC,
@@ -47,11 +47,11 @@
 !     +   NLSX2,SETRV
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -179,274 +179,274 @@
 !
 !     DEFINE CONSTANTS
 !
-      DATA Y1(1), Y1(2), Y1(3), Y1(4), Y1(5), Y1(6)
-     &   /2.138E0, 3.421E0, 3.597E0, 4.340E0, 4.882E0, 5.660E0/
+     data y1(1), y1(2), y1(3), y1(4), y1(5), y1(6)&
+     &   /2.138e0, 3.421e0, 3.597e0, 4.340e0, 4.882e0, 5.660e0/
 !
-      DATA XM1(1,1), XM1(2,1), XM1(3,1), XM1(4,1), XM1(5,1), XM1(6,1)
-     &   /1.309E0, 1.471E0, 1.490E0, 1.565E0, 1.611E0, 1.680E0/
+     data xm1(1,1), xm1(2,1), xm1(3,1), xm1(4,1), xm1(5,1), xm1(6,1)&
+     &   /1.309e0, 1.471e0, 1.490e0, 1.565e0, 1.611e0, 1.680e0/
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      CALL NLSX2(N1, M1, IXM1, NPAR1, IFIXED, STP, IDRVCK, MIT, STOPSS,
-     &   STOPP, SCALE, DELTA, IVAPRX, NPRT, IVCV)
+     call nlsx2(n1, m1, ixm1, npar1, ifixed, stp, idrvck, mit, stopss,&
+     &   stopp, scale, delta, ivaprx, nprt, ivcv)
 !
-      CALL SETRV(WT, N1, 1.0E0)
+      call setrv(wt, n1, 1.0e0)
 !
-      CALL LDSCMP(6, 0, 60+2*NPAR1, 0, 0, 0,
-     &   'S', 94+N1*(3+NPAR1)+NPAR1*(3*NPAR1+35)/2, LDSA1)
-      CALL LDSCMP(14, 0, MAX(2*(N1+NPAR1),60+2*NPAR1), 0, 0, 0,
-     &   'S', MAX(10*N1,94+N1*(3+NPAR1)+NPAR1*(3*NPAR1+37)/2), LDSN1A)
-      CALL LDSCMP(14, 0, 60+2*NPAR1, 0, 0, 0,
-     &   'S', 94+N1*(3+NPAR1)+NPAR1*(3*NPAR1+37)/2, LDSN1B)
+     call ldscmp(6, 0, 60+2*npar1, 0, 0, 0,&
+     &   'S', 94+n1*(3+npar1)+npar1*(3*npar1+35)/2, ldsa1)
+     call ldscmp(14, 0, max(2*(n1+npar1),60+2*npar1), 0, 0, 0,&
+     &   'S', max(10*n1,94+n1*(3+npar1)+npar1*(3*npar1+37)/2), ldsn1a)
+     call ldscmp(14, 0, 60+2*npar1, 0, 0, 0,&
+     &   'S', 94+n1*(3+npar1)+npar1*(3*npar1+37)/2, ldsn1b)
 !
-      LDSMIN = MAX(LDSA1, LDSN1A, LDSN1B)
+      ldsmin = max(ldsa1, ldsn1a, ldsn1b)
 !
-      IF (LDSMIN.LE.LDSTAK) GO TO 5
+      if (ldsmin.le.ldstak) go to 5
 !
-      WRITE (IPRT, 1140) LDSMIN
-      RETURN
+      write (iprt, 1140) ldsmin
+      return
 !
-    5 CONTINUE
+    5 continue
 !
-      NTEST = 0
+      ntest = 0
 !
 !
 !     **TEST ON NORMAL STATEMENT**
 !
 !
-      NTEST = NTEST + 1
-      WRITE (IPRT,1330) NTEST
-      WRITE (IPRT,1130)
-      WRITE (IPRT,1000)
-      CALL NLSX1(1, PAR1, NPAR1, PV, SDPV, RES, SDRES, VCV, N1, IVCV,
-     &   NNZW, NPARE, RSD)
-      CALL NLS(Y1, XM1, N1, M1, IXM1, MDL1, PAR1, NPAR1, RES, LDSN1A)
-      WRITE (IPRT,1120) IERR
-      CALL FITXSP(PAR1, PV, SDPV, RES, SDRES, VCV, N1, NPAR1, IVCV,
-     &   NNZW, NPARE, RSD)
+      ntest = ntest + 1
+      write (iprt,1330) ntest
+      write (iprt,1130)
+      write (iprt,1000)
+     call nlsx1(1, par1, npar1, pv, sdpv, res, sdres, vcv, n1, ivcv,&
+     &   nnzw, npare, rsd)
+      call nls(y1, xm1, n1, m1, ixm1, mdl1, par1, npar1, res, ldsn1a)
+      write (iprt,1120) ierr
+     call fitxsp(par1, pv, sdpv, res, sdres, vcv, n1, npar1, ivcv,&
+     &   nnzw, npare, rsd)
 !
-      NTEST = NTEST + 1
-      WRITE (IPRT,1330) NTEST
-      WRITE (IPRT,1130)
-      WRITE (IPRT,1010)
-      WRITE (IPRT,1340) IFIXED(1), STP(1), MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      CALL NLSX1(1, PAR1, NPAR1, PV, SDPV, RES, SDRES, VCV, N1, IVCV,
-     &   NNZW, NPARE, RSD)
-      CALL NLSC(Y1, XM1, N1, M1, IXM1, MDL1, PAR1, NPAR1, RES, LDSN1B,
-     &   IFIXED, STP, MIT, STOPSS, STOPP, SCALE, DELTA, IVAPRX, NPRT)
-      WRITE (IPRT,1350) IFIXED(1), STP(1), MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      WRITE (IPRT,1120) IERR
-      CALL FITXSP(PAR1, PV, SDPV, RES, SDRES, VCV, N1, NPAR1, IVCV,
-     &   NNZW, NPARE, RSD)
+      ntest = ntest + 1
+      write (iprt,1330) ntest
+      write (iprt,1130)
+      write (iprt,1010)
+     write (iprt,1340) ifixed(1), stp(1), mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+     call nlsx1(1, par1, npar1, pv, sdpv, res, sdres, vcv, n1, ivcv,&
+     &   nnzw, npare, rsd)
+     call nlsc(y1, xm1, n1, m1, ixm1, mdl1, par1, npar1, res, ldsn1b,&
+     &   ifixed, stp, mit, stopss, stopp, scale, delta, ivaprx, nprt)
+     write (iprt,1350) ifixed(1), stp(1), mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+      write (iprt,1120) ierr
+     call fitxsp(par1, pv, sdpv, res, sdres, vcv, n1, npar1, ivcv,&
+     &   nnzw, npare, rsd)
 !
-      NTEST = NTEST + 1
-      WRITE (IPRT,1330) NTEST
-      WRITE (IPRT,1130)
-      WRITE (IPRT,1020)
-      WRITE (IPRT,1340) IFIXED(1), STP(1), MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      CALL NLSX1(1, PAR1, NPAR1, PV, SDPV, RES, SDRES, VCV, N1, IVCV,
-     &   NNZW, NPARE, RSD)
-      CALL NLSS(Y1, XM1, N1, M1, IXM1, MDL1, PAR1, NPAR1, RES, LDSN1B,
-     &   IFIXED, STP, MIT, STOPSS, STOPP, SCALE, DELTA, IVAPRX, NPRT,
-     &   NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)
-      WRITE (IPRT,1350) IFIXED(1), STP(1), MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      WRITE (IPRT,1120) IERR
-      CALL FITXSP(PAR1, PV, SDPV, RES, SDRES, VCV, N1, NPAR1, IVCV,
-     &   NNZW, NPARE, RSD)
+      ntest = ntest + 1
+      write (iprt,1330) ntest
+      write (iprt,1130)
+      write (iprt,1020)
+     write (iprt,1340) ifixed(1), stp(1), mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+     call nlsx1(1, par1, npar1, pv, sdpv, res, sdres, vcv, n1, ivcv,&
+     &   nnzw, npare, rsd)
+     call nlss(y1, xm1, n1, m1, ixm1, mdl1, par1, npar1, res, ldsn1b,&
+    &   ifixed, stp, mit, stopss, stopp, scale, delta, ivaprx, nprt,&
+     &   npare, rsd, pv, sdpv, sdres, vcv, ivcv)
+     write (iprt,1350) ifixed(1), stp(1), mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+      write (iprt,1120) ierr
+     call fitxsp(par1, pv, sdpv, res, sdres, vcv, n1, npar1, ivcv,&
+     &   nnzw, npare, rsd)
 !
-      NTEST = NTEST + 1
-      WRITE (IPRT,1330) NTEST
-      WRITE (IPRT,1130)
-      WRITE (IPRT,1030)
-      CALL NLSX1(1, PAR1, NPAR1, PV, SDPV, RES, SDRES, VCV, N1, IVCV,
-     &   NNZW, NPARE, RSD)
-      CALL NLSW(Y1, WT, XM1, N1, M1, IXM1, MDL1, PAR1, NPAR1, RES,
-     &   LDSN1A)
-      WRITE (IPRT,1120) IERR
-      CALL FITXSP(PAR1, PV, SDPV, RES, SDRES, VCV, N1, NPAR1, IVCV,
-     &   NNZW, NPARE, RSD)
+      ntest = ntest + 1
+      write (iprt,1330) ntest
+      write (iprt,1130)
+      write (iprt,1030)
+     call nlsx1(1, par1, npar1, pv, sdpv, res, sdres, vcv, n1, ivcv,&
+     &   nnzw, npare, rsd)
+     call nlsw(y1, wt, xm1, n1, m1, ixm1, mdl1, par1, npar1, res,&
+     &   ldsn1a)
+      write (iprt,1120) ierr
+     call fitxsp(par1, pv, sdpv, res, sdres, vcv, n1, npar1, ivcv,&
+     &   nnzw, npare, rsd)
 !
-      NTEST = NTEST + 1
-      WRITE (IPRT,1330) NTEST
-      WRITE (IPRT,1130)
-      WRITE (IPRT,1040)
-      WRITE (IPRT,1340) IFIXED(1), STP(1), MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      CALL NLSX1(1, PAR1, NPAR1, PV, SDPV, RES, SDRES, VCV, N1, IVCV,
-     &   NNZW, NPARE, RSD)
-      CALL NLSWC(Y1, WT, XM1, N1, M1, IXM1, MDL1, PAR1, NPAR1, RES,
-     &   LDSN1B, IFIXED, STP, MIT, STOPSS, STOPP, SCALE, DELTA, IVAPRX,
-     &   NPRT)
-      WRITE (IPRT,1350) IFIXED(1), STP(1), MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      WRITE (IPRT,1120) IERR
-      CALL FITXSP(PAR1, PV, SDPV, RES, SDRES, VCV, N1, NPAR1, IVCV,
-     &   NNZW, NPARE, RSD)
+      ntest = ntest + 1
+      write (iprt,1330) ntest
+      write (iprt,1130)
+      write (iprt,1040)
+     write (iprt,1340) ifixed(1), stp(1), mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+     call nlsx1(1, par1, npar1, pv, sdpv, res, sdres, vcv, n1, ivcv,&
+     &   nnzw, npare, rsd)
+     call nlswc(y1, wt, xm1, n1, m1, ixm1, mdl1, par1, npar1, res,&
+    &   ldsn1b, ifixed, stp, mit, stopss, stopp, scale, delta, ivaprx,&
+     &   nprt)
+     write (iprt,1350) ifixed(1), stp(1), mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+      write (iprt,1120) ierr
+     call fitxsp(par1, pv, sdpv, res, sdres, vcv, n1, npar1, ivcv,&
+     &   nnzw, npare, rsd)
 !
-      NTEST = NTEST + 1
-      WRITE (IPRT,1330) NTEST
-      WRITE (IPRT,1130)
-      WRITE (IPRT,1050)
-      WRITE (IPRT,1340) IFIXED(1), STP(1), MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      CALL NLSX1(1, PAR1, NPAR1, PV, SDPV, RES, SDRES, VCV, N1, IVCV,
-     &   NNZW, NPARE, RSD)
-      CALL NLSWS(Y1, WT, XM1, N1, M1, IXM1, MDL1, PAR1, NPAR1, RES,
-     &   LDSN1B, IFIXED, STP, MIT, STOPSS, STOPP, SCALE, DELTA, IVAPRX,
-     &   NPRT, NNZW, NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)
-      WRITE (IPRT,1350) IFIXED(1), STP(1), MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      WRITE (IPRT,1120) IERR
-      CALL FITXSP(PAR1, PV, SDPV, RES, SDRES, VCV, N1, NPAR1, IVCV,
-     &   NNZW, NPARE, RSD)
+      ntest = ntest + 1
+      write (iprt,1330) ntest
+      write (iprt,1130)
+      write (iprt,1050)
+     write (iprt,1340) ifixed(1), stp(1), mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+     call nlsx1(1, par1, npar1, pv, sdpv, res, sdres, vcv, n1, ivcv,&
+     &   nnzw, npare, rsd)
+     call nlsws(y1, wt, xm1, n1, m1, ixm1, mdl1, par1, npar1, res,&
+    &   ldsn1b, ifixed, stp, mit, stopss, stopp, scale, delta, ivaprx,&
+     &   nprt, nnzw, npare, rsd, pv, sdpv, sdres, vcv, ivcv)
+     write (iprt,1350) ifixed(1), stp(1), mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+      write (iprt,1120) ierr
+     call fitxsp(par1, pv, sdpv, res, sdres, vcv, n1, npar1, ivcv,&
+     &   nnzw, npare, rsd)
 !
-      NTEST = NTEST + 1
-      WRITE (IPRT,1330) NTEST
-      WRITE (IPRT,1130)
-      WRITE (IPRT,1060)
-      CALL NLSX1(1, PAR1, NPAR1, PV, SDPV, RES, SDRES, VCV, N1, IVCV,
-     &   NNZW, NPARE, RSD)
-      CALL NLSD(Y1, XM1, N1, M1, IXM1, MDL1, DRV1A, PAR1, NPAR1, RES,
-     &   LDSA1)
-      WRITE (IPRT,1120) IERR
-      CALL FITXSP(PAR1, PV, SDPV, RES, SDRES, VCV, N1, NPAR1, IVCV,
-     &   NNZW, NPARE, RSD)
+      ntest = ntest + 1
+      write (iprt,1330) ntest
+      write (iprt,1130)
+      write (iprt,1060)
+     call nlsx1(1, par1, npar1, pv, sdpv, res, sdres, vcv, n1, ivcv,&
+     &   nnzw, npare, rsd)
+     call nlsd(y1, xm1, n1, m1, ixm1, mdl1, drv1a, par1, npar1, res,&
+     &   ldsa1)
+      write (iprt,1120) ierr
+     call fitxsp(par1, pv, sdpv, res, sdres, vcv, n1, npar1, ivcv,&
+     &   nnzw, npare, rsd)
 !
-      NTEST = NTEST + 1
-      WRITE (IPRT,1330) NTEST
-      WRITE (IPRT,1130)
-      WRITE (IPRT,1070)
-      WRITE (IPRT,1360) IFIXED(1), IDRVCK, MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      CALL NLSX1(1, PAR1, NPAR1, PV, SDPV, RES, SDRES, VCV, N1, IVCV,
-     &   NNZW, NPARE, RSD)
-      CALL NLSDC(Y1, XM1, N1, M1, IXM1, MDL1, DRV1A, PAR1, NPAR1, RES,
-     &   LDSA1, IFIXED, IDRVCK, MIT, STOPSS, STOPP, SCALE, DELTA,
-     &   IVAPRX, NPRT)
-      WRITE (IPRT,1370) IFIXED(1), IDRVCK, MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      WRITE (IPRT,1120) IERR
-      CALL FITXSP(PAR1, PV, SDPV, RES, SDRES, VCV, N1, NPAR1, IVCV,
-     &   NNZW, NPARE, RSD)
+      ntest = ntest + 1
+      write (iprt,1330) ntest
+      write (iprt,1130)
+      write (iprt,1070)
+     write (iprt,1360) ifixed(1), idrvck, mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+     call nlsx1(1, par1, npar1, pv, sdpv, res, sdres, vcv, n1, ivcv,&
+     &   nnzw, npare, rsd)
+     call nlsdc(y1, xm1, n1, m1, ixm1, mdl1, drv1a, par1, npar1, res,&
+    &   ldsa1, ifixed, idrvck, mit, stopss, stopp, scale, delta,&
+     &   ivaprx, nprt)
+     write (iprt,1370) ifixed(1), idrvck, mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+      write (iprt,1120) ierr
+     call fitxsp(par1, pv, sdpv, res, sdres, vcv, n1, npar1, ivcv,&
+     &   nnzw, npare, rsd)
 !
-      NTEST = NTEST + 1
-      WRITE (IPRT,1330) NTEST
-      WRITE (IPRT,1130)
-      WRITE (IPRT,1080)
-      WRITE (IPRT,1360) IFIXED(1), IDRVCK, MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      CALL NLSX1(1, PAR1, NPAR1, PV, SDPV, RES, SDRES, VCV, N1, IVCV,
-     &   NNZW, NPARE, RSD)
-      CALL NLSDS(Y1, XM1, N1, M1, IXM1, MDL1, DRV1A, PAR1, NPAR1, RES,
-     &   LDSA1, IFIXED, IDRVCK, MIT, STOPSS, STOPP, SCALE, DELTA,
-     &   IVAPRX, NPRT, NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)
-      WRITE (IPRT,1370) IFIXED(1), IDRVCK, MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      WRITE (IPRT,1120) IERR
-      CALL FITXSP(PAR1, PV, SDPV, RES, SDRES, VCV, N1, NPAR1, IVCV,
-     &   NNZW, NPARE, RSD)
+      ntest = ntest + 1
+      write (iprt,1330) ntest
+      write (iprt,1130)
+      write (iprt,1080)
+     write (iprt,1360) ifixed(1), idrvck, mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+     call nlsx1(1, par1, npar1, pv, sdpv, res, sdres, vcv, n1, ivcv,&
+     &   nnzw, npare, rsd)
+     call nlsds(y1, xm1, n1, m1, ixm1, mdl1, drv1a, par1, npar1, res,&
+    &   ldsa1, ifixed, idrvck, mit, stopss, stopp, scale, delta,&
+     &   ivaprx, nprt, npare, rsd, pv, sdpv, sdres, vcv, ivcv)
+     write (iprt,1370) ifixed(1), idrvck, mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+      write (iprt,1120) ierr
+     call fitxsp(par1, pv, sdpv, res, sdres, vcv, n1, npar1, ivcv,&
+     &   nnzw, npare, rsd)
 !
-      NTEST = NTEST + 1
-      WRITE (IPRT,1330) NTEST
-      WRITE (IPRT,1130)
-      WRITE (IPRT,1090)
-      WRITE (IPRT,1360) IFIXED(1), IDRVCK, MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      CALL NLSX1(1, PAR1, NPAR1, PV, SDPV, RES, SDRES, VCV, N1, IVCV,
-     &   NNZW, NPARE, RSD)
-      CALL NLSWD(Y1, WT, XM1, N1, M1, IXM1, MDL1, DRV1A, PAR1, NPAR1,
-     &   RES, LDSA1)
-      WRITE (IPRT,1370) IFIXED(1), IDRVCK, MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      WRITE (IPRT,1120) IERR
-      CALL FITXSP(PAR1, PV, SDPV, RES, SDRES, VCV, N1, NPAR1, IVCV,
-     &   NNZW, NPARE, RSD)
+      ntest = ntest + 1
+      write (iprt,1330) ntest
+      write (iprt,1130)
+      write (iprt,1090)
+     write (iprt,1360) ifixed(1), idrvck, mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+     call nlsx1(1, par1, npar1, pv, sdpv, res, sdres, vcv, n1, ivcv,&
+     &   nnzw, npare, rsd)
+     call nlswd(y1, wt, xm1, n1, m1, ixm1, mdl1, drv1a, par1, npar1,&
+     &   res, ldsa1)
+     write (iprt,1370) ifixed(1), idrvck, mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+      write (iprt,1120) ierr
+     call fitxsp(par1, pv, sdpv, res, sdres, vcv, n1, npar1, ivcv,&
+     &   nnzw, npare, rsd)
 !
-      NTEST = NTEST + 1
-      WRITE (IPRT,1330) NTEST
-      WRITE (IPRT,1130)
-      WRITE (IPRT,1100)
-      WRITE (IPRT,1360) IFIXED(1), IDRVCK, MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      CALL NLSX1(1, PAR1, NPAR1, PV, SDPV, RES, SDRES, VCV, N1, IVCV,
-     &   NNZW, NPARE, RSD)
-      CALL NLSWDC(Y1, WT, XM1, N1, M1, IXM1, MDL1, DRV1A, PAR1, NPAR1,
-     &   RES, LDSA1, IFIXED, IDRVCK, MIT, STOPSS, STOPP, SCALE, DELTA,
-     &   IVAPRX, NPRT)
-      WRITE (IPRT,1370) IFIXED(1), IDRVCK, MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      WRITE (IPRT,1120) IERR
-      CALL FITXSP(PAR1, PV, SDPV, RES, SDRES, VCV, N1, NPAR1, IVCV,
-     &   NNZW, NPARE, RSD)
+      ntest = ntest + 1
+      write (iprt,1330) ntest
+      write (iprt,1130)
+      write (iprt,1100)
+     write (iprt,1360) ifixed(1), idrvck, mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+     call nlsx1(1, par1, npar1, pv, sdpv, res, sdres, vcv, n1, ivcv,&
+     &   nnzw, npare, rsd)
+     call nlswdc(y1, wt, xm1, n1, m1, ixm1, mdl1, drv1a, par1, npar1,&
+    &   res, ldsa1, ifixed, idrvck, mit, stopss, stopp, scale, delta,&
+     &   ivaprx, nprt)
+     write (iprt,1370) ifixed(1), idrvck, mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+      write (iprt,1120) ierr
+     call fitxsp(par1, pv, sdpv, res, sdres, vcv, n1, npar1, ivcv,&
+     &   nnzw, npare, rsd)
 !
-      NTEST = NTEST + 1
-      WRITE (IPRT,1330) NTEST
-      WRITE (IPRT,1130)
-      WRITE (IPRT,1110)
-      WRITE (IPRT,1360) IFIXED(1), IDRVCK, MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      CALL NLSX1(1, PAR1, NPAR1, PV, SDPV, RES, SDRES, VCV, N1, IVCV,
-     &   NNZW, NPARE, RSD)
-      CALL NLSWDS(Y1, WT, XM1, N1, M1, IXM1, MDL1, DRV1A, PAR1, NPAR1,
-     &   RES, LDSA1, IFIXED, IDRVCK, MIT, STOPSS, STOPP, SCALE, DELTA,
-     &   IVAPRX, NPRT, NNZW, NPARE, RSD, PV, SDPV, SDRES, VCV, IVCV)
-      WRITE (IPRT,1370) IFIXED(1), IDRVCK, MIT, STOPSS, STOPP,
-     &   SCALE(1), DELTA, IVAPRX, NPRT
-      WRITE (IPRT,1120) IERR
-      CALL FITXSP(PAR1, PV, SDPV, RES, SDRES, VCV, N1, NPAR1, IVCV,
-     &   NNZW, NPARE, RSD)
+      ntest = ntest + 1
+      write (iprt,1330) ntest
+      write (iprt,1130)
+      write (iprt,1110)
+     write (iprt,1360) ifixed(1), idrvck, mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+     call nlsx1(1, par1, npar1, pv, sdpv, res, sdres, vcv, n1, ivcv,&
+     &   nnzw, npare, rsd)
+     call nlswds(y1, wt, xm1, n1, m1, ixm1, mdl1, drv1a, par1, npar1,&
+    &   res, ldsa1, ifixed, idrvck, mit, stopss, stopp, scale, delta,&
+     &   ivaprx, nprt, nnzw, npare, rsd, pv, sdpv, sdres, vcv, ivcv)
+     write (iprt,1370) ifixed(1), idrvck, mit, stopss, stopp,&
+     &   scale(1), delta, ivaprx, nprt
+      write (iprt,1120) ierr
+     call fitxsp(par1, pv, sdpv, res, sdres, vcv, n1, npar1, ivcv,&
+     &   nnzw, npare, rsd)
 !
 !
 !
 !     TEST NL2SOL AND NL2SNO DIRECTLY
 !
-      WRITE (IPRT,1320)
-      CALL NL2X(0.0_wp)
+      write (iprt,1320)
+      call nl2x(0.0_wp)
 !
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (14H TEST OF NLS  )
- 1010 FORMAT (15H TEST OF NLSC  )
- 1020 FORMAT (15H TEST OF NLSS  )
- 1030 FORMAT (14H TEST OF NLSW )
- 1040 FORMAT (15H TEST OF NLSWC )
- 1050 FORMAT (15H TEST OF NLSWS )
- 1060 FORMAT (14H TEST OF NLSD )
- 1070 FORMAT (15H TEST OF NLSDC )
- 1080 FORMAT (15H TEST OF NLSDS )
- 1090 FORMAT (14H TEST OF NLSWD)
- 1100 FORMAT (15H TEST OF NLSWDC)
- 1110 FORMAT (15H TEST OF NLSWDS)
- 1120 FORMAT (/29H ***** RETURNED RESULTS *****, 5X, 15H (-1 INDICATES ,
-     &   39HVALUE NOT CHANGED BY CALLED SUBROUTINE)//9H IERR IS , I3)
- 1130 FORMAT (15H NORMAL PROBLEM)
- 1140 FORMAT (45H1 *** LDSTAK MUST BE GREATER THAN OR EQUAL TO , I6)
- 1320 FORMAT (42H1TEST OF NL2SOL AND NL2SNO CALLED DIRECTLY)
- 1330 FORMAT (54H1NONLINEAR LEAST SQUARES ESTIMATION SUBROUTINE TEST NU,
-     &   4HMBER, I5/)
- 1340 FORMAT (24H INPUT   -  IFIXED(1) = , I6, 9X, 11H, STP(1) = ,
-     &   G15.8, 11H,    MIT = ,I5, 11H, STOPSS = , G15.8, 10H, STOPP = ,
-     &   G15.8/13X, 11HSCALE(1) = , G15.8, 11H,  DELTA = , G15.8,
-     &   11H, IVAPRX = , I5, 11H,   NPRT = , I5)
- 1350 FORMAT (//24H OUTPUT  -  IFIXED(1) = , I6, 9X, 11H, STP(1) = ,
-     &   G15.8, 11H,    MIT = ,I5, 11H, STOPSS = , G15.8, 10H, STOPP = ,
-     &   G15.8/13X, 11HSCALE(1) = , G15.8, 11H,  DELTA = , G15.8,
-     &   11H, IVAPRX = , I5, 11H,   NPRT = , I5//)
- 1360 FORMAT (24H INPUT   -  IFIXED(1) = , I6, 9X, 11H, IDRVCK = ,
-     &   I5, 10X, 11H,    MIT = ,I5, 11H, STOPSS = , G15.8,
-     &   10H, STOPP = , G15.8/
-     &   13X, 11HSCALE(1) = , G15.8, 11H,  DELTA = , G15.8,
-     &   11H, IVAPRX = , I5, 11H,   NPRT = , I6)
- 1370 FORMAT (//24H OUTPUT  -  IFIXED(1) = , I6, 9X, 11H, IDRVCK = ,
-     &   I5, 10X, 11H,    MIT = ,I5, 11H, STOPSS = , G15.8,
-     &   10H, STOPP = , G15.8/
-     &   13X, 11HSCALE(1) = , G15.8, 11H,  DELTA = , G15.8,
-     &   11H, IVAPRX = , I5, 11H,   NPRT = , I5//)
-      END
+ 1000 format (14h test of nls  )
+ 1010 format (15h test of nlsc  )
+ 1020 format (15h test of nlss  )
+ 1030 format (14h test of nlsw )
+ 1040 format (15h test of nlswc )
+ 1050 format (15h test of nlsws )
+ 1060 format (14h test of nlsd )
+ 1070 format (15h test of nlsdc )
+ 1080 format (15h test of nlsds )
+ 1090 format (14h test of nlswd)
+ 1100 format (15h test of nlswdc)
+ 1110 format (15h test of nlswds)
+1120 format (/29h ***** returned results *****, 5x, 15h (-1 indicates ,&
+     &   39hvalue not changed by called subroutine)//9h ierr is , i3)
+ 1130 format (15h normal problem)
+ 1140 format (45h1 *** ldstak must be greater than or equal to , i6)
+ 1320 format (42h1test of nl2sol and nl2sno called directly)
+1330 format (54h1nonlinear least squares estimation subroutine test nu,&
+     &   4hmber, i5/)
+1340 format (24h input   -  ifixed(1) = , i6, 9x, 11h, stp(1) = ,&
+    &   g15.8, 11h,    mit = ,i5, 11h, stopss = , g15.8, 10h, stopp = ,&
+    &   g15.8/13x, 11hscale(1) = , g15.8, 11h,  delta = , g15.8,&
+     &   11h, ivaprx = , i5, 11h,   nprt = , i5)
+1350 format (//24h output  -  ifixed(1) = , i6, 9x, 11h, stp(1) = ,&
+    &   g15.8, 11h,    mit = ,i5, 11h, stopss = , g15.8, 10h, stopp = ,&
+    &   g15.8/13x, 11hscale(1) = , g15.8, 11h,  delta = , g15.8,&
+     &   11h, ivaprx = , i5, 11h,   nprt = , i5//)
+1360 format (24h input   -  ifixed(1) = , i6, 9x, 11h, idrvck = ,&
+    &   i5, 10x, 11h,    mit = ,i5, 11h, stopss = , g15.8,&
+    &   10h, stopp = , g15.8/&
+    &   13x, 11hscale(1) = , g15.8, 11h,  delta = , g15.8,&
+     &   11h, ivaprx = , i5, 11h,   nprt = , i6)
+1370 format (//24h output  -  ifixed(1) = , i6, 9x, 11h, idrvck = ,&
+    &   i5, 10x, 11h,    mit = ,i5, 11h, stopss = , g15.8,&
+    &   10h, stopp = , g15.8/&
+    &   13x, 11hscale(1) = , g15.8, 11h,  delta = , g15.8,&
+     &   11h, ivaprx = , i5, 11h,   nprt = , i5//)
+      end

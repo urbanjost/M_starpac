@@ -1,5 +1,5 @@
 !PLTSYM
-      SUBROUTINE PLTSYM(IPTSYM, I, J, ISYM, N, IPOINT, LINE, ICOUNT)
+      subroutine pltsym(iptsym, i, j, isym, n, ipoint, line, icount)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,25 +16,25 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   I,IPOINT,IPTSYM,J,N
+     integer&
+     &   i,ipoint,iptsym,j,n
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   ICOUNT(103),ISYM(N)
-      CHARACTER
-     &   LINE(103)*1
+     integer&
+     &   icount(103),isym(n)
+     character&
+     &   line(103)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   ISYMBL
+     integer&
+     &   isymbl
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   SYM(30)*1,SYM1(10)*1
+     character&
+     &   sym(30)*1,sym1(10)*1
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX,MIN
+      intrinsic max,min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -62,37 +62,37 @@
 !     CHARACTER*1 SYM(30), SYM1(10)
 !        THE PLOT SYMBOLS.
 !
-      DATA SYM( 1)/'+'/,SYM( 2)/'.'/,SYM( 3)/'*'/,SYM( 4)/'-'/,
-     &     SYM( 5)/'A'/,SYM( 6)/'B'/,SYM( 7)/'C'/,SYM( 8)/'D'/,
-     &     SYM( 9)/'E'/,SYM(10)/'F'/,SYM(11)/'G'/,SYM(12)/'H'/,
-     &     SYM(13)/'I'/,SYM(14)/'J'/,SYM(15)/'K'/,SYM(16)/'L'/,
-     &     SYM(17)/'M'/,SYM(18)/'N'/,SYM(19)/'O'/,SYM(20)/'P'/,
-     &     SYM(21)/'Q'/,SYM(22)/'R'/,SYM(23)/'S'/,SYM(24)/'T'/,
-     &     SYM(25)/'U'/,SYM(26)/'V'/,SYM(27)/'W'/,SYM(28)/'Y'/,
-     &     SYM(29)/'Z'/,SYM(30)/'Z'/
-      DATA SYM1(1)/'1'/,SYM1(2)/'2'/,SYM1(3)/'3'/,SYM1(4)/'4'/,
-     &     SYM1(5)/'5'/,SYM1(6)/'6'/,SYM1(7)/'7'/,SYM1(8)/'8'/,
-     &     SYM1(9)/'9'/,SYM1(10)/'X'/
+     data sym( 1)/'+'/,sym( 2)/'.'/,sym( 3)/'*'/,sym( 4)/'-'/,&
+    &     sym( 5)/'A'/,sym( 6)/'B'/,sym( 7)/'C'/,sym( 8)/'D'/,&
+    &     sym( 9)/'E'/,sym(10)/'F'/,sym(11)/'G'/,sym(12)/'H'/,&
+    &     sym(13)/'I'/,sym(14)/'J'/,sym(15)/'K'/,sym(16)/'L'/,&
+    &     sym(17)/'M'/,sym(18)/'N'/,sym(19)/'O'/,sym(20)/'P'/,&
+    &     sym(21)/'Q'/,sym(22)/'R'/,sym(23)/'S'/,sym(24)/'T'/,&
+    &     sym(25)/'U'/,sym(26)/'V'/,sym(27)/'W'/,sym(28)/'Y'/,&
+     &     sym(29)/'Z'/,sym(30)/'Z'/
+     data sym1(1)/'1'/,sym1(2)/'2'/,sym1(3)/'3'/,sym1(4)/'4'/,&
+    &     sym1(5)/'5'/,sym1(6)/'6'/,sym1(7)/'7'/,sym1(8)/'8'/,&
+     &     sym1(9)/'9'/,sym1(10)/'X'/
 !
-      ICOUNT(IPOINT) = ICOUNT(IPOINT) + 1
-      IF (ICOUNT(IPOINT) .EQ. 1) GO TO 5
+      icount(ipoint) = icount(ipoint) + 1
+      if (icount(ipoint) .eq. 1) go to 5
 !
-      ISYMBL = MIN(ICOUNT(IPOINT), 10)
-      LINE(IPOINT) = SYM1(ISYMBL)
-      RETURN
+      isymbl = min(icount(ipoint), 10)
+      line(ipoint) = sym1(isymbl)
+      return
 !
-    5 CONTINUE
-      GO TO (10, 20, 30), IPTSYM
+    5 continue
+      go to (10, 20, 30), iptsym
 !
-   10 LINE(IPOINT) = SYM(1)
-      RETURN
+   10 line(ipoint) = sym(1)
+      return
 !
-   20 ISYMBL = MIN(29, MAX(1, ISYM(I)))
-      LINE(IPOINT) = SYM(ISYMBL)
-      RETURN
+   20 isymbl = min(29, max(1, isym(i)))
+      line(ipoint) = sym(isymbl)
+      return
 !
-   30 ISYMBL = MIN(29, MAX(1, J+4))
-      LINE(IPOINT) = SYM(ISYMBL)
+   30 isymbl = min(29, max(1, j+4))
+      line(ipoint) = sym(isymbl)
 !
-      RETURN
-      END
+      return
+      end

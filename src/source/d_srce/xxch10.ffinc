@@ -1,5 +1,5 @@
 !XXCH10
-      SUBROUTINE XXCH10(LDSTAK,typ)
+      subroutine xxch10(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -19,33 +19,33 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IAR,IPRT,N,NYF
+     integer&
+     &   i,iar,iprt,n,nyf
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   AIR(144),PHI(5),Y(150),YF(150)
+     real(kind=wp) ::&
+     &   air(144),phi(5),y(150),yf(150)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL DIF,GFARF,IPRINT,VP
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC LOG
+      intrinsic log
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -76,104 +76,104 @@
 !        THE FILTERED DATA.
 !
 !
-      DATA  AIR(  1), AIR(  2), AIR(  3), AIR(  4), AIR(  5), AIR(  6)
-     &    / 112.0_WP, 118.0_WP, 132.0_WP, 129.0_WP, 121.0_WP, 135.0_WP/
-      DATA  AIR(  7), AIR(  8), AIR(  9), AIR( 10), AIR( 11), AIR( 12)
-     &    / 148.0_WP, 148.0_WP, 136.0_WP, 119.0_WP, 104.0_WP, 118.0_WP/
-      DATA  AIR( 13), AIR( 14), AIR( 15), AIR( 16), AIR( 17), AIR( 18)
-     &    / 115.0_WP, 126.0_WP, 141.0_WP, 135.0_WP, 125.0_WP, 149.0_WP/
-      DATA  AIR( 19), AIR( 20), AIR( 21), AIR( 22), AIR( 23), AIR( 24)
-     &    / 170.0_WP, 170.0_WP, 158.0_WP, 133.0_WP, 114.0_WP, 140.0_WP/
-      DATA  AIR( 25), AIR( 26), AIR( 27), AIR( 28), AIR( 29), AIR( 30)
-     &    / 145.0_WP, 150.0_WP, 178.0_WP, 163.0_WP, 172.0_WP, 178.0_WP/
-      DATA  AIR( 31), AIR( 32), AIR( 33), AIR( 34), AIR( 35), AIR( 36)
-     &    / 199.0_WP, 199.0_WP, 184.0_WP, 162.0_WP, 146.0_WP, 166.0_WP/
-      DATA  AIR( 37), AIR( 38), AIR( 39), AIR( 40), AIR( 41), AIR( 42)
-     &    / 171.0_WP, 180.0_WP, 193.0_WP, 181.0_WP, 183.0_WP, 218.0_WP/
-      DATA  AIR( 43), AIR( 44), AIR( 45), AIR( 46), AIR( 47), AIR( 48)
-     &    / 230.0_WP, 242.0_WP, 209.0_WP, 191.0_WP, 172.0_WP, 194.0_WP/
-      DATA  AIR( 49), AIR( 50), AIR( 51), AIR( 52), AIR( 53), AIR( 54)
-     &    / 196.0_WP, 196.0_WP, 236.0_WP, 235.0_WP, 229.0_WP, 243.0_WP/
-      DATA  AIR( 55), AIR( 56), AIR( 57), AIR( 58), AIR( 59), AIR( 60)
-     &    / 264.0_WP, 272.0_WP, 237.0_WP, 211.0_WP, 180.0_WP, 201.0_WP/
-      DATA  AIR( 61), AIR( 62), AIR( 63), AIR( 64), AIR( 65), AIR( 66)
-     &    / 204.0_WP, 188.0_WP, 235.0_WP, 227.0_WP, 234.0_WP, 264.0_WP/
-      DATA  AIR( 67), AIR( 68), AIR( 69), AIR( 70), AIR( 71), AIR( 72)
-     &    / 302.0_WP, 293.0_WP, 259.0_WP, 229.0_WP, 203.0_WP, 229.0_WP/
-      DATA  AIR( 73), AIR( 74), AIR( 75), AIR( 76), AIR( 77), AIR( 78)
-     &    / 242.0_WP, 233.0_WP, 267.0_WP, 269.0_WP, 270.0_WP, 315.0_WP/
-      DATA  AIR( 79), AIR( 80), AIR( 81), AIR( 82), AIR( 83), AIR( 84)
-     &    / 364.0_WP, 347.0_WP, 312.0_WP, 274.0_WP, 237.0_WP, 278.0_WP/
-      DATA  AIR( 85), AIR( 86), AIR( 87), AIR( 88), AIR( 89), AIR( 90)
-     &    / 284.0_WP, 277.0_WP, 317.0_WP, 313.0_WP, 318.0_WP, 374.0_WP/
-      DATA  AIR( 91), AIR( 92), AIR( 93), AIR( 94), AIR( 95), AIR( 96)
-     &    / 413.0_WP, 405.0_WP, 355.0_WP, 306.0_WP, 271.0_WP, 306.0_WP/
-      DATA  AIR( 97), AIR( 98), AIR( 99), AIR(100), AIR(101), AIR(102)
-     &    / 315.0_WP, 301.0_WP, 356.0_WP, 348.0_WP, 355.0_WP, 422.0_WP/
-      DATA  AIR(103), AIR(104), AIR(105), AIR(106), AIR(107), AIR(108)
-     &    / 465.0_WP, 467.0_WP, 404.0_WP, 347.0_WP, 305.0_WP, 336.0_WP/
-      DATA  AIR(109), AIR(110), AIR(111), AIR(112), AIR(113), AIR(114)
-     &    / 340.0_WP, 318.0_WP, 362.0_WP, 348.0_WP, 363.0_WP, 435.0_WP/
-      DATA  AIR(115), AIR(116), AIR(117), AIR(118), AIR(119), AIR(120)
-     &    / 491.0_WP, 505.0_WP, 404.0_WP, 359.0_WP, 310.0_WP, 337.0_WP/
-      DATA  AIR(121), AIR(122), AIR(123), AIR(124), AIR(125), AIR(126)
-     &    / 360.0_WP, 342.0_WP, 406.0_WP, 396.0_WP, 420.0_WP, 472.0_WP/
-      DATA  AIR(127), AIR(128), AIR(129), AIR(130), AIR(131), AIR(132)
-     &    / 548.0_WP, 559.0_WP, 463.0_WP, 407.0_WP, 362.0_WP, 405.0_WP/
-      DATA  AIR(133), AIR(134), AIR(135), AIR(136), AIR(137), AIR(138)
-     &    / 417.0_WP, 391.0_WP, 419.0_WP, 461.0_WP, 472.0_WP, 535.0_WP/
-      DATA  AIR(139), AIR(140), AIR(141), AIR(142), AIR(143), AIR(144)
-     &    / 622.0_WP, 606.0_WP, 508.0_WP, 461.0_WP, 390.0_WP, 432.0_WP/
+     data  air(  1), air(  2), air(  3), air(  4), air(  5), air(  6)&
+     &    / 112.0_wp, 118.0_wp, 132.0_wp, 129.0_wp, 121.0_wp, 135.0_wp/
+     data  air(  7), air(  8), air(  9), air( 10), air( 11), air( 12)&
+     &    / 148.0_wp, 148.0_wp, 136.0_wp, 119.0_wp, 104.0_wp, 118.0_wp/
+     data  air( 13), air( 14), air( 15), air( 16), air( 17), air( 18)&
+     &    / 115.0_wp, 126.0_wp, 141.0_wp, 135.0_wp, 125.0_wp, 149.0_wp/
+     data  air( 19), air( 20), air( 21), air( 22), air( 23), air( 24)&
+     &    / 170.0_wp, 170.0_wp, 158.0_wp, 133.0_wp, 114.0_wp, 140.0_wp/
+     data  air( 25), air( 26), air( 27), air( 28), air( 29), air( 30)&
+     &    / 145.0_wp, 150.0_wp, 178.0_wp, 163.0_wp, 172.0_wp, 178.0_wp/
+     data  air( 31), air( 32), air( 33), air( 34), air( 35), air( 36)&
+     &    / 199.0_wp, 199.0_wp, 184.0_wp, 162.0_wp, 146.0_wp, 166.0_wp/
+     data  air( 37), air( 38), air( 39), air( 40), air( 41), air( 42)&
+     &    / 171.0_wp, 180.0_wp, 193.0_wp, 181.0_wp, 183.0_wp, 218.0_wp/
+     data  air( 43), air( 44), air( 45), air( 46), air( 47), air( 48)&
+     &    / 230.0_wp, 242.0_wp, 209.0_wp, 191.0_wp, 172.0_wp, 194.0_wp/
+     data  air( 49), air( 50), air( 51), air( 52), air( 53), air( 54)&
+     &    / 196.0_wp, 196.0_wp, 236.0_wp, 235.0_wp, 229.0_wp, 243.0_wp/
+     data  air( 55), air( 56), air( 57), air( 58), air( 59), air( 60)&
+     &    / 264.0_wp, 272.0_wp, 237.0_wp, 211.0_wp, 180.0_wp, 201.0_wp/
+     data  air( 61), air( 62), air( 63), air( 64), air( 65), air( 66)&
+     &    / 204.0_wp, 188.0_wp, 235.0_wp, 227.0_wp, 234.0_wp, 264.0_wp/
+     data  air( 67), air( 68), air( 69), air( 70), air( 71), air( 72)&
+     &    / 302.0_wp, 293.0_wp, 259.0_wp, 229.0_wp, 203.0_wp, 229.0_wp/
+     data  air( 73), air( 74), air( 75), air( 76), air( 77), air( 78)&
+     &    / 242.0_wp, 233.0_wp, 267.0_wp, 269.0_wp, 270.0_wp, 315.0_wp/
+     data  air( 79), air( 80), air( 81), air( 82), air( 83), air( 84)&
+     &    / 364.0_wp, 347.0_wp, 312.0_wp, 274.0_wp, 237.0_wp, 278.0_wp/
+     data  air( 85), air( 86), air( 87), air( 88), air( 89), air( 90)&
+     &    / 284.0_wp, 277.0_wp, 317.0_wp, 313.0_wp, 318.0_wp, 374.0_wp/
+     data  air( 91), air( 92), air( 93), air( 94), air( 95), air( 96)&
+     &    / 413.0_wp, 405.0_wp, 355.0_wp, 306.0_wp, 271.0_wp, 306.0_wp/
+     data  air( 97), air( 98), air( 99), air(100), air(101), air(102)&
+     &    / 315.0_wp, 301.0_wp, 356.0_wp, 348.0_wp, 355.0_wp, 422.0_wp/
+     data  air(103), air(104), air(105), air(106), air(107), air(108)&
+     &    / 465.0_wp, 467.0_wp, 404.0_wp, 347.0_wp, 305.0_wp, 336.0_wp/
+     data  air(109), air(110), air(111), air(112), air(113), air(114)&
+     &    / 340.0_wp, 318.0_wp, 362.0_wp, 348.0_wp, 363.0_wp, 435.0_wp/
+     data  air(115), air(116), air(117), air(118), air(119), air(120)&
+     &    / 491.0_wp, 505.0_wp, 404.0_wp, 359.0_wp, 310.0_wp, 337.0_wp/
+     data  air(121), air(122), air(123), air(124), air(125), air(126)&
+     &    / 360.0_wp, 342.0_wp, 406.0_wp, 396.0_wp, 420.0_wp, 472.0_wp/
+     data  air(127), air(128), air(129), air(130), air(131), air(132)&
+     &    / 548.0_wp, 559.0_wp, 463.0_wp, 407.0_wp, 362.0_wp, 405.0_wp/
+     data  air(133), air(134), air(135), air(136), air(137), air(138)&
+     &    / 417.0_wp, 391.0_wp, 419.0_wp, 461.0_wp, 472.0_wp, 535.0_wp/
+     data  air(139), air(140), air(141), air(142), air(143), air(144)&
+     &    / 622.0_wp, 606.0_wp, 508.0_wp, 461.0_wp, 390.0_wp, 432.0_wp/
 !
 !     DEFINE CONSTANTS
 !
-      CALL IPRINT(IPRT)
-      N = 144
+      call iprint(iprt)
+      n = 144
 !
 !     TAKE LOG OF DATA
 !
-      DO 10 I=1,N
-         Y(I) = LOG(AIR(I))
-   10 CONTINUE
+      do 10 i=1,n
+         y(i) = log(air(i))
+   10 continue
 !
 !     WRITE HEADER
 !
-      WRITE(IPRT, 1000)
+      write(iprt, 1000)
 !
 !     RUN SIMPLE TEST OF DIF
 !
-      WRITE(IPRT, 1100)
-      CALL DIF (Y, N, YF, NYF)
-      WRITE (IPRT,2000) IERR
+      write(iprt, 1100)
+      call dif (y, n, yf, nyf)
+      write (iprt,2000) ierr
 !
 !     PLOT ORIGINAL SERIES
 !
-      WRITE(IPRT, 1200)
-      CALL VP (Y, N, 1)
-      WRITE (IPRT,2000) IERR
+      write(iprt, 1200)
+      call vp (y, n, 1)
+      write (iprt,2000) ierr
 !
 !     PLOT DIFFERENCED SERIES
 !
-      WRITE(IPRT, 1300)
-      CALL VP (YF, NYF, 1)
-      WRITE (IPRT,2000) IERR
+      write(iprt, 1300)
+      call vp (yf, nyf, 1)
+      write (iprt,2000) ierr
 !
 !     RUN SIMPLE TEST OF GFARF
 !
-      WRITE(IPRT, 1400)
-      PHI(1) = 1.0
-      IAR = 1
-      CALL GFARF (PHI, IAR)
-      WRITE (IPRT,2000) IERR
+      write(iprt, 1400)
+      phi(1) = 1.0
+      iar = 1
+      call gfarf (phi, iar)
+      write (iprt,2000) ierr
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT ('1*CH10')
- 1100 FORMAT (' SIMPLE TEST OF DIF (NO OUTPUT UNLESS ERROR FOUND)')
- 1200 FORMAT ('1PLOT OF ORIGINAL SERIES')
- 1300 FORMAT ('1PLOT OF DIFFERENCED SERIES')
- 1400 FORMAT ('1SIMPLE TEST OF GFARF')
- 2000 FORMAT (/' THE VALUE OF IERR IS ', I4)
-      END
+ 1000 format ('1*CH10')
+ 1100 format (' SIMPLE TEST OF DIF (NO OUTPUT UNLESS ERROR FOUND)')
+ 1200 format ('1PLOT OF ORIGINAL SERIES')
+ 1300 format ('1PLOT OF DIFFERENCED SERIES')
+ 1400 format ('1SIMPLE TEST OF GFARF')
+ 2000 format (/' THE VALUE OF IERR IS ', i4)
+      end

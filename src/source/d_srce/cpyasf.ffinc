@@ -1,5 +1,5 @@
 !CPYASF
-      SUBROUTINE CPYASF (M, X, LX, Y, IY)
+      subroutine cpyasf (m, x, lx, y, iy)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,16 +16,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IY,LX,M
+     integer&
+     &   iy,lx,m
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   X(*),Y(IY,*)
+     real(kind=wp) ::&
+     &   x(*),y(iy,*)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IJ,J
+     integer&
+     &   i,ij,j
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -44,14 +44,14 @@
 !     REAL(KIND=WP) :: Y(IY,M)
 !        THE MATRIX TO BE COPIED TO.
 !
-      DO 20 I = 1, M
-         DO 10 J = 1, I
-            IJ = I*(I-1)/2 + J
-            Y(I,J) = X(IJ)
-            Y(J,I) = Y(I,J)
-   10    CONTINUE
-   20 CONTINUE
+      do 20 i = 1, m
+         do 10 j = 1, i
+            ij = i*(i-1)/2 + j
+            y(i,j) = x(ij)
+            y(j,i) = y(i,j)
+   10    continue
+   20 continue
 !
-      RETURN
+      return
 !
-      END
+      end

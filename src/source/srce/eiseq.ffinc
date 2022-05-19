@@ -1,6 +1,6 @@
 !EISEQ
-      SUBROUTINE EISEQ(NMSUB, NMVAR1, NVAL, NEQ, MSGTYP, HEAD, ERROR,
-     &   NMVAR2)
+     subroutine eiseq(nmsub, nmvar1, nval, neq, msgtyp, head, error,&
+     &   nmvar2)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,18 +17,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   MSGTYP,NEQ,NVAL
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   msgtyp,neq,nval
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1,NMVAR1(8)*1,NMVAR2(8)*1
+     character&
+     &   nmsub(6)*1,nmvar1(8)*1,nmvar2(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT
+     integer&
+     &   i,iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EHDR,IPRINT
@@ -63,32 +63,32 @@
 !     INTEGER NVAL
 !        THE INPUT VALUE OF THE ARGUMENT BEING CHECKED.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF (NVAL .EQ. NEQ) RETURN
+      if (nval .eq. neq) return
 !
-      ERROR = .TRUE.
+      error = .true.
 !
-      CALL IPRINT (IPRT)
+      call iprint (iprt)
 !
-      CALL EHDR(NMSUB, HEAD)
+      call ehdr(nmsub, head)
 !
-      WRITE (IPRT, 1000) (NMVAR1(I), I=1,6), NVAL
+      write (iprt, 1000) (nmvar1(i), i=1,6), nval
 !
 !     PRINT MESSAGE FOR ARIMA ROUTINES
 !
-      WRITE (IPRT, 1010) (NMVAR1(I), I=1,6), NEQ
-      RETURN
+      write (iprt, 1010) (nmvar1(i), i=1,6), neq
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/20H THE INPUT VALUE OF , 6A1, 4H IS , I5, '.')
- 1010 FORMAT(
-     &   27H THE VALUE OF THE ARGUMENT , 6A1,
-     &   ' MUST BE GREATER THAN OR EQUAL TO'/
-     &   1X, I5, ' = ONE PLUS THE SUM OF MSPEC(1,J)+MSPEC(3,J) FOR',
-     &   ' J = 1, ..., NFAC,'/
-     &   6X, ' = ONE PLUS THE NUMBER OF AUTOREGRESSIVE PARAMETERS PLUS'/
-     &   9X, ' THE NUMBER OF MOVING AVERAGE PARAMETERS.')
+ 1000 format (/20h the input value of , 6a1, 4h is , i5, '.')
+1010 format(&
+    &   27h the value of the argument , 6a1,&
+    &   ' MUST BE GREATER THAN OR EQUAL TO'/&
+    &   1x, i5, ' = ONE PLUS THE SUM OF MSPEC(1,J)+MSPEC(3,J) FOR',&
+    &   ' J = 1, ..., NFAC,'/&
+    &   6x, ' = ONE PLUS THE NUMBER OF AUTOREGRESSIVE PARAMETERS PLUS'/&
+     &   9x, ' THE NUMBER OF MOVING AVERAGE PARAMETERS.')
 !
-      END
+      end

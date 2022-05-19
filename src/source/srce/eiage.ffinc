@@ -1,6 +1,6 @@
 !EIAGE
-      SUBROUTINE EIAGE (NMSUB, NMVAR, YM, N, M, IYM, YMMN, NVMX,
-     &   HEAD, MSGTYP, NV, ERROR, NMMIN)
+     subroutine eiage (nmsub, nmvar, ym, n, m, iym, ymmn, nvmx,&
+     &   head, msgtyp, nv, error, nmmin)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,20 +20,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IYM,M,MSGTYP,N,NV,NVMX,YMMN
-      LOGICAL
-     &   ERROR,HEAD
+     integer&
+     &   iym,m,msgtyp,n,nv,nvmx,ymmn
+     logical&
+     &   error,head
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   YM(*)
-      CHARACTER
-     &   NMMIN(8)*1,NMSUB(6)*1,NMVAR(8)*1
+     integer&
+     &   ym(*)
+     character&
+     &   nmmin(8)*1,nmsub(6)*1,nmvar(8)*1
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,J
+     integer&
+     &   i,j
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL EIAGEP
@@ -79,28 +79,28 @@
 !     INTEGER YMMN
 !        THE MINIMUM ACCEPTABLE VALUE.
 !
-      ERROR = .FALSE.
+      error = .false.
 !
-      IF ((N.LE.0) .OR. (M.LE.0)) RETURN
+      if ((n.le.0) .or. (m.le.0)) return
 !
 !     CHECK FOR VIOLATIONS
 !
-      NV = 0
-      DO 5 I = 1, N
-         DO 1 J = 1, M
-            IF (YM(I+(J-1)*IYM) .LT. YMMN) NV = NV + 1
-    1    CONTINUE
-    5 CONTINUE
+      nv = 0
+      do 5 i = 1, n
+         do 1 j = 1, m
+            if (ym(i+(j-1)*iym) .lt. ymmn) nv = nv + 1
+    1    continue
+    5 continue
 !
-      IF (NV .LE. NVMX) RETURN
+      if (nv .le. nvmx) return
 !
 !     VIOLATIONS FOUND
 !
-      ERROR = .TRUE.
+      error = .true.
 !
-      CALL EIAGEP (NMSUB, NMVAR, YMMN, NVMX, HEAD, MSGTYP, NV,
-     &   NMMIN)
+     call eiagep (nmsub, nmvar, ymmn, nvmx, head, msgtyp, nv,&
+     &   nmmin)
 !
-      RETURN
+      return
 !
-      END
+      end

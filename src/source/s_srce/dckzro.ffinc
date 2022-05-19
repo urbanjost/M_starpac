@@ -1,6 +1,6 @@
 !DCKZRO
-      SUBROUTINE DCKZRO(J, PAR, NPAR, MDL, XM, N, NROW, M, IXM, PV,
-     &   PVTEMP, MSG, LMSG, FD, PARMX, PVPSTP, STP)
+     subroutine dckzro(j, par, npar, mdl, xm, n, nrow, m, ixm, pv,&
+     &   pvtemp, msg, lmsg, fd, parmx, pvpstp, stp)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,31 +18,31 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FD,PARMX,PV,PVPSTP,STP
-      INTEGER
-     &   IXM,J,LMSG,M,N,NPAR,NROW
+     real(kind=wp) ::&
+     &   fd,parmx,pv,pvpstp,stp
+     integer&
+     &   ixm,j,lmsg,m,n,npar,nrow
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),PVTEMP(N),XM(IXM,M)
-      INTEGER
-     &   MSG(LMSG)
+     real(kind=wp) ::&
+     &   par(npar),pvtemp(n),xm(ixm,m)
+     integer&
+     &   msg(lmsg)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL MDL
+       external mdl
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   CD,FPLRS,PVMSTP,TEMP,THIRD
+     real(kind=wp) ::&
+     &   cd,fplrs,pvmstp,temp,third
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   R1MACH
+     real(kind=wp) ::&
+     &   r1mach
 !       EXTERNAL R1MACH
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,MIN
+      intrinsic abs,min
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -105,53 +105,53 @@
 !        THE ARRAY IN WHICH ONE ROW OF THE INDEPENDENT VARIABLE ARRAY
 !        IS STORED.
 !
-      FPLRS = R1MACH(4)
+      fplrs = r1mach(4)
 !
 !     RECALCULATE NUMERICAL DERIVATIVE USING CENTRAL DIFFERENCE AND STEP
 !     SIZE OF 2*STP
 !
-      TEMP = PAR(J)
-      PAR(J) = PAR(J) - STP
-      CALL MDL(PAR, NPAR, XM, N, M, IXM, PVTEMP)
-      PAR(J) = TEMP
+      temp = par(j)
+      par(j) = par(j) - stp
+      call mdl(par, npar, xm, n, m, ixm, pvtemp)
+      par(j) = temp
 !
-      PVMSTP = PVTEMP(NROW)
+      pvmstp = pvtemp(nrow)
 !
-      CD = (PVPSTP-PVMSTP)/(2.0E0*STP)
+      cd = (pvpstp-pvmstp)/(2.0e0*stp)
 !
 !     CHECK FOR DISAGREEMENT
 !
-      IF (CD.NE.0.0E0) GO TO 10
+      if (cd.ne.0.0e0) go to 10
 !
 !     NUMERICAL AND ANALYTIC DERIVATIVES NOW AGREE, BUT BOTH EQUAL ZERO,
 !     INDICATING THAT DERIVATIVES SHOULD BE RECHECKED AT ANOTHER POINT.
 !
-      IF (MSG(1).EQ.0) MSG(1) = 1
-      MSG(J+1) = 3
-      RETURN
+      if (msg(1).eq.0) msg(1) = 1
+      msg(j+1) = 3
+      return
 !
-   10 CONTINUE
+   10 continue
 !
 !     NUMERICAL AND ANALYTIC DERIVATIVE STILL DO NOT AGREE.
 !
 !     CHECK IF NUMERICAL DERIVATIVE IS CLOSE TO ZERO.
 !
-      THIRD = 1.0E0/3.0E0
-      IF (MIN(ABS(CD), ABS(FD))*PARMX .GT. ABS(PV*FPLRS**THIRD))
-     &   GO TO 20
+      third = 1.0e0/3.0e0
+     if (min(abs(cd), abs(fd))*parmx .gt. abs(pv*fplrs**third))&
+     &   go to 20
 !
 !     NUMERICAL DERIVATIVE IS CLOSE TO ZERO
 !
-      IF (MSG(1).EQ.0) MSG(1) = 1
-      MSG(J+1) = 4
-      RETURN
+      if (msg(1).eq.0) msg(1) = 1
+      msg(j+1) = 4
+      return
 !
-   20 CONTINUE
+   20 continue
 !
 !     NUMERICAL DERIVATIVE NOT CLOSE TO ZERO
 !
-      MSG(1) = 2
-      MSG(J+1) = 5
-      RETURN
+      msg(1) = 2
+      msg(j+1) = 5
+      return
 !
-      END
+      end

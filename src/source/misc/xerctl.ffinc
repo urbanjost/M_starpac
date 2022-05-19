@@ -1,5 +1,5 @@
 !XERCTL
-      SUBROUTINE XERCTL(MESSG1,NMESSG,NERR,LEVEL,KONTRL)
+      subroutine xerctl(messg1,nmessg,nerr,level,kontrl)
 !
 !     ABSTRACT
 !        ALLOWS USER CONTROL OVER HANDLING OF INDIVIDUAL ERRORS.
@@ -35,8 +35,8 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER KONTRL,LEVEL,NERR,NMESSG
+      integer kontrl,level,nerr,nmessg
       character(len=4),intent(in) :: messg1
 !
-      RETURN
-      END
+      return
+      end

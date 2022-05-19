@@ -1,6 +1,6 @@
 !VPMN
-      SUBROUTINE VPMN (YM, YMMISS, N, M, IYM, NSAMPL, ISCHCK, ISYM,
-     &  LISYM, ISIZE, YMN, YMX, XLB, XINC, MISS, ILOG, IRLIN, IBAR)
+     subroutine vpmn (ym, ymmiss, n, m, iym, nsampl, ischck, isym,&
+     &  lisym, isize, ymn, ymx, xlb, xinc, miss, ilog, irlin, ibar)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,39 +16,39 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XINC,XLB,YMN,YMX
-      INTEGER
-     &   IBAR,ILOG,IRLIN,ISCHCK,ISIZE,IYM,LISYM,M,N,NSAMPL
-      LOGICAL
-     &   MISS
+     real(kind=wp) ::&
+     &   xinc,xlb,ymn,ymx
+     integer&
+     &   ibar,ilog,irlin,ischck,isize,iym,lisym,m,n,nsampl
+     logical&
+     &   miss
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YM(IYM,M),YMMISS(M)
-      INTEGER
-     &   ISYM(LISYM)
+     real(kind=wp) ::&
+     &   ym(iym,m),ymmiss(m)
+     integer&
+     &   isym(lisym)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   REFPT,XLABEL,YDMN,YDMX,YWIDTH,YY
-      INTEGER
-     &   I,IEND,ILOGY,IMAX,IMIN,IPOINT,IPRT,IPTSYM,IREFPT,J,NUMCOL,
-     &   NUSED
-      LOGICAL
-     &   IFMISS
-      CHARACTER
-     &   I0*1,IBLANK*1,IM*1,IPLTCH*1,IREFCH*1,FMT*72
+     real(kind=wp) ::&
+     &   refpt,xlabel,ydmn,ydmx,ywidth,yy
+     integer&
+    &   i,iend,ilogy,imax,imin,ipoint,iprt,iptsym,irefpt,j,numcol,&
+     &   nused
+     logical&
+     &   ifmiss
+     character&
+     &   i0*1,iblank*1,im*1,ipltch*1,irefch*1,fmt*72
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ICOUNT(103)
-      CHARACTER
-     &   LINE(103)*1
+     integer&
+     &   icount(103)
+     character&
+     &   line(103)*1
 !
 !  EXTERNAL FUNCTIONS
 !      LOGICAL
@@ -59,10 +59,10 @@
 !      EXTERNAL AMEAN,AMEANM,IPRINT,PLINE,PLTPLX,PLTSYM,SETIV,VPHEAD
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC LOG10,MAX,MIN
+      intrinsic log10,max,min
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -186,113 +186,113 @@
 !        THE VALUE OF YM ACTUALLY BEING PLOTTED
 !
 !
-      DATA IBLANK/' '/, IM/'M'/, I0/'0'/
+      data iblank/' '/, im/'M'/, i0/'0'/
 !
 !     PRINT PLOT HEADINGS
 !
-      CALL IPRINT(IPRT)
-      CALL VPHEAD(NSAMPL, IRLIN, IBAR,
-     &            REFPT, YWIDTH, YMN, YMX, ISIZE, ILOG,
-     &            LINE, NUMCOL, ILOGY, YDMN, YDMX)
-      IEND = NUMCOL + 2
+      call iprint(iprt)
+     call vphead(nsampl, irlin, ibar,&
+    &            refpt, ywidth, ymn, ymx, isize, ilog,&
+     &            line, numcol, ilogy, ydmn, ydmx)
+      iend = numcol + 2
 !
 !     COMPUTE REFERENCE POINT OF GRAPH, IF REQUIRED.
 !
-      IF (IRLIN.GE.0) THEN
-        IF (IRLIN.EQ.0) THEN
+      if (irlin.ge.0) then
+        if (irlin.eq.0) then
 !
 !         REFERENCE POINT IS ZERO
 !
-          REFPT = 0.0E0
-          IREFCH = I0
-        ELSE
+          refpt = 0.0e0
+          irefch = i0
+        else
 !
 !         REFERENCE POINT IS MEAN
 !
-          IF (MISS) THEN
-            CALL AMEANM(YM, YMMISS(1), N, NUSED, REFPT)
-          ELSE
-            CALL AMEAN(YM, N, REFPT)
-          END IF
-          IF (ILOGY.NE.0) REFPT = LOG10(REFPT)
-          IREFCH = IM
-        END IF
+          if (miss) then
+            call ameanm(ym, ymmiss(1), n, nused, refpt)
+          else
+            call amean(ym, n, refpt)
+          end if
+          if (ilogy.ne.0) refpt = log10(refpt)
+          irefch = im
+        end if
 !
 !       COMPUTE LOCATION OF REFPT IN PLOT STRING
 !
-        CALL PLTPLX(REFPT, YMN, YWIDTH, IREFPT, IEND)
-      ELSE
-        IREFPT = 1
-      END IF
+        call pltplx(refpt, ymn, ywidth, irefpt, iend)
+      else
+        irefpt = 1
+      end if
 !
 !     BEGIN PLOTTING
 !
-      IPTSYM = ISCHCK + 1
-      XLABEL = XLB
-      DO 50 I=1,N,NSAMPL
-         CALL PLINE(1, IEND, IBLANK, LINE)
-         CALL SETIV(ICOUNT, IEND, 0)
-         IFMISS = .FALSE.
-         IPOINT = 1
-         DO 30 J=1,M
-           IF (MISS) THEN
-             IFMISS = (IFMISS .OR. (MVCHK(YM(I,J),YMMISS(J))))
-             IF (.NOT.(MVCHK(YM(I,J),YMMISS(J)))) THEN
-               IF (ILOGY.EQ.0) THEN
-                 YY = YM(I,J)
-               ELSE
-                 YY = LOG10(YM(I,J))
-               END IF
-               IF ((YY.GE.YDMN) .AND. (YY.LE.YDMX)) THEN
-                CALL PLTPLX(YY, YMN, YWIDTH, IPOINT, IEND)
-                CALL PLTSYM(IPTSYM, I, J, ISYM, N, IPOINT, LINE, ICOUNT)
-                IPLTCH = LINE(IPOINT)
-               ELSE
-                IPOINT = IREFPT
-                IPLTCH = IBLANK
-               END IF
-             END IF
-           ELSE
-             IF (ILOGY.EQ.0) THEN
-               YY = YM(I,J)
-             ELSE
-               YY = LOG10(YM(I,J))
-             END IF
-             IF ((YY.GE.YDMN) .AND. (YY.LE. YDMX)) THEN
-                CALL PLTPLX(YY, YMN, YWIDTH, IPOINT, IEND)
-                CALL PLTSYM(IPTSYM, I, J, ISYM, N, IPOINT, LINE, ICOUNT)
-                IPLTCH = LINE(IPOINT)
-             ELSE
-                IPOINT = IREFPT
-                IPLTCH = IBLANK
-             END IF
-           END IF
-   30    CONTINUE
-         IF ((IBAR.GE.1) .AND. (.NOT.IFMISS)) THEN
-            IMIN = MIN(IPOINT,IREFPT)
-            IMAX = MAX(IPOINT,IREFPT)
-            CALL PLINE(IMIN, IMAX, IPLTCH, LINE)
-         ELSE IF (IRLIN.GE.0) THEN
-            LINE(IREFPT) = IREFCH
-         END IF
+      iptsym = ischck + 1
+      xlabel = xlb
+      do 50 i=1,n,nsampl
+         call pline(1, iend, iblank, line)
+         call setiv(icount, iend, 0)
+         ifmiss = .false.
+         ipoint = 1
+         do 30 j=1,m
+           if (miss) then
+             ifmiss = (ifmiss .or. (mvchk(ym(i,j),ymmiss(j))))
+             if (.not.(mvchk(ym(i,j),ymmiss(j)))) then
+               if (ilogy.eq.0) then
+                 yy = ym(i,j)
+               else
+                 yy = log10(ym(i,j))
+               end if
+               if ((yy.ge.ydmn) .and. (yy.le.ydmx)) then
+                call pltplx(yy, ymn, ywidth, ipoint, iend)
+                call pltsym(iptsym, i, j, isym, n, ipoint, line, icount)
+                ipltch = line(ipoint)
+               else
+                ipoint = irefpt
+                ipltch = iblank
+               end if
+             end if
+           else
+             if (ilogy.eq.0) then
+               yy = ym(i,j)
+             else
+               yy = log10(ym(i,j))
+             end if
+             if ((yy.ge.ydmn) .and. (yy.le. ydmx)) then
+                call pltplx(yy, ymn, ywidth, ipoint, iend)
+                call pltsym(iptsym, i, j, isym, n, ipoint, line, icount)
+                ipltch = line(ipoint)
+             else
+                ipoint = irefpt
+                ipltch = iblank
+             end if
+           end if
+   30    continue
+         if ((ibar.ge.1) .and. (.not.ifmiss)) then
+            imin = min(ipoint,irefpt)
+            imax = max(ipoint,irefpt)
+            call pline(imin, imax, ipltch, line)
+         else if (irlin.ge.0) then
+            line(irefpt) = irefch
+         end if
 !
-         IF (IFMISS) THEN
-           WRITE(FMT,1000) NUMCOL, '8H MISSING'
-           WRITE(IPRT,FMT) XLABEL, (LINE(J), J=1,IEND)
-         ELSE
-           WRITE(FMT,1000) NUMCOL, '1X, G11.5 '
-           IF (M.EQ.1) THEN
-             WRITE(IPRT,FMT) XLABEL, (LINE(J),J=1,IEND), YM(I,1)
-           ELSE
-             WRITE(IPRT,FMT) XLABEL, (LINE(J),J=1,IEND)
-           END IF
-         END IF
-         XLABEL = XLABEL + XINC*NSAMPL
-   50 CONTINUE
+         if (ifmiss) then
+           write(fmt,1000) numcol, '8H MISSING'
+           write(iprt,fmt) xlabel, (line(j), j=1,iend)
+         else
+           write(fmt,1000) numcol, '1X, G11.5 '
+           if (m.eq.1) then
+             write(iprt,fmt) xlabel, (line(j),j=1,iend), ym(i,1)
+           else
+             write(iprt,fmt) xlabel, (line(j),j=1,iend)
+           end if
+         end if
+         xlabel = xlabel + xinc*nsampl
+   50 continue
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT('(1X,G11.5,1X,A1,''I'',', I3, 'A1,''I'',A1,',A10,')')
-      END
+ 1000 format('(1X,G11.5,1X,A1,''I'',', i3, 'A1,''I'',A1,',a10,')')
+      end

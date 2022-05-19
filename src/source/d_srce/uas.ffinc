@@ -1,5 +1,5 @@
 !UAS
-      SUBROUTINE UAS (Y, N)
+      subroutine uas (y, n)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,40 +16,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*)
+     real(kind=wp) ::&
+     &   y(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ALPHA,DELTA,FMAX,FMIN,VAR,YMEAN
-      INTEGER
-     &   IAR,IPRT,LACOV,LAG,LAGMAX,LAIC,LDSMIN,LDSTAK,LPCV,LPHI,
-     &   LSPC,LWORK,NF,NPRT
+     real(kind=wp) ::&
+     &   alpha,delta,fmax,fmin,var,ymean
+     integer&
+    &   iar,iprt,lacov,lag,lagmax,laic,ldsmin,ldstak,lpcv,lphi,&
+     &   lspc,lwork,nf,nprt
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   ACOV(101),AIC(101),FREQ(101),FTEST(2,100),PHI(100),SPCA(101),
-     &   SPCF(101),WORK(101),XAXIS(207),YAXIS(207)
-      INTEGER
-     &   ISORT(101),ISYM(207)
-      LOGICAL
-     &   OPTION(4)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+    &   acov(101),aic(101),freq(101),ftest(2,100),phi(100),spca(101),&
+     &   spcf(101),work(101),xaxis(207),yaxis(207)
+     integer&
+     &   isort(101),isym(207)
+     logical&
+     &   option(4)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL ACVF,IPRINT,PARZEN,SETLAG,UASDV,UASER
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -143,69 +143,69 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'U',       'A',       'S',       ' ',       ' ',       ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      OPTION(1) = .FALSE.
-      OPTION(2) = .FALSE.
-      OPTION(3) = .FALSE.
-      OPTION(4) = .FALSE.
+      option(1) = .false.
+      option(2) = .false.
+      option(3) = .false.
+      option(4) = .false.
 !
-      LAG = 0
-      IAR = 0
-      NF = 101
-      FMIN = 0.0_WP
-      FMAX = 0.5_WP
-      NPRT = -1
-      LDSTAK = 0
-      LDSMIN = 0
+      lag = 0
+      iar = 0
+      nf = 101
+      fmin = 0.0_wp
+      fmax = 0.5_wp
+      nprt = -1
+      ldstak = 0
+      ldsmin = 0
 !
 !     SET THE MAXIMUM NUMBER OF LAGS TO BE USED.
 !
-      CALL SETLAG(N, LAGMAX)
+      call setlag(n, lagmax)
 !
 !     CALL ERROR CHECKING ROUTINE
 !
-      CALL UASER(NMSUB, N, ACOV, IAR, PHI, LAGMAX, LAG, LACOV,
-     &   NF, LDSTAK, LDSMIN, N, N, OPTION)
+     call uaser(nmsub, n, acov, iar, phi, lagmax, lag, lacov,&
+     &   nf, ldstak, ldsmin, n, n, option)
 !
-      IF (IERR.NE.0) THEN
-         IERR = 1
-         CALL IPRINT (IPRT)
-         WRITE (IPRT, 1000)
-         RETURN
-      END IF
+      if (ierr.ne.0) then
+         ierr = 1
+         call iprint (iprt)
+         write (iprt, 1000)
+         return
+      end if
 !
 !     SET VARIOUS PROGRAM PARAMETERS.
 !
-      LPCV = 207
-      LSPC = 101
-      LPHI = 100
-      LAIC = 101
-      LACOV = 101
-      LWORK = 101
+      lpcv = 207
+      lspc = 101
+      lphi = 100
+      laic = 101
+      lacov = 101
+      lwork = 101
 !
-      ALPHA = .95_WP
-      DELTA = 1.0_WP
+      alpha = .95_wp
+      delta = 1.0_wp
 !
 !     COMPUTE AUTOCOVARIANCES
 !
-      CALL ACVF (Y, N, YMEAN, ACOV, LAGMAX, LACOV)
+      call acvf (y, n, ymean, acov, lagmax, lacov)
 !
 !     CALL THE MAIN DRIVER FOR AUTOREGRESSIVE SPECTRUM ROUTINES.
 !
-      CALL UASDV(ACOV, SPCA, SPCF, LSPC, IAR, PHI, NF, FMIN, FMAX, FREQ,
-     &   N, LAGMAX, FTEST, AIC, WORK, LACOV, LWORK, DELTA, ISORT,
-     &   ISYM, XAXIS, YAXIS, LPCV, ALPHA, LAG, LAIC, LPHI, NPRT, VAR,
-     &   PARZEN, NMSUB)
+     call uasdv(acov, spca, spcf, lspc, iar, phi, nf, fmin, fmax, freq,&
+    &   n, lagmax, ftest, aic, work, lacov, lwork, delta, isort,&
+    &   isym, xaxis, yaxis, lpcv, alpha, lag, laic, lphi, nprt, var,&
+     &   parzen, nmsub)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   22H       CALL UAS (Y, N))
-      END
+1000 format (/42h the correct form of the call statement is//&
+     &   22h       call uas (y, n))
+      end

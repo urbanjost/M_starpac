@@ -1,5 +1,5 @@
 !FLTAR
-      SUBROUTINE FLTAR (Y, N, IAR, PHI, YF, NYF)
+      subroutine fltar (y, n, iar, phi, yf, nyf)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,18 +17,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IAR,N,NYF
+     integer&
+     &   iar,n,nyf
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PHI(*),Y(*),YF(*)
+     real(kind=wp) ::&
+     &   phi(*),y(*),yf(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   TEMP
-      INTEGER
-     &   I,I1,J,K
+     real(kind=wp) ::&
+     &   temp
+     integer&
+     &   i,i1,j,k
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -51,26 +51,26 @@
 !     REAL(KIND=WP) :: YF(N)
 !        THE VECTOR IN WHICH THE FILTERED SERIES IS RETURNED.
 !
-      DO 10 I = 1, N
-         YF(I) = Y(I)
-   10 CONTINUE
+      do 10 i = 1, n
+         yf(i) = y(i)
+   10 continue
 !
-      NYF = N - IAR
+      nyf = n - iar
 !
-      DO 30 I = 1, NYF
-         K = I + IAR
-         TEMP = YF(K)
-         DO 20 J = 1, IAR
-            K = K - 1
-            TEMP = TEMP - PHI(J) * YF(K)
-   20    CONTINUE
-         YF(I) = TEMP
-   30 CONTINUE
+      do 30 i = 1, nyf
+         k = i + iar
+         temp = yf(k)
+         do 20 j = 1, iar
+            k = k - 1
+            temp = temp - phi(j) * yf(k)
+   20    continue
+         yf(i) = temp
+   30 continue
 !
-      I1 = NYF + 1
+      i1 = nyf + 1
 !
-      DO 40 I = I1, N
-         YF(I) = 0.0_WP
-   40 CONTINUE
-      RETURN
-      END
+      do 40 i = i1, n
+         yf(i) = 0.0_wp
+   40 continue
+      return
+      end

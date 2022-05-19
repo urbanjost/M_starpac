@@ -1,5 +1,5 @@
 !MVPM
-      SUBROUTINE MVPM(YM, YMMISS, N, M, IYM, NS)
+      subroutine mvpm(ym, ymmiss, n, m, iym, ns)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,36 +17,36 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IYM,M,N,NS
+     integer&
+     &   iym,m,n,ns
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YM(*),YMMISS(*)
+     real(kind=wp) ::&
+     &   ym(*),ymmiss(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   XINC,XLB,YLB,YUB
-      INTEGER
-     &   IBAR,ILOG,IPRT,IRLIN,ISCHCK,ISIZE,LISYM
-      LOGICAL
-     &   MISS,MULTI
+     real(kind=wp) ::&
+     &   xinc,xlb,ylb,yub
+     integer&
+     &   ibar,ilog,iprt,irlin,ischck,isize,lisym
+     logical&
+     &   miss,multi
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISYM(1)
-      CHARACTER
-     &   NMSUB(6)*1
+     integer&
+     &   isym(1)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,VPCNT
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -121,40 +121,40 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      &    /  'M',       'V',       'P',       'M',       ' ',       ' '/
 !
 !     SET DEFAULT VALUES
 !
-      MULTI = .TRUE.
-      ILOG = -1
-      YLB = 0.0E0
-      YUB = 0.0E0
-      XLB = 1.0E0
-      XINC = 1.0E0
-      ISCHCK = 2
-      ISIZE = -1
-      MISS = .TRUE.
-      LISYM = 1
-      IRLIN = -1
-      IBAR = 0
+      multi = .true.
+      ilog = -1
+      ylb = 0.0e0
+      yub = 0.0e0
+      xlb = 1.0e0
+      xinc = 1.0e0
+      ischck = 2
+      isize = -1
+      miss = .true.
+      lisym = 1
+      irlin = -1
+      ibar = 0
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      CALL VPCNT (YM, YMMISS, N, M, IYM, MULTI, ILOG, YLB, YUB,
-     &  XLB, XINC, NS, IRLIN, IBAR, NMSUB, ISCHCK, ISYM, ISIZE,
-     &  MISS, LISYM)
+     call vpcnt (ym, ymmiss, n, m, iym, multi, ilog, ylb, yub,&
+    &  xlb, xinc, ns, irlin, ibar, nmsub, ischck, isym, isize,&
+     &  miss, lisym)
 !
-      IF (IERR.NE.0) THEN
-        IERR = 1
-        CALL IPRINT(IPRT)
-        WRITE (IPRT,1000)
-      END IF
-      RETURN
+      if (ierr.ne.0) then
+        ierr = 1
+        call iprint(iprt)
+        write (iprt,1000)
+      end if
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &  '       CALL MVPM (YM, YMMISS, N, M, IYM, NS)')
-      END
+      end

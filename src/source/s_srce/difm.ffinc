@@ -1,5 +1,5 @@
 !DIFM
-      SUBROUTINE DIFM (Y, YMISS, N, YF, YFMISS, NYF)
+      subroutine difm (y, ymiss, n, yf, yfmiss, nyf)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,35 +17,35 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) :: YFMISS,YMISS
-      INTEGER
-     &   N,NYF
+      real(kind=wp) :: yfmiss,ymiss
+     integer&
+     &   n,nyf
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y(*),YF(*)
+     real(kind=wp) ::&
+     &   y(*),yf(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IAR,IPRT
-      LOGICAL
-     &   ERR01,HEAD
+     integer&
+     &   iar,iprt
+     logical&
+     &   err01,head
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   PHI(1)
-      CHARACTER
-     &   LN(8)*1,NMSUB(6)*1
+     real(kind=wp) ::&
+     &   phi(1)
+     character&
+     &   ln(8)*1,nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EISGE,FLTARM,IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -88,42 +88,42 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'D',       'I',       'F',       'M',       ' ',       ' '/
-      DATA
-     &  LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     data&
+    &  ln(1), ln(2), ln(3), ln(4), ln(5), ln(6), ln(7), ln(8)&
      & /  'N',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 3, 1, HEAD, ERR01, LN)
+      call eisge(nmsub, ln, n, 3, 1, head, err01, ln)
 !
-      IF (.NOT. ERR01) GO TO 10
+      if (.not. err01) go to 10
 !
-      IERR = 1
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+      ierr = 1
+      call iprint (iprt)
+      write (iprt, 1000)
+      return
 !
-   10 CONTINUE
+   10 continue
 !
 !     SET VARIOUS PROGRAM PARAMETERS
 !
-      IAR = 1
-      PHI(1) = 1.0E0
+      iar = 1
+      phi(1) = 1.0e0
 !
-      CALL FLTARM (Y, YMISS, N, IAR, PHI, YF, YFMISS, NYF)
+      call fltarm (y, ymiss, n, iar, phi, yf, yfmiss, nyf)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   47H       CALL DIFM (Y, YMISS, N, YF, YFMISS, NYF))
-      END
+1000 format (/42h the correct form of the call statement is//&
+     &   47h       call difm (y, ymiss, n, yf, yfmiss, nyf))
+      end

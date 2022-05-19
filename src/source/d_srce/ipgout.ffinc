@@ -1,5 +1,5 @@
 !IPGOUT
-      SUBROUTINE IPGOUT (XAXIS, YAXIS, ISYM, NPTS, LPCV, ISPCER)
+      subroutine ipgout (xaxis, yaxis, isym, npts, lpcv, ispcer)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,18 +15,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISPCER,LPCV,NPTS
+     integer&
+     &   ispcer,lpcv,npts
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   XAXIS(LPCV),YAXIS(LPCV)
-      INTEGER
-     &   ISYM(LPCV)
+     real(kind=wp) ::&
+     &   xaxis(lpcv),yaxis(lpcv)
+     integer&
+     &   isym(lpcv)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
+     integer&
+     &   iprt
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL IPRINT,PPMN,VERSP
@@ -49,35 +49,35 @@
 !
 !     SET LOGICAL UNIT NUMBER FOR OUTPUT AND SET OUTPUT WIDTH.
 !
-      CALL IPRINT (IPRT)
+      call iprint (iprt)
 !
-      CALL VERSP(.TRUE.)
-      WRITE (IPRT, 1000)
+      call versp(.true.)
+      write (iprt, 1000)
 !
-      IF (ISPCER .EQ. 0) GO TO 5
+      if (ispcer .eq. 0) go to 5
 !
-      WRITE (IPRT, 1003)
-      RETURN
+      write (iprt, 1003)
+      return
 !
-    5 CONTINUE
+    5 continue
 !
-      CALL PPMN (YAXIS,YAXIS,XAXIS,XAXIS(1),NPTS,1,LPCV,1,ISYM,
-     &  LPCV, 0, -1, 0.0_WP, 1.0_WP, 0.0_WP, 0.5_WP, .FALSE., 0)
-      WRITE(IPRT, 1002)
-      RETURN
+     call ppmn (yaxis,yaxis,xaxis,xaxis(1),npts,1,lpcv,1,isym,&
+     &  lpcv, 0, -1, 0.0_wp, 1.0_wp, 0.0_wp, 0.5_wp, .false., 0)
+      write(iprt, 1002)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(34H INTEGRATED SAMPLE PERIODOGRAM (+)/
-     &   5X, 49H WITH 95 PER CENT TEST LIMITS FOR WHITE NOISE (.))
+1000 format(34h integrated sample periodogram (+)/&
+     &   5x, 49h with 95 per cent test limits for white noise (.))
 !1001 FORMAT(5H+FREQ/
 !    1   7H PERIOD, 9X, 3HINF, 7X, 3H10., 4X, 2H5., 8X, 6H3.3333, 4X,
 !    2   3H2.5, 4X, 2H2.)
- 1002 FORMAT(5H+FREQ/
-     &   7H PERIOD, 9X, 3HINF, 7X, 3H20., 7X, 3H10., 8X, 6H6.6667, 4X,
-     &   2H5., 8X, 2H4., 8X, 6H3.3333, 4X, 6H2.8571, 4X, 3H2.5, 7X,
-     &   6H2.2222, 4X, 2H2.)
- 1003 FORMAT (///42H THE INTEGRATED PERIODOGRAM OF THIS SERIES,
-     &   22H COULD NOT BE COMPUTED/
-     &   44H BECAUSE THE VARIANCE OF THE SERIES IS ZERO.)
-      END
+1002 format(5h+freq/&
+    &   7h period, 9x, 3hinf, 7x, 3h20., 7x, 3h10., 8x, 6h6.6667, 4x,&
+    &   2h5., 8x, 2h4., 8x, 6h3.3333, 4x, 6h2.8571, 4x, 3h2.5, 7x,&
+     &   6h2.2222, 4x, 2h2.)
+1003 format (///42h the integrated periodogram of this series,&
+    &   22h could not be computed/&
+     &   44h because the variance of the series is zero.)
+      end

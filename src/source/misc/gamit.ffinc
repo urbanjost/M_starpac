@@ -1,5 +1,5 @@
 !GAMIT
-      REAL FUNCTION GAMIT (A, X)
+      real function gamit (a, x)
 ! JULY 1977 EDITION.  W. FULLERTON, C3, LOS ALAMOS SCIENTIFIC LAB.
 !
 ! EVALUATE TRICOMI-S INCOMPLETE GAMMA FUNCTION DEFINED BY
@@ -26,10 +26,10 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL A,X
+      real a,x
 !
 !  LOCAL SCALARS
-      REAL AEPS,AINTA,ALGAP1,ALNEPS,ALNG,ALX,BOT,H,SGA,SGNGAM,SQEPS,T
+      real aeps,ainta,algap1,alneps,alng,alx,bot,h,sga,sgngam,sqeps,t
 !
 !  EXTERNAL FUNCTIONS
 !      REAL ALNGAM,GAMR,R1MACH,R9GMIT,R9LGIC,R9LGIT
@@ -39,62 +39,62 @@
 !       EXTERNAL ALGAMS,XERCLR,XERROR
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,AINT,EXP,LOG,SIGN,SQRT
+      intrinsic abs,aint,exp,log,sign,sqrt
 !
-      DATA ALNEPS, SQEPS, BOT / 3*0.0 /
+      data alneps, sqeps, bot / 3*0.0 /
 !
-      IF (ALNEPS.NE.0.0) GO TO 10
-      ALNEPS = -LOG(R1MACH(3))
-      SQEPS = SQRT(R1MACH(4))
-      BOT = LOG(R1MACH(1))
+      if (alneps.ne.0.0) go to 10
+      alneps = -log(r1mach(3))
+      sqeps = sqrt(r1mach(4))
+      bot = log(r1mach(1))
 !
- 10   IF (X.LT.0.0) CALL XERROR ('GAMIT   X IS NEGATIVE', 21, 2, 2)
+ 10   if (x.lt.0.0) call xerror ('GAMIT   X IS NEGATIVE', 21, 2, 2)
 !
-      IF (X.NE.0.0) ALX = LOG(X)
-      SGA = 1.0
-      IF (A.NE.0.0) SGA = SIGN (1.0, A)
-      AINTA = AINT (A+0.5*SGA)
-      AEPS = A - AINTA
+      if (x.ne.0.0) alx = log(x)
+      sga = 1.0
+      if (a.ne.0.0) sga = sign (1.0, a)
+      ainta = aint (a+0.5*sga)
+      aeps = a - ainta
 !
-      IF (X.GT.0.0) GO TO 20
-      GAMIT = 0.0
-      IF (AINTA.GT.0.0 .OR. AEPS.NE.0.0) GAMIT = GAMR(A+1.0)
-      RETURN
+      if (x.gt.0.0) go to 20
+      gamit = 0.0
+      if (ainta.gt.0.0 .or. aeps.ne.0.0) gamit = gamr(a+1.0)
+      return
 !
- 20   IF (X.GT.1.0) GO TO 40
-      IF (A.GE.(-0.5) .OR. AEPS.NE.0.0) CALL ALGAMS (A+1.0, ALGAP1,
-     &  SGNGAM)
-      GAMIT = R9GMIT (A, X, ALGAP1, SGNGAM, ALX)
-      RETURN
+ 20   if (x.gt.1.0) go to 40
+     if (a.ge.(-0.5) .or. aeps.ne.0.0) call algams (a+1.0, algap1,&
+     &  sgngam)
+      gamit = r9gmit (a, x, algap1, sgngam, alx)
+      return
 !
- 40   IF (A.LT.X) GO TO 50
-      T = R9LGIT (A, X, ALNGAM(A+1.0))
-      IF (T.LT.BOT) CALL XERCLR
-      GAMIT = EXP(T)
-      RETURN
+ 40   if (a.lt.x) go to 50
+      t = r9lgit (a, x, alngam(a+1.0))
+      if (t.lt.bot) call xerclr
+      gamit = exp(t)
+      return
 !
- 50   ALNG = R9LGIC (A, X, ALX)
+ 50   alng = r9lgic (a, x, alx)
 !
 ! EVALUATE GAMIT IN TERMS OF LOG(GAMIC(A,X))
 !
-      H = 1.0
-      IF (AEPS.EQ.0.0 .AND. AINTA.LE.0.0) GO TO 60
-      CALL ALGAMS (A+1.0, ALGAP1, SGNGAM)
-      T = LOG(ABS(A)) + ALNG - ALGAP1
-      IF (T.GT.ALNEPS) GO TO 70
-      IF (T.GT.(-ALNEPS)) H = 1.0 - SGA*SGNGAM*EXP(T)
-      IF (ABS(H).GT.SQEPS) GO TO 60
-      CALL XERCLR
-      CALL XERROR ('GAMIT   RESULT LT HALF PRECISION', 32, 1, 1)
+      h = 1.0
+      if (aeps.eq.0.0 .and. ainta.le.0.0) go to 60
+      call algams (a+1.0, algap1, sgngam)
+      t = log(abs(a)) + alng - algap1
+      if (t.gt.alneps) go to 70
+      if (t.gt.(-alneps)) h = 1.0 - sga*sgngam*exp(t)
+      if (abs(h).gt.sqeps) go to 60
+      call xerclr
+      call xerror ('GAMIT   RESULT LT HALF PRECISION', 32, 1, 1)
 !
- 60   T = -A*ALX + LOG(ABS(H))
-      IF (T.LT.BOT) CALL XERCLR
-      GAMIT = SIGN (EXP(T), H)
-      RETURN
+ 60   t = -a*alx + log(abs(h))
+      if (t.lt.bot) call xerclr
+      gamit = sign (exp(t), h)
+      return
 !
- 70   T = T - A*ALX
-      IF (T.LT.BOT) CALL XERCLR
-      GAMIT = -SGA*SGNGAM*EXP(T)
-      RETURN
+ 70   t = t - a*alx
+      if (t.lt.bot) call xerclr
+      gamit = -sga*sgngam*exp(t)
+      return
 !
-      END
+      end

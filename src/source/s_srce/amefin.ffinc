@@ -1,8 +1,8 @@
 !AMEFIN
-      SUBROUTINE AMEFIN(Y, WEIGHT, NNZW, WT, LWT, XM, N, M, IXM, IFIXD,
-     &   PAR, NPAR, NPARE, RES, PAGE, WIDE, IPTOUT, NDIGIT, RSSHLF, RSD,
-     &   PVT, SDPVT, SDREST, RD, VCVL, LVCVL, D, AMEHDR, IVCVPT, ISKULL,
-     &   NRESTS)
+     subroutine amefin(y, weight, nnzw, wt, lwt, xm, n, m, ixm, ifixd,&
+    &   par, npar, npare, res, page, wide, iptout, ndigit, rsshlf, rsd,&
+    &   pvt, sdpvt, sdrest, rd, vcvl, lvcvl, d, amehdr, ivcvpt, iskull,&
+     &   nrests)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -20,40 +20,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RSD,RSSHLF
-      INTEGER
-     &   IVCVPT,IXM,LVCVL,LWT,M,N,NDIGIT,NNZW,NPAR,NPARE,NRESTS
-      LOGICAL
-     &   PAGE,WEIGHT,WIDE
+     real(kind=wp) ::&
+     &   rsd,rsshlf
+     integer&
+     &   ivcvpt,ixm,lvcvl,lwt,m,n,ndigit,nnzw,npar,npare,nrests
+     logical&
+     &   page,weight,wide
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   D(N,*),PAR(*),PVT(*),RD(*),RES(*),SDPVT(*),SDREST(*),VCVL(*),
-     &   WT(*),XM(IXM,*),Y(*)
-      INTEGER
-     &   IFIXD(*),IPTOUT(*),ISKULL(10)
+     real(kind=wp) ::&
+    &   d(n,*),par(*),pvt(*),rd(*),res(*),sdpvt(*),sdrest(*),vcvl(*),&
+     &   wt(*),xm(ixm,*),y(*)
+     integer&
+     &   ifixd(*),iptout(*),iskull(10)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL AMEHDR
+       external amehdr
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   COND,RSS,YSS
-      INTEGER
-     &   I,IDF
-      LOGICAL
-     &   EXACT,PRTFSM
+     real(kind=wp) ::&
+     &   cond,rss,yss
+     integer&
+     &   i,idf
+     logical&
+     &   exact,prtfsm
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL AMEOUT,NLCMP
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -157,26 +157,26 @@
 !
 !     MODIFY VCV TO REFLECT PROPER DEGREES OF FREEDOM
 !
-      DO 10 I=1,LVCVL
-         VCVL(I) = (NRESTS-NPAR)*VCVL(I)/(N-NPAR)
-   10 CONTINUE
+      do 10 i=1,lvcvl
+         vcvl(i) = (nrests-npar)*vcvl(i)/(n-npar)
+   10 continue
 !
 !     COMPUTE RETURNED AND/OR PRINTED VALUES.
 !
-      CALL NLCMP (Y, WEIGHT, WT, LWT, N, NPAR, NPARE, RES,
-     &   D, RD, COND, VCVL, LVCVL, NNZW, IDF, RSSHLF, RSS, RSD, YSS,
-     &   EXACT, PVT, SDPVT, SDREST, ISKULL)
+     call nlcmp (y, weight, wt, lwt, n, npar, npare, res,&
+    &   d, rd, cond, vcvl, lvcvl, nnzw, idf, rsshlf, rss, rsd, yss,&
+     &   exact, pvt, sdpvt, sdrest, iskull)
 !
-      PRTFSM = ((IPTOUT(3).NE.0) .OR. (IPTOUT(4).NE.0) .OR.
-     &   (IPTOUT(5).NE.0) .OR. (IERR.NE.0))
+     prtfsm = ((iptout(3).ne.0) .or. (iptout(4).ne.0) .or.&
+     &   (iptout(5).ne.0) .or. (ierr.ne.0))
 !
 !     PRINT SUMMARY INFORMATION IF DESIRED OR IF AN ERROR FLAG
 !     HAS BEEN SET.
 !
-      IF (PRTFSM) CALL AMEOUT(Y, N,
-     &   IFIXD, PAR, NPAR, NPARE, RES, IPTOUT, NDIGIT, PAGE, IDF, COND,
-     &   RSS, RSD, YSS, EXACT, PVT, SDPVT, SDREST, VCVL, LVCVL, IVCVPT,
-     &   ISKULL, AMEHDR, WIDE)
-      RETURN
+     if (prtfsm) call ameout(y, n,&
+    &   ifixd, par, npar, npare, res, iptout, ndigit, page, idf, cond,&
+    &   rss, rsd, yss, exact, pvt, sdpvt, sdrest, vcvl, lvcvl, ivcvpt,&
+     &   iskull, amehdr, wide)
+      return
 !
-      END
+      end

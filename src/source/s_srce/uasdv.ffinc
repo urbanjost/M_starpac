@@ -1,8 +1,8 @@
 !UASDV
-      SUBROUTINE UASDV(ACOV, SPCA, SPCF, LSPC, IAR, PHI, NF, FMIN, FMAX,
-     &   FREQ, N, LAGMAX, FTEST, AIC, WORK, LACOV, LWORK, DELTA, ISORT,
-     &   ISYM, XAXIS, YAXIS, LPCV, ALPHA, LAG, LAIC, LPHI, NPRT, VAR,
-     &   WINDOW, NMSUB)
+     subroutine uasdv(acov, spca, spcf, lspc, iar, phi, nf, fmin, fmax,&
+    &   freq, n, lagmax, ftest, aic, work, lacov, lwork, delta, isort,&
+    &   isym, xaxis, yaxis, lpcv, alpha, lag, laic, lphi, nprt, var,&
+     &   window, nmsub)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,41 +19,41 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ALPHA,DELTA,FMAX,FMIN,VAR
-      INTEGER
-     &   IAR,LACOV,LAG,LAGMAX,LAIC,LPCV,LPHI,LSPC,LWORK,N,NF,NPRT
+     real(kind=wp) ::&
+     &   alpha,delta,fmax,fmin,var
+     integer&
+     &   iar,lacov,lag,lagmax,laic,lpcv,lphi,lspc,lwork,n,nf,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV(LACOV),AIC(LAIC),FREQ(NF),FTEST(2,LAGMAX),PHI(LPHI),
-     &   SPCA(LSPC),SPCF(LSPC),WORK(LWORK),XAXIS(LPCV),YAXIS(LPCV)
-      INTEGER
-     &   ISORT(NF),ISYM(LPCV)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+    &   acov(lacov),aic(laic),freq(nf),ftest(2,lagmax),phi(lphi),&
+     &   spca(lspc),spcf(lspc),work(lwork),xaxis(lpcv),yaxis(lpcv)
+     integer&
+     &   isort(nf),isym(lpcv)
+     character&
+     &   nmsub(6)*1
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL WINDOW
+       external window
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ALOW,AUP,BW,DF,SPCAMN,SPCAMX,SPCFMN,SPCFMX,XPLTMN,XPLTMX,
-     &   YPLTMN,YPLTMX
-      INTEGER
-     &   ISPCER,NPTS,NSPCA,NSPCF,NW
-      LOGICAL
-     &   AICPRT
+     real(kind=wp) ::&
+    &   alow,aup,bw,df,spcamn,spcamx,spcfmn,spcfmx,xpltmn,xpltmx,&
+     &   ypltmn,ypltmx
+     integer&
+     &   ispcer,npts,nspca,nspcf,nw
+     logical&
+     &   aicprt
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   LAGS(1),NLPPA(1)
+     integer&
+     &   lags(1),nlppa(1)
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL AOS,SETFRQ,SPCCK,UASCFT,UASEST,UASORD,UASOUT,UFSLAG,UFSMN
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC IABS,INT
+      intrinsic iabs,int
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -158,74 +158,74 @@
 !     REAL YPLTMN, YPLTMX
 !        THE MINIMUM AND MAXIMUM VALUES TO BE PLOTTED FOR THE Y AXIS.
 !
-      NW = 1
+      nw = 1
 !
-      IF (LAG.LE.0) THEN
+      if (lag.le.0) then
 !
 !     SET THE LAG WINDOW TRUNCATION POINT TO BE USED FOR THE
 !     FOURIER SPECTRUM ESTIMATES.
 !
-         CALL UFSLAG(ACOV, LAGMAX, LAGS, N, NW, NW, LACOV)
-         LAG = LAGS(1)/2
-      END IF
+         call ufslag(acov, lagmax, lags, n, nw, nw, lacov)
+         lag = lags(1)/2
+      end if
 !
 !     SET FREQUENCIES FOR THE SPECTRUM.
 !
-      CALL SETFRQ(FREQ, NF, 1, FMIN, FMAX, DELTA)
+      call setfrq(freq, nf, 1, fmin, fmax, delta)
 !
 !     COMPUTE THE FOURIER SPECTRUM ESTIMATES
 !
-      CALL UFSMN(ACOV, NLPPA, LAG, DF, NF, FREQ, ALPHA, BW, SPCF,
-     &  ALOW, AUP, LACOV, LSPC, WINDOW, WORK, LWORK, N, DELTA,
-     &  .FALSE., 1)
+     call ufsmn(acov, nlppa, lag, df, nf, freq, alpha, bw, spcf,&
+    &  alow, aup, lacov, lspc, window, work, lwork, n, delta,&
+     &  .false., 1)
 !
-      AICPRT = .FALSE.
+      aicprt = .false.
 !
-      IF (IAR.LT.0) THEN
+      if (iar.lt.0) then
 !
 !     USER HAS CHOSEN ORDER.
 !     COMPUTE COEFFICIENTS AND VARIANCE USING DURBINS RECURSIVE METHOD.
 !
-         CALL UASCFT(ACOV, LAGMAX, LACOV, IABS(IAR), PHI, N, VAR)
+         call uascft(acov, lagmax, lacov, iabs(iar), phi, n, var)
 !
-      ELSE IF (IAR.EQ.0) THEN
+      else if (iar.eq.0) then
 !
 !     SELECT MODEL ORDER AND COMPUTE COEFFICIENTS AND VARIANCE.
 !
-         AICPRT = .TRUE.
-         CALL AOS(N, LAGMAX, ACOV, WORK, IAR, VAR, PHI,
-     &            WORK, AIC, FTEST, LACOV, LAIC)
-      END IF
+         aicprt = .true.
+        call aos(n, lagmax, acov, work, iar, var, phi,&
+     &            work, aic, ftest, lacov, laic)
+      end if
 !
 !     COMPUTE THE AUTOREGRESSIVE SPECTRUM ESTIMATES.
 !
-      CALL UASEST(IABS(IAR), VAR, PHI, NF, FREQ, DELTA, SPCA, LPHI,
-     &   LSPC)
+     call uasest(iabs(iar), var, phi, nf, freq, delta, spca, lphi,&
+     &   lspc)
 !
-      IF (NPRT.EQ.0) RETURN
+      if (nprt.eq.0) return
 !
 !     SET PLOTTING VECTORS.
 !
-      XPLTMN = FMIN
-      XPLTMX = FMAX
+      xpltmn = fmin
+      xpltmx = fmax
 !
-      YPLTMN = 0.0E0
-      YPLTMX = 0.0E0
+      ypltmn = 0.0e0
+      ypltmx = 0.0e0
 !
-      CALL SPCCK(SPCF, ISORT, NF, SPCFMN, SPCFMX, NSPCF, ISPCER)
-      IF (ISPCER.NE.0) GO TO 40
-      CALL SPCCK(SPCA, ISORT, NF, SPCAMN, SPCAMX, NSPCA, ISPCER)
-      IF (ISPCER.NE.0) GO TO 40
+      call spcck(spcf, isort, nf, spcfmn, spcfmx, nspcf, ispcer)
+      if (ispcer.ne.0) go to 40
+      call spcck(spca, isort, nf, spcamn, spcamx, nspca, ispcer)
+      if (ispcer.ne.0) go to 40
 !
-      CALL UASORD(SPCF, SPCA, SPCFMN, SPCFMX, SPCAMN, SPCAMX, FREQ, NF,
-     &   XAXIS, YAXIS, ISYM, NPTS, LSPC, LPCV, NSPCF, NSPCA, BW, ALOW,
-     &   AUP, XPLTMN, XPLTMX, YPLTMN, YPLTMX, NPRT)
+     call uasord(spcf, spca, spcfmn, spcfmx, spcamn, spcamx, freq, nf,&
+    &   xaxis, yaxis, isym, npts, lspc, lpcv, nspcf, nspca, bw, alow,&
+     &   aup, xpltmn, xpltmx, ypltmn, ypltmx, nprt)
 !
 !     PRINT RESULTS
 !
-   40 CALL UASOUT(XAXIS, YAXIS, ISYM, NPTS, BW, INT(DF+0.5E0), LAG,
-     &   IABS(IAR), PHI, ISPCER, LPCV, XPLTMN, XPLTMX, YPLTMN, YPLTMX,
-     &   FTEST, AIC, LAIC, VAR, NPRT, LAGMAX, AICPRT, N, NMSUB)
+  40 call uasout(xaxis, yaxis, isym, npts, bw, int(df+0.5e0), lag,&
+    &   iabs(iar), phi, ispcer, lpcv, xpltmn, xpltmx, ypltmn, ypltmx,&
+     &   ftest, aic, laic, var, nprt, lagmax, aicprt, n, nmsub)
 !
-      RETURN
-      END
+      return
+      end

@@ -1,5 +1,5 @@
 !ICNTI
-      INTEGER FUNCTION ICNTI (IV, NIV, I)
+      integer function icnti (iv, niv, i)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -15,16 +15,16 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   I,NIV
+     integer&
+     &   i,niv
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   IV(NIV)
+     integer&
+     &   iv(niv)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   J
+     integer&
+     &   j
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -39,9 +39,9 @@
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      ICNTI = 0
-      DO 10 J = 1, NIV
-         IF (IV(J) .EQ. I) ICNTI = ICNTI + 1
-   10 CONTINUE
-      RETURN
-      END
+      icnti = 0
+      do 10 j = 1, niv
+         if (iv(j) .eq. i) icnti = icnti + 1
+   10 continue
+      return
+      end

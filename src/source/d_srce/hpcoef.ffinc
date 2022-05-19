@@ -1,5 +1,5 @@
 !HPCOEF
-      SUBROUTINE HPCOEF (HLP, K, HHP)
+      subroutine hpcoef (hlp, k, hhp)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,32 +16,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   K
+     integer&
+     &   k
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   HHP(*),HLP(*)
+     real(kind=wp) ::&
+     &   hhp(*),hlp(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IPRT
-      LOGICAL
-     &   ERR01,ERR02,ERR03,HEAD
+     integer&
+     &   iprt
+     logical&
+     &   err01,err02,err03,head
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   LHLP(8)*1,LK(8)*1,NMSUB(6)*1
+     character&
+     &   lhlp(8)*1,lk(8)*1,nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EISGE,ERIODD,ERSLF,HPFLT,IPRINT
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -74,49 +74,49 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'H',       'P',       'C',       'O',       'E',       'F'/
-      DATA
-     &  LK(1), LK(2), LK(3), LK(4), LK(5), LK(6), LK(7), LK(8)
+     data&
+    &  lk(1), lk(2), lk(3), lk(4), lk(5), lk(6), lk(7), lk(8)&
      & /  'K',   ' ',   ' ',   ' ',   ' ',   ' ',   ' ',   ' '/
-      DATA
-     &  LHLP(1), LHLP(2), LHLP(3), LHLP(4), LHLP(5), LHLP(6), LHLP(7),
-     &  LHLP(8)
+     data&
+    &  lhlp(1), lhlp(2), lhlp(3), lhlp(4), lhlp(5), lhlp(6), lhlp(7),&
+    &  lhlp(8)&
      & /  'H',   'L',   'P',   ' ',   ' ',   ' ',   ' ',   ' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LK, K, 1, 1, HEAD, ERR01, LK)
+      call eisge(nmsub, lk, k, 1, 1, head, err01, lk)
 !
-      CALL ERIODD(NMSUB, LK, K, 1, HEAD, ERR02)
+      call eriodd(nmsub, lk, k, 1, head, err02)
 !
-      IF (ERR01 .OR. ERR02) GO TO 10
+      if (err01 .or. err02) go to 10
 !
-      CALL ERSLF(NMSUB, LHLP, K, HLP, HEAD, ERR03)
+      call erslf(nmsub, lhlp, k, hlp, head, err03)
 !
-      IF (ERR03) GO TO 10
-      GO TO 20
+      if (err03) go to 10
+      go to 20
 !
-   10 CONTINUE
-      IERR = 1
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+   10 continue
+      ierr = 1
+      call iprint (iprt)
+      write (iprt, 1000)
+      return
 !
-   20 CONTINUE
+   20 continue
 !
-      CALL HPFLT (HLP, K, HHP)
+      call hpflt (hlp, k, hhp)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &   32H       CALL HPCOEF (HLP, K, HHP))
-      END
+1000 format (/42h the correct form of the call statement is//&
+     &   32h       call hpcoef (hlp, k, hhp))
+      end

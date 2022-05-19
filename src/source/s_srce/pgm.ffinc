@@ -1,5 +1,5 @@
 !PGM
-      SUBROUTINE PGM (YFFT, N, LYFFT, LDSTAK)
+      subroutine pgm (yfft, n, lyfft, ldstak)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,31 +16,31 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK,LYFFT,N
+     integer&
+     &   ldstak,lyfft,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   YFFT(*)
+     real(kind=wp) ::&
+     &   yfft(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   FREQ,IEXTND,IPRT,LDSMIN,NALL0,NF,NFFT,NPRT,YAXIS
-      LOGICAL
-     &   ERR01,ERR02,ERR03,HEAD
+     integer&
+     &   freq,iextnd,iprt,ldsmin,nall0,nf,nfft,nprt,yaxis
+     logical&
+     &   err01,err02,err03,head
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSTAK(12)
-      CHARACTER
-     &   LLDS(8)*1,LLYFFT(8)*1,LN(8)*1,NMSUB(6)*1
+     real(kind=wp) ::&
+     &   rstak(12)
+     character&
+     &   llds(8)*1,llyfft(8)*1,ln(8)*1,nmsub(6)*1
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -51,11 +51,11 @@
 !      EXTERNAL EISGE,IPRINT,LDSCMP,PGMMN,SETESL,STKCLR,STKSET
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
+      equivalence (dstak(1),rstak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -124,77 +124,77 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'P',       'G',       'M',       ' ',       ' ',       ' '/
-      DATA
-     & LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
-     &  LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
-      DATA
-     & LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
-     &  LLYFFT(6), LLYFFT(7), LLYFFT(8)
+     data&
+    & llds(1), llds(2), llds(3), llds(4), llds(5),&
+     &  llds(6), llds(7), llds(8) /'L','D','S','T','A','K',' ',' '/
+     data&
+    & llyfft(1), llyfft(2), llyfft(3), llyfft(4), llyfft(5),&
+    &  llyfft(6), llyfft(7), llyfft(8)&
      &  /'L','Y','F','F','T',' ',' ',' '/
-      DATA
-     & LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     data&
+    & ln(1), ln(2), ln(3), ln(4), ln(5), ln(6), ln(7), ln(8)&
      & /'N',' ',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 17, 1, HEAD, ERR01, LN)
-      IF (ERR01) GO TO 5
+      call eisge(nmsub, ln, n, 17, 1, head, err01, ln)
+      if (err01) go to 5
 !
 !     SET LENGTH OF EXTENDED SERIES
 !
-      CALL SETESL(N, 2, NFFT)
+      call setesl(n, 2, nfft)
 !
-      CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 9, HEAD, ERR02, LLYFFT)
+      call eisge(nmsub, llyfft, lyfft, nfft, 9, head, err02, llyfft)
 !
-      CALL LDSCMP(2, 0, 0, 0, 0, 0, 'S', NFFT, LDSMIN)
+      call ldscmp(2, 0, 0, 0, 0, 0, 'S', nfft, ldsmin)
 !
-      CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 2, HEAD, ERR03, LLDS)
+      call eisge(nmsub, llds, ldstak, ldsmin, 2, head, err03, llds)
 !
-      IF (ERR01 .OR. ERR02 .OR. ERR03) GO TO 5
-      GO TO 10
+      if (err01 .or. err02 .or. err03) go to 5
+      go to 10
 !
-    5 CONTINUE
-      IERR = 1
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+    5 continue
+      ierr = 1
+      call iprint (iprt)
+      write (iprt, 1000)
+      return
 !
-   10 CONTINUE
+   10 continue
 !
 !     SET THE SIZE OF THE WORK AREA
 !
-      CALL STKSET(LDSTAK, 4)
+      call stkset(ldstak, 4)
 !
 !     SET THE NUMBER OF OUTSTANDING ALLOCATIONS.
 !
-      NALL0 = STKST(1)
+      nall0 = stkst(1)
 !
 !     SET DEFAULT VALUES
 !
-      NPRT = -1
-      IEXTND = 0
+      nprt = -1
+      iextnd = 0
 !
 !     SUBDIVIDE THE WORK ARRAY
 !
-      YAXIS = STKGET(NFFT/2, 3)
-      FREQ = STKGET(NFFT/2, 3)
-      CALL PGMMN (YFFT, N, NFFT, IEXTND, NF, YFFT, LYFFT, RSTAK(YAXIS),
-     &   RSTAK(FREQ), NFFT/2, NPRT, NMSUB)
+      yaxis = stkget(nfft/2, 3)
+      freq = stkget(nfft/2, 3)
+     call pgmmn (yfft, n, nfft, iextnd, nf, yfft, lyfft, rstak(yaxis),&
+     &   rstak(freq), nfft/2, nprt, nmsub)
 !
-      CALL STKCLR(NALL0)
+      call stkclr(nall0)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &  '       CALL PGM (YFFT, N, LYFFT, LDSTAK)')
-      END
+      end

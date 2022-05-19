@@ -1,7 +1,7 @@
 !ACFMNM
-      SUBROUTINE ACFMNM(Y, YMISS, N, LAGMAX, RHO, SDRHO, NLPPA, YMEAN,
-     &   PRHO, AIC, FTEST, PHI, IAR, OSPVAR, ACOV, LACOV, LAIC, CHIA,
-     &   CHIAP, LAGLST, WORK, NPRT)
+     subroutine acfmnm(y, ymiss, n, lagmax, rho, sdrho, nlppa, ymean,&
+    &   prho, aic, ftest, phi, iar, ospvar, acov, lacov, laic, chia,&
+     &   chiap, laglst, work, nprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,22 +18,22 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) :: CHIA,CHIAP,OSPVAR,YMEAN,YMISS
-      INTEGER
-     &   IAR,LACOV,LAGLST,LAGMAX,LAIC,N,NPRT
+      real(kind=wp) :: chia,chiap,ospvar,ymean,ymiss
+     integer&
+     &   iar,lacov,laglst,lagmax,laic,n,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   ACOV(*),AIC(*),FTEST(2,*),PHI(*),PRHO(*),RHO(*),SDRHO(*),
-     &   WORK(*),Y(*)
-      INTEGER
-     &   NLPPA(*)
+     real(kind=wp) ::&
+    &   acov(*),aic(*),ftest(2,*),phi(*),prho(*),rho(*),sdrho(*),&
+     &   work(*),y(*)
+     integer&
+     &   nlppa(*)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM
-      INTEGER
-     &   I,NUSED
+     real(kind=wp) ::&
+     &   fplm
+     integer&
+     &   i,nused
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -107,45 +107,45 @@
 !        IF Y(I) .NE. YMISS, THE VALUE IS ASSUMED NOT MISSING.
 !
 !
-      FPLM = D1MACH(2)
+      fplm = d1mach(2)
 !
 !     COMPUTE AUTOCOVARIANCES OF THE SERIES WITH MISSING DATA.
 !
-      CALL ACVFM(Y, YMISS, N, YMEAN, ACOV, LAGMAX, LAGLST, NLPPA, LACOV)
+      call acvfm(y, ymiss, n, ymean, acov, lagmax, laglst, nlppa, lacov)
 !
-      IF (NLPPA(1) .EQ. 0 .OR. ACOV(1) .EQ. 0.0_WP) RETURN
+      if (nlppa(1) .eq. 0 .or. acov(1) .eq. 0.0_wp) return
 !
-      IF (NPRT .EQ. 0) RETURN
+      if (nprt .eq. 0) return
 !
 !     COMPUTE PARTIAL AUTOCORRELATIONS AND THE AUTOREGRESSIVE MODEL
 !     ORDER SELECTION STATISTICS IF THERE WERE NO MISSING DATA.
 !
-      IF (NLPPA(1) .EQ. N) CALL AOS (N, LAGMAX, ACOV, PRHO, IAR,
-     &   OSPVAR, PHI, WORK, AIC, FTEST, LACOV, LAIC)
+     if (nlppa(1) .eq. n) call aos (n, lagmax, acov, prho, iar,&
+     &   ospvar, phi, work, aic, ftest, lacov, laic)
 !
 !     COMPUTE AUTOCORRELATIONS.
 !
-      DO 10 I = 1, LAGMAX
-         IF (NLPPA(I+1) .GE. 1) RHO(I) = ACOV(I+1) / ACOV(1)
-   10 CONTINUE
+      do 10 i = 1, lagmax
+         if (nlppa(i+1) .ge. 1) rho(i) = acov(i+1) / acov(1)
+   10 continue
 !
 !     PRESET SDRHO VALUES FOR PRINTING ROUTINE
 !
-      DO 20 I = LAGLST, LAGMAX
-         SDRHO(I) = FPLM
-   20 CONTINUE
+      do 20 i = laglst, lagmax
+         sdrho(i) = fplm
+   20 continue
 !
 !     COMPUTE STANDARD ERROR OF AUTOCORRELATIONS.
 !
-      CALL ACFSDM (RHO, SDRHO, LAGLST, N, NLPPA(2))
+      call acfsdm (rho, sdrho, laglst, n, nlppa(2))
 !
-      IF (LAGLST .EQ. 0) RETURN
+      if (laglst .eq. 0) return
 !
 !     COMPUTE CHI STATISTIC BASED ON AUTOCORRELATION VALUES
 !
-      NUSED = NLPPA(1)
+      nused = nlppa(1)
 !
-      CALL CHIRHO (RHO, NUSED, LAGLST, CHIA, CHIAP)
+      call chirho (rho, nused, laglst, chia, chiap)
 !
-      RETURN
-      END
+      return
+      end

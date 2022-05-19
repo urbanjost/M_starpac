@@ -1,7 +1,7 @@
 !NLISM
-      SUBROUTINE NLISM (NLHDR, PAGE, WIDE, HLFRPT, NPAR, M, N, NNZW,
-     &   WEIGHT, IFIXD, PAR, SCALE, IWORK, IIWORK, RWORK, IRWORK, RES,
-     &   APRXDV, STP, LSTP, NPARE)
+     subroutine nlism (nlhdr, page, wide, hlfrpt, npar, m, n, nnzw,&
+    &   weight, ifixd, par, scale, iwork, iiwork, rwork, irwork, res,&
+     &   aprxdv, stp, lstp, npare)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,25 +19,25 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IIWORK,IRWORK,LSTP,M,N,NNZW,NPAR,NPARE
-      LOGICAL
-     &   APRXDV,HLFRPT,PAGE,WEIGHT,WIDE
+     integer&
+     &   iiwork,irwork,lstp,m,n,nnzw,npar,npare
+     logical&
+     &   aprxdv,hlfrpt,page,weight,wide
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),RES(N),RWORK(IRWORK),SCALE(NPAR),STP(LSTP)
-      INTEGER
-     &   IFIXD(NPAR),IWORK(IIWORK)
+     real(kind=wp) ::&
+     &   par(npar),res(n),rwork(irwork),scale(npar),stp(lstp)
+     integer&
+     &   ifixd(npar),iwork(iiwork)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL NLHDR
+       external nlhdr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   RSD,RSS
-      INTEGER
-     &   I,IPRT,ISUBHD,LMAX0,MXFCAL,MXITER,RFCTOL,XCTOL
+     real(kind=wp) ::&
+     &   rsd,rss
+     integer&
+     &   i,iprt,isubhd,lmax0,mxfcal,mxiter,rfctol,xctol
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -48,7 +48,7 @@
 !      EXTERNAL IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC DBLE,SQRT
+      intrinsic dble,sqrt
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -135,101 +135,101 @@
 !
 !     IWORK SUBSCRIPT VALUES
 !
-      DATA MXFCAL/17/, MXITER/18/
+      data mxfcal/17/, mxiter/18/
 !
 !     RWORK SUBSCRIPT VALUES
 !
-      DATA LMAX0/35/, RFCTOL/32/, XCTOL/33/
+      data lmax0/35/, rfctol/32/, xctol/33/
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      IF (.NOT.HLFRPT) THEN
+      if (.not.hlfrpt) then
 !
-         ISUBHD = 1
-         CALL NLHDR(PAGE, WIDE, ISUBHD)
+         isubhd = 1
+         call nlhdr(page, wide, isubhd)
 !
-         IF (APRXDV) THEN
-            WRITE (IPRT, 1260)
-         ELSE
-            WRITE (IPRT, 1270)
-         END IF
+         if (aprxdv) then
+            write (iprt, 1260)
+         else
+            write (iprt, 1270)
+         end if
 !
-         DO 40 I = 1, NPAR
-            IF (IFIXD(I).EQ.0) THEN
-               IF (SCALE(1).GT.0.0_WP) THEN
-                  IF (APRXDV) THEN
-                     WRITE (IPRT, 1410) I, PAR(I), SCALE(I), STP(I)
-                  ELSE
-                     WRITE (IPRT, 1410) I, PAR(I), SCALE(I)
-                  END IF
-               ELSE
-                  IF (APRXDV) THEN
-                     WRITE (IPRT, 1310) I, PAR(I), STP(I)
-                  ELSE
-                     WRITE (IPRT, 1310) I, PAR(I)
-                  END IF
-               END IF
-            ELSE
-               IF (APRXDV) THEN
-                  WRITE (IPRT, 1510) I, PAR(I)
-               ELSE
-                  WRITE (IPRT, 1610) I, PAR(I)
-               END IF
-            END IF
-   40    CONTINUE
+         do 40 i = 1, npar
+            if (ifixd(i).eq.0) then
+               if (scale(1).gt.0.0_wp) then
+                  if (aprxdv) then
+                     write (iprt, 1410) i, par(i), scale(i), stp(i)
+                  else
+                     write (iprt, 1410) i, par(i), scale(i)
+                  end if
+               else
+                  if (aprxdv) then
+                     write (iprt, 1310) i, par(i), stp(i)
+                  else
+                     write (iprt, 1310) i, par(i)
+                  end if
+               end if
+            else
+               if (aprxdv) then
+                  write (iprt, 1510) i, par(i)
+               else
+                  write (iprt, 1610) i, par(i)
+               end if
+            end if
+   40    continue
 !
-         WRITE (IPRT, 1160) N
+         write (iprt, 1160) n
 !
-      END IF
+      end if
 !
-      IF (WEIGHT) WRITE (IPRT, 1170) NNZW
-      WRITE (IPRT, 1180) M
-      WRITE(IPRT, 1070) IWORK(MXITER)
-      WRITE(IPRT, 1090) IWORK(MXFCAL)
-      WRITE(IPRT, 1080)
-      WRITE(IPRT, 1100) RWORK(RFCTOL)
-      WRITE(IPRT, 1110) RWORK(XCTOL)
-      WRITE(IPRT, 1120) RWORK(LMAX0)
+      if (weight) write (iprt, 1170) nnzw
+      write (iprt, 1180) m
+      write(iprt, 1070) iwork(mxiter)
+      write(iprt, 1090) iwork(mxfcal)
+      write(iprt, 1080)
+      write(iprt, 1100) rwork(rfctol)
+      write(iprt, 1110) rwork(xctol)
+      write(iprt, 1120) rwork(lmax0)
 !
-      RSD = DNRM2(N, RES, 1)
-      RSS = RSD * RSD
-      IF (NNZW-NPARE.GE.1) RSD = RSD /SQRT(DBLE(NNZW-NPARE))
-      WRITE (IPRT, 1200) RSS
-      WRITE (IPRT, 1210) RSD
+      rsd = dnrm2(n, res, 1)
+      rss = rsd * rsd
+      if (nnzw-npare.ge.1) rsd = rsd /sqrt(dble(nnzw-npare))
+      write (iprt, 1200) rss
+      write (iprt, 1210) rsd
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1070 FORMAT (/37H MAXIMUM NUMBER OF ITERATIONS ALLOWED, 32X, 5H(MIT),
-     &   1X, I5)
- 1080 FORMAT(/44H CONVERGENCE CRITERION FOR TEST BASED ON THE/)
- 1090 FORMAT(/41H MAXIMUM NUMBER OF MODEL SUBROUTINE CALLS,
-     &   8H ALLOWED, 26X, I5)
- 1100 FORMAT (5X, 39H FORECASTED RELATIVE CHANGE IN RESIDUAL,
-     &   15H SUM OF SQUARES, 7X, 8H(STOPSS), 1X, G11.4)
- 1110 FORMAT(5X, 49H MAXIMUM SCALED RELATIVE CHANGE IN THE PARAMETERS,
-     &   13X, 7H(STOPP), 1X, G11.4)
- 1120 FORMAT(//41H MAXIMUM CHANGE ALLOWED IN THE PARAMETERS,
-     &   23H AT THE FIRST ITERATION, 3X, 7H(DELTA), 1X, G11.4)
- 1160 FORMAT (/23H NUMBER OF OBSERVATIONS, 48X, 3H(N), 1X, I5)
- 1170 FORMAT (/41H NUMBER OF NON ZERO WEIGHTED OBSERVATIONS, 27X,
-     &   6H(NNZW), 1X, I5)
- 1180 FORMAT (/32H NUMBER OF INDEPENDENT VARIABLES, 39X, 3H(M), 1X, I5)
- 1200 FORMAT (/44H RESIDUAL SUM OF SQUARES FOR INPUT PARAMETER,
-     &   7H VALUES, 24X, G11.4)
- 1210 FORMAT (/48H RESIDUAL STANDARD DEVIATION FOR INPUT PARAMETER,
-     &   7H VALUES, 14X, 5H(RSD), 1X, G11.4)
- 1260 FORMAT (//50X, 13HSTEP SIZE FOR/
-     &   50X, 13HAPPROXIMATING/
-     &   7X, 24HPARAMETER STARTING VALUE, 6X, 5HSCALE, 10X,
-     &   10HDERIVATIVE/
-     &   1X, 5HINDEX, 2X, 5HFIXED, 6X, 5H(PAR), 12X, 7H(SCALE), 11X,
-     &   5H(STP)/)
- 1270 FORMAT (//6X, 25HPARAMETER STARTING VALUES, 5X, 5HSCALE/
-     &   1X, 5HINDEX, 2X, 5HFIXED, 6X, 5H(PAR), 11X, 7H(SCALE)/)
- 1310 FORMAT (1X, I3, 5X, ' NO', G17.8, 7X, 7HDEFAULT, 3X, G17.8)
- 1410 FORMAT (1X, I3, 5X, ' NO', 3G17.8)
- 1510 FORMAT (1X, I3, 5X, 'YES', G17.8, 9X, '---', 14X, '---')
- 1610 FORMAT (1X, I3, 5X, 'YES', G17.8, 9X, '---')
-      END
+1070 format (/37h maximum number of iterations allowed, 32x, 5h(mit),&
+     &   1x, i5)
+ 1080 format(/44h convergence criterion for test based on the/)
+1090 format(/41h maximum number of model subroutine calls,&
+     &   8h allowed, 26x, i5)
+1100 format (5x, 39h forecasted relative change in residual,&
+     &   15h sum of squares, 7x, 8h(stopss), 1x, g11.4)
+1110 format(5x, 49h maximum scaled relative change in the parameters,&
+     &   13x, 7h(stopp), 1x, g11.4)
+1120 format(//41h maximum change allowed in the parameters,&
+     &   23h at the first iteration, 3x, 7h(delta), 1x, g11.4)
+ 1160 format (/23h number of observations, 48x, 3h(n), 1x, i5)
+1170 format (/41h number of non zero weighted observations, 27x,&
+     &   6h(nnzw), 1x, i5)
+ 1180 format (/32h number of independent variables, 39x, 3h(m), 1x, i5)
+1200 format (/44h residual sum of squares for input parameter,&
+     &   7h values, 24x, g11.4)
+1210 format (/48h residual standard deviation for input parameter,&
+     &   7h values, 14x, 5h(rsd), 1x, g11.4)
+1260 format (//50x, 13hstep size for/&
+    &   50x, 13happroximating/&
+    &   7x, 24hparameter starting value, 6x, 5hscale, 10x,&
+    &   10hderivative/&
+    &   1x, 5hindex, 2x, 5hfixed, 6x, 5h(par), 12x, 7h(scale), 11x,&
+     &   5h(stp)/)
+1270 format (//6x, 25hparameter starting values, 5x, 5hscale/&
+     &   1x, 5hindex, 2x, 5hfixed, 6x, 5h(par), 11x, 7h(scale)/)
+ 1310 format (1x, i3, 5x, ' NO', g17.8, 7x, 7hdefault, 3x, g17.8)
+ 1410 format (1x, i3, 5x, ' NO', 3g17.8)
+ 1510 format (1x, i3, 5x, 'YES', g17.8, 9x, '---', 14x, '---')
+ 1610 format (1x, i3, 5x, 'YES', g17.8, 9x, '---')
+      end

@@ -1,5 +1,5 @@
 !XAIMT
-      SUBROUTINE XAIMT(LDSTAK,typ)
+      subroutine xaimt(ldstak,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -18,39 +18,39 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK
+     integer&
+     &   ldstak
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DELTA,RSD,STOPP,STOPSS
-      INTEGER
-     &   I,IFCST,IPRT,IVAPRX,IVCV,MIT,NFAC,NPAR,NPARE,NPRT,NY
+     real(kind=wp) ::&
+     &   delta,rsd,stopp,stopss
+     integer&
+     &   i,ifcst,iprt,ivaprx,ivcv,mit,nfac,npar,npare,nprt,ny
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   FCST(50,5),FCSTSD(50),PAR(50),PV(200),RES(200),SCALE(50),
-     &   SDPV(200),SDRES(200),STP(50),VCV(10,10),Y(200),YLOG(200),
-     &   YT(200)
-      INTEGER
-     &   IFIXED(50),MSPEC(4,50)
+     real(kind=wp) ::&
+    &   fcst(50,5),fcstsd(50),par(50),pv(200),res(200),scale(50),&
+    &   sdpv(200),sdres(200),stp(50),vcv(10,10),y(200),ylog(200),&
+     &   yt(200)
+     integer&
+     &   ifixed(50),mspec(4,50)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL AIME,AIMEC,AIMES,AIMF,AIMFS,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC LOG
+      intrinsic log
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -159,306 +159,306 @@
 !        THE ARRAY OF THE DEPENDENT VARIABLE.
 !
 !
-      DATA    Y(  1),   Y(  2),   Y(  3),   Y(  4),   Y(  5),   Y(  6)
-     &    / 112.0E0, 118.0E0, 132.0E0, 129.0E0, 121.0E0, 135.0E0/
-      DATA    Y(  7),   Y(  8),   Y(  9),   Y( 10),   Y( 11),   Y( 12)
-     &    / 148.0E0, 148.0E0, 136.0E0, 119.0E0, 104.0E0, 118.0E0/
-      DATA    Y( 13),   Y( 14),   Y( 15),   Y( 16),   Y( 17),   Y( 18)
-     &    / 115.0E0, 126.0E0, 141.0E0, 135.0E0, 125.0E0, 149.0E0/
-      DATA    Y( 19),   Y( 20),   Y( 21),   Y( 22),   Y( 23),   Y( 24)
-     &    / 170.0E0, 170.0E0, 158.0E0, 133.0E0, 114.0E0, 140.0E0/
-      DATA    Y( 25),   Y( 26),   Y( 27),   Y( 28),   Y( 29),   Y( 30)
-     &    / 145.0E0, 150.0E0, 178.0E0, 163.0E0, 172.0E0, 178.0E0/
-      DATA    Y( 31),   Y( 32),   Y( 33),   Y( 34),   Y( 35),   Y( 36)
-     &    / 199.0E0, 199.0E0, 184.0E0, 162.0E0, 146.0E0, 166.0E0/
-      DATA    Y( 37),   Y( 38),   Y( 39),   Y( 40),   Y( 41),   Y( 42)
-     &    / 171.0E0, 180.0E0, 193.0E0, 181.0E0, 183.0E0, 218.0E0/
-      DATA    Y( 43),   Y( 44),   Y( 45),   Y( 46),   Y( 47),   Y( 48)
-     &    / 230.0E0, 242.0E0, 209.0E0, 191.0E0, 172.0E0, 194.0E0/
-      DATA    Y( 49),   Y( 50),   Y( 51),   Y( 52),   Y( 53),   Y( 54)
-     &    / 196.0E0, 196.0E0, 236.0E0, 235.0E0, 229.0E0, 243.0E0/
-      DATA    Y( 55),   Y( 56),   Y( 57),   Y( 58),   Y( 59),   Y( 60)
-     &    / 264.0E0, 272.0E0, 237.0E0, 211.0E0, 180.0E0, 201.0E0/
-      DATA    Y( 61),   Y( 62),   Y( 63),   Y( 64),   Y( 65),   Y( 66)
-     &    / 204.0E0, 188.0E0, 235.0E0, 227.0E0, 234.0E0, 264.0E0/
-      DATA    Y( 67),   Y( 68),   Y( 69),   Y( 70),   Y( 71),   Y( 72)
-     &    / 302.0E0, 293.0E0, 259.0E0, 229.0E0, 203.0E0, 229.0E0/
-      DATA    Y( 73),   Y( 74),   Y( 75),   Y( 76),   Y( 77),   Y( 78)
-     &    / 242.0E0, 233.0E0, 267.0E0, 269.0E0, 270.0E0, 315.0E0/
-      DATA    Y( 79),   Y( 80),   Y( 81),   Y( 82),   Y( 83),   Y( 84)
-     &    / 364.0E0, 347.0E0, 312.0E0, 274.0E0, 237.0E0, 278.0E0/
-      DATA    Y( 85),   Y( 86),   Y( 87),   Y( 88),   Y( 89),   Y( 90)
-     &    / 284.0E0, 277.0E0, 317.0E0, 313.0E0, 318.0E0, 374.0E0/
-      DATA    Y( 91),   Y( 92),   Y( 93),   Y( 94),   Y( 95),   Y( 96)
-     &    / 413.0E0, 405.0E0, 355.0E0, 306.0E0, 271.0E0, 306.0E0/
-      DATA    Y( 97),   Y( 98),   Y( 99),   Y(100),   Y(101),   Y(102)
-     &    / 315.0E0, 301.0E0, 356.0E0, 348.0E0, 355.0E0, 422.0E0/
-      DATA    Y(103),   Y(104),   Y(105),   Y(106),   Y(107),   Y(108)
-     &    / 465.0E0, 467.0E0, 404.0E0, 347.0E0, 305.0E0, 336.0E0/
-      DATA    Y(109),   Y(110),   Y(111),   Y(112),   Y(113),   Y(114)
-     &    / 340.0E0, 318.0E0, 362.0E0, 348.0E0, 363.0E0, 435.0E0/
-      DATA    Y(115),   Y(116),   Y(117),   Y(118),   Y(119),   Y(120)
-     &    / 491.0E0, 505.0E0, 404.0E0, 359.0E0, 310.0E0, 337.0E0/
-      DATA    Y(121),   Y(122),   Y(123),   Y(124),   Y(125),   Y(126)
-     &    / 360.0E0, 342.0E0, 406.0E0, 396.0E0, 420.0E0, 472.0E0/
-      DATA    Y(127),   Y(128),   Y(129),   Y(130),   Y(131),   Y(132)
-     &    / 548.0E0, 559.0E0, 463.0E0, 407.0E0, 362.0E0, 405.0E0/
-      DATA    Y(133),   Y(134),   Y(135),   Y(136),   Y(137),   Y(138)
-     &    / 417.0E0, 391.0E0, 419.0E0, 461.0E0, 472.0E0, 535.0E0/
-      DATA    Y(139),   Y(140),   Y(141),   Y(142),   Y(143),   Y(144)
-     &    / 622.0E0, 606.0E0, 508.0E0, 461.0E0, 390.0E0, 432.0E0/
+     data    y(  1),   y(  2),   y(  3),   y(  4),   y(  5),   y(  6)&
+     &    / 112.0e0, 118.0e0, 132.0e0, 129.0e0, 121.0e0, 135.0e0/
+     data    y(  7),   y(  8),   y(  9),   y( 10),   y( 11),   y( 12)&
+     &    / 148.0e0, 148.0e0, 136.0e0, 119.0e0, 104.0e0, 118.0e0/
+     data    y( 13),   y( 14),   y( 15),   y( 16),   y( 17),   y( 18)&
+     &    / 115.0e0, 126.0e0, 141.0e0, 135.0e0, 125.0e0, 149.0e0/
+     data    y( 19),   y( 20),   y( 21),   y( 22),   y( 23),   y( 24)&
+     &    / 170.0e0, 170.0e0, 158.0e0, 133.0e0, 114.0e0, 140.0e0/
+     data    y( 25),   y( 26),   y( 27),   y( 28),   y( 29),   y( 30)&
+     &    / 145.0e0, 150.0e0, 178.0e0, 163.0e0, 172.0e0, 178.0e0/
+     data    y( 31),   y( 32),   y( 33),   y( 34),   y( 35),   y( 36)&
+     &    / 199.0e0, 199.0e0, 184.0e0, 162.0e0, 146.0e0, 166.0e0/
+     data    y( 37),   y( 38),   y( 39),   y( 40),   y( 41),   y( 42)&
+     &    / 171.0e0, 180.0e0, 193.0e0, 181.0e0, 183.0e0, 218.0e0/
+     data    y( 43),   y( 44),   y( 45),   y( 46),   y( 47),   y( 48)&
+     &    / 230.0e0, 242.0e0, 209.0e0, 191.0e0, 172.0e0, 194.0e0/
+     data    y( 49),   y( 50),   y( 51),   y( 52),   y( 53),   y( 54)&
+     &    / 196.0e0, 196.0e0, 236.0e0, 235.0e0, 229.0e0, 243.0e0/
+     data    y( 55),   y( 56),   y( 57),   y( 58),   y( 59),   y( 60)&
+     &    / 264.0e0, 272.0e0, 237.0e0, 211.0e0, 180.0e0, 201.0e0/
+     data    y( 61),   y( 62),   y( 63),   y( 64),   y( 65),   y( 66)&
+     &    / 204.0e0, 188.0e0, 235.0e0, 227.0e0, 234.0e0, 264.0e0/
+     data    y( 67),   y( 68),   y( 69),   y( 70),   y( 71),   y( 72)&
+     &    / 302.0e0, 293.0e0, 259.0e0, 229.0e0, 203.0e0, 229.0e0/
+     data    y( 73),   y( 74),   y( 75),   y( 76),   y( 77),   y( 78)&
+     &    / 242.0e0, 233.0e0, 267.0e0, 269.0e0, 270.0e0, 315.0e0/
+     data    y( 79),   y( 80),   y( 81),   y( 82),   y( 83),   y( 84)&
+     &    / 364.0e0, 347.0e0, 312.0e0, 274.0e0, 237.0e0, 278.0e0/
+     data    y( 85),   y( 86),   y( 87),   y( 88),   y( 89),   y( 90)&
+     &    / 284.0e0, 277.0e0, 317.0e0, 313.0e0, 318.0e0, 374.0e0/
+     data    y( 91),   y( 92),   y( 93),   y( 94),   y( 95),   y( 96)&
+     &    / 413.0e0, 405.0e0, 355.0e0, 306.0e0, 271.0e0, 306.0e0/
+     data    y( 97),   y( 98),   y( 99),   y(100),   y(101),   y(102)&
+     &    / 315.0e0, 301.0e0, 356.0e0, 348.0e0, 355.0e0, 422.0e0/
+     data    y(103),   y(104),   y(105),   y(106),   y(107),   y(108)&
+     &    / 465.0e0, 467.0e0, 404.0e0, 347.0e0, 305.0e0, 336.0e0/
+     data    y(109),   y(110),   y(111),   y(112),   y(113),   y(114)&
+     &    / 340.0e0, 318.0e0, 362.0e0, 348.0e0, 363.0e0, 435.0e0/
+     data    y(115),   y(116),   y(117),   y(118),   y(119),   y(120)&
+     &    / 491.0e0, 505.0e0, 404.0e0, 359.0e0, 310.0e0, 337.0e0/
+     data    y(121),   y(122),   y(123),   y(124),   y(125),   y(126)&
+     &    / 360.0e0, 342.0e0, 406.0e0, 396.0e0, 420.0e0, 472.0e0/
+     data    y(127),   y(128),   y(129),   y(130),   y(131),   y(132)&
+     &    / 548.0e0, 559.0e0, 463.0e0, 407.0e0, 362.0e0, 405.0e0/
+     data    y(133),   y(134),   y(135),   y(136),   y(137),   y(138)&
+     &    / 417.0e0, 391.0e0, 419.0e0, 461.0e0, 472.0e0, 535.0e0/
+     data    y(139),   y(140),   y(141),   y(142),   y(143),   y(144)&
+     &    / 622.0e0, 606.0e0, 508.0e0, 461.0e0, 390.0e0, 432.0e0/
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
 !     COMMENCE BODY OF ROUTINE
 !
 !     TEST AGAINST PUBLISHED RESULTS
 !
-      NY = 144
-      DO 10 I = 1, NY
-         YLOG(I) = LOG(Y(I))
-   10 CONTINUE
+      ny = 144
+      do 10 i = 1, ny
+         ylog(i) = log(y(i))
+   10 continue
 !
-      NFAC = 2
-      MSPEC(1,1) = 0
-      MSPEC(2,1) = 1
-      MSPEC(3,1) = 1
-      MSPEC(4,1) = 1
+      nfac = 2
+      mspec(1,1) = 0
+      mspec(2,1) = 1
+      mspec(3,1) = 1
+      mspec(4,1) = 1
 !
-      MSPEC(1,2) = 0
-      MSPEC(2,2) = 1
-      MSPEC(3,2) = 1
-      MSPEC(4,2) = 12
+      mspec(1,2) = 0
+      mspec(2,2) = 1
+      mspec(3,2) = 1
+      mspec(4,2) = 12
 !
-      NPAR = 3
-      PAR(1) = 0.0E0
-      PAR(2) = 0.40E0
-      PAR(3) = 0.60E0
+      npar = 3
+      par(1) = 0.0e0
+      par(2) = 0.40e0
+      par(3) = 0.60e0
 !
-      IFIXED(1) = 1
-      IFIXED(2) = 0
-      IFIXED(3) = 0
+      ifixed(1) = 1
+      ifixed(2) = 0
+      ifixed(3) = 0
 !
-      STOPSS = -1.0E0
-      STOPP = -1.0E0
-      SCALE(1) = -1.0E0
-      SCALE(2) = 1.0E-7
-      SCALE(3) = 1.0E-7
-      STP(1) = -1.0E0
-      STP(2) = 1.0E-7
-      STP(3) = 1.0E-7
-      MIT = 0
-      NPRT = -1
-      DELTA = -1.0E0
-      IVAPRX = -1
+      stopss = -1.0e0
+      stopp = -1.0e0
+      scale(1) = -1.0e0
+      scale(2) = 1.0e-7
+      scale(3) = 1.0e-7
+      stp(1) = -1.0e0
+      stp(2) = 1.0e-7
+      stp(3) = 1.0e-7
+      mit = 0
+      nprt = -1
+      delta = -1.0e0
+      ivaprx = -1
 !
-      WRITE(IPRT, 1000)
-      CALL AIMEC (YLOG, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES,LDSTAK, IFIXED,STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT)
+      write(iprt, 1000)
+     call aimec (ylog, ny, mspec, nfac,&
+    &   par, npar, res,ldstak, ifixed,stp, mit, stopss, stopp,&
+     &   scale, delta, ivaprx, nprt)
 !
-      WRITE (IPRT, 1005)
-      PAR(1) = 0.0E0
-      PAR(2) = 0.395E0
-      PAR(3) = 0.615E0
-      CALL AIMFS (YLOG, NY, MSPEC, NFAC,
-     &   PAR, NPAR, LDSTAK, NY/10+1, 1, [NY], NPRT, FCST, 50, FCSTSD)
+      write (iprt, 1005)
+      par(1) = 0.0e0
+      par(2) = 0.395e0
+      par(3) = 0.615e0
+     call aimfs (ylog, ny, mspec, nfac,&
+     &   par, npar, ldstak, ny/10+1, 1, [ny], nprt, fcst, 50, fcstsd)
 !
-      SCALE(1) = 1.0E-7
-      SCALE(2) = 1.0E-7
-      SCALE(3) = 1.0E-7
+      scale(1) = 1.0e-7
+      scale(2) = 1.0e-7
+      scale(3) = 1.0e-7
 !
-      NFAC = 2
-      MSPEC(1,1) = 0
-      MSPEC(2,1) = 1
-      MSPEC(3,1) = 1
-      MSPEC(4,1) = 1
+      nfac = 2
+      mspec(1,1) = 0
+      mspec(2,1) = 1
+      mspec(3,1) = 1
+      mspec(4,1) = 1
 !
-      MSPEC(1,2) = 0
-      MSPEC(2,2) = 0
-      MSPEC(3,2) = 1
-      MSPEC(4,2) = 12
+      mspec(1,2) = 0
+      mspec(2,2) = 0
+      mspec(3,2) = 1
+      mspec(4,2) = 12
 !
-      WRITE (IPRT, 1000)
-      CALL AIMEC (YLOG, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES,LDSTAK, IFIXED,STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT)
-      NY = 20
-      WRITE (IPRT, 1000)
-      CALL AIMEC (YLOG, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES,LDSTAK, IFIXED,STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT)
+      write (iprt, 1000)
+     call aimec (ylog, ny, mspec, nfac,&
+    &   par, npar, res,ldstak, ifixed,stp, mit, stopss, stopp,&
+     &   scale, delta, ivaprx, nprt)
+      ny = 20
+      write (iprt, 1000)
+     call aimec (ylog, ny, mspec, nfac,&
+    &   par, npar, res,ldstak, ifixed,stp, mit, stopss, stopp,&
+     &   scale, delta, ivaprx, nprt)
 !
-      NFAC = 2
-      MSPEC(1,1) = 0
-      MSPEC(2,1) = 0
-      MSPEC(3,1) = 1
-      MSPEC(4,1) = 1
+      nfac = 2
+      mspec(1,1) = 0
+      mspec(2,1) = 0
+      mspec(3,1) = 1
+      mspec(4,1) = 1
 !
-      MSPEC(1,2) = 0
-      MSPEC(2,2) = 0
-      MSPEC(3,2) = 1
-      MSPEC(4,2) = 12
+      mspec(1,2) = 0
+      mspec(2,2) = 0
+      mspec(3,2) = 1
+      mspec(4,2) = 12
 !
-      NY = 144
-      WRITE (IPRT, 1000)
-      CALL AIMEC (YLOG, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES,LDSTAK, IFIXED,STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT)
+      ny = 144
+      write (iprt, 1000)
+     call aimec (ylog, ny, mspec, nfac,&
+    &   par, npar, res,ldstak, ifixed,stp, mit, stopss, stopp,&
+     &   scale, delta, ivaprx, nprt)
 !
 !     EXAMPLE FROM PAGE 212 OF BOX AND JENKINS (1970)
 !     N.B. ADD PRINT STATEMENTS TO MDLTS2 TO CHECK COMPUTATIONS
 !          AT FIRST CALL AGAINST THOSE LISTED ON PAGE 214.
 !
-      WRITE(IPRT, 1000)
-      NY = 10
-      YT(1) = 460.0E0
-      YT(2) = 457.0E0
-      YT(3) = 452.0E0
-      YT(4) = 459.0E0
-      YT(5) = 462.0E0
-      YT(6) = 459.0E0
-      YT(7) = 463.0E0
-      YT(8) = 479.0E0
-      YT(9) = 493.0E0
-      YT(10) = 490.0E0
+      write(iprt, 1000)
+      ny = 10
+      yt(1) = 460.0e0
+      yt(2) = 457.0e0
+      yt(3) = 452.0e0
+      yt(4) = 459.0e0
+      yt(5) = 462.0e0
+      yt(6) = 459.0e0
+      yt(7) = 463.0e0
+      yt(8) = 479.0e0
+      yt(9) = 493.0e0
+      yt(10) = 490.0e0
 !
-      NFAC = 1
-      MSPEC(1,1) = 0
-      MSPEC(2,1) = 1
-      MSPEC(3,1) = 1
-      MSPEC(4,1) = 1
+      nfac = 1
+      mspec(1,1) = 0
+      mspec(2,1) = 1
+      mspec(3,1) = 1
+      mspec(4,1) = 1
 !
-      NPAR = 2
-      PAR(1) = 0.0E0
-      PAR(2) = 0.5E0
+      npar = 2
+      par(1) = 0.0e0
+      par(2) = 0.5e0
 !
-      IFIXED(1) = 1
-      IFIXED(2) = 0
+      ifixed(1) = 1
+      ifixed(2) = 0
 !
-      CALL AIMEC (YT, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES,LDSTAK, IFIXED,STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT)
+     call aimec (yt, ny, mspec, nfac,&
+    &   par, npar, res,ldstak, ifixed,stp, mit, stopss, stopp,&
+     &   scale, delta, ivaprx, nprt)
 !
 !     EXAMPLE FROM PAGE 216 OF BOX AND JENKINS (1970)
 !     N.B. ADD PRINT STATEMENTS TO MDLTS2 TO CHECK COMPUTATIONS
 !          AT FIRST CALL AGAINST THOSE LISTED ON PAGE 218.
 !
-      WRITE(IPRT, 1000)
-      NY = 12
-      YT(1) = 2.0E0
-      YT(2) = 0.8E0
-      YT(3) = -0.3E0
-      YT(4) = -0.3E0
-      YT(5) = -1.9E0
-      YT(6) = 0.3E0
-      YT(7) = 3.2E0
-      YT(8) = 1.6E0
-      YT(9) = -0.7E0
-      YT(10) = 3.0E0
-      YT(11) = 4.3E0
-      YT(12) = 1.1E0
+      write(iprt, 1000)
+      ny = 12
+      yt(1) = 2.0e0
+      yt(2) = 0.8e0
+      yt(3) = -0.3e0
+      yt(4) = -0.3e0
+      yt(5) = -1.9e0
+      yt(6) = 0.3e0
+      yt(7) = 3.2e0
+      yt(8) = 1.6e0
+      yt(9) = -0.7e0
+      yt(10) = 3.0e0
+      yt(11) = 4.3e0
+      yt(12) = 1.1e0
 !
-      NFAC = 1
-      MSPEC(1,1) = 1
-      MSPEC(2,1) = 0
-      MSPEC(3,1) = 1
-      MSPEC(4,1) = 1
+      nfac = 1
+      mspec(1,1) = 1
+      mspec(2,1) = 0
+      mspec(3,1) = 1
+      mspec(4,1) = 1
 !
-      NPAR = 3
-      PAR(1) = 0.3E0
-      PAR(2) = 0.0E0
-      PAR(3) = 0.7E0
+      npar = 3
+      par(1) = 0.3e0
+      par(2) = 0.0e0
+      par(3) = 0.7e0
 !
-      IFIXED(1) = 0
-      IFIXED(2) = 1
-      IFIXED(3) = 0
+      ifixed(1) = 0
+      ifixed(2) = 1
+      ifixed(3) = 0
 !
-      CALL AIMEC (YT, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES, LDSTAK, IFIXED, STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT)
+     call aimec (yt, ny, mspec, nfac,&
+    &   par, npar, res, ldstak, ifixed, stp, mit, stopss, stopp,&
+     &   scale, delta, ivaprx, nprt)
 !
 !     TEST ERROR MESSAGES
 !
-      WRITE (IPRT, 1010)
-      NY = 0
-      NFAC = 0
-      CALL AIME (YT, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES, LDSTAK)
-      CALL AIMEC (YT, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES, LDSTAK, IFIXED, STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT)
-      CALL AIMES (YT, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES, LDSTAK, IFIXED, STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT, NPARE, RSD, PV, SDPV, SDRES, VCV,
-     &   IVCV)
-      CALL AIMF (Y, NY, MSPEC, NFAC, PAR, NPAR, LDSTAK)
-      CALL AIMFS (Y, NY, MSPEC, NFAC,
-     &   PAR, NPAR, LDSTAK, NY/10+1, 1, [NY], NPRT, FCST, 50, FCSTSD)
+      write (iprt, 1010)
+      ny = 0
+      nfac = 0
+     call aime (yt, ny, mspec, nfac,&
+     &   par, npar, res, ldstak)
+     call aimec (yt, ny, mspec, nfac,&
+    &   par, npar, res, ldstak, ifixed, stp, mit, stopss, stopp,&
+     &   scale, delta, ivaprx, nprt)
+     call aimes (yt, ny, mspec, nfac,&
+    &   par, npar, res, ldstak, ifixed, stp, mit, stopss, stopp,&
+    &   scale, delta, ivaprx, nprt, npare, rsd, pv, sdpv, sdres, vcv,&
+     &   ivcv)
+      call aimf (y, ny, mspec, nfac, par, npar, ldstak)
+     call aimfs (y, ny, mspec, nfac,&
+     &   par, npar, ldstak, ny/10+1, 1, [ny], nprt, fcst, 50, fcstsd)
 !
-      NY = 144
-      NFAC = 2
-      MSPEC(1,1) = -1
-      CALL AIME (YT, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES, LDSTAK)
-      CALL AIMEC (YT, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES, LDSTAK, IFIXED, STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT)
-      CALL AIMES (YT, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES, LDSTAK, IFIXED, STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT, NPARE, RSD, PV, SDPV, SDRES, VCV,
-     &   IVCV)
-      CALL AIMF (Y, NY, MSPEC, NFAC, PAR, NPAR, LDSTAK)
-      CALL AIMFS (Y, NY, MSPEC, NFAC,
-     &   PAR, NPAR, LDSTAK, NY/10+1, 1, [NY], NPRT, FCST, 50, FCSTSD)
-      NY = 144
-      NFAC = 2
-      MSPEC(1,1) = 0
-      NPAR = 1
-      CALL AIME (YT, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES, LDSTAK)
-      CALL AIMEC (YT, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES, LDSTAK, IFIXED, STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT)
-      CALL AIMES (YT, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES, LDSTAK, IFIXED, STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT, NPARE, RSD, PV, SDPV, SDRES, VCV,
-     &   IVCV)
-      CALL AIMF (Y, NY, MSPEC, NFAC, PAR, NPAR, LDSTAK)
-      CALL AIMFS (Y, NY, MSPEC, NFAC,
-     &   PAR, NPAR, LDSTAK, NY/10+1, 1, [NY], NPRT, FCST, 50, FCSTSD)
-      NY = 144
-      NFAC = 2
-      MSPEC(1,1) = 0
-      NPAR = 3
-      DO 20 I = 1, NPAR
-        IFIXED(I) = 1
-   20 CONTINUE
-      IVCV = 0
-      IFCST = 0
-      CALL AIMEC (YT, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES, LDSTAK, IFIXED, STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT)
-      CALL AIMES (YT, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES, LDSTAK, IFIXED, STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT, NPARE, RSD, PV, SDPV, SDRES, VCV,
-     &   IVCV)
-      CALL AIMFS (Y, NY, MSPEC, NFAC,
-     &   PAR, NPAR, LDSTAK, NY/10+1, 1, [NY], NPRT, FCST, IFCST, FCSTSD)
-      DO 30 I = 1, NPAR
-        IFIXED(I) = 1
-   30 CONTINUE
-      IVCV = 0
-      STP(2) = -1.0E0
-      SCALE(2) = -1.0E0
-      CALL AIMEC (YT, NY, MSPEC, NFAC,
-     &   PAR, NPAR, RES, LDSTAK, IFIXED, STP, MIT, STOPSS, STOPP,
-     &   SCALE, DELTA, IVAPRX, NPRT)
-      RETURN
+      ny = 144
+      nfac = 2
+      mspec(1,1) = -1
+     call aime (yt, ny, mspec, nfac,&
+     &   par, npar, res, ldstak)
+     call aimec (yt, ny, mspec, nfac,&
+    &   par, npar, res, ldstak, ifixed, stp, mit, stopss, stopp,&
+     &   scale, delta, ivaprx, nprt)
+     call aimes (yt, ny, mspec, nfac,&
+    &   par, npar, res, ldstak, ifixed, stp, mit, stopss, stopp,&
+    &   scale, delta, ivaprx, nprt, npare, rsd, pv, sdpv, sdres, vcv,&
+     &   ivcv)
+      call aimf (y, ny, mspec, nfac, par, npar, ldstak)
+     call aimfs (y, ny, mspec, nfac,&
+     &   par, npar, ldstak, ny/10+1, 1, [ny], nprt, fcst, 50, fcstsd)
+      ny = 144
+      nfac = 2
+      mspec(1,1) = 0
+      npar = 1
+     call aime (yt, ny, mspec, nfac,&
+     &   par, npar, res, ldstak)
+     call aimec (yt, ny, mspec, nfac,&
+    &   par, npar, res, ldstak, ifixed, stp, mit, stopss, stopp,&
+     &   scale, delta, ivaprx, nprt)
+     call aimes (yt, ny, mspec, nfac,&
+    &   par, npar, res, ldstak, ifixed, stp, mit, stopss, stopp,&
+    &   scale, delta, ivaprx, nprt, npare, rsd, pv, sdpv, sdres, vcv,&
+     &   ivcv)
+      call aimf (y, ny, mspec, nfac, par, npar, ldstak)
+     call aimfs (y, ny, mspec, nfac,&
+     &   par, npar, ldstak, ny/10+1, 1, [ny], nprt, fcst, 50, fcstsd)
+      ny = 144
+      nfac = 2
+      mspec(1,1) = 0
+      npar = 3
+      do 20 i = 1, npar
+        ifixed(i) = 1
+   20 continue
+      ivcv = 0
+      ifcst = 0
+     call aimec (yt, ny, mspec, nfac,&
+    &   par, npar, res, ldstak, ifixed, stp, mit, stopss, stopp,&
+     &   scale, delta, ivaprx, nprt)
+     call aimes (yt, ny, mspec, nfac,&
+    &   par, npar, res, ldstak, ifixed, stp, mit, stopss, stopp,&
+    &   scale, delta, ivaprx, nprt, npare, rsd, pv, sdpv, sdres, vcv,&
+     &   ivcv)
+     call aimfs (y, ny, mspec, nfac,&
+     &   par, npar, ldstak, ny/10+1, 1, [ny], nprt, fcst, ifcst, fcstsd)
+      do 30 i = 1, npar
+        ifixed(i) = 1
+   30 continue
+      ivcv = 0
+      stp(2) = -1.0e0
+      scale(2) = -1.0e0
+     call aimec (yt, ny, mspec, nfac,&
+    &   par, npar, res, ldstak, ifixed, stp, mit, stopss, stopp,&
+     &   scale, delta, ivaprx, nprt)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT ('1TEST OF ARIMA ESTIMATION ROUTINES')
- 1005 FORMAT ('1TEST OF ARIMA FORECASTING ROUTINES')
- 1010 FORMAT ('1TEST OF ERROR CHECKING FACILITIES')
-      END
+ 1000 format ('1TEST OF ARIMA ESTIMATION ROUTINES')
+ 1005 format ('1TEST OF ARIMA FORECASTING ROUTINES')
+ 1010 format ('1TEST OF ERROR CHECKING FACILITIES')
+      end

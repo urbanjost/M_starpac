@@ -1,7 +1,7 @@
 !STPOUT
-      SUBROUTINE STPOUT(HEAD, N, EXM, NEXMPT, NETA, J, PAR, NPAR, STP,
-     &   NFAIL, IFAIL, SCALE, LSCALE, HDR, PAGE, WIDE, ISUBHD, NPRT,
-     &   PRTFXD, IFIXD)
+     subroutine stpout(head, n, exm, nexmpt, neta, j, par, npar, stp,&
+    &   nfail, ifail, scale, lscale, hdr, page, wide, isubhd, nprt,&
+     &   prtfxd, ifixd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,41 +18,41 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   EXM
-      INTEGER
-     &   ISUBHD,J,LSCALE,N,NETA,NEXMPT,NPAR,NPRT
-      LOGICAL
-     &   HEAD,PAGE,PRTFXD,WIDE
+     real(kind=wp) ::&
+     &   exm
+     integer&
+     &   isubhd,j,lscale,n,neta,nexmpt,npar,nprt
+     logical&
+     &   head,page,prtfxd,wide
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),SCALE(LSCALE),STP(NPAR)
-      INTEGER
-     &   IFAIL(N),IFIXD(NPAR),NFAIL(NPAR)
+     real(kind=wp) ::&
+     &   par(npar),scale(lscale),stp(npar)
+     integer&
+     &   ifail(n),ifixd(npar),nfail(npar)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL HDR
+       external hdr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,IPRT,K,NFLABS,NK,NPERL
-      LOGICAL
-     &   SAMELN
-      CHARACTER
-     &   BLANK*1,C*1,F*1,PLUS*1
+     integer&
+     &   i,iprt,k,nflabs,nk,nperl
+     logical&
+     &   sameln
+     character&
+     &   blank*1,c*1,f*1,plus*1
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   INDEX(25)
-      CHARACTER
-     &   FIXED(3)*1
+     integer&
+     &   index(25)
+     character&
+     &   fixed(3)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL FIXPRT,IPRINT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC IABS
+      intrinsic iabs
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -144,166 +144,166 @@
 !        THE VARIABLE USED TO INDICATE WHETHER THE HEADING SHOULD
 !        BE FULL WIDTH (TRUE) OR NOT (FALSE).
 !
-      DATA BLANK /' '/, PLUS /'+'/
-      CALL IPRINT(IPRT)
+      data blank /' '/, plus /'+'/
+      call iprint(iprt)
 !
 !     INITIALIZE ARRAY FIXED
 !
-      DO 10 K=1,3
-         FIXED(K) = BLANK
-   10 CONTINUE
+      do 10 k=1,3
+         fixed(k) = blank
+   10 continue
 !
-      IF (HEAD) THEN
+      if (head) then
 !
 !     PRINT HEADING
 !
-         HEAD = .FALSE.
+         head = .false.
 !
-         CALL HDR(PAGE, WIDE, ISUBHD)
-         IF (PRTFXD) THEN
-            WRITE (IPRT,1000)
-         ELSE
-            WRITE (IPRT,1010)
-         END IF
+         call hdr(page, wide, isubhd)
+         if (prtfxd) then
+            write (iprt,1000)
+         else
+            write (iprt,1010)
+         end if
 !
 !     PRINT INFORMATION OTHERWISE SUPPRESSED BY PRINT CONTROL
 !
-         DO 20 I=1,J-1
-            IF (PRTFXD) CALL FIXPRT(IFIXD(I), FIXED)
-            IF (IFIXD(I).EQ.0) THEN
-               F = BLANK
-               C = BLANK
-               NFLABS = IABS(NFAIL(I))
-               IF (NFLABS.GT.NEXMPT) F = PLUS
-               IF (NFAIL(I).LT.0) C = PLUS
-               IF (SCALE(1).GT.0.0_WP) THEN
-                  WRITE (IPRT,1020) I, (FIXED(K),K=1,3), PAR(I),
-     &                              SCALE(I),
-     &                              STP(I), NFLABS, F, C
-               ELSE
-                  WRITE (IPRT,1040) I, (FIXED(K),K=1,3), PAR(I),
-     &                              STP(I), NFLABS, F, C
-               END IF
-               IF (NFLABS.GT.NEXMPT) WRITE (IPRT,1030)
-            ELSE
-               WRITE (IPRT,1045) I, (FIXED(K),K=1,3), PAR(I)
-            END IF
-   20    CONTINUE
-      END IF
+         do 20 i=1,j-1
+            if (prtfxd) call fixprt(ifixd(i), fixed)
+            if (ifixd(i).eq.0) then
+               f = blank
+               c = blank
+               nflabs = iabs(nfail(i))
+               if (nflabs.gt.nexmpt) f = plus
+               if (nfail(i).lt.0) c = plus
+               if (scale(1).gt.0.0_wp) then
+                 write (iprt,1020) i, (fixed(k),k=1,3), par(i),&
+    &                              scale(i),&
+     &                              stp(i), nflabs, f, c
+               else
+                 write (iprt,1040) i, (fixed(k),k=1,3), par(i),&
+     &                              stp(i), nflabs, f, c
+               end if
+               if (nflabs.gt.nexmpt) write (iprt,1030)
+            else
+               write (iprt,1045) i, (fixed(k),k=1,3), par(i)
+            end if
+   20    continue
+      end if
 !
 !     PRINT INFORMATION FOR CURRENT PARAMETER
 !
-      I = J
-      IF (PRTFXD) CALL FIXPRT(IFIXD(I), FIXED)
-      IF (IFIXD(I).EQ.0) THEN
-         F = BLANK
-         C = BLANK
-         NFLABS = IABS(NFAIL(I))
-         IF (NFLABS.GT.NEXMPT) F = PLUS
-         IF (NFAIL(I).LT.0) C = PLUS
-         IF (SCALE(1).GT.0.0_WP) THEN
-            WRITE (IPRT,1020) I, (FIXED(K),K=1,3), PAR(I),
-     &                        SCALE(I),
-     &                        STP(I), NFLABS, F, C
-         ELSE
-            WRITE (IPRT,1040) I, (FIXED(K),K=1,3), PAR(I),
-     &                        STP(I), NFLABS, F, C
-         END IF
-         IF (NFLABS.GE.1) THEN
-            IF ((NPRT.EQ.0) .AND. (NFLABS.LE.NEXMPT)) THEN
-               WRITE (IPRT,1030)
-            ELSE
+      i = j
+      if (prtfxd) call fixprt(ifixd(i), fixed)
+      if (ifixd(i).eq.0) then
+         f = blank
+         c = blank
+         nflabs = iabs(nfail(i))
+         if (nflabs.gt.nexmpt) f = plus
+         if (nfail(i).lt.0) c = plus
+         if (scale(1).gt.0.0_wp) then
+           write (iprt,1020) i, (fixed(k),k=1,3), par(i),&
+    &                        scale(i),&
+     &                        stp(i), nflabs, f, c
+         else
+           write (iprt,1040) i, (fixed(k),k=1,3), par(i),&
+     &                        stp(i), nflabs, f, c
+         end if
+         if (nflabs.ge.1) then
+            if ((nprt.eq.0) .and. (nflabs.le.nexmpt)) then
+               write (iprt,1030)
+            else
 !
 !     PRINT ROW NUMBERS
 !
-               NPERL = 7
+               nperl = 7
 !
-               SAMELN = .TRUE.
-               NK = 0
-               DO 60 I=1,N
-                  IF (IFAIL(I).EQ.0) GO TO 60
-                  NK = NK + 1
-                  INDEX(NK) = I
-                  IF (NK.LT.NPERL) GO TO 60
-                  IF (SAMELN) THEN
-                     WRITE (IPRT,1050) (INDEX(K),K=1,NK)
-                  ELSE
-                     WRITE (IPRT,1060) (INDEX(K),K=1,NK)
-                  END IF
-                  SAMELN = .FALSE.
-                  NK = 0
-   60          CONTINUE
-               IF (SAMELN) THEN
-                  WRITE (IPRT,1050) (INDEX(K),K=1,NK)
-               ELSE
-                  WRITE (IPRT,1060) (INDEX(K),K=1,NK)
-               END IF
-            END IF
-         END IF
-      ELSE
-         WRITE (IPRT,1045) I, (FIXED(K),K=1,3), PAR(I)
-      END IF
-      IF (J.LT.NPAR) RETURN
+               sameln = .true.
+               nk = 0
+               do 60 i=1,n
+                  if (ifail(i).eq.0) go to 60
+                  nk = nk + 1
+                  index(nk) = i
+                  if (nk.lt.nperl) go to 60
+                  if (sameln) then
+                     write (iprt,1050) (index(k),k=1,nk)
+                  else
+                     write (iprt,1060) (index(k),k=1,nk)
+                  end if
+                  sameln = .false.
+                  nk = 0
+   60          continue
+               if (sameln) then
+                  write (iprt,1050) (index(k),k=1,nk)
+               else
+                  write (iprt,1060) (index(k),k=1,nk)
+               end if
+            end if
+         end if
+      else
+         write (iprt,1045) i, (fixed(k),k=1,3), par(i)
+      end if
+      if (j.lt.npar) return
 !
 !     PRINT FINAL NOTES AND SUMMARY
 !
-      WRITE (IPRT,1070)
-      IF (NPRT.NE.0) GO TO 100
-      DO 90 I=1,NPAR
-         IF (IFIXD(I).EQ.0) THEN
-            IF (IABS(NFAIL(I)).GT.NEXMPT) GO TO 90
-            WRITE (IPRT,1080)
-            GO TO 100
-         END IF
-   90 CONTINUE
+      write (iprt,1070)
+      if (nprt.ne.0) go to 100
+      do 90 i=1,npar
+         if (ifixd(i).eq.0) then
+            if (iabs(nfail(i)).gt.nexmpt) go to 90
+            write (iprt,1080)
+            go to 100
+         end if
+   90 continue
 !
-  100 CONTINUE
+  100 continue
 !
 !     PRINT CONTROL VALUES USED.
 !
-      WRITE (IPRT,1090) NETA
-      WRITE (IPRT,1100) EXM
-      WRITE (IPRT,1110) NEXMPT
-      WRITE (IPRT,1120) N
+      write (iprt,1090) neta
+      write (iprt,1100) exm
+      write (iprt,1110) nexmpt
+      write (iprt,1120) n
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (//50X, 13HSTEP SIZE FOR, 4X, 25HOBSERVATIONS FAILING STEP,
-     &   24H SIZE SELECTION CRITERIA/50X, 13HAPPROXIMATING, 21X, 1H*/7X,
-     &   24HPARAMETER STARTING VALUE, 6X, 5HSCALE, 10X, 10HDERIVATIVE,
-     &   7X, 5HCOUNT, 5X, 5HNOTES, 5X, 10HROW NUMBER/1X, 5HINDEX, 2X,
-     &   5HFIXED, 6X, 5H(PAR), 12X, 7H(SCALE), 11X, 5H(STP), 21X, 3HF C/
+1000 format (//50x, 13hstep size for, 4x, 25hobservations failing step,&
+    &   24h size selection criteria/50x, 13happroximating, 21x, 1h*/7x,&
+    &   24hparameter starting value, 6x, 5hscale, 10x, 10hderivative,&
+    &   7x, 5hcount, 5x, 5hnotes, 5x, 10hrow number/1x, 5hindex, 2x,&
+    &   5hfixed, 6x, 5h(par), 12x, 7h(scale), 11x, 5h(stp), 21x, 3hf c/&
      &   )
- 1010 FORMAT (//50X, 13HSTEP SIZE FOR, 4X, 25HOBSERVATIONS FAILING STEP,
-     &   24H SIZE SELECTION CRITERIA/18X, 9HPARAMETER, 23X, 9HAPPROXIMA,
-     &   4HTING, 21X, 1H*/16X, 14HSTARTING VALUE, 7X, 5HSCALE, 10X,
-     &   10HDERIVATIVE, 7X, 5HCOUNT, 5X, 5HNOTES, 5X, 13HROW NUMBER(S)/
-     &   1X, 5HINDEX, 13X, 5H(PAR), 12X, 7H(SCALE), 11X, 5H(STP), 21X,
-     &   3HF C/)
- 1020 FORMAT (1X, I3, 5X, 3A1, 3G17.8, 5X, I5, 7X, A1, 1X, A1)
- 1030 FORMAT ('+', 89X, 2H**)
- 1040 FORMAT (1X, I3, 5X, 3A1, G17.8, 7X, 7HDEFAULT, 3X, G17.8, 5X, I5,
-     &   7X, A1, 1X, A1)
- 1045 FORMAT (1X, I3, 5X, 3A1, G17.8, 9X, '---', 14X, '---',
-     &        14X, '-')
- 1050 FORMAT ('+', 86X, 7I5)
- 1060 FORMAT (87X, 7I5)
- 1070 FORMAT (//1X, 36H*  NOTES.  A PLUS (+) IN THE COLUMNS, 8H HEADED ,
-     &   33HF OR C HAS THE FOLLOWING MEANING.//4X, 17HF - NUMBER OF OBS,
-     &   27HERVATIONS FAILING STEP SIZE, 27H SELECTION CRITERIA EXCEEDS/
-     &   8X, 29HNUMBER OF EXEMPTIONS ALLOWED.//4X, 17HC - HIGH CURVATUR,
-     &   30HE IN THE MODEL IS SUSPECTED AS, 13H THE CAUSE OF/8X,
-     &   19HALL FAILURES NOTED.)
- 1080 FORMAT (//46H ** ROW NUMBERS ARE ONLY LISTED WHEN NUMBER OF,
-     &   26H OBSERVATIONS FAILING STEP/4X, 25HSIZE SELECTION CRITERIA E,
-     &   27HXCEEDS NUMBER OF EXEMPTIONS, 9H ALLOWED.)
- 1090 FORMAT (/43H NUMBER OF RELIABLE DIGITS IN MODEL RESULTS, 25X,
-     &   6H(NETA), 1X, I5)
- 1100 FORMAT (/41H PROPORTION OF OBSERVATIONS EXEMPTED FROM, 8H SELECTI,
-     &   11HON CRITERIA, 7X, 7H(EXMPT), 2X, F6.4)
- 1110 FORMAT (/37H NUMBER OF OBSERVATIONS EXEMPTED FROM, 11H SELECTION ,
-     &   8HCRITERIA, 19X, I5)
- 1120 FORMAT (/23H NUMBER OF OBSERVATIONS, 48X, 3H(N), 1X, I5)
-      END
+1010 format (//50x, 13hstep size for, 4x, 25hobservations failing step,&
+    &   24h size selection criteria/18x, 9hparameter, 23x, 9happroxima,&
+    &   4hting, 21x, 1h*/16x, 14hstarting value, 7x, 5hscale, 10x,&
+    &   10hderivative, 7x, 5hcount, 5x, 5hnotes, 5x, 13hrow number(s)/&
+    &   1x, 5hindex, 13x, 5h(par), 12x, 7h(scale), 11x, 5h(stp), 21x,&
+     &   3hf c/)
+ 1020 format (1x, i3, 5x, 3a1, 3g17.8, 5x, i5, 7x, a1, 1x, a1)
+ 1030 format ('+', 89x, 2h**)
+1040 format (1x, i3, 5x, 3a1, g17.8, 7x, 7hdefault, 3x, g17.8, 5x, i5,&
+     &   7x, a1, 1x, a1)
+1045 format (1x, i3, 5x, 3a1, g17.8, 9x, '---', 14x, '---',&
+     &        14x, '-')
+ 1050 format ('+', 86x, 7i5)
+ 1060 format (87x, 7i5)
+1070 format (//1x, 36h*  notes.  a plus (+) in the columns, 8h headed ,&
+    &   33hf or c has the following meaning.//4x, 17hf - number of obs,&
+    &   27hervations failing step size, 27h selection criteria exceeds/&
+    &   8x, 29hnumber of exemptions allowed.//4x, 17hc - high curvatur,&
+    &   30he in the model is suspected as, 13h the cause of/8x,&
+     &   19hall failures noted.)
+1080 format (//46h ** row numbers are only listed when number of,&
+    &   26h observations failing step/4x, 25hsize selection criteria e,&
+     &   27hxceeds number of exemptions, 9h allowed.)
+1090 format (/43h number of reliable digits in model results, 25x,&
+     &   6h(neta), 1x, i5)
+1100 format (/41h proportion of observations exempted from, 8h selecti,&
+     &   11hon criteria, 7x, 7h(exmpt), 2x, f6.4)
+1110 format (/37h number of observations exempted from, 11h selection ,&
+     &   8hcriteria, 19x, i5)
+ 1120 format (/23h number of observations, 48x, 3h(n), 1x, i5)
+      end

@@ -1,6 +1,6 @@
 !IPGMS
-      SUBROUTINE IPGMS (YFFT, N, LYFFT, LDSTAK, NF, PERI, LPERI, FREQ,
-     &   LFREQ, NPRT)
+     subroutine ipgms (yfft, n, lyfft, ldstak, nf, peri, lperi, freq,&
+     &   lfreq, nprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,34 +17,34 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDSTAK,LFREQ,LPERI,LYFFT,N,NF,NPRT
+     integer&
+     &   ldstak,lfreq,lperi,lyfft,n,nf,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   FREQ(*),PERI(*),YFFT(*)
+     real(kind=wp) ::&
+     &   freq(*),peri(*),yfft(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IEXTND,IPRT,ISYM,LDSMIN,LPCV,NALL0,NFFT,XAXIS,YAXIS
-      LOGICAL
-     &   ERR01,ERR02,ERR03,ERR04,ERR05,HEAD
+     integer&
+     &   iextnd,iprt,isym,ldsmin,lpcv,nall0,nfft,xaxis,yaxis
+     logical&
+     &   err01,err02,err03,err04,err05,head
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSTAK(12)
-      INTEGER
-     &   ISTAK(12)
-      CHARACTER
-     &   LLDS(8)*1,LLFREQ(8)*1,LLPERI(8)*1,LLYFFT(8)*1,LN(8)*1,
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   rstak(12)
+     integer&
+     &   istak(12)
+     character&
+    &   llds(8)*1,llfreq(8)*1,llperi(8)*1,llyfft(8)*1,ln(8)*1,&
+     &   nmsub(6)*1
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -55,12 +55,12 @@
 !      EXTERNAL CNTR,EISGE,IPGDV,IPRINT,LDSCMP,PGMMN,SETESL,STKCLR,STKSET
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
+      equivalence (dstak(1),rstak(1))
+      equivalence (dstak(1),istak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -134,115 +134,115 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA
-     &  NMSUB(1),  NMSUB(2),  NMSUB(3),  NMSUB(4),  NMSUB(5),  NMSUB(6)
+     data&
+    &  nmsub(1),  nmsub(2),  nmsub(3),  nmsub(4),  nmsub(5),  nmsub(6)&
      & /     'I',       'P',       'G',       'M',       'S',       ' '/
-      DATA
-     & LLFREQ(1), LLFREQ(2), LLFREQ(3), LLFREQ(4), LLFREQ(5),
-     &  LLFREQ(6), LLFREQ(7), LLFREQ(8)
+     data&
+    & llfreq(1), llfreq(2), llfreq(3), llfreq(4), llfreq(5),&
+    &  llfreq(6), llfreq(7), llfreq(8)&
      &  /'L','F','R','E','Q',' ',' ',' '/
-      DATA
-     & LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5),
-     &  LLDS(6), LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
-      DATA
-     & LLPERI(1), LLPERI(2), LLPERI(3), LLPERI(4), LLPERI(5),
-     &  LLPERI(6), LLPERI(7), LLPERI(8)
+     data&
+    & llds(1), llds(2), llds(3), llds(4), llds(5),&
+     &  llds(6), llds(7), llds(8) /'L','D','S','T','A','K',' ',' '/
+     data&
+    & llperi(1), llperi(2), llperi(3), llperi(4), llperi(5),&
+    &  llperi(6), llperi(7), llperi(8)&
      &  /'L','P','E','R','I',' ',' ',' '/
-      DATA
-     & LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
-     &  LLYFFT(6), LLYFFT(7), LLYFFT(8)
+     data&
+    & llyfft(1), llyfft(2), llyfft(3), llyfft(4), llyfft(5),&
+    &  llyfft(6), llyfft(7), llyfft(8)&
      &  /'L','Y','F','F','T',' ',' ',' '/
-      DATA
-     & LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8)
+     data&
+    & ln(1), ln(2), ln(3), ln(4), ln(5), ln(6), ln(7), ln(8)&
      & /'N',' ',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 17, 1, HEAD, ERR01, LN)
-      IF (ERR01) GO TO 5
+      call eisge(nmsub, ln, n, 17, 1, head, err01, ln)
+      if (err01) go to 5
 !
 !     SET LENGTH OF EXTENDED SERIES
 !
-      CALL SETESL(N, 2, NFFT)
-      NF = NFFT/2
+      call setesl(n, 2, nfft)
+      nf = nfft/2
 !
-      CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 9, HEAD, ERR02, LLYFFT)
+      call eisge(nmsub, llyfft, lyfft, nfft, 9, head, err02, llyfft)
 !
-      CALL EISGE(NMSUB, LLPERI, LPERI, NF, 9, HEAD, ERR03, LLPERI)
+      call eisge(nmsub, llperi, lperi, nf, 9, head, err03, llperi)
 !
-      CALL EISGE(NMSUB, LLFREQ, LFREQ, NF, 9, HEAD, ERR04, LLFREQ)
+      call eisge(nmsub, llfreq, lfreq, nf, 9, head, err04, llfreq)
 !
-      IF (NPRT .EQ. 0) THEN
-        LDSMIN = 0
-      ELSE
-        CALL LDSCMP(3, 0, NF+103, 0, 0, 0, 'D', 2*NFFT+206, LDSMIN)
-      END IF
+      if (nprt .eq. 0) then
+        ldsmin = 0
+      else
+        call ldscmp(3, 0, nf+103, 0, 0, 0, 'D', 2*nfft+206, ldsmin)
+      end if
 !
-      CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR05, LLDS)
+      call eisge(nmsub, llds, ldstak, ldsmin, 9, head, err05, llds)
 !
-      IF (ERR02 .OR. ERR03 .OR. ERR04 .OR. ERR05) GO TO 5
-      GO TO 10
+      if (err02 .or. err03 .or. err04 .or. err05) go to 5
+      go to 10
 !
-    5 CONTINUE
-      IERR = 1
-      CALL IPRINT (IPRT)
-      WRITE (IPRT, 1000)
-      RETURN
+    5 continue
+      ierr = 1
+      call iprint (iprt)
+      write (iprt, 1000)
+      return
 !
-   10 CONTINUE
+   10 continue
 !
 !     SET THE SIZE OF THE WORK AREA
 !
-      CALL STKSET(LDSTAK, 4)
+      call stkset(ldstak, 4)
 !
 !     SET THE NUMBER OF OUTSTANDING ALLOCATIONS.
 !
-      NALL0 = STKST(1)
+      nall0 = stkst(1)
 !
 !     SET VARIOUS PROGRAM PARAMETERS.
 !
-      LPCV = NF + 103
+      lpcv = nf + 103
 !
 !     CENTER THE SERIES
 !
-      CALL CNTR(YFFT, N, YFFT)
-      IEXTND = 0
+      call cntr(yfft, n, yfft)
+      iextnd = 0
 !
 !     SUBDIVIDE THE STACK.
 !
-      IF (NPRT .EQ. 0) THEN
-         ISYM = 1
-         XAXIS = 1
-         YAXIS = 1
-      ELSE
-         ISYM = STKGET(LPCV, 2)
-         XAXIS = STKGET(LPCV, 4)
-         YAXIS = STKGET(LPCV, 4)
-      END IF
+      if (nprt .eq. 0) then
+         isym = 1
+         xaxis = 1
+         yaxis = 1
+      else
+         isym = stkget(lpcv, 2)
+         xaxis = stkget(lpcv, 4)
+         yaxis = stkget(lpcv, 4)
+      end if
 !
 !     COMPUTE THE RAW PERIODOGRAM.
 !
-      CALL PGMMN (YFFT, N, NFFT, IEXTND, NF, PERI, LPERI, RSTAK(YAXIS),
-     &   FREQ, LFREQ, 0, NMSUB)
+     call pgmmn (yfft, n, nfft, iextnd, nf, peri, lperi, rstak(yaxis),&
+     &   freq, lfreq, 0, nmsub)
 !
 !     CALL THE MAIN DRIVER FOR COMPUTING (AND PLOTTING) THE INTEGRATED
 !     PERIODOGRAM.
 !
-      CALL IPGDV (PERI, NF, N, PERI, FREQ, RSTAK(XAXIS),
-     &   RSTAK(YAXIS), ISTAK(ISYM), LPCV, NPRT)
+     call ipgdv (peri, nf, n, peri, freq, rstak(xaxis),&
+     &   rstak(yaxis), istak(isym), lpcv, nprt)
 !
-      CALL STKCLR(NALL0)
+      call stkclr(nall0)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
-     &  '       CALL IPGMS (YFFT, N, LYFFT, LDSTAK,'/
+1000 format (/42h the correct form of the call statement is//&
+    &  '       CALL IPGMS (YFFT, N, LYFFT, LDSTAK,'/&
      &  '      +            NF, PERI, LPERI, FREQ, LFREQ, NPRT)')
-      END
+      end

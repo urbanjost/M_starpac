@@ -1,7 +1,7 @@
 !AMEISM
-      SUBROUTINE AMEISM (AMEHDR, PAGE, WIDE, HLFRPT, NPAR, M, N, NNZW,
-     &   WEIGHT, IFIXD, PAR, SCALE, LSCALE, IWORK, LIWORK, RWORK,
-     &   LRWORK, RES, APRXDV, STPT, LSTPT, NPARE)
+     subroutine ameism (amehdr, page, wide, hlfrpt, npar, m, n, nnzw,&
+    &   weight, ifixd, par, scale, lscale, iwork, liwork, rwork,&
+     &   lrwork, res, aprxdv, stpt, lstpt, npare)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,37 +19,37 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LIWORK,LRWORK,LSCALE,LSTPT,M,N,NNZW,NPAR,NPARE
-      LOGICAL
-     &   APRXDV,HLFRPT,PAGE,WEIGHT,WIDE
+     integer&
+     &   liwork,lrwork,lscale,lstpt,m,n,nnzw,npar,npare
+     logical&
+     &   aprxdv,hlfrpt,page,weight,wide
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),RES(*),RWORK(*),SCALE(*),STPT(*)
-      INTEGER
-     &   IFIXD(*),IWORK(*)
+     real(kind=wp) ::&
+     &   par(*),res(*),rwork(*),scale(*),stpt(*)
+     integer&
+     &   ifixd(*),iwork(*)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL AMEHDR
+       external amehdr
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IFLAG,MBO,MBOL,MSPECT,NFACT,NPARAR,NPARDF,NPARMA,NRESTS,
-     &   PARAR,PARDF,PARMA,T,TEMP
+     integer&
+    &   iflag,mbo,mbol,mspect,nfact,nparar,npardf,nparma,nrests,&
+     &   parar,pardf,parma,t,temp
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   RSD,RSS
-      INTEGER
-     &   IAMHD,IPRT,ISUBHD,LMAX0,MXFCAL,MXITER,RFCTOL,XCTOL
+     real(kind=wp) ::&
+     &   rsd,rss
+     integer&
+     &   iamhd,iprt,isubhd,lmax0,mxfcal,mxiter,rfctol,xctol
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISTAK(12)
+     integer&
+     &   istak(12)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -60,15 +60,15 @@
 !      EXTERNAL AMLST,IPRINT,MODSUM
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC REAL,SQRT
+      intrinsic real,sqrt
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /MDLTSC/MSPECT,NFACT,PARDF,NPARDF,PARAR,NPARAR,PARMA,
-     &   NPARMA,MBO,MBOL,T,TEMP,NRESTS,IFLAG
+      common /cstak/dstak
+     common /mdltsc/mspect,nfact,pardf,npardf,parar,nparar,parma,&
+     &   nparma,mbo,mbol,t,temp,nrests,iflag
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
+      equivalence (dstak(1),istak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -199,58 +199,58 @@
 !
 !     IWORK SUBSCRIPT VALUES
 !
-      DATA MXFCAL/17/, MXITER/18/
+      data mxfcal/17/, mxiter/18/
 !
 !     RWORK SUBSCRIPT VALUES
 !
-      DATA LMAX0/35/, RFCTOL/32/, XCTOL/33/
+      data lmax0/35/, rfctol/32/, xctol/33/
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      ISUBHD = 1
-      CALL AMEHDR(PAGE, WIDE, ISUBHD)
+      isubhd = 1
+      call amehdr(page, wide, isubhd)
 !
-      CALL MODSUM(NFACT, ISTAK(MSPECT))
-      IAMHD = 1
-      CALL AMLST (IAMHD, PAR, NPAR, NFACT, ISTAK(MSPECT), N, PAR, NPAR,
-     &  SCALE, LSCALE, STPT, LSTPT, IFIXD, RSS, RSD, NPARDF, NPARE, 0)
+      call modsum(nfact, istak(mspect))
+      iamhd = 1
+     call amlst (iamhd, par, npar, nfact, istak(mspect), n, par, npar,&
+     &  scale, lscale, stpt, lstpt, ifixd, rss, rsd, npardf, npare, 0)
 !
-      IF (WEIGHT) WRITE (IPRT, 1170) NNZW
-      WRITE(IPRT, 1070) IWORK(MXITER)
-      WRITE(IPRT, 1090) IWORK(MXFCAL)
-      WRITE(IPRT, 1080)
-      WRITE(IPRT, 1100) RWORK(RFCTOL)
-      WRITE(IPRT, 1110) RWORK(XCTOL)
-      WRITE(IPRT, 1120) RWORK(LMAX0)
-      RSD = SNRM2(NRESTS, RES, 1)
-      RSS = RSD * RSD
-      IF (N-NPARDF-NPARE.GE.1)
-     &     RSD = RSD / SQRT(REAL(N-NPARDF-NPARE))
-      WRITE (IPRT, 1200) RSS
-      WRITE (IPRT, 1210) RSD
-      WRITE (IPRT, 1220) N, NPARDF, NPARE, NNZW-NPARE
+      if (weight) write (iprt, 1170) nnzw
+      write(iprt, 1070) iwork(mxiter)
+      write(iprt, 1090) iwork(mxfcal)
+      write(iprt, 1080)
+      write(iprt, 1100) rwork(rfctol)
+      write(iprt, 1110) rwork(xctol)
+      write(iprt, 1120) rwork(lmax0)
+      rsd = snrm2(nrests, res, 1)
+      rss = rsd * rsd
+     if (n-npardf-npare.ge.1)&
+     &     rsd = rsd / sqrt(real(n-npardf-npare))
+      write (iprt, 1200) rss
+      write (iprt, 1210) rsd
+      write (iprt, 1220) n, npardf, npare, nnzw-npare
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1070 FORMAT (/37H MAXIMUM NUMBER OF ITERATIONS ALLOWED, 32X, 5H(MIT),
-     &   1X, I5)
- 1080 FORMAT(/44H CONVERGENCE CRITERION FOR TEST BASED ON THE/)
- 1090 FORMAT(/' MAXIMUM NUMBER OF MODEL SUBROUTINE CALLS',
-     &   8H ALLOWED, 26X, I5)
- 1100 FORMAT (5X, 39H FORECASTED RELATIVE CHANGE IN RESIDUAL,
-     &   15H SUM OF SQUARES, 7X, 8H(STOPSS), 1X, G11.4)
- 1110 FORMAT(5X, 49H MAXIMUM SCALED RELATIVE CHANGE IN THE PARAMETERS,
-     &   13X, 7H(STOPP), 1X, G11.4)
- 1120 FORMAT(//' MAXIMUM CHANGE ALLOWED IN THE PARAMETERS',
-     &   23H AT THE FIRST ITERATION, 3X, 7H(DELTA), 1X, G11.4)
- 1170 FORMAT (/' NUMBER OF NON ZERO WEIGHTED OBSERVATIONS', 27X,
-     &   6H(NNZW), 1X, I5)
- 1200 FORMAT (/44H RESIDUAL SUM OF SQUARES FOR INPUT PARAMETER,
-     &   7H VALUES, 24X, G11.4, '  (BACKFORECASTS INCLUDED)')
- 1210 FORMAT (/48H RESIDUAL STANDARD DEVIATION FOR INPUT PARAMETER,
-     &   7H VALUES, 14X, 5H(RSD), 1X, G11.4)
- 1220 FORMAT (/ 19H BASED ON DEGREES O,
-     &   9HF FREEDOM, 1X, I4, 3H - , I3, 3H - , I3, 3H = , I4)
-      END
+1070 format (/37h maximum number of iterations allowed, 32x, 5h(mit),&
+     &   1x, i5)
+ 1080 format(/44h convergence criterion for test based on the/)
+1090 format(/' MAXIMUM NUMBER OF MODEL SUBROUTINE CALLS',&
+     &   8h allowed, 26x, i5)
+1100 format (5x, 39h forecasted relative change in residual,&
+     &   15h sum of squares, 7x, 8h(stopss), 1x, g11.4)
+1110 format(5x, 49h maximum scaled relative change in the parameters,&
+     &   13x, 7h(stopp), 1x, g11.4)
+1120 format(//' MAXIMUM CHANGE ALLOWED IN THE PARAMETERS',&
+     &   23h at the first iteration, 3x, 7h(delta), 1x, g11.4)
+1170 format (/' NUMBER OF NON ZERO WEIGHTED OBSERVATIONS', 27x,&
+     &   6h(nnzw), 1x, i5)
+1200 format (/44h residual sum of squares for input parameter,&
+     &   7h values, 24x, g11.4, '  (BACKFORECASTS INCLUDED)')
+1210 format (/48h residual standard deviation for input parameter,&
+     &   7h values, 14x, 5h(rsd), 1x, g11.4)
+1220 format (/ 19h based on degrees o,&
+     &   9hf freedom, 1x, i4, 3h - , i3, 3h - , i3, 3h = , i4)
+      end

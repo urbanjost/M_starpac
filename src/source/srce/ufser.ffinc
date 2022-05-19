@@ -1,6 +1,6 @@
 !UFSER
-      SUBROUTINE UFSER(NMSUB, N, LAGMAX, LACOV, NF, ISPCF, NW,
-     &    LAGS, LDSTAK, LDSMIN, LYFFT, NFFT, OPTION)
+     subroutine ufser(nmsub, n, lagmax, lacov, nf, ispcf, nw,&
+     &    lags, ldstak, ldsmin, lyfft, nfft, option)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,40 +17,40 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ISPCF,LACOV,LAGMAX,LDSMIN,LDSTAK,LYFFT,N,NF,NFFT,NW
+     integer&
+     &   ispcf,lacov,lagmax,ldsmin,ldstak,lyfft,n,nf,nfft,nw
 !
 !  ARRAY ARGUMENTS
-      INTEGER
-     &   LAGS(*)
-      LOGICAL
-     &   OPTION(4)
-      CHARACTER
-     &   NMSUB(6)*1
+     integer&
+     &   lags(*)
+     logical&
+     &   option(4)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   I,NV
-      LOGICAL
-     &   HEAD
+     integer&
+     &   i,nv
+     logical&
+     &   head
 !
 !  LOCAL ARRAYS
-      LOGICAL
-     &   ERR(15)
-      CHARACTER
-     &   L1(8)*1,LISPCF(8)*1,LLACOV(8)*1,LLAGMX(8)*1,LLAGS(8)*1,
-     &   LLDS(8)*1,LLGMX1(8)*1,LLYFFT(8)*1,LN(8)*1,LNF(8)*1,
-     &   LNM1(8)*1,LNW(8)*1
+     logical&
+     &   err(15)
+     character&
+    &   l1(8)*1,lispcf(8)*1,llacov(8)*1,llagmx(8)*1,llags(8)*1,&
+    &   llds(8)*1,llgmx1(8)*1,llyfft(8)*1,ln(8)*1,lnf(8)*1,&
+     &   lnm1(8)*1,lnw(8)*1
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL EISGE,EISII,EIVII
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -107,97 +107,97 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA LISPCF(1), LISPCF(2), LISPCF(3), LISPCF(4), LISPCF(5),
-     &   LISPCF(6), LISPCF(7), LISPCF(8) /'I','S','P','C','F',' ',' ',
+     data lispcf(1), lispcf(2), lispcf(3), lispcf(4), lispcf(5),&
+    &   lispcf(6), lispcf(7), lispcf(8) /'I','S','P','C','F',' ',' ',&
      &   ' '/
-      DATA LLACOV(1), LLACOV(2), LLACOV(3), LLACOV(4), LLACOV(5),
-     &   LLACOV(6), LLACOV(7), LLACOV(8) /'L','A','C','O','V',' ',' ',
+     data llacov(1), llacov(2), llacov(3), llacov(4), llacov(5),&
+    &   llacov(6), llacov(7), llacov(8) /'L','A','C','O','V',' ',' ',&
      &   ' '/
-      DATA LLAGMX(1), LLAGMX(2), LLAGMX(3), LLAGMX(4), LLAGMX(5),
-     &   LLAGMX(6), LLAGMX(7), LLAGMX(8) /'L','A','G','M','A','X',' ',
+     data llagmx(1), llagmx(2), llagmx(3), llagmx(4), llagmx(5),&
+    &   llagmx(6), llagmx(7), llagmx(8) /'L','A','G','M','A','X',' ',&
      &   ' '/
-      DATA LLAGS(1), LLAGS(2), LLAGS(3), LLAGS(4), LLAGS(5), LLAGS(6),
-     &   LLAGS(7), LLAGS(8) /'L','A','G','S',' ',' ',' ',' '/
-      DATA LLGMX1(1), LLGMX1(2), LLGMX1(3), LLGMX1(4), LLGMX1(5),
-     &   LLGMX1(6), LLGMX1(7), LLGMX1(8) /'L','A','G','M','A','X','+',
+     data llags(1), llags(2), llags(3), llags(4), llags(5), llags(6),&
+     &   llags(7), llags(8) /'L','A','G','S',' ',' ',' ',' '/
+     data llgmx1(1), llgmx1(2), llgmx1(3), llgmx1(4), llgmx1(5),&
+    &   llgmx1(6), llgmx1(7), llgmx1(8) /'L','A','G','M','A','X','+',&
      &   '1'/
-      DATA LLDS(1), LLDS(2), LLDS(3), LLDS(4), LLDS(5), LLDS(6),
-     &   LLDS(7), LLDS(8) /'L','D','S','T','A','K',' ',' '/
-      DATA LN(1), LN(2), LN(3), LN(4), LN(5), LN(6), LN(7), LN(8) /'N',
+     data llds(1), llds(2), llds(3), llds(4), llds(5), llds(6),&
+     &   llds(7), llds(8) /'L','D','S','T','A','K',' ',' '/
+     data ln(1), ln(2), ln(3), ln(4), ln(5), ln(6), ln(7), ln(8) /'N',&
      &   ' ',' ',' ',' ',' ',' ',' '/
-      DATA LNF(1), LNF(2), LNF(3), LNF(4), LNF(5), LNF(6), LNF(7),
-     &   LNF(8) /'N','F',' ',' ',' ',' ',' ',' '/
-      DATA LNM1(1), LNM1(2), LNM1(3), LNM1(4), LNM1(5), LNM1(6),
-     &   LNM1(7), LNM1(8) /'N','-','1',' ',' ',' ',' ',' '/
-      DATA LNW(1), LNW(2), LNW(3), LNW(4), LNW(5), LNW(6), LNW(7),
-     &   LNW(8) /'N','W',' ',' ',' ',' ',' ',' '/
-      DATA LLYFFT(1), LLYFFT(2), LLYFFT(3), LLYFFT(4), LLYFFT(5),
-     &   LLYFFT(6), LLYFFT(7), LLYFFT(8) /'L','Y','F','F','T',' ',' ',
+     data lnf(1), lnf(2), lnf(3), lnf(4), lnf(5), lnf(6), lnf(7),&
+     &   lnf(8) /'N','F',' ',' ',' ',' ',' ',' '/
+     data lnm1(1), lnm1(2), lnm1(3), lnm1(4), lnm1(5), lnm1(6),&
+     &   lnm1(7), lnm1(8) /'N','-','1',' ',' ',' ',' ',' '/
+     data lnw(1), lnw(2), lnw(3), lnw(4), lnw(5), lnw(6), lnw(7),&
+     &   lnw(8) /'N','W',' ',' ',' ',' ',' ',' '/
+     data llyfft(1), llyfft(2), llyfft(3), llyfft(4), llyfft(5),&
+    &   llyfft(6), llyfft(7), llyfft(8) /'L','Y','F','F','T',' ',' ',&
      &   ' '/
-      DATA L1(1), L1(2), L1(3), L1(4), L1(5), L1(6), L1(7), L1(8) /'1',
+     data l1(1), l1(2), l1(3), l1(4), l1(5), l1(6), l1(7), l1(8) /'1',&
      &   ' ',' ',' ',' ',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      IERR = 0
-      HEAD = .TRUE.
+      ierr = 0
+      head = .true.
 !
-      DO 10 I=1,15
-         ERR(I) = .FALSE.
-   10 CONTINUE
+      do 10 i=1,15
+         err(i) = .false.
+   10 continue
 !
 !     CALL ERROR CHECKING ROUTINES
 !
-      CALL EISGE(NMSUB, LN, N, 17, 1, HEAD, ERR(1), LN)
+      call eisge(nmsub, ln, n, 17, 1, head, err(1), ln)
 !
-      IF (OPTION(4)) THEN
-        CALL EISGE(NMSUB, LNF, NF, 1, 1, HEAD, ERR(6), LNF)
-        IF (.NOT.ERR(6))
-     &     CALL EISGE(NMSUB, LISPCF, ISPCF, NF, 3, HEAD, ERR(7), LNF)
-        CALL EISGE(NMSUB, LNW, NW, 1, 1, HEAD, ERR(8), LNW)
-      END IF
+      if (option(4)) then
+        call eisge(nmsub, lnf, nf, 1, 1, head, err(6), lnf)
+       if (.not.err(6))&
+     &     call eisge(nmsub, lispcf, ispcf, nf, 3, head, err(7), lnf)
+        call eisge(nmsub, lnw, nw, 1, 1, head, err(8), lnw)
+      end if
 !
-      IF (.NOT.ERR(1)) THEN
-        IF (OPTION(3)) THEN
-          CALL EISII(NMSUB, LLAGMX, LAGMAX, 1, N-1, 1, HEAD, ERR(2),
-     &       L1, LNM1)
-          IF (.NOT.ERR(2)) THEN
-            IF (OPTION(2)) THEN
-              CALL EISGE(NMSUB, LLACOV, LACOV, LAGMAX+1, 8, HEAD,
-     &          ERR(3), LLGMX1)
-            ELSE
-              CALL EISGE(NMSUB, LLACOV, LACOV, LAGMAX+1, 7, HEAD,
-     &          ERR(3), LLGMX1)
-            END IF
-          END IF
-        END IF
-        IF (.NOT.ERR(2)) THEN
-          IF (OPTION(1))
-     &      CALL EISGE(NMSUB, LLYFFT, LYFFT, NFFT, 9, HEAD, ERR(4),
-     &        LLYFFT)
+      if (.not.err(1)) then
+        if (option(3)) then
+         call eisii(nmsub, llagmx, lagmax, 1, n-1, 1, head, err(2),&
+     &       l1, lnm1)
+          if (.not.err(2)) then
+            if (option(2)) then
+             call eisge(nmsub, llacov, lacov, lagmax+1, 8, head,&
+     &          err(3), llgmx1)
+            else
+             call eisge(nmsub, llacov, lacov, lagmax+1, 7, head,&
+     &          err(3), llgmx1)
+            end if
+          end if
+        end if
+        if (.not.err(2)) then
+         if (option(1))&
+    &      call eisge(nmsub, llyfft, lyfft, nfft, 9, head, err(4),&
+     &        llyfft)
 !
-          IF (.NOT.ERR(8)) THEN
-           IF (OPTION(4)) THEN
-            IF (OPTION(3)) THEN
-             CALL EIVII(NMSUB, LLAGS, LAGS, NW, 1, LAGMAX, 0, HEAD, 3,
-     &         NV, ERR(9), L1, LLAGMX)
-            ELSE
-             CALL EIVII(NMSUB, LLAGS, LAGS, NW, 1, N-1, 0, HEAD, 3, NV,
-     &         ERR(9), L1, LNM1)
-            END IF
-           END IF
+          if (.not.err(8)) then
+           if (option(4)) then
+            if (option(3)) then
+            call eivii(nmsub, llags, lags, nw, 1, lagmax, 0, head, 3,&
+     &         nv, err(9), l1, llagmx)
+            else
+            call eivii(nmsub, llags, lags, nw, 1, n-1, 0, head, 3, nv,&
+     &         err(9), l1, lnm1)
+            end if
+           end if
 !
-            IF ((.NOT.ERR(6)) .AND. (.NOT.ERR(9)))
-     &         CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR(14),
-     &            LLDS)
-          END IF
-        END IF
-      END IF
+           if ((.not.err(6)) .and. (.not.err(9)))&
+    &         call eisge(nmsub, llds, ldstak, ldsmin, 9, head, err(14),&
+     &            llds)
+          end if
+        end if
+      end if
 !
-      DO 40 I=1,15
-         IF (ERR(I)) IERR = 1
-   40 CONTINUE
+      do 40 i=1,15
+         if (err(i)) ierr = 1
+   40 continue
 !
-      RETURN
+      return
 !
-      END
+      end

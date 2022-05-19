@@ -1,5 +1,5 @@
 !CORRER
-      SUBROUTINE CORRER(NMSUB, M, N, IYM, IVCV, LDSTAK, ICOR, NPRT)
+      subroutine correr(nmsub, m, n, iym, ivcv, ldstak, icor, nprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,36 +18,36 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   ICOR,IVCV,IYM,LDSTAK,M,N,NPRT
+     integer&
+     &   icor,ivcv,iym,ldstak,m,n,nprt
 !
 !  ARRAY ARGUMENTS
-      CHARACTER
-     &   NMSUB(6)*1
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IP,IPRT,IS,LDSMIN
-      LOGICAL
-     &   ERR01,ERR02,ERR03,ERR04,ERR05,HEAD
+     integer&
+     &   ip,iprt,is,ldsmin
+     logical&
+     &   err01,err02,err03,err04,err05,head
 !
 !  LOCAL ARRAYS
-      CHARACTER
-     &   LIVCV(8)*1,LIYM(8)*1,LLDS(8)*1,LM(8)*1,LN(8)*1,
-     &   LTHREE(8)*1,LTWO(8)*1
+     character&
+    &   livcv(8)*1,liym(8)*1,llds(8)*1,lm(8)*1,ln(8)*1,&
+     &   lthree(8)*1,ltwo(8)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL EISGE,IPRINT,LDSCMP
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -98,71 +98,71 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA  LIVCV(1), LIVCV(2), LIVCV(3), LIVCV(4), LIVCV(5), LIVCV(6),
-     &      LIVCV(7), LIVCV(8) / 'I', 'V', 'C', 'V', ' ', ' ', ' ', ' '/
-      DATA   LIYM(1),  LIYM(2),  LIYM(3),  LIYM(4),  LIYM(5),  LIYM(6),
-     &       LIYM(7),  LIYM(8) / 'I', 'Y', 'M', ' ', ' ', ' ', ' ', ' '/
-      DATA   LLDS(1),  LLDS(2),  LLDS(3),  LLDS(4),  LLDS(5),  LLDS(6),
-     &       LLDS(7),  LLDS(8) / 'L', 'D', 'S', 'T', 'A', 'K', ' ', ' '/
-      DATA     LM(1),    LM(2),    LM(3),    LM(4),    LM(5),    LM(6),
-     &         LM(7),    LM(8) / 'M', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
-      DATA     LN(1),    LN(2),    LN(3),    LN(4),    LN(5),    LN(6),
-     &         LN(7),    LN(8) / 'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
-      DATA LTHREE(1),LTHREE(2),LTHREE(3),LTHREE(4),LTHREE(5),LTHREE(6),
-     &     LTHREE(7),LTHREE(8) / 'T', 'H', 'R', 'E', 'E', ' ', ' ', ' '/
-      DATA   LTWO(1),  LTWO(2),  LTWO(3),  LTWO(4),  LTWO(5),  LTWO(6),
-     &       LTWO(7),  LTWO(8) / 'T', 'W', 'O', ' ', ' ', ' ', ' ', ' '/
+     data  livcv(1), livcv(2), livcv(3), livcv(4), livcv(5), livcv(6),&
+     &      livcv(7), livcv(8) / 'I', 'V', 'C', 'V', ' ', ' ', ' ', ' '/
+     data   liym(1),  liym(2),  liym(3),  liym(4),  liym(5),  liym(6),&
+     &       liym(7),  liym(8) / 'I', 'Y', 'M', ' ', ' ', ' ', ' ', ' '/
+     data   llds(1),  llds(2),  llds(3),  llds(4),  llds(5),  llds(6),&
+     &       llds(7),  llds(8) / 'L', 'D', 'S', 'T', 'A', 'K', ' ', ' '/
+     data     lm(1),    lm(2),    lm(3),    lm(4),    lm(5),    lm(6),&
+     &         lm(7),    lm(8) / 'M', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
+     data     ln(1),    ln(2),    ln(3),    ln(4),    ln(5),    ln(6),&
+     &         ln(7),    ln(8) / 'N', ' ', ' ', ' ', ' ', ' ', ' ', ' '/
+     data lthree(1),lthree(2),lthree(3),lthree(4),lthree(5),lthree(6),&
+     &     lthree(7),lthree(8) / 'T', 'H', 'R', 'E', 'E', ' ', ' ', ' '/
+     data   ltwo(1),  ltwo(2),  ltwo(3),  ltwo(4),  ltwo(5),  ltwo(6),&
+     &       ltwo(7),  ltwo(8) / 'T', 'W', 'O', ' ', ' ', ' ', ' ', ' '/
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      HEAD = .TRUE.
+      head = .true.
 !
-      IERR = 0
+      ierr = 0
 !
 !     BEGIN ERROR CHECKING. THE COMMENTS STATE WHAT CONSTITUTES AN
 !     ERROR. COMMENTS ENCLOSED BY STARS(**) INDICATE THE ERROR CONDITION
 !
 !     **NUMBER OF VARIABLES LESS THAN 2**
 !
-      CALL EISGE(NMSUB, LM, M, 2, 2, HEAD, ERR01, LTWO)
+      call eisge(nmsub, lm, m, 2, 2, head, err01, ltwo)
 !
 !     **NUMBER OF OBSERVATIONS LESS THAN 3**
 !
-      CALL EISGE(NMSUB, LN, N, 3, 2, HEAD, ERR02, LTHREE)
+      call eisge(nmsub, ln, n, 3, 2, head, err02, lthree)
 !
 !     **OBSERVATION MATRIX DIMENSIONED LESS THAN N**
 !
-      ERR03 = .FALSE.
-      IF (.NOT.ERR02) CALL EISGE(NMSUB, LIYM, IYM, N, 3, HEAD, ERR03,
-     &   LN)
+      err03 = .false.
+     if (.not.err02) call eisge(nmsub, liym, iym, n, 3, head, err03,&
+     &   ln)
 !
 !     **SC MATRIX DIMENSIONED LESS THAN M**
 !
-      ERR04 = .FALSE.
-      IF ((ICOR.EQ.2) .AND. (.NOT.ERR01)) CALL EISGE(NMSUB, LIVCV,
-     &   IVCV, M, 3, HEAD, ERR04, LM)
+      err04 = .false.
+     if ((icor.eq.2) .and. (.not.err01)) call eisge(nmsub, livcv,&
+     &   ivcv, m, 3, head, err04, lm)
 !
-      IF (ERR01 .OR. ERR02) GO TO 40
-      IS = 0
-      IF (ICOR.EQ.1) IS = 1
+      if (err01 .or. err02) go to 40
+      is = 0
+      if (icor.eq.1) is = 1
 !
-      IP = 1
-      IF (NPRT.EQ.0) IP = 0
+      ip = 1
+      if (nprt.eq.0) ip = 0
 !
 !
 !     CHECK FOR ENOUGH COMMON FOR THIS PROBLEM
 !
-      CALL LDSCMP(12, 0, IP*MAX(N,M), 0, 0, 0, 'S',
-     &   IS*M*M + IP*(MAX(N,M)+M+N*(M+3)+6*M*M), LDSMIN)
+     call ldscmp(12, 0, ip*max(n,m), 0, 0, 0, 'S',&
+     &   is*m*m + ip*(max(n,m)+m+n*(m+3)+6*m*m), ldsmin)
 !
-      CALL EISGE(NMSUB, LLDS, LDSTAK, LDSMIN, 9, HEAD, ERR05, LLDS)
+      call eisge(nmsub, llds, ldstak, ldsmin, 9, head, err05, llds)
 !
-      IF (ERR01 .OR. ERR02 .OR. ERR03 .OR. ERR04 .OR. ERR05) GO TO 40
-      RETURN
+      if (err01 .or. err02 .or. err03 .or. err04 .or. err05) go to 40
+      return
 !
 !     SET IERR TO INDICATE AN ERROR
 !
-   40 CONTINUE
-      IERR = 1
-      RETURN
-      END
+   40 continue
+      ierr = 1
+      return
+      end

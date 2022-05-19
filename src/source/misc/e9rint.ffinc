@@ -1,5 +1,5 @@
 !E9RINT
-      SUBROUTINE E9RINT(MESSG,NW,NERR,SAVE)
+      subroutine e9rint(messg,nw,nerr,save)
 !
 !  THIS ROUTINE STORES THE CURRENT ERROR MESSAGE OR PRINTS THE OLD ONE,
 !  IF ANY, DEPENDING ON WHETHER OR NOT SAVE = .TRUE. .
@@ -17,18 +17,18 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER NERR,NW
-      LOGICAL SAVE
+      integer nerr,nw
+      logical save
 !
 !  ARRAY ARGUMENTS
-      CHARACTER MESSG(NW)*4
+      character messg(nw)*4
 !
 !  LOCAL SCALARS
-      INTEGER I,IWUNIT,NERRP,NWP
-      CHARACTER CCPLUS*4
+      integer i,iwunit,nerrp,nwp
+      character ccplus*4
 !
 !  LOCAL ARRAYS
-      CHARACTER FMT(14)*4,MESSGP(36)*4
+      character fmt(14)*4,messgp(36)*4
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER I1MACH,I8SAVE
@@ -40,51 +40,51 @@
 !
 !  START WITH NO PREVIOUS MESSAGE.
 !
-      DATA MESSGP(1)/'1'/, NWP/0/, NERRP/0/
+      data messgp(1)/'1'/, nwp/0/, nerrp/0/
 !
 !  SET UP THE FORMAT FOR PRINTING THE ERROR MESSAGE.
 !  THE FORMAT IS SIMPLY (A1,14X,72AXX) WHERE XX=I1MACH(6) IS THE
 !  NUMBER OF CHARACTERS STORED PER INTEGER WORD.
 !
-      DATA CCPLUS  / '+' /
+      data ccplus  / '+' /
 !
-      DATA FMT( 1) / '(' /
-      DATA FMT( 2) / 'A' /
-      DATA FMT( 3) / '1' /
-      DATA FMT( 4) / ',' /
-      DATA FMT( 5) / '1' /
-      DATA FMT( 6) / '4' /
-      DATA FMT( 7) / 'X' /
-      DATA FMT( 8) / ',' /
-      DATA FMT( 9) / '7' /
-      DATA FMT(10) / '2' /
-      DATA FMT(11) / 'A' /
-      DATA FMT(12) / 'X' /
-      DATA FMT(13) / 'X' /
-      DATA FMT(14) / ')' /
+      data fmt( 1) / '(' /
+      data fmt( 2) / 'A' /
+      data fmt( 3) / '1' /
+      data fmt( 4) / ',' /
+      data fmt( 5) / '1' /
+      data fmt( 6) / '4' /
+      data fmt( 7) / 'X' /
+      data fmt( 8) / ',' /
+      data fmt( 9) / '7' /
+      data fmt(10) / '2' /
+      data fmt(11) / 'A' /
+      data fmt(12) / 'X' /
+      data fmt(13) / 'X' /
+      data fmt(14) / ')' /
 !
-      IF (.NOT.SAVE) GO TO 20
+      if (.not.save) go to 20
 !
 !  SAVE THE MESSAGE.
 !
-        NWP=NW
-        NERRP=NERR
-        DO 10 I=1,NW
- 10     MESSGP(I)=MESSG(I)
+        nwp=nw
+        nerrp=nerr
+        do 10 i=1,nw
+ 10     messgp(i)=messg(i)
 !
-        GO TO 30
+        go to 30
 !
- 20   IF (I8SAVE(1,0,.FALSE.).EQ.0) GO TO 30
+ 20   if (i8save(1,0,.false.).eq.0) go to 30
 !
 !  PRINT THE MESSAGE.
 !
-        IWUNIT=I1MACH(4)
-        WRITE(IWUNIT,9000) NERRP
- 9000   FORMAT(' ERROR ',I4,' IN ')
+        iwunit=i1mach(4)
+        write(iwunit,9000) nerrp
+ 9000   format(' ERROR ',i4,' IN ')
 !
-        CALL S88FMT(2,I1MACH(6),FMT(12))
-        WRITE(IWUNIT,FMT) CCPLUS,(MESSGP(I),I=1,NWP)
+        call s88fmt(2,i1mach(6),fmt(12))
+        write(iwunit,fmt) ccplus,(messgp(i),i=1,nwp)
 !
- 30   RETURN
+ 30   return
 !
-      END
+      end

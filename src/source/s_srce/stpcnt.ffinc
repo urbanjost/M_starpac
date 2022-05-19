@@ -1,7 +1,7 @@
 !STPCNT
-      SUBROUTINE STPCNT(XM, N, M, IXM, MDL, PAR, NPAR, STP,
-     &   EXMPT, NETA, SCALE, LSCALE, NPRT, HDR, PAGE, WIDE, ISUBHD,
-     &   HLFRPT, PRTFXD, IFIXED, LIFIXD)
+     subroutine stpcnt(xm, n, m, ixm, mdl, par, npar, stp,&
+    &   exmpt, neta, scale, lscale, nprt, hdr, page, wide, isubhd,&
+     &   hlfrpt, prtfxd, ifixed, lifixd)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -17,68 +17,68 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   EXMPT
-      INTEGER
-     &   ISUBHD,IXM,LIFIXD,LSCALE,M,N,NETA,NPAR,NPRT
-      LOGICAL
-     &   HLFRPT,PAGE,PRTFXD,WIDE
+     real(kind=wp) ::&
+     &   exmpt
+     integer&
+     &   isubhd,ixm,lifixd,lscale,m,n,neta,npar,nprt
+     logical&
+     &   hlfrpt,page,prtfxd,wide
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(NPAR),SCALE(LSCALE),STP(NPAR),XM(IXM,M)
-      INTEGER
-     &   IFIXED(LIFIXD)
+     real(kind=wp) ::&
+     &   par(npar),scale(lscale),stp(npar),xm(ixm,m)
+     integer&
+     &   ifixed(lifixd)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL HDR,MDL
+       external hdr,mdl
 !
 !  SCALARS IN COMMON
-      REAL(KIND=WP) ::
-     &   Q
-      INTEGER
-     &   IERR
+     real(kind=wp) ::&
+     &   q
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ETA,EXM,FPLRS,SCL,TAU
-      INTEGER
-     &   CD,FD,FDLAST,FDSAVE,IFAILJ,IFIXD,IFP,ITEMP,J,MXFAIL,NALL0,
-     &   NDD,NDGT1,NEXMPT,NFAIL,NFAILJ,PARTMP,PV,PVMCD,PVNEW,PVPCD,
-     &   PVSTP,PVTEMP
-      LOGICAL
-     &   HEAD
+     real(kind=wp) ::&
+     &   eta,exm,fplrs,scl,tau
+     integer&
+    &   cd,fd,fdlast,fdsave,ifailj,ifixd,ifp,itemp,j,mxfail,nall0,&
+    &   ndd,ndgt1,nexmpt,nfail,nfailj,partmp,pv,pvmcd,pvnew,pvpcd,&
+     &   pvstp,pvtemp
+     logical&
+     &   head
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSTAK(12)
-      INTEGER
-     &   ISTAK(12)
+     real(kind=wp) ::&
+     &   rstak(12)
+     integer&
+     &   istak(12)
 !
 !  EXTERNAL FUNCTIONS
-      REAL(KIND=WP) ::
-     &   R1MACH
-      INTEGER
-     &   STKST
+     real(kind=wp) ::&
+     &   r1mach
+     integer&
+     &   stkst
 !       EXTERNAL R1MACH,STKST
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL CPYVII,ETAMDL,SETIV,STKCLR,STPMN,STPOUT
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC ABS,INT,LOG10,MAX,MIN
+      intrinsic abs,int,log10,max,min
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
-      COMMON /NOTOPT/Q
+      common /cstak/dstak
+      common /errchk/ierr
+      common /notopt/q
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
+      equivalence (dstak(1),istak(1))
+      equivalence (dstak(1),rstak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -252,114 +252,114 @@
 !        IS STORED.
 !
 !
-      NALL0 = STKST(1)
+      nall0 = stkst(1)
 !
-      FPLRS = R1MACH(4)
-      IFP = 3
+      fplrs = r1mach(4)
+      ifp = 3
 !
 !     SET PRINT CONTROLS
 !
-      HEAD = .TRUE.
+      head = .true.
 !
 !     SUBDIVIDE WORK AREA
 !
-      IFIXD = STKGET(NPAR, 2)
-      ITEMP = STKGET(N, 2)
-      IFAILJ = STKGET(N, 2)
-      NFAIL = STKGET(NPAR, 2)
+      ifixd = stkget(npar, 2)
+      itemp = stkget(n, 2)
+      ifailj = stkget(n, 2)
+      nfail = stkget(npar, 2)
 !
-      CD = STKGET(MAX(N,NPAR), IFP)
-      FD = STKGET(N, IFP)
-      FDLAST = STKGET(N, IFP)
-      FDSAVE = STKGET(N, IFP)
-      PV = STKGET(N, IFP)
-      PVMCD = STKGET(N, IFP)
-      PVNEW = STKGET(N, IFP)
-      PVPCD = STKGET(N, IFP)
-      PVSTP = STKGET(N, IFP)
-      PVTEMP = STKGET(N, IFP)
+      cd = stkget(max(n,npar), ifp)
+      fd = stkget(n, ifp)
+      fdlast = stkget(n, ifp)
+      fdsave = stkget(n, ifp)
+      pv = stkget(n, ifp)
+      pvmcd = stkget(n, ifp)
+      pvnew = stkget(n, ifp)
+      pvpcd = stkget(n, ifp)
+      pvstp = stkget(n, ifp)
+      pvtemp = stkget(n, ifp)
 !
-      IF (IERR .EQ. 1) RETURN
+      if (ierr .eq. 1) return
 !
-      PARTMP = CD
+      partmp = cd
 !
 !     SET UP IFIXD
 !
-      IF (IFIXED(1).LT.0) THEN
-         CALL SETIV(ISTAK(IFIXD), NPAR, 0)
-      ELSE
-         CALL CPYVII(NPAR, IFIXED, 1, ISTAK(IFIXD), 1)
-      END IF
+      if (ifixed(1).lt.0) then
+         call setiv(istak(ifixd), npar, 0)
+      else
+         call cpyvii(npar, ifixed, 1, istak(ifixd), 1)
+      end if
 !
 !     SET PARAMETERS NECESSARY FOR THE COMPUTATIONS
 !
-      NDD = INT(-LOG10(FPLRS))
+      ndd = int(-log10(fplrs))
 !
-      IF ((NETA.GE.2) .AND. (NETA.LE.NDD)) THEN
-         ETA = 10.0E0 ** (-NETA)
-         NDGT1 = NETA
-      ELSE
-         CALL ETAMDL(MDL, PAR, NPAR, XM, N, M, IXM, ETA, NDGT1,
-     &               RSTAK(PARTMP), RSTAK(PVTEMP), 0)
-      END IF
+      if ((neta.ge.2) .and. (neta.le.ndd)) then
+         eta = 10.0e0 ** (-neta)
+         ndgt1 = neta
+      else
+        call etamdl(mdl, par, npar, xm, n, m, ixm, eta, ndgt1,&
+     &               rstak(partmp), rstak(pvtemp), 0)
+      end if
 !
-      TAU = MIN(ETA ** (0.25E0), 0.01E0)
+      tau = min(eta ** (0.25e0), 0.01e0)
 !
-      EXM = EXMPT
-      IF ((EXM.LT.0.0E0) .OR. (EXM.GT.1.0E0)) EXM = 0.10E0
-      NEXMPT = EXM * N
-      IF (EXM .NE. 0.0E0) NEXMPT = MAX(NEXMPT, 1)
+      exm = exmpt
+      if ((exm.lt.0.0e0) .or. (exm.gt.1.0e0)) exm = 0.10e0
+      nexmpt = exm * n
+      if (exm .ne. 0.0e0) nexmpt = max(nexmpt, 1)
 !
 !     COMPUTE PREDICTED VALUES OF THE MODEL USING THE INPUT PARAMETER
 !     ESTIMATES
 !
-      CALL MDL(PAR, NPAR, XM, N, M, IXM, RSTAK(PV))
+      call mdl(par, npar, xm, n, m, ixm, rstak(pv))
 !
-      MXFAIL = 0
-      NFAILJ = NFAIL
+      mxfail = 0
+      nfailj = nfail
 !
-      DO 120 J = 1, NPAR
-         IF (ISTAK(IFIXD-1+J).EQ.0) THEN
-            IF (SCALE(1).LE.0.0E0) THEN
-               IF (PAR(J).EQ.0.0E0) THEN
-                  SCL = 1.0E0
-               ELSE
-                  SCL = ABS(PAR(J))
-               END IF
-            ELSE
-               SCL = SCALE(J)
-            END IF
+      do 120 j = 1, npar
+         if (istak(ifixd-1+j).eq.0) then
+            if (scale(1).le.0.0e0) then
+               if (par(j).eq.0.0e0) then
+                  scl = 1.0e0
+               else
+                  scl = abs(par(j))
+               end if
+            else
+               scl = scale(j)
+            end if
 !
-            CALL STPMN(J, XM, N, M, IXM, MDL, PAR, NPAR, NEXMPT,
-     &         ETA, TAU, SCL, STP(J), ISTAK(NFAILJ), ISTAK(IFAILJ),
-     &         RSTAK(CD), ISTAK(ITEMP), RSTAK(FD), RSTAK(FDLAST),
-     &         RSTAK(FDSAVE), RSTAK(PV), RSTAK(PVMCD), RSTAK(PVNEW),
-     &         RSTAK(PVPCD), RSTAK(PVSTP), RSTAK(PVTEMP))
+           call stpmn(j, xm, n, m, ixm, mdl, par, npar, nexmpt,&
+    &         eta, tau, scl, stp(j), istak(nfailj), istak(ifailj),&
+    &         rstak(cd), istak(itemp), rstak(fd), rstak(fdlast),&
+    &         rstak(fdsave), rstak(pv), rstak(pvmcd), rstak(pvnew),&
+     &         rstak(pvpcd), rstak(pvstp), rstak(pvtemp))
 !
 !     COMPUTE THE MAXIMUM NUMBER OF FAILURES FOR ANY PARAMETER
 !
-            MXFAIL = MAX(ISTAK(NFAILJ), MXFAIL)
+            mxfail = max(istak(nfailj), mxfail)
 !
-         ELSE
-            STP(J) = 0.0
-         END IF
+         else
+            stp(j) = 0.0
+         end if
 !
 !     PRINT RESULTS IF THEY ARE DESIRED
 !
-         IF ((NPRT.NE.0) .OR. (MXFAIL.GT.NEXMPT))
-     &      CALL STPOUT(HEAD, N, EXM, NEXMPT, NDGT1, J, PAR, NPAR,
-     &            STP, ISTAK(NFAIL), ISTAK(IFAILJ), SCALE,  LSCALE, HDR,
-     &            PAGE, WIDE, ISUBHD, NPRT, PRTFXD, ISTAK(IFIXD))
-         NFAILJ = NFAILJ + 1
-  120 CONTINUE
+        if ((nprt.ne.0) .or. (mxfail.gt.nexmpt))&
+    &      call stpout(head, n, exm, nexmpt, ndgt1, j, par, npar,&
+    &            stp, istak(nfail), istak(ifailj), scale,  lscale, hdr,&
+     &            page, wide, isubhd, nprt, prtfxd, istak(ifixd))
+         nfailj = nfailj + 1
+  120 continue
 !
-      HLFRPT = .FALSE.
-      IF ((NPRT.NE.0) .OR. (MXFAIL.GT.NEXMPT)) HLFRPT = .TRUE.
+      hlfrpt = .false.
+      if ((nprt.ne.0) .or. (mxfail.gt.nexmpt)) hlfrpt = .true.
 !
-      IF (MXFAIL.GT.NEXMPT) IERR = 2
+      if (mxfail.gt.nexmpt) ierr = 2
 !
-      CALL STKCLR(NALL0)
+      call stkclr(nall0)
 !
-      RETURN
+      return
 !
-      END
+      end

@@ -1,5 +1,5 @@
 !XDFLT
-      SUBROUTINE XDFLT(LDS,typ)
+      subroutine xdflt(lds,typ)
       real(kind=wp),intent(in) :: typ
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
@@ -20,35 +20,35 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   LDS
+     integer&
+     &   lds
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) :: FC,FMAX,FMIN,YFMISS,YMISS
-      INTEGER
-     &   I,IAR,IPRT,ITEST,K,LDSTAK,LPHI,N,NF,NFAC,NPRT,NYF,NYS
+      real(kind=wp) :: fc,fmax,fmin,yfmiss,ymiss
+     integer&
+     &   i,iar,iprt,itest,k,ldstak,lphi,n,nf,nfac,nprt,nyf,nys
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   FREQ(101),GAIN(101),HHP(50),HLP(50),PHAS(300),PHI(50),Y(300),
-     &   YF(300),YS(300)
-      INTEGER
-     &   IOD(10),ND(10)
+     real(kind=wp) ::&
+    &   freq(101),gain(101),hhp(50),hlp(50),phas(300),phi(50),y(300),&
+     &   yf(300),ys(300)
+     integer&
+     &   iod(10),nd(10)
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL ARFLT,DIF,DIFC,DIFM,DIFMC,GFARF,GFARFS,GFSLF,GFSLFS,
 !     +   HIPASS,HPCOEF,IPRINT,LOPASS,LPCOEF,MAFLT,SAMPLE,SLFLT
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -126,393 +126,393 @@
 !     REAL YS(300)
 !        THE ARRAY CONTAINING THE SAMPLED SERIES.
 !
-      DATA   Y(  1),  Y(  2),  Y(  3),  Y(  4),  Y(  5),  Y(  6)
-     &    /     5.0E0, 11.0E0, 16.0E0, 23.0E0, 36.0E0, 58.0E0/
-      DATA   Y(  7),  Y(  8),  Y(  9),  Y( 10),  Y( 11),  Y( 12)
-     &    /    29.0E0, 20.0E0, 10.0E0,  8.0E0,  3.0E0,  0.0E0/
-      DATA   Y( 13),  Y( 14),  Y( 15),  Y( 16),  Y( 17),  Y( 18)
-     &    /     0.0E0, 2.0E0, 11.0E0, 27.0E0, 47.0E0, 63.0E0/
-      DATA   Y( 19),  Y( 20),  Y( 21),  Y( 22),  Y( 23),  Y( 24)
-     &    /    60.0E0, 39.0E0, 28.0E0, 26.0E0, 22.0E0, 11.0E0/
-      DATA   Y( 25),  Y( 26),  Y( 27),  Y( 28),  Y( 29),  Y( 30)
-     &    /    21.0E0, 40.0E0, 78.0E0,122.0E0,103.0E0, 73.0E0/
-      DATA   Y( 31),  Y( 32),  Y( 33),  Y( 34),  Y( 35),  Y( 36)
-     &    /    47.0E0, 35.0E0, 11.0E0,  5.0E0, 16.0E0, 34.0E0/
-      DATA   Y( 37),  Y( 38),  Y( 39),  Y( 40),  Y( 41),  Y( 42)
-     &    /    70.0E0, 81.0E0,111.0E0,101.0E0, 73.0E0, 40.0E0/
-      DATA   Y( 43),  Y( 44),  Y( 45),  Y( 46),  Y( 47),  Y( 48)
-     &    /    20.0E0, 16.0E0,  5.0E0, 11.0E0, 22.0E0, 40.0E0/
-      DATA   Y( 49),  Y( 50),  Y( 51),  Y( 52),  Y( 53),  Y( 54)
-     &    /    60.0E0, 80.9E0, 83.4E0, 47.7E0, 47.8E0, 30.7E0/
-      DATA   Y( 55),  Y( 56),  Y( 57),  Y( 58),  Y( 59),  Y( 60)
-     &    /    12.2E0,  9.6E0, 10.2E0, 32.4E0, 47.6E0, 54.0E0/
-      DATA   Y( 61),  Y( 62),  Y( 63),  Y( 64),  Y( 65),  Y( 66)
-     &    /    62.9E0, 85.9E0, 61.2E0, 45.1E0, 36.4E0, 20.9E0/
-      DATA   Y( 67),  Y( 68),  Y( 69),  Y( 70),  Y( 71),  Y( 72)
-     &    /    11.4E0, 37.8E0, 69.8E0,106.1E0,100.8E0, 81.6E0/
-      DATA   Y( 73),  Y( 74),  Y( 75),  Y( 76),  Y( 77),  Y( 78)
-     &    /    66.5E0, 34.8E0, 30.6E0,  7.0E0, 19.8E0, 92.5E0/
-      DATA   Y( 79),  Y( 80),  Y( 81),  Y( 82),  Y( 83),  Y( 84)
-     &    /   154.4E0,125.9E0, 84.8E0, 68.1E0, 38.5E0, 22.8E0/
-      DATA   Y( 85),  Y( 86),  Y( 87),  Y( 88),  Y( 89),  Y( 90)
-     &    /    10.2E0, 24.1E0, 82.9E0,132.0E0,130.9E0,118.1E0/
-      DATA   Y( 91),  Y( 92),  Y( 93),  Y( 94),  Y( 95),  Y( 96)
-     &    /    89.9E0, 66.6E0, 60.0E0, 46.9E0, 41.0E0, 21.3E0/
-      DATA   Y( 97),  Y( 98),  Y( 99),  Y(100),  Y(101),  Y(102)
-     &    /    16.0E0,  6.4E0,  4.1E0,  6.8E0, 14.5E0, 34.0E0/
-      DATA   Y(103),  Y(104),  Y(105),  Y(106),  Y(107),  Y(108)
-     &    /    45.0E0, 43.1E0, 47.5E0, 42.2E0, 28.1E0, 10.1E0/
-      DATA   Y(109),  Y(110),  Y(111),  Y(112),  Y(113),  Y(114)
-     &    /     8.1E0,  2.5E0,  0.0E0,  1.4E0,  5.0E0, 12.2E0/
-      DATA   Y(115),  Y(116),  Y(117),  Y(118),  Y(119),  Y(120)
-     &    /    13.9E0, 35.4E0, 45.8E0, 41.1E0, 30.1E0, 23.9E0/
-      DATA   Y(121),  Y(122),  Y(123),  Y(124),  Y(125),  Y(126)
-     &    /    15.6E0,  6.6E0,  4.0E0,  1.8E0,  8.5E0, 16.6E0/
-      DATA   Y(127),  Y(128),  Y(129),  Y(130),  Y(131),  Y(132)
-     &    /    36.3E0, 49.6E0, 64.2E0, 67.0E0, 70.9E0, 47.8E0/
-      DATA   Y(133),  Y(134),  Y(135),  Y(136),  Y(137),  Y(138)
-     &    /    27.5E0,  8.5E0, 13.2E0, 56.9E0,121.5E0,138.3E0/
-      DATA   Y(139),  Y(140),  Y(141),  Y(142),  Y(143),  Y(144)
-     &    /   103.2E0, 85.7E0, 64.6E0, 36.7E0, 24.2E0, 10.7E0/
-      DATA   Y(145),  Y(146),  Y(147),  Y(148),  Y(149),  Y(150)
-     &    /    15.0E0, 40.1E0, 61.5E0, 98.5E0,124.7E0, 96.3E0/
-      DATA   Y(151),  Y(152),  Y(153),  Y(154),  Y(155),  Y(156)
-     &    /    66.6E0, 64.5E0, 54.1E0, 39.0E0, 20.6E0,  6.7E0/
-      DATA   Y(157),  Y(158),  Y(159),  Y(160),  Y(161),  Y(162)
-     &    /     4.3E0, 22.7E0, 54.8E0, 93.8E0, 95.8E0, 77.2E0/
-      DATA   Y(163),  Y(164),  Y(165),  Y(166),  Y(167),  Y(168)
-     &    /    59.1E0, 44.0E0, 47.0E0, 30.5E0, 16.3E0,  7.3E0/
-      DATA   Y(169),  Y(170),  Y(171),  Y(172),  Y(173),  Y(174)
-     &    /    37.6E0, 74.0E0,139.0E0,111.2E0,101.6E0, 66.2E0/
-      DATA   Y(175),  Y(176),  Y(177),  Y(178),  Y(179),  Y(180)
-     &    /    44.7E0, 17.0E0, 11.3E0, 12.4E0,  3.4E0,  6.0E0/
-      DATA   Y(181),  Y(182),  Y(183),  Y(184),  Y(185),  Y(186)
-     &    /    32.3E0, 54.3E0, 59.7E0, 63.7E0, 63.5E0, 52.2E0/
-      DATA   Y(187),  Y(188),  Y(189),  Y(190),  Y(191),  Y(192)
-     &    /    25.4E0, 13.1E0,  6.8E0,  6.3E0,  7.1E0, 35.6E0/
-      DATA   Y(193),  Y(194),  Y(195),  Y(196),  Y(197),  Y(198)
-     &    /    73.0E0, 85.1E0, 78.0E0, 64.0E0, 41.8E0, 26.2E0/
-      DATA   Y(199),  Y(200),  Y(201),  Y(202),  Y(203),  Y(204)
-     &    /    26.7E0, 12.1E0,  9.5E0,  2.7E0,  5.0E0, 24.4E0/
-      DATA   Y(205),  Y(206),  Y(207),  Y(208),  Y(209),  Y(210)
-     &    /    42.0E0, 63.5E0, 53.8E0, 62.0E0, 48.5E0, 43.9E0/
-      DATA   Y(211),  Y(212),  Y(213),  Y(214),  Y(215),  Y(216)
-     &    /    18.6E0,  5.7E0,  3.6E0,  1.4E0,  9.6E0, 47.4E0/
-      DATA   Y(217),  Y(218),  Y(219),  Y(220),  Y(221),  Y(222)
-     &    /    57.1E0,103.9E0, 80.6E0, 63.6E0, 37.6E0, 26.1E0/
-      DATA   Y(223),  Y(224),  Y(225),  Y(226),  Y(227),  Y(228)
-     &    /    14.2E0,  5.8E0, 16.7E0, 44.3E0, 63.9E0, 69.0E0/
-      DATA   Y(229),  Y(230),  Y(231),  Y(232),  Y(233),  Y(234)
-     &    /    77.8E0, 64.9E0, 35.7E0, 21.2E0, 11.1E0,  5.7E0/
-      DATA   Y(235),  Y(236),  Y(237),  Y(238),  Y(239),  Y(240)
-     &    /     8.7E0, 36.1E0, 79.7E0,114.4E0,109.6E0, 88.8E0/
-      DATA   Y(241),  Y(242),  Y(243),  Y(244),  Y(245),  Y(246)
-     &    /    67.8E0, 47.5E0, 30.6E0, 16.3E0,  9.6E0, 33.2E0/
-      DATA   Y(247),  Y(248),  Y(249),  Y(250),  Y(251),  Y(252)
-     &    /    92.6E0,151.6E0,136.3E0,134.7E0, 83.9E0, 69.4E0/
-      DATA   Y(253),  Y(254),  Y(255),  Y(256),  Y(257),  Y(258)
-     &    /    31.5E0, 13.9E0,  4.4E0, 38.0E0,141.7E0,190.2E0/
-      DATA   Y(259),  Y(260),  Y(261)
-     &    /   184.8E0,159.0E0,112.3E0/
+     data   y(  1),  y(  2),  y(  3),  y(  4),  y(  5),  y(  6)&
+     &    /     5.0e0, 11.0e0, 16.0e0, 23.0e0, 36.0e0, 58.0e0/
+     data   y(  7),  y(  8),  y(  9),  y( 10),  y( 11),  y( 12)&
+     &    /    29.0e0, 20.0e0, 10.0e0,  8.0e0,  3.0e0,  0.0e0/
+     data   y( 13),  y( 14),  y( 15),  y( 16),  y( 17),  y( 18)&
+     &    /     0.0e0, 2.0e0, 11.0e0, 27.0e0, 47.0e0, 63.0e0/
+     data   y( 19),  y( 20),  y( 21),  y( 22),  y( 23),  y( 24)&
+     &    /    60.0e0, 39.0e0, 28.0e0, 26.0e0, 22.0e0, 11.0e0/
+     data   y( 25),  y( 26),  y( 27),  y( 28),  y( 29),  y( 30)&
+     &    /    21.0e0, 40.0e0, 78.0e0,122.0e0,103.0e0, 73.0e0/
+     data   y( 31),  y( 32),  y( 33),  y( 34),  y( 35),  y( 36)&
+     &    /    47.0e0, 35.0e0, 11.0e0,  5.0e0, 16.0e0, 34.0e0/
+     data   y( 37),  y( 38),  y( 39),  y( 40),  y( 41),  y( 42)&
+     &    /    70.0e0, 81.0e0,111.0e0,101.0e0, 73.0e0, 40.0e0/
+     data   y( 43),  y( 44),  y( 45),  y( 46),  y( 47),  y( 48)&
+     &    /    20.0e0, 16.0e0,  5.0e0, 11.0e0, 22.0e0, 40.0e0/
+     data   y( 49),  y( 50),  y( 51),  y( 52),  y( 53),  y( 54)&
+     &    /    60.0e0, 80.9e0, 83.4e0, 47.7e0, 47.8e0, 30.7e0/
+     data   y( 55),  y( 56),  y( 57),  y( 58),  y( 59),  y( 60)&
+     &    /    12.2e0,  9.6e0, 10.2e0, 32.4e0, 47.6e0, 54.0e0/
+     data   y( 61),  y( 62),  y( 63),  y( 64),  y( 65),  y( 66)&
+     &    /    62.9e0, 85.9e0, 61.2e0, 45.1e0, 36.4e0, 20.9e0/
+     data   y( 67),  y( 68),  y( 69),  y( 70),  y( 71),  y( 72)&
+     &    /    11.4e0, 37.8e0, 69.8e0,106.1e0,100.8e0, 81.6e0/
+     data   y( 73),  y( 74),  y( 75),  y( 76),  y( 77),  y( 78)&
+     &    /    66.5e0, 34.8e0, 30.6e0,  7.0e0, 19.8e0, 92.5e0/
+     data   y( 79),  y( 80),  y( 81),  y( 82),  y( 83),  y( 84)&
+     &    /   154.4e0,125.9e0, 84.8e0, 68.1e0, 38.5e0, 22.8e0/
+     data   y( 85),  y( 86),  y( 87),  y( 88),  y( 89),  y( 90)&
+     &    /    10.2e0, 24.1e0, 82.9e0,132.0e0,130.9e0,118.1e0/
+     data   y( 91),  y( 92),  y( 93),  y( 94),  y( 95),  y( 96)&
+     &    /    89.9e0, 66.6e0, 60.0e0, 46.9e0, 41.0e0, 21.3e0/
+     data   y( 97),  y( 98),  y( 99),  y(100),  y(101),  y(102)&
+     &    /    16.0e0,  6.4e0,  4.1e0,  6.8e0, 14.5e0, 34.0e0/
+     data   y(103),  y(104),  y(105),  y(106),  y(107),  y(108)&
+     &    /    45.0e0, 43.1e0, 47.5e0, 42.2e0, 28.1e0, 10.1e0/
+     data   y(109),  y(110),  y(111),  y(112),  y(113),  y(114)&
+     &    /     8.1e0,  2.5e0,  0.0e0,  1.4e0,  5.0e0, 12.2e0/
+     data   y(115),  y(116),  y(117),  y(118),  y(119),  y(120)&
+     &    /    13.9e0, 35.4e0, 45.8e0, 41.1e0, 30.1e0, 23.9e0/
+     data   y(121),  y(122),  y(123),  y(124),  y(125),  y(126)&
+     &    /    15.6e0,  6.6e0,  4.0e0,  1.8e0,  8.5e0, 16.6e0/
+     data   y(127),  y(128),  y(129),  y(130),  y(131),  y(132)&
+     &    /    36.3e0, 49.6e0, 64.2e0, 67.0e0, 70.9e0, 47.8e0/
+     data   y(133),  y(134),  y(135),  y(136),  y(137),  y(138)&
+     &    /    27.5e0,  8.5e0, 13.2e0, 56.9e0,121.5e0,138.3e0/
+     data   y(139),  y(140),  y(141),  y(142),  y(143),  y(144)&
+     &    /   103.2e0, 85.7e0, 64.6e0, 36.7e0, 24.2e0, 10.7e0/
+     data   y(145),  y(146),  y(147),  y(148),  y(149),  y(150)&
+     &    /    15.0e0, 40.1e0, 61.5e0, 98.5e0,124.7e0, 96.3e0/
+     data   y(151),  y(152),  y(153),  y(154),  y(155),  y(156)&
+     &    /    66.6e0, 64.5e0, 54.1e0, 39.0e0, 20.6e0,  6.7e0/
+     data   y(157),  y(158),  y(159),  y(160),  y(161),  y(162)&
+     &    /     4.3e0, 22.7e0, 54.8e0, 93.8e0, 95.8e0, 77.2e0/
+     data   y(163),  y(164),  y(165),  y(166),  y(167),  y(168)&
+     &    /    59.1e0, 44.0e0, 47.0e0, 30.5e0, 16.3e0,  7.3e0/
+     data   y(169),  y(170),  y(171),  y(172),  y(173),  y(174)&
+     &    /    37.6e0, 74.0e0,139.0e0,111.2e0,101.6e0, 66.2e0/
+     data   y(175),  y(176),  y(177),  y(178),  y(179),  y(180)&
+     &    /    44.7e0, 17.0e0, 11.3e0, 12.4e0,  3.4e0,  6.0e0/
+     data   y(181),  y(182),  y(183),  y(184),  y(185),  y(186)&
+     &    /    32.3e0, 54.3e0, 59.7e0, 63.7e0, 63.5e0, 52.2e0/
+     data   y(187),  y(188),  y(189),  y(190),  y(191),  y(192)&
+     &    /    25.4e0, 13.1e0,  6.8e0,  6.3e0,  7.1e0, 35.6e0/
+     data   y(193),  y(194),  y(195),  y(196),  y(197),  y(198)&
+     &    /    73.0e0, 85.1e0, 78.0e0, 64.0e0, 41.8e0, 26.2e0/
+     data   y(199),  y(200),  y(201),  y(202),  y(203),  y(204)&
+     &    /    26.7e0, 12.1e0,  9.5e0,  2.7e0,  5.0e0, 24.4e0/
+     data   y(205),  y(206),  y(207),  y(208),  y(209),  y(210)&
+     &    /    42.0e0, 63.5e0, 53.8e0, 62.0e0, 48.5e0, 43.9e0/
+     data   y(211),  y(212),  y(213),  y(214),  y(215),  y(216)&
+     &    /    18.6e0,  5.7e0,  3.6e0,  1.4e0,  9.6e0, 47.4e0/
+     data   y(217),  y(218),  y(219),  y(220),  y(221),  y(222)&
+     &    /    57.1e0,103.9e0, 80.6e0, 63.6e0, 37.6e0, 26.1e0/
+     data   y(223),  y(224),  y(225),  y(226),  y(227),  y(228)&
+     &    /    14.2e0,  5.8e0, 16.7e0, 44.3e0, 63.9e0, 69.0e0/
+     data   y(229),  y(230),  y(231),  y(232),  y(233),  y(234)&
+     &    /    77.8e0, 64.9e0, 35.7e0, 21.2e0, 11.1e0,  5.7e0/
+     data   y(235),  y(236),  y(237),  y(238),  y(239),  y(240)&
+     &    /     8.7e0, 36.1e0, 79.7e0,114.4e0,109.6e0, 88.8e0/
+     data   y(241),  y(242),  y(243),  y(244),  y(245),  y(246)&
+     &    /    67.8e0, 47.5e0, 30.6e0, 16.3e0,  9.6e0, 33.2e0/
+     data   y(247),  y(248),  y(249),  y(250),  y(251),  y(252)&
+     &    /    92.6e0,151.6e0,136.3e0,134.7e0, 83.9e0, 69.4e0/
+     data   y(253),  y(254),  y(255),  y(256),  y(257),  y(258)&
+     &    /    31.5e0, 13.9e0,  4.4e0, 38.0e0,141.7e0,190.2e0/
+     data   y(259),  y(260),  y(261)&
+     &    /   184.8e0,159.0e0,112.3e0/
 !
-      CALL IPRINT(IPRT)
-      ITEST = 1
-      LDSTAK = LDS
+      call iprint(iprt)
+      itest = 1
+      ldstak = lds
 !
-      N = 261
-      NPRT = 2
-      FC = 1.0E0/22.0E0
-      NF = 101
-      FMIN = 0.0E0
-      FMAX = 0.2E0
-      LPHI = 50
-      NFAC = 1
-      ND(1) = 1
-      IOD(1) = 1
-      IAR = 1
-      PHI(1) = 0.6E0
-      K = 41
-      YMISS = 11.0E0
+      n = 261
+      nprt = 2
+      fc = 1.0e0/22.0e0
+      nf = 101
+      fmin = 0.0e0
+      fmax = 0.2e0
+      lphi = 50
+      nfac = 1
+      nd(1) = 1
+      iod(1) = 1
+      iar = 1
+      phi(1) = 0.6e0
+      k = 41
+      ymiss = 11.0e0
 !
 !     TEST OF LPCOEF
 !
-   10 WRITE (IPRT, 1001)
-      CALL LPCOEF (FC, K, HLP)
-      WRITE (IPRT, 1002) IERR
+   10 write (iprt, 1001)
+      call lpcoef (fc, k, hlp)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM LPCOEF
 !
-      IF (IERR.EQ.0) WRITE (IPRT, 1004) (HLP(I), I = 1, K)
+      if (ierr.eq.0) write (iprt, 1004) (hlp(i), i = 1, k)
 !
 !     TEST OF LOPASS
 !
-      WRITE (IPRT, 1007)
-      CALL LOPASS (Y, N, FC, K, HLP, YF, NYF)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1007)
+      call lopass (y, n, fc, k, hlp, yf, nyf)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM LOPASS
 !
-      IF (IERR.EQ.0) THEN
-        WRITE (IPRT, 1004) (HLP(I), I = 1, K)
-        WRITE (IPRT, 1004) (YF(I), I = 1, NYF)
-      END IF
+      if (ierr.eq.0) then
+        write (iprt, 1004) (hlp(i), i = 1, k)
+        write (iprt, 1004) (yf(i), i = 1, nyf)
+      end if
 !
 !     TEST OF HIPASS
 !
-      WRITE (IPRT, 1008)
-      CALL HIPASS (Y, N, FC, K, HHP, YF, NYF)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1008)
+      call hipass (y, n, fc, k, hhp, yf, nyf)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM HIPASS
 !
-      IF (IERR.EQ.0) THEN
-        WRITE (IPRT, 1004) (HHP(I), I = 1, K)
-        WRITE (IPRT, 1004) (YF(I), I = 1, NYF)
-      END IF
+      if (ierr.eq.0) then
+        write (iprt, 1004) (hhp(i), i = 1, k)
+        write (iprt, 1004) (yf(i), i = 1, nyf)
+      end if
 !
 !     TEST OF HPCOEF
 !
-   20 WRITE (IPRT, 1003)
-      CALL HPCOEF (HLP, K, HHP)
-      WRITE (IPRT, 1002) IERR
+   20 write (iprt, 1003)
+      call hpcoef (hlp, k, hhp)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM HPCOEF
 !
-      IF (IERR.EQ.0) WRITE (IPRT, 1004) (HHP(I), I = 1, K)
+      if (ierr.eq.0) write (iprt, 1004) (hhp(i), i = 1, k)
 !
 !     TEST OF MAFLT
 !
-      WRITE (IPRT, 1020)
-      CALL MAFLT (Y, N, K, YF, NYF)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1020)
+      call maflt (y, n, k, yf, nyf)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM MAFLT
 !
-      IF (IERR.EQ.0) WRITE (IPRT, 1004) (YF(I), I = 1, NYF)
+      if (ierr.eq.0) write (iprt, 1004) (yf(i), i = 1, nyf)
 !
 !     TEST OF SLFLT
 !
-      WRITE (IPRT, 1005)
-      CALL SLFLT (Y, N, K, HLP, YF, NYF)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1005)
+      call slflt (y, n, k, hlp, yf, nyf)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM SLFLT
 !
-      IF (IERR.EQ.0) WRITE (IPRT, 1004) (YF(I), I = 1, NYF)
+      if (ierr.eq.0) write (iprt, 1004) (yf(i), i = 1, nyf)
 !
 !     TEST OF SAMPLE
 !
-      WRITE (IPRT, 1006)
-      CALL SAMPLE (YF, N, K, YS, NYS)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1006)
+      call sample (yf, n, k, ys, nys)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM SAMPLE
 !
-      IF (IERR.EQ.0) WRITE (IPRT, 1004) (YF(I), I = 1, NYS)
+      if (ierr.eq.0) write (iprt, 1004) (yf(i), i = 1, nys)
 !
 !     TEST OF ARFLT
 !
-      WRITE (IPRT, 1009)
-      CALL ARFLT (Y, N,  IAR, PHI, YF, NYF)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1009)
+      call arflt (y, n,  iar, phi, yf, nyf)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM ARFLT
 !
-      IF (IERR.EQ.0) WRITE (IPRT, 1004) (YF(I), I = 1, NYF)
+      if (ierr.eq.0) write (iprt, 1004) (yf(i), i = 1, nyf)
 !
 !     TEST OF DIF
 !
-      WRITE (IPRT, 1015)
-      CALL DIF (Y, N, YF, NYF)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1015)
+      call dif (y, n, yf, nyf)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM DIF
 !
-      IF (IERR.EQ.0) WRITE (IPRT, 1004) (YF(I), I = 1, NYF)
+      if (ierr.eq.0) write (iprt, 1004) (yf(i), i = 1, nyf)
 !
 !     TEST OF DIFM
 !
-      WRITE (IPRT, 1018)
-      CALL DIFM (Y, YMISS, N, YF, YFMISS, NYF)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1018)
+      call difm (y, ymiss, n, yf, yfmiss, nyf)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM DIFM
 !
-      IF (IERR.EQ.0) THEN
-         WRITE (IPRT, 1004) (YF(I), I = 1, NYF)
-         WRITE (IPRT, 1004) YFMISS
-      END IF
+      if (ierr.eq.0) then
+         write (iprt, 1004) (yf(i), i = 1, nyf)
+         write (iprt, 1004) yfmiss
+      end if
 !
 !     TEST OF GFSLF
 !
-      WRITE (IPRT, 1011)
-      CALL GFSLF (HLP, K)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1011)
+      call gfslf (hlp, k)
+      write (iprt, 1002) ierr
 !
 !     TEST OF GFARF
 !
-      WRITE (IPRT, 1013)
-      CALL GFARF (PHI, IAR)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1013)
+      call gfarf (phi, iar)
+      write (iprt, 1002) ierr
 !
 !     TEST OF DIFC
 !
-   30 WRITE (IPRT, 1010)
-      CALL DIFC (Y, N, NFAC, ND, IOD, IAR, PHI, LPHI, YF, NYF, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+   30 write (iprt, 1010)
+      call difc (y, n, nfac, nd, iod, iar, phi, lphi, yf, nyf, ldstak)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM DIFC
 !
-      IF (IERR.EQ.0) THEN
-        WRITE (IPRT, 1004) (PHI(I), I = 1, K)
-        WRITE (IPRT, 1004) (YF(I), I = 1, NYF)
-      END IF
+      if (ierr.eq.0) then
+        write (iprt, 1004) (phi(i), i = 1, k)
+        write (iprt, 1004) (yf(i), i = 1, nyf)
+      end if
 !
 !     TEST OF DIFMC
 !
-      WRITE (IPRT, 1019)
-      CALL DIFMC (Y, YMISS, N, NFAC, ND, IOD, IAR, PHI, LPHI, YF,
-     &   YFMISS, NYF, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1019)
+     call difmc (y, ymiss, n, nfac, nd, iod, iar, phi, lphi, yf,&
+     &   yfmiss, nyf, ldstak)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM DIFMC
 !
-      IF (IERR.EQ.0) THEN
-        WRITE (IPRT, 1004) (PHI(I), I = 1, K)
-        WRITE (IPRT, 1004) (YF(I), I = 1, NYF)
-        WRITE (IPRT, 1004) YFMISS
-      END IF
+      if (ierr.eq.0) then
+        write (iprt, 1004) (phi(i), i = 1, k)
+        write (iprt, 1004) (yf(i), i = 1, nyf)
+        write (iprt, 1004) yfmiss
+      end if
 !
 !     TEST OF GFSLFS
 !
-      WRITE (IPRT, 1012)
-      CALL GFSLFS (HLP, K, NF, FMIN, FMAX, GAIN, FREQ, NPRT, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1012)
+      call gfslfs (hlp, k, nf, fmin, fmax, gain, freq, nprt, ldstak)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM GFSLFS
 !
-      IF (IERR.EQ.0) THEN
-        WRITE (IPRT, 1004) (GAIN(I), I = 1, NF)
-        WRITE (IPRT, 1004) (FREQ(I), I = 1, NF)
-      END IF
+      if (ierr.eq.0) then
+        write (iprt, 1004) (gain(i), i = 1, nf)
+        write (iprt, 1004) (freq(i), i = 1, nf)
+      end if
 !
 !     TEST OF GFARFS
 !
-      WRITE (IPRT, 1014)
-      CALL GFARFS (PHI, IAR, NF, FMIN, FMAX, GAIN, PHAS, FREQ, NPRT,
-     &   LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      write (iprt, 1014)
+     call gfarfs (phi, iar, nf, fmin, fmax, gain, phas, freq, nprt,&
+     &   ldstak)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM GFARFS
 !
-      IF (IERR.EQ.0) THEN
-        WRITE (IPRT, 1004) (GAIN(I), I = 1, NF)
-        WRITE (IPRT, 1004) (PHAS(I), I = 1, NF)
-        WRITE (IPRT, 1004) (FREQ(I), I = 1, NF)
-      END IF
+      if (ierr.eq.0) then
+        write (iprt, 1004) (gain(i), i = 1, nf)
+        write (iprt, 1004) (phas(i), i = 1, nf)
+        write (iprt, 1004) (freq(i), i = 1, nf)
+      end if
 !
-      GO TO (100, 200, 300, 400), ITEST
+      go to (100, 200, 300, 400), itest
 !
 !     TEST SPECIAL CASES
 !
-  100 ITEST = ITEST + 1
+  100 itest = itest + 1
 !
 !     TEST OF GFSLFS
 !
-      FMIN = 0.4E0
-      FMAX = 0.1E0
-      NPRT = 1
-      WRITE (IPRT, 1012)
-      CALL GFSLFS (HLP, K, NF, FMIN, FMAX, GAIN, FREQ, NPRT, LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      fmin = 0.4e0
+      fmax = 0.1e0
+      nprt = 1
+      write (iprt, 1012)
+      call gfslfs (hlp, k, nf, fmin, fmax, gain, freq, nprt, ldstak)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM GFSLFS
 !
-      IF (IERR.EQ.0) THEN
-        WRITE (IPRT, 1004) (GAIN(I), I = 1, NF)
-        WRITE (IPRT, 1004) (FREQ(I), I = 1, NF)
-      END IF
+      if (ierr.eq.0) then
+        write (iprt, 1004) (gain(i), i = 1, nf)
+        write (iprt, 1004) (freq(i), i = 1, nf)
+      end if
 !
 !     TEST OF GFARFS
 !
-      NPRT = -1
-      WRITE (IPRT, 1014)
-      CALL GFARFS (PHI, IAR, NF, FMIN, FMAX, GAIN, PHAS, FREQ, NPRT,
-     &   LDSTAK)
-      WRITE (IPRT, 1002) IERR
+      nprt = -1
+      write (iprt, 1014)
+     call gfarfs (phi, iar, nf, fmin, fmax, gain, phas, freq, nprt,&
+     &   ldstak)
+      write (iprt, 1002) ierr
 !
 !     PRINT STORAGE FROM GFARFS
 !
-      IF (IERR.EQ.0) THEN
-        WRITE (IPRT, 1004) (GAIN(I), I = 1, NF)
-        WRITE (IPRT, 1004) (PHAS(I), I = 1, NF)
-        WRITE (IPRT, 1004) (FREQ(I), I = 1, NF)
-      END IF
+      if (ierr.eq.0) then
+        write (iprt, 1004) (gain(i), i = 1, nf)
+        write (iprt, 1004) (phas(i), i = 1, nf)
+        write (iprt, 1004) (freq(i), i = 1, nf)
+      end if
 !
 !     TEST MINIMUM PROBLEM SIZE
 !
-      N = 3
-      K = 1
-      NPRT = -1
-      IAR = 1
-      NF = 1
-      GO TO 20
+      n = 3
+      k = 1
+      nprt = -1
+      iar = 1
+      nf = 1
+      go to 20
 !
 !     TEST ERROR CONDITIONS
 !
-  200 ITEST = ITEST + 1
-      N = -5
-      FC = 1.0E0
-      NF = 0
-      LPHI = 0
-      NFAC = 1
-      ND(1) = -1
-      IOD(1) = -1
-      IAR = 0
-      K = -1
-      GO TO 10
+  200 itest = itest + 1
+      n = -5
+      fc = 1.0e0
+      nf = 0
+      lphi = 0
+      nfac = 1
+      nd(1) = -1
+      iod(1) = -1
+      iar = 0
+      k = -1
+      go to 10
 !
 !     TEST LDSTAK
 !
-  300 ITEST = ITEST + 1
-      N = 261
-      NPRT = 2
-      FC = 1.0E0/22.0E0
-      NF = 101
-      FMIN = 0.0E0
-      FMAX = 0.2E0
-      LPHI = 50
-      NFAC = 1
-      ND(1) = 1
-      IOD(1) = 1
-      IAR = 1
-      PHI(1) = 0.6E0
-      K = 41
-      YMISS = 11.0E0
-      LDSTAK = 0
-      GO TO 30
+  300 itest = itest + 1
+      n = 261
+      nprt = 2
+      fc = 1.0e0/22.0e0
+      nf = 101
+      fmin = 0.0e0
+      fmax = 0.2e0
+      lphi = 50
+      nfac = 1
+      nd(1) = 1
+      iod(1) = 1
+      iar = 1
+      phi(1) = 0.6e0
+      k = 41
+      ymiss = 11.0e0
+      ldstak = 0
+      go to 30
 !
-  400 RETURN
+  400 return
 !
 !     FORMAT STATEMENTS
 !
- 1001 FORMAT ('1', 14HTEST OF LPCOEF)
- 1002 FORMAT (/' IERR IS ', I5)
- 1003 FORMAT ('1', 14HTEST OF HPCOEF)
- 1004 FORMAT (10E10.3)
- 1005 FORMAT ('1', 13HTEST OF SLFLT)
- 1006 FORMAT ('1', 14HTEST OF SAMPLE)
- 1007 FORMAT ('1', 14HTEST OF LOPASS)
- 1008 FORMAT ('1', 14HTEST OF HIPASS)
- 1009 FORMAT ('1', 13HTEST OF ARFLT)
- 1010 FORMAT ('1', 12HTEST OF DIFC)
- 1011 FORMAT ('1', 13HTEST OF GFSLF)
- 1012 FORMAT ('1', 14HTEST OF GFSLFS)
- 1013 FORMAT ('1', 13HTEST OF GFARF)
- 1014 FORMAT ('1', 14HTEST OF GFARFS)
- 1015 FORMAT ('1', 11HTEST OF DIF)
- 1018 FORMAT ('1', 12HTEST OF DIFM)
- 1019 FORMAT ('1', 13HTEST OF DIFMC)
- 1020 FORMAT ('1', 13HTEST OF MAFLT)
+ 1001 format ('1', 14htest of lpcoef)
+ 1002 format (/' IERR IS ', i5)
+ 1003 format ('1', 14htest of hpcoef)
+ 1004 format (10e10.3)
+ 1005 format ('1', 13htest of slflt)
+ 1006 format ('1', 14htest of sample)
+ 1007 format ('1', 14htest of lopass)
+ 1008 format ('1', 14htest of hipass)
+ 1009 format ('1', 13htest of arflt)
+ 1010 format ('1', 12htest of difc)
+ 1011 format ('1', 13htest of gfslf)
+ 1012 format ('1', 14htest of gfslfs)
+ 1013 format ('1', 13htest of gfarf)
+ 1014 format ('1', 14htest of gfarfs)
+ 1015 format ('1', 11htest of dif)
+ 1018 format ('1', 12htest of difm)
+ 1019 format ('1', 13htest of difmc)
+ 1020 format ('1', 13htest of maflt)
 !
-      END
+      end

@@ -1,5 +1,5 @@
 !CORRS
-      SUBROUTINE CORRS(YM, N, M, IYM, LDSTAK, NPRT, VCV, IVCV)
+      subroutine corrs(ym, n, m, iym, ldstak, nprt, vcv, ivcv)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -21,32 +21,32 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   IVCV,IYM,LDSTAK,M,N,NPRT
+     integer&
+     &   ivcv,iym,ldstak,m,n,nprt
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   VCV(*),YM(*)
+     real(kind=wp) ::&
+     &   vcv(*),ym(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   AVG,CILO,CIUP,ICOR,IFP,IPRT,IWRK,LIWRK,LWRK,NALL0,PC,QF,
-     &   QUAD,RANK,SC,SCINV,SD,SLPC,SLSC,SRCC,T,WRK
+     integer&
+    &   avg,cilo,ciup,icor,ifp,iprt,iwrk,liwrk,lwrk,nall0,pc,qf,&
+     &   quad,rank,sc,scinv,sd,slpc,slsc,srcc,t,wrk
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   RSTAK(12)
-      INTEGER
-     &   ISTAK(12)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   rstak(12)
+     integer&
+     &   istak(12)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL FUNCTIONS
 !      INTEGER
@@ -57,15 +57,15 @@
 !      EXTERNAL CORRER,CORRMN,IPRINT,STKCLR,STKSET
 !
 !  INTRINSIC FUNCTIONS
-      INTRINSIC MAX
+      intrinsic max
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),RSTAK(1))
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
+      equivalence (dstak(1),rstak(1))
+      equivalence (dstak(1),istak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -171,89 +171,89 @@
 !
 !     SET UP NAME ARRAY
 !
-      DATA  NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6)
+     data  nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6)&
      &   /       'C',      'O',      'R',      'R',      'S',      ' '/
 !
 !     SET UP FRAMEWORK VARIABLES FOR NUMBER TYPES
 !
-      IFP = 3
+      ifp = 3
 !
 !     SET THE CALLER FLAG, THIS IS CORRS
 !
-      ICOR = 2
+      icor = 2
 !
 !     CHECK FOR ERRORS IN PARAMETERS
 !
-      CALL CORRER(NMSUB, M, N, IYM, IVCV, LDSTAK, ICOR, NPRT)
+      call correr(nmsub, m, n, iym, ivcv, ldstak, icor, nprt)
 !
 !     IF THERE IS AN ERROR RETURN TO THE CALLERS ROUTINE
 !
-      IF (IERR.EQ.0) GO TO 10
+      if (ierr.eq.0) go to 10
 !
 !     PRINT CORRECT FORM OF CALL STATEMENT AND RETURN TO CALLER
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
-      RETURN
+      call iprint(iprt)
+      write (iprt,1000)
+      return
 !
 !     INITIALIZE THE STACK
 !
-   10 CALL STKSET (LDSTAK, 4)
-      NALL0 = STKST(1)
+   10 call stkset (ldstak, 4)
+      nall0 = stkst(1)
 !
 !     ALLOCATE SPACE IN DSTAK FOR MATRICES
 !
-      LIWRK = MAX(N,M)
-      LWRK = LIWRK
+      liwrk = max(n,m)
+      lwrk = liwrk
 !
-      WRK = STKGET(LWRK,IFP)
+      wrk = stkget(lwrk,ifp)
 !
-      IF (NPRT.EQ.0) THEN
-         IWRK = WRK
-         T = WRK
-         RANK = WRK
-         SC = WRK
-         SCINV = WRK
-         SLSC = WRK
-         PC = WRK
-         SLPC = WRK
-         QUAD = WRK
-         QF = WRK
-      ELSE
-         IWRK = STKGET(LIWRK,2)
-         T = STKGET(M,IFP)
-         RANK = STKGET(N*M,IFP)
-         SC = STKGET(M*M,IFP)
-         SCINV = STKGET(M*M,IFP)
-         SLSC = STKGET(M*M,IFP)
-         PC = STKGET(M*M,IFP)
-         SLPC = STKGET(M*M,IFP)
-         QUAD = STKGET(3*N,IFP)
-         QF = STKGET(M*M,IFP)
-      END IF
+      if (nprt.eq.0) then
+         iwrk = wrk
+         t = wrk
+         rank = wrk
+         sc = wrk
+         scinv = wrk
+         slsc = wrk
+         pc = wrk
+         slpc = wrk
+         quad = wrk
+         qf = wrk
+      else
+         iwrk = stkget(liwrk,2)
+         t = stkget(m,ifp)
+         rank = stkget(n*m,ifp)
+         sc = stkget(m*m,ifp)
+         scinv = stkget(m*m,ifp)
+         slsc = stkget(m*m,ifp)
+         pc = stkget(m*m,ifp)
+         slpc = stkget(m*m,ifp)
+         quad = stkget(3*n,ifp)
+         qf = stkget(m*m,ifp)
+      end if
 !
 !     THE FOLLOWING VARIABLES HAVE BEEN INDIRECTLY EQUIVALENCED-
 !
-      CIUP = SLSC
-      CILO = SLPC
-      AVG = WRK
-      SD = WRK
-      SRCC = SCINV
+      ciup = slsc
+      cilo = slpc
+      avg = wrk
+      sd = wrk
+      srcc = scinv
 !
-      CALL CORRMN(YM, N, M, IYM, RSTAK(AVG), RSTAK(SD), RSTAK(T),
-     &   RSTAK(RANK), RSTAK(SC), RSTAK(PC), RSTAK(SCINV), ISTAK(IWRK),
-     &   RSTAK(WRK), RSTAK(SLSC), RSTAK(SLPC), RSTAK(SRCC),
-     &   RSTAK(QUAD), RSTAK(CIUP), RSTAK(CILO), RSTAK(QF),
-     &   NPRT, VCV, IVCV, LIWRK, LWRK)
+     call corrmn(ym, n, m, iym, rstak(avg), rstak(sd), rstak(t),&
+    &   rstak(rank), rstak(sc), rstak(pc), rstak(scinv), istak(iwrk),&
+    &   rstak(wrk), rstak(slsc), rstak(slpc), rstak(srcc),&
+    &   rstak(quad), rstak(ciup), rstak(cilo), rstak(qf),&
+     &   nprt, vcv, ivcv, liwrk, lwrk)
 !
 !     RETURN AREA TO WORK
 !
-      CALL STKCLR(NALL0)
+      call stkclr(nall0)
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &   '       CALL CORRS (YM, N, M, IYM, LDSTAK, NPRT, VCV, IVCV)')
-      END
+      end

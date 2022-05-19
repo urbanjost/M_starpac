@@ -1,5 +1,5 @@
 !BFS
-      SUBROUTINE BFS(Y1, Y2, N)
+      subroutine bfs(y1, y2, n)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,41 +16,41 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      INTEGER
-     &   N
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   Y1(*),Y2(*)
+     real(kind=wp) ::&
+     &   y1(*),y2(*)
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   ALPHA,DELTA,FMAX,FMIN,YMISS1,YMISS2
-      INTEGER
-     &   ICCOV,ICSPC2,INDEX1,INDEX2,INLPPC,IPHAS,IPRT,JCCOV,JNLPPC,
-     &   LAGMAX,LAGMX1,LDSMIN,LDSTAK,LPCV,LW,LY,M,NF,NPRT,NW
+     real(kind=wp) ::&
+     &   alpha,delta,fmax,fmin,ymiss1,ymiss2
+     integer&
+    &   iccov,icspc2,index1,index2,inlppc,iphas,iprt,jccov,jnlppc,&
+     &   lagmax,lagmx1,ldsmin,ldstak,lpcv,lw,ly,m,nf,nprt,nw
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   CCOV(101,2,2),CEVEN(101),CODD(101),CSPC2(101,4),FREQ(101),
-     &   PHAS(101,4),SPCF1(101),SPCF2(101),W(101),XAXIS(404),
-     &   YAXIS(404)
-      INTEGER
-     &   ISYM(404),LAGS(4),NLPPC(1,1,1)
-      LOGICAL
-     &   OPTION(4)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+    &   ccov(101,2,2),ceven(101),codd(101),cspc2(101,4),freq(101),&
+    &   phas(101,4),spcf1(101),spcf2(101),w(101),xaxis(404),&
+     &   yaxis(404)
+     integer&
+     &   isym(404),lags(4),nlppc(1,1,1)
+     logical&
+     &   option(4)
+     character&
+     &   nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL BFSDRV,IPRINT,PARZEN,SETLAG
 !
 !  COMMON BLOCKS
-      COMMON /ERRCHK/IERR
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -157,61 +157,61 @@
 !
 !     SET UP NAME ARRAYS
 !
-      DATA NMSUB(1), NMSUB(2), NMSUB(3), NMSUB(4), NMSUB(5), NMSUB(6) /
+     data nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6) /&
      &   'B','F','S',' ',' ',' '/
 !
 !     SET UP FOR ERROR CHECKING
 !
-      OPTION(1) = .FALSE.
-      OPTION(2) = .FALSE.
-      OPTION(3) = .FALSE.
-      OPTION(4) = .FALSE.
+      option(1) = .false.
+      option(2) = .false.
+      option(3) = .false.
+      option(4) = .false.
 !
-      ICCOV = 101
-      JCCOV = 2
-      M = 2
-      INDEX1 = 1
-      INDEX2 = 2
+      iccov = 101
+      jccov = 2
+      m = 2
+      index1 = 1
+      index2 = 2
 !
-      ICSPC2 = 101
-      IPHAS = 101
+      icspc2 = 101
+      iphas = 101
 !
-      LDSTAK = 0
-      LDSMIN = 0
+      ldstak = 0
+      ldsmin = 0
 !
-      NF = 101
-      YMISS1 = 1.0E0
-      YMISS2 = 1.0E0
-      INLPPC = 1
-      JNLPPC = 1
-      LW = 101
-      LY = N
-      LPCV = 404
+      nf = 101
+      ymiss1 = 1.0e0
+      ymiss2 = 1.0e0
+      inlppc = 1
+      jnlppc = 1
+      lw = 101
+      ly = n
+      lpcv = 404
 !
 !     SET MAXIMUM LAG VALUE (LAGMAX)
 !     SET NUMBER OF LAG WINDOW TRUCCATION POINTS (NW)
 !
-      CALL SETLAG(N, LAGMAX)
-      NW = 4
+      call setlag(n, lagmax)
+      nw = 4
 !
 !     CALL THE CONTROLING ROUTINE FOR THE BIVARIATE SPECTRUM ROUTINES
 !
-      CALL BFSDRV(Y1, Y2, YMISS1, YMISS2, CCOV, NLPPC, SPCF1, SPCF2,
-     &   NF, FMIN, FMAX, FREQ, N, NW, LAGMAX, LAGS, LAGMX1, W, LW,
-     &   DELTA, ISYM, XAXIS, YAXIS, LPCV, ALPHA, NPRT, PARZEN, ICCOV,
-     &   JCCOV, M, INDEX1, INDEX2, CSPC2, PHAS, ICSPC2, IPHAS, CODD,
-     &   CEVEN, W, LW, NMSUB, LDSMIN, LDSTAK, OPTION, N, INLPPC,
-     &   JNLPPC, LY)
+     call bfsdrv(y1, y2, ymiss1, ymiss2, ccov, nlppc, spcf1, spcf2,&
+    &   nf, fmin, fmax, freq, n, nw, lagmax, lags, lagmx1, w, lw,&
+    &   delta, isym, xaxis, yaxis, lpcv, alpha, nprt, parzen, iccov,&
+    &   jccov, m, index1, index2, cspc2, phas, icspc2, iphas, codd,&
+    &   ceven, w, lw, nmsub, ldsmin, ldstak, option, n, inlppc,&
+     &   jnlppc, ly)
 !
-      IF (IERR.EQ.0) RETURN
+      if (ierr.eq.0) return
 !
-      CALL IPRINT(IPRT)
-      WRITE (IPRT,1000)
-      RETURN
+      call iprint(iprt)
+      write (iprt,1000)
+      return
 !
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (/42H THE CORRECT FORM OF THE CALL STATEMENT IS//
+1000 format (/42h the correct form of the call statement is//&
      &   '       CALL BFS (Y1, Y2, N)')
-      END
+      end

@@ -1,5 +1,5 @@
 !EPRINT
-      SUBROUTINE EPRINT
+      subroutine eprint
 !
 !  THIS SUBROUTINE PRINTS THE LAST ERROR MESSAGE, IF ANY.
 !
@@ -7,13 +7,13 @@
 !  VARIABLE DECLARATIONS
 !
 !  LOCAL ARRAYS
-      CHARACTER MESSG(1)*4
+      character messg(1)*4
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL E9RINT
 !
 !
-      CALL E9RINT(MESSG,1,1,.FALSE.)
-      RETURN
+      call e9rint(messg,1,1,.false.)
+      return
 !
-      END
+      end

@@ -1,8 +1,8 @@
 !AMEOUT
-      SUBROUTINE AMEOUT(Y, N, IFIXD,
-     &   PAR, NPAR, NPARE, RES, IPTOUT, NDIGIT, PAGE, IDF, COND, RSS,
-     &   RSD, YSS, EXACT, PVT, SDPVT, SDREST, VCVL, LVCVL, IVCVPT,
-     &   ISKULL, AMEHDR, WIDE)
+     subroutine ameout(y, n, ifixd,&
+    &   par, npar, npare, res, iptout, ndigit, page, idf, cond, rss,&
+    &   rsd, yss, exact, pvt, sdpvt, sdrest, vcvl, lvcvl, ivcvpt,&
+     &   iskull, amehdr, wide)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,39 +19,39 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   COND,RSD,RSS,YSS
-      INTEGER
-     &   IDF,IVCVPT,LVCVL,N,NDIGIT,NPAR,NPARE
-      LOGICAL
-     &   EXACT,PAGE,WIDE
+     real(kind=wp) ::&
+     &   cond,rsd,rss,yss
+     integer&
+     &   idf,ivcvpt,lvcvl,n,ndigit,npar,npare
+     logical&
+     &   exact,page,wide
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),PVT(*),RES(*),SDPVT(*),SDREST(*),VCVL(*),Y(*)
-      INTEGER
-     &   IFIXD(*),IPTOUT(*),ISKULL(10)
+     real(kind=wp) ::&
+     &   par(*),pvt(*),res(*),sdpvt(*),sdrest(*),vcvl(*),y(*)
+     integer&
+     &   ifixd(*),iptout(*),iskull(10)
 !
 !  SUBROUTINE ARGUMENTS
-       EXTERNAL AMEHDR
+       external amehdr
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR,IFLAG,MBO,MBOL,MSPECT,NFACT,NPARAR,NPARDF,NPARMA,
-     &   NRESTS,PARAR,PARDF,PARMA,T,TEMP
+     integer&
+    &   ierr,iflag,mbo,mbol,mspect,nfact,nparar,npardf,nparma,&
+     &   nrests,parar,pardf,parma,t,temp
 !
 !  ARRAYS IN COMMON
-      DOUBLE PRECISION DSTAK(12)
+      double precision dstak(12)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM
-      INTEGER
-     &   I,IAMHD,IPRT,ISUBHD
+     real(kind=wp) ::&
+     &   fplm
+     integer&
+     &   i,iamhd,iprt,isubhd
 !
 !  LOCAL ARRAYS
-      INTEGER
-     &   ISTAK(12)
+     integer&
+     &   istak(12)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -62,13 +62,13 @@
 !      EXTERNAL AMEPT1,AMEPT2,AMLST,IPRINT,MODSUM,NLSKL,VCVOTF
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
-      COMMON /MDLTSC/MSPECT,NFACT,PARDF,NPARDF,PARAR,NPARAR,PARMA,
-     &   NPARMA,MBO,MBOL,T,TEMP,NRESTS,IFLAG
+      common /cstak/dstak
+      common /errchk/ierr
+     common /mdltsc/mspect,nfact,pardf,npardf,parar,nparar,parma,&
+     &   nparma,mbo,mbol,t,temp,nrests,iflag
 !
 !  EQUIVALENCES
-      EQUIVALENCE (DSTAK(1),ISTAK(1))
+      equivalence (dstak(1),istak(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -197,129 +197,129 @@
 !        THE SUM OF THE SQUARES ABOUT THE MEAN Y VALUE.
 !
 !
-      FPLM = R1MACH(2)
+      fplm = r1mach(2)
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      IF ((IERR.GE.1) .AND. (IERR.NE.4)) GO TO 60
+      if ((ierr.ge.1) .and. (ierr.ne.4)) go to 60
 !
 !     TEST FOR EXACT FIT
 !
-      IF ((IDF.LE.0) .OR. EXACT) GO TO 70
+      if ((idf.le.0) .or. exact) go to 70
 !
 !     PRINT ERROR HEADING IF NECESSARY
 !
-      IF (IERR.EQ.4) CALL NLSKL(ISKULL, PAGE, WIDE, AMEHDR)
+      if (ierr.eq.4) call nlskl(iskull, page, wide, amehdr)
 !
 !     PRINT PRIMARY REPORT
 !
-      IF ((IERR.EQ.0) .AND. (IPTOUT(3).EQ.0)) GO TO 10
-      ISUBHD = 0
-      CALL AMEHDR(PAGE, WIDE, ISUBHD)
-      CALL AMEPT1(N, Y, PVT, SDPVT, RES, SDREST, IPTOUT, NDIGIT)
+      if ((ierr.eq.0) .and. (iptout(3).eq.0)) go to 10
+      isubhd = 0
+      call amehdr(page, wide, isubhd)
+      call amept1(n, y, pvt, sdpvt, res, sdrest, iptout, ndigit)
 !
 !     PRINT STANDARDIZED RESIDUAL PLOTS
 !
-   10 IF (IPTOUT(4).EQ.0) GO TO 20
-      ISUBHD = 0
-      CALL AMEHDR(PAGE, WIDE, ISUBHD)
+   10 if (iptout(4).eq.0) go to 20
+      isubhd = 0
+      call amehdr(page, wide, isubhd)
 !
-      CALL AMEPT2 (RES, SDREST, N, RSS)
+      call amept2 (res, sdrest, n, rss)
 !
 !     PRINT THE COVARIANCE AND CORRELATION MATRIX
 !
-   20 IF ((IERR.EQ.0) .AND. (IPTOUT(5).EQ.0)) RETURN
-      ISUBHD = 0
-      CALL AMEHDR(PAGE, WIDE, ISUBHD)
-      CALL MODSUM(NFACT, ISTAK(MSPECT))
+   20 if ((ierr.eq.0) .and. (iptout(5).eq.0)) return
+      isubhd = 0
+      call amehdr(page, wide, isubhd)
+      call modsum(nfact, istak(mspect))
 !
-      IF ((IERR.EQ.0) .AND. (IPTOUT(5).LE.1)) GO TO 30
+      if ((ierr.eq.0) .and. (iptout(5).le.1)) go to 30
 !
-      CALL VCVOTF(NPARE, VCVL, LVCVL, .TRUE., NPAR, IFIXD, IVCVPT)
+      call vcvotf(npare, vcvl, lvcvl, .true., npar, ifixd, ivcvpt)
 !
 !     PRINT ANALYSIS SUMMARY
 !
-   30 WRITE (IPRT,1000)
-      IAMHD = 3
-      CALL AMLST(IAMHD, PAR, NPAR, NFACT, ISTAK(MSPECT), N, VCVL, LVCVL,
-     &   PAR, NPAR, PAR, NPAR, IFIXD, RSS, RSD, NPARDF, NPARE, IDF)
-      WRITE (IPRT,1050) COND
+   30 write (iprt,1000)
+      iamhd = 3
+     call amlst(iamhd, par, npar, nfact, istak(mspect), n, vcvl, lvcvl,&
+     &   par, npar, par, npar, ifixd, rss, rsd, npardf, npare, idf)
+      write (iprt,1050) cond
 !
-      IF (RSS.GT.YSS) WRITE (IPRT,1060)
+      if (rss.gt.yss) write (iprt,1060)
 !
-      RETURN
+      return
 !
 !     PRINT OUT ERROR HEADING
 !
-   60 CALL NLSKL(ISKULL, PAGE, WIDE, AMEHDR)
+   60 call nlskl(iskull, page, wide, amehdr)
 !
-      IF (IERR.LE.2) RETURN
+      if (ierr.le.2) return
 !
 !     PRINT SECONDARY REPORT
 !
-   70 CONTINUE
-      ISUBHD = 0
-      CALL AMEHDR(PAGE, WIDE, ISUBHD)
-      CALL MODSUM(NFACT, ISTAK(MSPECT))
-      IF (IERR.NE.0) WRITE (IPRT,1080)
-      WRITE (IPRT,1000)
-      IAMHD = 2
-      CALL AMLST(IAMHD, PAR, NPAR, NFACT, ISTAK(MSPECT), N, VCVL, LVCVL,
-     &   PAR, NPAR, PAR, NPAR, IFIXD, RSS, RSD, NPARDF, NPARE, IDF)
-      IF (IERR.NE.3) WRITE (IPRT,1050) COND
+   70 continue
+      isubhd = 0
+      call amehdr(page, wide, isubhd)
+      call modsum(nfact, istak(mspect))
+      if (ierr.ne.0) write (iprt,1080)
+      write (iprt,1000)
+      iamhd = 2
+     call amlst(iamhd, par, npar, nfact, istak(mspect), n, vcvl, lvcvl,&
+     &   par, npar, par, npar, ifixd, rss, rsd, npardf, npare, idf)
+      if (ierr.ne.3) write (iprt,1050) cond
 !
-      IF ((IERR.EQ.0) .AND. (.NOT.EXACT) .AND. (IDF.LE.0)) WRITE
-     &   (IPRT,1070)
-      IF ((IERR.EQ.0) .AND. EXACT) WRITE (IPRT,1090)
+     if ((ierr.eq.0) .and. (.not.exact) .and. (idf.le.0)) write&
+     &   (iprt,1070)
+      if ((ierr.eq.0) .and. exact) write (iprt,1090)
 !
-      IF (IERR.NE.0) GO TO 100
+      if (ierr.ne.0) go to 100
 !
-      DO 90 I=1,N
-         SDREST(I) = 0.0E0
-         SDPVT(I) = 0.0E0
-   90 CONTINUE
+      do 90 i=1,n
+         sdrest(i) = 0.0e0
+         sdpvt(i) = 0.0e0
+   90 continue
 !
-      RETURN
+      return
 !
-  100 CONTINUE
+  100 continue
 !
-      DO 110 I=1,N
-         SDREST(I) = FPLM
-         SDPVT(I) = FPLM
-  110 CONTINUE
+      do 110 i=1,n
+         sdrest(i) = fplm
+         sdpvt(i) = fplm
+  110 continue
 !
 !     PRINT OUT ERROR EXIT STATISTICS
 !
-      CALL AMEPT1(N, Y, PVT, SDPVT, RES, SDREST, IPTOUT, NDIGIT)
+      call amept1(n, y, pvt, sdpvt, res, sdrest, iptout, ndigit)
 !
 !     WIPE OUT SDREST VECTOR
 !
-      DO 120 I=1,N
-         SDREST(I) = FPLM
-  120 CONTINUE
+      do 120 i=1,n
+         sdrest(i) = fplm
+  120 continue
 !
 !     WIPE OUT VCV MATRIX
 !
-      DO 140 I=1,LVCVL
-         VCVL(I) = FPLM
-  140 CONTINUE
+      do 140 i=1,lvcvl
+         vcvl(i) = fplm
+  140 continue
 !
-      RETURN
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT (///33H ESTIMATES FROM LEAST SQUARES FIT/1X, 33('-'))
- 1050 FORMAT (/29H APPROXIMATE CONDITION NUMBER, 10X, G15.7)
- 1060 FORMAT (//52H THE RESIDUAL SUM OF SQUARES AFTER THE LEAST SQUARES,
-     &   20H FIT IS GREATER THAN/35H THE SUM OF SQUARES ABOUT THE MEAN ,
-     &   19HY OBSERVATION.  THE, 14H MODEL IS LESS/17H REPRESENTATIVE O,
-     &   39HF THE DATA THAN A SIMPLE AVERAGE.  DATA, 15H AND MODEL SHOU,
-     &   2HLD/48H BE CHECKED TO BE SURE THAT THEY ARE COMPATABLE.)
- 1070 FORMAT (/49H THE DEGREES OF FREEDOM FOR THIS PROBLEM IS ZERO.,
-     &   54H  STATISTICAL ANALYSIS OF THE RESULTS IS NOT POSSIBLE.)
- 1080 FORMAT (//40H THE FOLLOWING SUMMARY SHOULD BE USED TO, 8H ANALYZE,
-     &   30H THE ABOVE MENTIONED PROBLEMS.)
- 1090 FORMAT (/50H THE LEAST SQUARES FIT OF THE DATA TO THE MODEL IS,
-     &   35H EXACT TO WITHIN MACHINE PRECISION./20H STATISTICAL ANALYSI,
-     &   33HS OF THE RESULTS IS NOT POSSIBLE.)
-      END
+ 1000 format (///33h estimates from least squares fit/1x, 33('-'))
+ 1050 format (/29h approximate condition number, 10x, g15.7)
+1060 format (//52h the residual sum of squares after the least squares,&
+    &   20h fit is greater than/35h the sum of squares about the mean ,&
+    &   19hy observation.  the, 14h model is less/17h representative o,&
+    &   39hf the data than a simple average.  data, 15h and model shou,&
+     &   2hld/48h be checked to be sure that they are compatable.)
+1070 format (/49h the degrees of freedom for this problem is zero.,&
+     &   54h  statistical analysis of the results is not possible.)
+1080 format (//40h the following summary should be used to, 8h analyze,&
+     &   30h the above mentioned problems.)
+1090 format (/50h the least squares fit of the data to the model is,&
+    &   35h exact to within machine precision./20h statistical analysi,&
+     &   33hs of the results is not possible.)
+      end

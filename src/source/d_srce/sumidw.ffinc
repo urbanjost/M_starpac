@@ -1,5 +1,5 @@
 !SUMIDW
-      SUBROUTINE SUMIDW(X, W, N, XMEANW, SUMDI)
+      subroutine sumidw(x, w, n, xmeanw, sumdi)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,20 +18,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   SUMDI,XMEANW
-      INTEGER
-     &   N
+     real(kind=wp) ::&
+     &   sumdi,xmeanw
+     integer&
+     &   n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   W(N),X(N)
+     real(kind=wp) ::&
+     &   w(n),x(n)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   DIFF,I
-      INTEGER
-     &   K
+     real(kind=wp) ::&
+     &   diff,i
+     integer&
+     &   k
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -54,13 +54,13 @@
 !     REAL(KIND=WP) :: XMEANW
 !        INPUT PARAMETER.  THE WEIGHTED MEAN OF X.
 !
-      I = 0.0_WP
-      SUMDI = 0.0_WP
-      DO 10 K=1,N
-         IF (W(K).EQ.0.0_WP) GO TO 10
-         DIFF = X(K) - XMEANW
-         I = I + 1.0_WP
-         SUMDI = SUMDI + I*DIFF
-   10 CONTINUE
-      RETURN
-      END
+      i = 0.0_wp
+      sumdi = 0.0_wp
+      do 10 k=1,n
+         if (w(k).eq.0.0_wp) go to 10
+         diff = x(k) - xmeanw
+         i = i + 1.0_wp
+         sumdi = sumdi + i*diff
+   10 continue
+      return
+      end

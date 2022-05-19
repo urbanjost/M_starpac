@@ -1,7 +1,7 @@
 !ACFOUT
-      SUBROUTINE ACFOUT (YMEAN, YSD, N, NUSED, LAGMAX, RHO, SDRHO,
-     &   PRHO, NLPPA, AIC, LAIC, FTEST, IAR, PHI, OSPVAR, CHIA, CHIAP,
-     &   NDFCHI, IFMISS, YMISS, DIFFER, NEWPG, NFAC, ND, IOD, NTIMES)
+     subroutine acfout (ymean, ysd, n, nused, lagmax, rho, sdrho,&
+    &   prho, nlppa, aic, laic, ftest, iar, phi, ospvar, chia, chiap,&
+     &   ndfchi, ifmiss, ymiss, differ, newpg, nfac, nd, iod, ntimes)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,30 +19,30 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) :: CHIA,CHIAP,OSPVAR,YMEAN,YMISS,YSD
-      INTEGER
-     &   IAR,LAGMAX,LAIC,N,NDFCHI,NFAC,NTIMES,NUSED
-      LOGICAL
-     &   DIFFER,IFMISS,NEWPG
+      real(kind=wp) :: chia,chiap,ospvar,ymean,ymiss,ysd
+     integer&
+     &   iar,lagmax,laic,n,ndfchi,nfac,ntimes,nused
+     logical&
+     &   differ,ifmiss,newpg
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   AIC(LAIC),FTEST(2,LAGMAX),PHI(LAGMAX),PRHO(LAGMAX),
-     &   RHO(LAGMAX),SDRHO(LAGMAX)
-      INTEGER
-     &   IOD(*),ND(*),NLPPA(LAGMAX)
+     real(kind=wp) ::&
+    &   aic(laic),ftest(2,lagmax),phi(lagmax),prho(lagmax),&
+     &   rho(lagmax),sdrho(lagmax)
+     integer&
+     &   iod(*),nd(*),nlppa(lagmax)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   FPLM,PMISS
-      INTEGER
-     &   IPRT,NMISS
+     real(kind=wp) ::&
+     &   fplm,pmiss
+     integer&
+     &   iprt,nmiss
 !
 !  LOCAL ARRAYS
-      REAL(KIND=WP) ::
-     &   YMMISS(1)
-      INTEGER
-     &   ISYM(1)
+     real(kind=wp) ::&
+     &   ymmiss(1)
+     integer&
+     &   isym(1)
 !
 !  EXTERNAL FUNCTIONS
 !      REAL(KIND=WP) ::
@@ -127,96 +127,96 @@
 !        THE STANDARD DEVIATION OF THE OBSERVED SERIES.
 !
 !
-      FPLM = D1MACH(2)
+      fplm = d1mach(2)
 !
-      YMMISS(1) = FPLM
+      ymmiss(1) = fplm
 !
 !     PRINT SUMMARY INFORMATION
 !
-      CALL IPRINT(IPRT)
+      call iprint(iprt)
 !
-      IF (NEWPG) WRITE(IPRT, 1004)
+      if (newpg) write(iprt, 1004)
 !
-      CALL VERSP (.TRUE.)
-      WRITE(IPRT, 1005)
-      IF (DIFFER) CALL ACFDTL(NFAC, ND, IOD, NTIMES)
-      WRITE(IPRT, 1000) YMEAN, YSD, N
-      IF (.NOT. IFMISS) GO TO 10
-      NMISS = N - NUSED
-      PMISS = 100.0_WP * NMISS / N
-      WRITE(IPRT, 1003) NMISS, PMISS
-   10 WRITE(IPRT, 1006) LAGMAX
-      IF (IFMISS) WRITE(IPRT, 1007) YMISS
+      call versp (.true.)
+      write(iprt, 1005)
+      if (differ) call acfdtl(nfac, nd, iod, ntimes)
+      write(iprt, 1000) ymean, ysd, n
+      if (.not. ifmiss) go to 10
+      nmiss = n - nused
+      pmiss = 100.0_wp * nmiss / n
+      write(iprt, 1003) nmiss, pmiss
+   10 write(iprt, 1006) lagmax
+      if (ifmiss) write(iprt, 1007) ymiss
 !
-      IF (YSD .GT. 0.0_WP) GO TO 20
+      if (ysd .gt. 0.0_wp) go to 20
 !
-      WRITE (IPRT, 1010)
-      RETURN
+      write (iprt, 1010)
+      return
 !
-   20 CONTINUE
+   20 continue
 !
 !     PRINT ACF INFORMATION
 !
-      WRITE(IPRT, 1008)
-      WRITE(IPRT, 1001)
-      CALL ACFLST (RHO, SDRHO, NLPPA, LAGMAX, IFMISS, CHIA, NDFCHI,
-     &   CHIAP)
+      write(iprt, 1008)
+      write(iprt, 1001)
+     call acflst (rho, sdrho, nlppa, lagmax, ifmiss, chia, ndfchi,&
+     &   chiap)
 !
 !     PLOT ACF INFORMATION
 !
-      WRITE(IPRT, 1004)
-      CALL VERSP (.TRUE.)
-      WRITE(IPRT, 1001)
-      IF (DIFFER) CALL ACFDTL(NFAC, ND, IOD, NTIMES)
-      CALL VPMN(RHO, YMMISS, LAGMAX, 1, LAGMAX, 1, 0, ISYM, 1, 0,
-     &   -1.0_WP, 1.0_WP, 1.0_WP, 1.0_WP, IFMISS, 0, 0, 1)
+      write(iprt, 1004)
+      call versp (.true.)
+      write(iprt, 1001)
+      if (differ) call acfdtl(nfac, nd, iod, ntimes)
+     call vpmn(rho, ymmiss, lagmax, 1, lagmax, 1, 0, isym, 1, 0,&
+     &   -1.0_wp, 1.0_wp, 1.0_wp, 1.0_wp, ifmiss, 0, 0, 1)
 !
 !     CHECK WHETHER PACF HAVE BEEN COMPUTED
 !
-      IF (NUSED .LE. N-1) RETURN
+      if (nused .le. n-1) return
 !
 !     PRINT PACF INFORMATION AND AUTOREGRESSIVE MODEL ORDER SELECTION
 !     STATISTICS
 !
-      WRITE(IPRT, 1004)
-      CALL VERSP (.TRUE.)
-      WRITE(IPRT, 1002)
-      WRITE (IPRT, 1009)
-      IF (DIFFER) CALL ACFDTL(NFAC, ND, IOD, NTIMES)
-      CALL AOSLST (PRHO, AIC, FTEST, LAGMAX, LAIC, IAR, PHI, OSPVAR,
-     &   .TRUE., N)
+      write(iprt, 1004)
+      call versp (.true.)
+      write(iprt, 1002)
+      write (iprt, 1009)
+      if (differ) call acfdtl(nfac, nd, iod, ntimes)
+     call aoslst (prho, aic, ftest, lagmax, laic, iar, phi, ospvar,&
+     &   .true., n)
 !
 !     PLOT PACF INFORMATION
 !
-      WRITE(IPRT, 1004)
-      CALL VERSP (.TRUE.)
-      WRITE(IPRT, 1002)
-      IF (DIFFER) CALL ACFDTL(NFAC, ND, IOD, NTIMES)
-      CALL VPMN(PRHO, YMMISS, NDFCHI, 1, NDFCHI, 1, 0, ISYM, 1, 0,
-     &   -1.0_WP, 1.0_WP, 1.0_WP, 1.0_WP, IFMISS, 0, 0, 1)
-      RETURN
+      write(iprt, 1004)
+      call versp (.true.)
+      write(iprt, 1002)
+      if (differ) call acfdtl(nfac, nd, iod, ntimes)
+     call vpmn(prho, ymmiss, ndfchi, 1, ndfchi, 1, 0, isym, 1, 0,&
+     &   -1.0_wp, 1.0_wp, 1.0_wp, 1.0_wp, ifmiss, 0, 0, 1)
+      return
 !
 !     FORMAT STATEMENTS
 !
- 1000 FORMAT(/
-     &   ' AVERAGE OF THE SERIES                 = ', G14.7/
-     &   ' STANDARD DEVIATION OF THE SERIES      = ', G14.7/
-     &   ' NUMBER OF TIME POINTS                 = ', I10)
- 1001 FORMAT (40H AUTOCORRELATION FUNCTION ESTIMATE (ACF)/)
- 1002 FORMAT (49H PARTIAL AUTOCORRELATION FUNCTION ESTIMATE (PACF)/)
- 1003 FORMAT (
-     &   ' NUMBER OF MISSING OBSERVATIONS        = ', I10/
-     &   ' PERCENTAGE OF OBSERVATIONS MISSING    = ', F10.4)
- 1004 FORMAT ('1')
- 1005 FORMAT ( 25H AUTOCORRELATION ANALYSIS)
- 1006 FORMAT(
-     &   ' LARGEST LAG VALUE USED                = ', I10)
- 1007 FORMAT(
-     &   ' MISSING VALUE CODE                    = ', G14.7)
- 1008 FORMAT(//)
- 1009 FORMAT (46H AND AUTOREGRESSIVE ORDER SELECTION STATISTICS///)
- 1010 FORMAT (///36H THE AUTOCORRELATIONS OF THIS SERIES,
-     &   22H COULD NOT BE COMPUTED/
-     &   50H BECAUSE THE LAG ZERO AUTOCOVARIANCE OF THE SERIES,
-     &    9H IS ZERO.)
-      END
+1000 format(/&
+    &   ' AVERAGE OF THE SERIES                 = ', g14.7/&
+    &   ' STANDARD DEVIATION OF THE SERIES      = ', g14.7/&
+     &   ' NUMBER OF TIME POINTS                 = ', i10)
+ 1001 format (40h autocorrelation function estimate (acf)/)
+ 1002 format (49h partial autocorrelation function estimate (pacf)/)
+1003 format (&
+    &   ' NUMBER OF MISSING OBSERVATIONS        = ', i10/&
+     &   ' PERCENTAGE OF OBSERVATIONS MISSING    = ', f10.4)
+ 1004 format ('1')
+ 1005 format ( 25h autocorrelation analysis)
+1006 format(&
+     &   ' LARGEST LAG VALUE USED                = ', i10)
+1007 format(&
+     &   ' MISSING VALUE CODE                    = ', g14.7)
+ 1008 format(//)
+ 1009 format (46h and autoregressive order selection statistics///)
+1010 format (///36h the autocorrelations of this series,&
+    &   22h could not be computed/&
+    &   50h because the lag zero autocovariance of the series,&
+     &    9h is zero.)
+      end

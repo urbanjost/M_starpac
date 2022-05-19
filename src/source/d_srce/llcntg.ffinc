@@ -1,7 +1,7 @@
 !LLCNTG
-      SUBROUTINE LLCNTG(Y, WT, LWT, XM, N, IXM, NPAR, RES, LDSTAK, NPRT,
-     &   PAR, LPAR, RSD, PV, LPV, SDPV, LSDPV, SDRES, LSDRES, VCV, IVCV,
-     &   NMSUB, WEIGHT, SAVE)
+     subroutine llcntg(y, wt, lwt, xm, n, ixm, npar, res, ldstak, nprt,&
+    &   par, lpar, rsd, pv, lpv, sdpv, lsdpv, sdres, lsdres, vcv, ivcv,&
+     &   nmsub, weight, save)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,36 +18,36 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   RSD
-      INTEGER
-     &   IVCV,IXM,LDSTAK,LPAR,LPV,LSDPV,LSDRES,LWT,N,NPAR,NPRT
-      LOGICAL
-     &   SAVE,WEIGHT
+     real(kind=wp) ::&
+     &   rsd
+     integer&
+     &   ivcv,ixm,ldstak,lpar,lpv,lsdpv,lsdres,lwt,n,npar,nprt
+     logical&
+     &   save,weight
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PAR(*),PV(*),RES(*),SDPV(*),SDRES(*),VCV(*),WT(*),XM(*),Y(*)
-      CHARACTER
-     &   NMSUB(6)*1
+     real(kind=wp) ::&
+     &   par(*),pv(*),res(*),sdpv(*),sdres(*),vcv(*),wt(*),xm(*),y(*)
+     character&
+     &   nmsub(6)*1
 !
 !  SCALARS IN COMMON
-      INTEGER
-     &   IERR
+     integer&
+     &   ierr
 !
 !  ARRAYS IN COMMON
-      REAL(KIND=WP) :: DSTAK(12)
+      real(kind=wp) :: dstak(12)
 !
 !  LOCAL SCALARS
-      INTEGER
-     &   IFIT,M
+     integer&
+     &   ifit,m
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL LLCNT,LLHDRG
 !
 !  COMMON BLOCKS
-      COMMON /CSTAK/DSTAK
-      COMMON /ERRCHK/IERR
+      common /cstak/dstak
+      common /errchk/ierr
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -119,13 +119,13 @@
 !        THE DEPENDENT VARIABLE.
 !
 !
-      IFIT = 3
-      M = NPAR
+      ifit = 3
+      m = npar
 !
-      CALL LLCNT(Y, WT, LWT, XM, N, M, IXM, NPAR, RES, LDSTAK, NPRT,
-     &   PAR, LPAR, RSD, PV, LPV, SDPV, LSDPV, SDRES, LSDRES, VCV, IVCV,
-     &   LLHDRG, IFIT, NMSUB, WEIGHT, SAVE)
+     call llcnt(y, wt, lwt, xm, n, m, ixm, npar, res, ldstak, nprt,&
+    &   par, lpar, rsd, pv, lpv, sdpv, lsdpv, sdres, lsdres, vcv, ivcv,&
+     &   llhdrg, ifit, nmsub, weight, save)
 !
-      RETURN
+      return
 !
-      END
+      end

@@ -1,5 +1,5 @@
 !UASVAR
-      SUBROUTINE UASVAR (Y, YMEAN, N, IAR, PHI, VAR)
+      subroutine uasvar (y, ymean, n, iar, phi, var)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -16,20 +16,20 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      REAL(KIND=WP) ::
-     &   VAR,YMEAN
-      INTEGER
-     &   IAR,N
+     real(kind=wp) ::&
+     &   var,ymean
+     integer&
+     &   iar,n
 !
 !  ARRAY ARGUMENTS
-      REAL(KIND=WP) ::
-     &   PHI(IAR),Y(N)
+     real(kind=wp) ::&
+     &   phi(iar),y(n)
 !
 !  LOCAL SCALARS
-      REAL(KIND=WP) ::
-     &   RES,RSS
-      INTEGER
-     &   I,IAR1,J,K
+     real(kind=wp) ::&
+     &   res,rss
+     integer&
+     &   i,iar1,j,k
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -57,19 +57,19 @@
 !     REAL YMEAN
 !        THE MEAN OF THE OBSERVED TIME SERIES
 !
-      RSS = 0.0E0
-      IAR1 = IAR+1
-      DO 20 I = IAR1, N
-         RES = Y(I) - YMEAN
-         DO 10 J = 1, IAR
-            K = I-J
-            RES = RES - PHI(J) * (Y(K)-YMEAN)
-   10    CONTINUE
-         RSS = RSS + RES*RES
-   20 CONTINUE
+      rss = 0.0e0
+      iar1 = iar+1
+      do 20 i = iar1, n
+         res = y(i) - ymean
+         do 10 j = 1, iar
+            k = i-j
+            res = res - phi(j) * (y(k)-ymean)
+   10    continue
+         rss = rss + res*res
+   20 continue
 !
-      VAR = RSS / (N-IAR1)
+      var = rss / (n-iar1)
 !
-      RETURN
+      return
 !
-      END
+      end
