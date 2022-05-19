@@ -776,24 +776,18 @@
 !***END PROLOGUE  DASUM
 
 !...SCALAR ARGUMENTS
-      INTEGER
-     &   INCX,N
+      INTEGER INCX,N
 
 !...ARRAY ARGUMENTS
-      DOUBLE PRECISION
-     &   DX(*)
+      DOUBLE PRECISION DX(*)
 
 !...LOCAL SCALARS
-      INTEGER
-     &   I,M,MP1,NS
+      INTEGER I,M,MP1,NS
 
 !...INTRINSIC FUNCTIONS
-      INTRINSIC
-     &   DABS,MOD
-
+      INTRINSIC DABS,MOD
 
 !***FIRST EXECUTABLE STATEMENT  DASUM
-
 
       DASUM = 0.D0
       IF(N.LE.0)RETURN
@@ -820,7 +814,7 @@
    40 MP1 = M + 1
       DO 50 I = MP1,N,6
          DASUM = DASUM + DABS(DX(I)) + DABS(DX(I+1)) + DABS(DX(I+2))
-     1   + DABS(DX(I+3)) + DABS(DX(I+4)) + DABS(DX(I+5))
+     &   + DABS(DX(I+3)) + DABS(DX(I+4)) + DABS(DX(I+5))
    50 CONTINUE
       RETURN
       END
@@ -1365,7 +1359,7 @@
    40 MP1 = M + 1
       DO 50 I = MP1,N,5
          DDOT = DDOT + DX(I)*DY(I) + DX(I+1)*DY(I+1) +
-     *    DX(I+2)*DY(I+2) + DX(I+3)*DY(I+3) + DX(I+4)*DY(I+4)
+     &    DX(I+2)*DY(I+2) + DX(I+3)*DY(I+3) + DX(I+4)*DY(I+4)
    50 CONTINUE
       RETURN
 !
@@ -1505,7 +1499,7 @@
    40 MP1 = M + 1
       DO 50 I = MP1,N,5
         SDOT = SDOT + SX(I)*SY(I) + SX(I + 1)*SY(I + 1) +
-     *    SX(I+2)*SY(I+2) + SX(I+3)*SY(I+3) + SX(I+4)*SY(I+4)
+     &    SX(I+2)*SY(I+2) + SX(I+3)*SY(I+3) + SX(I+4)*SY(I+4)
    50 CONTINUE
       RETURN
 !
@@ -2657,7 +2651,7 @@
    40 MP1 = M + 1
       DO 50 I = MP1,N,6
         SASUM = SASUM + ABS(SX(I)) + ABS(SX(I + 1)) + ABS(SX(I + 2))
-     1  + ABS(SX(I + 3)) + ABS(SX(I + 4)) + ABS(SX(I + 5))
+     &  + ABS(SX(I + 3)) + ABS(SX(I + 4)) + ABS(SX(I + 5))
    50 CONTINUE
       RETURN
       END
@@ -2918,7 +2912,7 @@
         IF (ABS(P).LT.EPS*S) GO TO 20
  10   CONTINUE
       CALL XERROR (  'R9LGIC  NO CONVERGENCE IN 200 TERMS OF CONTINUED F
-     1RACTION', 57, 1, 2)
+     &RACTION', 57, 1, 2)
 !
  20   R9LGIC = A*ALX - X + LOG(S/XPA)
 !
@@ -3016,10 +3010,10 @@
       N = -N
       IF (X.EQ.0.) CALL XERROR ('GAMMA   X IS 0', 14, 4, 2)
       IF (X.LT.0. .AND. X+FLOAT(N-2).EQ.0.) CALL XERROR (
-     1  'GAMMA   X IS A NEGATIVE INTEGER', 31, 4, 2)
+     &  'GAMMA   X IS A NEGATIVE INTEGER', 31, 4, 2)
       IF (X.LT.(-0.5) .AND. ABS((X-AINT(X-0.5))/X).LT.DXREL) CALL
-     1  XERROR (  'GAMMA   ANSWER LT HALF PRECISION BECAUSE X TOO NEAR N
-     2EGATIVE INTEGER', 68, 1, 1)
+     &  XERROR (  'GAMMA   ANSWER LT HALF PRECISION BECAUSE X TOO NEAR N
+     &EGATIVE INTEGER', 68, 1, 1)
 !
       DO 20 I=1,N
         GAMMA = GAMMA / (X+FLOAT(I-1))
@@ -3036,23 +3030,23 @@
 ! COMPUTE GAMMA(X) FOR ABS(X) .GT. 10.0.  RECALL Y = ABS(X).
 !
  50   IF (X.GT.XMAX) CALL XERROR ('GAMMA   X SO BIG GAMMA OVERFLOWS',
-     1  32, 3, 2)
+     &  32, 3, 2)
 !
       GAMMA = 0.
       IF (X.LT.XMIN) CALL XERROR ('GAMMA   X SO SMALL GAMMA UNDERFLOWS',
-     1  35, 2, 1)
+     &  35, 2, 1)
       IF (X.LT.XMIN) RETURN
 !
       GAMMA = EXP((Y-0.5)*LOG(Y) - Y + SQ2PIL + R9LGMC(Y) )
       IF (X.GT.0.) RETURN
 !
       IF (ABS((X-AINT(X-0.5))/X).LT.DXREL) CALL XERROR (
-     1  'GAMMA   ANSWER LT HALF PRECISION, X TOO NEAR NEGATIVE INTEGER',
-     2  61, 1, 1)
+     &  'GAMMA   ANSWER LT HALF PRECISION, X TOO NEAR NEGATIVE INTEGER',
+     &  61, 1, 1)
 !
       SINPIY = SIN (PI*Y)
       IF (SINPIY.EQ.0.) CALL XERROR (
-     1  'GAMMA   X IS A NEGATIVE INTEGER', 31, 4, 2)
+     &  'GAMMA   X IS A NEGATIVE INTEGER', 31, 4, 2)
 !
       GAMMA = -PI / (Y*SINPIY*GAMMA)
 !
@@ -3103,7 +3097,7 @@
 ! LOG ( ABS (DGAMMA(X)) ) FOR ABS(X) .GT. 10.0
 !
  20   IF (Y.GT.XMAX) CALL XERROR (
-     1  'DLNGAM  ABS(X) SO BIG DLNGAM OVERFLOWS', 39, 2, 2)
+     &  'DLNGAM  ABS(X) SO BIG DLNGAM OVERFLOWS', 39, 2, 2)
 !
       IF (X.GT.0.D0) THEN
          DLNGAM = SQ2PIL + (X-0.5D0)*LOG(X) - X + D9LGMC(Y)
@@ -3112,11 +3106,11 @@
 !
       SINPIY = ABS (SIN(PI*Y))
       IF (SINPIY.EQ.0.D0) CALL XERROR (
-     1  'DLNGAM  X IS A NEGATIVE INTEGER', 31, 3, 2)
+     &  'DLNGAM  X IS A NEGATIVE INTEGER', 31, 3, 2)
 !
       IF (ABS ((X-INT(X-0.5D0))/X).LT.DXREL) CALL XERROR (
-     1    'DLNGAM  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR NEGATIVE
-     2INTEGER', 68, 1, 1)
+     &    'DLNGAM  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR NEGATIVE
+     &INTEGER', 68, 1, 1)
 !
       DLNGAM = SQPI2L + (X-0.5D0)*LOG(Y) - X - LOG(SINPIY) - D9LGMC(Y)
       RETURN
@@ -3375,7 +3369,7 @@
       Q = MAX (A, B)
 !
       IF (P.LE.0.D0) CALL XERROR (
-     1  'DLBETA  BOTH ARGUMENTS MUST BE GT ZERO', 38, 1, 2)
+     &  'DLBETA  BOTH ARGUMENTS MUST BE GT ZERO', 38, 1, 2)
 !
       IF (P.GE.10.D0) GO TO 30
       IF (Q.GE.10.D0) GO TO 20
@@ -3389,14 +3383,14 @@
 !
  20   CORR = D9LGMC(Q) - D9LGMC(P+Q)
       DLBETA = DLNGAM(P) + CORR + P - P*LOG(P+Q)
-     1  + (Q-0.5D0)*DLNREL(-P/(P+Q))
+     &  + (Q-0.5D0)*DLNREL(-P/(P+Q))
       RETURN
 !
 ! P AND Q ARE BIG.
 !
  30   CORR = D9LGMC(P) + D9LGMC(Q) - D9LGMC(P+Q)
       DLBETA = -0.5D0*LOG(Q) + SQ2PIL + CORR + (P-0.5D0)*LOG(P/(P+Q))
-     1  + Q*DLNREL(-P/(P+Q))
+     &  + Q*DLNREL(-P/(P+Q))
       RETURN
 !
       END
@@ -3434,9 +3428,9 @@
 !
       IF (N.LT.1) CALL XERROR ('DCSEVL  NUMBER OF TERMS LE 0', 28, 2,2)
       IF (N.GT.1000) CALL XERROR ('DCSEVL  NUMBER OF TERMS GT 1000',
-     1  31, 3, 2)
+     &  31, 3, 2)
       IF (X.LT.(-1.D0) .OR. X.GT.1.D0) CALL XERROR (
-     1  'DCSEVL  X OUTSIDE (-1,+1)', 25, 1, 1)
+     &  'DCSEVL  X OUTSIDE (-1,+1)', 25, 1, 1)
 !
       TWOX = 2.0D0*X
       B0 = 0.0D0
@@ -3493,7 +3487,7 @@
         XOLD = XMIN
         XLN = LOG(XMIN)
         XMIN = XMIN - XMIN*((XMIN+0.5)*XLN - XMIN - 0.2258 + ALNSML)
-     1    / (XMIN*XLN + 0.5)
+     &    / (XMIN*XLN + 0.5)
         IF (ABS(XMIN-XOLD).LT.0.005) GO TO 20
  10   CONTINUE
       CALL XERROR ('GAMLIM  UNABLE TO FIND XMIN', 27, 1, 2)
@@ -3506,7 +3500,7 @@
         XOLD = XMAX
         XLN = LOG(XMAX)
         XMAX = XMAX - XMAX*((XMAX-0.5)*XLN - XMAX + 0.9189 - ALNBIG)
-     1    / (XMAX*XLN - 0.5)
+     &    / (XMAX*XLN - 0.5)
         IF (ABS(XMAX-XOLD).LT.0.005) GO TO 40
  30   CONTINUE
       CALL XERROR ('GAMLIM  UNABLE TO FIND XMAX', 27, 2, 2)
@@ -3625,7 +3619,7 @@
 ! LOG (ABS (GAMMA(X))) FOR ABS(X) .GT. 10.0
 !
  20   IF (Y.GT.XMAX) CALL XERROR (
-     1  'ALNGAM  ABS(X) SO BIG ALNGAM OVERFLOWS', 38, 2, 2)
+     &  'ALNGAM  ABS(X) SO BIG ALNGAM OVERFLOWS', 38, 2, 2)
 !
       IF (X.GT.0.0) THEN
          ALNGAM = SQ2PIL + (X-0.5)*LOG(X) - X + R9LGMC(Y)
@@ -3634,11 +3628,11 @@
 !
       SINPIY = ABS (SIN(PI*Y))
       IF (SINPIY.EQ.0.) CALL XERROR ('ALNGAM  X IS A NEGATIVE INTEGER',
-     1  31, 3, 2)
+     &  31, 3, 2)
 !
       IF (ABS((X-AINT(X-0.5))/X).LT.DXREL) CALL XERROR (
-     1    'ALNGAM  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR NEGATIVE
-     2INTEGER', 68, 1, 1)
+     &    'ALNGAM  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR NEGATIVE
+     &INTEGER', 68, 1, 1)
 !
       ALNGAM = SQPI2L + (X-0.5)*LOG(Y) - X - LOG(SINPIY) - R9LGMC(Y)
       RETURN
@@ -3685,11 +3679,11 @@
       INTRINSIC MOD
 !
       DATA F(1),F(2),F(3),F(4),F(5),F(6),F(7),F(8),F(9),F(10)
-     1   / '(' ,'1' ,'X' ,',' ,' ' ,' ' ,'A' ,' ' ,' ' ,')' /
+     &   / '(' ,'1' ,'X' ,',' ,' ' ,' ' ,'A' ,' ' ,' ' ,')' /
       DATA G(1),G(2),G(3),G(4),G(5),G(6),G(7),G(8),G(9),G(10)
-     1   / '(' ,'1' ,'X' ,' ' ,' ' ,' ' ,' ' ,' ' ,' ' ,' ' /
+     &   / '(' ,'1' ,'X' ,' ' ,' ' ,' ' ,' ' ,' ' ,' ' ,' ' /
       DATA G(11),G(12),G(13),G(14)
-     1   / ' '  ,' '  ,' '  ,')'  /
+     &   / ' '  ,' '  ,' '  ,')'  /
       DATA LA/'A'/,LCOM/','/,LBLANK/' '/
 !     PREPARE FORMAT FOR WHOLE LINES
       NCHAR = I1MACH(6)
@@ -3767,7 +3761,7 @@
 !
 !
       IF (NOS.LT.1) CALL XERROR (
-     1  'INITS   NUMBER OF COEFFICIENTS LT 1', 35, 2, 2)
+     &  'INITS   NUMBER OF COEFFICIENTS LT 1', 35, 2, 2)
 !
       ERR = 0.
       DO 10 II=1,NOS
@@ -3777,7 +3771,7 @@
  10   CONTINUE
 !
  20   IF (I.EQ.NOS) CALL XERROR ('INITS   ETA MAY BE TOO SMALL', 28,
-     1  1, 2)
+     &  1, 2)
       INITS = I
 !
       RETURN
@@ -3816,9 +3810,9 @@
 !
       IF (N.LT.1) CALL XERROR ('CSEVL   NUMBER OF TERMS LE 0', 28, 2,2)
       IF (N.GT.1000) CALL XERROR ('CSEVL   NUMBER OF TERMS GT 1000',
-     1  31, 3, 2)
+     &  31, 3, 2)
       IF (X.LT.(-1.0) .OR. X.GT.1.0) CALL XERROR (
-     1  'CSEVL   X OUTSIDE (-1,+1)', 25, 1, 1)
+     &  'CSEVL   X OUTSIDE (-1,+1)', 25, 1, 1)
 !
       B0 = 0.0
       B1 = 0.0
@@ -4087,8 +4081,8 @@
         S = S + T
         IF (ABS(T).LT.EPS*ABS(S)) GO TO 30
  20   CONTINUE
-      CALL XERROR ( 'D9GMIT  NO CONVERGENCE IN 200 TERMS OF TAYLOR-S SER
-     1IES', 54, 2, 2)
+      CALL XERROR
+     &('D9GMIT  NO CONVERGENCE IN 200 TERMS OF TAYLOR-S SERIES',54,2,2)
 !
  30   IF (A.GE.(-0.5D0)) THEN
          ALGS = -ALGAP1 + LOG(S)
@@ -4169,7 +4163,7 @@
 !
       IF ((KONTRL.GE.(-2)).AND.(KONTRL.LE.2)) GO TO 10
          CALL XERRWV('XSETF  -- INVALID VALUE OF KONTRL (I1).',33,1,2,
-     1   1,KONTRL,0,0,0.,0.)
+     &   1,KONTRL,0,0,0.,0.)
          RETURN
    10 JUNK = J4SAVE(2,KONTRL,.TRUE.)
       RETURN
@@ -4225,7 +4219,7 @@
         IF (ABS(T).LT.EPS*ABS(S)) GO TO 30
  20   CONTINUE
       CALL XERROR (  'R9GMIT  NO CONVERGENCE IN 200 TERMS OF TAYLOR-S SE
-     1RIES', 54, 2, 2)
+     &RIES', 54, 2, 2)
 !
  30   IF (A.GE.(-0.5)) THEN
          ALGS = -ALGAP1 + LOG(S)
@@ -4343,8 +4337,8 @@
 !
  10   IF (X.LE.(-1.D0)) CALL XERROR ('DLNREL  X IS LE -1', 18, 2, 2)
       IF (X.LT.XMIN) CALL XERROR (
-     1  'DLNREL  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR -1', 54,
-     2  1, 1)
+     &  'DLNREL  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR -1', 54,
+     &  1, 1)
 !
       IF (ABS(X).LE.0.375D0) THEN
          DLNREL = X*(1.0D0 - X*DCSEVL (X/0.375D0, ALNRCS, NLNREL))
@@ -4460,8 +4454,9 @@
         S = S + P
         IF (ABS(P).LT.EPS*S) GO TO 20
  10   CONTINUE
-      CALL XERROR ( 'D9LGIC  NO CONVERGENCE IN 300 TERMS OF CONTINUED FR
-     1ACTION', 57, 1, 2)
+      CALL XERROR
+     &('D9LGIC  NO CONVERGENCE IN 300 TERMS OF CONTINUED FRACTION',
+     & 57,1,2)
 !
  20   D9LGIC = A*ALX - X + LOG(S/XPA)
 !
@@ -4585,9 +4580,9 @@
 !
 !     EXAMPLES
 !        CALL XERROR('SMOOTH -- NUM (=I1) WAS ZERO.',29,1,2,
-!    1   1,NUM,0,0,0.,0.)
+!    &   1,NUM,0,0,0.,0.)
 !        CALL XERRWV(  'QUADXY -- REQUESTED ERROR (R1) LESS THAN MINIMUM
-!    1 (R2).',54,77,1,0,0,0,2,ERRREQ,ERRMIN)
+!    & (R2).',54,77,1,0,0,0,2,ERRREQ,ERRMIN)
 !
 !     WRITTEN BY RON JONES, WITH SLATEC COMMON MATH LIBRARY SUBCOMMITTEE
 !     LATEST REVISION ---  19 MAR 1980
@@ -4625,12 +4620,12 @@
       MAXMES = J4SAVE(4,0,.FALSE.)
 !     CHECK FOR VALID INPUT
       IF ((NMESSG.GT.0).AND.(NERR.NE.0).AND.
-     1    (LEVEL.GE.(-1)).AND.(LEVEL.LE.2)) GO TO 10
+     &    (LEVEL.GE.(-1)).AND.(LEVEL.LE.2)) GO TO 10
          IF (LKNTRL.GT.0) CALL XERPRT('FATAL ERROR IN...',17)
          CALL XERPRT('XERROR -- INVALID INPUT',23)
          IF (LKNTRL.GT.0) CALL FDUMP
          IF (LKNTRL.GT.0) CALL XERPRT('JOB ABORT DUE TO FATAL ERROR.',
-     1   29)
+     &   29)
          IF (LKNTRL.GT.0) CALL XERSAV('    ',0,0,0,KDUMMY)
          CALL XERABT('XERROR -- INVALID INPUT',23)
          RETURN
@@ -4653,17 +4648,17 @@
 !     DECIDE WHETHER TO PRINT MESSAGE
       IF ((LLEVEL.LT.2).AND.(LKNTRL.EQ.0)) GO TO 100
       IF (((LLEVEL.EQ.(-1)).AND.(KOUNT.GT.MIN(1,MAXMES)))
-     1.OR.((LLEVEL.EQ.0)   .AND.(KOUNT.GT.MAXMES))
-     2.OR.((LLEVEL.EQ.1)   .AND.(KOUNT.GT.MAXMES).AND.(MKNTRL.EQ.1))
-     3.OR.((LLEVEL.EQ.2)   .AND.(KOUNT.GT.MAX(1,MAXMES)))) GO TO 100
+     &.OR.((LLEVEL.EQ.0)   .AND.(KOUNT.GT.MAXMES))
+     &.OR.((LLEVEL.EQ.1)   .AND.(KOUNT.GT.MAXMES).AND.(MKNTRL.EQ.1))
+     &.OR.((LLEVEL.EQ.2)   .AND.(KOUNT.GT.MAX(1,MAXMES)))) GO TO 100
          IF (LKNTRL.LE.0) GO TO 20
             CALL XERPRT('    ',1)
 !           INTRODUCTION
             IF (LLEVEL.EQ.(-1)) CALL XERPRT
-     1('WARNING MESSAGE...THIS MESSAGE WILL ONLY BE PRINTED ONCE.',57)
+     &('WARNING MESSAGE...THIS MESSAGE WILL ONLY BE PRINTED ONCE.',57)
             IF (LLEVEL.EQ.0) CALL XERPRT('WARNING IN...',13)
             IF (LLEVEL.EQ.1) CALL XERPRT
-     1      ('RECOVERABLE ERROR IN...',23)
+     &      ('RECOVERABLE ERROR IN...',23)
             IF (LLEVEL.EQ.2) CALL XERPRT('FATAL ERROR IN...',17)
    20    CONTINUE
 !        MESSAGE
@@ -4691,15 +4686,15 @@
   100 CONTINUE
       IFATAL = 0
       IF ((LLEVEL.EQ.2).OR.((LLEVEL.EQ.1).AND.(MKNTRL.EQ.2)))
-     1IFATAL = 1
+     &IFATAL = 1
 !     QUIT HERE IF MESSAGE IS NOT FATAL
       IF (IFATAL.LE.0) RETURN
       IF ((LKNTRL.LE.0).OR.(KOUNT.GT.MAX(1,MAXMES))) GO TO 120
 !        PRINT REASON FOR ABORT
          IF (LLEVEL.EQ.1) CALL XERPRT
-     1   ('JOB ABORT DUE TO UNRECOVERED ERROR.',35)
+     &   ('JOB ABORT DUE TO UNRECOVERED ERROR.',35)
          IF (LLEVEL.EQ.2) CALL XERPRT
-     1   ('JOB ABORT DUE TO FATAL ERROR.',29)
+     &   ('JOB ABORT DUE TO FATAL ERROR.',29)
 !        PRINT ERROR SUMMARY
          CALL XERSAV('    ',-1,0,0,KDUMMY)
   120 CONTINUE
@@ -4753,7 +4748,7 @@
       SQEPS = DSQRT (D1MACH(4))
 !
  10   IF (X.LE.0.D0 .OR. A.LT.X) CALL XERROR ( 'D9LGIT  X SHOULD BE GT 0
-     1.0 AND LE A', 35, 2, 2)
+     &.0 AND LE A', 35, 2, 2)
 !
       AX = A + X
       A1X = AX + 1.0D0
@@ -4769,11 +4764,11 @@
         IF (ABS(P).LT.EPS*S) GO TO 30
  20   CONTINUE
       CALL XERROR ( 'D9LGIT  NO CONVERGENCE IN 200 TERMS OF CONTINUED FR
-     1ACTION', 57, 3, 2)
+     &ACTION', 57, 3, 2)
 !
  30   HSTAR = 1.0D0 - X*S/A1X
       IF (HSTAR.LT.SQEPS) CALL XERROR ( 'D9LGIT  RESULT LESS THAN HALF P
-     1RECISION', 39, 1, 1)
+     &RECISION', 39, 1, 1)
 !
       D9LGIT = -X - ALGAP1 - LOG(HSTAR)
       RETURN
@@ -4855,7 +4850,7 @@
 !
         WRITE(IWUNIT,9001)
  9001   FORMAT('1ERROR    2 IN SETERR - CANNOT HAVE NERR=0'//
-     1         ' THE CURRENT ERROR MESSAGE FOLLOWS'///)
+     &         ' THE CURRENT ERROR MESSAGE FOLLOWS'///)
         CALL E9RINT(MESSG,NW,NERR,.TRUE.)
         ITEMP=I8SAVE(1,1,.TRUE.)
         GO TO 50
@@ -4866,8 +4861,8 @@
 !
         WRITE(IWUNIT,9002)
  9002   FORMAT('1ERROR    3 IN SETERR -',
-     1         ' AN UNRECOVERED ERROR FOLLOWED BY ANOTHER ERROR.'//
-     2         ' THE PREVIOUS AND CURRENT ERROR MESSAGES FOLLOW.'///)
+     &         ' AN UNRECOVERED ERROR FOLLOWED BY ANOTHER ERROR.'//
+     &         ' THE PREVIOUS AND CURRENT ERROR MESSAGES FOLLOW.'///)
         CALL EPRINT
         CALL E9RINT(MESSG,NW,NERR,.TRUE.)
         GO TO 50
@@ -4882,7 +4877,7 @@
 !
         WRITE(IWUNIT,9003)
  9003   FORMAT('1ERROR    4 IN SETERR - BAD VALUE FOR IOPT'//
-     1         ' THE CURRENT ERROR MESSAGE FOLLOWS'///)
+     &         ' THE CURRENT ERROR MESSAGE FOLLOWS'///)
         GO TO 50
 !
 !  TEST FOR RECOVERY.
@@ -4939,7 +4934,7 @@
       IF (SQEPS.EQ.0.0) SQEPS = SQRT(R1MACH(4))
 !
       IF (X.LE.0.0 .OR. A.LT.X) CALL XERROR (
-     1  'R9LGIT  X SHOULD BE GT 0.0 AND LE A', 35, 2, 2)
+     &  'R9LGIT  X SHOULD BE GT 0.0 AND LE A', 35, 2, 2)
 !
       AX = A + X
       A1X = AX + 1.0
@@ -4955,11 +4950,11 @@
         IF (ABS(P).LT.EPS*S) GO TO 30
  20   CONTINUE
       CALL XERROR (  'R9LGIT  NO CONVERGENCE IN 200 TERMS OF CONTINUED F
-     1RACTION', 57, 3, 2)
+     &RACTION', 57, 3, 2)
 !
  30   HSTAR = 1.0 - X*S/A1X
       IF (HSTAR.LT.SQEPS) CALL XERROR (
-     1  'R9LGIT  RESULT LESS THAN HALF PRECISION', 39, 1, 1)
+     &  'R9LGIT  RESULT LESS THAN HALF PRECISION', 39, 1, 1)
 !
       R9LGIT = -X - ALGAP1 - LOG(HSTAR)
 !
@@ -5228,10 +5223,10 @@
       XMIN = -1.0 + SQRT(R1MACH(4))
 !
  10   IF (X.LE.(-1.0)) CALL XERROR (
-     1  'ALNREL  X IS LE -1', 18, 2, 2)
+     &  'ALNREL  X IS LE -1', 18, 2, 2)
       IF (X.LT.XMIN) CALL XERROR (
-     1  'ALNREL  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR -1', 54,
-     2  1, 1)
+     &  'ALNREL  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR -1', 54,
+     &  1, 1)
 !
       IF (ABS(X).LE.0.375) THEN
          ALNREL = X*(1.0-X*CSEVL(X/0.375,ALNRCS,NLNREL))
@@ -5275,7 +5270,7 @@
 !
 !
       IF (NOS.LT.1) CALL XERROR (
-     1  'INITDS  NUMBER OF COEFFICIENTS LT 1', 35, 2, 2)
+     &  'INITDS  NUMBER OF COEFFICIENTS LT 1', 35, 2, 2)
 !
       ERR = 0.0
       DO 10 II=1,NOS
@@ -5285,7 +5280,7 @@
  10   CONTINUE
 !
  20   IF (I.EQ.NOS) CALL XERROR ('INITDS  ETA MAY BE TOO SMALL', 28,
-     1  1, 2)
+     &  1, 2)
       INITDS = I
 !
       RETURN
@@ -5335,9 +5330,9 @@
       ALNSML = LOG (SML)
 !
  10   IF (X.LT.0.D0 .OR. X.GT.1.D0) CALL XERROR (
-     1  'DBETAI  X IS NOT IN THE RANGE (0,1)', 35, 1, 2)
+     &  'DBETAI  X IS NOT IN THE RANGE (0,1)', 35, 1, 2)
       IF (PIN.LE.0.D0 .OR. QIN.LE.0.D0) CALL XERROR (
-     1  'DBETAI  P AND/OR Q IS LE ZERO', 29, 2, 2)
+     &  'DBETAI  P AND/OR Q IS LE ZERO', 29, 2, 2)
 !
       Y = X
       P = PIN
@@ -5567,10 +5562,10 @@
       N = -N
       IF (X.EQ.0.D0) CALL XERROR ('DGAMMA  X IS 0', 14, 4, 2)
       IF (X.LT.0.0 .AND. X+DBLE(FLOAT(N-2)).EQ.0.D0) CALL XERROR (
-     1  'DGAMMA  X IS A NEGATIVE INTEGER', 31, 4, 2)
+     &  'DGAMMA  X IS A NEGATIVE INTEGER', 31, 4, 2)
       IF (X.LT.(-0.5D0) .AND. ABS((X-INT(X-0.5D0))/X).LT.DXREL) CALL
-     1  XERROR (  'DGAMMA  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR N
-     2EGATIVE INTEGER', 68, 1, 1)
+     &  XERROR (  'DGAMMA  ANSWER LT HALF PRECISION BECAUSE X TOO NEAR N
+     &EGATIVE INTEGER', 68, 1, 1)
 !
       DO 20 I=1,N
         DGAMMA = DGAMMA/(X+DBLE(FLOAT(I-1)) )
@@ -5587,23 +5582,23 @@
 ! GAMMA(X) FOR ABS(X) .GT. 10.0.  RECALL Y = ABS(X).
 !
  50   IF (X.GT.XMAX) CALL XERROR ('DGAMMA  X SO BIG GAMMA OVERFLOWS',
-     1  32, 3, 2)
+     &  32, 3, 2)
 !
       DGAMMA = 0.D0
       IF (X.LT.XMIN) CALL XERROR ('DGAMMA  X SO SMALL GAMMA UNDERFLOWS',
-     1  35, 2, 1)
+     &  35, 2, 1)
       IF (X.LT.XMIN) RETURN
 !
       DGAMMA = EXP ((Y-0.5D0)*LOG(Y) - Y + SQ2PIL + D9LGMC(Y) )
       IF (X.GT.0.D0) RETURN
 !
       IF (ABS((X-INT(X-0.5D0))/X).LT.DXREL) CALL XERROR (
-     1  'DGAMMA  ANSWER LT HALF PRECISION, X TOO NEAR NEGATIVE INTEGER',
-     2  61, 1, 1)
+     &  'DGAMMA  ANSWER LT HALF PRECISION, X TOO NEAR NEGATIVE INTEGER',
+     &  61, 1, 1)
 !
       SINPIY = SIN (PI*Y)
       IF (SINPIY.EQ.0.D0) CALL XERROR (
-     1  'DGAMMA  X IS A NEGATIVE INTEGER', 31, 4, 2)
+     &  'DGAMMA  X IS A NEGATIVE INTEGER', 31, 4, 2)
 !
       DGAMMA = -PI/(Y*SINPIY*DGAMMA)
 !
@@ -5882,7 +5877,7 @@
         XOLD = XMIN
         XLN = LOG(XMIN)
         XMIN = XMIN - XMIN*((XMIN+0.5D0)*XLN - XMIN - 0.2258D0 + ALNSML)
-     1    / (XMIN*XLN+0.5D0)
+     &    / (XMIN*XLN+0.5D0)
         IF (ABS(XMIN-XOLD).LT.0.005D0) GO TO 20
  10   CONTINUE
       CALL XERROR ('DGAMLM  UNABLE TO FIND XMIN', 27, 1, 2)
@@ -5895,7 +5890,7 @@
         XOLD = XMAX
         XLN = LOG(XMAX)
         XMAX = XMAX - XMAX*((XMAX-0.5D0)*XLN - XMAX + 0.9189D0 - ALNBIG)
-     1    / (XMAX*XLN-0.5D0)
+     &    / (XMAX*XLN-0.5D0)
         IF (ABS(XMAX-XOLD).LT.0.005D0) GO TO 40
  30   CONTINUE
       CALL XERROR ('DGAMLM  UNABLE TO FIND XMAX', 27, 2, 2)
@@ -5933,7 +5928,7 @@
       Q = MAX (A, B)
 !
       IF (P.LE.0.0) CALL XERROR (
-     1  'ALBETA  BOTH ARGUMENTS MUST BE GT ZERO', 38, 1, 2)
+     &  'ALBETA  BOTH ARGUMENTS MUST BE GT ZERO', 38, 1, 2)
       IF (P.GE.10.0) GO TO 30
       IF (Q.GE.10.0) GO TO 20
 !
@@ -5946,14 +5941,14 @@
 !
  20   CORR = R9LGMC(Q) - R9LGMC(P+Q)
       ALBETA = ALNGAM(P) + CORR + P - P*LOG(P+Q) +
-     1  (Q-0.5)*ALNREL(-P/(P+Q))
+     &  (Q-0.5)*ALNREL(-P/(P+Q))
       RETURN
 !
 ! P AND Q ARE BIG.
 !
  30   CORR = R9LGMC(P) + R9LGMC(Q) - R9LGMC(P+Q)
       ALBETA = -0.5*LOG(Q) + SQ2PIL + CORR + (P-0.5)*LOG(P/(P+Q))
-     1  + Q*ALNREL(-P/(P+Q))
+     &  + Q*ALNREL(-P/(P+Q))
       RETURN
 !
       END
@@ -6005,25 +6000,25 @@
 !     CERTAIN CONVENTIONS FOR COMPILERS WHICH DYNAMICALLY
 !     ALLOCATE STORAGE.
       DATA MESTAB(1),MESTAB(2),MESTAB(3),MESTAB(4),MESTAB(5),
-     1     MESTAB(6),MESTAB(7),MESTAB(8),MESTAB(9),MESTAB(10)
-     2     /'0','0','0','0','0','0','0','0','0','0'/
+     &     MESTAB(6),MESTAB(7),MESTAB(8),MESTAB(9),MESTAB(10)
+     &     /'0','0','0','0','0','0','0','0','0','0'/
       DATA NERTAB(1),NERTAB(2),NERTAB(3),NERTAB(4),NERTAB(5),
-     1     NERTAB(6),NERTAB(7),NERTAB(8),NERTAB(9),NERTAB(10)
-     2     /0,0,0,0,0,0,0,0,0,0/
+     &     NERTAB(6),NERTAB(7),NERTAB(8),NERTAB(9),NERTAB(10)
+     &     /0,0,0,0,0,0,0,0,0,0/
       DATA LEVTAB(1),LEVTAB(2),LEVTAB(3),LEVTAB(4),LEVTAB(5),
-     1     LEVTAB(6),LEVTAB(7),LEVTAB(8),LEVTAB(9),LEVTAB(10)
-     2     /0,0,0,0,0,0,0,0,0,0/
+     &     LEVTAB(6),LEVTAB(7),LEVTAB(8),LEVTAB(9),LEVTAB(10)
+     &     /0,0,0,0,0,0,0,0,0,0/
 !     NEXT TWO DATA STATEMENTS ARE NECESSARY TO PROVIDE A BLANK
 !     ERROR TABLE INITIALLY
       DATA KOUNT(1),KOUNT(2),KOUNT(3),KOUNT(4),KOUNT(5),
-     1     KOUNT(6),KOUNT(7),KOUNT(8),KOUNT(9),KOUNT(10)
-     2     /0,0,0,0,0,0,0,0,0,0/
+     &     KOUNT(6),KOUNT(7),KOUNT(8),KOUNT(9),KOUNT(10)
+     &     /0,0,0,0,0,0,0,0,0,0/
       DATA KOUNTX/0/
 !     NEXT DATA STATEMENT SETS UP OUTPUT FORMAT
       DATA F(1),F(2),F(3),F(4),F(5),F(6),F(7),F(8),F(9),F(10),
-     1     F(11),F(12),F(13),F(14),F(15),F(16),F(17)
-     2     /'(' ,'1' ,'X' ,',' ,'A' ,' ' ,' ' ,',' ,'I' ,' ' ,
-     3      ' ' ,',' ,'2' ,'I' ,'1' ,'0' ,')' /
+     &     F(11),F(12),F(13),F(14),F(15),F(16),F(17)
+     &     /'(' ,'1' ,'X' ,',' ,'A' ,' ' ,' ' ,',' ,'I' ,' ' ,
+     &      ' ' ,',' ,'2' ,'I' ,'1' ,'0' ,')' /
       IF (NMESSG.GT.0) GO TO 80
 !     DUMP THE TABLE
          IF (KOUNT(1).EQ.0) RETURN
@@ -6040,7 +6035,7 @@
 !           PRINT TABLE HEADER
             WRITE (IUNIT,10)
    10       FORMAT ('0          ERROR MESSAGE SUMMARY'/
-     1              ' FIRST WORD      NERR     LEVEL     COUNT')
+     &              ' FIRST WORD      NERR     LEVEL     COUNT')
 !           PRINT BODY OF TABLE
             DO 20 I=1,10
                IF (KOUNT(I).EQ.0) GO TO 30
@@ -6155,7 +6150,7 @@
 !
  20   IF (X.GT.1.D0) GO TO 30
       IF (A.GE.(-0.5D0) .OR. AEPS.NE.0.D0) CALL DLGAMS (A+1.0D0, ALGAP1,
-     1  SGNGAM)
+     &  SGNGAM)
       DGAMIT = D9GMIT (A, X, ALGAP1, SGNGAM, ALX)
       RETURN
 !
@@ -6258,7 +6253,7 @@
 !
  20   IF (X.GT.1.0) GO TO 40
       IF (A.GE.(-0.5) .OR. AEPS.NE.0.0) CALL ALGAMS (A+1.0, ALGAP1,
-     1  SGNGAM)
+     &  SGNGAM)
       GAMIT = R9GMIT (A, X, ALGAP1, SGNGAM, ALX)
       RETURN
 !
@@ -6433,9 +6428,9 @@
       ALNSML = LOG(SML)
 !
  10   IF (X.LT.0. .OR. X.GT.1.0) CALL XERROR (
-     1  'BETAI   X IS NOT IN THE RANGE (0,1)', 35, 1, 2)
+     &  'BETAI   X IS NOT IN THE RANGE (0,1)', 35, 1, 2)
       IF (PIN.LE.0. .OR. QIN.LE.0.) CALL XERROR (
-     1  'BETAI   P AND/OR Q IS LE ZERO', 29, 2, 2)
+     &  'BETAI   P AND/OR Q IS LE ZERO', 29, 2, 2)
 !
       Y = X
       P = PIN
@@ -6665,7 +6660,7 @@
 !
       D9LGMC = 1.D0/(12.D0*X)
       IF (X.LT.XBIG) D9LGMC = DCSEVL (2.0D0*(10.D0/X)**2-1.D0, ALGMCS,
-     1  NALGM) / X
+     &  NALGM) / X
       RETURN
 !
  20   D9LGMC = 0.D0
