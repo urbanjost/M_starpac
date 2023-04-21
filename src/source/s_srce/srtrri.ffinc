@@ -47,7 +47,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL A(LA)
+!     REAL(KIND=WP) :: A(LA)
 !        INPUT/OUTPUT PARAMETER.  THE ARRAY TO BE SORTED ON
 !        THE BASIS OF THE VALUES IN IR.  IF IR IS A PERMUTATION
 !        VECTOR PRODUCED ORIGINALLY IN A SORT OF A, THEN THIS
@@ -80,18 +80,18 @@
 !        A, RR, AND IR.
 !     INTEGER M
 !        *
-!     REAL R
+!     REAL(KIND=WP) :: R
 !        *
-!     REAL RR(LA)
+!     REAL(KIND=WP) :: RR(LA)
 !        INPUT/OUTPUT PARAMETER.  THE ARRAY CARRIED ALONG IN
 !        THE SORT.  IT MIGHT BE THE SET OF WEIGHTS FOR A.
-!     REAL RT
+!     REAL(KIND=WP) :: RT
 !        *
-!     REAL RTT
+!     REAL(KIND=WP) :: RTT
 !        *
-!     REAL T
+!     REAL(KIND=WP) :: T
 !        *
-!     REAL TT
+!     REAL(KIND=WP) :: TT
 !        *
 !
       m = 1

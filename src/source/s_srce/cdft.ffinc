@@ -81,21 +81,21 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL B11, B21, B22, B23, B24, B25
+!     REAL(KIND=WP) :: B11, B21, B22, B23, B24, B25
 !        CONSTANTS USED IN THE COMPUTATIONS.
-!     REAL B31, B32, B33, B34, B35, B36, B37
+!     REAL(KIND=WP) :: B31, B32, B33, B34, B35, B36, B37
 !        CONSTANTS USED IN THE COMPUTATIONS.
-!     REAL C
+!     REAL(KIND=WP) :: C
 !        ...
-!     REAL CSQ
+!     REAL(KIND=WP) :: CSQ
 !        ...
-!     REAL DCONST
+!     REAL(KIND=WP) :: DCONST
 !        ...
-!     REAL DF
+!     REAL(KIND=WP) :: DF
 !        THE DEGREES OF FREEDOM.
-!     REAL D1, D11, D3, D5, D7, D9
+!     REAL(KIND=WP) :: D1, D11, D3, D5, D7, D9
 !        CONSTANTS USED IN THE COMPUTATIONS.
-!     REAL FPSPM
+!     REAL(KIND=WP) :: FPSPM
 !        THE FLOATING POINT SMALLEST POSITIVE MAGNITUDE.
 !     INTEGER I
 !        AN INDEX.
@@ -111,28 +111,28 @@
 !        ...
 !     INTEGER IPRT
 !        THE PRINT UNIT.
-!     REAL PI
+!     REAL(KIND=WP) :: PI
 !        PI.
-!     REAL SD
+!     REAL(KIND=WP) :: SD
 !        ...
-!     REAL SUM
+!     REAL(KIND=WP) :: SUM
 !        ...
-!     REAL TERM, TERM1, TERM2, TERM3
+!     REAL(KIND=WP) :: TERM, TERM1, TERM2, TERM3
 !        ...
-!     REAL X
+!     REAL(KIND=WP) :: X
 !        THE T STATISTIC.
-!     REAL Z
+!     REAL(KIND=WP) :: Z
 !        ...
 !
       data idfcut /1000/
-      data dconst /0.3989422804e0/
-      data b11 /0.25e0/
-      data b21 /96.0e0/
+      data dconst /0.3989422804_wp/
+      data b11 /0.25_wp/
+      data b21 /96.0_wp/
 !     DATA B21 /0.01041666666667E0/
-      data b22, b23, b24, b25 /3.0e0,-7.0e0,-5.0e0,-3.0e0/
-      data b31 /0.00260416666667e0/
+      data b22, b23, b24, b25 /3.0_wp,-7.0_wp,-5.0_wp,-3.0_wp/
+      data b31 /0.00260416666667_wp/
      data b32, b33, b34, b35, b36, b37&
-     &    /1.0e0,-11.0e0,14.0e0,6.0e0,-3.0e0,-15.0e0/
+     &    /1.0_wp,-11.0_wp,14.0_wp,6.0_wp,-3.0_wp,-15.0_wp/
 !
 !
       call getpi(pi)
@@ -231,7 +231,7 @@
          end if
       end if
       if (ievodd.eq.0) go to 110
-      sum = (2.0e0/pi)*(atan(x/sqrt(df))+sum)
+      sum = (2.0_wp/pi)*(atan(x/sqrt(df))+sum)
   110 cdft = 0.5e0 + sum/2.0e0
       return
 !

@@ -49,16 +49,16 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL ACOV(LACOV), ACOV0
+!     REAL(KIND=WP) :: ACOV(LACOV), ACOV0
 !        THE AUTOCOVARIANCES FOR LAGS ZERO TO LAGMAX, AND THE
 !        AUTOCOVARIANCE AT LAG ZERO.
-!     REAL AIC(LAIC), AICMIN
+!     REAL(KIND=WP) :: AIC(LAIC), AICMIN
 !        THE ARRAY CONTAINING AKIAKES CRITERIA FOR EACH ORDER, WHERE
 !        AIC(I+1) IS THE CRITERIA FOR ORDER I-1, AND THE MINIMUM
 !        CRITERIA COMPUTED.
-!     REAL FPLM
+!     REAL(KIND=WP) :: FPLM
 !        THE FLOATING POINT LARGEST MAGNITUDE.
-!     REAL FTEST(2, LAGMAX)
+!     REAL(KIND=WP) :: FTEST(2, LAGMAX)
 !        THE ARRAY IN WHICH THE F PERCENTAGE POINT AND PROBABILITY ARE
 !        STORED.
 !     INTEGER I
@@ -75,21 +75,21 @@
 !        THE LENGTH OF THE VECTOR AIC.
 !     INTEGER N
 !        THE INTEGER NUMBER OF OBSERVATIONS IN EACH SERIES
-!     REAL OSPVAR
+!     REAL(KIND=WP) :: OSPVAR
 !        THE ONE STEP PREDICTION VARIANCE FOR THE ORDER SELECTED (IAR).
-!     REAL PHI(LAGMAX)
+!     REAL(KIND=WP) :: PHI(LAGMAX)
 !        THE ARRAY OF AUTOREGRESSIVE COEFFICIENTS FOR THE
 !        SELECTED ORDER.
-!     REAL PRHO(LAGMAX)
+!     REAL(KIND=WP) :: PRHO(LAGMAX)
 !        THE ARRAY CONTAINING THE PARTIAL AUTOCORRELATION
 !        COEFFICIENTS.
-!     REAL RSS, RSSMIN
+!     REAL(KIND=WP) :: RSS, RSSMIN
 !        THE ONE STEP PREDICTION RESIDUAL SUM OF SQUARES AND THE
 !        MINIMUM ONE STEP PREDICTION RESIDUAL SUM OF SQUARES.
-!     REAL SQPACF
+!     REAL(KIND=WP) :: SQPACF
 !        THE SQUARED VALUE OF THE PARTIAL AUTOCORRELATION FUNCTION AT
 !        LAG I.
-!     REAL WORK(LAGMAX)
+!     REAL(KIND=WP) :: WORK(LAGMAX)
 !        A REAL WORK AREA.
 !
       fplm = r1mach(2)
@@ -114,7 +114,7 @@
 !
       ftest(1,1) = (n-2) * sqpacf / (1.0e0 - sqpacf)
 !
-      ftest(2,1) = 1.0e0 - cdff(ftest(1,1), 1.0e0, real(n-2))
+      ftest(2,1) = 1.0e0 - cdff(ftest(1,1), 1.0_wp, real(n-2))
 !
     5 continue
 !
@@ -143,7 +143,7 @@
 !
          ftest(1,i) = (n-i-1) * sqpacf / (1.0e0 - sqpacf)
 !
-         ftest(2,i) = 1.0e0 - cdff(ftest(1,i), 1.0e0, real(n-i-1))
+         ftest(2,i) = 1.0e0 - cdff(ftest(1,i), 1.0_wp, real(n-i-1))
 !
    15    continue
 !

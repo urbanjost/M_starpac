@@ -304,17 +304,17 @@
 !     DATA DIVER(1),DIVER(2) /     0,  27136/
 !     DATA LOG10(1),LOG10(2) /  8347,  32538/
 !
-      integer,parameter       :: b = radix(0.0e0)
-      integer,parameter       :: t = digits (0.0e0 )
-      real,parameter :: emin=minexponent(0.0e0)
-      real,parameter :: emax=maxexponent(0.0e0)
+      integer,parameter       :: b = radix(0.0_wp)
+      integer,parameter       :: t = digits (0.0_wp )
+      real,parameter :: emin=minexponent(0.0_wp)
+      real,parameter :: emax=maxexponent(0.0_wp)
 
       select case(i)
-      case(1); r1mach = tiny(0.0e0)                ! B**(EMIN-1), the smallest positive magnitude.
-      case(2); r1mach = huge(0.0e0)                ! B**EMAX*(1-B**(-T)), the largest magnitude.
+      case(1); r1mach = tiny(0.0_wp)               ! B**(EMIN-1), the smallest positive magnitude.
+      case(2); r1mach = huge(0.0_wp)               ! B**EMAX*(1-B**(-T)), the largest magnitude.
                                                    ! calculating this by formula could cause overflow without using a larger type
       case(3); r1mach = real(b)**(-t)              ! B**(-T), the smallest relative spacing.
-      case(4); r1mach = epsilon(0.0e0)             ! B**(1-T), the largest relative spacing.
+      case(4); r1mach = epsilon(0.0_wp)            ! B**(1-T), the largest relative spacing.
       case(5);
       block
       intrinsic log10

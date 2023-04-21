@@ -21,10 +21,10 @@
 !  INTRINSIC FUNCTIONS
       intrinsic abs,aint,log,sin,sqrt
 !
-      data sq2pil / 0.91893853320467274e0/
+      data sq2pil / 0.91893853320467274_wp/
 ! SQ2PIL = LOG(SQRT(2.*PI)),  SQPI2L = LOG (SQRT(PI/2.))
-      data sqpi2l / 0.22579135264472743e0/
-      data pi     / 3.14159265358979324e0/
+      data sqpi2l / 0.22579135264472743_wp/
+      data pi     / 3.14159265358979324_wp/
 !
       data xmax, dxrel / 0., 0. /
 !

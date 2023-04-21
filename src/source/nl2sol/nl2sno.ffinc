@@ -99,7 +99,7 @@
 !
 !     INTEGER COVPRT, COVREQ, D, DLTFDJ, DTYPE, J, NFCALL, NFGCAL, R, TOOBIG
 !
-     data hfac/1.0e3_wp/, hlim/0.0_wp/, negpt5/-0.5_wp/,& one/1.0_wp/, zero/0.0_wp/
+     data hfac/1.0e3_wp/, hlim/0.0_wp/, negpt5/-0.5_wp/, one/1.0_wp/, zero/0.0_wp/
 !
 !  ***  IV SUBSCRIPT VALUES  ***
 !

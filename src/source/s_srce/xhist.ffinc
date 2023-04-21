@@ -75,18 +75,18 @@
 !        FLAG FOR NO OUTPUT (EXCEPT ERROR MESSAGES).
 !     INTEGER NPRTON
 !        FLAG FOR FULL PRINTOUT.
-!     REAL Y(84)
+!     REAL(KIND=WP) :: Y(84)
 !        DATA VECTOR FOR TESTS.
-!     REAL YCONST(10)
+!     REAL(KIND=WP) :: YCONST(10)
 !        VECTOR OF CONSTANT DATA.
-!     REAL YLB
+!     REAL(KIND=WP) :: YLB
 !        THE LOWER BOUND FOR SELECTING DATA FROM Y FOR THE HISTOGRAM.
-!     REAL YLONG(200)
+!     REAL(KIND=WP) :: YLONG(200)
 !        LONG VECTOR OF DATA
-!     REAL YPATH(10)
+!     REAL(KIND=WP) :: YPATH(10)
 !        A VECTOR OF Y VALUES DESIGNED TO FORCE DIFFERENT PATHS
 !        THROUGH THE SUMMATION ROUTINES.
-!     REAL YUB
+!     REAL(KIND=WP) :: YUB
 !        THE UPPER BOUND FOR SELECTING DATA FROM Y FOR THE HISTOGRAM.
 !
 !     DATA INITIALIZATIONS.
@@ -96,60 +96,60 @@
       data nprton /1/
       data nprtof /0/
       data ncell/10/
-      data ylb/0.60e0/, yub/0.63e0/
+      data ylb/0.60_wp/, yub/0.63_wp/
 !
 !     DAVIS-HARRISON R.H. DATA, PIKES PEAK.
 !
 !     THIS IS AN ARBITRARILY CHOSEN DATA SET.
 !
      data y( 1), y( 2), y( 3), y( 4)&
-     &    / 0.6067e0, 0.6087e0, 0.6086e0, 0.6134e0/
+     &    / 0.6067_wp, 0.6087_wp, 0.6086_wp, 0.6134_wp/
      data y( 5), y( 6), y( 7)&
-     &    / 0.6108e0, 0.6138e0, 0.6125e0/
+     &    / 0.6108_wp, 0.6138_wp, 0.6125_wp/
      data y( 8), y( 9), y(10), y(11)&
-     &    / 0.6122e0, 0.6110e0, 0.6104e0, 0.7213e0/
+     &    / 0.6122_wp, 0.6110_wp, 0.6104_wp, 0.7213_wp/
      data y(12), y(13), y(14)&
-     &    / 0.7078e0, 0.7021e0, 0.7004e0/
+     &    / 0.7078_wp, 0.7021_wp, 0.7004_wp/
      data y(15), y(16), y(17), y(18)&
-     &    / 0.6981e0, 0.7242e0, 0.7268e0, 0.7418e0/
+     &    / 0.6981_wp, 0.7242_wp, 0.7268_wp, 0.7418_wp/
      data y(19), y(20), y(21)&
-     &    / 0.7407e0, 0.7199e0, 0.6225e0/
+     &    / 0.7407_wp, 0.7199_wp, 0.6225_wp/
      data y(22), y(23), y(24), y(25)&
-     &    / 0.6254e0, 0.6252e0, 0.6267e0, 0.6218e0/
+     &    / 0.6254_wp, 0.6252_wp, 0.6267_wp, 0.6218_wp/
      data y(26), y(27), y(28)&
-     &    / 0.6178e0, 0.6216e0, 0.6192e0/
+     &    / 0.6178_wp, 0.6216_wp, 0.6192_wp/
      data y(29), y(30), y(31), y(32)&
-     &    / 0.6191e0, 0.6250e0, 0.6188e0, 0.6233e0/
+     &    / 0.6191_wp, 0.6250_wp, 0.6188_wp, 0.6233_wp/
      data y(33), y(34), y(35)&
-     &    / 0.6225e0, 0.6204e0, 0.6207e0/
+     &    / 0.6225_wp, 0.6204_wp, 0.6207_wp/
      data y(36), y(37), y(38), y(39)&
-     &    / 0.6168e0, 0.6141e0, 0.6291e0, 0.6231e0/
+     &    / 0.6168_wp, 0.6141_wp, 0.6291_wp, 0.6231_wp/
      data y(40), y(41), y(42)&
-     &    / 0.6222e0, 0.6252e0, 0.6308e0/
+     &    / 0.6222_wp, 0.6252_wp, 0.6308_wp/
      data y(43), y(44), y(45), y(46)&
-     &    / 0.6376e0, 0.6330e0, 0.6303e0, 0.6301e0/
+     &    / 0.6376_wp, 0.6330_wp, 0.6303_wp, 0.6301_wp/
      data y(47), y(48), y(49)&
-     &    / 0.6390e0, 0.6423e0, 0.6300e0/
+     &    / 0.6390_wp, 0.6423_wp, 0.6300_wp/
      data y(50), y(51), y(52), y(53)&
-     &    / 0.6260e0, 0.6292e0, 0.6298e0, 0.6290e0/
+     &    / 0.6260_wp, 0.6292_wp, 0.6298_wp, 0.6290_wp/
      data y(54), y(55), y(56)&
-     &    / 0.6262e0, 0.5952e0, 0.5951e0/
+     &    / 0.6262_wp, 0.5952_wp, 0.5951_wp/
      data y(57), y(58), y(59), y(60)&
-     &    / 0.6314e0, 0.6440e0, 0.6439e0, 0.6326e0/
+     &    / 0.6314_wp, 0.6440_wp, 0.6439_wp, 0.6326_wp/
      data y(61), y(62), y(63)&
-     &    / 0.6392e0, 0.6417e0, 0.6412e0/
+     &    / 0.6392_wp, 0.6417_wp, 0.6412_wp/
      data y(64), y(65), y(66), y(67)&
-     &    / 0.6530e0, 0.6411e0, 0.6355e0, 0.6344e0/
+     &    / 0.6530_wp, 0.6411_wp, 0.6355_wp, 0.6344_wp/
      data y(68), y(69), y(70)&
-     &    / 0.6623e0, 0.6276e0, 0.6307e0/
+     &    / 0.6623_wp, 0.6276_wp, 0.6307_wp/
      data y(71), y(72), y(73), y(74)&
-     &    / 0.6354e0, 0.6197e0, 0.6153e0, 0.6340e0/
+     &    / 0.6354_wp, 0.6197_wp, 0.6153_wp, 0.6340_wp/
      data y(75), y(76), y(77)&
-     &    / 0.6338e0, 0.6284e0, 0.6162e0/
+     &    / 0.6338_wp, 0.6284_wp, 0.6162_wp/
      data y(78), y(79), y(80), y(81)&
-     &    / 0.6252e0, 0.6349e0, 0.6344e0, 0.6361e0/
+     &    / 0.6252_wp, 0.6349_wp, 0.6344_wp, 0.6361_wp/
      data y(82), y(83), y(84)&
-     &    / 0.6373e0, 0.6337e0, 0.6383e0/
+     &    / 0.6373_wp, 0.6337_wp, 0.6383_wp/
 !
 !     DEFINE IPRT, THE CURRENT OUTPUT UNIT.
 !
@@ -216,7 +216,7 @@
 !     ERROR 4, NO DATA WITHIN USER SUPPLIED LIMITS
 !
       write (iprt, 1110)
-      call histc(y, n, 0, 4.0e0, 10.0e0, ldstak)
+      call histc(y, n, 0, 4.0_wp, 10.0_wp, ldstak)
       write (iprt, 1170) ierr
 !
 !     TEST 2.  MAKE A WORKING RUN OF EACH ROUTINE TO CHECK
@@ -246,13 +246,13 @@
       call hist(ypath, nconst, ldstak)
       write (iprt,1170) ierr
       write (iprt, 1130)
-      call histc(ypath, nconst, 0, 0.0e0, 0.0e0, ldstak)
+      call histc(ypath, nconst, 0, 0.0_wp, 0.0_wp, ldstak)
       write (iprt, 1130)
-      call histc(ypath, nconst, 1, 0.0e0, 0.0e0, ldstak)
+      call histc(ypath, nconst, 1, 0.0_wp, 0.0_wp, ldstak)
       write (iprt, 1130)
-      call histc(ypath, nconst, 0, -0.5e0, 0.5e0, ldstak)
+      call histc(ypath, nconst, 0, -0.5_wp, 0.5_wp, ldstak)
       write (iprt, 1130)
-      call histc(ypath, nconst, 0, 1.0e0, 4.0e0, ldstak)
+      call histc(ypath, nconst, 0, 1.0_wp, 4.0_wp, ldstak)
 !
 !     RUN DATA SET 6.8
 !

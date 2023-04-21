@@ -39,14 +39,14 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL A(IA,NP)
+!     REAL(KIND=WP) :: A(IA,NP)
 !           THE COEFFICIENTS MATRIX (NOT PRESERVED ON OUTPUT)
-!     REAL B(N)
+!     REAL(KIND=WP) :: B(N)
 !           THE CONSTANT COLUMN MATRIX OF THE SYSTEM (NOT PRESERVED
 !           ON OUTPUT)
-!     REAL C(NP)
+!     REAL(KIND=WP) :: C(NP)
 !           THE MATRIX C DESCRIBED ABOVE
-!     REAL D(NP)
+!     REAL(KIND=WP) :: D(NP)
 !           THE DIAGONAL ELEMENTS OF THE MATRIX D DESCRIBED ABOVE
 !     INTEGER I
 !           *
@@ -68,13 +68,13 @@
 !           THE NUMBER OF PARAMETERS
 !     INTEGER NPJJMJ
 !           *
-!     REAL R(IR,NP)
+!     REAL(KIND=WP) :: R(IR,NP)
 !           THE UPPER ELEMENTS OF THE MATRIX R DESCRIBED ABOVE
-!     REAL SM1
+!     REAL(KIND=WP) :: SM1
 !           *
-!     REAL SM2
+!     REAL(KIND=WP) :: SM2
 !           *
-!     REAL X(NP)
+!     REAL(KIND=WP) :: X(NP)
 !           THE SOLUTION MATRIX
 !
 !

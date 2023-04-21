@@ -36,7 +36,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL FREQ(LFREQ)
+!     REAL(KIND=WP) :: FREQ(LFREQ)
 !        THE ARRAY IN WHICH THE FREQUENCIES CORRESPONDING TO THE
 !        INTEGRATED SPECTRUM VALUES ARE STORED.
 !     INTEGER I
@@ -69,13 +69,13 @@
 !                         PERIODOGRAM IN DECIBELS ON A LINEAR SCALE.
 !        IF NPRT .GE.  2, THE OUTPUT CONSISTS OF A VERTICAL PLOT OF THE
 !                         PERIODOGRAM ON A LOG-LINEAR SCALE,
-!     REAL PER(LPER)
+!     REAL(KIND=WP) :: PER(LPER)
 !        THE ARRAY IN WHICH THE PERIODOGRAM IS STORED.
-!     REAL YAXIS(LFREQ)
+!     REAL(KIND=WP) :: YAXIS(LFREQ)
 !        THE ARRAY IN WHICH THE Y AXIS VALUES TO BE PLOTTED ARE STORED.
-!     REAL YEXTND
+!     REAL(KIND=WP) :: YEXTND
 !        THE VALUE USED TO EXTEND THE SERIES.
-!     REAL YFFT(NFFT)
+!     REAL(KIND=WP) :: YFFT(NFFT)
 !        THE ARRAY CONTAINING THE OBSERVED TIME SERIES.
 !
       yextnd = 0.0e0
@@ -92,11 +92,11 @@
 !
 !     COMPUTE THE PERIODOGRAM.
 !
-      call pgmest (yfft, nfft, nf, 1.0e0, per, lper)
+      call pgmest (yfft, nfft, nf, 1.0_wp, per, lper)
 !
 !     SET FREQUENCIES FOR PERIODOGRAM VALUES
 !
-      call setfrq (freq, nf, 1, 0.0e0, 0.5e0, 1.0e0)
+      call setfrq (freq, nf, 1, 0.0_wp, 0.5_wp, 1.0e0)
 !
       if (nprt .eq. 0) return
 !

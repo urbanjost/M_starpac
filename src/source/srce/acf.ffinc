@@ -3,9 +3,8 @@ subroutine acf (y, n)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
-!     THIS IS THE USER CALLABLE ROUTINE FOR COMPUTING THE
-!     AUTOCORRELATIONS AND PARTIAL AUTOCORRELATIONS OF A TIME SERIES
-!     (SHORT CALL).
+!     THIS IS THE USER CALLABLE ROUTINE FOR COMPUTING THE AUTOCORRELATIONS
+!     AND PARTIAL AUTOCORRELATIONS OF A TIME SERIES (SHORT CALL).
 !
 !     WRITTEN BY - JANET R. DONALDSON
 !                  STATISTICAL ENGINEERING DIVISION
@@ -13,51 +12,39 @@ subroutine acf (y, n)
 !
 !     CREATION DATE  -  NOVEMBER 21, 1980
 !
-!
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-     integer&
-     &   n
+integer :: n
 !
 !  ARRAY ARGUMENTS
-     real(kind=wp) ::&
-     &   y(*)
+real(kind=wp) :: y(*)
 !
 !  SCALARS IN COMMON
-     integer&
-     &   ierr
+integer :: ierr
 !
 !  LOCAL SCALARS
-     real(kind=wp) ::&
-     &   chia,chiap,ospvar,ymean,ysd
-     integer&
-    &   iar,iprt,lacov,lagmax,laic,ldsmin,ldstak,lyfft,nfac,nfft,&
-     &   nprt
-     logical&
-     &   differ,isfft
+real(kind=wp) :: chia,chiap,ospvar,ymean,ysd
+integer :: iar,iprt,lacov,lagmax,laic,ldsmin,ldstak,lyfft,nfac,nfft,nprt
+logical :: differ,isfft
 !
 !  LOCAL ARRAYS
-     real(kind=wp) ::&
-    &   acov(101),aic(101),ftest(2,100),phi(100),prho(100),rho(100),&
-     &   sdrho(100),work(100)
-     integer&
-     &   iod(1),nd(1),ndum(1)
-     character&
-     &   nmsub(6)*1
+real(kind=wp) :: acov(101),aic(101),ftest(2,100),phi(100),prho(100),rho(100),sdrho(100),work(100)
+integer :: iod(1),nd(1),ndum(1)
+character :: nmsub(6)*1
 !
 !  EXTERNAL SUBROUTINES
 !      EXTERNAL ACFER,ACFMN,ACFOUT,IPRINT,SETLAG
 !
 !  INTRINSIC FUNCTIONS
-!      INTRINSIC SQRT
+intrinsic sqrt
 !
 !  COMMON BLOCKS
-      common /errchk/ierr
+common /errchk/ierr
 !
 !  EQUIVALENCES
-      equivalence (acov(2),rho(1))
-      equivalence (work(1),sdrho(1))
+equivalence (acov(2),rho(1))
+equivalence (work(1),sdrho(1))
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -157,8 +144,7 @@ subroutine acf (y, n)
       lyfft = n
       nfft = n
 !
-     call acfer(nmsub, n, lagmax, lacov, ldstak, ldsmin,&
-     &  differ, nfac, nd, iod, isfft, lyfft, nfft)
+     call acfer(nmsub, n, lagmax, lacov, ldstak, ldsmin, differ, nfac, nd, iod, isfft, lyfft, nfft)
 !
       if (ierr.eq.0) then
 !
@@ -168,15 +154,13 @@ subroutine acf (y, n)
 !
 !       CALL ROUTINE FOR MAIN AUTOCORRELATION COMPUTATIONS.
 !
-       call acfmn (y, n, lagmax, rho, sdrho, ymean, prho, aic, ftest,&
-     &     phi, iar, ospvar, acov, lacov, laic, chia, chiap, work, nprt)
+       call acfmn (y, n, lagmax, rho, sdrho, ymean, prho, aic, ftest, phi, iar, ospvar, acov, lacov, laic, chia, chiap, work, nprt)
 !
         ysd = sqrt(acov(1) * n / (n-1))
 !
 !       CALL ROUTINE TO PRINT OUT AUTOCORRELATIONS
 !
-       call acfout (ymean, ysd, n, n, lagmax, rho, sdrho, prho, ndum,&
-    &     aic, laic, ftest, iar, phi, ospvar, chia, chiap, lagmax,&
+       call acfout (ymean, ysd, n, n, lagmax, rho, sdrho, prho, ndum, aic, laic, ftest, iar, phi, ospvar, chia, chiap, lagmax,&
      &     .false., 0.0_wp, .false., .false., 0, ndum, ndum, 0)
       end if
 !
@@ -189,10 +173,7 @@ subroutine acf (y, n)
         write (iprt, 1000)
       end if
 !
-      return
-!
 !     FORMAT STATEMENTS
 !
-1000 format(/42h the correct form of the call statement is//&
-     &   22h       call acf (y, n))
+1000 format(/,' the correct form of the call statement is "call acf (y, n)"')
 end subroutine acf

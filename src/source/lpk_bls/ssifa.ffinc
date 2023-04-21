@@ -83,7 +83,7 @@
 !     INITIALIZE
 !
 !     ALPHA IS USED IN CHOOSING PIVOT BLOCK SIZE.
-      alpha = (1.0e0 + sqrt(17.0e0))/8.0e0
+      alpha = (1.0_wp + sqrt(17.0_wp))/8.0_wp
 !
       info = 0
 !
@@ -98,7 +98,7 @@
          if (k .eq. 0) go to 200
          if (k .gt. 1) go to 20
             kpvt(1) = 1
-            if (a(1,1) .eq. 0.0e0) info = 1
+            if (a(1,1) .eq. 0.0_wp) info = 1
 !     ......EXIT
             go to 200
    20    continue
@@ -126,7 +126,7 @@
 !           DETERMINE THE LARGEST OFF-DIAGONAL ELEMENT IN
 !           ROW IMAX.
 !
-            rowmax = 0.0e0
+            rowmax = 0.0_wp
             imaxp1 = imax + 1
             do 40 j = imaxp1, k
                rowmax = amax1(rowmax,abs(a(imax,j)))
@@ -149,7 +149,7 @@
                swap = imax .ne. km1
    80       continue
    90    continue
-         if (amax1(absakk,colmax) .ne. 0.0e0) go to 100
+         if (amax1(absakk,colmax) .ne. 0.0_wp) go to 100
 !
 !           COLUMN K IS ZERO.  SET INFO AND ITERATE THE LOOP.
 !
@@ -215,7 +215,7 @@
             if (km2 .eq. 0) go to 180
                ak = a(k,k)/a(k-1,k)
                akm1 = a(k-1,k-1)/a(k-1,k)
-               denom = 1.0e0 - ak*akm1
+               denom = 1.0_wp - ak*akm1
                do 170 jj = 1, km2
                   j = km1 - jj
                   bk = a(j,k)/a(k-1,k)

@@ -1,5 +1,6 @@
 !CDFNML
-      real(kind=wp) function cdfnml(x)
+function cdfnml(x)
+real(kind=wp) :: cdfnml
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -18,12 +19,10 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-     real(kind=wp) ::&
-     &   x
+     real(kind=wp) :: x
 !
 !  EXTERNAL FUNCTIONS
-     real(kind=wp) ::&
-     &    erf
+     real(kind=wp) :: erf
 !       EXTERNAL  ERF
 !
 !  INTRINSIC FUNCTIONS
@@ -31,12 +30,11 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL X
+!     REAL(KIND=WP) :: X
 !        THE PERCENT POINT FROM THE CHI SQUARED DISTRIBUTION.
 !
 !     COMMENCE BODY OF ROUTINE
 !
-      cdfnml = 0.5e0 * (1.0e0 +  erf(x/sqrt(2.0e0)))
+      cdfnml = 0.5_wp * (1.0_wp +  erf(x/sqrt(2.0_wp)))
 !
-      return
-      end
+end function cdfnml

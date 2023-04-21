@@ -49,7 +49,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL AIR(144)
+!     REAL(KIND=WP) :: AIR(144)
 !        THE AIRLINE DATA.
 !     INTEGER IERR
 !        A COMMON VARIABLE USED AS A FLAG TO INDICATE WHETHER
@@ -81,36 +81,36 @@
 !        OF THE PLOT ARE TO BE LISTED.
 !     INTEGER NY, NYM
 !        THE NUMBER OF OBSERVATIONS IN ARRAYS Y AND YM, RESPECTIVELY.
-!     REAL TIME(144)
+!     REAL(KIND=WP) :: TIME(144)
 !        THE TIME VALUES FOR THE AIRLINE DATA.
-!     REAL X(144)
+!     REAL(KIND=WP) :: X(144)
 !        VECTOR OF OBSERVATIONS FOR X(HORIZONTAL) COORDINATES
-!     REAL XLB
+!     REAL(KIND=WP) :: XLB
 !        THE LOWER BOUND FOR THE X-AXIS.  (XLB=XUB INDICATES LIMITS ARE
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
-!     REAL XMISS
+!     REAL(KIND=WP) :: XMISS
 !        THE MISSING VALUE CODE FOR THE X-AXIS.
-!     REAL XUB
+!     REAL(KIND=WP) :: XUB
 !        THE UPPER BOUND FOR THE X-AXIS.  (XLB=XUB INDICATES LIMITS ARE
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
-!     REAL Y(144)
+!     REAL(KIND=WP) :: Y(144)
 !        VECTOR OF OBSERVATIONS FOR THE Y (VERTICAL) COORDINATES
-!     REAL YLB
+!     REAL(KIND=WP) :: YLB
 !        THE LOWER BOUND FOR THE Y-AXIS.  (YLB=YUB INDICATES LIMITS ARE
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
-!     REAL YM(12,12)
+!     REAL(KIND=WP) :: YM(12,12)
 !        MULTIVARIATE OBSERVATIONS FOR THE Y (VERTICAL) COORDINATES.
-!     REAL YMISS
+!     REAL(KIND=WP) :: YMISS
 !        THE MISSING VALUE CODE FOR THE Y-AXIS.
-!     REAL YMMISS(144)
+!     REAL(KIND=WP) :: YMMISS(144)
 !        THE MISSING VALUE CODES FOR EACH COLUMN OF YM.
-!     REAL YUB
+!     REAL(KIND=WP) :: YUB
 !        THE UPPER BOUND FOR THE Y-AXIS.  (YLB=YUB INDICATES LIMITS ARE
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
 !
 !
      data     xmiss,    ymiss&
-     &    /      7.0e0,    180.0e0/
+     &    /      7.0_wp,    180.0_wp/
 !
      data isym(  1),isym(  2),isym(  3),isym(  4),isym(  5),isym(  6)&
      &    /    -5000,     6000,        7,        8,        9,       10/
@@ -162,102 +162,102 @@
      &    /       11,       12,       13,       14,       15,       16/
 !
      data time(  1),time(  2),time(  3),time(  4),time(  5),time(  6)&
-     &    /   1.0e0,    2.0e0,    3.0e0,    4.0e0,    5.0e0,    6.0e0/
+     &    /   1.0_wp,    2.0_wp,    3.0_wp,    4.0_wp,    5.0_wp,    6.0_wp/
      data time(  7),time(  8),time(  9),time( 10),time( 11),time( 12)&
-     &    /   7.0e0,    8.0e0,    9.0e0,   10.0e0,   11.0e0,   12.0e0/
+     &    /   7.0_wp,    8.0_wp,    9.0_wp,   10.0_wp,   11.0_wp,   12.0_wp/
      data time( 13),time( 14),time( 15),time( 16),time( 17),time( 18)&
-     &    /  13.0e0,   14.0e0,   15.0e0,   16.0e0,   17.0e0,   18.0e0/
+     &    /  13.0_wp,   14.0_wp,   15.0_wp,   16.0_wp,   17.0_wp,   18.0_wp/
      data time( 19),time( 20),time( 21),time( 22),time( 23),time( 24)&
-     &    /  19.0e0,   20.0e0,   21.0e0,   22.0e0,   23.0e0,   24.0e0/
+     &    /  19.0_wp,   20.0_wp,   21.0_wp,   22.0_wp,   23.0_wp,   24.0_wp/
      data time( 25),time( 26),time( 27),time( 28),time( 29),time( 30)&
-     &    /  25.0e0,   26.0e0,   27.0e0,   28.0e0,   29.0e0,   30.0e0/
+     &    /  25.0_wp,   26.0_wp,   27.0_wp,   28.0_wp,   29.0_wp,   30.0_wp/
      data time( 31),time( 32),time( 33),time( 34),time( 35),time( 36)&
-     &    /  31.0e0,   32.0e0,   33.0e0,   34.0e0,   35.0e0,   36.0e0/
+     &    /  31.0_wp,   32.0_wp,   33.0_wp,   34.0_wp,   35.0_wp,   36.0_wp/
      data time( 37),time( 38),time( 39),time( 40),time( 41),time( 42)&
-     &    /  37.0e0,   38.0e0,   39.0e0,   40.0e0,   41.0e0,   42.0e0/
+     &    /  37.0_wp,   38.0_wp,   39.0_wp,   40.0_wp,   41.0_wp,   42.0_wp/
      data time( 43),time( 44),time( 45),time( 46),time( 47),time( 48)&
-     &    /  43.0e0,   44.0e0,   45.0e0,   46.0e0,   47.0e0,   48.0e0/
+     &    /  43.0_wp,   44.0_wp,   45.0_wp,   46.0_wp,   47.0_wp,   48.0_wp/
      data time( 49),time( 50),time( 51),time( 52),time( 53),time( 54)&
-     &    /  49.0e0,   50.0e0,   51.0e0,   52.0e0,   53.0e0,   54.0e0/
+     &    /  49.0_wp,   50.0_wp,   51.0_wp,   52.0_wp,   53.0_wp,   54.0_wp/
      data time( 55),time( 56),time( 57),time( 58),time( 59),time( 60)&
-     &    /  55.0e0,   56.0e0,   57.0e0,   58.0e0,   59.0e0,   60.0e0/
+     &    /  55.0_wp,   56.0_wp,   57.0_wp,   58.0_wp,   59.0_wp,   60.0_wp/
      data time( 61),time( 62),time( 63),time( 64),time( 65),time( 66)&
-     &    /  61.0e0,   62.0e0,   63.0e0,   64.0e0,   65.0e0,   66.0e0/
+     &    /  61.0_wp,   62.0_wp,   63.0_wp,   64.0_wp,   65.0_wp,   66.0_wp/
      data time( 67),time( 68),time( 69),time( 70),time( 71),time( 72)&
-     &    /  67.0e0,   68.0e0,   69.0e0,   70.0e0,   71.0e0,   72.0e0/
+     &    /  67.0_wp,   68.0_wp,   69.0_wp,   70.0_wp,   71.0_wp,   72.0_wp/
      data time( 73),time( 74),time( 75),time( 76),time( 77),time( 78)&
-     &    /  73.0e0,   74.0e0,   75.0e0,   76.0e0,   77.0e0,   78.0e0/
+     &    /  73.0_wp,   74.0_wp,   75.0_wp,   76.0_wp,   77.0_wp,   78.0_wp/
      data time( 79),time( 80),time( 81),time( 82),time( 83),time( 84)&
-     &    /  79.0e0,   80.0e0,   81.0e0,   82.0e0,   83.0e0,   84.0e0/
+     &    /  79.0_wp,   80.0_wp,   81.0_wp,   82.0_wp,   83.0_wp,   84.0_wp/
      data time( 85),time( 86),time( 87),time( 88),time( 89),time( 90)&
-     &    /  85.0e0,   86.0e0,   87.0e0,   88.0e0,   89.0e0,   90.0e0/
+     &    /  85.0_wp,   86.0_wp,   87.0_wp,   88.0_wp,   89.0_wp,   90.0_wp/
      data time( 91),time( 92),time( 93),time( 94),time( 95),time( 96)&
-     &    /  91.0e0,   92.0e0,   93.0e0,   94.0e0,   95.0e0,   96.0e0/
+     &    /  91.0_wp,   92.0_wp,   93.0_wp,   94.0_wp,   95.0_wp,   96.0_wp/
      data time( 97),time( 98),time( 99),time(100),time(101),time(102)&
-     &    /  97.0e0,   98.0e0,   99.0e0,  100.0e0,  101.0e0,  102.0e0/
+     &    /  97.0_wp,   98.0_wp,   99.0_wp,  100.0_wp,  101.0_wp,  102.0_wp/
      data time(103),time(104),time(105),time(106),time(107),time(108)&
-     &    / 103.0e0,  104.0e0,  105.0e0,  106.0e0,  107.0e0,  108.0e0/
+     &    / 103.0_wp,  104.0_wp,  105.0_wp,  106.0_wp,  107.0_wp,  108.0_wp/
      data time(109),time(110),time(111),time(112),time(113),time(114)&
-     &    / 109.0e0,  110.0e0,  111.0e0,  112.0e0,  113.0e0,  114.0e0/
+     &    / 109.0_wp,  110.0_wp,  111.0_wp,  112.0_wp,  113.0_wp,  114.0_wp/
      data time(115),time(116),time(117),time(118),time(119),time(120)&
-     &    / 115.0e0,  116.0e0,  117.0e0,  118.0e0,  119.0e0,  120.0e0/
+     &    / 115.0_wp,  116.0_wp,  117.0_wp,  118.0_wp,  119.0_wp,  120.0_wp/
      data time(121),time(122),time(123),time(124),time(125),time(126)&
-     &    / 121.0e0,  122.0e0,  123.0e0,  124.0e0,  125.0e0,  126.0e0/
+     &    / 121.0_wp,  122.0_wp,  123.0_wp,  124.0_wp,  125.0_wp,  126.0_wp/
      data time(127),time(128),time(129),time(130),time(131),time(132)&
-     &    / 127.0e0,  128.0e0,  129.0e0,  130.0e0,  131.0e0,  132.0e0/
+     &    / 127.0_wp,  128.0_wp,  129.0_wp,  130.0_wp,  131.0_wp,  132.0_wp/
      data time(133),time(134),time(135),time(136),time(137),time(138)&
-     &    / 133.0e0,  134.0e0,  135.0e0,  136.0e0,  137.0e0,  138.0e0/
+     &    / 133.0_wp,  134.0_wp,  135.0_wp,  136.0_wp,  137.0_wp,  138.0_wp/
      data time(139),time(140),time(141),time(142),time(143),time(144)&
-     &    / 139.0e0,  140.0e0,  141.0e0,  142.0e0,  143.0e0,  144.0e0/
+     &    / 139.0_wp,  140.0_wp,  141.0_wp,  142.0_wp,  143.0_wp,  144.0_wp/
 !
      data  air(  1), air(  2), air(  3), air(  4), air(  5), air(  6)&
-     &    / 112.0e0,  118.0e0,  132.0e0,  129.0e0,  121.0e0,  135.0e0/
+     &    / 112.0_wp,  118.0_wp,  132.0_wp,  129.0_wp,  121.0_wp,  135.0_wp/
      data  air(  7), air(  8), air(  9), air( 10), air( 11), air( 12)&
-     &    / 148.0e0,  148.0e0,  136.0e0,  119.0e0,  104.0e0,  118.0e0/
+     &    / 148.0_wp,  148.0_wp,  136.0_wp,  119.0_wp,  104.0_wp,  118.0_wp/
      data  air( 13), air( 14), air( 15), air( 16), air( 17), air( 18)&
-     &    / 115.0e0,  126.0e0,  141.0e0,  135.0e0,  125.0e0,  149.0e0/
+     &    / 115.0_wp,  126.0_wp,  141.0_wp,  135.0_wp,  125.0_wp,  149.0_wp/
      data  air( 19), air( 20), air( 21), air( 22), air( 23), air( 24)&
-     &    / 170.0e0,  170.0e0,  158.0e0,  133.0e0,  114.0e0,  140.0e0/
+     &    / 170.0_wp,  170.0_wp,  158.0_wp,  133.0_wp,  114.0_wp,  140.0_wp/
      data  air( 25), air( 26), air( 27), air( 28), air( 29), air( 30)&
-     &    / 145.0e0,  150.0e0,  178.0e0,  163.0e0,  172.0e0,  178.0e0/
+     &    / 145.0_wp,  150.0_wp,  178.0_wp,  163.0_wp,  172.0_wp,  178.0_wp/
      data  air( 31), air( 32), air( 33), air( 34), air( 35), air( 36)&
-     &    / 199.0e0,  199.0e0,  184.0e0,  162.0e0,  146.0e0,  166.0e0/
+     &    / 199.0_wp,  199.0_wp,  184.0_wp,  162.0_wp,  146.0_wp,  166.0_wp/
      data  air( 37), air( 38), air( 39), air( 40), air( 41), air( 42)&
-     &    / 171.0e0,  180.0e0,  193.0e0,  181.0e0,  183.0e0,  218.0e0/
+     &    / 171.0_wp,  180.0_wp,  193.0_wp,  181.0_wp,  183.0_wp,  218.0_wp/
      data  air( 43), air( 44), air( 45), air( 46), air( 47), air( 48)&
-     &    / 230.0e0,  242.0e0,  209.0e0,  191.0e0,  172.0e0,  194.0e0/
+     &    / 230.0_wp,  242.0_wp,  209.0_wp,  191.0_wp,  172.0_wp,  194.0_wp/
      data  air( 49), air( 50), air( 51), air( 52), air( 53), air( 54)&
-     &    / 196.0e0,  196.0e0,  236.0e0,  235.0e0,  229.0e0,  243.0e0/
+     &    / 196.0_wp,  196.0_wp,  236.0_wp,  235.0_wp,  229.0_wp,  243.0_wp/
      data  air( 55), air( 56), air( 57), air( 58), air( 59), air( 60)&
-     &    / 264.0e0,  272.0e0,  237.0e0,  211.0e0,  180.0e0,  201.0e0/
+     &    / 264.0_wp,  272.0_wp,  237.0_wp,  211.0_wp,  180.0_wp,  201.0_wp/
      data  air( 61), air( 62), air( 63), air( 64), air( 65), air( 66)&
-     &    / 204.0e0,  188.0e0,  235.0e0,  227.0e0,  234.0e0,  264.0e0/
+     &    / 204.0_wp,  188.0_wp,  235.0_wp,  227.0_wp,  234.0_wp,  264.0_wp/
      data  air( 67), air( 68), air( 69), air( 70), air( 71), air( 72)&
-     &    / 302.0e0,  293.0e0,  259.0e0,  229.0e0,  203.0e0,  229.0e0/
+     &    / 302.0_wp,  293.0_wp,  259.0_wp,  229.0_wp,  203.0_wp,  229.0_wp/
      data  air( 73), air( 74), air( 75), air( 76), air( 77), air( 78)&
-     &    / 242.0e0,  233.0e0,  267.0e0,  269.0e0,  270.0e0,  315.0e0/
+     &    / 242.0_wp,  233.0_wp,  267.0_wp,  269.0_wp,  270.0_wp,  315.0_wp/
      data  air( 79), air( 80), air( 81), air( 82), air( 83), air( 84)&
-     &    / 364.0e0,  347.0e0,  312.0e0,  274.0e0,  237.0e0,  278.0e0/
+     &    / 364.0_wp,  347.0_wp,  312.0_wp,  274.0_wp,  237.0_wp,  278.0_wp/
      data  air( 85), air( 86), air( 87), air( 88), air( 89), air( 90)&
-     &    / 284.0e0,  277.0e0,  317.0e0,  313.0e0,  318.0e0,  374.0e0/
+     &    / 284.0_wp,  277.0_wp,  317.0_wp,  313.0_wp,  318.0_wp,  374.0_wp/
      data  air( 91), air( 92), air( 93), air( 94), air( 95), air( 96)&
-     &    / 413.0e0,  405.0e0,  355.0e0,  306.0e0,  271.0e0,  306.0e0/
+     &    / 413.0_wp,  405.0_wp,  355.0_wp,  306.0_wp,  271.0_wp,  306.0_wp/
      data  air( 97), air( 98), air( 99), air(100), air(101), air(102)&
-     &    / 315.0e0,  301.0e0,  356.0e0,  348.0e0,  355.0e0,  422.0e0/
+     &    / 315.0_wp,  301.0_wp,  356.0_wp,  348.0_wp,  355.0_wp,  422.0_wp/
      data  air(103), air(104), air(105), air(106), air(107), air(108)&
-     &    / 465.0e0,  467.0e0,  404.0e0,  347.0e0,  305.0e0,  336.0e0/
+     &    / 465.0_wp,  467.0_wp,  404.0_wp,  347.0_wp,  305.0_wp,  336.0_wp/
      data  air(109), air(110), air(111), air(112), air(113), air(114)&
-     &    / 340.0e0,  318.0e0,  362.0e0,  348.0e0,  363.0e0,  435.0e0/
+     &    / 340.0_wp,  318.0_wp,  362.0_wp,  348.0_wp,  363.0_wp,  435.0_wp/
      data  air(115), air(116), air(117), air(118), air(119), air(120)&
-     &    / 491.0e0,  505.0e0,  404.0e0,  359.0e0,  310.0e0,  337.0e0/
+     &    / 491.0_wp,  505.0_wp,  404.0_wp,  359.0_wp,  310.0_wp,  337.0_wp/
      data  air(121), air(122), air(123), air(124), air(125), air(126)&
-     &    / 360.0e0,  342.0e0,  406.0e0,  396.0e0,  420.0e0,  472.0e0/
+     &    / 360.0_wp,  342.0_wp,  406.0_wp,  396.0_wp,  420.0_wp,  472.0_wp/
      data  air(127), air(128), air(129), air(130), air(131), air(132)&
-     &    / 548.0e0,  559.0e0,  463.0e0,  407.0e0,  362.0e0,  405.0e0/
+     &    / 548.0_wp,  559.0_wp,  463.0_wp,  407.0_wp,  362.0_wp,  405.0_wp/
      data  air(133), air(134), air(135), air(136), air(137), air(138)&
-     &    / 417.0e0,  391.0e0,  419.0e0,  461.0e0,  472.0e0,  535.0e0/
+     &    / 417.0_wp,  391.0_wp,  419.0_wp,  461.0_wp,  472.0_wp,  535.0_wp/
      data  air(139), air(140), air(141), air(142), air(143), air(144)&
-     &    / 622.0e0,  606.0e0,  508.0e0,  461.0e0,  390.0e0,  432.0e0/
+     &    / 622.0_wp,  606.0_wp,  508.0_wp,  461.0_wp,  390.0_wp,  432.0_wp/
 !
       call setrv(ymmiss, 144, ymiss)
       call scopy(144, air, 1, y, 1)

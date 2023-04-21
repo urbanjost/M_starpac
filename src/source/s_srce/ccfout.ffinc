@@ -56,7 +56,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL FPLM
+!     REAL(KIND=WP) :: FPLM
 !        THE FLOATING POINT LARGEST MAGNITUDE.
 !     LOGICAL IFMISS
 !        THE INDICATOR VARIABLE USED TO DETERMINE
@@ -87,20 +87,20 @@
 !        THE NUMBER OF MISSING VALUES IN EACH SERIES.
 !     INTEGER NUSEDJ, NUSEDK
 !        THE ACTIVE NUMBER OF OBSERVATIONS IN EACH SERIES.
-!     REAL PMISSJ, PMISSK
+!     REAL(KIND=WP) :: PMISSJ, PMISSK
 !        THE PERCENT OF MISSING OBSERVATIONS.
-!     REAL RHOC(NCC)
+!     REAL(KIND=WP) :: RHOC(NCC)
 !        THE ARRAY IN WHICH THE CROSS CORRELATIONS ARE STORED
-!     REAL SDRHOC(NCC)
+!     REAL(KIND=WP) :: SDRHOC(NCC)
 !        THE ARRAY IN WHICH THE STANDARD ERRORS OF THE AUTOCORRELATIONS
 !        ARE STORED
-!     REAL YMEANJ, YMEANK
+!     REAL(KIND=WP) :: YMEANJ, YMEANK
 !        THE MEAN OF EACH OF THE SERIES.
-!     REAL YMISSJ, YMISSK
+!     REAL(KIND=WP) :: YMISSJ, YMISSK
 !        THE MISSING VALUE CODE FOR EACH SERIES.
-!     REAL YMMISS(1)
+!     REAL(KIND=WP) :: YMMISS(1)
 !        THE MISSING VALUE CODE FOR THE CROSS CORRELATIONS.
-!     REAL YSDJ, YSDK
+!     REAL(KIND=WP) :: YSDJ, YSDK
 !        THE STANDARD DEVIAION OF EACH SERIES.
 !
       fplm = r1mach(2)
@@ -144,7 +144,7 @@
       call versp (.true.)
       write (iprt, 1001) j, k
      call vpmn(rhoc, ymmiss, 2*lagmax+1, 1, 2*lagmax+1, 1, 0,&
-    &   isym, 1, 0, -1.0e0, 1.0e0, real(-lagmax), 1.0e0, ifmiss,&
+    &   isym, 1, 0, -1.0_wp, 1.0_wp, real(-lagmax), 1.0_wp, ifmiss,&
      &   0, 0, 1)
       return
 !

@@ -76,7 +76,7 @@
          a(j) = aa + re
          aa = cn - (cd*cn+sd*sn)
          sn = (sd*cn-cd*sn) + sn
-         cn = 0.5e0/(aa**2+sn**2) + 0.5e0
+         cn = 0.5_wp/(aa**2+sn**2) + 0.5e0
          sn = cn*sn
          cn = cn*aa
    20 continue

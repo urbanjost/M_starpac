@@ -134,7 +134,7 @@
 !     INTEGER RANK
 !                  THE STARTING LOCATION IN THE WORK AREA FOR THE
 !                  MATRIX CONTAINING THE RANKS OF YM
-!     REAL RSTAK(12)
+!     REAL(KIND=WP) :: RSTAK(12)
 !                  THE REAL VERSION OF THE
 !                  /CSTAK/ WORK AREA.
 !     INTEGER SC
@@ -164,7 +164,7 @@
 !     INTEGER WRK
 !                  THE STARTING LOCATION IN THE WORK AREA FOR
 !                  WORK SPACE
-!     REAL YM(IYM,M)
+!     REAL(KIND=WP) :: YM(IYM,M)
 !                  THE MATRIX IN WHICH THE OBSERVATIONS ARE PASSED
 !
 !

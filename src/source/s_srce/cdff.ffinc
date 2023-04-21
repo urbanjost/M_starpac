@@ -50,13 +50,13 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL DF1
+!     REAL(KIND=WP) :: DF1
 !        THE DEGREES OF FREEDOM IN THE NUMERATOR.
-!     REAL DF2
+!     REAL(KIND=WP) :: DF2
 !        THE DEGREES OF FREEDOM IN THE DENOMINATOR.
-!     REAL F
+!     REAL(KIND=WP) :: F
 !        THE PERCENTAGE POINT FROM THE F DISTRIBUTION.
-!     REAL FTRANS
+!     REAL(KIND=WP) :: FTRANS
 !        TRANSFORMS OF THE F PERCENTAGE POINT, USED FOR THE VARIOUS
 !        APPROXIMATING DISTRIBUTIONS.
 !
@@ -84,9 +84,9 @@
 !     TO COMPUTE THE F CDF.
 !
      ftrans =&
-    &   (((1.0e0-(2.0e0/(9.0e0*df2)))*&
-    &     (f**(1.0e0/3.0e0)))-(1.0e0-(2.0e0/(9.0e0*df1)))) /&
-     &   sqrt(((f**(2.0e0/3.0e0))/(4.5e0*df2))+(2.0e0/(9.0e0*df1)))
+    &   (((1.0e0-(2.0_wp/(9.0e0*df2)))*&
+    &     (f**(1.0_wp/3.0e0)))-(1.0e0-(2.0_wp/(9.0e0*df1)))) /&
+     &   sqrt(((f**(2.0_wp/3.0e0))/(4.5e0*df2))+(2.0_wp/(9.0e0*df1)))
 !
       cdff = cdfnml(ftrans)
       return
@@ -99,7 +99,7 @@
 !
      ftrans =&
     &   (df1 + (df1/df2)*(0.5e0*df1-1.0e0))/&
-     &   ((1.0e0/f)+(df1/df2)*0.5e0)
+     &   ((1.0_wp/f)+(df1/df2)*0.5e0)
 !
       cdff = cdfchi(ftrans, df1)
 !

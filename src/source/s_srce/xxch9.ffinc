@@ -65,25 +65,25 @@
 !        THE NUMBER OF OBSERVATIONS IN EACH PROBLEM.
 !     INTEGER NPAR
 !        THE NUMBER OF PARAMETERS TO BE ESTIMATED.
-!     REAL PAR(5)
+!     REAL(KIND=WP) :: PAR(5)
 !        THE ARRAY IN WHICH THE CURRENT ESTIMATES OF THE UNKNOWN
 !        PARAMETERS ARE STORED.
-!     REAL RES(10)
+!     REAL(KIND=WP) :: RES(10)
 !        THE RESIDUALS.
-!     REAL STP(5)
+!     REAL(KIND=WP) :: STP(5)
 !        THE STEP SIZES SELECTED FOR GENERATING FINITE DIFFERENCE
 !        DERIVATIVES.
-!     REAL XM(10,2)
+!     REAL(KIND=WP) :: XM(10,2)
 !        THE INDEPENDENT VARIABLE.
-!     REAL Y(10)
+!     REAL(KIND=WP) :: Y(10)
 !        THE DEPENDENT VARIABLE.
 !
 !
      data y(1), y(2), y(3), y(4), y(5), y(6)&
-     &   /2.138e0, 3.421e0, 3.597e0, 4.340e0, 4.882e0, 5.660e0/
+     &   /2.138_wp, 3.421_wp, 3.597_wp, 4.340_wp, 4.882_wp, 5.660_wp/
 !
      data xm(1,1), xm(2,1), xm(3,1), xm(4,1), xm(5,1), xm(6,1)&
-     &   /1.309e0, 1.471e0, 1.490e0, 1.565e0, 1.611e0, 1.680e0/
+     &   /1.309_wp, 1.471_wp, 1.490_wp, 1.565_wp, 1.611_wp, 1.680_wp/
 !
 !     SET PARAMETERS NECESSARY FOR THE COMPUTATIONS
 !

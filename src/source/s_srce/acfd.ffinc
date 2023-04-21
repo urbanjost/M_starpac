@@ -150,20 +150,20 @@
 !        ORDER.
 !     INTEGER PRHO
 !        THE STARTING LOCATION IN THE WORK AREA FOR PRHO.
-!     REAL RSTAK(12)
+!     REAL(KIND=WP) :: RSTAK(12)
 !        THE REAL VERSION OF THE /CSTAK/ WORK AREA.
 !     INTEGER SDRHO
 !        THE STARTING LOCATION IN THE WORK AREA FOR SDRHO.
 !     INTEGER WORK
 !        THE STARTING LOCATION IN THE WORK AREA FOR WORK.
-!     REAL Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        THE VECTOR CONTAINING THE OBSERVED TIME SERIES
 !     INTEGER YF
 !        THE STARTING LOCATION IN DSTAK FOR
 !        THE VECTOR CONTAINING THE DIFFERENCE FILTERED SERIES.
-!     REAL YMEAN
+!     REAL(KIND=WP) :: YMEAN
 !        THE MEAN OF THE OBSERVED TIME SERIES
-!     REAL YSD
+!     REAL(KIND=WP) :: YSD
 !        THE STANDARD DEVIATION OF THE OBSERVED TIME SERIES
 !
 !
@@ -243,7 +243,7 @@
          call acfout (ymean, ysd, nyf, nyf, min(lagmax, nyd-1),&
     &       rstak(acov+1), rstak(sdrho), rstak(prho), ndum, rstak(aic),&
     &       lagmax+1, rstak(ftest), iar, rstak(phi), ospvar, chia,&
-    &       chiap, lagmax, .false., 0.0e0, differ, newpg, nfac, nd,&
+    &       chiap, lagmax, .false., 0.0_wp, differ, newpg, nfac, nd,&
      &       iod, ntimes)
 !
           newpg = .true.
@@ -272,7 +272,7 @@
             call acfout (ymean, ysd, nyf, nyf, min(lagmax, nyd-1),&
     &          rstak(acov+1), rstak(sdrho), rstak(prho), ndum,&
     &          rstak(aic), lagmax+1, rstak(ftest), iar, rstak(phi),&
-    &          ospvar, chia, chiap, lagmax, .false., 0.0e0, differ,&
+    &          ospvar, chia, chiap, lagmax, .false., 0.0_wp, differ,&
      &          newpg, nfac, nd, iod, i)
 !
    50       continue

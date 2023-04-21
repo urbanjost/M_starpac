@@ -50,7 +50,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL D(N,NPAR)
+!     REAL(KIND=WP) :: D(N,NPAR)
 !        THE FIRST DERIVATIVE OF THE MODEL (JACOBIAN).
 !     EXTERNAL DRV
 !        THE NAME OF THE USER SUPPLIED SUBROUTINE WHICH COMPUTES THE
@@ -91,26 +91,26 @@
 !        THE NUMBER OF OBSERVATIONS.
 !     INTEGER NPAR
 !        THE NUMBER OF PARAMETERS IN THE MODEL.
-!     REAL PAR(NPAR)
+!     REAL(KIND=WP) :: PAR(NPAR)
 !        THE CURRENT ESTIMATES OF THE PARAMETERS.
-!     REAL PJ
+!     REAL(KIND=WP) :: PJ
 !        A TEMPORARY LOCATION FOR STORAGE OF THE JTH PARAMETER.
-!     REAL PVT(N)
+!     REAL(KIND=WP) :: PVT(N)
 !        THE PREDICTED VALUE BASED ON THE CURRENT PARAMETER ESTIMATES.
-!     REAL SCL(LSCL)
+!     REAL(KIND=WP) :: SCL(LSCL)
 !        THE SCALE VALUES.
-!     REAL STPT(LSTPT)
+!     REAL(KIND=WP) :: STPT(LSTPT)
 !        THE STEP SIZE ARRAY.
-!     REAL STPJ
+!     REAL(KIND=WP) :: STPJ
 !        THE JTH STEP SIZE.
 !     LOGICAL WEIGHT
 !        THE VARIABLE USED TO INDICATE WHETHER WEIGHTED ANALYSIS IS TO
 !        BE PERFORMED (TRUE) OR NOT (FALSE).
-!     REAL WT(LWT)
+!     REAL(KIND=WP) :: WT(LWT)
 !        THE USER SUPPLIED WEIGHTS.
-!     REAL WTSQRT
+!     REAL(KIND=WP) :: WTSQRT
 !        THE SQUARE ROOT OF THE USER SUPPLIED WEIGHTS.
-!     REAL XM(IXM,M)
+!     REAL(KIND=WP) :: XM(IXM,M)
 !        THE INDEPENDENT VARIABLE.
 !
 !     COMPUTE FINITE-DIFFERENCE JACOBIAN OF THE OPTIMIZED PARAMETERS
@@ -123,13 +123,13 @@
             pj = par(j)
             if (scl(jpk).eq.0.0e0) then
                if (par(j).ne.0.0e0) then
-                  stpj = stpt(j)*sign(1.0e0,par(j))*abs(par(j))
+                  stpj = stpt(j)*sign(1.0_wp,par(j))*abs(par(j))
                else
                   stpj = stpt(j)
                end if
             else
               stpj = stpt(j)*&
-    &                sign(1.0e0,par(j))*max(abs(par(j)),1.0e0/&
+    &                sign(1.0_wp,par(j))*max(abs(par(j)),1.0_wp/&
      &                abs(scl(jpk)))
             end if
 !

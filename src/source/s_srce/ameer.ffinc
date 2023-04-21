@@ -105,9 +105,9 @@
 !        THE VARIABLE USED TO INDICATE WHETHER ANY RESULTS OTHER THAN
 !        THE RESIDUALS AND PARAMETERS ARE TO BE SAVED (TRUE) OR NOT
 !        (FALSE).
-!     REAL SCALE(LSCALE)
+!     REAL(KIND=WP) :: SCALE(LSCALE)
 !        THE TYPICAL SIZE OF THE PARAMETERS.
-!     REAL STP(LSTP)
+!     REAL(KIND=WP) :: STP(LSTP)
 !        THE STEP SIZE ARRAY.
 !
 !     SET UP NAME ARRAYS
@@ -165,9 +165,9 @@
 !
         if (.not.error(4)) then
           call eisge(nmsub, lnpare, npare, 1, 2, head, error(5), lone)
-         call ervgt(nmsub, lstep, stp, lstp, 0.0e0, 0, head, 6, nv,&
+         call ervgt(nmsub, lstep, stp, lstp, 0.0_wp, 0, head, 6, nv,&
      &      error(8), lzero)
-         call ervgt(nmsub, lscl, scale, lscale, 0.0e0, 0, head, 6, nv,&
+         call ervgt(nmsub, lscl, scale, lscale, 0.0_wp, 0, head, 6, nv,&
      &      error(12), lzero)
          if (save .and. (.not.error(5)))&
     &      call eisge(nmsub, livcv, ivcv, npare, 3, head, error(15),&

@@ -96,27 +96,27 @@
 !        THE CHARACTERS OF THE CALLING ROUTINES NAME.
 !     INTEGER NV
 !        THE NUMBER OF VIOLATIONS FOUND IN THE X AND Y AXIS ARRAYS.
-!     REAL X(N)
+!     REAL(KIND=WP) :: X(N)
 !        VECTOR OF OBSERVATIONS FOR X COORDINATES
 !     LOGICAL XCHECK
 !        INDICATOR VARIABLE USED TO DESIGNATE WHETHER X-AXIS VALUES
 !        ARE TO BE CHECKED (XCHECK = .TRUE.) OR NOT (XCHECK = .FALSE.)
-!     REAL XLB
+!     REAL(KIND=WP) :: XLB
 !        THE LOWER BOUND FOR THE X-AXIS.  (XLB=XUB INDICATES LIMITS ARE
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
-!     REAL XMISS
+!     REAL(KIND=WP) :: XMISS
 !        THE MISSING VALUE CODE FOR THE X-AXIS.
-!     REAL XUB
+!     REAL(KIND=WP) :: XUB
 !        THE UPPER BOUND FOR THE X-AXIS.  (XLB=XUB INDICATES LIMITS ARE
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
-!     REAL YLB
+!     REAL(KIND=WP) :: YLB
 !        THE LOWER BOUND FOR THE Y-AXIS.  (YLB=YUB INDICATES LIMITS ARE
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
-!     REAL YM(IYM,M)
+!     REAL(KIND=WP) :: YM(IYM,M)
 !        MULTIVARIATE OBSERVATIONS FOR THE Y (VERTICAL) COORDINATES.
-!     REAL YMMISS(M)
+!     REAL(KIND=WP) :: YMMISS(M)
 !        THE MISSING VALUE CODE FOR EACH COLUMN OF YM.
-!     REAL YUB
+!     REAL(KIND=WP) :: YUB
 !        THE UPPER BOUND FOR THE Y-AXIS.  (YLB=YUB INDICATES LIMITS ARE
 !        TO BE DETERMINED FROM THE RANGE OF THE DATA.)
 !
@@ -215,10 +215,10 @@
 !         IF X AXIS IS LOG SCALE, CHECK FOR NEGATIVE X AXIS VALUES
 !
           if (miss) then
-           call ervgtm(nmsub, lx, x, xmiss, n, 0.0e0, 0, head, 1,&
+           call ervgtm(nmsub, lx, x, xmiss, n, 0.0_wp, 0, head, 1,&
      &        nv, err04, lx)
           else
-           call ervgt(nmsub, lx, x, n, 0.0e0, 0, head, 1, nv, err04,&
+           call ervgt(nmsub, lx, x, n, 0.0_wp, 0, head, 1, nv, err04,&
      &        lx)
           end if
         end if
@@ -227,8 +227,8 @@
 !
 !         CHECK FOR NEGATIVE PLOT BOUNDS
 !
-          call ersgt(nmsub, lxlb, xlb, 0.0e0, 1, head, err05, lxlb)
-          call ersgt(nmsub, lxub, xub, 0.0e0, 1, head, err06, lxub)
+          call ersgt(nmsub, lxlb, xlb, 0.0_wp, 1, head, err05, lxlb)
+          call ersgt(nmsub, lxub, xub, 0.0_wp, 1, head, err06, lxub)
         end if
       end if
       if (ilogxy(2).ne.0) then
@@ -238,18 +238,18 @@
 !
           if (miss) then
             if (multi) then
-             call eragtm(nmsub, lym, ym, ymmiss, n, m, iym, 0.0e0, 0,&
+             call eragtm(nmsub, lym, ym, ymmiss, n, m, iym, 0.0_wp, 0,&
      &           head, 1, nv, err04, lym)
             else
-             call ervgtm(nmsub, ly, ym, ymmiss(1), n, 0.0e0, 0, head,&
+             call ervgtm(nmsub, ly, ym, ymmiss(1), n, 0.0_wp, 0, head,&
      &           1, nv, err04, ly)
             end if
           else
             if (multi) then
-             call eragt(nmsub, lym, ym, n, m, iym, 0.0e0, 0, head,&
+             call eragt(nmsub, lym, ym, n, m, iym, 0.0_wp, 0, head,&
      &           1, nv, err04, lym)
             else
-             call ervgt(nmsub, ly, ym, n, 0.0e0, 0, head, 1,&
+             call ervgt(nmsub, ly, ym, n, 0.0_wp, 0, head, 1,&
      &           nv, err04, ly)
             end if
           end if
@@ -259,8 +259,8 @@
 !
 !         CHECK FOR NEGATIVE PLOT BOUNDS
 !
-          call ersgt(nmsub, lylb, ylb, 0.0e0, 1, head, err05, lylb)
-          call ersgt(nmsub, lyub, yub, 0.0e0, 1, head, err06, lyub)
+          call ersgt(nmsub, lylb, ylb, 0.0_wp, 1, head, err05, lylb)
+          call ersgt(nmsub, lyub, yub, 0.0_wp, 1, head, err06, lyub)
         end if
       end if
 !

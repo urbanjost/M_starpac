@@ -33,9 +33,9 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL BW
+!     REAL(KIND=WP) :: BW
 !       THE BANDWIDTH.
-!     REAL CILOW, CIMID, CIUP
+!     REAL(KIND=WP) :: CILOW, CIMID, CIUP
 !        THE Y CORDNATES FOR THE LOWER  MID AND UPPER CONFIDENCE
 !        INTERVAL POINTS.
 !     INTEGER ISYM(LPCV)
@@ -44,16 +44,16 @@
 !        THE LENGTH OF THE VECTORS USED FOR THE PLOTS.
 !     INTEGER NPTS
 !        THE NUMBER OF CO-ORDINATES TO BE PLOTTED.
-!     REAL XAXIS(LPCV)
+!     REAL(KIND=WP) :: XAXIS(LPCV)
 !        THE X AXIS VALUES FOR THE SPECTRUM PLOT.
-!     REAL XPLTMN, XPLTMX
+!     REAL(KIND=WP) :: XPLTMN, XPLTMX
 !        THE MINIMUM AND MAXIMUM VALUES TO BE PLOTTED FOR THE X AXIS.
-!     REAL YAXIS(LPCV)
+!     REAL(KIND=WP) :: YAXIS(LPCV)
 !        THE Y AXIS VALUES FOR THE SPECTRUM PLOTS.
 !
       if (xpltmx - xpltmn .ge. bw) go to 10
 !
-      xpltmx = max(xpltmx + (bw - xpltmx + xpltmn) / 2.0e0, 0.5e0)
+      xpltmx = max(xpltmx + (bw - xpltmx + xpltmn) / 2.0_wp, 0.5e0)
       xpltmn = xpltmx - bw
 !
    10 continue

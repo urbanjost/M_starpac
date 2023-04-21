@@ -214,7 +214,7 @@
       ak = c1 - (cd*c1+sd*s1)
       s1 = (sd*c1-cd*s1) + s1
 !  THE FOLLOWING THREE STATEMENTS COMPENSATE FOR TRUNCATION ERROR
-      c1 = 0.5e0/(ak**2+s1**2) + 0.5e0
+      c1 = 0.5_wp/(ak**2+s1**2) + 0.5e0
       s1 = c1*s1
       c1 = c1*ak
       kk = kk + jc
@@ -282,7 +282,7 @@
       if (kk.le.nt) go to 190
   210 c2 = c1 - (cd*c1+sd*s1)
       s1 = (sd*c1-cd*s1) + s1
-      c1 = 0.5e0/(c2**2+s1**2) + 0.5e0
+      c1 = 0.5_wp/(c2**2+s1**2) + 0.5e0
       s1 = c1*s1
       c1 = c1*c2
       c2 = c1**2 - s1**2
@@ -443,7 +443,7 @@
       if (kk.le.kspnn) go to 350
       c2 = c1 - (cd*c1+sd*s1)
       s1 = s1 + (sd*c1-cd*s1)
-      c1 = 0.5e0/(c2**2+s1**2) + 0.5e0
+      c1 = 0.5_wp/(c2**2+s1**2) + 0.5e0
       s1 = c1*s1
       c2 = c1*c2
       kk = kk - kspnn + jc

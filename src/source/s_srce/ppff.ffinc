@@ -96,11 +96,11 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL ANU1
+!     REAL(KIND=WP) :: ANU1
 !        THE (REAL) DEGREES OF FREEDOM IN THE NUMERATOR.
-!     REAL ANU2
+!     REAL(KIND=WP) :: ANU2
 !        THE (REAL) DEGREES OF FREEDOM IN THE DENOMINATOR.
-!     REAL EXPF
+!     REAL(KIND=WP) :: EXPF
 !        *
 !     INTEGER IBUG
 !        *
@@ -114,32 +114,32 @@
 !        THE DEGREES OF FREEDOM IN THE NUMERATOR.
 !     INTEGER  NU2
 !        THE DEGREES OF FREEDOM IN THE DENOMINATOR.
-!     REAL P
+!     REAL(KIND=WP) :: P
 !        THE VALUE (BETWEEN 0.0E0 AND 1.0E0) AT WHICH THE PERCENT POINT
 !        IS TO BE CALCULATED.
-!     REAL PCALC
+!     REAL(KIND=WP) :: PCALC
 !        *
-!     REAL SDF
+!     REAL(KIND=WP) :: SDF
 !        *
-!     REAL TOL
+!     REAL(KIND=WP) :: TOL
 !        *
-!     REAL X
+!     REAL(KIND=WP) :: X
 !        *
-!     REAL XDEL
+!     REAL(KIND=WP) :: XDEL
 !        *
-!     REAL XLOW
+!     REAL(KIND=WP) :: XLOW
 !        *
-!     REAL XMAX
+!     REAL(KIND=WP) :: XMAX
 !        *
-!     REAL XMID
+!     REAL(KIND=WP) :: XMID
 !        *
-!     REAL XMIN
+!     REAL(KIND=WP) :: XMIN
 !        *
-!     REAL XN
+!     REAL(KIND=WP) :: XN
 !        *
-!     REAL XUP
+!     REAL(KIND=WP) :: XUP
 !        *
-!     REAL ZN
+!     REAL(KIND=WP) :: ZN
 !        *
 !
 !---------------------------------------------------------------------
@@ -186,8 +186,8 @@
       anu1 = nu1
       anu2 = nu2
 !
-      expf = 0.5e0*((1.0e0/anu2)-(1.0e0/anu1))
-      sdf = sqrt(0.5e0*((1.0e0/anu2)+(1.0e0/anu1)))
+      expf = 0.5e0*((1.0_wp/anu2)-(1.0_wp/anu1))
+      sdf = sqrt(0.5e0*((1.0_wp/anu2)+(1.0_wp/anu1)))
       zn = ppfnml(p)
       xn = expf + zn*sdf
       xmid = exp(2.0e0*xn)

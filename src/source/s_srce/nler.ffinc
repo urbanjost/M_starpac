@@ -114,14 +114,14 @@
 !        THE VARIABLE USED TO INDICATE WHETHER ANY RESULTS OTHER THAN
 !        THE RESIDUALS AND PARAMETERS ARE TO BE SAVED (TRUE) OR NOT
 !        (FALSE).
-!     REAL SCALE(LSCALE)
+!     REAL(KIND=WP) :: SCALE(LSCALE)
 !        THE TYPICAL SIZE OF THE PARAMETERS.
-!     REAL STP(LSTP)
+!     REAL(KIND=WP) :: STP(LSTP)
 !        THE STEP SIZE ARRAY.
 !     LOGICAL WEIGHT
 !        THE VARIABLE USED TO INDICATE WHETHER WEIGHTED ANALYSIS IS TO
 !        BE PERFORMED (TRUE) OR NOT (FALSE).
-!     REAL WT(LWT)
+!     REAL(KIND=WP) :: WT(LWT)
 !        THE USER SUPPLIED WEIGHTS.
 !
 !
@@ -201,10 +201,10 @@
     &      call eisge(nmsub, llds, ldstak, ldsmin, 9, head, error(6),&
      &      llds)
 !
-        call ervgt(nmsub, lstep, stp, lstp, 0.0e0, 0, head, 6, nv,&
+        call ervgt(nmsub, lstep, stp, lstp, 0.0_wp, 0, head, 6, nv,&
      &      error(8), lzero)
 !
-        call ervgt(nmsub, lscl, scale, lscale, 0.0e0, 0, head, 6, nv,&
+        call ervgt(nmsub, lscl, scale, lscale, 0.0_wp, 0, head, 6, nv,&
      &      error(12), lzero)
 !
         if (save)&

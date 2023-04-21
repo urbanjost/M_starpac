@@ -43,7 +43,7 @@
 !        THE LENGTH OF THE PLOT CO-ORDINATE VECTORS.
 !     INTEGER NPTS
 !        THE NUMBER OF X, Y CO-ORDINATES TO BE PLOTTED.
-!     REAL XAXIS(LPCV), YAXIS(LPCV)
+!     REAL(KIND=WP) :: XAXIS(LPCV), YAXIS(LPCV)
 !        THE X, Y CO-ORDINATES FOR THE SPECTRAL PLOTS.
 !
 !
@@ -62,7 +62,7 @@
     5 continue
 !
      call ppmn (yaxis,yaxis,xaxis,xaxis(1),npts,1,lpcv,1,isym,&
-     &  lpcv, 0, -1, 0.0e0, 1.0e0, 0.0e0, 0.5e0, .false., 0)
+     &  lpcv, 0, -1, 0.0_wp, 1.0_wp, 0.0_wp, 0.5_wp, .false., 0)
       write(iprt, 1002)
       return
 !

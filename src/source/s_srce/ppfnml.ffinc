@@ -91,25 +91,25 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL ADEN, ANUM
+!     REAL(KIND=WP) :: ADEN, ANUM
 !        *
-!     REAL P
+!     REAL(KIND=WP) :: P
 !        THE PROBABILITY AT WHICH THE PERCENT POINT IS TO BE EVALUATED
-!     REAL P0, P1, P2, P3, P4
+!     REAL(KIND=WP) :: P0, P1, P2, P3, P4
 !        VARIOUS PARAMETERS USED IN THE APPROXIMATIONS.
-!     REAL Q0, Q1, Q2, Q3, Q4
+!     REAL(KIND=WP) :: Q0, Q1, Q2, Q3, Q4
 !        VARIOUS ADDITIONAL PARAMETERS USED IN THE APPROXIMATIONS.
-!     REAL R
+!     REAL(KIND=WP) :: R
 !        *
-!     REAL T
+!     REAL(KIND=WP) :: T
 !        *
 !
      data p0, p1, p2, p3, p4&
-    &  /-.322232431088e0, -1.0e0, -.342242088547e0,&
+    &  /-.322232431088_wp, -1.0_wp, -.342242088547_wp,&
      &   -.204231210245e-1,-.453642210148e-4/
      data q0, q1, q2, q3, q4&
-    &  /.993484626060e-1, .588581570495e0,&
-     &   .531103462366e0, .103537752850e0, .38560700634e-2/
+    &  /.993484626060e-1, .588581570495_wp,&
+     &   .531103462366_wp, .103537752850_wp, .38560700634e-2/
 !
 !
       if (p.ne.0.5e0) go to 30

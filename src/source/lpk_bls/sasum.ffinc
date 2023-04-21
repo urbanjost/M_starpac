@@ -45,7 +45,7 @@
 
 !***FIRST EXECUTABLE STATEMENT  SASUM
 
-      sasum = 0.0e0
+      sasum = 0.0_wp
       if(n.le.0)return
       if(incx.eq.1)goto 20
 

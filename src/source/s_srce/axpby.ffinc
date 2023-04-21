@@ -39,7 +39,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL SX(N), SY(N), SZ(N)
+!     REAL(KIND=WP) :: SX(N), SY(N), SZ(N)
 !
       if(n.le.0) return
      if ((incx .eq. 1) .and. (incy .eq. 1) .and. (incz .eq. 1))&

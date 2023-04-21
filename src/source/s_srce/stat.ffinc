@@ -66,7 +66,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL ALPHA
+!     REAL(KIND=WP) :: ALPHA
 !        THE PERCENTAGE TO BE TRIMMED OFF EACH END OF Y FOR THE
 !        TRIMMED MEANS CALCULATIONS.
 !     DOUBLE PRECISION DSTAK(12)
@@ -104,26 +104,26 @@
 !     LOGICAL STACK
 !        A FLAG INDICATING WHETHER THIS ROUTINE USES THE STACK (TRUE)
 !        OR NOT (FALSE).
-!     REAL STS(53)
+!     REAL(KIND=WP) :: STS(53)
 !        THE VECTOR OF THE 53 STATISTICS COMPUTED.
-!     REAL SUMDA
+!     REAL(KIND=WP) :: SUMDA
 !        THE SUM OF THE ABSOLUTE DIFFERENCES FROM THE MEAN.
-!     REAL SUMDI
+!     REAL(KIND=WP) :: SUMDI
 !        THE SUM OF THE PRODUCTS OF THE INDICES AND THE DIFFERENCES.
-!     REAL SUMD2
+!     REAL(KIND=WP) :: SUMD2
 !        THE SUM OF THE SQUARES OF THE DIFFERENCES.
-!     REAL SUMD3
+!     REAL(KIND=WP) :: SUMD3
 !        THE SUM OF THE CUBES OF THE DIFFERENCES.
-!     REAL SUMD4
+!     REAL(KIND=WP) :: SUMD4
 !        THE SUM OF THE 4TH POWERS OF THE DIFFERENCES.
-!     REAL SUMT1
+!     REAL(KIND=WP) :: SUMT1
 !        THE SUM OF THE ALPHA TRIMMED ARRAY Y.
-!     REAL WT(1)
+!     REAL(KIND=WP) :: WT(1)
 !        THE DUMMY WEIGHTS VECTOR.
 !     LOGICAL WTS
 !        A FLAG INDICATING WHETHER THERE ARE WEIGHTS (TRUE)
 !        OR NOT (FALSE).
-!     REAL Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        INPUT PARAMETER.  THE VECTOR OF DATA POINTS ON WHICH
 !        THE STATISTICS ARE COMPUTED.  Y IS SORTED, BUT RESTORED
 !        TO ITS ORIGINAL ORDER AFTERWARDS.
@@ -134,7 +134,7 @@
      data  nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6)&
      &   /       'S',      'T',      'A',      'T',      ' ',      ' '/
 !
-      data alpha /0.25e0/
+      data alpha /0.25_wp/
       data idp /4/
       data iint /2/
       data wts /.false./
@@ -169,7 +169,7 @@
 !     COMPUTE THE STATISTICS WHICH USE A SORTED ARRAY.
 !
      call stat1(y, n, sts(5), sts(34), sts(35), sts(6),&
-     &   sts(11), 10, 0.0e0, 0.0e0, sts(44))
+     &   sts(11), 10, 0.0_wp, 0.0_wp, sts(44))
 !
 !     CALCULATE SUMS OF THE SORTED ARRAY.
 !

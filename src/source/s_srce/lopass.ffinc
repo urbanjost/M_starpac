@@ -60,13 +60,13 @@
 !     LOGICAL ERR01, ERR02, ERR03, ERR04, ERR05
 !        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
 !        (FALSE).
-!     REAL FC
+!     REAL(KIND=WP) :: FC
 !        THE USER SUPPLIED CUTOFF FREQUENCY.
 !     LOGICAL HEAD
 !        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
 !        (TRUE) OR NOT (FALSE).  IF A HEADING IS PRINTED, THE VALUE
 !        OF HEAD WILL BE CHANGED TO FALSE.
-!     REAL HLP(K)
+!     REAL(KIND=WP) :: HLP(K)
 !        THE ARRAY IN WHICH THE -IDEAL- HIGH PASS FILTER COEFFICIENTS
 !        WILL BE RETURNED.
 !     INTEGER IERR
@@ -86,9 +86,9 @@
 !        THE ARRAY CONTAINING THE NAME OF THIS SUBROUTINE.
 !     INTEGER NYF
 !        THE NUMBER OF OBSERVATIONS IN THE FILTERED SERIES YF.
-!     REAL Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        THE VECTOR CONTAINING THE OBSERVED TIME SERIES.
-!     REAL YF(N)
+!     REAL(KIND=WP) :: YF(N)
 !        THE VECTOR IN WHICH THE FILTERED SERIES IS RETURNED.
 !
 !     SET UP NAME ARRAYS
@@ -115,7 +115,7 @@
 !
       call eisge(nmsub, ln, n, 3, 1, head, err01, ln)
 !
-      call ersii(nmsub, lfc, fc, 0.0e0, 0.5e0, 2, head, err02, lfc, lfc)
+      call ersii(nmsub, lfc, fc, 0.0_wp, 0.5_wp, 2, head, err02, lfc, lfc)
 !
       call eisii(nmsub, lk, k, 1, n, 2, head, err03, lk, lk)
 !

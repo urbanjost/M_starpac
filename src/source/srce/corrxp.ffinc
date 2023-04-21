@@ -1,5 +1,5 @@
 !CORRXP
-      subroutine corrxp(m, vcv, ivcv, iprt)
+subroutine corrxp(m, vcv, ivcv, iprt)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -12,16 +12,13 @@
 !
 !     CREATION DATE  -  MAY 17, 1982
 !
-!
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-     integer&
-     &   iprt,ivcv,m
+     integer :: iprt,ivcv,m
 !
 !  ARRAY ARGUMENTS
-     real(kind=wp) ::&
-     &   vcv(*)
+     real(kind=wp) :: vcv(*)
 !
 !  EXTERNAL SUBROUTINES
 !       EXTERNAL MATPRT
@@ -45,7 +42,6 @@
 !
 !     FORMAT STATEMENTS
 !
-      return
  1000 format (/ 20h storage from corrs.)
  1010 format (40h storage from variance-covariance matrix)
-      end
+end subroutine corrxp

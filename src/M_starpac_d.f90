@@ -2895,7 +2895,7 @@ end subroutine acffs
  1080 format (32h -- smoothed fourier spectrum --)
       end
 !SETRV
-      subroutine setrv(vector, n, value)
+subroutine setrv(vector, n, value)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -2907,20 +2907,17 @@ end subroutine acffs
 !
 !     CREATION DATE  -  DECEMBER 7, 1981
 !
-!
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      real(kind=wp) :: value
-      integer :: n
+real(kind=wp) :: value
+integer :: n
 !
 !  ARRAY ARGUMENTS
-     real(kind=wp) ::&
-     &   vector(n)
+real(kind=wp) :: vector(n)
 !
 !  LOCAL SCALARS
-     integer&
-     &   i
+integer :: i
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -2933,13 +2930,11 @@ end subroutine acffs
 !     REAL(KIND=WP) :: VECTOR(N)
 !        VECTOR WHOSE FIRST N ELEMENTS ARE TO BE SET.
 !
-      do 10 i=1,n
-         vector(i) = value
-   10 continue
+   do i=1,n
+      vector(i) = value
+   enddo
 !
-      return
-!
-      end
+end subroutine setrv
 !NLOUT
      subroutine nlout(y, weight, nnzw, wt, lwt, xm, n, m, ixm, ifixd,&
     &   par, npar, npare, res, iptout, ndigit, page, idf, cond, rss,&
@@ -23341,7 +23336,7 @@ end subroutine acflst
 !
       end
 !GETPI
-      subroutine getpi(pi)
+subroutine getpi(pi)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -23357,8 +23352,7 @@ end subroutine acflst
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-     real(kind=wp) ::&
-     &   pi
+     real(kind=wp) :: pi
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -23366,8 +23360,8 @@ end subroutine acflst
 !        THE VALUE OF PI.
 !
       pi = 3.141592653589793238462643383279_wp
-      return
-      end
+
+end subroutine getpi
 !FITXSP
      subroutine fitxsp(par, pv, sdpv, res, sdres, vcv, n, npar, ivcv,&
      &   nnzw, npare, rsd)
@@ -34918,31 +34912,26 @@ end subroutine acflst
  1150 format (/5x, 25h current parameter values)
       end
 !ADJLMT
-      subroutine adjlmt(ymn, ymx)
+subroutine adjlmt(ymn, ymx)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
-!     THIS ROUTINE CORRECTS THE PLOT LIMITS WHEN ALL
-!     OBSERVATIONS ARE IDENTICALLY EQUAL.
+!     This routine corrects the plot limits when all
+!     observations are identically equal.
 !
-!     WRITTEN BY - JANET R. DONALDSON
-!                  STATISTICAL ENGINEERING DIVISION
-!                  NATIONAL BUREAU OF STANDARDS, BOULDER, COLORADO
+!     WRITTEN BY - Janet R. Donaldson
+!                  Statistical Engineering Division
+!                  National Bureau of Standards, Boulder, Colorado
 !
-!     CREATION DATE  -  JANUARY 21, 1982
-!
+!     CREATION DATE  -  January 21, 1982
 !
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-     real(kind=wp) ::&
-     &   ymn,ymx
-!
+     real(kind=wp),intent(inout) :: ymn,ymx
 !  INTRINSIC FUNCTIONS
-      intrinsic abs
-!
-!     VARIABLE DEFINITIONS (ALPHABETICALLY)
-!
+      intrinsic :: abs
+!  VARIABLE DEFINITIONS (ALPHABETICALLY)
 !     REAL(KIND=WP) :: YMN, YMX
 !        THE Y-AXIS LOWER AND UPPER LIMITS ACTUALLY USED.
 !
@@ -34956,8 +34945,7 @@ end subroutine acflst
       ymn = -0.5_wp
       ymx = 0.5_wp
 !
-      return
-      end
+end subroutine adjlmt
 !XXCH7
       subroutine xxch7(ldstak,typ)
       real(kind=wp),intent(in) :: typ
@@ -35882,7 +35870,7 @@ end subroutine acflst
      &  '       CALL IPGM (YFFT, N, LYFFT, LDSTAK)')
       end
 !REPCK
-      subroutine repck(d, nrests, npar, n)
+subroutine repck(d, nrests, npar, n)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -35896,33 +35884,26 @@ end subroutine acflst
 !
 !     CREATION DATE  -  DECEMBER 2, 1985
 !
-!
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-     integer&
-     &   n,npar,nrests
-!
+     integer :: n,npar,nrests
 !  ARRAY ARGUMENTS
-     real(kind=wp) ::&
-     &   d(nrests*npar)
-!
+     real(kind=wp) :: d(nrests*npar)
 !  LOCAL SCALARS
-     integer&
-     &   i,i1,i2,j
-!
+     integer i,i1,i2,j
 !
       i1 = -n
       i2 = -n
-      do 10 j = 1, npar
+      do j = 1, npar
         i1 = i1 + nrests
         i2 = i2 + n
-        do 5 i = 1, n
+        do i = 1, n
           d(i2+i) = d(i1+i)
-    5   continue
-   10 continue
-      return
-      end
+        enddo
+      enddo
+
+end subroutine repck
 !MDFLT
       subroutine mdflt (per, nf, nk, kmd, perf, ldstak)
 !
@@ -82787,7 +82768,7 @@ end subroutine vpc
 !
 !     INTEGER COVPRT, COVREQ, D, DLTFDJ, DTYPE, J, NFCALL, NFGCAL, R, TOOBIG
 !
-     data hfac/1.0e3_wp/, hlim/0.0_wp/, negpt5/-0.5_wp/,& one/1.0_wp/, zero/0.0_wp/
+     data hfac/1.0e3_wp/, hlim/0.0_wp/, negpt5/-0.5_wp/, one/1.0_wp/, zero/0.0_wp/
 !
 !  ***  IV SUBSCRIPT VALUES  ***
 !

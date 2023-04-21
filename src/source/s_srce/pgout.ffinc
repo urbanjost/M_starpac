@@ -52,7 +52,7 @@
 !
 !     LOGICAL ERROR
 !       AN ERROR FLAG
-!     REAL FPLM
+!     REAL(KIND=WP) :: FPLM
 !        THE FLOATING POINT LARGEST MAGNITUDE.
 !     INTEGER ILOG
 !        ...
@@ -73,19 +73,19 @@
 !                         PERIODOGRAM IN DECIBELS ON A LINEAR SCALE.
 !     INTEGER NPTS
 !        THE NUMBER OF X, Y CO-ORDINATES TO BE PLOTTED.
-!     REAL XAXIS(NPTS)
+!     REAL(KIND=WP) :: XAXIS(NPTS)
 !        THE X CO-ORDINATES FOR THE PAGE PLOTS.
-!     REAL XMISS
+!     REAL(KIND=WP) :: XMISS
 !        THE VALUE USED TO SPECIFY IF THE PERIODOGRAM VALUE WAS
 !        LESS THAN OR EQUAL TO ZERO.
-!     REAL XMN, XMX
+!     REAL(KIND=WP) :: XMN, XMX
 !        ...
-!     REAL YAXIS(NPTS)
+!     REAL(KIND=WP) :: YAXIS(NPTS)
 !        THE Y CO-ORDINATES FOR THE SPECTRAL PLOTS.
-!     REAL YMISS
+!     REAL(KIND=WP) :: YMISS
 !        THE VALUE USED TO SPECIFY IF AN PERIODOGRAM VALUE WAS
 !        LESS THAN OR EQUAL TO ZERO.
-!     REAL YMN, YMX
+!     REAL(KIND=WP) :: YMN, YMX
 !
 !
       fplm = r1mach(2)
@@ -113,18 +113,18 @@
 !
 !       PLOT VERTICAL PLOTS
 !
-       call vplmt(yaxis,[ymiss],npts,1,npts,0.0e0,0.0e0,ymn,ymx,&
+       call vplmt(yaxis,[ymiss],npts,1,npts,0.0_wp,0.0_wp,ymn,ymx,&
      &    error, nmsub, .true., 1)
        if (.not.error)&
     &    call vpmn(yaxis(2),[ymiss],npts-1,1,npts,1,0,isym,1,0,&
-    &    ymn, ymx, 0.5e0/(npts-1), 0.5e0/(npts-1),&
+    &    ymn, ymx, 0.5_wp/(npts-1), 0.5_wp/(npts-1),&
      &   .true., ilog, -1, 0)
       else
 !
 !       PLOT PAGE PLOTS
 !
        call pplmt(yaxis,[ymiss],xaxis,xmiss,npts,1,npts,&
-    &    0.0e0, 0.0e0, ymn, ymx, 0.0e0, 0.5e0, xmn, xmx,&
+    &    0.0_wp, 0.0_wp, ymn, ymx, 0.0_wp, 0.5_wp, xmn, xmx,&
      &    error, nmsub, .true.)
         if (.not.error) then
          call ppmn (yaxis,[ymiss],xaxis,xmiss,npts,1,npts,0,&

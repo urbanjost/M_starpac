@@ -1,6 +1,6 @@
 !CDFNML
-      function cdfnml(x)
-      real(kind=wp) :: cdfnml
+function cdfnml(x)
+real(kind=wp) :: cdfnml
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -19,12 +19,10 @@
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-     real(kind=wp) ::&
-     &   x
+     real(kind=wp) :: x
 !
 !  EXTERNAL FUNCTIONS
-     real(kind=wp) ::&
-     &   derf
+     real(kind=wp) :: derf
 !       EXTERNAL DERF
 !
 !  INTRINSIC FUNCTIONS
@@ -39,5 +37,4 @@
 !
       cdfnml = 0.5_wp * (1.0_wp + derf(x/sqrt(2.0_wp)))
 !
-      return
-      end
+end function cdfnml

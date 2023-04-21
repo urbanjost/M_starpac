@@ -85,11 +85,11 @@
 !        THE LENGTH OF DATA SET GENERATED
 !     CHARACTER*1 NMSUB(6)
 !        THE NAME OF THIS SUBROUTINE
-!     REAL SIGMA
+!     REAL(KIND=WP) :: SIGMA
 !        THE STANDARD DEVIATION OF THE GENERATED VALUES.
-!     REAL Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        THE GENERATED RANDOM VALUES.
-!     REAL YMEAN
+!     REAL(KIND=WP) :: YMEAN
 !        THE MEAN OF THE GENERATED VALUES.
 !
      data  nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6)&
@@ -110,7 +110,7 @@
 !     CHECK FOR INPUT ERRORS
 !
       call eisge(nmsub, ln, n, 1, 2, head, err01, lone)
-      call ersge(nmsub, lsigma, sigma, 0.0e0, 2, head, err02, lzero)
+      call ersge(nmsub, lsigma, sigma, 0.0_wp, 2, head, err02, lzero)
       call eisrng(nmsub, iseed, iseedu, head)
 !
       if (err01.or.err02) then

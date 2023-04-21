@@ -43,7 +43,7 @@
       data erfcs(12) /   -.000000000000000371e0 /
       data erfcs(13) /    .000000000000000007e0 /
 !
-      data sqrtpi /1.7724538509055160e0/
+      data sqrtpi /1.7724538509055160_wp/
       data nterf, xbig, sqeps / 0, 0., 0./
 !
       if (nterf.ne.0) go to 10

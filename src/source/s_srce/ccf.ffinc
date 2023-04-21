@@ -55,7 +55,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL CCOV(101, 2, 2)
+!     REAL(KIND=WP) :: CCOV(101, 2, 2)
 !        THE CCVF MATRIX.
 !     INTEGER ICCOV
 !        THE ACTUAL FIRST DIMENSION OF THE ARRAY CCOV, AS
@@ -106,13 +106,13 @@
 !     CHARACTER*1 NMSUB(6)
 !        THE NAME OF THE SUBROUTINE CALLING THE ERROR CHECKING
 !        SUBROUTINE.
-!     REAL RHOC(201)
+!     REAL(KIND=WP) :: RHOC(201)
 !        THE ARRAY CONTAINING THE CCF.
-!     REAL SDRHOC(201)
+!     REAL(KIND=WP) :: SDRHOC(201)
 !        THE ARRAY CONTAINING THE SD OF THE CCF.
-!     REAL Y1(N), Y1MEAN, Y1SD
+!     REAL(KIND=WP) :: Y1(N), Y1MEAN, Y1SD
 !        THE FIRST SERIES, AND ITS MEAN AND STANDARD DEVIATION.
-!     REAL Y2(N), Y2MEAN, Y2SD
+!     REAL(KIND=WP) :: Y2(N), Y2MEAN, Y2SD
 !        THE SECOND SERIES, AND ITS MEAN AND STANDARD DEVIATION.
 !
 !     SET UP NAME ARRAYS
@@ -171,7 +171,7 @@
 !
        call ccfout (1, y1mean, y1sd, n, n, 2, y2mean, y2sd, n,&
     &     n, lagmax, 2*lagmax+1, rhoc, sdrhoc, .false., ndum, ndum, 1,&
-     &     0.0e0, 0.0e0, .false.)
+     &     0.0_wp, 0.0_wp, .false.)
       end if
 !
       if (ierr.ne.0) then

@@ -42,15 +42,15 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL ASUM
+!     REAL(KIND=WP) :: ASUM
 !        *
-!     REAL CR
+!     REAL(KIND=WP) :: CR
 !        *
-!     REAL FPLM
+!     REAL(KIND=WP) :: FPLM
 !        THE FLOATING POINT LARGEST MAGNITUDE.
-!     REAL F1
+!     REAL(KIND=WP) :: F1
 !        *
-!     REAL F2
+!     REAL(KIND=WP) :: F2
 !        *
 !     INTEGER I
 !        AN INDEX.
@@ -64,27 +64,27 @@
 !        THE NUMBER OF NON ZERO WEIGHTS.
 !     INTEGER NSUA
 !        *
-!     REAL PF1
+!     REAL(KIND=WP) :: PF1
 !        *
-!     REAL PF2
+!     REAL(KIND=WP) :: PF2
 !        *
-!     REAL RED(NPAR)
+!     REAL(KIND=WP) :: RED(NPAR)
 !        THE REDUCTION TO THE SUM OF SQUARES DUE TO EACH PARAMETER.
-!     REAL RESMS
+!     REAL(KIND=WP) :: RESMS
 !        *
-!     REAL RESSS
+!     REAL(KIND=WP) :: RESSS
 !        *
-!     REAL RVAR
+!     REAL(KIND=WP) :: RVAR
 !        THE RESIDUAL VARIANCE.
-!     REAL SSU
+!     REAL(KIND=WP) :: SSU
 !        *
-!     REAL TEMP(NPAR)
+!     REAL(KIND=WP) :: TEMP(NPAR)
 !        A WORK VECTOR.
-!     REAL VR
+!     REAL(KIND=WP) :: VR
 !        *
-!     REAL V1F2
+!     REAL(KIND=WP) :: V1F2
 !        *
-!     REAL YSUM
+!     REAL(KIND=WP) :: YSUM
 !        THE SUM OF THE WEIGHTED DEPENDENT VARIABLES SQUARED.
 !
 !
@@ -122,7 +122,7 @@
          pf2 = 0.0e0
          go to 40
    30    f1 = red(i)/rvar
-         pf1 = 1.0e0 - cdff(f1,1.0e0,vr)
+         pf1 = 1.0e0 - cdff(f1,1.0_wp,vr)
 !
 !     TEST HIGHER SUB-HYPOTHESES
 !

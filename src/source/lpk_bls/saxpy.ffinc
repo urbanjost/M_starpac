@@ -22,7 +22,7 @@
 !  INTRINSIC FUNCTIONS
       intrinsic mod
 !
-      if(n.le.0.or.sa.eq.0.e0) return
+      if(n.le.0.or.sa.eq.0.0_wp) return
       if(incx.eq.incy) if(incx-1) 5,20,60
     5 continue
 !

@@ -87,7 +87,7 @@
 !        THE NUMBER OF UNKNOWN PARAMETERS IN THE MODEL.
 !     INTEGER NV
 !        THE NUMBER OF VIOLATIONS FOUND BY THE SCALE CHECKING ROUTINE.
-!     REAL SCALE(LSCALE)
+!     REAL(KIND=WP) :: SCALE(LSCALE)
 !        THE TYPICAL SIZE OF THE UNKNOWN PARAMETERS.
 !
 !     SET UP NAME ARRAYS
@@ -134,7 +134,7 @@
     &   call eisge(nmsub, llds, ldstak, ldsmin, 9, head, error(5),&
      &   llds)
 !
-     call ervgt(nmsub, lscl, scale, lscale, 0.0e0, 0, head, 6, nv,&
+     call ervgt(nmsub, lscl, scale, lscale, 0.0_wp, 0, head, 6, nv,&
      &   error(9), lzero)
 !
       do 20 i=1,10

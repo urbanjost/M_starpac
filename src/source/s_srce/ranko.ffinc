@@ -50,13 +50,13 @@
 !          INDEX VARIABLE
 !     INTEGER N
 !        NUMBER OF OBSERVATIONS
-!     REAL R(N)
+!     REAL(KIND=WP) :: R(N)
 !        FINAL VECTOR CONTAINING RANK
-!     REAL T
+!     REAL(KIND=WP) :: T
 !        12 TIMES THE OMNITAB CORRECTION FOR TIES
 !             T = SUM(T-1)*T*(T+1)
 !             T = 0 MEANS NO TIES
-!     REAL Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        VECTOR TO BE RANKED
 !
 !

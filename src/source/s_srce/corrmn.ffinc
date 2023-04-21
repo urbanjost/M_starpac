@@ -74,27 +74,27 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL AVG(M)
+!     REAL(KIND=WP) :: AVG(M)
 !                  CONTAINS THE COLUMN AVERAGES OF YM
-!     REAL B
+!     REAL(KIND=WP) :: B
 !                  = (N-1) * N * (N+1) / 6
-!     REAL C(3)
+!     REAL(KIND=WP) :: C(3)
 !                  *
-!     REAL CILO(M,M)
+!     REAL(KIND=WP) :: CILO(M,M)
 !                  LOWER CONFIDENCE INTERVAL FOR SC
-!     REAL CIUP(M,M)
+!     REAL(KIND=WP) :: CIUP(M,M)
 !                  UPPER CONFIDENCE INTERVAL FOR SC
-!     REAL D(3)
+!     REAL(KIND=WP) :: D(3)
 !                  A DUMMY ARRAY.
-!     REAL F
+!     REAL(KIND=WP) :: F
 !                  SQUARE ROOT OF FN3
-!     REAL FN3
+!     REAL(KIND=WP) :: FN3
 !                  REAL REPRESENTATION OF (N-3).
-!     REAL FPLM
+!     REAL(KIND=WP) :: FPLM
 !                  THE FLOATING POINT LARGEST MAGNITUDE
-!     REAL HL1
+!     REAL(KIND=WP) :: HL1
 !                  *
-!     REAL HL2
+!     REAL(KIND=WP) :: HL2
 !                  *
 !     INTEGER I
 !                  AN INDEX VARIABLE
@@ -137,47 +137,47 @@
 !                  OTHERWISE PRINTOUT IS PROVIDED
 !     INTEGER NSUM
 !                  THE NUMBER OF OBSERVATIONS IN THE DOT PRODUCT
-!     REAL PC(M,M)
+!     REAL(KIND=WP) :: PC(M,M)
 !                  PARTIAL CORRELATION COEFFICIENTS MATRIX
-!     REAL QF(M,M)
+!     REAL(KIND=WP) :: QF(M,M)
 !                  QUADRATIC FIX MATRIX
-!     REAL QUAD(N,3)
+!     REAL(KIND=WP) :: QUAD(N,3)
 !                  DOUBLE VERSION OF QF MATRIX
-!     REAL RANK(N,M)
+!     REAL(KIND=WP) :: RANK(N,M)
 !                  THE MATRIX CONTAING THE RANKS OF YM
-!     REAL RR(3,3)
+!     REAL(KIND=WP) :: RR(3,3)
 !                  *
-!     REAL SC(M,M)
+!     REAL(KIND=WP) :: SC(M,M)
 !                  SIMPLE CORRELATION COEFFICIENTS MATRIX
-!     REAL SCINV(M,M)
+!     REAL(KIND=WP) :: SCINV(M,M)
 !                  THE INVERSE MATRIX OF SC
-!     REAL SD(M)
+!     REAL(KIND=WP) :: SD(M)
 !                  STANDARD DEVIATION OF THE COMLUMNS OF YM
-!     REAL SLPC(M,M)
+!     REAL(KIND=WP) :: SLPC(M,M)
 !                  SIGNIFICANCE LEVELS OF PC
-!     REAL SLSC(M,M)
+!     REAL(KIND=WP) :: SLSC(M,M)
 !                  SIGNIFICANCE LEVELS OF SC
-!     REAL SQSUM
+!     REAL(KIND=WP) :: SQSUM
 !                  THE SUM OF SQUARES OF THE ITH COLUMN OF YM
-!     REAL SRCC(M,M)
+!     REAL(KIND=WP) :: SRCC(M,M)
 !                  SPEARMAN RANK CORRELATION COEFFICIENTS
-!     REAL SUM
+!     REAL(KIND=WP) :: SUM
 !                  USED IN CALCULATING THE STATISTICS OF YM
-!     REAL T(M)
+!     REAL(KIND=WP) :: T(M)
 !                  USED IN DETERMINING SRCC
-!     REAL VCV(IVCV,M)
+!     REAL(KIND=WP) :: VCV(IVCV,M)
 !                  THE VARIANCE COVARIANCE MATRIX.
-!     REAL WRK(LWRK)
+!     REAL(KIND=WP) :: WRK(LWRK)
 !                  WORK STORAGE
-!     REAL XX(3)
+!     REAL(KIND=WP) :: XX(3)
 !                  *
-!     REAL YM(IYM,M)
+!     REAL(KIND=WP) :: YM(IYM,M)
 !                  THE MATRIX WHOSE COLUMNS EACH CONTAIN ONE OF M SETS
 !                  OF N OBSERVATIONS. EACH COLUMN REPRESENTS A DIFFERENT
 !                  VARIABLE
-!     REAL Z
+!     REAL(KIND=WP) :: Z
 !                  USED IN COMPUTING CONFIDENCE INTERVALS
-!     REAL ZZ
+!     REAL(KIND=WP) :: ZZ
 !                  USED IN DETERMINING CORRELATION COEFFICIENTS
 !
       ierr = 0
@@ -246,7 +246,7 @@
             pc(i,j) = fplm
             if (zz.le.0.0e0) go to 110
             pc(i,j) = -scinv(j,i)/sqrt(zz)
-            if (abs(pc(i,j)).gt.1.0e0) pc(i,j) = sign(1.0e0,pc(i,j))
+            if (abs(pc(i,j)).gt.1.0e0) pc(i,j) = sign(1.0_wp,pc(i,j))
   110       pc(j,i) = pc(i,j)
   120    continue
 !
@@ -268,7 +268,7 @@
             slpc(i,j) = fplm
             go to 170
   160       f = (n-m)*f/(1.0e0-f)
-            slpc(i,j) = 1.0e0 - cdff(f,1.0e0,real(n-m))
+            slpc(i,j) = 1.0e0 - cdff(f,1.0_wp,real(n-m))
   170    continue
   180 continue
 !
@@ -291,7 +291,7 @@
             slsc(i,j) = fplm
             go to 240
   230       f = (n-2)*f/(1.0e0-f)
-            slsc(i,j) = 1.0e0 - cdff(f,1.0e0,real(n-2))
+            slsc(i,j) = 1.0e0 - cdff(f,1.0_wp,real(n-2))
   240    continue
   250 continue
 !
@@ -385,7 +385,7 @@
             if (f.eq.0.0e0) go to 400
             f = (c(3)*c(3)*fn3)/f
             qf(i,j) = 1.0e0
-            if (f.gt.0.0e0) qf(i,j) = 1.0e0 - cdff(f,1.0e0,fn3)
+            if (f.gt.0.0e0) qf(i,j) = 1.0e0 - cdff(f,1.0_wp,fn3)
   400    continue
   410 continue
 !
@@ -400,8 +400,8 @@
 !     COMPUTE CONFIDENCE LIMITS FOR SIMPLE CORRELATION COEFFICIENTS
 !
   420 f = sqrt(fn3)
-      hl1 = 2.5758293e0/f
-      hl2 = 1.9599640e0/f
+      hl1 = 2.5758293_wp/f
+      hl2 = 1.9599640_wp/f
       do 520 j=1,m
          do 510 i=1,m
             if (i.ne.j) go to 430

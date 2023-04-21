@@ -54,18 +54,18 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL AIC(LAIC)
+!     REAL(KIND=WP) :: AIC(LAIC)
 !        THE ARRAY CONTAINING THE AKAIKES INFORMATION CRITERION.
-!     REAL CHIA, CHIAP
+!     REAL(KIND=WP) :: CHIA, CHIAP
 !        THE VARIABLES IN WHICH THE CHI SQUARE STATISTIC AND
 !        CHI SQUARED STATISTIC PROBABILITY FOR THE AUTOCORRELATIONS
 !        ARE STORED.
 !     LOGICAL DIFFER
 !        THE VARIABLE USED TO DESIGNATE WHETHER OR NOT THE SERIES
 !        ANALYZED WAS DIFFERENCED OR NOT.
-!     REAL FPLM
+!     REAL(KIND=WP) :: FPLM
 !        THE FLOATING POINT LARGEST MAGNITUDE.
-!     REAL FTEST(2, LAGMAX)
+!     REAL(KIND=WP) :: FTEST(2, LAGMAX)
 !        THE ARRAY IN WHICH THE F RATIO AND PROBABILITY ARE STORED.
 !     INTEGER IAR
 !        THE ORDER OF THE AUTOREGRESSIVE PROCESS CHOSEN.
@@ -105,25 +105,25 @@
 !        APPLIED.
 !     INTEGER NUSED
 !        THE ACTIVE NUMBER OF OBSERVATIONS.
-!     REAL OSPVAR
+!     REAL(KIND=WP) :: OSPVAR
 !        THE ONE STEP PREDICTION VARIANCE FOR THE ORDER SELECTED (IAR).
-!     REAL PHI(LAGMAX)
+!     REAL(KIND=WP) :: PHI(LAGMAX)
 !        THE ARRAY OF AUTOREGRESSIVE COEFFICIENTS FOR THE SELECTED
 !        ORDER.
-!     REAL PMISS
+!     REAL(KIND=WP) :: PMISS
 !        THE PERCENT OF MISSING OBSERVATIONS.
-!     REAL PRHO(LAGMAX)
+!     REAL(KIND=WP) :: PRHO(LAGMAX)
 !        THE ARRAY IN WHICH THE PARTIAL AUTOCORRELATIONS ARE STORED
-!     REAL RHO(LAGMAX)
+!     REAL(KIND=WP) :: RHO(LAGMAX)
 !        THE ARRAY IN WHICH THE AUTOCORRELATIONS ARE STORED
-!     REAL SDRHO(LAGMAX)
+!     REAL(KIND=WP) :: SDRHO(LAGMAX)
 !        THE ARRAY IN WHICH THE STANDARD ERRORS OF THE AUTOCORRELATIONS
 !        ARE STORED
-!     REAL YMEAN
+!     REAL(KIND=WP) :: YMEAN
 !        THE MEAN OF THE OBSERVED SERIES.
-!     REAL YMISS, YMMISS(1)
+!     REAL(KIND=WP) :: YMISS, YMMISS(1)
 !        THE MISSING VALUE CODE.
-!     REAL YSD
+!     REAL(KIND=WP) :: YSD
 !        THE STANDARD DEVIATION OF THE OBSERVED SERIES.
 !
 !
@@ -143,12 +143,12 @@
       write(iprt, 1000) ymean, ysd, n
       if (.not. ifmiss) go to 10
       nmiss = n - nused
-      pmiss = 100.0e0 * nmiss / n
+      pmiss = 100.0_wp * nmiss / n
       write(iprt, 1003) nmiss, pmiss
    10 write(iprt, 1006) lagmax
       if (ifmiss) write(iprt, 1007) ymiss
 !
-      if (ysd .gt. 0.0e0) go to 20
+      if (ysd .gt. 0.0_wp) go to 20
 !
       write (iprt, 1010)
       return
@@ -169,7 +169,7 @@
       write(iprt, 1001)
       if (differ) call acfdtl(nfac, nd, iod, ntimes)
      call vpmn(rho, ymmiss, lagmax, 1, lagmax, 1, 0, isym, 1, 0,&
-     &   -1.0e0, 1.0e0, 1.0e0, 1.0e0, ifmiss, 0, 0, 1)
+     &   -1.0_wp, 1.0_wp, 1.0_wp, 1.0_wp, ifmiss, 0, 0, 1)
 !
 !     CHECK WHETHER PACF HAVE BEEN COMPUTED
 !
@@ -193,7 +193,7 @@
       write(iprt, 1002)
       if (differ) call acfdtl(nfac, nd, iod, ntimes)
      call vpmn(prho, ymmiss, ndfchi, 1, ndfchi, 1, 0, isym, 1, 0,&
-     &   -1.0e0, 1.0e0, 1.0e0, 1.0e0, ifmiss, 0, 0, 1)
+     &   -1.0_wp, 1.0_wp, 1.0_wp, 1.0_wp, ifmiss, 0, 0, 1)
       return
 !
 !     FORMAT STATEMENTS

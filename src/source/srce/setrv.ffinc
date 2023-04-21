@@ -1,5 +1,5 @@
 !SETRV
-      subroutine setrv(vector, n, value)
+subroutine setrv(vector, n, value)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -11,20 +11,17 @@
 !
 !     CREATION DATE  -  DECEMBER 7, 1981
 !
-!
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-      real(kind=wp) :: value
-      integer :: n
+real(kind=wp) :: value
+integer :: n
 !
 !  ARRAY ARGUMENTS
-     real(kind=wp) ::&
-     &   vector(n)
+real(kind=wp) :: vector(n)
 !
 !  LOCAL SCALARS
-     integer&
-     &   i
+integer :: i
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -37,10 +34,8 @@
 !     REAL(KIND=WP) :: VECTOR(N)
 !        VECTOR WHOSE FIRST N ELEMENTS ARE TO BE SET.
 !
-      do 10 i=1,n
-         vector(i) = value
-   10 continue
+   do i=1,n
+      vector(i) = value
+   enddo   
 !
-      return
-!
-      end
+end subroutine setrv

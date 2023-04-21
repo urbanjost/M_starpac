@@ -52,14 +52,14 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL DELTA
+!     REAL(KIND=WP) :: DELTA
 !        THE MAXIMUM CHANGE ALLOWED IN THE MODEL PARAMETERS AT THE
 !        FIRST ITERATION.
 !     DOUBLE PRECISION DSTAK(12)
 !        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
-!     REAL FCST(200, 10)
+!     REAL(KIND=WP) :: FCST(200, 10)
 !        THE FORECASTS.
-!     REAL FCSTSD(200, 10)
+!     REAL(KIND=WP) :: FCSTSD(200, 10)
 !        THE STANDARD DEVIATIONS OF THE FORECASTS.
 !     INTEGER IERR
 !        THE INTEGER VALUE RETURNED BY THIS ROUTINE DESIGNATING
@@ -132,86 +132,86 @@
 !        TO BE PROVIDED.
 !     INTEGER NTEST
 !        THE NUMBER OF THE CURRENT TEST.
-!     REAL PAR(10)
+!     REAL(KIND=WP) :: PAR(10)
 !        THE ARRAY IN WHICH THE CURRENT ESTIMATES OF THE UNKNOWN
 !        PARAMETERS ARE STORED.
-!     REAL PV(200)
+!     REAL(KIND=WP) :: PV(200)
 !        THE PREDICTED VALUE BASED ON THE CURRENT PARAMETER ESTIMATES
-!     REAL RES(200)
+!     REAL(KIND=WP) :: RES(200)
 !        THE RESIDUALS FROM THE FIT.
-!     REAL RSD
+!     REAL(KIND=WP) :: RSD
 !        THE VALUE OF THE RESIDUAL STANDARD DEVIATION AT THE SOLUTION.
-!     REAL SCALE(10)
+!     REAL(KIND=WP) :: SCALE(10)
 !        A VALUE TO INDICATE USE OF THE DEFAULT VALUES OF
 !        THE TYPICAL SIZE OF THE UNKNOWN PARAMETERS.
-!     REAL SDPV(200)
+!     REAL(KIND=WP) :: SDPV(200)
 !        THE STANDARD DEVIATION OF THE PREDICTED VALUE.
-!     REAL SDRES(200)
+!     REAL(KIND=WP) :: SDRES(200)
 !        THE STANDARD DEVIATIONS OF THE RESIDUALS.
-!     REAL STOPP
+!     REAL(KIND=WP) :: STOPP
 !        THE STOPPING CRITERION FOR THE TEST BASED ON THE MAXIMUM SCALED
 !        RELATIVE CHANGE IN THE ELEMENTS OF THE MODEL PARAMETER VECTOR
-!     REAL STOPSS
+!     REAL(KIND=WP) :: STOPSS
 !        THE STOPPING CRITERION FOR THE TEST BASED ON THE RATIO OF THE
 !        PREDICTED DECREASE IN THE RESIDUAL SUM OF SQUARES (COMPUTED
 !        BY STARPAC) TO THE CURRENT RESIDUAL SUM OF SQUARES ESTIMATE.
-!     REAL STP(10)
+!     REAL(KIND=WP) :: STP(10)
 !        THE RCSTEP SIZE ARRAY.
-!     REAL VCV(10,10)
+!     REAL(KIND=WP) :: VCV(10,10)
 !        THE COVARIANCE MATRIX.
-!     REAL Y(200)
+!     REAL(KIND=WP) :: Y(200)
 !        THE ARRAY OF THE DEPENDENT VARIABLE.
 !
 !     DEFINE CONSTANTS
 !
      data    y(  1),   y(  2),   y(  3),   y(  4),   y(  5),   y(  6)&
-     &    / 112.0e0, 118.0e0, 132.0e0, 129.0e0, 121.0e0, 135.0e0/
+     &    / 112.0_wp, 118.0_wp, 132.0_wp, 129.0_wp, 121.0_wp, 135.0_wp/
      data    y(  7),   y(  8),   y(  9),   y( 10),   y( 11),   y( 12)&
-     &    / 148.0e0, 148.0e0, 136.0e0, 119.0e0, 104.0e0, 118.0e0/
+     &    / 148.0_wp, 148.0_wp, 136.0_wp, 119.0_wp, 104.0_wp, 118.0_wp/
      data    y( 13),   y( 14),   y( 15),   y( 16),   y( 17),   y( 18)&
-     &    / 115.0e0, 126.0e0, 141.0e0, 135.0e0, 125.0e0, 149.0e0/
+     &    / 115.0_wp, 126.0_wp, 141.0_wp, 135.0_wp, 125.0_wp, 149.0_wp/
      data    y( 19),   y( 20),   y( 21),   y( 22),   y( 23),   y( 24)&
-     &    / 170.0e0, 170.0e0, 158.0e0, 133.0e0, 114.0e0, 140.0e0/
+     &    / 170.0_wp, 170.0_wp, 158.0_wp, 133.0_wp, 114.0_wp, 140.0_wp/
      data    y( 25),   y( 26),   y( 27),   y( 28),   y( 29),   y( 30)&
-     &    / 145.0e0, 150.0e0, 178.0e0, 163.0e0, 172.0e0, 178.0e0/
+     &    / 145.0_wp, 150.0_wp, 178.0_wp, 163.0_wp, 172.0_wp, 178.0_wp/
      data    y( 31),   y( 32),   y( 33),   y( 34),   y( 35),   y( 36)&
-     &    / 199.0e0, 199.0e0, 184.0e0, 162.0e0, 146.0e0, 166.0e0/
+     &    / 199.0_wp, 199.0_wp, 184.0_wp, 162.0_wp, 146.0_wp, 166.0_wp/
      data    y( 37),   y( 38),   y( 39),   y( 40),   y( 41),   y( 42)&
-     &    / 171.0e0, 180.0e0, 193.0e0, 181.0e0, 183.0e0, 218.0e0/
+     &    / 171.0_wp, 180.0_wp, 193.0_wp, 181.0_wp, 183.0_wp, 218.0_wp/
      data    y( 43),   y( 44),   y( 45),   y( 46),   y( 47),   y( 48)&
-     &    / 230.0e0, 242.0e0, 209.0e0, 191.0e0, 172.0e0, 194.0e0/
+     &    / 230.0_wp, 242.0_wp, 209.0_wp, 191.0_wp, 172.0_wp, 194.0_wp/
      data    y( 49),   y( 50),   y( 51),   y( 52),   y( 53),   y( 54)&
-     &    / 196.0e0, 196.0e0, 236.0e0, 235.0e0, 229.0e0, 243.0e0/
+     &    / 196.0_wp, 196.0_wp, 236.0_wp, 235.0_wp, 229.0_wp, 243.0_wp/
      data    y( 55),   y( 56),   y( 57),   y( 58),   y( 59),   y( 60)&
-     &    / 264.0e0, 272.0e0, 237.0e0, 211.0e0, 180.0e0, 201.0e0/
+     &    / 264.0_wp, 272.0_wp, 237.0_wp, 211.0_wp, 180.0_wp, 201.0_wp/
      data    y( 61),   y( 62),   y( 63),   y( 64),   y( 65),   y( 66)&
-     &    / 204.0e0, 188.0e0, 235.0e0, 227.0e0, 234.0e0, 264.0e0/
+     &    / 204.0_wp, 188.0_wp, 235.0_wp, 227.0_wp, 234.0_wp, 264.0_wp/
      data    y( 67),   y( 68),   y( 69),   y( 70),   y( 71),   y( 72)&
-     &    / 302.0e0, 293.0e0, 259.0e0, 229.0e0, 203.0e0, 229.0e0/
+     &    / 302.0_wp, 293.0_wp, 259.0_wp, 229.0_wp, 203.0_wp, 229.0_wp/
      data    y( 73),   y( 74),   y( 75),   y( 76),   y( 77),   y( 78)&
-     &    / 242.0e0, 233.0e0, 267.0e0, 269.0e0, 270.0e0, 315.0e0/
+     &    / 242.0_wp, 233.0_wp, 267.0_wp, 269.0_wp, 270.0_wp, 315.0_wp/
      data    y( 79),   y( 80),   y( 81),   y( 82),   y( 83),   y( 84)&
-     &    / 364.0e0, 347.0e0, 312.0e0, 274.0e0, 237.0e0, 278.0e0/
+     &    / 364.0_wp, 347.0_wp, 312.0_wp, 274.0_wp, 237.0_wp, 278.0_wp/
      data    y( 85),   y( 86),   y( 87),   y( 88),   y( 89),   y( 90)&
-     &    / 284.0e0, 277.0e0, 317.0e0, 313.0e0, 318.0e0, 374.0e0/
+     &    / 284.0_wp, 277.0_wp, 317.0_wp, 313.0_wp, 318.0_wp, 374.0_wp/
      data    y( 91),   y( 92),   y( 93),   y( 94),   y( 95),   y( 96)&
-     &    / 413.0e0, 405.0e0, 355.0e0, 306.0e0, 271.0e0, 306.0e0/
+     &    / 413.0_wp, 405.0_wp, 355.0_wp, 306.0_wp, 271.0_wp, 306.0_wp/
      data    y( 97),   y( 98),   y( 99),   y(100),   y(101),   y(102)&
-     &    / 315.0e0, 301.0e0, 356.0e0, 348.0e0, 355.0e0, 422.0e0/
+     &    / 315.0_wp, 301.0_wp, 356.0_wp, 348.0_wp, 355.0_wp, 422.0_wp/
      data    y(103),   y(104),   y(105),   y(106),   y(107),   y(108)&
-     &    / 465.0e0, 467.0e0, 404.0e0, 347.0e0, 305.0e0, 336.0e0/
+     &    / 465.0_wp, 467.0_wp, 404.0_wp, 347.0_wp, 305.0_wp, 336.0_wp/
      data    y(109),   y(110),   y(111),   y(112),   y(113),   y(114)&
-     &    / 340.0e0, 318.0e0, 362.0e0, 348.0e0, 363.0e0, 435.0e0/
+     &    / 340.0_wp, 318.0_wp, 362.0_wp, 348.0_wp, 363.0_wp, 435.0_wp/
      data    y(115),   y(116),   y(117),   y(118),   y(119),   y(120)&
-     &    / 491.0e0, 505.0e0, 404.0e0, 359.0e0, 310.0e0, 337.0e0/
+     &    / 491.0_wp, 505.0_wp, 404.0_wp, 359.0_wp, 310.0_wp, 337.0_wp/
      data    y(121),   y(122),   y(123),   y(124),   y(125),   y(126)&
-     &    / 360.0e0, 342.0e0, 406.0e0, 396.0e0, 420.0e0, 472.0e0/
+     &    / 360.0_wp, 342.0_wp, 406.0_wp, 396.0_wp, 420.0_wp, 472.0_wp/
      data    y(127),   y(128),   y(129),   y(130),   y(131),   y(132)&
-     &    / 548.0e0, 559.0e0, 463.0e0, 407.0e0, 362.0e0, 405.0e0/
+     &    / 548.0_wp, 559.0_wp, 463.0_wp, 407.0_wp, 362.0_wp, 405.0_wp/
      data    y(133),   y(134),   y(135),   y(136),   y(137),   y(138)&
-     &    / 417.0e0, 391.0e0, 419.0e0, 461.0e0, 472.0e0, 535.0e0/
+     &    / 417.0_wp, 391.0_wp, 419.0_wp, 461.0_wp, 472.0_wp, 535.0_wp/
      data    y(139),   y(140),   y(141),   y(142),   y(143),   y(144)&
-     &    / 622.0e0, 606.0e0, 508.0e0, 461.0e0, 390.0e0, 432.0e0/
+     &    / 622.0_wp, 606.0_wp, 508.0_wp, 461.0_wp, 390.0_wp, 432.0_wp/
 !
       call iprint(iprt)
 !

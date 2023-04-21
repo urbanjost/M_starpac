@@ -42,7 +42,7 @@
 !     LOGICAL ERROR
 !        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
 !        (FALSE).
-!     REAL FC
+!     REAL(KIND=WP) :: FC
 !        THE USER SUPPLIED CUTOFF FREQUENCY.
 !     LOGICAL HEAD
 !        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
@@ -54,13 +54,13 @@
 !        THE NUMBER OF TERMS IN THE FILTER.
 !     CHARACTER*1 NMSUB(6)
 !        THE ARRAY CONTAINING THE NAME OF THE CALLING SUBROUTINE.
-!     REAL TEMP
+!     REAL(KIND=WP) :: TEMP
 !        A TEMPORARY VARIABLE USED FOR TYPE CONVERSION.
 !
       error = .false.
       temp = k
 !
-      if (fc - 1.0e0/temp .ge. 0.0e0) go to 10
+      if (fc - 1.0_wp/temp .ge. 0.0e0) go to 10
 !
       call iprint(iprt)
       call ehdr(nmsub, head)
@@ -70,7 +70,7 @@
 !
    10 continue
 !
-      if (fc + 1.0e0/k .lt. 0.5e0) return
+      if (fc + 1.0_wp/k .lt. 0.5e0) return
 !
       call iprint(iprt)
       call ehdr(nmsub, head)

@@ -49,7 +49,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL D(NRESTS,NPAR)
+!     REAL(KIND=WP) :: D(NRESTS,NPAR)
 !        THE FIRST DERIVATIVE OF THE MODEL (JACOBIAN).
 !     EXTERNAL DRV
 !        THE NAME OF THE USER SUPPLIED SUBROUTINE WHICH COMPUTES THE
@@ -92,24 +92,24 @@
 !        THE NUMBER OF PARAMETERS IN THE MODEL.
 !     INTEGER NRESTS
 !        THE MAXIMUM NUMBER OF RESIDUALS TO BE COMPUTED.
-!     REAL PAR(NPAR)
+!     REAL(KIND=WP) :: PAR(NPAR)
 !        THE CURRENT ESTIMATES OF THE PARAMETERS.
-!     REAL PJ
+!     REAL(KIND=WP) :: PJ
 !        A TEMPORARY LOCATION FOR STORAGE OF THE JTH PARAMETER.
-!     REAL RESTS(NRESTS)
+!     REAL(KIND=WP) :: RESTS(NRESTS)
 !        THE RESIDUALS FROM THE ARIMA MODEL.
-!     REAL SCL(LSCL)
+!     REAL(KIND=WP) :: SCL(LSCL)
 !        THE SCALE VALUES.
-!     REAL STPT(LSTPT)
+!     REAL(KIND=WP) :: STPT(LSTPT)
 !        THE STEP SIZE ARRAY.
-!     REAL STPJ
+!     REAL(KIND=WP) :: STPJ
 !        THE JTH STEP SIZE.
 !     LOGICAL WEIGHT
 !        THE VARIABLE USED TO INDICATE WHETHER WEIGHTED ANALYSIS IS TO
 !        BE PERFORMED (TRUE) OR NOT (FALSE).
-!     REAL WT(LWT)
+!     REAL(KIND=WP) :: WT(LWT)
 !        THE USER SUPPLIED WEIGHTS.
-!     REAL XM(IXM,M)
+!     REAL(KIND=WP) :: XM(IXM,M)
 !        THE INDEPENDENT VARIABLE.
 !
 !     COMPUTE FINITE-DIFFERENCE JACOBIAN OF THE OPTIMIZED PARAMETERS
@@ -124,11 +124,11 @@
 !
          pj = par(j)
          if (scl(jpk).ne.0.0e0) then
-           stpj = stpt(j)*sign(1.0e0,par(j))*max(abs(par(j)),1.0e0/&
+           stpj = stpt(j)*sign(1.0_wp,par(j))*max(abs(par(j)),1.0_wp/&
      &             abs(scl(jpk)))
          else
             if (par(j).ne.0.0e0) then
-               stpj = stpt(j)*sign(1.0e0,par(j))*abs(par(j))
+               stpj = stpt(j)*sign(1.0_wp,par(j))*abs(par(j))
             else
                stpj = stpt(j)
             end if

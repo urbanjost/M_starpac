@@ -47,7 +47,7 @@
 !     *****FUNCTIONS.
 !/+
 !     INTEGER MIN
-!     REAL(KIND=WP) ::             ABS,SQRT
+!     REAL(KIND=WP) ::            ABS,SQRT
 !/
 !     EXTERNAL DOTPRD, VAXPY, VSCOPY, V2NORM
 !     REAL(KIND=WP) :: DOTPRD, V2NORM

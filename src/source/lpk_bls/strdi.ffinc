@@ -76,21 +76,21 @@
 !        COMPUTE DETERMINANT
 !
          if (job/100 .eq. 0) go to 70
-            det(1) = 1.0e0
-            det(2) = 0.0e0
-            ten = 10.0e0
+            det(1) = 1.0_wp
+            det(2) = 0.0_wp
+            ten = 10.0_wp
             do 50 i = 1, n
                det(1) = t(i,i)*det(1)
 !           ...EXIT
-               if (det(1) .eq. 0.0e0) go to 60
-   10          if (abs(det(1)) .ge. 1.0e0) go to 20
+               if (det(1) .eq. 0.0_wp) go to 60
+   10          if (abs(det(1)) .ge. 1.0_wp) go to 20
                   det(1) = ten*det(1)
-                  det(2) = det(2) - 1.0e0
+                  det(2) = det(2) - 1.0_wp
                go to 10
    20          continue
    30          if (abs(det(1)) .lt. ten) go to 40
                   det(1) = det(1)/ten
-                  det(2) = det(2) + 1.0e0
+                  det(2) = det(2) + 1.0_wp
                go to 30
    40          continue
    50       continue
@@ -105,15 +105,15 @@
                   do 100 k = 1, n
                      info = k
 !              ......EXIT
-                     if (t(k,k) .eq. 0.0e0) go to 110
-                     t(k,k) = 1.0e0/t(k,k)
+                     if (t(k,k) .eq. 0.0_wp) go to 110
+                     t(k,k) = 1.0_wp/t(k,k)
                      temp = -t(k,k)
                      call sscal(k-1,temp,t(1,k),1)
                      kp1 = k + 1
                      if (n .lt. kp1) go to 90
                      do 80 j = kp1, n
                         temp = t(k,j)
-                        t(k,j) = 0.0e0
+                        t(k,j) = 0.0_wp
                         call saxpy(k,temp,t(1,k),1,t(1,j),1)
    80                continue
    90                continue
@@ -129,15 +129,15 @@
                   k = n + 1 - kb
                   info = k
 !     ............EXIT
-                  if (t(k,k) .eq. 0.0e0) go to 180
-                  t(k,k) = 1.0e0/t(k,k)
+                  if (t(k,k) .eq. 0.0_wp) go to 180
+                  t(k,k) = 1.0_wp/t(k,k)
                   temp = -t(k,k)
                   if (k .ne. n) call sscal(n-k,temp,t(k+1,k),1)
                   km1 = k - 1
                   if (km1 .lt. 1) go to 140
                   do 130 j = 1, km1
                      temp = t(k,j)
-                     t(k,j) = 0.0e0
+                     t(k,j) = 0.0_wp
                      call saxpy(n-k+1,temp,t(k,k),1,t(k,j),1)
   130             continue
   140             continue

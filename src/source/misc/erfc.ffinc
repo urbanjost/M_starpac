@@ -107,7 +107,7 @@
       data erfccs(23) /    .000000000000000138e0 /
       data erfccs(24) /   -.000000000000000048e0 /
 !
-      data sqrtpi /1.7724538509055160e0/
+      data sqrtpi /1.7724538509055160_wp/
       data nterf, nterfc, nterc2, xsml, xmax, sqeps /3*0, 3*0./
 !
       if (nterf.ne.0) go to 10

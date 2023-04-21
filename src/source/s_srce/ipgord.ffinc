@@ -40,9 +40,9 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL CI, CIMID
+!     REAL(KIND=WP) :: CI, CIMID
 !        THE WIDTH AND MIDPOINT OF THE TEST INTERVAL FOR WHITE NOISE.
-!     REAL FREQ(NF)
+!     REAL(KIND=WP) :: FREQ(NF)
 !        THE ARRAY IN WHICH THE FREQUENCIES AT WHICH THE PERIODOGRAM
 !        WAS ESTIMATED ARE STORED.
 !     INTEGER I
@@ -64,29 +64,29 @@
 !        PLOTTED.
 !     INTEGER NPTS
 !        THE NUMBER OF X, Y CO-ORDINATES TO BE PLOTTED.
-!     REAL PERI(NF)
+!     REAL(KIND=WP) :: PERI(NF)
 !        THE ARRAY CONTAINING THE INTEGRATED PERIODOGRAM VALUES.
-!     REAL S(40)
+!     REAL(KIND=WP) :: S(40)
 !        VALUES USED TO COMPUTE THE CONFIDENCE LIMITS.
-!     REAL XAXIS(LPCV), YAXIS(LPCV)
+!     REAL(KIND=WP) :: XAXIS(LPCV), YAXIS(LPCV)
 !        THE X, Y CO-ORDINATES FOR THE SPECTRAL PLOTS.
 !
-      data s(1)/0.975e0/, s(2)/0.842e0/, s(3)/0.708e0/
-      data s(4)/0.624e0/, s(5)/0.563e0/
-      data s(6)/0.519e0/, s(7)/0.483e0/, s(8)/0.454e0/
-      data s(9)/0.430e0/, s(10)/0.409e0/
-      data s(11)/0.391e0/, s(12)/0.375e0/, s(13)/0.361e0/
-      data s(14)/0.349e0/, s(15)/0.338e0/
-      data s(16)/0.327e0/, s(17)/0.318e0/, s(18)/0.309e0/
-      data s(19)/0.301e0/, s(20)/0.294e0/
-      data s(21)/0.287e0/, s(22)/0.281e0/, s(23)/0.275e0/
-      data s(24)/0.269e0/, s(25)/0.264e0/
-      data s(26)/0.259e0/, s(27)/0.254e0/, s(28)/0.250e0/
-      data s(29)/0.246e0/, s(30)/0.242e0/
-      data s(31)/0.238e0/, s(32)/0.234e0/, s(33)/0.231e0/
-      data s(34)/0.227e0/, s(35)/0.224e0/
-      data s(36)/0.221e0/, s(37)/0.218e0/, s(38)/0.215e0/
-      data s(39)/0.213e0/, s(40)/0.210e0/
+      data s(1)/0.975_wp/, s(2)/0.842_wp/, s(3)/0.708_wp/
+      data s(4)/0.624_wp/, s(5)/0.563_wp/
+      data s(6)/0.519_wp/, s(7)/0.483_wp/, s(8)/0.454_wp/
+      data s(9)/0.430_wp/, s(10)/0.409_wp/
+      data s(11)/0.391_wp/, s(12)/0.375_wp/, s(13)/0.361_wp/
+      data s(14)/0.349_wp/, s(15)/0.338_wp/
+      data s(16)/0.327_wp/, s(17)/0.318_wp/, s(18)/0.309_wp/
+      data s(19)/0.301_wp/, s(20)/0.294_wp/
+      data s(21)/0.287_wp/, s(22)/0.281_wp/, s(23)/0.275_wp/
+      data s(24)/0.269_wp/, s(25)/0.264_wp/
+      data s(26)/0.259_wp/, s(27)/0.254_wp/, s(28)/0.250_wp/
+      data s(29)/0.246_wp/, s(30)/0.242_wp/
+      data s(31)/0.238_wp/, s(32)/0.234_wp/, s(33)/0.231_wp/
+      data s(34)/0.227_wp/, s(35)/0.224_wp/
+      data s(36)/0.221_wp/, s(37)/0.218_wp/, s(38)/0.215_wp/
+      data s(39)/0.213_wp/, s(40)/0.210_wp/
 !
       i = n + mod(n,2) - 1
 !

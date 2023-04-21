@@ -95,7 +95,7 @@
       nodet = mod(job,100)/10 .eq. 0
       noert = mod(job,1000)/100 .eq. 0
 !
-      ten = 10.0e0
+      ten = 10.0_wp
 !
       if (nodet .and. noert) go to 140
          if (noert) go to 10
@@ -104,10 +104,10 @@
             inert(3) = 0
    10    continue
          if (nodet) go to 20
-            det(1) = 1.0e0
-            det(2) = 0.0e0
+            det(1) = 1.0_wp
+            det(2) = 0.0_wp
    20    continue
-         t = 0.0e0
+         t = 0.0_wp
          do 130 k = 1, n
             d = a(k,k)
 !
@@ -121,33 +121,33 @@
 !              TO AVOID UNDERFLOW/OVERFLOW TROUBLES.
 !              TAKE TWO PASSES THROUGH SCALING.  USE  T  FOR FLAG.
 !
-               if (t .ne. 0.0e0) go to 30
+               if (t .ne. 0.0_wp) go to 30
                   t = abs(a(k,k+1))
                   d = (d/t)*a(k+1,k+1) - t
                go to 40
    30          continue
                   d = t
-                  t = 0.0e0
+                  t = 0.0_wp
    40          continue
    50       continue
 !
             if (noert) go to 60
-               if (d .gt. 0.0e0) inert(1) = inert(1) + 1
-               if (d .lt. 0.0e0) inert(2) = inert(2) + 1
-               if (d .eq. 0.0e0) inert(3) = inert(3) + 1
+               if (d .gt. 0.0_wp) inert(1) = inert(1) + 1
+               if (d .lt. 0.0_wp) inert(2) = inert(2) + 1
+               if (d .eq. 0.0_wp) inert(3) = inert(3) + 1
    60       continue
 !
             if (nodet) go to 120
                det(1) = d*det(1)
-               if (det(1) .eq. 0.0e0) go to 110
-   70             if (abs(det(1)) .ge. 1.0e0) go to 80
+               if (det(1) .eq. 0.0_wp) go to 110
+   70             if (abs(det(1)) .ge. 1.0_wp) go to 80
                      det(1) = ten*det(1)
-                     det(2) = det(2) - 1.0e0
+                     det(2) = det(2) - 1.0_wp
                   go to 70
    80             continue
    90             if (abs(det(1)) .lt. ten) go to 100
                      det(1) = det(1)/ten
-                     det(2) = det(2) + 1.0e0
+                     det(2) = det(2) + 1.0_wp
                   go to 90
   100             continue
   110          continue
@@ -165,7 +165,7 @@
 !
 !              1 BY 1
 !
-               a(k,k) = 1.0e0/a(k,k)
+               a(k,k) = 1.0_wp/a(k,k)
                if (km1 .lt. 1) go to 170
                   call scopy(km1,a(1,k),1,work,1)
                   do 160 j = 1, km1
@@ -184,7 +184,7 @@
                ak = a(k,k)/t
                akp1 = a(k+1,k+1)/t
                akkp1 = a(k,k+1)/t
-               d = t*(ak*akp1 - 1.0e0)
+               d = t*(ak*akp1 - 1.0_wp)
                a(k,k) = akp1/d
                a(k+1,k+1) = ak/d
                a(k,k+1) = -akkp1/d

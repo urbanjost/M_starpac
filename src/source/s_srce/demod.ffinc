@@ -81,9 +81,9 @@
 !     LOGICAL ERR01, ERR02, ERR03, ERR04, ERR05, ERR06, ERR07
 !        VALUES INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
 !        (FALSE).
-!     REAL FC
+!     REAL(KIND=WP) :: FC
 !        THE CUTOFF FREQUENCY USED FOR THE LOW PASS FILTER.
-!     REAL FD
+!     REAL(KIND=WP) :: FD
 !        THE DEMODULATION FREQUENCY.
 !     LOGICAL HEAD
 !        A FLAG INDICATING WHETHER THE HEADING SHOULD BE PRINTED
@@ -127,11 +127,11 @@
 !     INTEGER PHASE
 !        THE STARTING LOCATIONS IN RSTAK/DSTAK OF
 !        THE ARRAY CONTAINING THE PRIMARY AND SECONDARY PHASE ESTIMATES.
-!     REAL RSTAK(12)
+!     REAL(KIND=WP) :: RSTAK(12)
 !        THE REAL VERSION OF THE /CSTAK/ WORK AREA.
-!     REAL TEMP
+!     REAL(KIND=WP) :: TEMP
 !        A TEMPORARY VARIABLE USED FOR TYPE CONVERSION.
-!     REAL Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        THE INPUT ARRAY CONTAINING THE OBSERVED SERIES.
 !
 !     SET UP NAME ARRAYS
@@ -172,7 +172,7 @@
       call eisge(nmsub, ln, n, 17, 1, head, err01, ln)
 !
      call ersii(nmsub, lfd, fd,&
-     &           0.0e0, 0.5e0, 2, head, err02, lfd, lfd)
+     &           0.0_wp, 0.5_wp, 2, head, err02, lfd, lfd)
 !
       err03 = .true.
      if (.not. err01)&
@@ -183,7 +183,7 @@
       err05 = .true.
       if ((.not. err02) .and. (.not. err03) .and. (.not. err04)) then
          temp = k
-        call ersii(nmsub, lfc, fc, 1.0e0/temp, fd, 1, head, err05,&
+        call ersii(nmsub, lfc, fc, 1.0_wp/temp, fd, 1, head, err05,&
      &              lkin, lfd)
       end if
 !

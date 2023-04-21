@@ -74,7 +74,7 @@
 !        THE MINIMUM NUMBER OF NONZERO WEIGHTS WHICH IS ACCEPTABLE.
 !     INTEGER NZW
 !        THE NUMBER OF ZERO WEIGHTS.
-!     REAL WT(N)
+!     REAL(KIND=WP) :: WT(N)
 !        THE WEIGHT VECTOR.
 !
       error = .false.

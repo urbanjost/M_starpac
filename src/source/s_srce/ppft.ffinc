@@ -88,21 +88,21 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL ARG
+!     REAL(KIND=WP) :: ARG
 !        *
-!     REAL B21
+!     REAL(KIND=WP) :: B21
 !        *
-!     REAL B31, B32, B33, B34
+!     REAL(KIND=WP) :: B31, B32, B33, B34
 !        *
-!     REAL B41, B42, B43, B44, B45
+!     REAL(KIND=WP) :: B41, B42, B43, B44, B45
 !        *
-!     REAL B51, B52, B53, B54, B55, B56
+!     REAL(KIND=WP) :: B51, B52, B53, B54, B55, B56
 !        *
-!     REAL C, CON
+!     REAL(KIND=WP) :: C, CON
 !        *
-!     REAL DF
+!     REAL(KIND=WP) :: DF
 !        THE DEGREES OF FREEDOM.
-!     REAL D1, D3, D5, D7, D9
+!     REAL(KIND=WP) :: D1, D3, D5, D7, D9
 !        *
 !     INTEGER IDF
 !        THE (INTEGER) DEGREES OF FREEDOM.
@@ -110,31 +110,31 @@
 !        *
 !     INTEGER MAXIT
 !        *
-!     REAL P
+!     REAL(KIND=WP) :: P
 !        THE PROBABILITY AT WHICH THE PERCENT POINT IS TO BE EVALUATED.
-!     REAL PI
+!     REAL(KIND=WP) :: PI
 !        THE VALUE OF PI.
-!     REAL PPFN
+!     REAL(KIND=WP) :: PPFN
 !        THE NORMAL PERCENT POINT VALUE.
-!     REAL S
+!     REAL(KIND=WP) :: S
 !        *
-!     REAL SQRT2
+!     REAL(KIND=WP) :: SQRT2
 !        THE SQUARE ROOT OF TWO.
 !        *
-!     REAL TERM1, TERM2, TERM3, TERM4, TERM5
+!     REAL(KIND=WP) :: TERM1, TERM2, TERM3, TERM4, TERM5
 !        *
-!     REAL Z
+!     REAL(KIND=WP) :: Z
 !        *
 !
 !     DEFINE CONSTANTS USED IN THE APPROXIMATIONS
 !
-      data b21 /4.0e0/
-      data b31, b32, b33, b34 /96.0e0, 5.0e0, 16.0e0, 3.0e0/
+      data b21 /4.0_wp/
+      data b31, b32, b33, b34 /96.0_wp, 5.0_wp, 16.0_wp, 3.0_wp/
      data b41, b42, b43, b44, b45&
-     &  /384.0e0, 3.0e0, 19.0e0, 17.0e0, -15.0e0/
+     &  /384.0_wp, 3.0_wp, 19.0_wp, 17.0_wp, -15.0_wp/
      data b51, b52, b53, b54, b55, b56&
-    &   /9216.0e0, 79.0e0, 776.0e0, 1482.0e0,&
-     &   -1920.0e0, -945.0e0/
+    &   /9216.0_wp, 79.0_wp, 776.0_wp, 1482.0_wp,&
+     &   -1920.0_wp, -945.0_wp/
 !
       call getpi(pi)
 !
@@ -172,10 +172,10 @@
       d7 = ppfn**7
       d9 = ppfn**9
       term1 = d1
-      term2 = (1.0e0/b21)*(d3+d1)/df
-      term3 = (1.0e0/b31)*(b32*d5+b33*d3+b34*d1)/(df**2)
-      term4 = (1.0e0/b41)*(b42*d7+b43*d5+b44*d3+b45*d1)/(df**3)
-      term5 = (1.0e0/b51)*(b52*d9+b53*d7+b54*d5+b55*d3+b56*d1)/(df**4)
+      term2 = (1.0_wp/b21)*(d3+d1)/df
+      term3 = (1.0_wp/b31)*(b32*d5+b33*d3+b34*d1)/(df**2)
+      term4 = (1.0_wp/b41)*(b42*d7+b43*d5+b44*d3+b45*d1)/(df**3)
+      term5 = (1.0_wp/b51)*(b52*d9+b53*d7+b54*d5+b55*d3+b56*d1)/(df**4)
       ppft = term1 + term2 + term3 + term4 + term5
       if (idf.ge.7) return
       if (idf.eq.3) go to 60
@@ -218,7 +218,7 @@
       do 110 ipass=1,maxit
          s = sin(z)
          c = cos(z)
-         z = z - (z+(c+(2.0e0/3.0e0)*c*c*c)*s-con)/((8.0e0/3.0e0)*c**4)
+         z = z - (z+(c+(2.0_wp/3.0e0)*c*c*c)*s-con)/((8.0_wp/3.0e0)*c**4)
   110 continue
       ppft = sqrt(df)*s/c
       return
@@ -232,7 +232,7 @@
          s = sin(z)
          c = cos(z)
         z = z - ((1.0e0+0.5e0*c*c+0.375e0*c**4)*s-con)/&
-     &           ((15.0e0/8.0e0)*c**5)
+     &           ((15.0_wp/8.0e0)*c**5)
   130 continue
       ppft = sqrt(df)*s/c
       return

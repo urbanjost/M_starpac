@@ -61,11 +61,11 @@
 !        AMOUNT OF WORK AREA.  SIZE OF DSTAK.
 !     INTEGER N
 !        THE LENGTH OF THE VECTOR Y.
-!     REAL SIGMA
+!     REAL(KIND=WP) :: SIGMA
 !        THE S.D. OF THE SAMPLE.
-!     REAL Y(1000)
+!     REAL(KIND=WP) :: Y(1000)
 !        DATA VECTOR FOR TESTS.
-!     REAL YMEAN
+!     REAL(KIND=WP) :: YMEAN
 !        THE MEAN OF THE SAMPLE.
 !
 !

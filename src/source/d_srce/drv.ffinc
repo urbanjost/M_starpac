@@ -1,5 +1,5 @@
 !DRV
-      subroutine drv(par, npar, xm, n, m, ixm, d)
+subroutine drv(par, npar, xm, n, m, ixm, d)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -11,16 +11,13 @@
 !
 !     CREATION DATE  -  DECEMBER 7, 1981
 !
-!
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-     integer&
-     &   ixm,m,n,npar
+     integer :: ixm,m,n,npar
 !
 !  ARRAY ARGUMENTS
-     real(kind=wp) ::&
-     &   d(n,npar),par(npar),xm(ixm,m)
+     real(kind=wp) :: d(n,npar),par(npar),xm(ixm,m)
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -39,7 +36,4 @@
 !     REAL(KIND=WP) :: XM(IXM,M)
 !        MODEL INDEPENDENT VARIABLE
 !
-!
-      return
-!
-      end
+end subroutine drv

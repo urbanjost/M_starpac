@@ -23,7 +23,7 @@
      real(kind=wp) ::&
      &   big,machep,tiny,vk,zero
      integer&
-    &   d0init,dtype,dtype0,epslon,i,ich,inits,iv1,jtinit,jtol0,&
+    &   d0init,dtype,dtyp_wp,epslon,i,ich,inits,iv1,jtinit,jtol0,&
     &   jtol1,jtolp,k,l,m,nvdflt,oldn,oldnn,oldp,parprt,parsv1,&
      &   prunit,pu
 !
@@ -62,7 +62,7 @@
 !
       data big/0.0_wp/, nvdflt/27/, tiny/1.0_wp/, zero/0.0_wp/
 !
-     data dtype/16/, dtype0/29/, d0init/37/, epslon/19/,&
+     data dtype/16/, dtyp_wp/29/, d0init/37/, epslon/19/,&
     &     inits/25/, jtinit/39/, jtol0/86/, jtol1/87/,&
     &     oldn/45/, oldnn/46/, oldp/47/, parprt/20/,&
      &     parsv1/51/, prunit/21/

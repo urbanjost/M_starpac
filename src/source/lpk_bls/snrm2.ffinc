@@ -16,7 +16,7 @@
 !  INTRINSIC FUNCTIONS
       intrinsic abs,float,sqrt
 !
-      data   zero, one /0.0e0, 1.0e0/
+      data   zero, one /0.0_wp, 1.0_wp/
 !
 !     EUCLIDEAN NORM OF THE N-VECTOR STORED IN SX() WITH STORAGE
 !     INCREMENT INCX .

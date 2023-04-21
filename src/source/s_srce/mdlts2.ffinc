@@ -48,7 +48,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL FPLPM
+!     REAL(KIND=WP) :: FPLPM
 !        THE FLOATING POINT LARGEST POSITIVE MAGNITUDE.
 !     INTEGER I
 !        AN INDEX VARIABLE.
@@ -95,32 +95,32 @@
 !        THE LOWER BOUND FOR RESTS.
 !     INTEGER N2
 !        THE UPPER BOUND FOR RESTS.
-!     REAL PAR(NPAR)
+!     REAL(KIND=WP) :: PAR(NPAR)
 !        THE CURRENT ESTIMATES OF THE PARAMETERS.
-!     REAL PARAR(MBO)
+!     REAL(KIND=WP) :: PARAR(MBO)
 !        THE AUTOREGRESSIVE PARAMETERS
-!     REAL PARDF(NPARDF)
+!     REAL(KIND=WP) :: PARDF(NPARDF)
 !        THE VECTOR CONTAINING THE DIFFERENCE FILTER PARAMETERS.
 !     LOGICAL PARLE1
 !        A FLAG INDICATING WHETHER ALL OF THE MOVING AVERAGE PARAMETERS
 !        ARE LESS THAN OR EQUAL TO 1 (PARLE1 = .TRUE.) OR NOT
 !        (PARLE1 = .FALSE.)
-!     REAL PARMA(MBO)
+!     REAL(KIND=WP) :: PARMA(MBO)
 !        THE MOVING AVERAGE PARAMETERS
-!     REAL PMU
+!     REAL(KIND=WP) :: PMU
 !        THE VALUE OF MU, I.E., THE TREND OR MEAN.
-!     REAL RESMAX
+!     REAL(KIND=WP) :: RESMAX
 !        THE LARGEST POSSIBLE RESIDUAL WHICH WILL STILL AVOID OVERFLOW.
-!     REAL RESTS(N1:N2)
+!     REAL(KIND=WP) :: RESTS(N1:N2)
 !        THE PREDICTED VALUE OF THE FIT.
-!     REAL T(2*MBO)
+!     REAL(KIND=WP) :: T(2*MBO)
 !        A TEMPORARY WORK VECTOR.
-!     REAL TEMP(MBO)
+!     REAL(KIND=WP) :: TEMP(MBO)
 !        A TEMPORARY WORK VECTOR
-!     REAL WTEST
+!     REAL(KIND=WP) :: WTEST
 !        THE TEST VALUE USED TO DETERMINE IF THE DIFFERENCED SERIES
 !        BACK FORECAST IS EFFECTIVELY ZERO OR NOT.
-!     REAL Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        THE DEPENDENT VARIABLE.
 !
       fplpm = r1mach(2)
@@ -249,8 +249,8 @@
                     if (log(abs(parma(j)))+log(abs(t(imod1))).lt.&
     &                         log(fplpm)&
     &                     .and.&
-    &                     (sign(1.0e0,t(imod)).ne.&
-    &                         sign(1.0e0,parma(j)*t(imod1))&
+    &                     (sign(1.0_wp,t(imod)).ne.&
+    &                         sign(1.0_wp,parma(j)*t(imod1))&
     &                     .or.&
     &                     log(abs(parma(j)))+log(abs(t(imod1))).lt.&
      &                         log(fplpm-abs(t(imod))))) then

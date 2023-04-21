@@ -38,11 +38,11 @@
 !        NUMBER OF OBSERVATIONS
 !     INTEGER NPAR
 !        NUMBER OF PARAMETERS
-!     REAL PAR(NPAR)
+!     REAL(KIND=WP) :: PAR(NPAR)
 !        MODEL PARAMETERS
-!     REAL PV(N)
+!     REAL(KIND=WP) :: PV(N)
 !        PREDICTED VALUES
-!     REAL XM(IXM,M)
+!     REAL(KIND=WP) :: XM(IXM,M)
 !        INDEPENDENT VARIABLES
 !
       do 10 i=1,n

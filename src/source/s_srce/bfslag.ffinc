@@ -37,13 +37,13 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL CCOV(ICCOV,JCCOV,*)
+!     REAL(KIND=WP) :: CCOV(ICCOV,JCCOV,*)
 !        THE COVARIANCES.
-!     REAL COVMX
+!     REAL(KIND=WP) :: COVMX
 !        THE MAXIMUM COVARIANCE VALUE.
-!     REAL COVMXI
+!     REAL(KIND=WP) :: COVMXI
 !        THE MAXIMUM COVARIANCE VALUE FOR THE ITH LAG.
-!     REAL FAC11, FAC12, FAC21, FAC22
+!     REAL(KIND=WP) :: FAC11, FAC12, FAC21, FAC22
 !        FACTORS USED TO COMPUTE THE CORRELATION COEFFICIENTS.
 !     INTEGER I
 !        AN INDEX VARIABLE
@@ -71,7 +71,7 @@
 !     INTEGER NWM1, NWUSED
 !        THE NUMBER OF DIFFERENT BANDWIDTHS MINUS 1, AND THE
 !        ACTUAL NUMBER OF BANDWIDTHS ACTUALLY USED.
-!     REAL P95LIM
+!     REAL(KIND=WP) :: P95LIM
 !        THE 95 PERCENT CONFIDENT LIMIT FOR WHITE NOISE.
 !
       lags(nw) = lagmax
@@ -80,7 +80,7 @@
 !     COMPUTE 95 PERCENT CONFIDENCE LIMITS ON BIVARIATECOVARIANCES,
 !     ASSUMING WHITE NOISE.
 !
-      p95lim = 1.96e0/sqrt(real(n))
+      p95lim = 1.96_wp/sqrt(real(n))
 !
       fac11 = ccov(1,index1,index1)
       fac12 = sqrt(ccov(1,index1,index1)*ccov(1,index2,index2))
@@ -113,7 +113,7 @@
 !
 !     COMPUTE LAG WINDOW TRUNCATION POINTS
 !
-   30 lags(nw) = lags(nw)*3.0e0/2.0e0
+   30 lags(nw) = lags(nw)*3.0_wp/2.0e0
       if (lags(nw).lt.32) lags(nw) = 32
       if (lags(nw).gt.lagmax) lags(nw) = lagmax
       nwused = nw

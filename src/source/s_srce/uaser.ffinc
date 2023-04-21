@@ -58,7 +58,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL ACOV(LACOV)
+!     REAL(KIND=WP) :: ACOV(LACOV)
 !        THE AUTOCOVARIANCE FUNCTION.
 !     LOGICAL ERR(20)
 !        VALUE(S) INDICATING WHETHER AN ERROR WAS DETECTED (TRUE) OR NOT
@@ -107,7 +107,7 @@
 !        AN INDICATOR ARRAY USED TO DESIGNATE WHETHER ANY OF THE
 !        FOUR POSSIBLE OPTIONS (F, M, V, OR S) HAVE BEEN USED (TRUE)
 !        OR NOT (FALSE).
-!     REAL PHI(IAR)
+!     REAL(KIND=WP) :: PHI(IAR)
 !        THE ARRAY OF AUTOREGRESSIVE COEFFICIENTS FOR THE
 !        SELECTED ORDER.
 !
@@ -208,7 +208,7 @@
      call eisii(nmsub, liar, iar, -iabs(lagmax), iabs(lagmax), 1, head,&
      &   err(6), llgmxm, llgmxp)
 !
-     call ervii(nmsub, lphi, phi, iar, -1.0e0, 1.0e0, 0, head, 1, nv,&
+     call ervii(nmsub, lphi, phi, iar, -1.0_wp, 1.0_wp, 0, head, 1, nv,&
      &   err(7)) !, L1, L1)
 !
      if (.not.option(3))&

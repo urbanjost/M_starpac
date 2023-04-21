@@ -54,7 +54,7 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL DIF
+!     REAL(KIND=WP) :: DIF
 !        THE SUM OF THE DIFFERENCES BETWEEN SUCCEEDING ELEMENTS
 !        IN Y.
 !     INTEGER I
@@ -73,7 +73,7 @@
 !        THE NUMBER OF RUNS UP AND DOWN.
 !     INTEGER N
 !        INPUT PARAMETER.  THE LENGTH OF Y AND WT.
-!     REAL STS(53)
+!     REAL(KIND=WP) :: STS(53)
 !        OUTPUT PARAMETER.  THE VECTOR OF 53 STATISTICS COMPUTED.
 !        ROW STATISTIC                    ROW STATISTIC
 !         1  LENGTH OF VECTOR             TESTS FOR NONRANDOMNESS
@@ -102,28 +102,28 @@
 !        20  S.D. OF SLOPE                43  WTD. AVG. ABS. VALUES
 !        21  SLOPE/S.D. OF SLOPE = T      44-53 FREQ. DISTRIBUTION
 !        22  PROB ( X .GT. ABS(OBS. T))
-!     REAL SUMDA
+!     REAL(KIND=WP) :: SUMDA
 !        INPUT PARAMETER.  THE SUM OF THE ABSOLUTE VALUES OF THE
 !        DIFFERENCES DIFF.
-!     REAL SUMDI
+!     REAL(KIND=WP) :: SUMDI
 !        INPUT PARAMETER.  THE SUM OF THE PRODUCTS OF I AND THE
 !        ITH DIFFERENCE DIFF.
-!     REAL SUMD2
+!     REAL(KIND=WP) :: SUMD2
 !        INPUT PARAMETER.  THE SUM OF THE SQUARES OF THE
 !        DIFFERENCES DIFF.
-!     REAL SUMD3
+!     REAL(KIND=WP) :: SUMD3
 !        INPUT PARAMETER.  THE SUM OF THE CUBES OF THE
 !        DIFFERENCES DIFF.
-!     REAL SUMD4
+!     REAL(KIND=WP) :: SUMD4
 !        INPUT PARAMETER.  THE SUM OF THE HYPERCUBES OF THE
 !        DIFFERENCES DIFF.
-!     REAL T
+!     REAL(KIND=WP) :: T
 !        A RESIDUAL (Y(I) - MEANY)
-!     REAL TA
+!     REAL(KIND=WP) :: TA
 !        A TEMPORARY VARIABLE IN THE RUNS CALCULATION.
-!     REAL TK1, TK2
+!     REAL(KIND=WP) :: TK1, TK2
 !        CHI-SQUARED VALUES.
-!     REAL Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        INPUT PARAMETER.  A SET OF N DATA POINTS, SORTED
 !        INTO ASCENDING ORDER.
 !
@@ -180,7 +180,7 @@
      &   sts(37) = (sumd4/sts(1))/((sumd2/sts(1))**2)
       sts(40) = sumd2
       sts(19) = (12.0e0*sumdi)/(sts(1)*(sts(1)**2-1.0e0))
-     sts(20) = (1.0e0/(sts(1)-2.0e0)*&
+     sts(20) = (1.0_wp/(sts(1)-2.0e0)*&
     &             (12.0e0*(sumd2/(sts(1)*(sts(1)**2-1.0e0)))-&
      &              sts(19)**2))
       if (sts(20).le.0.0e0) sts(20) = 0.0e0
@@ -188,7 +188,7 @@
       if (sts(20).eq.0.0e0) sts(21) = 0.0e0
       if (sts(20).gt.0.0e0) sts(21) = sts(19)/sts(20)
 !
-      sts(22) = 1.0e0 - cdff(sts(21)*sts(21), 1.0e0, sts(1)-2.0e0)
+      sts(22) = 1.0e0 - cdff(sts(21)*sts(21), 1.0_wp, sts(1)-2.0e0)
 !
 !     COMPUTE NUMBER OF RUNS IN THE DATA.
 !
@@ -217,9 +217,9 @@
      if (sts(9).ne.0.0e0)&
      &   sts(41) = (sts(4)*sqrt(sts(1)))/sts(9)
       sts(12) = sumda/sts(1)
-      t = ppft(0.975e0, n-1)
-      tk1 = ppfchs(0.975e0, n-1)
-      tk2 = ppfchs(0.025e0, n-1)
+      t = ppft(0.975_wp, n-1)
+      tk1 = ppfchs(0.975_wp, n-1)
+      tk2 = ppfchs(0.025_wp, n-1)
       sts(15) = sts(4) - t*sts(10)
       sts(16) = sts(4) + t*sts(10)
       sts(17) = sqrt((sts(1)-1.0e0)/tk1)*sts(9)

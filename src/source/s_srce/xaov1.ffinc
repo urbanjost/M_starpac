@@ -48,9 +48,9 @@
 !
 !     DOUBLE PRECISION DSTAK(12)
 !        THE DOUBLE PRECISION VERSION OF THE /CSTAK/ WORK AREA.
-!     REAL FI
+!     REAL(KIND=WP) :: FI
 !        FLOAT OF INDEX I
-!     REAL GSTAT(10,4)
+!     REAL(KIND=WP) :: GSTAT(10,4)
 !        THE GROUP STATISTICS.  COLUMNS CORRESPOND TO THE TAG
 !        VALUE, SAMPLE SIZE, GROUP MEAN, AND GROUP STANDARD DEVIATION.
 !     INTEGER I
@@ -69,32 +69,32 @@
 !        THE NUMBER OF OBSERVATIONS
 !     INTEGER NG
 !        THE NUMBER OF DIFFERENT GROUPS
-!     REAL TAG(20)
+!     REAL(KIND=WP) :: TAG(20)
 !        THE TAG VALUES FOR EACH OBSERVATION
-!     REAL Y(20)
+!     REAL(KIND=WP) :: Y(20)
 !        THE VECTOR OF OBSERVATIONS
-!     REAL Z(10)
+!     REAL(KIND=WP) :: Z(10)
 !        TEST VECTOR
-!     REAL ZTAG(10)
+!     REAL(KIND=WP) :: ZTAG(10)
 !        TEST TAG VECTOR
 !
      data   y( 1),   y( 2),   y( 3),   y( 4),   y( 5)&
-     &   /    61.0e0,    61.0e0,    67.0e0,    67.0e0,    64.0e0/
+     &   /    61.0_wp,    61.0_wp,    67.0_wp,    67.0_wp,    64.0_wp/
      data   y( 6),   y( 7),   y( 8),   y( 9),   y(10)&
-     &   /    78.0e0,    71.0e0,    75.0e0,    72.0e0,    74.0e0/
+     &   /    78.0_wp,    71.0_wp,    75.0_wp,    72.0_wp,    74.0_wp/
      data   y(11),   y(12),   y(13),   y(14),   y(15)&
-     &   /    83.0e0,    81.0e0,    76.0e0,    78.0e0,    79.0e0/
+     &   /    83.0_wp,    81.0_wp,    76.0_wp,    78.0_wp,    79.0_wp/
      data   y(16),   y(17)&
-     &   /    72.0e0,   72.0e0/
+     &   /    72.0_wp,   72.0_wp/
 !
      data tag( 1), tag( 2), tag( 3), tag( 4), tag( 5)&
-     &   /    11.5e0,    11.5e0,    11.5e0,    11.5e0,    11.5e0/
+     &   /    11.5_wp,    11.5_wp,    11.5_wp,    11.5_wp,    11.5_wp/
      data tag( 6), tag( 7), tag( 8), tag( 9), tag(10)&
-     &   /    12.0e0,    12.0e0,    12.0e0,    12.0e0,    12.0e0/
+     &   /    12.0_wp,    12.0_wp,    12.0_wp,    12.0_wp,    12.0_wp/
      data tag(11), tag(12), tag(13), tag(14), tag(15)&
-     &   /    11.0e0,    11.0e0,    11.0e0,    11.0e0,    11.0e0/
+     &   /    11.0_wp,    11.0_wp,    11.0_wp,    11.0_wp,    11.0_wp/
      data tag(16), tag(17)&
-     &   /   -11.0e0,   11.0e0/
+     &   /   -11.0_wp,   11.0_wp/
 !
       call iprint(iprt)
 !

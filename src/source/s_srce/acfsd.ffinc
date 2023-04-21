@@ -42,21 +42,21 @@
 !        THE INTEGER NUMBER OF OBSERVATIONS IN EACH SERIES
 !     INTEGER NC
 !        THE NUMBER OF AUTOCORRELATIONS COMPUTED
-!     REAL RHO(NC)
+!     REAL(KIND=WP) :: RHO(NC)
 !        THE ARRAY IN WHICH THE AUTOCORRELATIONS ARE STORED
-!     REAL SDRHO(NC)
+!     REAL(KIND=WP) :: SDRHO(NC)
 !        THE ARRAY IN WHICH THE STANDARD ERRORS OF THE AUTOCORRELATIONS
 !        ARE STORED
 !
       sdrho(1) = sqrt(real(n - 1)) / n
       if (nc .eq. 1) return
       do 20 lag = 2, nc
-         sdrho(lag) = 0.0e0
+         sdrho(lag) = 0.0_wp
          klast = min(lag-1, n-lag)
          do 10 k = 1, klast
             sdrho(lag) = sdrho(lag) + (n-lag-k) * rho(k) * rho(k)
    10    continue
-         sdrho(lag) = sqrt((n-lag) + 2.0e0 * sdrho(lag)) / n
+         sdrho(lag) = sqrt((n-lag) + 2.0_wp * sdrho(lag)) / n
    20 continue
       return
       end

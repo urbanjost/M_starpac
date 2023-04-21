@@ -84,62 +84,62 @@
 !     INTEGER NPRT
 !        THE INDICATOR VARIABLE USED TO DESIGNATE THE AMOUNT OF
 !        PRINTED OUTPUT.
-!     REAL PAR(10)
+!     REAL(KIND=WP) :: PAR(10)
 !        THE PARAMETERS  TO BE ESTIMATED.
-!     REAL PV(50)
+!     REAL(KIND=WP) :: PV(50)
 !        THE PREDICTED VALUES.
-!     REAL RAND(1)
+!     REAL(KIND=WP) :: RAND(1)
 !        *
-!     REAL RES(50)
+!     REAL(KIND=WP) :: RES(50)
 !        THE RESIDUALS.
-!     REAL RSD
+!     REAL(KIND=WP) :: RSD
 !        THE RESIDUAL STANDARD DEVIATION.
-!     REAL SDPV(50)
+!     REAL(KIND=WP) :: SDPV(50)
 !        THE STANDARD DEVIATIONS OF THE PREDICTED VALUES.
-!     REAL SDRES(50)
+!     REAL(KIND=WP) :: SDRES(50)
 !        THE STANDARDIZED RESIDUALS.
-!     REAL SUM, TERM
+!     REAL(KIND=WP) :: SUM, TERM
 !        *
-!     REAL VCV(10,10)
+!     REAL(KIND=WP) :: VCV(10,10)
 !        THE VARIANCE COVARIANCE MATRIX.
-!     REAL WT(50)
+!     REAL(KIND=WP) :: WT(50)
 !        THE WEIGHTS (A DUMMY VECTOR IN THE UNWEIGHTED CASE).
-!     REAL X(50,9)
+!     REAL(KIND=WP) :: X(50,9)
 !        THE INDEPENDENT VARIABLE.
-!     REAL XM(50,10)
+!     REAL(KIND=WP) :: XM(50,10)
 !        THE INDEPENDENT VARIABLE.
-!     REAL XM1(50,10)
+!     REAL(KIND=WP) :: XM1(50,10)
 !        THE INDEPENDENT VARIABLE.
-!     REAL Y(50)
+!     REAL(KIND=WP) :: Y(50)
 !        THE DEPENDENT VARIABLE.
-!     REAL Y1(50)
+!     REAL(KIND=WP) :: Y1(50)
 !        THE DEPENDENT VARIABLE.
 !
 !
      data      xm(1,1),  xm(1,2),  xm(1,3),  xm(1,4)&
-     &    /      1.0e0, 42.2e0, 11.2e0, 31.9e0/
+     &    /      1.0_wp, 42.2_wp, 11.2_wp, 31.9_wp/
      data      xm(2,1),  xm(2,2),  xm(2,3),  xm(2,4)&
-     &    /      1.0e0, 48.6e0, 10.6e0, 13.2e0/
+     &    /      1.0_wp, 48.6_wp, 10.6_wp, 13.2_wp/
      data      xm(3,1),  xm(3,2),  xm(3,3),  xm(3,4)&
-     &    /      1.0e0, 42.6e0, 10.6e0, 28.7e0/
+     &    /      1.0_wp, 42.6_wp, 10.6_wp, 28.7_wp/
      data      xm(4,1),  xm(4,2),  xm(4,3),  xm(4,4)&
-     &    /      1.0e0, 39.0e0, 10.4e0, 26.1e0/
+     &    /      1.0_wp, 39.0_wp, 10.4_wp, 26.1_wp/
      data      xm(5,1),  xm(5,2),  xm(5,3),  xm(5,4)&
-     &    /      1.0e0, 34.7e0,  9.3e0, 30.1e0/
+     &    /      1.0_wp, 34.7_wp,  9.3_wp, 30.1_wp/
      data      xm(6,1),  xm(6,2),  xm(6,3),  xm(6,4)&
-     &    /      1.0e0, 44.5e0, 10.8e0,  8.5e0/
+     &    /      1.0_wp, 44.5_wp, 10.8_wp,  8.5_wp/
      data      xm(7,1),  xm(7,2),  xm(7,3),  xm(7,4)&
-     &    /      1.0e0, 39.1e0, 10.7e0, 24.3e0/
+     &    /      1.0_wp, 39.1_wp, 10.7_wp, 24.3_wp/
      data      xm(8,1),  xm(8,2),  xm(8,3),  xm(8,4)&
-     &    /      1.0e0, 40.1e0, 10.0e0, 18.6e0/
+     &    /      1.0_wp, 40.1_wp, 10.0_wp, 18.6_wp/
      data      xm(9,1),  xm(9,2),  xm(9,3),  xm(9,4)&
-     &    /      1.0e0, 45.9e0, 12.0e0, 20.4e0/
+     &    /      1.0_wp, 45.9_wp, 12.0_wp, 20.4_wp/
      data         y(1),     y(2),     y(3)&
-     &    /    167.1e0,174.4e0,160.8e0/
+     &    /    167.1_wp,174.4_wp,160.8_wp/
      data         y(4),     y(5),     y(6)&
-     &    /    162.0e0,140.8e0,174.6e0/
+     &    /    162.0_wp,140.8_wp,174.6_wp/
      data         y(7),     y(8),     y(9)&
-     &    /    163.7e0,174.5e0,185.7e0/
+     &    /    163.7_wp,174.5_wp,185.7_wp/
 !
 !     SET PARAMETERS NECESSARY FOR THE COMPUTATIONS
 !
@@ -454,7 +454,7 @@
       call fitsxp(par, pv, sdpv, res, sdres, vcv, n, npar, ivcv, rsd)
       call setrv(wt, n, 100.0e0)
 !
-      call genr(wt, n, 1.0e0, 1.0e0)
+      call genr(wt, n, 1.0_wp, 1.0e0)
       write (iprt,1310)
       write (iprt,1030)
      call llsws(y, wt, xm, n, ixm, npar, res, ldstak,&

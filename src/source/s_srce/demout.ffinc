@@ -51,12 +51,12 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL AMPL(NDEM)
+!     REAL(KIND=WP) :: AMPL(NDEM)
 !        THE ARRAY IN WHICH THE AMPLITUDES OF THE DEMODULATED SERIES
 !        ARE STORED.
 !     LOGICAL ERROR
 !        AN ERROR FLAG
-!     REAL FC, FD
+!     REAL(KIND=WP) :: FC, FD
 !        THE CUTOFF FREQUENCY AND THE DEMODULATION FREQUENCY.
 !     INTEGER IERR
 !        THE ERROR FLAG
@@ -73,11 +73,11 @@
 !        THE NUMBER OF VALUES IN THE DEMODULATED SERIES.
 !     CHARACTER*1 NMSUB(6)
 !        THE NAME OF THE CALLING SUBROUTINE
-!     REAL PHASE(IPHASE,2)
+!     REAL(KIND=WP) :: PHASE(IPHASE,2)
 !        THE ARRAY CONTAINING THE PRIMARY AND SECONDARY PHASE VALUES.
-!     REAL PI
+!     REAL(KIND=WP) :: PI
 !        THE VALUE OF PI.
-!     REAL YMN, YMX
+!     REAL(KIND=WP) :: YMN, YMX
 !
 !
       call iprint(iprt)
@@ -89,7 +89,7 @@
       write (iprt, 1000) fd, fc, k
 !
       write (iprt, 1001)
-     call vplmt(ampl, ampl, ndem, 1, ndem, 0.0e0, 0.0e0,&
+     call vplmt(ampl, ampl, ndem, 1, ndem, 0.0_wp, 0.0_wp,&
      &  ymn, ymx, error, nmsub, .false., 1)
 !
       if (error) then
@@ -97,14 +97,14 @@
         return
       else
        call vpmn(ampl, ampl, ndem, 1, ndem, 1, 0, isym, 1, 0,&
-     &   ymn, ymx, 1.0e0, 1.0e0, .false., 0, 1, 0)
+     &   ymn, ymx, 1.0_wp, 1.0_wp, .false., 0, 1, 0)
       end if
 !
       write (iprt, 1002)
       call versp(.true.)
       write (iprt, 1003)
      call vpmn(phase, phase, ndem, 2, iphase, 1, 2, isym, 1, 0,&
-     &   -2.0e0*pi, 2.0e0*pi, 1.0e0, 1.0e0, .false., 0, 0, 0)
+     &   -2.0e0*pi, 2.0e0*pi, 1.0_wp, 1.0_wp, .false., 0, 0, 0)
 !
       return
 !

@@ -1,5 +1,5 @@
 !PLTPLX
-      subroutine pltplx(point, ymn, scale, ipoint, iend)
+subroutine pltplx(point, ymn, scale, ipoint, iend)
 !
 !     LATEST REVISION  -  03/15/90  (JRD)
 !
@@ -11,14 +11,11 @@
 !
 !     CREATION DATE  -  JANUARY 21, 1982
 !
-!
 !  VARIABLE DECLARATIONS
 !
 !  SCALAR ARGUMENTS
-     real(kind=wp) ::&
-     &   point,scale,ymn
-     integer&
-     &   iend,ipoint
+     real(kind=wp) :: point,scale,ymn
+     integer :: iend,ipoint
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
@@ -26,15 +23,14 @@
 !        THE NUMBER OF LOCATIONS IN THE PLOT STRING.
 !     INTEGER IPOINT
 !        THE LOCATION IN THE PLOT STRING OF THE VALUE BEING PLOTTED.
-!     REAL POINT
+!     REAL(KIND=WP) :: POINT
 !        THE VALUE TO BE PLOTTED.
-!     REAL SCALE
+!     REAL(KIND=WP) :: SCALE
 !        THE SCALE INTERVAL OF THE PLOT.
-!     REAL YMN
+!     REAL(KIND=WP) :: YMN
 !        THE GRAPH AXIS LOWER LIMITS ACTUALLY USED.
 !
-      ipoint = (point-ymn)/scale + 2.5
+      ipoint = (point-ymn)/scale + 2.5_wp
       if (ipoint .lt. 2) ipoint = 1
       if (ipoint .gt. iend) ipoint = iend
-      return
-      end
+end subroutine pltplx

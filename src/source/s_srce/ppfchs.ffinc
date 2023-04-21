@@ -102,7 +102,7 @@
       intrinsic exp,log
 !
 !
-      data c/0.918938533204672741e0/
+      data c/0.918938533204672741_wp/
      data d(3),d(4),d(5)&
     &  /+0.793650793650793651e-3,&
     &   -0.595238095238095238e-3,&
@@ -111,11 +111,11 @@
     &  /-0.191752691752691753e-2,&
     &   +0.641025641025641025e-2,&
     &   -0.2955065359147712418e-1,&
-    &   +0.179644372368830573e0,&
+    &   +0.179644372368830573_wp,&
      &   -0.139243221690590111e1/
 !
-      d(1) = 1.0e0/12.0e0
-      d(2) = 1.0e0/360.0e0
+      d(1) = 1.0_wp/12.0e0
+      d(2) = 1.0_wp/360.0e0
 !
       call iprint (iprt)
 !
@@ -173,7 +173,7 @@
 !
       iloop = 1
 !     XMIN0 = (FP*GAMMA*G)**(1.0E0/GAMMA)
-      xmin0 = exp((1.0e0/gamma)*(log(fp)+log(gamma)+(a+b)-log(den)))
+      xmin0 = exp((1.0_wp/gamma)*(log(fp)+log(gamma)+(a+b)-log(den)))
       xmin = xmin0
       xlower = xmin
       xmid = xmin
@@ -223,8 +223,8 @@
 !     COMPUTE T-SUB-Q AS DEFINED ON PAGE 4 OF THE WILK, GNANADESIKAN,
 !     AND HUYETT REFERENCE
 !
-  600 sum = 1.0e0/gamma
-      term = 1.0e0/gamma
+  600 sum = 1.0_wp/gamma
+      term = 1.0_wp/gamma
       cut1 = dx-gamma
       cut2 = dx*10000000000.0e0
       do 700 j=1,maxit

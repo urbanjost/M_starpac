@@ -69,12 +69,12 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL ACOV(LACOV)
+!     REAL(KIND=WP) :: ACOV(LACOV)
 !        THE AUTOCOVARIANCE VECTOR.
 !     INTEGER AIC
 !        THE STARTING LOCATION IN DSTAK FOR
 !        THE ARRAY CONTAINING THE AKAIKES CRITERION FOR EACH ORDER.
-!     REAL CHIA, CHIAP
+!     REAL(KIND=WP) :: CHIA, CHIAP
 !        THE VARIABLES IN WHICH THE CHI SQUARE STATISTIC AND
 !        CHI SQUARED STATISTIC PROBABILITY FOR THE AUTOCORRELATIONS
 !        ARE STORED.
@@ -133,24 +133,24 @@
 !        THE INDICATOR VARIABLE USED TO SPECIFY WHETHER OR NOT
 !        PRINTED OUTPUT IS TO BE GIVEN, WHERE IF THE VALUE OF
 !        NPRT IS ZERO, NO OUTPUT IS MADE.
-!     REAL OSPVAR
+!     REAL(KIND=WP) :: OSPVAR
 !        THE ONE STEP PREDICTION VARIANCE FOR THE ORDER SELECTED (IAR).
-!     REAL PHI(LAGMAX)
+!     REAL(KIND=WP) :: PHI(LAGMAX)
 !        THE ARRAY OF AUTOREGRESSIVE COEFFICIENTS FOR THE SELECTED
 !        ORDER.
 !     INTEGER PRHO
 !        THE STARTING LOCATION IN THE WORK AREA FOR PRHO.
-!     REAL RSTAK(12)
+!     REAL(KIND=WP) :: RSTAK(12)
 !        THE REAL VERSION OF THE /CSTAK/ WORK AREA.
 !     INTEGER SDRHO
 !        THE STARTING LOCATION IN THE WORK AREA FOR SDRHO.
 !     INTEGER WORK
 !        THE STARTING LOCATION IN THE WORK AREA FOR WORK.
-!     REAL Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        THE VECTOR CONTAINING THE OBSERVED TIME SERIES
-!     REAL YMEAN
+!     REAL(KIND=WP) :: YMEAN
 !        THE MEAN OF THE OBSERVED TIME SERIES
-!     REAL YSD
+!     REAL(KIND=WP) :: YSD
 !        THE STANDARD DEVIATION OF THE OBSERVED TIME SERIES
 !
 !     SET UP NAME ARRAYS
@@ -206,10 +206,10 @@
 !
 !         CALL ROUTINE TO PRINT OUT AUTOCORRELATIONS
 !
-         if ((nprt.ne.0) .or.  (acov(1).eq.0.0e0)) call acfout&
+         if ((nprt.ne.0) .or.  (acov(1).eq.0.0_wp)) call acfout&
     &       (ymean, ysd, n, n, lagmax, acov(2), rstak(sdrho),&
     &       rstak(prho), ndum, rstak(aic), lagmax+1, rstak(ftest),&
-    &       iar, phi, ospvar, chia, chiap, lagmax, .false., 0.0e0,&
+    &       iar, phi, ospvar, chia, chiap, lagmax, .false., 0.0_wp,&
      &       .false., .false., 0, ndum, ndum, 0)
 !
           if (nprt.ne.0) then

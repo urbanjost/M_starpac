@@ -114,9 +114,9 @@
 !     INTEGER NZTAGS
 !        THE NUMBER OF POSITIVE NON-ZERO TAGS, TO BE DETERMINED BY
 !        THIS ROUTINE
-!     REAL TAG(N)
+!     REAL(KIND=WP) :: TAG(N)
 !        THE VECTOR OF TAGS.
-!     REAL Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        THE VECTOR OF OBSERVATIONS.
 !
      data  ligsta(1),ligsta(2),ligsta(3),ligsta(4),ligsta(5),ligsta(6),&
@@ -158,7 +158,7 @@
 !
 !     NUMBER OF NON-ZERO TAGS LESS THAN 2
 !
-     call ervgt(nmsub, ltag, tag, n, 0.0e0, (n-2), head, 7, nv, error,&
+     call ervgt(nmsub, ltag, tag, n, 0.0_wp, (n-2), head, 7, nv, error,&
      &   lzero)
       if (error) go to 50
 !

@@ -30,9 +30,9 @@
 !
 !     VARIABLE DEFINITIONS (ALPHABETICALLY)
 !
-!     REAL AA, AB, A2
-!     REAL CD, CN
-!     REAL EX
+!     REAL(KIND=WP) :: AA, AB, A2
+!     REAL(KIND=WP) :: CD, CN
+!     REAL(KIND=WP) :: EX
 !     INTEGER I, ISN
 !     INTEGER IX
 !        THE DIMENSION OF X.
@@ -42,10 +42,10 @@
 !     INTEGER NK, N1
 !     INTEGER N2
 !        THE HALF LENGTH OF THE SYMMETRIC DATA ARRAY.  N2 MUST BE EVEN.
-!     REAL PI
+!     REAL(KIND=WP) :: PI
 !        THE VALUE OF PI.
-!     REAL SAVE, SD, SN
-!     REAL X(IX)
+!     REAL(KIND=WP) :: SAVE, SD, SN
+!     REAL(KIND=WP) :: X(IX)
 !        THE N2+2 VECTOR WITH FIRST HALF OF SYMMETRIC DATA STORED IN
 !        THE FIRST N2+1 LOCATIONS.  LOCATION N2+2 USED ONLY FOR
 !        WORKSPACE.  THE COSINE TRANSFORM COEFFICIENTS ARE RETURNED
@@ -85,7 +85,7 @@
          ab = (x(j)-x(k))*0.5e0
          ex = cn - (cd*cn+sd*sn)
          sn = (sd*cn-cd*sn) + sn
-         cn = 0.5e0/(ex*ex+sn*sn) + 0.5e0
+         cn = 0.5_wp/(ex*ex+sn*sn) + 0.5e0
          sn = cn*sn
          cn = cn*ex
          ex = ab/sn

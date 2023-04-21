@@ -83,7 +83,7 @@
 !        THE LENGTH OF DATA SET GENERATED
 !     CHARACTER*1 NMSUB(6)
 !        THE NAME OF THIS SUBROUTINE
-!     REAL Y(N)
+!     REAL(KIND=WP) :: Y(N)
 !        THE GENERATED RANDOM VALUES.
 !
      data  nmsub(1), nmsub(2), nmsub(3), nmsub(4), nmsub(5), nmsub(6)&
